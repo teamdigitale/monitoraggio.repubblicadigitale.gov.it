@@ -118,13 +118,15 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
     const authorizedOption = [];
     if (
       hasUserPermission(['del.news']) ||
-      author?.toString() === userId?.toString()
+      (author?.toString() === userId?.toString() &&
+        hasUserPermission(['new.news']))
     ) {
       authorizedOption.push(deleteOption);
     }
     if (
       hasUserPermission(['upd.news']) ||
-      author?.toString() === userId?.toString()
+      (author?.toString() === userId?.toString() &&
+        hasUserPermission(['new.news']))
     ) {
       authorizedOption.push(editOption);
     }

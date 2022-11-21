@@ -17,6 +17,7 @@ export interface SocialI {
   showReplies?: boolean | undefined;
   user_like?: boolean | undefined;
   onShowReplies?: (() => void) | undefined;
+  isReply?: boolean;
 }
 
 const SocialBar: React.FC<SocialI> = (props) => {
@@ -31,11 +32,10 @@ const SocialBar: React.FC<SocialI> = (props) => {
     user_like,
     downloads,
     replies,
+    isReply = false,
   } = props;
 
   const device = useAppSelector(selectDevice);
-
-  console.log('replies', replies);
 
   return (
     <div
@@ -146,7 +146,7 @@ const SocialBar: React.FC<SocialI> = (props) => {
               />
               {device.mediaIsDesktop ? (
                 <p className='primary-color font-weight-bold pl-2 letter-spacing'>
-                  COMMENTA
+                  {isReply ? 'RISPONDI':'COMMENTA'}
                 </p>
               ) : null}
             </Button>

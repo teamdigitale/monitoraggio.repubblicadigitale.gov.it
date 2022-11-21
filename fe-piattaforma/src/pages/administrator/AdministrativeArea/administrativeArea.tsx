@@ -279,7 +279,7 @@ const AreaAmministrativaRoutes = [
   <Route
     key='programmi-dettaglio-progetti-dettaglio-enti'
     path='programmi/:entityId/progetti/:projectId/:authorityType/:authorityId'
-    element={<AuthoritiesDetails />}
+    element={<ProjectsDetails />}
   />,
   <Route
     key='programmi-dettaglio-progetti-dettaglio-enti-utenti'

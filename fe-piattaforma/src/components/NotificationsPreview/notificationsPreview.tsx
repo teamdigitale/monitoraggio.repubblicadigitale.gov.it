@@ -120,7 +120,11 @@ const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
                   // TODO update key with a unique value
                   {...notification}
                   notificationsPreview={true}
-                  onClick={() => onReadNotification(notification.id)}
+                  onRead={() => onReadNotification(notification.id)}
+                  onClick={() => {
+                    onReadNotification(notification.id);
+                    setOpen(false);
+                  }}
                 />
               </div>
             ))

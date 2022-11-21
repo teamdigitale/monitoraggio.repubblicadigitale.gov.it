@@ -2,11 +2,9 @@ import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
-import isEqual from 'lodash.isequal';
 import { selectDevice } from '../../../redux/features/app/appSlice';
 import { useAppSelector } from '../../../redux/hooks';
 import { focusId } from '../../../utils/common';
-// import { focusId } from '../../../utils/common';
 import CardProfile from '../../CardProfile/cardProfile';
 import GenericModal from '../GenericModal/genericModal';
 import './switchProfileModal.scss';
@@ -17,17 +15,10 @@ import {
   selectModalPayload,
 } from '../../../redux/features/modal/modalSlice';
 import { getSessionValues } from '../../../utils/sessionHelper';
-import { useNavigate } from 'react-router-dom';
 
 const id = 'switchProfileModal';
 
-/*interface ProfileI {
-  name: string;
-  programName: string;
-}*/
-
 interface SwitchProfileModalI {
-  //profiles?: ProfileI[];
   isRoleManaging?: boolean;
   isOnboarding?: boolean;
   profilePicture?: string;
@@ -38,7 +29,6 @@ const SwitchProfileModal: React.FC<SwitchProfileModalI> = ({
   profilePicture = '',
 }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const user = useAppSelector(selectUser) || {};
   const modal = useAppSelector(selectModalPayload);
   const { profiliUtente: profiles } = user;
@@ -60,8 +50,7 @@ const SwitchProfileModal: React.FC<SwitchProfileModalI> = ({
       if (modal?.onSubmit) {
         modal.onSubmit();
       } else {
-        dispatch(closeModal());
-        navigate('/');
+        window.location.reload();
       }
     }
   };
@@ -97,6 +86,26 @@ const SwitchProfileModal: React.FC<SwitchProfileModalI> = ({
       default:
         break;
     }
+  };
+
+  const checkActiveProfile = ({
+    codiceRuolo,
+    idProgramma,
+    idProgetto,
+    idEnte,
+  }: any) => {
+    const {
+      codiceRuolo: codiceRuoloSel,
+      idProgramma: idProgrammaSel,
+      idProgetto: idProgettoSel,
+      idEnte: idEnteSel,
+    } = profileSelected;
+    return (
+      codiceRuolo === codiceRuoloSel &&
+      idProgramma === idProgrammaSel &&
+      idProgetto === idProgettoSel &&
+      idEnte === idEnteSel
+    );
   };
 
   return (
@@ -156,7 +165,7 @@ const SwitchProfileModal: React.FC<SwitchProfileModalI> = ({
             >
               <CardProfile
                 profile={profile}
-                activeProfile={isEqual(profile, profileSelected)}
+                activeProfile={checkActiveProfile(profile)}
                 className='mb-2'
                 user={user}
                 profilePicture={profilePicture}

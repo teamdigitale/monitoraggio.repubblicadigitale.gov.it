@@ -522,10 +522,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
         )}
       >
         {device.mediaIsPhone ? (
-          <ProgressBar
-            currentStep={activeSection + 1}
-            steps={progressSteps()}
-          />
+          <ProgressBar currentStep={activeSection} steps={progressSteps()} />
         ) : (
           <Stepper nSteps={4} currentStep={activeSection} />
         )}

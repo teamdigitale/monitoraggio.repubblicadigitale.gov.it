@@ -11,7 +11,7 @@ import {
 //import LogoMobile from '/public/assets/img/logo-mobile.png';
 import LogoMobile from '/public/assets/img/logo_tmp3.png';
 import Bell from '/public/assets/img/campanella.png';
-import RocketChatIcon from '/public/assets/img/rocketchat.png';
+import RocketChatIcon from '/public/assets/img/rocketchat-2x.png';
 import { HeaderI } from '../header';
 import HamburgerMenu from '../../HamburgerMenu/hamburgerMenu';
 import { openModal } from '../../../redux/features/modal/modalSlice';
@@ -105,6 +105,7 @@ const HeaderMobile: React.FC<HeaderI> = ({
             icon='it-expand'
             role='button'
             aria-label='Espandi menù'
+            aria-hidden
           />
         </div>
       </div>
@@ -181,7 +182,10 @@ const HeaderMobile: React.FC<HeaderI> = ({
                   'justify-content-between'
                 )}
                 role='menuitem'
-                onClick={() => navigate('/area-personale/contenuti-pubblicati')}
+                onClick={() => {
+                  navigate('/area-personale/contenuti-pubblicati');
+                  setOpenUser(false);
+                }}
               >
                 Contenuti pubblicati
               </Button>

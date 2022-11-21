@@ -72,10 +72,15 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    max-width: 180px;
+    max-width: 185px;
 
-    @media screen and (max-width: 576px) {
-      max-width: 115px;
+    @media screen and (max-width: 767px) {
+      font-size: 14px !important;
+      max-width: 150px;
+    }
+    @media screen and (max-width: 1200px) {
+      margin-bottom: 0 !important;
+      padding-right: 2px;
     }
    }
   }

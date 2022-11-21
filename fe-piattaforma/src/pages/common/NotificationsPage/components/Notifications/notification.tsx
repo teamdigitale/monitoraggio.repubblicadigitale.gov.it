@@ -24,7 +24,8 @@ import {
   DeleteNotification,
   GetNotificationsByUser,
 } from '../../../../../redux/features/user/userThunk';
-// import { useNavigate } from 'react-router-dom';
+import DeleteCheck from '/public/assets/img/delete-check.png';
+import { useNavigate } from 'react-router-dom';
 
 export interface NotificationI {
   id?: string;
@@ -38,6 +39,7 @@ export interface NotificationI {
   notificationsPreview?: boolean;
   isChecked?: boolean;
   onClick?: () => void;
+  onRead?: () => void;
 }
 
 const Notification: React.FC<NotificationI> = (props) => {
@@ -47,12 +49,13 @@ const Notification: React.FC<NotificationI> = (props) => {
     status = false,
     id,
     action = '',
-    // node_id = '',
-    // node_bundle = '',
+    node_id = '',
+    node_bundle = '',
     onSelect,
     notificationsPreview = true,
     isChecked = false,
     onClick = () => ({}),
+    onRead = () => ({}),
   } = props;
 
   const device = useAppSelector(selectDevice);
@@ -61,7 +64,7 @@ const Notification: React.FC<NotificationI> = (props) => {
   const dispatch = useDispatch();
   const usersAnagraphic = useAppSelector(selectAnagraphics);
   const [populatedMessage, setPopulatedMessage] = useState('');
-  // const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (message) {
@@ -96,21 +99,21 @@ const Notification: React.FC<NotificationI> = (props) => {
     dispatch(GetNotificationsByUser());
   };
 
-  // const onNavigateToItem = () => {
-  //   switch (node_bundle) {
-  //     case 'board_item':
-  //       navigate(`/bacheca/${node_id}`)
-  //       break;
-  //     case 'community_item':
-  //       navigate(`/community/${node_id}`)
-  //       break
-  //     case 'document_item':
-  //       navigate(`/documenti/${node_id}`)
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // }
+  const onNavigateToItem = () => {
+    switch (node_bundle) {
+      case 'board_item':
+        navigate(`/bacheca/${node_id}`);
+        break;
+      case 'community_item':
+        navigate(`/community/${node_id}`);
+        break;
+      case 'document_item':
+        navigate(`/documenti/${node_id}`);
+        break;
+      default:
+        break;
+    }
+  };
 
   const userDropDown = (
     <Dropdown
@@ -147,7 +150,7 @@ const Notification: React.FC<NotificationI> = (props) => {
                 'justify-content-between'
               )}
               role='menuitem'
-              onClick={onClick}
+              onClick={onRead}
             >
               <Icon
                 className='pr-2'
@@ -208,9 +211,23 @@ const Notification: React.FC<NotificationI> = (props) => {
         <div>
           <div className='d-flex align-items-center'>
             <NotificationIcon status={status} action={action} />
-            <p
-              className='neutral-1-color-a8 pl-3'
+            <div
+              role='button'
+              className='neutral-1-color-a8 pl-3 notification-link'
+              onClick={(e) => {
+                e.preventDefault();
+                !status && onClick();
+                onNavigateToItem();
+              }}
+              onKeyDown={(e) => {
+                if (e.key === ' ') {
+                  e.preventDefault();
+                  !status && onClick();
+                  onNavigateToItem();
+                }
+              }}
               dangerouslySetInnerHTML={{ __html: populatedMessage }}
+              tabIndex={0}
             />
           </div>
           <div
@@ -237,11 +254,11 @@ const Notification: React.FC<NotificationI> = (props) => {
 
         {notificationsPreview ? userDropDown : null}
         {!isMobile && !notificationsPreview ? (
-          <div className='ml-auto' role='button'>
+          <div className='ml-auto d-flex align-items-center' role='button'>
             <Icon
               color='primary'
-              icon='it-close'
-              size='lg'
+              icon={DeleteCheck}
+              size='sm'
               onClick={(e) => {
                 e.stopPropagation();
                 onDelete();

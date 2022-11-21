@@ -1,9 +1,10 @@
 import clsx from 'clsx';
+import { Icon } from 'design-react-kit';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { AvatarSizes } from '../../../../../components/Avatar/AvatarInitials/avatarInitials';
+// import { AvatarSizes } from '../../../../../components/Avatar/AvatarInitials/avatarInitials';
 import ProfileImageForm from '../../../../../components/Avatar/ProfileImage/ProfileImageForm';
-import UserAvatar from '../../../../../components/Avatar/UserAvatar/UserAvatar';
+// import UserAvatar from '../../../../../components/Avatar/UserAvatar/UserAvatar';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
 import { closeModal } from '../../../../../redux/features/modal/modalSlice';
@@ -22,7 +23,7 @@ interface ManageProfilePicFormI {
 
 interface ManageProfilePic
   extends withFormHandlerProps,
-    ManageProfilePicFormI {}
+  ManageProfilePicFormI { }
 
 const id = 'update-profile-pic-modal';
 
@@ -31,7 +32,7 @@ const ManageProfilePic: React.FC<ManageProfilePic> = (props) => {
     clearForm = () => ({}),
     formDisabled,
     creation = false,
-    isPreview = false,
+    // isPreview = false,
   } = props;
   const dispatch = useDispatch();
   const profilePic = useAppSelector(selectImmagineProfilo);
@@ -99,11 +100,28 @@ const ManageProfilePic: React.FC<ManageProfilePic> = (props) => {
           che il nome del file non contenga altri punti &quot;.&quot; oltre a
           quello che precede l’estensione
         </p>
-        <UserAvatar
+        {/* <UserAvatar
           avatarImage={image.data !== '' ? image.data : ''}
           size={AvatarSizes.Preview}
           isPreview={isPreview}
-        />
+        /> */}
+        <div
+          className='rounded-circle neutral-2-bg d-flex align-items-center justify-content-center'
+          style={{ width: '120px', height: '120px' }}>
+          {image.data !== '' ?
+            <img
+              className='w-100 h-100 rounded-circle'
+              src={image.data as string}
+              alt='immagine utente'
+              aria-hidden />
+            :
+            <Icon
+              icon='it-user'
+              color='primary'
+              size='lg'
+              aria-label='Immagine profilo'
+              aria-hidden />}
+        </div>
         <ProfileImageForm
           creation={creation}
           formDisabled={!!formDisabled}

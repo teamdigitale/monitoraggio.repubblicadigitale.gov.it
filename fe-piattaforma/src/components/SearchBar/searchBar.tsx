@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useCallback, useEffect, useState } from 'react';
 import clsx from 'clsx';
-import { Button, Icon, Tooltip } from 'design-react-kit';
+import { Button, Icon } from 'design-react-kit';
 import AsyncSelect from 'react-select/async';
 import { MultiValue, SingleValue } from 'react-select';
 import { OptionType, SelectI } from '../Form/select';
@@ -55,8 +55,8 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
     title = 'Cerca',
     search = false,
     onReset = () => ({}),
-    tooltip = false,
-    tooltipText = '',
+    // tooltip = false,
+    // tooltipText = '',
     infoText = '',
   } = props;
   const dispatch = useDispatch();
@@ -150,7 +150,7 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
     );
   };
 
-  const [openOne, toggleOne] = useState(false);
+  // const [openOne, toggleOne] = useState(false);
 
   const focusOfSearch = () => {
     focusId(id);
@@ -197,7 +197,8 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
                   hasSearchValue && 'input-text-bold',
                   'position-relative',
                   'bg-transparent',
-                  'mr-5'
+                  'mr-5',
+                  device.mediaIsPhone && 'pl-0'
                 )}
                 field={id}
                 onInputChange={(search) =>
@@ -227,9 +228,9 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
                       }
                     }}
                   >
-                    {title}
+                    {!searchValue && title}
                   </span>
-                  {tooltip && (
+                  {/* {tooltip && (
                     <div id='search-tooltip'>
                       <Tooltip
                         placement='bottom'
@@ -246,7 +247,7 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
                         aria-hidden
                       />
                     </div>
-                  )}
+                  )} */}
                 </span>
               )}
             </div>

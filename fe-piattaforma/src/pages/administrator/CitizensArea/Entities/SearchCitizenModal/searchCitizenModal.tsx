@@ -217,7 +217,7 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
               // @ts-ignore
               body[sezioneQ1Template[key].keyBE] =
                 typeof newUserValues[key] === 'string'
-                  ? newUserValues[key]
+                  ? newUserValues[key]?.toString().replaceAll("'", "’")
                   : JSON.stringify(newUserValues[key]);
             }
           }

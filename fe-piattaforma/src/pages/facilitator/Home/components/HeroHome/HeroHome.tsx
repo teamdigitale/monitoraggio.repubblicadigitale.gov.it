@@ -4,7 +4,7 @@ import heroHomeBackgroundImg from '../../../../../../public/assets/img/hero-home
 
 const HeroHome = () => {
   return (
-    <Hero overlay='dark'>
+    <Hero overlay='dark' small>
       <HeroBackground
         src={heroHomeBackgroundImg}
         title='image title'
@@ -19,7 +19,7 @@ const HeroHome = () => {
         >
           {'ti diamo il benvenuto su Facilita'.toUpperCase()}
         </HeroTitle>
-        <p className='d-none d-lg-block mt-5'>
+        <p className='d-lg-block mt-5'>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at
           elementum risus. Praesent vitae ullamcorper elit. Nunc congue
           consectetur mi tempor egestas.

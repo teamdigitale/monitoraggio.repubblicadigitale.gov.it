@@ -180,7 +180,11 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
   }, [docDetail]);
 
   useEffect(() => {
-    setIsFormValid(isValidForm);
+    setIsFormValid(
+      isValidForm &&
+        (form?.external_link?.value !== '' ||
+          files.name !== defaultDocument.name)
+    );
     sendNewValues({
       ...getFormValues(),
       program: getFormValues().program?.toString(),
@@ -190,6 +194,9 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
 
   const removeDocument = (e: any) => {
     setFiles(defaultDocument);
+    if (inputRef.current !== null) {
+      inputRef.current.value = '';
+    }
     e.preventDefault();
   };
 
@@ -284,7 +291,7 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
           {...form?.description}
           rows={6}
           cols={100}
-          maxLength={800}
+          maximum={800}
           className='mb-1 mt-3'
           onInputChange={onInputChange}
           placeholder=' '
@@ -311,7 +318,7 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
           <input
             type='file'
             id='file'
-            accept='image/*,.pdf,.doc,.docx,.xls,.xlsx'
+            accept='.txt, .rtf, .odt, .zip, .exe, .docx, .doc, .ppt, .pptx, .pdf, .jpg, .png, .gif, .xls, .xlsx, .csv, .mpg, .wmv'
             ref={inputRef}
             className='sr-only'
             capture
