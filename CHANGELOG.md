@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.321](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.320...1.0.0-develop.321) (2022-11-21)
+
+
+### Bug Fixes
+
+* **be:** modifica email quest online ([94c538f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/94c538f0d798e656b3473928dedc77121c8cd163))
+
 ## [1.0.0-develop.320](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.319...1.0.0-develop.320) (2022-11-18)
 
 
