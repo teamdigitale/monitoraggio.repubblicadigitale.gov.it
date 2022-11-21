@@ -53,14 +53,14 @@ public class ReferentiDelegatiEntePartnerDiProgettoServiceTest {
 	
 	@Test
 	public void getReferentiEntePartnerByIdProgettoAndIdEnteTest() {
-		when(this.referentiDelegatiEntePartnerDiProgettoRepository.findNomeStatoReferentiEntePartnerByIdProgettoAndIdEnte(1L, 1L)).thenReturn(null);
-		referentiDelegatiEntePartnerDiProgettoService.getReferentiEntePartnerByIdProgettoAndIdEnte(1L, 1L);
+		when(this.referentiDelegatiEntePartnerDiProgettoRepository.findNomeStatoReferentiEntePartnerByIdProgettoAndIdEnte("DTD", 1L, 1L)).thenReturn(null);
+		referentiDelegatiEntePartnerDiProgettoService.getReferentiEntePartnerByIdProgettoAndIdEnte("DTD", 1L, 1L);
 	}
 	
 	@Test
 	public void getDelegatiEntePartnerByIdProgettoAndIdEnteTest() {
-		when(this.referentiDelegatiEntePartnerDiProgettoRepository.findNomeStatoDelegatiEntePartnerByIdProgettoAndIdEnte(1L, 1L)).thenReturn(null);
-		referentiDelegatiEntePartnerDiProgettoService.getDelegatiEntePartnerByIdProgettoAndIdEnte(1L, 1L);
+		when(this.referentiDelegatiEntePartnerDiProgettoRepository.findNomeStatoDelegatiEntePartnerByIdProgettoAndIdEnte("DTD", 1L, 1L)).thenReturn(null);
+		referentiDelegatiEntePartnerDiProgettoService.getDelegatiEntePartnerByIdProgettoAndIdEnte("DTD", 1L, 1L);
 	}
 	
 	@Test

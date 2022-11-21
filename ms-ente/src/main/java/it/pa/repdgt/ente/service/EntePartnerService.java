@@ -95,42 +95,15 @@ public class EntePartnerService {
 		return this.entePartnerRepository.findEntiPartnerByProgetto(idProgetto);
 	}
 
-	//il seguente metodo presenta delle projection (interfacce) non può essere utilizzato da metodi esterni
-	@Deprecated
-	public SchedaEntePartnerBean getSchedaEntePartnerByIdProgettoAndIdEnte(Long idProgetto, Long idEnte) {
-		SchedaEntePartnerBean schedaEntePartner = new SchedaEntePartnerBean();
-		EnteProjection ente = this.entePartnerRepository.findEntePartnerByIdProgettoAndIdEnte(idProgetto, idEnte);		
-		List<UtenteProjection> referenti = this.referentiDelegatiEntePartnerDiProgettoService.getReferentiEntePartnerByIdProgettoAndIdEnte(idProgetto, idEnte);
-		List<UtenteProjection> delegati = this.referentiDelegatiEntePartnerDiProgettoService.getDelegatiEntePartnerByIdProgettoAndIdEnte(idProgetto, idEnte);
-		List<SedeEntity> sedi = this.sedeService.getSediEnteByIdProgettoAndIdEnte(idProgetto, idEnte);
-		List<SedeBean> sediPartner = sedi
-				.stream()
-				.map(sede -> {
-					SedeBean sedePartner = new SedeBean();
-					sedePartner.setId(sede.getId());
-					sedePartner.setNome(sede.getNome());
-					sedePartner.setServiziErogati(sede.getServiziErogati());
-					sedePartner.setNrFacilitatori(this.utenteService.countFacilitatoriPerSedeProgettoEnte(idProgetto, sede.getId(), idEnte));
-					sedePartner.setStato(this.sedeService.getStatoSedeByIdProgettoAndIdSedeAndIdEnte(idProgetto, sede.getId(), idEnte));
-					return sedePartner;
-				}).collect(Collectors.toList());
-
-		schedaEntePartner.setEnte(ente);
-		schedaEntePartner.setReferentiEntePartner(referenti);
-		schedaEntePartner.setDelegatiEntePartner(delegati);
-		schedaEntePartner.setSediEntePartner(sediPartner);
-		return schedaEntePartner;
-	}
-
-	public SchedaEntePartnerBean getSchedaEntePartnerByIdProgettoAndIdEnteAndSceltaProfilo(Long idProgetto, Long idEnte, EntiPaginatiParam entiPaginatiParam) {
+	public SchedaEntePartnerBean getSchedaEntePartnerByIdProgettoAndIdEnteAndSceltaProfilo(String codiceRuolo, Long idProgetto, Long idEnte, EntiPaginatiParam entiPaginatiParam) {
 		SchedaEntePartnerBean schedaEntePartner = new SchedaEntePartnerBean();
 		EnteProjection ente = this.entePartnerRepository.findEntePartnerByIdProgettoAndIdEnte(idProgetto, idEnte);
 		if(ente == null) {
 			String messaggioErrore = String.format("ente partner non presente per idEnte %s, idProgetto %s", idEnte, idProgetto);
 			throw new EnteException(messaggioErrore, CodiceErroreEnum.EN24);
 		}
-		List<UtenteProjection> referenti = this.referentiDelegatiEntePartnerDiProgettoService.getReferentiEntePartnerByIdProgettoAndIdEnte(idProgetto, idEnte);
-		List<UtenteProjection> delegati = this.referentiDelegatiEntePartnerDiProgettoService.getDelegatiEntePartnerByIdProgettoAndIdEnte(idProgetto, idEnte);
+		List<UtenteProjection> referenti = this.referentiDelegatiEntePartnerDiProgettoService.getReferentiEntePartnerByIdProgettoAndIdEnte(codiceRuolo, idProgetto, idEnte);
+		List<UtenteProjection> delegati = this.referentiDelegatiEntePartnerDiProgettoService.getDelegatiEntePartnerByIdProgettoAndIdEnte(codiceRuolo, idProgetto, idEnte);
 		List<SedeEntity> sedi = this.sedeService.getSediEnteByIdProgettoAndIdEnte(idProgetto, idEnte);
 		List<SedeBean> sediPartner = sedi
 				.stream()
@@ -327,7 +300,7 @@ public class EntePartnerService {
 									Long idEnte = enteService.getEnteByPartitaIva(ente.getPiva()).getId();
 									//se esiste --> KO
 									if(this.entePartnerRepository.findEntePartnerByIdProgettoAndIdEnte(idProgetto, idEnte) != null) {
-										ente.setEsito("KO - Ente già in elenco");
+										ente.setEsito("KO - L'ente è già associato al progetto, inserisci un nuovo ente");
 									}else {
 										//altrimenti aggiungo associazione EntePartner
 										associaEntePartnerPerProgetto(idEnte, idProgetto);
@@ -337,19 +310,19 @@ public class EntePartnerService {
 								}
 
 							}else {
-								ente.setEsito("KO - Tipologia ente non conforme");
+								ente.setEsito("KO - La tipologia ente non è valida, inserisci un valore corretto");
 							}
 						}else {
-							ente.setEsito("KO - CF/PIVA è una sequenza di 11 numeri");
+							ente.setEsito("KO - CF/P.IVA non valido, inserisci una sequenza di 11 numeri");
 						}
 					}else {
-						ente.setEsito("KO - Nome ente già in uso");
+						ente.setEsito("KO - Il nome ente inserito è già in uso");
 					}
 				}else {							
-					ente.setEsito(String.format("KO - %s è un campo obbligatorio", nome == null || (nome.trim()).equals("") ? "NOME"
-							: nomeBreve == null || (nomeBreve.trim()).equals("") ? "NOME BREVE" 
-									: tipologia == null || (tipologia.trim()).equals("") ? "TIPOLOGIA"
-											: "PIVA"
+					ente.setEsito(String.format("KO - %s è un campo obbligatorio", nome == null || (nome.trim()).equals("") ? "\"Nome\""
+							: nomeBreve == null || (nomeBreve.trim()).equals("") ? "\"Nome breve\"" 
+									: tipologia == null || (tipologia.trim()).equals("") ? "\"Tipologia ente\""
+											: "\"CF/PIVA\""
 								));
 				}
 				esiti.add(ente);
