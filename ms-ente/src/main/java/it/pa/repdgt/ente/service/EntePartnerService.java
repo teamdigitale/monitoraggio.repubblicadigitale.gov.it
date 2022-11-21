@@ -300,7 +300,7 @@ public class EntePartnerService {
 									Long idEnte = enteService.getEnteByPartitaIva(ente.getPiva()).getId();
 									//se esiste --> KO
 									if(this.entePartnerRepository.findEntePartnerByIdProgettoAndIdEnte(idProgetto, idEnte) != null) {
-										ente.setEsito("KO - Ente già in elenco");
+										ente.setEsito("KO - L'ente è già associato al progetto, inserisci un nuovo ente");
 									}else {
 										//altrimenti aggiungo associazione EntePartner
 										associaEntePartnerPerProgetto(idEnte, idProgetto);
@@ -310,19 +310,19 @@ public class EntePartnerService {
 								}
 
 							}else {
-								ente.setEsito("KO - Tipologia ente non conforme");
+								ente.setEsito("KO - La tipologia ente non è valida, inserisci un valore corretto");
 							}
 						}else {
-							ente.setEsito("KO - CF/PIVA è una sequenza di 11 numeri");
+							ente.setEsito("KO - CF/P.IVA non valido, inserisci una sequenza di 11 numeri");
 						}
 					}else {
-						ente.setEsito("KO - Nome ente già in uso");
+						ente.setEsito("KO - Il nome ente inserito è già in uso");
 					}
 				}else {							
-					ente.setEsito(String.format("KO - %s è un campo obbligatorio", nome == null || (nome.trim()).equals("") ? "NOME"
-							: nomeBreve == null || (nomeBreve.trim()).equals("") ? "NOME BREVE" 
-									: tipologia == null || (tipologia.trim()).equals("") ? "TIPOLOGIA"
-											: "PIVA"
+					ente.setEsito(String.format("KO - %s è un campo obbligatorio", nome == null || (nome.trim()).equals("") ? "\"Nome\""
+							: nomeBreve == null || (nomeBreve.trim()).equals("") ? "\"Nome breve\"" 
+									: tipologia == null || (tipologia.trim()).equals("") ? "\"Tipologia ente\""
+											: "\"CF/PIVA\""
 								));
 				}
 				esiti.add(ente);
