@@ -331,4 +331,14 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 			@Param("idEnte") Long idEnte
 		);
 	
+	@Query(value = ""
+			+ " select * "
+			+ "from servizio s "
+			+ "inner join questionario_compilato qc "
+			+ "on s.id = qc.servizio_id "
+			+ "where qc.id = :idQuestionarioCompilato",
+			nativeQuery = true)
+	Optional<ServizioEntity> findServizioByQuestionarioCompilato(
+			@Param(value = "idQuestionarioCompilato") String idQuestionarioCompilato
+			);
 }
