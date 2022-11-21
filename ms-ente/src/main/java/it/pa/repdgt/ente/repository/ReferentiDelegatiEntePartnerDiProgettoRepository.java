@@ -23,6 +23,7 @@ public interface ReferentiDelegatiEntePartnerDiProgettoRepository extends JpaRep
 			 + "	,u.COGNOME "
 			 + "	,u.CODICE_FISCALE as codiceFiscale "
 			 + "	,rdpp.STATO_UTENTE as STATO "
+			 + "	, case when :codiceRuolo in ('FAC','VOL') then 'false' else 'true' end as associatoAUtente "
 			 + " FROM "
 			 + "	referente_delegati_partner rdpp"
 			 + "    INNER JOIN utente u"
@@ -32,7 +33,11 @@ public interface ReferentiDelegatiEntePartnerDiProgettoRepository extends JpaRep
 			 + "	AND ID_ENTE = :idEnte "
 			 + "	AND CODICE_RUOLO = 'REPP'", 
 	   nativeQuery = true)
-	List<UtenteProjection> findNomeStatoReferentiEntePartnerByIdProgettoAndIdEnte(Long idProgetto, Long idEnte);
+	List<UtenteProjection> findNomeStatoReferentiEntePartnerByIdProgettoAndIdEnte(
+		@Param(value="codiceRuolo") String codiceRuolo, 
+		@Param(value="idProgetto") Long idProgetto, 
+		@Param(value="idEnte") Long idEnte
+	);
 
 	@Query(value = " "
 			+ " SELECT "
@@ -41,6 +46,7 @@ public interface ReferentiDelegatiEntePartnerDiProgettoRepository extends JpaRep
 			 + "	,u.COGNOME "
 			 + "	,u.CODICE_FISCALE as codiceFiscale "
 			 + "	,rdpp.STATO_UTENTE as STATO "
+			 + "	, case when :codiceRuolo in ('FAC','VOL') then 'false' else 'true' end as associatoAUtente "
 			 + " FROM "
 			 + "	referente_delegati_partner rdpp"
 			 + "    INNER JOIN utente u"
@@ -50,7 +56,11 @@ public interface ReferentiDelegatiEntePartnerDiProgettoRepository extends JpaRep
 			 + "	AND ID_ENTE = :idEnte "
 			 + "	AND CODICE_RUOLO = 'DEPP'", 
 	   nativeQuery = true)
-	List<UtenteProjection> findNomeStatoDelegatiEntePartnerByIdProgettoAndIdEnte(Long idProgetto, Long idEnte);
+	List<UtenteProjection> findNomeStatoDelegatiEntePartnerByIdProgettoAndIdEnte(
+			@Param(value="codiceRuolo") String codiceRuolo,
+			@Param(value="idProgetto") Long idProgetto, 
+			@Param(value="idEnte") Long idEnte
+		);
 
 	@Query(value = " "
 			+ " SELECT * "
@@ -93,21 +103,21 @@ public interface ReferentiDelegatiEntePartnerDiProgettoRepository extends JpaRep
 			+ "WHERE rdp.ID_ENTE = :idEnte "
 			+ "		AND rdp.ID_PROGETTO = :idProgetto ", 
 	nativeQuery = true)
-	void cancellaAssociazioneReferenteDelegatoEntePartnerPerProgetto(Long idEnte, Long idProgetto);
+	void cancellaAssociazioneReferenteDelegatoEntePartnerPerProgetto(@Param(value = "idEnte") Long idEnte, @Param(value = "idProgetto") Long idProgetto);
 
 	@Query(value = "SELECT * "
 			+ "FROM referente_delegati_partner rdp "
 			+ " WHERE rdp.ID_ENTE = :idEnte "
 			+ "		AND rdp.ID_PROGETTO = :idProgetto ", 
 			nativeQuery = true)
-	List<ReferentiDelegatiEntePartnerDiProgettoEntity> findReferentiDelegatiEntePartner(Long idEnte, Long idProgetto);
+	List<ReferentiDelegatiEntePartnerDiProgettoEntity> findReferentiDelegatiEntePartner(@Param(value = "idEnte") Long idEnte, @Param(value = "idProgetto") Long idProgetto);
 
 	@Query(value = "SELECT COUNT(*) "
 			+ "FROM referente_delegati_partner rdp "
 			+ "WHERE rdp.CF_UTENTE = :codFiscaleUtente "
 			+ "		AND rdp.CODICE_RUOLO = :codiceRuolo ", 
 			nativeQuery = true)
-	int countAssociazioniReferenteDelegati(String codFiscaleUtente, String codiceRuolo);
+	int countAssociazioniReferenteDelegati(@Param(value = "codFiscaleUtente") String codFiscaleUtente, @Param(value = "codiceRuolo") String codiceRuolo);
 
 
 	@Query(value = "SELECT * "

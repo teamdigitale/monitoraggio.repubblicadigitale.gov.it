@@ -53,14 +53,14 @@ public class ReferentiDelegatiEnteGestoreProgrammaServiceTest {
 	
 	@Test
 	public void getReferentiEnteGestoreByIdProgrammaAndIdEnteTest() {
-		when(this.referentiDelegatiEnteGestoreProgrammaRepository.findNomeStatoReferentiEnteGestoreByIdProgrammaAndIdEnte(1L, 1L)).thenReturn(null);
-		referentiDelegatiEnteGestoreProgrammaService.getReferentiEnteGestoreByIdProgrammaAndIdEnte(1L, 1L);
+		when(this.referentiDelegatiEnteGestoreProgrammaRepository.findNomeStatoReferentiEnteGestoreByIdProgrammaAndIdEnte("DTD", 1L, 1L)).thenReturn(null);
+		referentiDelegatiEnteGestoreProgrammaService.getReferentiEnteGestoreByIdProgrammaAndIdEnte("DTD", 1L, 1L);
 	}
 	
 	@Test
 	public void getDelegatiEnteGestoreByIdProgrammaAndIdEnteTest() {
-		when(this.referentiDelegatiEnteGestoreProgrammaRepository.findNomeStatoDelegatiEnteGestoreByIdProgrammaAndIdEnte(1L, 1L)).thenReturn(null);
-		referentiDelegatiEnteGestoreProgrammaService.getDelegatiEnteGestoreByIdProgrammaAndIdEnte(1L, 1L);
+		when(this.referentiDelegatiEnteGestoreProgrammaRepository.findNomeStatoDelegatiEnteGestoreByIdProgrammaAndIdEnte("DTD", 1L, 1L)).thenReturn(null);
+		referentiDelegatiEnteGestoreProgrammaService.getDelegatiEnteGestoreByIdProgrammaAndIdEnte("DTD", 1L, 1L);
 	}
 	
 	@Test

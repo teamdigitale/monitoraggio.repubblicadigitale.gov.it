@@ -139,7 +139,7 @@ public class EnteRestApi {
 			@RequestBody @Valid SceltaProfiloParam sceltaProfiloParam) {
 		if(!accessControServiceUtils.checkPermessoIdProgramma(sceltaProfiloParam, idProgramma))
 			throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
-		return this.enteService.getSchedaEnteGestoreProgrammaByIdProgramma(idProgramma);
+		return this.enteService.getSchedaEnteGestoreProgrammaByIdProgramma(sceltaProfiloParam.getCodiceRuoloUtenteLoggato(), idProgramma);
 	}
 
 	// Dettaglio ente gestore di un determinato progetto
@@ -150,20 +150,20 @@ public class EnteRestApi {
 			@RequestBody @Valid EntiPaginatiParam entiPaginatiParam) {
 		if(!accessControServiceUtils.checkPermessoIdProgetto(entiPaginatiParam, idProgetto))
 			throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
-		return this.enteService.getSchedaEnteGestoreProgettoByIdProgettoAndSceltaProfilo(idProgetto, entiPaginatiParam);
+		return this.enteService.getSchedaEnteGestoreProgettoByIdProgettoAndSceltaProfilo(entiPaginatiParam.getCodiceRuoloUtenteLoggato(), idProgetto, entiPaginatiParam);
 	}
 
 	// Dettaglio ente partner di un determinato progetto
 	@PostMapping (path = "/partner/{idProgetto}/{idEnte}")
 	@ResponseStatus(value = HttpStatus.OK)
-	public SchedaEntePartnerBean getSchedaEntePartneroBySceltaProfilo(
+	public SchedaEntePartnerBean getSchedaEntePartnerBySceltaProfilo(
 			@PathVariable(value = "idProgetto") Long idProgetto,
 			@PathVariable(value = "idEnte") Long idEnte,
 			@RequestBody @Valid EntiPaginatiParam entiPaginatiParam) {
 		if(!accessControServiceUtils.checkPermessoIdProgetto(entiPaginatiParam, idProgetto) || 
 				!accessControServiceUtils.checkPermessoIdEnte(entiPaginatiParam, idEnte))
 			throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
-		return this.entePartnerService.getSchedaEntePartnerByIdProgettoAndIdEnteAndSceltaProfilo(idProgetto, idEnte, entiPaginatiParam);
+		return this.entePartnerService.getSchedaEntePartnerByIdProgettoAndIdEnteAndSceltaProfilo(entiPaginatiParam.getCodiceRuoloUtenteLoggato(), idProgetto, idEnte, entiPaginatiParam);
 	}
 
 	// Creazione ente 

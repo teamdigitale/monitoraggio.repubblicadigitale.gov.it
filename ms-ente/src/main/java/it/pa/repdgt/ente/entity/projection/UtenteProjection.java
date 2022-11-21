@@ -6,4 +6,5 @@ public interface UtenteProjection {
 	String getNome();
 	String getCognome();
 	String getStato();
+	Boolean getAssociatoAUtente();
 }
