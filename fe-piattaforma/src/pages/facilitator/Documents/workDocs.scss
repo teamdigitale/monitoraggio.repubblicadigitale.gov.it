@@ -9,7 +9,9 @@
     }
   }
 }
-
-.confirm-password {
-  margin-top: 2rem;
+.margin-bottom {
+  margin-bottom: 1rem;
+  @media screen and (max-width: 576px) {
+    margin-bottom: 2.25rem;
+  }
 }
