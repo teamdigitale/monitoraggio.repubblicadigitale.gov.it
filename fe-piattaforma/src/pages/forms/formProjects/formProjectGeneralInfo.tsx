@@ -325,7 +325,7 @@ const form = newForm([
     id: 'short-name',
     required: true,
     maximum: 25,
-    minimum: 6,
+    //minimum: 6,
   }),
   newFormField({
     field: 'cup',

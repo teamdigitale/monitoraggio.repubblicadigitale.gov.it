@@ -298,7 +298,7 @@ const form = newForm([
     id: 'nomeBreve',
     required: true,
     maximum: 25,
-    minimum: 6,
+    //minimum: 6,
   }),
   newFormField({
     field: 'dataInizio',
