@@ -820,8 +820,9 @@ public class UtenteServiceTest {
 	@Test
 	public void getUtenteByCriterioRicercaTest() {
 		when(this.utenteRepository.findUtenteByCriterioRicerca(
-				filtroRicerca.getCriterioRicerca()
-				)).thenReturn(utentiList);
+				filtroRicerca.getCriterioRicerca(),
+				"%" + filtroRicerca.getCriterioRicerca() + "%"
+		)).thenReturn(utentiList);
 		List<UtenteEntity> risultato = service.getUtenteByCriterioRicerca(filtroRicerca.getCriterioRicerca());
 		assertThat(risultato.size()).isEqualTo(utentiList.size());
 	}
