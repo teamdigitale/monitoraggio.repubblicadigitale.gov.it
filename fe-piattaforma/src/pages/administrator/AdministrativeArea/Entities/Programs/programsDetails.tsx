@@ -952,7 +952,8 @@ const ProgramsDetails: React.FC = () => {
           role='menuitem'
           onKeyDown={() => setActiveTab(tabs.ENTE)}
         >
-          {!managerAuthorityId ? (
+          {!managerAuthorityId ||
+          authorityInfo?.dettagliInfoEnte?.statoEnte === entityStatus.NON_ATTIVO ? (
             <div id='tab-ente-gestore'>
               * Ente gestore
               <Tooltip
@@ -961,7 +962,7 @@ const ProgramsDetails: React.FC = () => {
                 isOpen={openOne}
                 toggle={() => toggleOne(!openOne)}
               >
-                Compilazione obbligatoria
+                È necessario aggiungere almeno un referente per l'ente gestore
               </Tooltip>
               <Icon
                 icon='it-warning-circle'

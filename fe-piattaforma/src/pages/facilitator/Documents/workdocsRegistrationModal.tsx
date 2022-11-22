@@ -93,13 +93,15 @@ const WorkdocsRegistrationModal: React.FC<WorkdocsRegistrationModalI> = (
         label: 'Annulla',
         onClick: resetModal,
       }}
-      title='Registrazione WorkDocs'
+      title="Registrati all'area di collaborazione"
     >
       <div className='my-3 px-4'>
         <p className='text-center mb-5'>
-          Crea una nuova utenza <strong>WorkDocs</strong> per accedere al tool
-          di <br />
-          collaboration con la tua email: {email}
+          Crea una nuova utenza <strong>WorkDocs</strong> per accedere
+          all&apos;area di collaborazione. Scegli la tua{' '}
+          <strong>password per registrarti</strong> e usa la{' '}
+          <strong>tua email {email} come username</strong> per il successivo
+          login.
         </p>
         <Form id='workdocs-registration-form' className='my-3 mx-2 work-docs'>
           <Form.Row className='justify-content-between px-0 px-lg-5 mx-4'>
@@ -113,6 +115,7 @@ const WorkdocsRegistrationModal: React.FC<WorkdocsRegistrationModalI> = (
               {...form?.confirmPassword}
               col='col-12'
               onInputBlur={onInputChange}
+              className='confirm-password'
             />
           </Form.Row>
         </Form>

@@ -27,6 +27,7 @@ import { GetEntityFilterValues } from '../../../redux/features/administrativeAre
 import { GetCategoriesList } from '../../../redux/features/forum/categories/categoriesThunk';
 import { uploadFile } from '../../../utils/common';
 import { selectDevice } from '../../../redux/features/app/appSlice';
+import { RegexpType } from '../../../utils/validator';
 
 interface uploadDocumentI extends withFormHandlerProps {
   formDisabled?: boolean;
@@ -430,6 +431,7 @@ const form = newForm([
     field: 'external_link',
     id: 'external_link',
     type: 'url',
+    regex: RegexpType.URL,
   }),
 ]);
 export default withFormHandler({ form }, FormLoadDocument);
