@@ -209,7 +209,7 @@ const DropdownFilter: React.FC<DropdownFilterI> = (props) => {
         aria-owns={idListOptions}
       >
         <ClickOutside callback={() => setOpen(false)}>
-          <FocusTrap>
+          <FocusTrap focusTrapOptions={{ allowOutsideClick: true }}>
             <div>
               {options?.length && options?.length > 4 ? (
                 <div className='border-bottom d-flex flex-row'>
