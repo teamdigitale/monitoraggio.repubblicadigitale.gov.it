@@ -25,6 +25,7 @@ export const RegexpType = {
   PIVA: 'pivaInput',
   NAME_SURNAME: 'name_surname',
   DOCUMENT_NUMBER: 'document-number',
+  URL: 'url',
 };
 
 const RegexpRule = {
@@ -55,6 +56,7 @@ const RegexpRule = {
   [RegexpType.PIVA]: /^[0-9]{11}$/gm,
   [RegexpType.NAME_SURNAME]: /^[^!#§ç@°]*^[A-Z a-z À-Ö Ø-ö ø-ÿ '-]{1,30}$/,
   [RegexpType.DOCUMENT_NUMBER]: /^[a-z A-Z 0-9_.-]{5,10}$/gi,
+  [RegexpType.URL]: /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,30}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/g,
 };
 
 export const validator = (

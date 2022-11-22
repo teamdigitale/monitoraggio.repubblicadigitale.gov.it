@@ -108,7 +108,7 @@ const ManageProfilePic: React.FC<ManageProfilePic> = (props) => {
         <div
           className='rounded-circle neutral-2-bg d-flex align-items-center justify-content-center'
           style={{ width: '120px', height: '120px' }}>
-          {image.data !== '' ?
+          {image.data ?
             <img
               className='w-100 h-100 rounded-circle'
               src={image.data as string}

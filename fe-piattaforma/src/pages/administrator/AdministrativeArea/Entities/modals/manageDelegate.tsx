@@ -46,7 +46,7 @@ interface ManageDelegateI extends withFormHandlerProps, ManageDelgateFormI {}
 
 const ManageDelegate: React.FC<ManageDelegateI> = ({
   clearForm = () => ({}),
-  formDisabled,
+  // formDisabled,
   creation = false,
   legend = '',
 }) => {
@@ -61,11 +61,13 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
   const { entityId, projectId, authorityId, userId } = useParams();
   const authority = useAppSelector(selectAuthorities).detail.dettagliInfoEnte;
   const open = useAppSelector(selectModalState);
+  const [isUserSelected, setIsUserSelected] = useState(false);
 
   const resetModal = (toClose = true) => {
     clearForm();
     setShowForm(true);
     setAlreadySearched(false);
+    setIsUserSelected(false);
     dispatch(setUsersList(null));
     if (toClose) dispatch(closeModal());
   };
@@ -148,6 +150,7 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
         dispatch(GetUserDetails(td.id as string, true));
       }
       setShowForm(true);
+      setIsUserSelected(true);
     },
   };
 
@@ -157,7 +160,7 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
     content = (
       <FormUser
         creation={creation}
-        formDisabled={!!formDisabled}
+        formDisabled={isUserSelected}
         sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
           setNewFormValues({ ...newData })
         }
@@ -212,7 +215,7 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
               'search-bar-borders',
               'search-bar-bg'
             )}
-            placeholder='Inserisci il nome, l’ID o il codice fiscale dell’utente'
+            placeholder='Inserisci il codice fiscale dell’utente'
             onSubmit={handleSearchUser}
             onReset={() => {
               resetModal(false);

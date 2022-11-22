@@ -1,28 +1,12 @@
 import clsx from 'clsx';
 import { CardText, CardTitle, Col, Icon } from 'design-react-kit';
 import React, { memo } from 'react';
-import Heart from '/public/assets/img/heart.png';
+import Heart from '/public/assets/img/hollow-grey-heart.png';
 import './cardCommunity.scss';
 import { useNavigate } from 'react-router-dom';
 import PublishingAuthority from '../CardDocument/PublishingAuthority';
 import { formatDate } from '../../utils/datesHelper';
 import { ForumCardsI } from '../CardShowcase/cardShowcase';
-
-/* interface CardCommunityI extends CardProps {
-  id?: string;
-  title?: string;
-  community?: string;
-  description?: string;
-  colorLeft?: string;
-  date?: string;
-  likes?: string;
-  comment_count?: number;
-  comments?: CommentI[];
-  category_label?: string;
-  views?: string;
-  entity?: string;
-  onClick?: () => void;
-} */
 
 const CardCommunity: React.FC<ForumCardsI> = (props) => {
   const {
@@ -116,7 +100,7 @@ const CardCommunity: React.FC<ForumCardsI> = (props) => {
             )}
           >
             <Icon
-              color='primary'
+              color='note'
               icon={Heart}
               size='xs'
               aria-label='Likes'
@@ -133,7 +117,7 @@ const CardCommunity: React.FC<ForumCardsI> = (props) => {
             )}
           >
             <Icon
-              color='primary'
+              color='note'
               icon='it-comment'
               size='sm'
               aria-label='Comments'
@@ -145,7 +129,7 @@ const CardCommunity: React.FC<ForumCardsI> = (props) => {
           </div>
           <div className={clsx('d-flex', 'align-items-center', 'category-top')}>
             <Icon
-              color='primary'
+              color='note'
               icon='it-password-visible'
               size='sm'
               aria-label='Views'

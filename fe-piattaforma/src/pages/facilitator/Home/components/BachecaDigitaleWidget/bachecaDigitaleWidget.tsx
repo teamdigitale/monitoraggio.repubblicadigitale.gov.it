@@ -54,9 +54,7 @@ const BachecaDigitaleWidget = () => {
   return (
     <div className='py-5'>
       <div className='container'>
-        <h2 className='h3 text-primary mb-3'>
-          {device.mediaIsPhone ? 'Bacheca' : 'Bacheca digitale'}
-        </h2>
+        <h2 className='h3 text-primary mb-3'>Bacheca</h2>
         {device.mediaIsPhone && <div className='title-border-box my-3' />}
         <div
           className={clsx(
@@ -71,12 +69,12 @@ const BachecaDigitaleWidget = () => {
               !device.mediaIsPhone && 'responsive-width'
             )}
           >
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
-            ipsum velit, tempor at luctus quis, congue eget justo.
+            Scopri gli aggiornamenti sulla community di Facilita e sui programmi
+            a cui partecipi.
           </p>
           {!device.mediaIsPhone && (
             <Link className='btn btn-primary' role='button' to='/bacheca'>
-              Leggi tutte le news
+              Vai alle news
             </Link>
           )}
         </div>
@@ -86,7 +84,7 @@ const BachecaDigitaleWidget = () => {
           {'La bacheca presenta ' + (newsList?.length || 0) + ' news'}
         </span>
         {newsList?.length ? (
-          <Slider isItemsHome={!device.mediaIsPhone}>
+          <Slider isItemsHome={!device.mediaIsPhone} widgetType='news'>
             {formatSlides(
               newsList.slice(0, newsPagination[getMediaQueryDevice(device)]),
               carouselPagination[getMediaQueryDevice(device)]

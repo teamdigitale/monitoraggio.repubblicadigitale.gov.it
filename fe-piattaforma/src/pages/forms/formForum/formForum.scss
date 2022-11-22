@@ -8,3 +8,16 @@
     min-width: 156px !important;
   }
 }
+
+.forum-chip-tag {
+  border: 2px solid #797C80 !important;
+  &:hover {
+    .chip-label {
+      color: #5c6f82 !important;
+    }
+    .chip-closer {
+      fill: #5c6f82 !important;
+    }
+    background-color: #FCFDFF !important;
+  }
+}

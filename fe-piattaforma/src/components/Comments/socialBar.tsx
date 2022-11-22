@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Icon } from 'design-react-kit';
+import CuoreVuoto from '../../../public/assets/img/hollow-grey-heart.png';
 import CuoreBluVuoto from '../../../public/assets/img/hollow-blue-heart.png';
 import CuoreBluPieno from '../../../public/assets/img/filled-blue-heart.png';
 import clsx from 'clsx';
@@ -57,7 +58,7 @@ const SocialBar: React.FC<SocialI> = (props) => {
           {likes !== undefined ? (
             <div className='d-flex flex-row align-items-center pr-4'>
               <Icon
-                icon={CuoreBluVuoto}
+                icon={CuoreVuoto}
                 size='xs'
                 aria-label='like vuoto'
                 aria-hidden
@@ -69,7 +70,7 @@ const SocialBar: React.FC<SocialI> = (props) => {
             <div className='d-flex flex-row align-items-center pr-4'>
               <Icon
                 icon='it-comment'
-                color='primary'
+                color='note'
                 size='sm'
                 aria-label='Commenti'
                 aria-hidden
@@ -81,7 +82,7 @@ const SocialBar: React.FC<SocialI> = (props) => {
             <div className='d-flex flex-row align-items-center'>
               <Icon
                 icon='it-password-visible'
-                color='primary'
+                color='note'
                 size='sm'
                 aria-label='Views'
                 aria-hidden
@@ -93,7 +94,7 @@ const SocialBar: React.FC<SocialI> = (props) => {
             <div className='d-flex flex-row align-items-center'>
               <Icon
                 icon='it-download'
-                color='primary'
+                color='note'
                 size='sm'
                 aria-label='download effetuati'
                 aria-hidden
@@ -114,7 +115,7 @@ const SocialBar: React.FC<SocialI> = (props) => {
                 'mr-4'
                 /*   device.mediaIsDesktop && 'justify-content-end' */
               )}
-              aria-label={user_like ? 'NON MI PIACE' : 'MI PIACE'}
+              aria-label='mi piace'
             >
               <Icon
                 icon={user_like ? CuoreBluPieno : CuoreBluVuoto}
@@ -124,7 +125,8 @@ const SocialBar: React.FC<SocialI> = (props) => {
               />
               {device.mediaIsDesktop ? (
                 <p className='primary-color font-weight-bold pl-2 letter-spacing'>
-                  {user_like ? 'NON MI PIACE' : 'MI PIACE'}
+                  {/*user_like ? 'NON MI PIACE' : 'MI PIACE'*/}
+                  MI PIACE
                 </p>
               ) : null}
             </Button>
