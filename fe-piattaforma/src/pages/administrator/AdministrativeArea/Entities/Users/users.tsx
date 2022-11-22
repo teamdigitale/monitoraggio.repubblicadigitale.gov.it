@@ -37,6 +37,7 @@ import {
   GetEntityValues,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 import useGuard from '../../../../../hooks/guard';
+import IconNote from '/public/assets/img/it-note-primary.png';
 
 const entity = 'utente';
 const statusDropdownLabel = 'stati';
@@ -214,7 +215,7 @@ const Users = () => {
     autocomplete: false,
     onHandleSearch: handleOnSearch,
     placeholder:
-      "Inserisci il nome, il cognome, l'ID o il codice fiscale dell'utente",
+      'Inserisci il cognome e/o il nome, oppure l’ID o il codice fiscale dell’utente',
     isClearable: true,
     title: 'Cerca programma',
   };
@@ -263,9 +264,7 @@ const Users = () => {
       ctaDownload={
         hasUserPermission(['list.dwnl.utenti']) ? handleDownloadList : undefined
       }
-      resetFilterDropdownSelected={(filterKey: string) =>
-        setFilterDropdownSelected(filterKey)
-      }
+      resetFilterDropdownSelected={() => setFilterDropdownSelected('')}
       tooltip
       tooltiptext={searchInformation.placeholder}
     >
@@ -293,11 +292,14 @@ const Users = () => {
         <EmptySection
           title='Non sono presenti utenti'
           subtitle='associati al tuo ruolo'
-          icon='it-note'
+          icon={IconNote}
           withIcon
         />
       )}
-      <ManageUsers creation />
+      <ManageUsers
+        legend="form creazione utente, i campi con l'asterisco sono obbligatori"
+        creation
+      />
     </GenericSearchFilterTableLayout>
   );
 };

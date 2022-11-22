@@ -113,7 +113,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
                   : value[id][0],
             },
           };
-          if(id.toString() === '3') setOriginalCF(value[id][0]);
+          if (id.toString() === '3') setOriginalCF(value[id][0]);
         });
       } else if (typeof value === 'string') {
         const val = jsonParseValues(decodeURI(value).replaceAll("'", '"'));
@@ -129,7 +129,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
                   : val[id][0],
             },
           };
-          if(id.toString() === '3') setOriginalCF(val[id][0]);
+          if (id.toString() === '3') setOriginalCF(val[id][0]);
         });
       }
     });
@@ -283,11 +283,24 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
     };
     Object.keys(tmpForm).map((key) => {
       if (tmpForm[key].dependencyNotFlag === '4') {
-        tmpForm[key] = {
-          ...tmpForm[key],
-          required: shouldBeRequired,
-        };
+        // field 3
+        if (shouldBeRequired) {
+          tmpForm[key] = {
+            ...tmpForm[key],
+            required: shouldBeRequired,
+            disabled: !shouldBeRequired,
+          };
+        } else {
+          tmpForm[key] = {
+            ...tmpForm[key],
+            required: shouldBeRequired,
+            disabled: !shouldBeRequired,
+            value: '',
+            valid: true,
+          };
+        }
       } else if (tmpForm[key].dependencyFlag === '4') {
+        // field 5-6
         tmpForm[key] = {
           ...tmpForm[key],
           required: !shouldBeRequired,
@@ -422,7 +435,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
             <Icon
               icon='it-chevron-left'
               color='primary'
-              aria-label='Icona step precedente'
+              aria-label='Step Precedente'
             />
             <Button
               onClick={() => {
@@ -459,7 +472,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
               icon='it-chevron-right'
               color='primary'
               className='ml-2'
-              aria-label='Icona step Successivo'
+              aria-label='Step successivo'
             />
           </div>
         </div>
@@ -509,10 +522,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
         )}
       >
         {device.mediaIsPhone ? (
-          <ProgressBar
-            currentStep={activeSection + 1}
-            steps={progressSteps()}
-          />
+          <ProgressBar currentStep={activeSection} steps={progressSteps()} />
         ) : (
           <Stepper nSteps={4} currentStep={activeSection} />
         )}

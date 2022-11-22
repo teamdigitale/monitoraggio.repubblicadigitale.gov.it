@@ -30,12 +30,13 @@ import {
   selectUsers,
   setUserDetails,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
-import {CardStatusAction, EmptySection} from '../../../../../components';
+import { CardStatusAction, EmptySection } from '../../../../../components';
 import ManageFacilitator from '../../../../../components/AdministrativeArea/Entities/Headquarters/ManageFacilitator/ManageFacilitator';
 import { formFieldI } from '../../../../../utils/formHelper';
 import AddUserRole from '../modals/addUserRole';
 import {
   GetUserDetails,
+  UserDelete,
   UserDeleteRole,
 } from '../../../../../redux/features/administrativeArea/user/userThunk';
 import useGuard from '../../../../../hooks/guard';
@@ -188,12 +189,15 @@ const UsersDetails = () => {
 
   useEffect(() => {
     if (userRole === userRoles.FAC || userRole === userRoles.VOL) {
-      setCurrentForm(<FormFacilitator formDisabled />);
+      setCurrentForm(
+        <FormFacilitator legend='form facilitatore' formDisabled />
+      );
     } else {
       setCurrentForm(
         <FormUser
           formDisabled
           fieldsToHide={userRole !== userRoles.USR ? ['tipoContratto'] : []}
+          legend='form facilitatore'
         />
       );
     }
@@ -307,16 +311,24 @@ const UsersDetails = () => {
         case userRoles.DEG:
         case userRoles.DEGP:
         case userRoles.DEPP:
-          return <ManageDelegate />;
+          return (
+            <ManageDelegate legend="form modifica delegato, i campi con l'asterisco sono obbligatori" />
+          );
         case userRoles.REG:
         case userRoles.REGP:
         case userRoles.REPP:
-          return <ManageReferal />;
+          return (
+            <ManageReferal legend="form modifica referente, i campi con l'asterisco sono obbligatori" />
+          );
         case userRoles.FAC:
         case userRoles.VOL:
-          return <ManageFacilitator />;
+          return (
+            <ManageFacilitator legend="form modifica utente, i campi con l'asterisco sono obbligatori" />
+          );
         default:
-          return <ManageUsers />;
+          return (
+            <ManageUsers legend="form modifica utente, i campi con l'asterisco sono obbligatori" />
+          );
       }
     }
   };
@@ -524,6 +536,15 @@ const UsersDetails = () => {
       await dispatch(UserDeleteRole({ idUtente: userId, ruolo: role }));
       await dispatch(GetUserDetails(userId));
       dispatch(closeModal());
+    } else if (
+      userId &&
+      userRole === userRoles.USR &&
+      hasUserPermission(['del.utente']) &&
+      userInfo.stato === entityStatus.NON_ATTIVO &&
+      !userRoleList?.length
+    ) {
+      await dispatch(UserDelete(userId));
+      navigate('/area-amministrativa/utenti', { replace: true });
     }
   };
 
@@ -570,7 +591,7 @@ const UsersDetails = () => {
                         icon='it-plus-circle'
                         size='sm'
                         className='mr-2'
-                        aria-label='Aggiungi'
+                        aria-label=''
                       />
                       Aggiungi ruolo
                     </Button>
@@ -675,7 +696,9 @@ const UsersDetails = () => {
                     );
                   }
                 )
-              ) : <EmptySection title='Non ci sono ruoli associati' />}
+              ) : (
+                <EmptySection title='Non ci sono ruoli associati' />
+              )}
             </div>
           ) : null}
           <DeleteEntityModal

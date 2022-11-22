@@ -199,6 +199,34 @@ export const UploadUserPic =
     }
   };
 
+/* TO IMPLEMENT WHEN THE API WILL BE AVAILABLE */
+const RemoveUserPicAction = { type: 'user/RemoveUserPic' };
+export const RemoveUserPic =
+  (userId?: string) => async (dispatch: Dispatch) => {
+    try {
+      dispatch({ ...RemoveUserPicAction }); // TODO manage dispatch for dev env only
+      dispatch(showLoader());
+      const { idUtente } = getUserHeaders();
+      const formData = new FormData();
+      formData.append('noImage', '');
+      const res = await API.post(
+        `/utente/upload/immagineProfilo/${userId || idUtente}`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'noImage/formData',
+          },
+        }
+      );
+      return res;
+    } catch (error) {
+      console.log('RemoveUserPic error', error);
+      return false;
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
 const RocketChatLoginAction = { type: 'user/RocketChatLogin' };
 export const RocketChatLogin = () => async (dispatch: Dispatch) => {
   try {

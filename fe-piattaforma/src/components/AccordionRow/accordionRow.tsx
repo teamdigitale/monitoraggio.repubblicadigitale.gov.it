@@ -9,10 +9,10 @@ export interface AccordionRowI {
   clickEditAction?: () => void;
   clickDeleteAction?: () => void;
   innerInfo?:
-  | {
-    [key: string]: string;
-  }
-  | undefined;
+    | {
+        [key: string]: string;
+      }
+    | undefined;
   status?: string | undefined;
   StatusElement?: ReactElement | undefined;
   onTooltipInfo?: string;
@@ -57,7 +57,7 @@ const AccordionRow: React.FC<AccordionRowI> = ({
                   <Icon
                     icon='it-less-circle'
                     className='accordion-row--icon'
-                    aria-label='nascondi elemento'
+                    aria-label={`Riduci informazioni di ${title}`}
                   />
                 </Button>
               ) : null}
@@ -66,7 +66,7 @@ const AccordionRow: React.FC<AccordionRowI> = ({
                   <Icon
                     icon='it-plus-circle'
                     className='accordion-row--icon'
-                    aria-label='mostra elemento'
+                    aria-label={`Espandi informazioni di ${title}`}
                   />
                 </Button>
               ) : null}
@@ -77,44 +77,38 @@ const AccordionRow: React.FC<AccordionRowI> = ({
         </div>
         <div>
           {clickViewAction ? (
-            <Button>
-              <div className='d-flex justify-content-start'>
-                <Icon
-                  icon='it-chevron-right'
-                  onClick={clickViewAction}
-                  aria-label='vai al dettaglio'
-                />
-              </div>
+            <Button className='d-flex justify-content-start'>
+              <Icon
+                icon='it-chevron-right'
+                onClick={clickViewAction}
+                aria-label={`Vai al dettaglio di ${title}`}
+              />
             </Button>
           ) : null}
           {clickEditAction ? (
-            <Button>
-              <div className='d-flex justify-content-start'>
-                <Icon
-                  icon='it-pencil'
-                  color='primary'
-                  onClick={clickEditAction}
-                  aria-label='Modifica riga'
-                />
-              </div>
+            <Button className='d-flex justify-content-start'>
+              <Icon
+                icon='it-pencil'
+                color='primary'
+                onClick={clickEditAction}
+                aria-label={`Modifica ${title}`}
+              />
             </Button>
           ) : null}
           {clickDeleteAction ? (
-            <Button>
-              <div className='d-flex justify-content-start'>
-                <Icon
-                  icon='it-less-circle'
-                  color='primary'
-                  onClick={clickDeleteAction}
-                  aria-label='Elimina riga'
-                />
-              </div>
+            <Button className='d-flex justify-content-start'>
+              <Icon
+                icon='it-less-circle'
+                color='primary'
+                onClick={clickDeleteAction}
+                aria-label={`Elimina ${title}`}
+              />
             </Button>
           ) : null}
         </div>
         {((onTooltipInfo || innerInfo?.onTooltipInfo) &&
           innerInfo?.isPresentInList) ||
-          innerInfo?.failedCSV ? (
+        innerInfo?.failedCSV ? (
           <div
             className='d-inline-flex position-relative'
             id={`tooltip-${innerInfo.id}`}
@@ -122,13 +116,19 @@ const AccordionRow: React.FC<AccordionRowI> = ({
             <UncontrolledTooltip
               placement='bottom'
               target={`tooltip-${innerInfo.id}`}
-            /*  isOpen={openOne}
+              /*  isOpen={openOne}
                   toggle={() => toggleOne(!openOne)} */
             >
               {onTooltipInfo}
               {innerInfo.onTooltipInfo}
             </UncontrolledTooltip>
-            <Icon icon='it-info-circle' size='sm' color='primary' />
+            <Icon
+              icon='it-info-circle'
+              size='sm'
+              color='primary'
+              aria-label='Informazioni'
+              aria-hidden
+            />
           </div>
         ) : null}
       </div>
@@ -168,7 +168,7 @@ const AccordionRow: React.FC<AccordionRowI> = ({
               .map((x, index) => (
                 <div className='info-row' key={index}>
                   <span className='text-uppercase font-weight-semibold info-title'>
-                    {t(x)}:
+                    {t(x)}:{' '}
                   </span>
                   <span>{innerInfo[x]}</span>
                 </div>

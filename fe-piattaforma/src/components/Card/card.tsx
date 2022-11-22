@@ -81,7 +81,7 @@ const Card: React.FC<CardI> = (props) => {
                 color='primary'
                 icon='it-calendar'
                 size='xs'
-                aria-label='calendar'
+                aria-label={category}
               />
               <span className='pl-1'>{category}</span>
             </div>

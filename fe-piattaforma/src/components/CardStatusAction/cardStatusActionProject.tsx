@@ -1,5 +1,10 @@
 import clsx from 'clsx';
-import { Button, CardReadMore, Icon } from 'design-react-kit';
+import {
+  Button,
+  CardReadMore,
+  Icon,
+  UncontrolledTooltip,
+} from 'design-react-kit';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { CRUDActionsI, CRUDActionTypes } from '../../utils/common';
@@ -135,19 +140,28 @@ const CardStatusActionProject: React.FC<CardStatusActionI> = (props) => {
           <span className='d-flex align-items-center'>
             {onActionClick[CRUDActionTypes.DELETE] ? (
               device.mediaIsPhone ? null : (
-                <Button
-                  onClick={() => {
-                    onActionClick[CRUDActionTypes.DELETE](id);
-                  }}
-                  className='pl-3 pr-0'
-                >
-                  <Icon
-                    color='primary'
-                    icon='it-less-circle'
-                    size='sm'
-                    aria-label='Elimina'
-                  />
-                </Button>
+                <>
+                  <Button
+                    onClick={() => {
+                      onActionClick[CRUDActionTypes.DELETE](id);
+                    }}
+                    className='pl-3 pr-0'
+                    id={`icon-delete-${id}`}
+                  >
+                    <Icon
+                      color='primary'
+                      icon='it-less-circle'
+                      size='sm'
+                      aria-label={`Rimuovi ${title}`}
+                    />
+                  </Button>
+                  <UncontrolledTooltip
+                    placement='top'
+                    target={`icon-delete-${id}`}
+                  >
+                    Rimuovi
+                  </UncontrolledTooltip>
+                </>
               )
             ) : null}
             {onActionClick[CRUDActionTypes.VIEW] ? (
@@ -161,7 +175,7 @@ const CardStatusActionProject: React.FC<CardStatusActionI> = (props) => {
                   color='primary'
                   icon='it-chevron-right'
                   size='sm'
-                  aria-label='Seleziona'
+                  aria-label={`Vai al dettaglio di ${title}`}
                 />
               </Button>
             ) : null}
@@ -176,7 +190,7 @@ const CardStatusActionProject: React.FC<CardStatusActionI> = (props) => {
                   color='primary'
                   icon='it-file'
                   size='sm'
-                  aria-label='Preview'
+                  aria-label={`Anteprima di ${title}`}
                 />
               </Button>
             ) : null}

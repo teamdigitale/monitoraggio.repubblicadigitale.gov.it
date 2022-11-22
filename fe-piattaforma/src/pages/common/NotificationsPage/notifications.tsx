@@ -121,6 +121,7 @@ const Notifications: React.FC = () => {
                     }
                     size='sm'
                     aria-label='Segna come letto'
+                    aria-hidden
                     className='mr-1'
                   />
                 </Button>
@@ -134,18 +135,22 @@ const Notifications: React.FC = () => {
                     icon={selectedNotifications.length ? DeleteCheck : Delete}
                     size='sm'
                     aria-label='Elimina'
+                    aria-hidden
                     className='mr-1'
                   />
                 </Button>
               </div>
             </div>
+
             <Input
+              role='checkbox'
               className='notification-card-checkbar'
               type='checkbox'
               onInputChange={() => onSelectAll()}
               checked={notificationsList.every((notification) =>
                 selectedNotifications.includes(notification.id)
               )}
+              aria-label='checkbox per tutte le notifiche'
             />
           </div>
         </>
@@ -176,13 +181,14 @@ const Notifications: React.FC = () => {
 
           <div className='notifications-card-container container d-flex'>
             <Input
-              role='button'
+              role='checkbox'
               className='notification-card-checkbar'
               type='checkbox'
               onInputChange={() => onSelectAll()}
               checked={notificationsList.every((notification) =>
                 selectedNotifications.includes(notification.id)
               )}
+              aria-label='checkbox per tutte le notifiche'
             />
             <div className={clsx('d-flex')}>
               <Button
@@ -194,9 +200,9 @@ const Notifications: React.FC = () => {
                   icon={selectedNotifications.length ? MailReadCheck : MailRead}
                   size='sm'
                   aria-label='Segna come letto'
+                  aria-hidden
                   className='mr-1'
                 />
-
                 <span
                   className={clsx(
                     selectedNotifications.length
@@ -217,9 +223,9 @@ const Notifications: React.FC = () => {
                   icon={selectedNotifications.length ? DeleteCheck : Delete}
                   size='sm'
                   aria-label='Elimina'
+                  aria-hidden
                   className='mr-1'
                 />
-
                 <span
                   className={clsx(
                     selectedNotifications.length
@@ -254,6 +260,7 @@ const Notifications: React.FC = () => {
                   )
                 }
                 notificationsPreview={false}
+                onClick={() => dispatch(ReadNotification([notification.id]))}
                 isChecked={selectedNotifications.includes(notification.id)}
               />
             </div>

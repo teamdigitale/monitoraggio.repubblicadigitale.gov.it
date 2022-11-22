@@ -48,7 +48,9 @@ const DetailCard: React.FC<DetailCardI> = (props) => {
         <Icon
           icon='it-pa'
           size={device.mediaIsPhone ? 'sm' : isCommunity ? '' : 'lg'}
-          fill='#66A5E3'
+          fill='#2066AC'
+          aria-label='Editore'
+          aria-hidden
         />
       </div>
 

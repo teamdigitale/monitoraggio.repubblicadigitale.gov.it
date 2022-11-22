@@ -29,6 +29,7 @@ interface AccordionI {
   iconLeft?: boolean;
   detailAccordion?: boolean;
   roleList?: boolean;
+  index?: number;
   userPublishedContent?: boolean;
 }
 
@@ -49,6 +50,7 @@ const Accordion: React.FC<AccordionI> = (props) => {
     iconLeft = true,
     detailAccordion = false,
     roleList = false,
+    index = 0,
     userPublishedContent = false,
   } = props;
   const [collapseOpen, setCollapseOpen] = useState(false);
@@ -114,24 +116,24 @@ const Accordion: React.FC<AccordionI> = (props) => {
             collapseOpen && 'accordion-container__form-checkbox--collapsed'
           )}
         >
-          <Form id={`form-${title}`}>
+          <Form id={`form-${index}-${title}`}>
             <Input
-              id={`checkbox-${title.replace(/\s/g, '-')}`}
+              id={`checkbox-${index}-${title.replace(/\s/g, '-')}`}
               field='authorization'
               type='checkbox'
               withLabel={false}
               className='shadow-none accordion-container__input-checkbox'
-              aria-label={`checkbox-${title}`}
+              aria-label={`checkbox ${title}`}
               checked={isChecked}
               disabled={disabledCheckbox}
               onInputChange={handleOnCheck}
-              aria-labelledby={`checkbox-${title.replace(
+              aria-labelledby={`checkbox-${index}-${title.replace(
                 /\s/g,
                 '-'
               )}Description`}
             />
             <Label
-              id={`checkbox-${title.replace(/\s/g, '-')}Description`}
+              id={`checkbox-${index}-${title.replace(/\s/g, '-')}Description`}
               check
               className='d-none'
             >

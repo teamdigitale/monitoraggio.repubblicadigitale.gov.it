@@ -257,6 +257,8 @@ const Dashboard = () => {
               }
             : undefined
         }
+        sectionInfo={getMediaQueryDevice(device) === 'mobile'}
+        defaultOpen={getMediaQueryDevice(device) === 'mobile'}
       />
       <div className='dashboard-container__frame w-100 mt-5'>
         <iframe

@@ -22,12 +22,14 @@ interface SurveyTemplateI {
   editMode?: boolean;
   cloneMode?: boolean;
   isModal?: boolean;
+  legend?: string | undefined;
 }
 
 const SurveyTemplate: React.FC<SurveyTemplateI> = ({
   editMode = false,
   cloneMode = false,
   isModal = false,
+  legend = '',
 }) => {
   const dispatch = useDispatch();
   const form = useAppSelector(selectSurveyForm);
@@ -84,7 +86,7 @@ const SurveyTemplate: React.FC<SurveyTemplateI> = ({
 
   return (
     <>
-      <Form id='form-survey-template' className='pt-5'>
+      <Form legend={legend} id='form-survey-template' className='pt-5'>
         <Form.Row
           className={clsx(
             device.mediaIsPhone ? '' : 'd-flex justify-content-start'
@@ -160,6 +162,7 @@ const SurveyTemplate: React.FC<SurveyTemplateI> = ({
                     size='sm'
                     className='mr-2'
                     aria-label='Aggiungi domanda'
+                    aria-hidden
                   />
                   Aggiungi domanda
                 </Button>

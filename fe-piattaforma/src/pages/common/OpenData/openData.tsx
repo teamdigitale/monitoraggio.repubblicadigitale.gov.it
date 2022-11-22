@@ -18,6 +18,7 @@ import {
 } from '../../../components/SectionInfo/bodies';
 import { downloadFile } from '../../../utils/common';
 import { useAppSelector } from '../../../redux/hooks';
+import './openData.scss';
 
 const tableValues = newTable(TableHeading, staticValues);
 
@@ -87,10 +88,10 @@ const OpenData = () => {
           'mt-5'
         )}
       >
-        <div className='d-flex'>
+        <div className='d-flex open-data-container__three-columns'>
           <span>Scarica i dati</span>
         </div>
-        <div className='d-flex'>
+        <div className='d-flex justify-content-center open-data-container__three-columns'>
           <Button
             color='primary'
             onClick={getDocumentUrl}
@@ -99,7 +100,7 @@ const OpenData = () => {
             Scarica il csv {docSize ? `(${docSize} Kb)` : null}
           </Button>
         </div>
-        <div className={clsx('d-flex', 'flex-row', 'align-items-center')}>
+        <div className={clsx('d-flex', 'flex-row', 'align-items-center', 'justify-content-end','open-data-container__three-columns')}>
           <Icon icon='it-download' color='primary' size='' className='pr-2' />
           {totalCount} Download
         </div>
@@ -116,7 +117,7 @@ const OpenData = () => {
             'py-4'
           )}
         >
-          <strong>Servizi di facilitazione e formazione</strong>
+          <strong className='open-data-container__title-height'>Servizi di facilitazione e formazione</strong>
           Modello di lettura del file di dati con elenco delle colonne e
           relative descrizioni
         </div>

@@ -27,6 +27,7 @@ const id = formTypes.SERVICES;
 interface ManageServicesFormI {
   formDisabled?: boolean;
   creation?: boolean;
+  legend?: string | undefined;
 }
 
 interface ManageServicesI extends withFormHandlerProps, ManageServicesFormI {}
@@ -35,6 +36,7 @@ const ManageServices: React.FC<ManageServicesI> = ({
   clearForm = () => ({}),
   formDisabled,
   creation,
+  legend = '',
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -45,8 +47,7 @@ const ManageServices: React.FC<ManageServicesI> = ({
   const [areFormsValid, setAreFormsValid] = useState<boolean>(true);
   const [questionarioCompilatoQ3, setQuestionarioCompilatoQ3] =
     useState<string>('');
-  const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
-    getUserHeaders();
+  const { idProgramma, idProgetto, idEnte } = getUserHeaders();
 
   useEffect(() => {
     if (creation) dispatch(resetServiceDetails());
@@ -61,7 +62,6 @@ const ManageServices: React.FC<ManageServicesI> = ({
   const createPayload = (answersForms: {
     [key: string]: formFieldI['value'];
   }) => {
-    // TODO rendere dinamico
     const answersQ3 = `{"id":"${idQ3}","title":"${titleQ3}","properties":${questionarioCompilatoQ3?.replaceAll(
       '"',
       "'"
@@ -73,13 +73,16 @@ const ManageServices: React.FC<ManageServicesI> = ({
       idEnteServizio: idEnte,
       idSedeServizio: answersForms?.idSede,
       nomeServizio: answersForms?.nomeServizio,
-      profilazioneParam: {
+      /*profilazioneParam: {
         codiceFiscaleUtenteLoggato: codiceFiscale,
         codiceRuoloUtenteLoggato: codiceRuolo,
         idProgetto,
         idProgramma,
         idEnte,
-      },
+      },*/
+      idProgetto,
+      idProgramma,
+      idEnte,
       sezioneQuestionarioCompilatoQ3: answersQ3,
       tipoDiServizioPrenotato: tipologiaServizio,
     };
@@ -142,6 +145,7 @@ const ManageServices: React.FC<ManageServicesI> = ({
           getQuestioanarioCompilatoQ3={(answersQ3: string) =>
             setQuestionarioCompilatoQ3(answersQ3)
           }
+          legend={legend}
         />
       </div>
     </GenericModal>

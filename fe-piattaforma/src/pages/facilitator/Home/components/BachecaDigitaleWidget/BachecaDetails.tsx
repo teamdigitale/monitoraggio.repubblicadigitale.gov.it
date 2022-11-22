@@ -6,10 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import AnteprimaBachecaNews from '../../../../../components/AnteprimaNews/anteprimaNews';
 import CommentSection from '../../../../../components/Comments/commentSection';
 import DeleteForumModal from '../../../../../components/General/DeleteForumEntity/DeleteForumEntity';
-/* import { singleNewsMock } from '../../../../../components/MocksWave3/Mocks'; */
-import {
-  /* selectDevice, */ setInfoIdsBreadcrumb,
-} from '../../../../../redux/features/app/appSlice';
+import { setInfoIdsBreadcrumb } from '../../../../../redux/features/app/appSlice';
 import {
   DeleteComment,
   GetCommentsList,
@@ -33,9 +30,9 @@ import { useAppSelector } from '../../../../../redux/hooks';
 import ManageComment from '../../../../administrator/AdministrativeArea/Entities/modals/manageComment';
 import ManageNews from '../../../../administrator/AdministrativeArea/Entities/modals/manageNews';
 import ManageReport from '../../../../administrator/AdministrativeArea/Entities/modals/manageReport';
+import { Loader } from '../../../../../components';
 
 const BachecaDetails = () => {
-  /*  const device = useAppSelector(selectDevice) */
   const navigate = useNavigate();
   const newsDetail = useAppSelector(selectNewsDetail);
   const commentsList = useAppSelector(selectCommentsList);
@@ -45,10 +42,12 @@ const BachecaDetails = () => {
 
   const getItemDetails = async () => {
     if (id && userId) {
-      dispatch(ManageItemEvent(id, 'view'));
-      dispatch(GetCommentsList(id, userId));
       const res = await dispatch(GetItemDetail(id, userId, 'board'));
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       if (res) {
+        dispatch(GetCommentsList(id, userId));
+        dispatch(ManageItemEvent(id, 'view'));
         dispatch(
           ActionTracker({
             target: 'tnd',
@@ -63,6 +62,8 @@ const BachecaDetails = () => {
               res?.data?.data?.items?.[0]?.category,
           })
         );
+      } else {
+        navigate('/bacheca', { replace: true });
       }
     }
   };
@@ -98,11 +99,13 @@ const BachecaDetails = () => {
     <Button
       onClick={() => navigate('/bacheca', { replace: true })}
       className='px-0'
+      aria-label='torna indietro'
     >
       <Icon
         icon='it-chevron-left'
         color='primary'
-        aria-label='Torna indietro'
+        aria-label='torna indietro'
+        aria-hidden
       />
       <span className='primary-color'>Torna indietro</span>
     </Button>
@@ -112,6 +115,8 @@ const BachecaDetails = () => {
     await dispatch(DeleteItem(entityId, reason));
     navigate(-1);
   };
+
+  if (!newsDetail?.id) return <Loader />;
 
   return (
     <div className={clsx('container', 'mb-5')}>

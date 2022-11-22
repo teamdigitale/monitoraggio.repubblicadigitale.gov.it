@@ -29,6 +29,7 @@ import {
 } from '../../../redux/features/forum/comments/commentsThunk';
 import { setInfoIdsBreadcrumb } from '../../../redux/features/app/appSlice';
 import DeleteForumModal from '../../../components/General/DeleteForumEntity/DeleteForumEntity';
+import { Loader } from '../../../components';
 
 const CommunityDetails = () => {
   const navigate = useNavigate();
@@ -40,10 +41,12 @@ const CommunityDetails = () => {
 
   const getItemDetails = async () => {
     if (id && userId) {
-      dispatch(ManageItemEvent(id, 'view'));
-      dispatch(GetCommentsList(id, userId));
       const res = await dispatch(GetItemDetail(id, userId, 'community'));
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       if (res) {
+        dispatch(ManageItemEvent(id, 'view'));
+        dispatch(GetCommentsList(id, userId));
         dispatch(
           ActionTracker({
             target: 'tnd',
@@ -58,6 +61,8 @@ const CommunityDetails = () => {
               res?.data?.data?.items?.[0]?.category,
           })
         );
+      } else {
+        navigate('/community', { replace: true });
       }
     }
   };
@@ -83,53 +88,17 @@ const CommunityDetails = () => {
     <Button
       onClick={() => navigate('/community', { replace: true })}
       className='px-0'
+      aria-label='torna indietro'
     >
       <Icon
         icon='it-chevron-left'
         color='primary'
-        aria-label='Torna indietro'
+        aria-label='torna indietro'
+        aria-hidden
       />
       <span className='primary-color'>Torna indietro</span>
     </Button>
   );
-
-  // const AllComments = (
-  //   <Button
-  //     size='xs'
-  //     className='p-0 d-flex flex-row align-items-center'
-  //     onClick={() => setShowAllComments(!showAllComments)}
-  //   >
-  //     <div
-  //       className={clsx(
-  //         'd-flex',
-  //         'flex-row',
-  //         'align-items-center',
-  //         device.mediaIsDesktop
-  //           ? 'justify-content-end'
-  //           : 'justify-content-start py-3'
-  //       )}
-  //     >
-  //       <p
-  //         className={clsx(
-  //           'primary-color',
-  //           'font-weight-bold',
-  //           !device.mediaIsPhone ? 'pl-2' : 'pr-2',
-  //           'text-nowrap',
-  //           'letter-spacing'
-  //         )}
-  //       >
-  //         {`${!showAllComments
-  //             ? `LEGGI TUTTI I COMMENTI`
-  //             : `NASCONDI TUTTI I COMMENTI`
-  //           }`}
-  //       </p>
-  //       <span
-  //         className='primary-color pl-1 letter-spacing'
-  //         style={{ fontWeight: 400 }}
-  //       >{`(${comments.length})`}</span>
-  //     </div>
-  //   </Button>
-  // );
 
   const onCommentDelete = async (commentId: string, reason: string) => {
     await dispatch(DeleteComment(commentId, reason));
@@ -143,6 +112,8 @@ const CommunityDetails = () => {
     await dispatch(DeleteItem(entityId, reason));
     navigate(-1);
   };
+
+  if (!topicDetails?.id) return <Loader />;
 
   return (
     <div className='container'>

@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { Chip, ChipLabel, UncontrolledTooltip } from 'design-react-kit';
+import { Chip, ChipLabel } from 'design-react-kit';
 import React, { memo } from 'react';
 import { selectDevice } from '../../redux/features/app/appSlice';
 import { useAppSelector } from '../../redux/hooks';
@@ -78,50 +78,38 @@ export const statusColor = (status: string) => {
 };
 
 const StatusChip: React.FC<StatusChipI> = (props) => {
-  const { status, noTooltip = false, rowTableId, chipWidth } = props;
+  const { status, rowTableId, chipWidth } = props;
   const device = useAppSelector(selectDevice);
 
   if (!status) return null;
 
   return (
-    <>
-      <span
-        className='px-0 py-0'
-        id={`button-status-${rowTableId ? rowTableId : new Date().getTime()}`}
+    <div className='px-0 py-0'>
+      <Chip
+        id={`chip-status-${rowTableId ? rowTableId : new Date().getTime()}`}
+        className={clsx(
+          'table-container__status-label',
+          statusBgColor(status),
+          'no-border',
+          chipWidth && 'px-2',
+          device.mediaIsPhone && 'my-2'
+        )}
       >
-        <Chip
+        <ChipLabel
           className={clsx(
-            'table-container__status-label',
-            statusBgColor(status),
-            'no-border',
-            chipWidth && 'px-2',
-            device.mediaIsPhone && 'my-2'
+            statusColor(status),
+            chipWidth && 'px-3',
+            device.mediaIsPhone &&
+              status?.length >= 11 &&
+              'chip-label__chip-height',
+            status === 'NON ATTIVO' && 'not-active-chip'
           )}
-        >
-          <ChipLabel
-            className={clsx(
-              statusColor(status),
-              chipWidth && 'px-3',
-              device.mediaIsPhone &&
-                status?.length >= 11 &&
-                'chip-label__chip-height',
-            )}
-          >
-            {status?.toUpperCase().replace('_', ' ')}
-          </ChipLabel>
-        </Chip>
-      </span>
-      {!noTooltip && (
-        <UncontrolledTooltip
-          placement='top'
-          target={`button-status-${
-            rowTableId ? rowTableId : new Date().getTime()
-          }`}
+          role='status'
         >
           {status?.toUpperCase().replace('_', ' ')}
-        </UncontrolledTooltip>
-      )}
-    </>
+        </ChipLabel>
+      </Chip>
+    </div>
   );
 };
 

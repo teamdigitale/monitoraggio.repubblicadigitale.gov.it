@@ -33,6 +33,7 @@ interface ManageUsersFormI {
     | undefined;*/
   formDisabled?: boolean;
   creation?: boolean;
+  legend?: string | undefined;
 }
 
 interface ManageUsersI extends withFormHandlerProps, ManageUsersFormI {}
@@ -41,6 +42,7 @@ const ManageUsers: React.FC<ManageUsersI> = ({
   clearForm = () => ({}),
   formDisabled,
   creation = false,
+  legend = '',
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -71,7 +73,9 @@ const ManageUsers: React.FC<ManageUsersI> = ({
           );
         }
       } else {
-        res = await dispatch(UpdateUser(userId || userIdPayload, newFormValues));
+        res = await dispatch(
+          UpdateUser(userId || userIdPayload, newFormValues)
+        );
         dispatch(GetUserDetails(userId || userIdPayload));
       }
 
@@ -99,6 +103,7 @@ const ManageUsers: React.FC<ManageUsersI> = ({
           setNewFormValues({ ...newData })
         }
         setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
+        legend={legend}
       />
     </GenericModal>
   );

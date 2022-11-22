@@ -38,6 +38,7 @@ const id = formTypes.FACILITATORE;
 interface ManageFacilitatorFormI {
   formDisabled?: boolean;
   creation?: boolean;
+  legend?: string | undefined;
 }
 
 interface ManageFacilitatorI
@@ -48,6 +49,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
   clearForm = () => ({}),
   formDisabled,
   creation = false,
+  legend = '',
 }) => {
   const [newFormValues, setNewFormValues] = useState<{
     [key: string]: formFieldI['value'];
@@ -136,6 +138,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
       }
       setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
       creation={creation}
+      legend={legend}
     />
   );
 
@@ -202,6 +205,9 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
             }}
             title='Cerca'
             search
+            infoText={
+              usersList?.length ? `${usersList?.length} risultati trovati` : ''
+            }
           />
         ) : null}
         <div className='mx-5'>{content}</div>

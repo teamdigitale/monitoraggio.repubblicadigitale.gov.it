@@ -7,6 +7,7 @@ export enum AvatarSizes {
   Big = '__big',
   Medium = '__medium',
   Small = '__small',
+  Preview = '__preview',
 }
 
 export enum AvatarTextSizes {
@@ -57,7 +58,13 @@ const AvatarInitials: React.FC<AvatarInitialsI> = (props) => {
       {uName && uSurname ? (
         <p className={`m-1 initials${font}`}>{getInitials(uSurname, uName)}</p>
       ) : (
-        <Icon icon='it-user' color='primary' className='p-1' />
+        <Icon
+          icon='it-user'
+          color='primary'
+          className='p-1'
+          aria-label={`Utente ${uSurname}` + ` ${uName}`}
+          aria-hidden
+        />
       )}
     </div>
   );

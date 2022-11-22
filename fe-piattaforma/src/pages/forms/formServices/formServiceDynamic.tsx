@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Select } from '../../../components';
+import { Duration, Form, Input, Select } from '../../../components';
 import CheckboxGroup from '../../../components/Form/checkboxGroup';
 // import { OptionTypeMulti } from '../../../components/Form/selectMultiple';
 import SelectMultipleCheckbox from '../../../components/Form/selectMultipleCheckbox';
@@ -132,8 +132,20 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
 
   const getAnswerType = (field: formFieldI) => {
     switch (field.type) {
-      case 'date':
       case 'time':
+        return (
+          <Duration
+            {...field}
+            id={`input-${field.field}`}
+            col='col-12 col-lg-6'
+            label={field.label}
+            required
+            onInputChange={onInputDataChange}
+            disabled={formDisabled}
+            className='pl-0 duration-input'
+          />
+        );
+      case 'date':
       case 'text': {
         return (
           <Input
@@ -148,8 +160,8 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
             type={field.type}
             required
             onInputChange={onInputDataChange}
-            placeholder={`Inserisci ${field.label?.toLowerCase()}`}
             disabled={formDisabled}
+            className='pl-0 duration-input'
           />
         );
       }
@@ -162,7 +174,7 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
             col={field.field === '24' ? 'col-12' : 'col-12 col-lg-6'}
             required={field.required || false}
             onInputChange={onInputDataChange}
-            placeholder={`Inserisci ${field.label?.toLowerCase()}`}
+            placeholder={`Seleziona ${field.label?.toLowerCase()}`}
             options={field.options}
             isDisabled={formDisabled}
             value={field.value}

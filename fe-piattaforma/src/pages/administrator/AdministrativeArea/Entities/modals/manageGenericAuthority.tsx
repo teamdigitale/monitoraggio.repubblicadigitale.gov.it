@@ -19,6 +19,7 @@ const id = 'ente';
 interface ManageEntePartnerFormI {
   formDisabled?: boolean;
   creation?: boolean;
+  legend?: string | undefined;
 }
 
 interface ManageEnteGestoreProgettoI
@@ -29,6 +30,7 @@ const ManageGenericAuthority: React.FC<ManageEnteGestoreProgettoI> = ({
   clearForm = () => ({}),
   formDisabled,
   creation = false,
+  legend = '',
 }) => {
   const [newFormValues, setNewFormValues] = useState<{
     [key: string]: formFieldI['value'];
@@ -81,6 +83,7 @@ const ManageGenericAuthority: React.FC<ManageEnteGestoreProgettoI> = ({
           setIsFormValid={(value: boolean | undefined) =>
             setIsFormValid(!!value)
           }
+          legend={legend}
         />
       </div>
     </GenericModal>

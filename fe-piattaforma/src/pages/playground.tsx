@@ -53,6 +53,8 @@ import UserAvatar from '../components/Avatar/UserAvatar/UserAvatar';
 import { closeModal, openModal } from '../redux/features/modal/modalSlice';
 import GenericModal from '../components/Modals/GenericModal/genericModal';
 import { getAnagraphicID } from '../redux/features/anagraphic/anagraphicSlice';
+import ManageProfilePic from '../pages/administrator/AdministrativeArea/Entities/modals/manageProfilePic';
+import Onboarding from './facilitator/Onboarding/onboarding';
 
 const Playground: React.FC<withFormHandlerProps> = (props) => {
   const { t } = useTranslation();
@@ -130,6 +132,8 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
     if (typeof value === 'string') setMultipleSelectValue(value);
   };
 
+  console.log('form', props.form);
+
   const handleInputCheckbox = (
     value?: formFieldI['value'],
     field?: formFieldI['field']
@@ -144,6 +148,19 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
   return (
     <div className='container mt-4'>
       <h1>Playground {t('hello')}</h1>
+      <div className='w-100 my-5'>
+        <Form id='form-playground-4'>
+          <Form.Row>
+            {/*  <Duration
+              {...props.form?.duration}
+              label='Durata'
+              required
+              onInputChange={props.onInputChange}
+            /> */}
+          </Form.Row>
+        </Form>
+        <p>Valore duration input: {props.form?.duration?.value}</p>
+      </div>
 
       <a
         //href="https://s3-mitd-drupal-dev.s3.eu-central-1.amazonaws.com/public/2022-10/1666187931099715_Nuovo%20Documento%20di%20testo.txt?versionId=9rmoYvlyrbsf6TIv8020BXkDVx4oEYKw&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4LHBWFYR2FHS4H6R/20221019/eu-central-1/s3/aws4_request&X-Amz-Date=20221019T135935Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Signature=9154a896c3985ca74293527074da6e0ff8710d3c568ddbf7d53b72f65cc69f31"
@@ -219,11 +236,11 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
           <UserAvatar
             // avatarImage={profilePicture}
             user={{ uSurname: 'Galassi', uName: 'Riccardo' }}
-          //size={device.mediaIsPhone ? AvatarSizes.Big : AvatarSizes.Small}
-          /*  font={
+            //size={device.mediaIsPhone ? AvatarSizes.Big : AvatarSizes.Small}
+            /*  font={
             device.mediaIsPhone ? AvatarTextSizes.Big : AvatarTextSizes.Small
           } */
-          //lightColor={device.mediaIsPhone}
+            //lightColor={device.mediaIsPhone}
           />
           <div> {'CIAO'} </div>
           <StatusChip
@@ -235,8 +252,8 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
               'no-border'
               //device.mediaIsPhone ? 'mx-0 ml-2 my-3' : 'mx-3'
             )}
-            status='ATTIVO'
-          //rowTableId={name?.replace(/\s/g, '') || new Date().getTime()}
+            status={'ATTIVO'}
+            //rowTableId={name?.replace(/\s/g, '') || new Date().getTime()}
           />
         </div>
         <div className='d-flex w-100 justify-content-center'> {'CIAO'} </div>
@@ -374,23 +391,25 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
 
       <section>
         <div className='d-flex align-items-center w-100'>
-          <span 
-          className='d-none d-md-flex'
-          style={{
-            height: '2px',
-            flexGrow: '1',
-            backgroundColor: '#797C80',
-          }} />
-          <div  className='d-flex justify-content-center align-items-center px-3 mx-auto'>
-            <span 
-            className='pr-3'
+          <span
+            className='d-none d-md-flex'
             style={{
-              color: '#2079D4',
-              fontWeight: '700'
-            }}>
+              height: '2px',
+              flexGrow: '1',
+              backgroundColor: '#797C80',
+            }}
+          />
+          <div className='d-flex justify-content-center align-items-center px-3 mx-auto'>
+            <span
+              className='pr-3'
+              style={{
+                color: '#2079D4',
+                fontWeight: '700',
+              }}
+            >
               Ti è stato utile?
             </span>
-            <div  className='d-flex'>
+            {/*   <div className='d-flex'>
               <FormGroup check className='d-flex align-items-center mt-0 pr-2'>
                 <Input name='si' type='radio' id='si' />
                 <label className='mb-0'>SI</label>
@@ -399,15 +418,16 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
                 <Input name='si' type='radio' id='si' />
                 <label className='mb-0'>NO</label>
               </FormGroup>
-            </div>
+            </div> */}
           </div>
-          <span 
-          className='d-none d-md-flex'
-          style={{
-            height: '2px',
-            flexGrow: '1',
-            backgroundColor: '#797C80',
-          }} />
+          <span
+            className='d-none d-md-flex'
+            style={{
+              height: '2px',
+              flexGrow: '1',
+              backgroundColor: '#797C80',
+            }}
+          />
         </div>
       </section>
 
@@ -438,6 +458,29 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
       </section>
 
       <section>
+        <ManageProfilePic isPreview />
+      </section>
+
+      <section>
+        <Onboarding />
+      </section>
+
+      <section>
+        <Button
+          onClick={() =>
+            dispatch(
+              openModal({
+                id: 'update-profile-pic-modal',
+                payload: { title: 'Aggiorna immagine profilo' },
+              })
+            )
+          }
+        >
+          modale immagine
+        </Button>
+      </section>
+
+      <section>
         <Row>
           <Form id='form-playground-3'>
             <fieldset>
@@ -446,7 +489,9 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
           </Form>
         </Row>
       </section>
-
+      <section>
+        <Onboarding />
+      </section>
       <section>
         <Slider>
           {new Array(3).fill([1, 2, 3]).map((el, i) => (
@@ -512,6 +557,10 @@ const form = newForm([
   }),
   newFormField({
     field: 'surname',
+    required: true,
+  }),
+  newFormField({
+    field: 'duration',
     required: true,
   }),
 ]);

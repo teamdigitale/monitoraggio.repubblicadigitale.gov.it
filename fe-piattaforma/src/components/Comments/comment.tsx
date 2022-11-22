@@ -48,6 +48,7 @@ export interface CommentI {
   onDeleteComment?: () => void;
   onEditComment?: () => void;
   reported: 0 | 1;
+  isReply?: boolean;
 }
 
 const Comment: React.FC<CommentI> = (props) => {
@@ -66,6 +67,7 @@ const Comment: React.FC<CommentI> = (props) => {
     onDeleteComment = () => ({}),
     onEditComment = () => ({}),
     reported = 0,
+    isReply = false,
   } = props;
 
   const [detailDropdownOptions, setDetailDropdownOptions] = useState<any[]>([]);
@@ -199,38 +201,37 @@ const Comment: React.FC<CommentI> = (props) => {
               'text.white'
             )}
           >
-            <div>
-              <Button>
-                <Icon icon='it-more-items' color='primary' />
-              </Button>
-            </div>
+            <Icon
+              icon='it-more-items'
+              color='primary'
+              aria-label='apri menu azioni'
+            />
           </div>
         </DropdownToggle>
-        <DropdownMenu role='menu' tag='ul'>
-          <LinkList role='none'>
+        <DropdownMenu role='menu'>
+          <LinkList role='list'>
             {detailDropdownOptions.map((item, i) => (
               <li key={i} role='none' onClick={() => setIsOpen(!isOpen)}>
                 <Button
-                  className={clsx('primary-color-b1', 'py-2', 'w-100')}
+                  className={clsx(
+                    'primary-color-b1',
+                    'py-2',
+                    'w-100',
+                    'd-flex',
+                    'flex-row',
+                    'justify-content-around',
+                    'align-items-center'
+                  )}
                   role='menuitem'
                   onClick={() => item.action && item.action()}
                 >
-                  <div
-                    className={clsx(
-                      'd-flex',
-                      'flex-row',
-                      'justify-content-around',
-                      'align-items-center'
-                    )}
-                  >
-                    <div>
-                      <Icon
-                        icon={item.DropdownIcon.icon}
-                        color={item.DropdownIcon.color}
-                      />
-                    </div>
-                    <div>{item.optionName}</div>
-                  </div>
+                  <Icon
+                    icon={item.DropdownIcon.icon}
+                    color={item.DropdownIcon.color}
+                    aria-label={item.optionName}
+                    aria-hidden
+                  />
+                  <span>{item.optionName}</span>
                 </Button>
               </li>
             ))}
@@ -244,7 +245,8 @@ const Comment: React.FC<CommentI> = (props) => {
       className={clsx(
         !isAnswer
           ? 'comment-container__comment-card'
-          : 'pt-3 comment-container__answer'
+          : 'pt-3 comment-container__answer',
+        'pb-5'
       )}
       id={id}
     >
@@ -320,7 +322,7 @@ const Comment: React.FC<CommentI> = (props) => {
         )}
       >
         <div style={{ width: '94%' }}>{body}</div>
-        <div className='comment-container__border mt-4 mb-2'></div>
+        <div className='comment-container__border mt-4 mb-3'></div>
         <SocialBar
           replies={
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -337,6 +339,7 @@ const Comment: React.FC<CommentI> = (props) => {
               ? () => setShowReplies((prev) => !prev)
               : undefined
           }
+          isReply={isReply}
           showReplies={section === 'community' ? showReplies : undefined}
           likes={likes}
           user_like={user_like}

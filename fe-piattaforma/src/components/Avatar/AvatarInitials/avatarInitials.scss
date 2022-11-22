@@ -1,5 +1,9 @@
 .avatar-initials-container {
   &__circle-width {
+    &__preview {
+      width: 120px;
+      height: 120px;
+    }
     &__big {
       width: 67px !important;
       height: 67px !important;

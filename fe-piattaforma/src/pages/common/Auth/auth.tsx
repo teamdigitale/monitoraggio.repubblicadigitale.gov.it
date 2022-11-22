@@ -129,7 +129,7 @@ const Auth: React.FC<withFormHandlerProps> = ({
           <div className={clsx('w-100', 'text-center', 'mb-5')}>
             <img
               src={LogoScrittaBlu}
-              alt='logo'
+              alt='Repubblica Digitale'
               className='auth-container__logo'
             />
           </div>
@@ -228,48 +228,42 @@ const Auth: React.FC<withFormHandlerProps> = ({
                       'mx-auto',
                       'mb-3',
                       'w-100',
-                      'd-flex, align-items-center',
+                      'd-flex',
+                      'align-items-center',
+                      'justify-content-center',
+                      'mx-auto',
                       device.mediaIsPhone ? 'btn-xs px-4' : 'btn-sm'
                     )}
                     color='primary'
                     onClick={cognitoRedirect}
                     size='xs'
                   >
-                    <div
+                    <span
                       className={clsx(
+                        'rounded-circle',
                         'd-flex',
                         'align-items-center',
                         'justify-content-center',
-                        'mx-auto'
+                        'bg-white',
+                        'mr-1'
                       )}
                     >
-                      <div
-                        className={clsx(
-                          'rounded-circle',
-                          'd-flex',
-                          'align-items-center',
-                          'justify-content-center',
-                          'bg-white',
-                          'mr-1'
-                        )}
-                      >
-                        <Icon
-                          size=''
-                          icon='it-user'
-                          color='primary'
-                          padding
-                          aria-label='Utente'
-                        />
-                      </div>
-                      <span
-                        className={clsx(
-                          'ml-2',
-                          device.mediaIsPhone && 'text-nowrap'
-                        )}
-                      >
-                        Entra con SPID
-                      </span>
-                    </div>
+                      <Icon
+                        size=''
+                        icon='it-user'
+                        color='primary'
+                        padding
+                        aria-label='Utente'
+                      />
+                    </span>
+                    <span
+                      className={clsx(
+                        'ml-2',
+                        device.mediaIsPhone && 'text-nowrap'
+                      )}
+                    >
+                      Entra con SPID
+                    </span>
                   </Button>
                   <Button
                     className={clsx(
@@ -287,7 +281,7 @@ const Auth: React.FC<withFormHandlerProps> = ({
                 {isActiveProvisionalLogin ? (
                   <div className='my-5'>
                     <hr />
-                    <h4 className='py-2'>Provisional Login</h4>
+                    <p className='h4 py-2'>Provisional Login</p>
                     {/* TODO Remove next block, it's for dev purpose only*/}
                     <Input
                       {...form.mockUser}

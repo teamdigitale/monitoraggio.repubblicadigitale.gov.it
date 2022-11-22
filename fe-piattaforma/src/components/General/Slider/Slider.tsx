@@ -53,6 +53,7 @@ const Slider = ({
     <div className='slider'>
       {currentSlide > 0 && !isItemsHome && (
         <Icon
+          aria-label='Freccia sinistra'
           onClick={() => scrollTo(currentSlide - 1)}
           icon='it-chevron-left'
           className={clsx(
@@ -66,6 +67,7 @@ const Slider = ({
       )}
       {currentSlide < children.length - 1 && !isItemsHome && (
         <Icon
+          aria-label='Freccia Destra'
           onClick={() => scrollTo(currentSlide + 1)}
           icon='it-chevron-right'
           className={clsx(
@@ -97,7 +99,8 @@ const Slider = ({
           }}
           className={currentSlide === i ? 'active' : ''}
           key={i}
-        ></button>
+          aria-label='Elementi del carosello'
+        />
       ))}
     </div>
   );

@@ -41,7 +41,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
       >
         {heading?.length ? (
           <thead>
-            <tr className='lightgrey-bg-a1 neutral-2-color-b4'>
+            <tr className='bg-and-text-color'>
               {onActionRadio && (
                 <th
                   scope='col'
@@ -97,7 +97,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
                         check
                         htmlFor={`radio-${td.id}`}
                       >
-                        <span>{`Select Row`}</span>
+                        {`Seleziona ${td?.nome || td?.label || td?.name}`}
                       </Label>
                     </FormGroup>
                   </Form>
@@ -133,6 +133,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
                           color='primary'
                           size='sm'
                           aria-label='Informazioni'
+                          aria-hidden
                         />
                       </Button>
                     ) : null}
@@ -153,6 +154,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
                           color='primary'
                           size='sm'
                           aria-label='Aggiungi nuovo'
+                          aria-hidden
                         />
                       </Button>
                     ) : null}
@@ -164,13 +166,16 @@ const TableDesktop: React.FC<TableI> = (props) => {
                       <Button
                         onClick={() => onActionClick[CRUDActionTypes.EDIT](td)}
                         className='mr-4 p-0'
-                        aria-label='Modifica riga'
+                        aria-label={`Modifica ${
+                          td?.nome || td?.label || td?.name
+                        }`}
                       >
                         <Icon
                           icon='it-pencil'
                           color='primary'
                           size='sm'
-                          aria-label='Modifica riga'
+                          aria-label='Modifica'
+                          aria-hidden
                         />
                       </Button>
                     ) : null}
@@ -184,13 +189,16 @@ const TableDesktop: React.FC<TableI> = (props) => {
                           onActionClick[CRUDActionTypes.DELETE](td)
                         }
                         className='mr-4 p-0'
-                        aria-label='Elimina elemento riga'
+                        aria-label={`Elimina ${
+                          td?.nome || td?.label || td?.name
+                        }`}
                       >
                         <Icon
                           icon='it-less-circle'
                           color='primary'
                           size='sm'
-                          aria-label='Elimina elemento riga'
+                          aria-label='Elimina'
+                          aria-hidden
                         />
                       </Button>
                     ) : null}
@@ -202,12 +210,16 @@ const TableDesktop: React.FC<TableI> = (props) => {
                       <Button
                         onClick={() => onActionClick[CRUDActionTypes.CLONE](td)}
                         className='mr-4 p-0'
+                        aria-label={`Clona ${
+                          td?.nome || td?.label || td?.name
+                        }`}
                       >
                         <Icon
                           icon='it-copy'
                           color='primary'
                           size='sm'
-                          aria-label='Copia elemento riga'
+                          aria-label='Clona'
+                          aria-hidden
                         />
                       </Button>
                     ) : null}
@@ -222,14 +234,17 @@ const TableDesktop: React.FC<TableI> = (props) => {
                             onActionClick[CRUDActionTypes.VIEW](td)
                           }
                           className='p-0'
-                          aria-label='Pulsante selezione riga'
+                          aria-label={`Vai al dettaglio di ${
+                            td?.nome || td?.label || td?.name
+                          }`}
                         >
                           <Icon
                             icon='it-chevron-right'
                             color='primary'
                             size='sm'
-                            aria-label='Vedi dettaglio elemento riga'
                             focusable={false}
+                            aria-label='Vai al dettaglio'
+                            aria-hidden
                           />
                         </Button>
                       ) : null
@@ -253,6 +268,8 @@ const TableDesktop: React.FC<TableI> = (props) => {
                       size='sm'
                       color='primary'
                       className='mt-2'
+                      aria-label='Informazioni'
+                      aria-hidden
                     />
                   </div>
                 </td>
@@ -265,7 +282,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
       </TableKit>
       {totalCounter ? (
         <div
-          className={clsx('text-right', 'neutral-2-color-b4')}
+          className={clsx('text-right', 'total-counter-text-color')}
         >{`${values.length} di ${totalCounter}`}</div>
       ) : null}
     </>
@@ -279,7 +296,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
         >
           {heading?.length ? (
             <thead>
-              <tr className='lightgrey-bg-a1 neutral-2-color-b4'>
+              <tr className='bg-and-text-color'>
                 {onActionRadio && (
                   <th
                     scope='col'

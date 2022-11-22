@@ -53,6 +53,7 @@
 .input-search > .form-control[type='text'] {
   border: none !important;
   font-size: 18px;
+  word-spacing: 2.7px;
   text-overflow: ellipsis;
   padding-left: 0;
 }
@@ -98,6 +99,8 @@
 input:focus + #placeholder-icon {
   display: none;
 }
+
+
 .search-bar-topic-modal {
   .btn {
     padding-inline: 0;
@@ -106,6 +109,10 @@ input:focus + #placeholder-icon {
   .input-search > .form-control[type='text'] {
     font-size: 18px;
   }
+}
+
+.word-spacing {
+  word-spacing: 2.4px;
 }
 
 .input-group-append {

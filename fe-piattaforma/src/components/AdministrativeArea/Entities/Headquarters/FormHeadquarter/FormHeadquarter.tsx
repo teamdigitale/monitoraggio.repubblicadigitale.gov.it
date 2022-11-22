@@ -18,6 +18,7 @@ interface ProgramInformationI {
   sendNewValues?: (param?: { [key: string]: formFieldI['value'] }) => void;
   setIsFormValid?: (param: boolean | undefined) => void;
   creation?: boolean;
+  legend?: string | undefined;
 }
 
 interface FormEnteGestoreProgettoFullInterface
@@ -56,6 +57,7 @@ const Sedi: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
     updateForm = () => ({}),
     // creation = false,
     formDisabled,
+    legend = '',
   } = props;
 
   const formData: { [key: string]: string } | undefined =
@@ -109,7 +111,12 @@ const Sedi: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
   }, [formDisabled, form]);
 
   return (
-    <Form id='form-headquarter' className='mt-5' formDisabled={formDisabled ? formDisabled : false}>
+    <Form
+      id='form-headquarter'
+      legend={legend}
+      className='mt-5'
+      formDisabled={formDisabled ? formDisabled : false}
+    >
       <Form.Row className='justify-content-between'>
         {formDisabled ? (
           <Input

@@ -118,13 +118,15 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
     const authorizedOption = [];
     if (
       hasUserPermission(['del.news']) ||
-      author?.toString() === userId?.toString()
+      (author?.toString() === userId?.toString() &&
+        hasUserPermission(['new.news']))
     ) {
       authorizedOption.push(deleteOption);
     }
     if (
       hasUserPermission(['upd.news']) ||
-      author?.toString() === userId?.toString()
+      (author?.toString() === userId?.toString() &&
+        hasUserPermission(['new.news']))
     ) {
       authorizedOption.push(editOption);
     }
@@ -149,38 +151,37 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
         <div
           className={clsx('d-inline-flex', 'align-items-center', 'text.white')}
         >
-          <div>
-            <Button>
-              <Icon icon='it-more-items' color='primary' />
-            </Button>
-          </div>
+          <Icon
+            icon='it-more-items'
+            color='primary'
+            aria-label='apri menu azioni'
+          />
         </div>
       </DropdownToggle>
-      <DropdownMenu role='none' tag='ul'>
-        <LinkList role='none'>
+      <DropdownMenu role='menu'>
+        <LinkList role='list'>
           {newsDetailDropdownOptions.map((item, i) => (
             <li key={i} role='none' onClick={() => setIsOpen(!isOpen)}>
               <Button
-                className={clsx('primary-color-b1', 'py-2', 'w-100')}
+                className={clsx(
+                  'primary-color-b1',
+                  'py-2',
+                  'w-100',
+                  'd-flex',
+                  'flex-row',
+                  'justify-content-around',
+                  'align-items-center'
+                )}
                 role='menuitem'
                 onClick={() => item.action && item.action()}
               >
-                <div
-                  className={clsx(
-                    'd-flex',
-                    'flex-row',
-                    'justify-content-around',
-                    'align-items-center'
-                  )}
-                >
-                  <div>
-                    <Icon
-                      icon={item.DropdownIcon.icon}
-                      color={item.DropdownIcon.color}
-                    />
-                  </div>
-                  <div>{item.optionName}</div>
-                </div>
+                <Icon
+                  icon={item.DropdownIcon.icon}
+                  color={item.DropdownIcon.color}
+                  aria-label={item.optionName}
+                  aria-hidden
+                />
+                <span>{item.optionName}</span>
               </Button>
             </li>
           ))}
@@ -196,8 +197,13 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
           'bg-image' /*  device.mediaIsPhone ? 'mr-3' : device.mediaIsTablet ? 'mx-1': null */
         )}
         style={{
-          backgroundImage: `url(${!cover ? coverPlaceholder : typeof cover === "string" ? cleanDrupalFileURL(cover) : cover.res
-            })`,
+          backgroundImage: `url(${
+            !cover
+              ? coverPlaceholder
+              : typeof cover === 'string'
+              ? cleanDrupalFileURL(cover)
+              : cover.res
+          })`,
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
           zIndex: '0',
@@ -238,26 +244,30 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
                   'd-flex',
                   'justify-content-start',
                   'px-0',
-                  'pb-5'
+                  'pb-5',
+                  'd-flex',
+                  'align-items-center'
                 )}
               >
-                <div className='d-flex align-items-center'>
-                  <Icon
-                    icon='it-download'
-                    color='primary'
-                    size='sm'
-                    aria-label='Scarica allegato'
-                  />
-                  <a
-                    href={typeof attachment === "string" ? cleanDrupalFileURL(attachment) : attachment.res}
-                    download
-                    target='_blank'
-                    rel='noreferrer'
-                    className='ml-2'
-                  >
-                    <p className='font-weight-bold h6 mb-0'>Scarica allegato</p>
-                  </a>
-                </div>
+                <Icon
+                  icon='it-download'
+                  color='primary'
+                  size='sm'
+                  aria-label='Scarica allegato'
+                />
+                <a
+                  href={
+                    typeof attachment === 'string'
+                      ? cleanDrupalFileURL(attachment)
+                      : attachment.res
+                  }
+                  download
+                  target='_blank'
+                  rel='noreferrer'
+                  className='ml-2'
+                >
+                  <p className='font-weight-bold h6 mb-0'>Scarica allegato</p>
+                </a>
               </Button>
             </div>
           ) : null}
@@ -296,17 +306,17 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
                 onComment={
                   enable_comments
                     ? () =>
-                      dispatch(
-                        openModal({
-                          id: 'comment-modal',
-                          payload: {
-                            title: 'Aggiungi commento',
-                            action: 'comment',
-                            entity: 'board',
-                            category: category_label || category,
-                          },
-                        })
-                      )
+                        dispatch(
+                          openModal({
+                            id: 'comment-modal',
+                            payload: {
+                              title: 'Aggiungi commento',
+                              action: 'comment',
+                              entity: 'board',
+                              category: category_label || category,
+                            },
+                          })
+                        )
                     : undefined
                 }
               />

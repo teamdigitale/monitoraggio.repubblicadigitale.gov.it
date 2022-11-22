@@ -55,7 +55,7 @@ const CategoryForm: React.FC<CategoriesFormI> = (props) => {
         updateForm(newForm(populatedForm));
       }
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     setIsFormValid(isValidForm);
@@ -101,6 +101,7 @@ const form = newForm([
     id: 'term_name',
     required: true,
     type: 'text',
+    maximum: 30,
   }),
   newFormField({
     field: 'term_type',

@@ -39,6 +39,7 @@ import {
   GetEntityFilterQueryParamsValues,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 import useGuard from '../../../../../hooks/guard';
+import IconNote from '/public/assets/img/it-note-primary.png';
 
 const entity = 'servizio';
 const statusDropdownLabel = 'stato';
@@ -262,9 +263,7 @@ const Services = () => {
       ctaDownload={
         hasUserPermission(['list.dwnl.serv']) ? handleDownloadList : undefined
       }
-      resetFilterDropdownSelected={(filterKey: string) =>
-        setFilterDropdownSelected(filterKey)
-      }
+      resetFilterDropdownSelected={() => setFilterDropdownSelected('')}
       tooltip
       tooltiptext={searchInformation.placeholder}
     >
@@ -294,12 +293,15 @@ const Services = () => {
           <EmptySection
             title='Non sono presenti servizi'
             subtitle='associati al tuo ruolo'
-            icon='it-note'
+            icon={IconNote}
             withIcon
           />
         )}
       </div>
-      <ManageServices creation />
+      <ManageServices
+        legend="form creazione servizio, i campi con l'asterisco sono obbligatori"
+        creation
+      />
     </GenericSearchFilterTableLayout>
   );
 };

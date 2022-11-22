@@ -47,6 +47,7 @@ import {
 import { formatDate } from '../../../../../utils/datesHelper';
 import useGuard from '../../../../../hooks/guard';
 import { resetSurveyDetails } from '../../../../../redux/features/administrativeArea/surveys/surveysSlice';
+import IconNote from '/public/assets/img/it-note-primary.png';
 
 const entity = 'questionarioTemplate';
 const statusDropdownLabel = 'stato';
@@ -82,6 +83,7 @@ const Surveys = () => {
         ? TableHeadingQuestionnaires
         : TableHeadingQuestionnairesLite,
       questionariList?.list.map((td) => ({
+        idShort: td.id.split('-')[0],
         id: td.id,
         nome: td.nome,
         status: <StatusChip status={td.stato} rowTableId={td.id} />,
@@ -90,6 +92,7 @@ const Surveys = () => {
           formatDate(td.dataUltimaModifica, 'shortDate') || '-',
         defaultSCD: (
           <FormGroup check className='table-container__toggle-button'>
+            {console.log(td)}
             <Toggle
               label=''
               aria-labelledby={`toggle-SCD-${td.id}`}
@@ -100,7 +103,7 @@ const Surveys = () => {
               }
             />
             <span id={`toggle-SCD-${td.id}`} className='d-none'>
-              Default toggle SCD {td.id}
+              {td?.nome} Default SCD
             </span>
           </FormGroup>
         ),
@@ -116,7 +119,7 @@ const Surveys = () => {
               }
             />
             <span id={`toggle-RFD-${td.id}`} className='d-none'>
-              Default toggle RFD {td.id}
+              {td?.nome} Default RFD
             </span>
           </FormGroup>
         ),
@@ -337,9 +340,7 @@ const Surveys = () => {
         dropdowns={dropdowns}
         {...objectToPass}
         ctaDownload={handleDownloadList}
-        resetFilterDropdownSelected={(filterKey: string) =>
-          setFilterDropdownSelected(filterKey)
-        }
+        resetFilterDropdownSelected={() => setFilterDropdownSelected('')}
         tooltip
         tooltiptext={searchInformation.placeholder}
       >
@@ -369,7 +370,7 @@ const Surveys = () => {
             <EmptySection
               title='Non sono presenti questionari'
               subtitle='associati al tuo ruolo'
-              icon='it-note'
+              icon={IconNote}
               withIcon
             />
           )}
