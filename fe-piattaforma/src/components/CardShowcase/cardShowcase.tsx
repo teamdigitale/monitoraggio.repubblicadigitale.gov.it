@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { CardProps, CardText, CardTitle, Col, Icon } from 'design-react-kit';
-import Heart from '/public/assets/img/heart.png';
+import Heart from '/public/assets/img/hollow-grey-heart.png';
 import bookmark from '/public/assets/img/bookmark.png';
 import './cardShowcase.scss';
 import { useAppSelector } from '../../redux/hooks';
@@ -181,7 +181,7 @@ const CardShowcase: React.FC<ForumCardsI> = (props) => {
               )}
             >
               <Icon
-                color='primary'
+                color='note'
                 icon={Heart}
                 size='xs'
                 aria-label='Like'
@@ -198,7 +198,7 @@ const CardShowcase: React.FC<ForumCardsI> = (props) => {
               )}
             >
               <Icon
-                color='primary'
+                color='note'
                 icon='it-comment'
                 size='sm'
                 aria-label='Commento'
@@ -212,7 +212,7 @@ const CardShowcase: React.FC<ForumCardsI> = (props) => {
               className={clsx('category-top', 'd-flex', 'align-items-center')}
             >
               <Icon
-                color='primary'
+                color='note'
                 icon='it-password-visible'
                 size='sm'
                 aria-label='Views'

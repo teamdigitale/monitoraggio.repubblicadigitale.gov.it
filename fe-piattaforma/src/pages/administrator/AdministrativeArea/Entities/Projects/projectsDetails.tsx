@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Icon, Nav } from 'design-react-kit';
+import { Icon, Nav, Tooltip } from 'design-react-kit';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { entityStatus, formTypes, userRoles } from '../utils';
 import {
@@ -116,7 +116,7 @@ const ProjectsDetails = () => {
   const [itemAccordionList, setItemAccordionList] = useState<
     ItemsListI[] | null
   >();
-  // const [openOne, toggleOne] = useState(false);
+  const [openOne, toggleOne] = useState(false);
   const [correctButtons, setCorrectButtons] = useState<ButtonInButtonsBar[]>(
     []
   );
@@ -749,22 +749,26 @@ const ProjectsDetails = () => {
           active={activeTab === tabs.ENTE_GESTORE}
           enteGestore={!managingAuthorityID}
         >
-          {!managingAuthorityID ? (
-            <div id='tab-ente-gestore-progetto'>
-              * Ente gestore
-              {/* <Tooltip
-                placement='bottom'
-                target='tab-ente-gestore-progetto'
-                isOpen={openOne}
-                toggle={() => toggleOne(!openOne)}
-              >
-                Compilazione obbligatoria
-              </Tooltip> */}
-              <Icon icon='it-warning-circle' size='xs' className='ml-1' />
-            </div>
-          ) : (
-            'Ente gestore'
-          )}
+          <div id='tab-ente-gestore-progetto'>
+            {!managingAuthorityID ||
+            authorityInfo?.dettagliInfoEnte?.statoEnte ===
+              entityStatus.NON_ATTIVO ? (
+              <>
+                * Ente gestore
+                <Tooltip
+                  placement='bottom'
+                  target='tooltip-ente-gestore-progetto'
+                  isOpen={openOne}
+                  toggle={() => toggleOne(!openOne)}
+                >
+                  È necessario aggiungere almeno un referente per l'ente gestore
+                </Tooltip>
+                <Icon icon='it-warning-circle' size='xs' className='ml-1' id='tooltip-ente-gestore-progetto'/>
+              </>
+            ) : (
+              'Ente gestore'
+            )}
+          </div>
         </NavLink>
       </li>
       <li ref={partnerRef}>

@@ -417,6 +417,10 @@ const ProgramsDetails: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if(entityId && managerAuthorityId) dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
+  },[managerAuthorityId]);
+
   const cancelSurvey = () => {
     setChangeSurveyButtonVisible(true);
     setRadioButtonsSurveys(false);
@@ -952,27 +956,32 @@ const ProgramsDetails: React.FC = () => {
           role='menuitem'
           onKeyDown={() => setActiveTab(tabs.ENTE)}
         >
-          {!managerAuthorityId ? (
-            <div id='tab-ente-gestore'>
-              * Ente gestore
-              <Tooltip
-                placement='bottom'
-                target='tab-ente-gestore'
-                isOpen={openOne}
-                toggle={() => toggleOne(!openOne)}
-              >
-                Compilazione obbligatoria
-              </Tooltip>
-              <Icon
-                icon='it-warning-circle'
-                size='xs'
-                className='ml-1'
-                aria-label='Avviso'
-              />
-            </div>
-          ) : (
-            'Ente gestore'
-          )}
+          <div id='tab-ente-gestore'>
+            {!managerAuthorityId ||
+            authorityInfo?.dettagliInfoEnte?.statoEnte ===
+              entityStatus.NON_ATTIVO ? (
+              <>
+                * Ente gestore
+                <Tooltip
+                  placement='bottom'
+                  target='tooltip-ente-gestore-programma'
+                  isOpen={openOne}
+                  toggle={() => toggleOne(!openOne)}
+                >
+                  È necessario aggiungere almeno un referente per l'ente gestore
+                </Tooltip>
+                <Icon
+                  icon='it-warning-circle'
+                  size='xs'
+                  className='ml-1'
+                  aria-label='Avviso'
+                  id='tooltip-ente-gestore-programma'
+                />
+              </>
+            ) : (
+              'Ente gestore'
+            )}
+          </div>
         </NavLink>
       </li>
       <li ref={questionariRef} role='none'>
