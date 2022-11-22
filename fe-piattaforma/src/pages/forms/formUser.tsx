@@ -38,6 +38,7 @@ interface UserInformationI {
   setIsFormValid?: (param: boolean | undefined) => void;
   creation?: boolean;
   fieldsToHide?: ('ruolo' | 'mansione' | 'tipoContratto')[];
+  legend?: string | undefined;
 }
 
 interface UserFormI extends withFormHandlerProps, UserInformationI {}
@@ -55,6 +56,7 @@ const FormUser: React.FC<UserFormI> = (props) => {
     creation = false,
     fieldsToHide = [],
     children,
+    legend = '',
   } = props;
 
   const dispatch = useDispatch();
@@ -136,7 +138,12 @@ const FormUser: React.FC<UserFormI> = (props) => {
   const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
 
   return (
-    <Form id='form-user' className='mt-5 mb-0' formDisabled={formDisabled}>
+    <Form
+      id='form-user'
+      legend={legend}
+      className='mt-5 mb-0'
+      formDisabled={formDisabled}
+    >
       <Form.Row className={bootClass}>
         <>
           <Input

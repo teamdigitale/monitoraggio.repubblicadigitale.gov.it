@@ -45,13 +45,13 @@ const id = formTypes.SEDE;
 
 const headings: TableHeadingI[] = [
   {
-    label: 'ID',
-    field: 'id',
+    label: 'Nome',
+    field: 'nome',
     size: 'medium',
   },
   {
-    label: 'Nome',
-    field: 'nome',
+    label: 'ID',
+    field: 'id',
     size: 'medium',
   },
 ];
@@ -60,6 +60,7 @@ interface ManageHeadquarterFormI {
   formDisabled?: boolean;
   creation?: boolean;
   enteType?: 'partner' | 'manager';
+  legend?: string | undefined;
 }
 
 interface ManageHeadquarterI
@@ -70,6 +71,7 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
   formDisabled,
   creation = false,
   enteType = 'manager',
+  legend = '',
 }) => {
   const [newFormValues, setNewFormValues] = useState<{
     [key: string]: formFieldI['value'];
@@ -125,6 +127,7 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
       ]);
       setMovingHeadquarter(false);
       dispatch(resetHeadquarterDetails());
+      dispatch(setHeadquartersList(null));
     }
   }, [open, creation]);
 
@@ -268,8 +271,13 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
         formDisabled={!!formDisabled}
         sendNewValues={(newData) => setNewFormValues({ ...newData })}
         setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
+        legend={legend}
       />
-      <Form id='form-manage-headquarter' className='mx-5 mb-5'>
+      <Form
+        legend='interruttore sede itinerante'
+        id='form-manage-headquarter'
+        className='mx-5 mb-5'
+      >
         <Form.Row>
           <div className='col-10 col-md-6'>
             <Toggle
@@ -297,8 +305,8 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
       <Table
         heading={headings}
         values={headquartersList.map((item) => ({
-          id: item.id,
           nome: item.nome,
+          id: item.id,
         }))}
         onActionRadio={handleSelectHeadquarter}
         id='table'
@@ -366,6 +374,11 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
             }}
             title='Cerca'
             search
+            infoText={
+              headquartersList?.length
+                ? `${headquartersList?.length} risultati trovati`
+                : ''
+            }
           />
         ) : null}
         <div className='mx-5'>{content}</div>

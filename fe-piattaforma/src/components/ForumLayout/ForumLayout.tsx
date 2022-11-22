@@ -27,11 +27,12 @@ import {
 } from '../../redux/features/forum/forumSlice';
 import useGuard from '../../hooks/guard';
 import './ForumLayout.scss';
+import { ForumCardsI } from '../CardShowcase/cardShowcase';
 
 export interface ForumLayoutI {
   dropdowns?: DropdownFilterI[];
   filtersList?: any;
-  cards?: any[];
+  cards?: ForumCardsI[];
   buttonsList?: ButtonInButtonsBar[];
   textCtaToolCollaboration?: string | undefined;
   iconCtaToolCollaboration?: string;
@@ -156,7 +157,10 @@ const ForumLayout: React.FC<ForumLayoutI> = (props) => {
             {getFilterLabel(filterKey)}: {filter}
           </ChipLabel>
           <Button close onClick={() => cleanFilters(filterKey, filter.value)}>
-            <Icon icon='it-close' aria-label='Chiudi chip' />
+            <Icon
+              icon='it-close'
+              aria-label={`Elimina filtro ${filter.label}`}
+            />
           </Button>
         </Chip>
       );
@@ -169,7 +173,10 @@ const ForumLayout: React.FC<ForumLayoutI> = (props) => {
                 {getFilterLabel(filterKey)}: {f.label}
               </ChipLabel>
               <Button close onClick={() => cleanFilters(filterKey, f.value)}>
-                <Icon icon='it-close' aria-label='Chiudi chip' />
+                <Icon
+                  icon='it-close'
+                  aria-label={`Elimina filtro ${f.label}`}
+                />
               </Button>
             </Chip>
           ))}
@@ -241,12 +248,15 @@ const ForumLayout: React.FC<ForumLayoutI> = (props) => {
                   !device.mediaIsTablet && 'mr-3'
                 )}
                 onClick={ctaToolCollaboration}
+                aria-label='Vai al tool di Collaboration'
               >
                 {iconCtaToolCollaboration ? (
                   <Icon
                     icon={iconCtaToolCollaboration}
                     color='primary'
                     className='mr-1'
+                    aria-label='Vai al tool di Collaboration'
+                    aria-hidden
                   />
                 ) : null}
                 <span className='text-nowrap'>{textCtaToolCollaboration}</span>
@@ -263,13 +273,17 @@ const ForumLayout: React.FC<ForumLayoutI> = (props) => {
                 )}
                 onClick={cta}
                 data-testid='create-new-entity'
+                aria-label={`Crea ${
+                  isCommunity ? 'topic' : isDocument ? 'documento' : 'news'
+                }`}
               >
                 {iconCta ? (
                   <Icon
                     color='white'
                     icon={iconCta}
                     className='mr-1'
-                    aria-label='Aggiungi'
+                    aria-label='Crea'
+                    aria-hidden
                   />
                 ) : null}
                 <span className='text-nowrap'>{textCta}</span>
@@ -281,7 +295,7 @@ const ForumLayout: React.FC<ForumLayoutI> = (props) => {
                     color='white'
                     icon={iconCta}
                     className='mr-2'
-                    aria-label='Aggiungi'
+                    aria-label=''
                   />
                 ) : null}
                 {textCta}
@@ -291,40 +305,38 @@ const ForumLayout: React.FC<ForumLayoutI> = (props) => {
         </div>
         <div className='container'>
           <Slider cardSlider isItemsHome={!device.mediaIsPhone}>
-            {formatSlides(cards, numberOfSlides()).map((el, i) => (
-              <div
-                key={`slide-${i}`}
-                className='d-flex flex-row align-items-start w-100'
-              >
-                {el.map((e: any, index: any) => (
-                  <div
-                    key={`card-${i}-${index}`}
-                    style={{
-                      width: device.mediaIsDesktop ? '30%' : '100%',
-                    }}
-                    className='h-auto flex-grow-0 sliding-cards'
-                  >
-                    <CardSlider
-                      id={e.id}
-                      isDocument={isDocument}
-                      isNews={isNews}
-                      isCommunity={isCommunity}
-                      category_label={e.category_label}
-                      date={e.date}
-                      title={e.title}
-                      downloads={
-                        e.commentsTot || e.download || e.downloads
-                      }
-                      comment_count={
-                        e.commentsTot || e.comment_count || e.comment
-                      }
-                      likes={e.likes || e.commentsTot}
-                      views={e.views || e.commentsTot}
-                    />
-                  </div>
-                ))}
-              </div>
-            ))}
+            {formatSlides(cards, numberOfSlides()).map(
+              (el: ForumCardsI[], i: number) => (
+                <div
+                  key={`slide-${i}`}
+                  className='d-flex flex-row align-items-start w-100'
+                >
+                  {el.map((e: ForumCardsI, index: number) => (
+                    <div
+                      key={`card-${i}-${index}`}
+                      style={{
+                        width: device.mediaIsDesktop ? '30%' : '100%',
+                      }}
+                      className='h-auto flex-grow-0 sliding-cards'
+                    >
+                      <CardSlider
+                        id={e.id}
+                        isDocument={isDocument}
+                        isNews={isNews}
+                        isCommunity={isCommunity}
+                        category_label={e.category_label}
+                        date={e.date}
+                        title={e.title}
+                        downloads={e.downloads}
+                        comment_count={e.comment_count}
+                        likes={e.likes}
+                        views={e.views}
+                      />
+                    </div>
+                  ))}
+                </div>
+              )
+            )}
           </Slider>
         </div>
       </div>

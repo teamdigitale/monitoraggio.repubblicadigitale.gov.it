@@ -33,6 +33,12 @@
     z-index: 99;
   }
 
+  &__empty-state {
+    font-weight: 400;
+    text-align: start;
+    padding: 0px;
+  }
+
   button {
     padding: rem(11px) rem(8px) rem(11px) rem(21px);
   }

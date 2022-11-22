@@ -49,6 +49,7 @@ import ManagePartnerAuthority from '../modals/managePartnerAuthority';
 import useGuard from '../../../../../hooks/guard';
 import { GetProjectDetail } from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
 import { GetProgramDetail } from '../../../../../redux/features/administrativeArea/programs/programsThunk';
+import IconNote from '/public/assets/img/it-note-primary.png';
 
 const AuthoritiesDetails = () => {
   const authorityDetails = useAppSelector(selectAuthorities)?.detail;
@@ -74,15 +75,6 @@ const AuthoritiesDetails = () => {
     }
     if (entityId && !programDetails?.nomeBreve)
       dispatch(GetProgramDetail(entityId));
-
-    if (
-      location.pathname ===
-      `/area-amministrativa/programmi/${entityId}/progetti/${projectId}/ente-gestore-progetto/${authorityId}`
-    ) {
-      navigate(
-        `/area-amministrativa/programmi/${entityId}/progetti/${projectId}/ente-gestore-progetto`
-      );
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -470,7 +462,7 @@ const AuthoritiesDetails = () => {
               title: authorityDetails?.dettagliInfoEnte?.nome,
               status: authorityDetails?.dettagliInfoEnte?.stato,
               upperTitle: { icon: PeopleIcon, text: 'Ente' },
-              subTitle: projectDetail?.nome || projectDetail?.nomeBreve || '',
+              subTitle: projectDetail?.nomeBreve || projectDetail?.nome || '',
             }}
             enteIcon
             formButtons={buttons}
@@ -520,7 +512,7 @@ const AuthoritiesDetails = () => {
                           ? `associate.`
                           : `associati.`
                       }`}
-                      icon='it-note'
+                      icon={IconNote}
                       withIcon
                       noMargin
                     />
@@ -573,11 +565,21 @@ const AuthoritiesDetails = () => {
               ))}
             </div>
           ) : null}
-          <ManageGenericAuthority />
-          <ManagePartnerAuthority />
-          <ManageDelegate creation />
-          <ManageReferal creation />
-          <ManageHeadquarter creation enteType='partner' />
+          <ManageGenericAuthority legend="form modifica ente, i campi con l'asterisco sono obbligatori" />
+          <ManagePartnerAuthority legend="form modifica ente partner, i campi con l'asterisco sono obbligatori" />
+          <ManageDelegate
+            legend="form aggiunta delegato, i campi con l'asterisco sono obbligatori"
+            creation
+          />
+          <ManageReferal
+            legend="form aggiunta referente, i campi con l'asterisco sono obbligatori"
+            creation
+          />
+          <ManageHeadquarter
+            legend="form aggiunta sede, i campi con l'asterisco sono obbligatori"
+            creation
+            enteType='partner'
+          />
           <DeleteEntityModal
             onClose={() => dispatch(closeModal())}
             onConfirm={(payload) => {

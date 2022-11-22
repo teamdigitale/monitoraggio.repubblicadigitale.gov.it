@@ -7,12 +7,11 @@ import {
   DropdownMenu,
   DropdownToggle,
   Icon,
-  LinkListItem,
 } from 'design-react-kit';
 //import LogoMobile from '/public/assets/img/logo-mobile.png';
 import LogoMobile from '/public/assets/img/logo_tmp3.png';
 import Bell from '/public/assets/img/campanella.png';
-import RocketChatIcon from '/public/assets/img/rocketchat.png';
+import RocketChatIcon from '/public/assets/img/rocketchat-2x.png';
 import { HeaderI } from '../header';
 import HamburgerMenu from '../../HamburgerMenu/hamburgerMenu';
 import { openModal } from '../../../redux/features/modal/modalSlice';
@@ -47,128 +46,179 @@ const HeaderMobile: React.FC<HeaderI> = ({
 
   const userDropDown = () => (
     <Dropdown
-      className='p-0 header-container__top__user-dropdown mr-4'
+      className='p-0 header-container__top__user-dropdown mr-4 position-relativ'
       isOpen={openUser}
       toggle={() => setOpenUser(!openUser)}
       direction='down'
     >
-      <DropdownToggle caret className='complementary-1-color-a1 shadow-none'>
+      <div
+        className={clsx(
+          'header-container__top__user',
+          'd-inline-flex',
+          'align-items-center',
+          'text.white',
+          'primary-bg-b2',
+          'header-panel-btn',
+          'border-right',
+          'complementary-1-color-a1',
+          'shadow-none'
+        )}
+        id='dropdownMenuButtonMobile'
+        role='button'
+        aria-haspopup='true'
+        data-toggle='dropdown'
+        aria-expanded={openUser}
+        onClick={() => setOpenUser(!openUser)}
+        onKeyDown={(e) => {
+          if (e.key === ' ') {
+            setOpenUser(!openUser);
+          }
+        }}
+        tabIndex={0}
+      >
+        <UserAvatar
+          avatarImage={profilePicture}
+          user={{ uSurname: user?.cognome, uName: user?.nome }}
+          size={AvatarSizes.Small}
+          font={AvatarTextSizes.Small}
+          lightColor
+        />
         <div
           className={clsx(
             'd-flex',
             'flex-row',
-            'align-items-center',
             'justify-content-start',
-            'text.white',
-            'primary-bg-b2'
+            'user-description'
           )}
         >
-          <div>
-            <UserAvatar
-              avatarImage={profilePicture}
-              user={{ uSurname: user?.cognome, uName: user?.nome }}
-              size={AvatarSizes.Small}
-              font={AvatarTextSizes.Small}
-              lightColor
-            />
-          </div>
-          <div className='d-flex flex-row justify-content-start user-description'>
-            <p className='h6 font-weight-light'>
-              {/*<em>{getRoleLabel(userProfile?.codiceRuolo)}</em>*/}
-              <em>{`${userProfile?.descrizioneRuolo}${
-                userProfile?.nomeEnte ? ` ${userProfile.nomeEnte}` : ''
-              }`}</em>
-            </p>
-          </div>
-          <div className='ml-2'>
-            <Icon size='' color='white' icon='it-expand' />
-          </div>
+          <span className='h6 font-weight-light'>
+            {/*<em>{getRoleLabel(userProfile?.codiceRuolo)}</em>*/}
+            <em>{`${userProfile?.descrizioneRuolo}${
+              userProfile?.nomeEnte ? ` ${userProfile.nomeEnte}` : ''
+            }`}</em>
+          </span>
         </div>
-      </DropdownToggle>
-      <DropdownMenu role='menu' tag='ul'>
-        {userDropdownOptions.map((item, index) => (
-          <li
-            key={index}
-            role='none'
-            className='px-4'
-            onClick={() => setOpenUser(!openUser)}
-          >
-            <Button
-              className={clsx(
-                'primary-color-b1',
-                'py-2',
-                'w-100',
-                'd-flex',
-                'justify-content-between'
-              )}
-              role='menuitem'
-              onClick={item.action}
+        <div className='ml-2'>
+          <Icon
+            size=''
+            color='white'
+            icon='it-expand'
+            role='button'
+            aria-label='Espandi menù'
+            aria-hidden
+          />
+        </div>
+      </div>
+      <DropdownToggle caret className='d-none' aria-hidden={true} />
+      <div className='position-relative w-100'>
+        <DropdownMenu
+          role='menu'
+          className='header-container__dropdown'
+          tag='ul'
+        >
+          {userDropdownOptions.map((item, index) => (
+            <li
+              key={index}
+              role='none'
+              className='px-4'
+              onClick={() => setOpenUser(!openUser)}
             >
-              <span>{item.optionName}</span>
-            </Button>
-          </li>
-        ))}
-        {(user?.profiliUtente?.length || 0) > 1 ? (
-          <li role='none' className='px-4'>
-            <Button
-              className={clsx(
-                'primary-color-b1',
-                'py-2',
-                'w-100',
-                'd-flex',
-                'justify-content-between'
-              )}
-              role='menuitem'
-              onClick={() => dispatch(openModal({ id: 'switchProfileModal' }))}
-            >
-              <span>Cambia ruolo</span>
-            </Button>
-          </li>
-        ) : null}
-        {hasUserPermission(['btn.cont']) ? (
-          <li role='none' className='px-4'>
-            <Button
-              className={clsx(
-                'primary-color-b1',
-                'py-2',
-                'w-100',
-                'd-flex',
-                'justify-content-between'
-              )}
-              role='menuitem'
-              onClick={() => navigate('/area-personale/contenuti-pubblicati')}
-            >
-              Contenuti pubblicati
-            </Button>
-          </li>
-        ) : null}
-        <LinkListItem divider role='menuitem' aria-hidden={true} />
-        {isLogged ? (
-          <li role='none' className='px-4'>
-            <Button
-              className={clsx(
-                'primary-color-b1',
-                'py-2',
-                'w-100',
-                'd-flex',
-                'justify-content-between'
-              )}
-              role='menuitem'
-              onClick={() => {
-                dispatch(LogoutRedirect());
-              }}
-            >
-              <span>Esci</span>
-              <Icon
-                icon='it-external-link'
-                color='primary'
-                size='sm'
-                aria-label='esci'
-              />
-            </Button>
-          </li>
-        ) : null}
-      </DropdownMenu>
+              <Button
+                className={clsx(
+                  'primary-color-b1',
+                  'py-2',
+                  'w-100',
+                  'd-flex',
+                  'justify-content-between'
+                )}
+                role='menuitem'
+                onClick={item.action}
+              >
+                <span>{item.optionName}</span>
+                <Icon
+                  icon='it-chevron-right'
+                  color='primary'
+                  size='sm'
+                  aria-label='Seleziona'
+                  aria-hidden
+                />
+              </Button>
+            </li>
+          ))}
+          {(user?.profiliUtente?.length || 0) > 1 ? (
+            <li role='none' className='px-4'>
+              <Button
+                className={clsx(
+                  'primary-color-b1',
+                  'py-2',
+                  'w-100',
+                  'd-flex',
+                  'justify-content-between'
+                )}
+                role='menuitem'
+                onClick={() =>
+                  dispatch(openModal({ id: 'switchProfileModal' }))
+                }
+              >
+                <span>Cambia ruolo</span>
+                <Icon
+                  icon='it-chevron-right'
+                  color='primary'
+                  size='sm'
+                  aria-label='Seleziona'
+                  aria-hidden
+                />
+              </Button>
+            </li>
+          ) : null}
+          {hasUserPermission(['btn.cont']) ? (
+            <li role='none' className='px-4'>
+              <Button
+                className={clsx(
+                  'primary-color-b1',
+                  'py-2',
+                  'w-100',
+                  'd-flex',
+                  'justify-content-between'
+                )}
+                role='menuitem'
+                onClick={() => {
+                  navigate('/area-personale/contenuti-pubblicati');
+                  setOpenUser(false);
+                }}
+              >
+                Contenuti pubblicati
+              </Button>
+            </li>
+          ) : null}
+          {isLogged ? (
+            <li role='none' className='px-4 header-container__divider'>
+              <Button
+                className={clsx(
+                  'primary-color-b1',
+                  'py-2',
+                  'w-100',
+                  'd-flex',
+                  'justify-content-between'
+                )}
+                role='menuitem'
+                onClick={() => {
+                  dispatch(LogoutRedirect());
+                }}
+              >
+                <span>Esci</span>
+                <Icon
+                  icon='it-external-link'
+                  color='primary'
+                  size='sm'
+                  aria-label='Esci'
+                  aria-hidden
+                />
+              </Button>
+            </li>
+          ) : null}
+        </DropdownMenu>
+      </div>
     </Dropdown>
   );
   const [isOpen, setIsOpen] = useState(false);
@@ -209,27 +259,27 @@ const HeaderMobile: React.FC<HeaderI> = ({
                 {userDropDown()}
                 <div className='d-flex align-items-center'>
                   {hasUserPermission(['btn.chat']) && handleOpenRocketChat ? (
-                    <div
-                      tabIndex={0}
-                      role='button'
+                    <Button
                       onClick={handleOpenRocketChat}
                       onKeyPress={(e) => {
                         if (e.key === 'Enter') {
                           handleOpenRocketChat();
                         }
                       }}
-                      className='mr-3 position-relative'
+                      className='mr-3 position-relative p-0'
+                      aria-label={`${chatToRead} messaggi da leggere su Rocketchat`}
                     >
                       <Icon
                         color='white'
                         icon={RocketChatIcon}
                         size='sm'
                         aria-label='RocketChat'
+                        aria-hidden
                       />
                       {chatToRead ? (
                         <span className='chat-notifications'>{chatToRead}</span>
                       ) : null}
-                    </div>
+                    </Button>
                   ) : null}
                   <Button
                     onClick={() => setNotificationsIsOpen(true)}
@@ -239,7 +289,7 @@ const HeaderMobile: React.FC<HeaderI> = ({
                       color='white'
                       icon={Bell}
                       size='sm'
-                      aria-label='notifications preview'
+                      aria-label='Notifiche'
                     />
                     {notification ? (
                       <span className='badge-notifications'>
@@ -301,26 +351,34 @@ const HeaderMobile: React.FC<HeaderI> = ({
           </div>
           {isLogged ? (
             <div className='header-container__main__search ml-auto'>
-              <Button
+              <div
                 className={clsx(
                   'primary-color-b1',
                   'd-flex',
                   'flex-row',
                   'justify-content-center',
                   'align-items-center',
-                  'p-0'
+                  'ml-5'
                 )}
+                role='button'
+                tabIndex={0}
                 onClick={() => navigate('/home/cerca')}
+                onKeyDown={(e) => {
+                  if (e.key === ' ') {
+                    e.preventDefault();
+                    navigate('/home/cerca');
+                  }
+                }}
               >
                 <div className='header-container__icon-container ml-2'>
                   <Icon
                     icon='it-search'
                     color='white'
                     size='sm'
-                    aria-label='cerca'
+                    aria-label='Cerca'
                   />
                 </div>
-              </Button>
+              </div>
             </div>
           ) : null}
         </div>

@@ -36,6 +36,7 @@ import {
   DownloadEntityValues,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 import useGuard from '../../../../../hooks/guard';
+import IconNote from '/public/assets/img/it-note-primary.png';
 
 const entity = 'programma';
 const statusDropdownLabel = 'filtroStati';
@@ -257,9 +258,7 @@ const Programs = () => {
           ? handleDownloadList
           : undefined
       }
-      resetFilterDropdownSelected={(filterKey: string) =>
-        setFilterDropdownSelected(filterKey)
-      }
+      resetFilterDropdownSelected={() => setFilterDropdownSelected('')}
       tooltiptext={searchInformation.placeholder}
       tooltip
     >
@@ -290,12 +289,15 @@ const Programs = () => {
           <EmptySection
             title='Non sono presenti programmi'
             subtitle='associati al tuo ruolo'
-            icon='it-note'
+            icon={IconNote}
             withIcon
           />
         )}
       </div>
-      <ManageProgram creation />
+      <ManageProgram
+        legend="Form creazione programma, i campi con l'asterisco sono obbligatori"
+        creation
+      />
     </GenericSearchFilterTableLayout>
   );
 };

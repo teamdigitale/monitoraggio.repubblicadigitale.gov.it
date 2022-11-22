@@ -26,6 +26,8 @@ const Infocard: React.FC<InfoCardI> = ({ text, image, icon }) => (
               backgroundColor: icon.backgroundColor,
               borderRadius: icon.borderRadius,
             }}
+            aria-label={text}
+            aria-hidden
           />
         ) : null}
       </div>

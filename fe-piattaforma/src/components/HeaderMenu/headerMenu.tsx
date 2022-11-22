@@ -21,10 +21,19 @@ const HeaderMenu: React.FC<HeaderMenuI> = (props) => {
   const { isHeaderFull, menuRoutes = [] } = props;
   const { hasUserPermission } = useGuard();
 
-  const updateActiveTab = () =>
-    menuRoutes
+  const updateActiveTab = () => {
+    const activeRoute = menuRoutes
       .filter(({ path }) => window.location.pathname.includes(path))
-      .reduce((a, b) => (a.path.length > b.path.length ? a : b)).id;
+      .reduce((a, b) => (a.path.length > b.path.length ? a : b));
+    if (activeRoute?.id === 'tab-home') {
+      return window.location.pathname === activeRoute?.path
+        ? activeRoute?.id
+        : undefined;
+    }
+    return window.location.pathname.includes(activeRoute?.path)
+      ? activeRoute?.id
+      : undefined;
+  };
 
   const [activeTab, setActiveTab] = useState(updateActiveTab());
   const { t } = useTranslation();
@@ -35,7 +44,7 @@ const HeaderMenu: React.FC<HeaderMenuI> = (props) => {
   useEffect(() => {
     setActiveTab(updateActiveTab());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [menuRoutes]);
+  }, [menuRoutes, window.location.pathname]);
 
   const navDropDown: React.FC<MenuItem> = (li) => {
     const toggle = (dropdown: string) => {
@@ -75,7 +84,13 @@ const HeaderMenu: React.FC<HeaderMenuI> = (props) => {
             }
           >
             {li.label}
-            <Icon icon='it-expand' size='sm' color='white' aria-label='Apri' />
+            <Icon
+              icon='it-expand'
+              size='sm'
+              color='white'
+              aria-label='Espandi'
+              aria-hidden
+            />
           </DropdownToggle>
           <DropdownMenu role='menu' tag='ul'>
             {(li.subRoutes || [])
@@ -169,15 +184,17 @@ const HeaderMenu: React.FC<HeaderMenuI> = (props) => {
           ))}
       </ul>
       {!isHeaderFull && (
-        <Button className='p-0' aria-label='bottone-ricerca-navbar'>
-          <div className='header-container__icon-container ml-2'>
-            <Icon
-              icon='it-search'
-              color='white'
-              size='xs'
-              aria-label='Ricerca barra di navigazione'
-            />
-          </div>
+        <Button
+          className='p-0 header-container__icon-container ml-2'
+          aria-label='Ricerca barra di navigazione'
+        >
+          <Icon
+            icon='it-search'
+            color='white'
+            size='xs'
+            aria-label='Ricerca barra di navigazione'
+            aria-hidden
+          />
         </Button>
       )}
     </nav>

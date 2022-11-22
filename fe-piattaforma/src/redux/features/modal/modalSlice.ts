@@ -33,7 +33,9 @@ export const modalSlice = createSlice({
         state.payload = action.payload.payload || {};
       }
     },
-    closeModal: () => initialState,
+    closeModal: () => {
+      return initialState;
+    },
     expandModal: (state, action: PayloadAction<any>) => {
       state.expandModal = action.payload.expandModal;
     },

@@ -53,7 +53,7 @@ const AccordionAddress: React.FC<AccordionAddressI> = ({
   roleList = false,
   // handleOnToggle,
 }) => {
-  const [addressOpen, setAddressOpen] = useState(index === 1);
+  const [addressOpen, setAddressOpen] = useState(false);
   // const accordionToggleHandler = (isOpen: boolean) => {
   //   if (handleOnToggle) handleOnToggle(isOpen);
   // };
@@ -90,10 +90,8 @@ const AccordionAddress: React.FC<AccordionAddressI> = ({
 
   const openDayAddHandler = (dayIndex: number) => {
     const newTimeSlots = { ...addressInfo.fasceOrarieAperturaIndirizzoSede };
-    newTimeSlots[`${dayCode[dayIndex]}OrarioApertura1`] = '09:00';
-    newTimeSlots[`${dayCode[dayIndex]}OrarioChiusura1`] = '12:00';
-    newTimeSlots[`${dayCode[dayIndex]}OrarioApertura2`] = '14:00';
-    newTimeSlots[`${dayCode[dayIndex]}OrarioChiusura2`] = '18:00';
+    newTimeSlots[`${dayCode[dayIndex]}OrarioApertura1`] = '';
+    newTimeSlots[`${dayCode[dayIndex]}OrarioChiusura1`] = '';
 
     onAddressInfoChange({
       ...addressInfo,
@@ -120,8 +118,8 @@ const AccordionAddress: React.FC<AccordionAddressI> = ({
     const newTimeSlots = { ...addressInfo.fasceOrarieAperturaIndirizzoSede };
     newTimeSlots[`${dayCode[dayIndex]}OrarioApertura1`] = timeSpan[0][0];
     newTimeSlots[`${dayCode[dayIndex]}OrarioChiusura1`] = timeSpan[0][1];
-    newTimeSlots[`${dayCode[dayIndex]}OrarioApertura2`] = timeSpan[1][0];
-    newTimeSlots[`${dayCode[dayIndex]}OrarioChiusura2`] = timeSpan[1][1];
+    newTimeSlots[`${dayCode[dayIndex]}OrarioApertura2`] = timeSpan[1][0]  ? timeSpan[1][0] : null;
+    newTimeSlots[`${dayCode[dayIndex]}OrarioChiusura2`] = timeSpan[1][1]  ? timeSpan[1][1] : null;
 
     onAddressInfoChange({
       ...addressInfo,

@@ -254,7 +254,7 @@ export const UserAddRole =
   };
 
 const UserDeleteRoleAction = {
-  type: 'user/UserAddRole',
+  type: 'user/UserRemoveRole',
 };
 export const UserDeleteRole =
   (payload: { idUtente: string; ruolo: string }) =>
@@ -263,8 +263,10 @@ export const UserDeleteRole =
       dispatch(showLoader());
       dispatch({ ...UserDeleteRoleAction, payload });
       const { idUtente, ruolo } = payload;
+      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
       const res = await API.delete(
-        `/utente/${idUtente}/cancellaRuolo/${ruolo}`
+        `/utente/${idUtente}/cancellaRuolo/${ruolo}`,
+        { data: { idProgramma, idProgetto, idEnte } }
       );
       if (res) {
         return true;
@@ -275,3 +277,25 @@ export const UserDeleteRole =
       dispatch(hideLoader());
     }
   };
+
+const UserDeleteAction = {
+  type: 'user/UserDelte',
+};
+export const UserDelete = (idUtente: string) => async (dispatch: Dispatch) => {
+  try {
+    dispatch(showLoader());
+    dispatch({ ...UserDeleteAction, idUtente });
+    const { idProgramma, idProgetto, idEnte } = getUserHeaders();
+    const res = await API.delete(`/utente/${idUtente}`, {
+      data: { idProgramma, idProgetto, idEnte },
+    });
+    if (res) {
+      return true;
+    }
+  } catch (error) {
+    console.log(error);
+    return false;
+  } finally {
+    dispatch(hideLoader());
+  }
+};

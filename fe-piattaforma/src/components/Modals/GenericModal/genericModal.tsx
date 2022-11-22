@@ -76,7 +76,7 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
     isSurveyOnline = false,
     isSuccesModal = false,
     isUserRole = false,
-    darkTitle = false,
+    //darkTitle = false,
     isRocketChatModal = false,
   } = props;
 
@@ -145,19 +145,21 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
           </div>
         </div>
       ) : (
-        <button className='hidden-btn' />
+        <button className='hidden-btn' aria-label='modale' />
       )}
       <>
         {isRocketChatModal && (
           <Button
             onClick={() => dispatch(closeModal())}
             className='close-button align-self-end'
+            aria-label='Chiudi modale'
           >
             <Icon
               color='primary'
               icon='it-close-big'
               size='sm'
-              aria-label='chiudi'
+              aria-label='chiudi modale'
+              aria-hidden
             />
           </Button>
         )}
@@ -177,14 +179,14 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
                   ? 'primary-color-a10 h3 pb-4'
                   : 'primary-color h4',
                 'my-auto',
-                darkTitle && 'primary-color-a10'
+                //darkTitle && 'primary-color-a10'
               )}
             >
               {title || payload?.title}
             </p>
           </div>
         ) : (
-          <button className='hidden-btn' />
+          <button className='hidden-btn' aria-label='header della modale' />
         )}
       </>
       {hasSearch || description || payload?.description || children ? (
@@ -209,7 +211,8 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
           {description || payload?.description ? (
             <p
               className={clsx(
-                isSurveyOnline && 'text-muted text-center mx-auto h5'
+                isSurveyOnline && 'text-muted text-center h5',
+                'mx-auto'
               )}
             >
               {description || payload?.description}
@@ -218,7 +221,7 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
           {children}
         </ModalBody>
       ) : (
-        <button className='hidden-btn' />
+        <button className='hidden-btn' aria-label='contenuto della modale' />
       )}
 
       {footer || primaryCTA || secondaryCTA ? (
@@ -245,12 +248,13 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
                 )}
                 onClick={() => handleAction('tertiary')}
                 size='xs'
+                aria-label={tertiaryCTA.label}
               >
                 {tertiaryCTA.label}
               </Button>
             </div>
           ) : (
-            <button className='hidden-btn' />
+            <button className='hidden-btn' aria-label='footer della modale' />
           )}
           {primaryCTA || secondaryCTA ? (
             <div
@@ -270,11 +274,15 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
                   )}
                   onClick={() => handleAction('secondary')}
                   size='xs'
+                  aria-label={secondaryCTA.label}
                 >
                   {secondaryCTA.label}
                 </Button>
               ) : (
-                <button className='hidden-btn' />
+                <button
+                  className='hidden-btn'
+                  aria-label='footer della modale'
+                />
               )}
               {primaryCTA ? (
                 <Button
@@ -286,19 +294,23 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
                   color='primary'
                   onClick={() => handleAction('primary')}
                   size='xs'
+                  aria-label={primaryCTA.label}
                 >
                   {primaryCTA.label}
                 </Button>
               ) : (
-                <button className='hidden-btn' />
+                <button
+                  className='hidden-btn'
+                  aria-label='footer della modale'
+                />
               )}
             </div>
           ) : (
-            <button className='hidden-btn' />
+            <button className='hidden-btn' aria-label='footer della modale' />
           )}
         </ModalFooter>
       ) : (
-        <button className='hidden-btn' />
+        <button className='hidden-btn' aria-label='footer della modale' />
       )}
     </Modal>
   );

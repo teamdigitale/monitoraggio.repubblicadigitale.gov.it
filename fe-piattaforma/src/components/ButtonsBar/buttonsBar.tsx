@@ -49,6 +49,7 @@ const ButtonsBar: React.FC<StickyButtonsI> = ({
           buttonClass: undefined,
           iconColor: undefined,
           iconForButton: undefined,
+          text: undefined, // for accessibility
         };
         return (
           <Button
@@ -63,6 +64,7 @@ const ButtonsBar: React.FC<StickyButtonsI> = ({
               button.buttonClass
             )}
             size='xs'
+            aria-label={button.text}
           >
             {button.iconForButton && (
               <Icon
@@ -71,9 +73,10 @@ const ButtonsBar: React.FC<StickyButtonsI> = ({
                 color={button.iconColor || 'white'}
                 className='mr-1'
                 aria-label={button.text}
+                aria-hidden
               />
             )}
-            <span>{button.text}</span>
+            {button.text}
           </Button>
         );
       })}

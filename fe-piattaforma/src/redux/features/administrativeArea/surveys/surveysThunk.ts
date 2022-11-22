@@ -314,7 +314,7 @@ const getSchemaTypeQuestion = (form: FormI) => {
         const values: { label: string; value: string }[] = JSON.parse(
           form['question-values'].value
         );
-        values.map((val) => valuesEnum.push(val.value));
+        values.map((val) => valuesEnum.push(val.value.replaceAll("'", "’")));
         properties.enum = valuesEnum;
       }
       break;
@@ -326,7 +326,7 @@ const getSchemaTypeQuestion = (form: FormI) => {
           form['question-values'].value
         );
         values.map((val) => {
-          valuesProperties[val.value] = { type: 'boolean' };
+          valuesProperties[val.value.replaceAll("'", "’")] = { type: 'boolean' };
         });
         properties.properties = valuesProperties;
       }
@@ -367,7 +367,7 @@ const getSchemaSection = (
         const id = question.id;
         schemaSection.properties[id] = {
           id: id,
-          title: question.form['question-description'].value,
+          title: question.form['question-description'].value.replaceAll("'", "’"),
           ...getSchemaTypeQuestion(question.form),
           order: index + 1,
         };

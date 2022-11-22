@@ -1,20 +1,14 @@
 import clsx from 'clsx';
-import { CardProps, CardText, CardTitle, Col, Icon } from 'design-react-kit';
+import { CardText, CardTitle, Col, Icon } from 'design-react-kit';
 import React, { memo } from 'react';
 import Heart from '/public/assets/img/heart.png';
 import './cardCommunity.scss';
 import { useNavigate } from 'react-router-dom';
 import PublishingAuthority from '../CardDocument/PublishingAuthority';
 import { formatDate } from '../../utils/datesHelper';
+import { ForumCardsI } from '../CardShowcase/cardShowcase';
 
-interface CommentI {
-  user?: string;
-  picture?: string;
-  commmentText?: string;
-  commentDate?: string;
-}
-
-interface CardCommunityI extends CardProps {
+/* interface CardCommunityI extends CardProps {
   id?: string;
   title?: string;
   community?: string;
@@ -28,9 +22,9 @@ interface CardCommunityI extends CardProps {
   views?: string;
   entity?: string;
   onClick?: () => void;
-}
+} */
 
-const CardCommunity: React.FC<CardCommunityI> = (props) => {
+const CardCommunity: React.FC<ForumCardsI> = (props) => {
   const {
     id,
     title,
@@ -60,17 +54,29 @@ const CardCommunity: React.FC<CardCommunityI> = (props) => {
         'd-flex',
         'flex-column'
       )}
-      onKeyDown={navigateTo}
+      onKeyDown={(e) => {
+        if (e.key === ' ') {
+          e.preventDefault();
+          navigateTo();
+        }
+      }}
       onClick={navigateTo}
       tabIndex={0}
+      aria-label={`Categoria: ${category_label}. Data: ${
+        date && formatDate(date, 'shortDate')
+      }. Titolo topic: ${title}. Descrizione: ${description}. Editore: ${entity}. ${likes} like. ${comment_count} ${
+        Number(comment_count) === 1 ? 'commento' : 'commenti'
+      }. ${views} ${
+        Number(views) === 1 ? 'visualizzazione' : 'visualizzazioni'
+      }`}
     >
       <Col className='text-left'>
         {category_label ? (
           <div className='mb-2 card-community__pre-title'>
             <span className='font-weight-bold'>
-              {category_label}&nbsp;—&nbsp;
+              {category_label}
+              {/* &nbsp;—&nbsp; */}
             </span>
-            {date && formatDate(date, 'shortDate')}
           </div>
         ) : null}
         {title ? (
@@ -89,57 +95,64 @@ const CardCommunity: React.FC<CardCommunityI> = (props) => {
         {entity ? <PublishingAuthority authority={entity} /> : null}
       </Col>
       <div
-        className={clsx('d-flex', 'flex-row', 'mt-2', 'justify-content-end')}
+        className={clsx(
+          'd-flex',
+          'flex-row',
+          'mt-2',
+          'justify-content-between',
+          'align-items-center'
+        )}
       >
-        <div
-          className={clsx(
-            'd-flex',
-            'align-items-center',
-            'category-top',
-            'mr-2'
-          )}
-        >
-          <Icon
-            color='primary'
-            icon={Heart}
-            size='xs'
-            aria-label='calendario'
-          />
-          <span className='card-community__span-icons pl-1'>{likes}</span>
-        </div>
-        <div
-          className={clsx(
-            'd-flex',
-            'align-items-center',
-            'category-top',
-            'mr-2'
-          )}
-        >
-          <Icon
-            color='primary'
-            icon='it-comment'
-            size='sm'
-            aria-label='commenti'
-          />
-          <span className='card-community__span-icons pl-1'>
-            {comment_count}
-          </span>
-        </div>
-        <div
-          className={clsx(
-            'd-flex',
-            'align-items-center',
-            'category-top',
-            'mr-2'
-          )}
-        >
-          <Icon
-            color='primary'
-            icon='it-password-visible'
-            size='sm'
-            aria-label='stella rating'
-          />
-          <span className='card-community__span-icons pl-1'>{views}</span>
+        <span className='card-community__date'>
+          {date && formatDate(date, 'shortDate')}
+        </span>
+        <div className='d-flex'>
+          <div
+            className={clsx(
+              'd-flex',
+              'align-items-center',
+              'category-top',
+              'mr-2'
+            )}
+          >
+            <Icon
+              color='primary'
+              icon={Heart}
+              size='xs'
+              aria-label='Likes'
+              aria-hidden
+            />
+            <span className='card-community__span-icons pl-1'>{likes}</span>
+          </div>
+          <div
+            className={clsx(
+              'd-flex',
+              'align-items-center',
+              'category-top',
+              'mr-2'
+            )}
+          >
+            <Icon
+              color='primary'
+              icon='it-comment'
+              size='sm'
+              aria-label='Comments'
+              aria-hidden
+            />
+            <span className='card-community__span-icons pl-1'>
+              {comment_count}
+            </span>
+          </div>
+          <div className={clsx('d-flex', 'align-items-center', 'category-top')}>
+            <Icon
+              color='primary'
+              icon='it-password-visible'
+              size='sm'
+              aria-label='Views'
+              aria-hidden
+            />
+            <span className='card-community__span-icons pl-1'>{views}</span>
+          </div>
         </div>
       </div>
     </div>

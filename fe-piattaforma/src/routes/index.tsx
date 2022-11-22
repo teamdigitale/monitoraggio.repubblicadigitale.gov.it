@@ -19,6 +19,7 @@ import BachecaDetails from '../pages/facilitator/Home/components/BachecaDigitale
 import BachecaDigitale from '../pages/facilitator/Home/components/BachecaDigitaleWidget/BachecaDigitale';
 import HomeSearch from '../pages/common/HomeSearch/homeSearch';
 import UserPublishedContentsPage from '../pages/common/UserPublishedContentsPage/userPublishedContentsPage';
+import { selectModalState } from '../redux/features/modal/modalSlice';
 
 const AuthRedirect = lazy(() => import('../pages/common/Auth/authRedirect'));
 
@@ -60,6 +61,9 @@ const UserProfile = lazy(
 );
 
 const OpenData = lazy(() => import('../pages/common/OpenData/openData'));
+const Accessibility = lazy(
+  () => import('../pages/common/Accessibility/accessibility')
+);
 const SurveyOnline = lazy(
   () => import('../pages/common/SurveyOnline/surveyOnline')
 );
@@ -80,12 +84,22 @@ const CommunityDetails = lazy(
  */
 
 export const defaultRedirectUrl = '/';
+export const redirectUrlSurveyOnline = 'https://repubblicadigitale.gov.it/it/';
 
 const AppRoutes: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isLogged = useAppSelector(selectLogged);
+  const modalOpen = useAppSelector(selectModalState);
   const [validSession, setValidSession] = useState(false);
+
+  useEffect(() => {
+    if (modalOpen) {
+      document.body.classList.add('overflow-hidden');
+    } else {
+      document.body.classList.remove('overflow-hidden');
+    }
+  }, [modalOpen]);
 
   const checkSession = async () => {
     const checkSession = await SessionCheck(dispatch);
@@ -296,6 +310,7 @@ const AppRoutes: React.FC = () => {
                   </ProtectedComponent>
                 }
               />
+              <Route path='/accessibilita' element={<Accessibility />} />
               <Route
                 path='/area-amministrativa/*'
                 element={
@@ -321,6 +336,7 @@ const AppRoutes: React.FC = () => {
             <Route path='/report-dati' element={<Dashboard />} />
             <Route path='/' element={<FullLayout />}>
               {/* Public Paths */}
+              <Route path='/accessibilita' element={<Accessibility />} />
               <Route path='/onboarding' element={<Onboarding />} />
               <Route path='/' element={<AuthRedirect />} />
             </Route>

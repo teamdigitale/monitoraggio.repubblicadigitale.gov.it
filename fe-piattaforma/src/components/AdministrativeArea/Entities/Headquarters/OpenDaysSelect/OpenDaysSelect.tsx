@@ -35,9 +35,8 @@ const OpenDaysSelect: React.FC<OpenDaysSelectI> = ({
   return (
     <div>
       {dayOfWeek
-
         .map((v, i) => (
-          <div className={clsx(!isMobile && 'row')} key={i}>
+          <div className={clsx(!isMobile && 'row', !isReadOnly && 'mb-4')} key={i}>
             <div className={clsx(!isMobile && 'col col-sm-6')}>
               <div className='row'>
                 <div className={`${isMobile ? 'col-12' : 'col-6'}`}>
@@ -62,7 +61,7 @@ const OpenDaysSelect: React.FC<OpenDaysSelectI> = ({
                       id={`input-checkbox-day-${index}-${i}`}
                       type='checkbox'
                       checked={Object.entries(openDays).some(
-                        ([key, value]) => key.includes(dayCode[i]) && value
+                        ([key, value]) => key.includes(dayCode[i]) && value !== null
                       )}
                       onInputChange={(value) => {
                         if (value) {
@@ -87,7 +86,7 @@ const OpenDaysSelect: React.FC<OpenDaysSelectI> = ({
                 isOpen={
                   !isMobile ||
                   Object.entries(openDays).some(
-                    ([key, value]) => key.includes(dayCode[i]) && value
+                    ([key, value]) => key.includes(dayCode[i]) && value !== null
                   )
                 }
               >
@@ -95,17 +94,17 @@ const OpenDaysSelect: React.FC<OpenDaysSelectI> = ({
                   isReadOnly={isReadOnly}
                   disabled={
                     !Object.entries(openDays).some(
-                      ([key, value]) => key.includes(dayCode[i]) && value
+                      ([key, value]) => key.includes(dayCode[i]) && value !== null
                     )
                   }
                   timeSpan={[
                     [
-                      openDays[`${dayCode[i]}OrarioApertura1`] || '09:00',
-                      openDays[`${dayCode[i]}OrarioChiusura1`] || '13:00',
+                      openDays[`${dayCode[i]}OrarioApertura1`] || '',
+                      openDays[`${dayCode[i]}OrarioChiusura1`] || '',
                     ],
                     [
-                      openDays[`${dayCode[i]}OrarioApertura2`] || '14:00',
-                      openDays[`${dayCode[i]}OrarioChiusura2`] || '18:00',
+                      openDays[`${dayCode[i]}OrarioApertura2`] || '',
+                      openDays[`${dayCode[i]}OrarioChiusura2`] || '',
                     ],
                   ]}
                   onTimeChange={(timeSpan: string[][]) =>

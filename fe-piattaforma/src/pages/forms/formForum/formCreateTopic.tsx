@@ -115,6 +115,9 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
 
   const removeDocument = (e: any) => {
     setFiles(defaultDocument);
+    if (inputRef.current !== null) {
+      inputRef.current.value = '';
+    }
     e.preventDefault();
   };
 
@@ -189,7 +192,7 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
           {...form?.description}
           rows={6}
           cols={100}
-          maxLength={1500}
+          maximum={1500}
           onInputChange={onInputChange}
           className='mb-1 mt-3'
           placeholder=' '
@@ -203,11 +206,18 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
       <Form.Row className={bootClass}>
         <div className='mt-5 d-flex align-items-center'>
           <strong className='mr-2'>AGGIUNGI TAG</strong>
-          <Icon icon='it-info-circle' size='sm' color='primary' />
+          <Icon
+            icon='it-info-circle'
+            size='sm'
+            color='primary'
+            aria-label='Aggiungi tag'
+            aria-hidden
+          />
         </div>
       </Form.Row>
       <Form.Row className={bootClass}>
         <TagsSelect
+          id='topic-tags'
           selectedTags={tags}
           tags={tagsList.map((opt) => ({
             label: opt.name,
@@ -240,7 +250,7 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
                   onClick={handleOnDelete}
                   style={{ minWidth: '8px' }}
                 >
-                  <Icon icon='it-close' aria-label='Chiudi chip' />
+                  <Icon icon='it-close' aria-label='Elimina tag' />
                 </Button>
               </Chip>
             ))}
@@ -252,7 +262,13 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
       <Form.Row className={bootClass}>
         <div className='mt-5 d-flex align-items-center'>
           <strong className='mr-2'>ALLEGA FILE</strong>
-          <Icon icon='it-info-circle' size='sm' color='primary' />
+          <Icon
+            icon='it-info-circle'
+            size='sm'
+            color='primary'
+            aria-label='Informazioni'
+            aria-hidden
+          />
         </div>
       </Form.Row>
       <Form.Row className={bootClass}>
@@ -260,7 +276,7 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
           <input
             type='file'
             id='file'
-            accept='image/*,.pdf,.doc,.docx,.xls,.xlsx'
+            accept='.txt, .rtf, .odt, .zip, .exe, .docx, .doc, .ppt, .pptx, .pdf, .jpg, .png, .gif, .xls, .xlsx, .csv, .mpg, .wmv'
             ref={inputRef}
             className='sr-only'
             capture
@@ -285,6 +301,8 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
                   size='sm'
                   color='primary'
                   className='pb-1'
+                  aria-label='Seleziona file'
+                  aria-hidden
                 />
                 Seleziona file
               </Button>
@@ -295,6 +313,7 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
                 size='sm'
                 className='mr-4'
                 onClick={removeDocument}
+                aria-label='Elimina'
               />
             )}
           </label>

@@ -35,6 +35,7 @@ import {
   GetEntityValues,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 import useGuard from '../../../../../hooks/guard';
+import IconNote from '/public/assets/img/it-note-primary.png';
 
 const entity = 'progetto';
 const statusDropdownLabel = 'filtroStati';
@@ -248,9 +249,7 @@ const Projects: React.FC = () => {
       searchInformation={searchInformation}
       dropdowns={dropdowns}
       filtersList={filtersList}
-      resetFilterDropdownSelected={(filterKey: string) =>
-        setFilterDropdownSelected(filterKey)
-      }
+      resetFilterDropdownSelected={() => setFilterDropdownSelected('')}
       ctaDownload={
         progettiList?.length &&
         tableValues?.values?.length &&
@@ -288,12 +287,15 @@ const Projects: React.FC = () => {
           <EmptySection
             title='Non sono presenti progetti'
             subtitle='associati al tuo ruolo'
-            icon='it-note'
+            icon={IconNote}
             withIcon
           />
         )}
       </div>
-      <ManageProject creation />
+      <ManageProject
+        legend="form creazione progetto, i campi con l'asterisco sono obbligatori"
+        creation
+      />
     </GenericSearchFilterTableLayout>
   );
 };

@@ -8,3 +8,27 @@
     cursor: pointer;
   }
 }
+
+.spacing {
+  padding-left: 50px;
+}
+.switch-profile-titles {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  @media screen and (max-width: 576px) {
+    max-width: 120px;
+  }
+}
+.switch-profile-subs {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  @media screen and (max-width: 576px) {
+    max-width: 120px;
+    display: -webkit-box;
+  }
+}

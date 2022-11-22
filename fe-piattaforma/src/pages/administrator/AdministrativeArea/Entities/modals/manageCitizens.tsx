@@ -20,6 +20,7 @@ interface ManageCitizensFormI {
   creation?: boolean;
   idCitizen?: string | undefined;
   onClose: () => void;
+  legend?: string | undefined;
 }
 
 interface ManageCitizensI extends withFormHandlerProps, ManageCitizensFormI {}
@@ -28,6 +29,7 @@ const ManageCitizens: React.FC<ManageCitizensI> = ({
   clearForm = () => ({}),
   idCitizen,
   onClose,
+  legend = '',
 }) => {
   const dispatch = useDispatch();
   const [newFormValues, setNewFormValues] = useState<{
@@ -94,6 +96,7 @@ const ManageCitizens: React.FC<ManageCitizensI> = ({
           }}
           setIsFormValid={(isValid: boolean) => setIsFormValid(isValid)}
           editMode
+          legend={legend}
         />
       </div>
     </GenericModal>

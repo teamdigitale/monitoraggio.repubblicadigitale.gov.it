@@ -41,14 +41,13 @@ const DetailsRow: React.FC<DetailsRowI> = ({
               onClick={() =>
                 onActionClick[CRUDActionTypes.COMPILE](idQuestionario)
               }
-              aria-label='Compila questionario'
               id={`button-1-compile-${id}`}
             >
               <Icon
                 icon={ItPlusCircle}
                 color='primary'
                 size='sm'
-                aria-label='Compila questionario'
+                aria-label={`Compila questionario di ${nome}`}
               />
             </Button>
             <Button
@@ -58,14 +57,13 @@ const DetailsRow: React.FC<DetailsRowI> = ({
                   idQuestionario: idQuestionario,
                 })
               }
-              aria-label='Invia questionario'
               id={`button-1-send-${id}`}
             >
               <Icon
                 icon={ItMail}
                 color='primary'
                 size='sm'
-                aria-label='Invia questionario'
+                aria-label={`Invia questionario a ${nome}`}
               />
             </Button>
             <UncontrolledTooltip
@@ -86,14 +84,13 @@ const DetailsRow: React.FC<DetailsRowI> = ({
               onClick={() =>
                 onActionClick[CRUDActionTypes.COMPILE](idQuestionario)
               }
-              aria-label='Compila questionario'
               id={`button-2-compile-${id}`}
             >
               <Icon
                 icon={ItPlusCircle}
                 color='primary'
                 size='sm'
-                aria-label='Compila questionario'
+                aria-label={`Compila questionario di ${nome}`}
               />
             </Button>
             <Button
@@ -103,14 +100,13 @@ const DetailsRow: React.FC<DetailsRowI> = ({
                   idQuestionario: idQuestionario,
                 })
               }
-              aria-label='Invia questionario'
               id={`button-2-send-${id}`}
             >
               <Icon
                 icon={ItMail}
                 color='primary'
                 size='sm'
-                aria-label='Invia questionario'
+                aria-label={`Invia questionario a ${nome}`}
               />
             </Button>
             <UncontrolledTooltip
@@ -131,7 +127,6 @@ const DetailsRow: React.FC<DetailsRowI> = ({
               onClick={() =>
                 onActionClick[CRUDActionTypes.VIEW](idQuestionario)
               }
-              aria-label='Visualizza questionario'
               id={`button-view-${id}`}
             >
               <Icon
@@ -139,7 +134,7 @@ const DetailsRow: React.FC<DetailsRowI> = ({
                 className='icons__icon-visible-password'
                 color='primary'
                 size='sm'
-                aria-label='Visualizza questionario'
+                aria-label={`Visualizza questionario compilato di ${nome}`}
               />
             </Button>
             <UncontrolledTooltip placement='top' target={`button-view-${id}`}>
@@ -160,14 +155,13 @@ const DetailsRow: React.FC<DetailsRowI> = ({
             <Button
               onClick={() => onActionClick[CRUDActionTypes.EDIT](id)}
               className='mr-2 p-0 details-row__name'
-              aria-label='Modifica cittadino'
               id={`button-edit-citizen-${id}`}
             >
               <Icon
                 icon={ItPencil}
                 color='primary'
                 size='sm'
-                aria-label='Modifica cittadino'
+                aria-label={`Modifica anagrafica del cittadino ${nome}`}
               />
             </Button>
             <UncontrolledTooltip
@@ -209,7 +203,7 @@ const DetailsRow: React.FC<DetailsRowI> = ({
       <div className='details-row__right-section primary-color-b1'>
         <span className='text-uppercase'>{rowInfoType}</span>
         <div>
-          <StatusChip status={stato} noTooltip />
+          <StatusChip status={stato} />
           {loadIcons()}
         </div>
       </div>

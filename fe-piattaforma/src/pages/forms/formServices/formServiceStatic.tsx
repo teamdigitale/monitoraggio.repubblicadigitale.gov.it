@@ -20,6 +20,7 @@ interface FormServicesI {
   sendNewValues?: (param?: { [key: string]: formFieldI['value'] }) => void;
   setIsFormValid?: (param: boolean) => void;
   creation?: boolean;
+  legend?: string | undefined;
 }
 
 interface FormEnteGestoreProgettoFullInterface
@@ -38,6 +39,7 @@ const FormServiceStatic: React.FC<FormEnteGestoreProgettoFullInterface> = (
     getFormValues = () => ({}),
     updateForm = () => ({}),
     creation = false,
+    legend = '',
   } = props;
   const dropdownOptions = useAppSelector(selectServices)?.dropdownsCreation;
   const formData = useAppSelector(selectServices)?.detail?.dettaglioServizio;
@@ -124,28 +126,28 @@ const FormServiceStatic: React.FC<FormEnteGestoreProgettoFullInterface> = (
   }, [form]);
 
   return (
-    <Form id='form-service-static' formDisabled={formDisabled}>
+    <Form legend={legend} id='form-service-static' formDisabled={formDisabled}>
       <Form.Row>
         <Input
           {...form?.nomeServizio}
           col='col-12'
-          placeholder={`Inserisci ${form?.nomeServizio?.label?.toLowerCase()}`}
+          placeholder={`${form?.nomeServizio?.label}`}
           onInputChange={onInputDataChange}
         />
         <Input
           {...form?.idEnte}
           disabled
           col='col-12 col-lg-6'
-          className='mb-5 pr-lg-3'
+          // className='pr-lg-3'
           value={nomeEnte}
         />
         <Select
           {...form?.idSede}
           col='col-12 col-lg-6'
-          placeholder={`Inserisci ${form?.idSede?.label?.toLowerCase()}`}
+          placeholder={`Seleziona ${form?.idSede?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
           options={dropdownOptions['sedi']}
-          wrapperClassName='mb-5 pr-lg-3'
+          wrapperClassName='pl-0 pr-lg-3'
           isDisabled={formDisabled || dropdownOptions?.sedi?.length === 1}
         />
       </Form.Row>

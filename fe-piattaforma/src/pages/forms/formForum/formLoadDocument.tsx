@@ -180,7 +180,11 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
   }, [docDetail]);
 
   useEffect(() => {
-    setIsFormValid(isValidForm);
+    setIsFormValid(
+      isValidForm &&
+        (form?.external_link?.value !== '' ||
+          files.name !== defaultDocument.name)
+    );
     sendNewValues({
       ...getFormValues(),
       program: getFormValues().program?.toString(),
@@ -190,6 +194,9 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
 
   const removeDocument = (e: any) => {
     setFiles(defaultDocument);
+    if (inputRef.current !== null) {
+      inputRef.current.value = '';
+    }
     e.preventDefault();
   };
 
@@ -284,7 +291,7 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
           {...form?.description}
           rows={6}
           cols={100}
-          maxLength={800}
+          maximum={800}
           className='mb-1 mt-3'
           onInputChange={onInputChange}
           placeholder=' '
@@ -298,7 +305,12 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
       <Form.Row className={bootClass}>
         <div className='mt-5 d-flex align-items-center'>
           <strong className='mr-2'>ALLEGA FILE</strong>
-          <Icon icon='it-info-circle' size='sm' color='primary' />
+          <Icon
+            icon='it-info-circle'
+            size='sm'
+            color='primary'
+            aria-label='Informazioni'
+          />
         </div>
       </Form.Row>
       <Form.Row className={bootClass}>
@@ -306,7 +318,7 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
           <input
             type='file'
             id='file'
-            accept='image/*,.pdf,.doc,.docx,.xls,.xlsx'
+            accept='.txt, .rtf, .odt, .zip, .exe, .docx, .doc, .ppt, .pptx, .pdf, .jpg, .png, .gif, .xls, .xlsx, .csv, .mpg, .wmv'
             ref={inputRef}
             className='sr-only'
             capture
@@ -331,6 +343,8 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
                   size='sm'
                   color='primary'
                   className='pb-1'
+                  aria-label='Seleziona file'
+                  aria-hidden
                 />
                 Seleziona file
               </Button>
@@ -341,6 +355,8 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
                 size='sm'
                 className='mr-4'
                 onClick={removeDocument}
+                aria-label='Elimina'
+                aria-hidden
               />
             )}
           </label>
@@ -350,7 +366,12 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
       <Form.Row className={bootClass}>
         <div className='mt-5 d-flex align-items-center'>
           <strong className='mr-2'>INSERISCI URL</strong>
-          <Icon icon='it-info-circle' size='sm' color='primary' />
+          <Icon
+            icon='it-info-circle'
+            size='sm'
+            color='primary'
+            aria-label='Informazioni'
+          />
         </div>
       </Form.Row>
       <Form.Row className={bootClass}>

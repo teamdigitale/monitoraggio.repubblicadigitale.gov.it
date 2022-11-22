@@ -173,7 +173,6 @@ const FormOnboarding: React.FC<FormProfileI> = (props) => {
               //placeholder='Posizione Lavorativa'
               col='col-12 col-md-6'
               onInputChange={onInputChange}
-              className={clsx(device.mediaIsPhone && 'mb-0')}
             />
           ) : (
             <span />

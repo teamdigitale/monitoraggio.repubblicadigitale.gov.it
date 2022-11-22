@@ -44,6 +44,7 @@ interface EnteInformationI {
   creation?: boolean | undefined;
   noIdField?: boolean | undefined;
   enteType?: string;
+  legend?: string;
 }
 
 interface FormEnteGestoreProgettoFullInterface
@@ -67,6 +68,7 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
     enteType,
     updateForm = () => ({}),
     clearForm = () => ({}),
+    legend,
   } = props;
 
   const { projectId, entityId, authorityId } = useParams();
@@ -225,6 +227,7 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
       id='form-authorities'
       className='mt-5 mb-5'
       formDisabled={formDisabled}
+      legend={legend}
     >
       {creation || noIdField ? (
         <Form.Row className={bootClass}>

@@ -37,7 +37,7 @@ export interface CardDocumentDetailI {
   date: string;
   description: string;
   comment_count: number;
-  attachment?: string;
+  attachment?: string | undefined;
   external_link?: string;
   entity?: string;
   entity_type?: string;
@@ -65,7 +65,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
     date,
     description,
     comment_count,
-    attachment,
+    attachment = '',
     entity,
     entity_type,
     external_link,
@@ -90,10 +90,10 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { hasUserPermission } = useGuard();
 
-  const trackDownload = () => {
+  const trackDownload = async () => {
     if (id && section === 'documents') {
-      dispatch(ManageItemEvent(id, 'downloaded'));
-      dispatch(
+      await dispatch(ManageItemEvent(id, 'downloaded'));
+      await dispatch(
         ActionTracker({
           target: 'tnd',
           action_type: 'VISUALIZZAZIONE-DOWNLOAD',
@@ -102,6 +102,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
         })
       );
     }
+    window.open(cleanDrupalFileURL(attachment), '_blank');
   };
 
   const deleteOption = {
@@ -141,7 +142,14 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
           ? 'del.topic'
           : 'hidden',
       ]) ||
-      author?.toString() === userId?.toString()
+      (author?.toString() === userId?.toString() &&
+        hasUserPermission([
+          section === 'documents' || isDocument
+            ? 'new.doc'
+            : section === 'community'
+            ? 'new.topic'
+            : 'hidden',
+        ]))
     ) {
       authorizedOption.push(deleteOption);
     }
@@ -153,7 +161,14 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
           ? 'upd.topic'
           : 'hidden',
       ]) ||
-      author?.toString() === userId?.toString()
+      (author?.toString() === userId?.toString() &&
+        hasUserPermission([
+          section === 'documents' || isDocument
+            ? 'new.doc'
+            : section === 'community'
+            ? 'new.topic'
+            : 'hidden',
+        ]))
     ) {
       authorizedOption.push(editOption);
     }
@@ -182,40 +197,43 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
       isOpen={isOpen}
       toggle={() => setIsOpen(!isOpen)}
     >
-      <DropdownToggle caret className='bg-white'>
+      <DropdownToggle caret className='bg-white' aria-label='menu azioni'>
         <div
           className={clsx('d-inline-flex', 'align-items-center', 'text.white')}
         >
-          <div>
-            <Icon icon='it-more-items' color='primary' />
-          </div>
+          <Icon
+            icon='it-more-items'
+            color='primary'
+            aria-label='apri menu azioni'
+            aria-hidden
+          />
         </div>
       </DropdownToggle>
-      <DropdownMenu role='menu' tag='ul'>
-        <LinkList role='none'>
+      <DropdownMenu role='menu'>
+        <LinkList role='list'>
           {detailDropdownOptions.map((item, i) => (
             <li key={i} role='none' onClick={() => setIsOpen(!isOpen)}>
               <Button
-                className={clsx('primary-color-b1', 'px-4', 'w-75')}
+                className={clsx(
+                  'primary-color-b1',
+                  'py-2',
+                  'px-1',
+                  'w-100',
+                  'd-flex',
+                  'flex-row',
+                  'justify-content-around',
+                  'align-items-center'
+                )}
                 role='menuitem'
                 onClick={() => item.action && item.action()}
               >
-                <div
-                  className={clsx(
-                    'd-flex',
-                    'flex-row',
-                    'justify-content-start',
-                    'align-items-center'
-                  )}
-                >
-                  <div className='pr-2'>
-                    <Icon
-                      icon={item.DropdownIcon.icon}
-                      color={item.DropdownIcon.color}
-                    />
-                  </div>
-                  <div>{item.optionName}</div>
-                </div>
+                <Icon
+                  icon={item.DropdownIcon.icon}
+                  color={item.DropdownIcon.color}
+                  aria-label={item.optionName}
+                  aria-hidden
+                />
+                <span>{item.optionName}</span>
               </Button>
             </li>
           ))}
@@ -269,6 +287,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
                 ? 'mb-4'
                 : 'document-card-detail-container__img-icon-file mr-4'
             )}
+            aria-label='immagine documento'
           />
         ) : null}
         <p
@@ -281,7 +300,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
         </p>
       </div>
       {!device.mediaIsPhone ? (
-        <div className='mb-4'>
+        <div className='mb-4 d-flex flex-row justify-content-start'>
           {attachment ? (
             <div className='d-flex justify-content-start'>
               <Button
@@ -290,28 +309,35 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
                   'd-flex',
                   'justify-content-start',
                   'px-0',
-                  'pb-5'
+                  'pb-5',
+                  'd-flex',
+                  'align-items-center',
+                  external_link && 'mr-5'
                 )}
                 onClick={trackDownload}
+                aria-label='Scarica allegato'
               >
-                <div className='d-flex align-items-center'>
-                  <Icon
-                    icon='it-download'
-                    color='primary'
-                    size='sm'
-                    aria-label='Scarica allegato'
-                  />
-                  <a
-                    href={cleanDrupalFileURL(attachment)}
-                    download
-                    target='_blank'
-                    rel='noreferrer'
-                    className='ml-2'
-                  >
-                    <p className='font-weight-bold h6 mb-0'>Scarica allegato</p>
-                  </a>
-                </div>
+                <Icon
+                  icon='it-download'
+                  color='primary'
+                  size='sm'
+                  aria-label='Scarica allegato'
+                  aria-hidden
+                  className='mr-2'
+                />
+                <p className='font-weight-bold h6 mb-0'>
+                  <u>Scarica allegato</u>
+                </p>
               </Button>
+              {/*  <a
+                href={cleanDrupalFileURL(attachment)}
+                download
+                target='_blank'
+                rel='noreferrer'
+                className='ml-2 d-none'
+              >
+                <p className='font-weight-bold h6 mb-0'>Scarica allegato</p>
+              </a> */}
             </div>
           ) : null}
           {external_link ? (
@@ -322,25 +348,27 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
                   'd-flex',
                   'justify-content-start',
                   'px-0',
-                  'pb-5'
+                  'pb-5',
+                  'd-flex',
+                  'align-items-center'
                 )}
+                aria-label='Vai al link esterno'
               >
-                <div className='d-flex align-items-center'>
-                  <Icon
-                    icon='it-external-link'
-                    color='primary'
-                    size='sm'
-                    aria-label='Link esterno'
-                  />
-                  <a
-                    href={cleanDrupalFileURL(external_link)}
-                    target='_blank'
-                    rel='noreferrer'
-                    className='ml-2'
-                  >
-                    <p className='font-weight-bold h6 mb-0'>Link esterno</p>
-                  </a>
-                </div>
+                <Icon
+                  icon='it-external-link'
+                  color='primary'
+                  size='sm'
+                  aria-label='vai al link esterno'
+                  aria-hidden
+                />
+                <a
+                  href={cleanDrupalFileURL(external_link)}
+                  target='_blank'
+                  rel='noreferrer'
+                  className='ml-2'
+                >
+                  <p className='font-weight-bold h6 mb-0'>Link esterno</p>
+                </a>
               </Button>
             </div>
           ) : null}
@@ -353,27 +381,29 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
               'd-flex',
               'justify-content-start',
               'px-0',
-              'py-2'
+              'py-2',
+              'd-flex',
+              'align-items-center'
             )}
             onClick={trackDownload}
+            aria-label='Scarica allegato'
           >
-            <div className='d-flex align-items-center'>
-              <Icon
-                icon='it-download'
-                color='primary'
-                size='sm'
-                aria-label='Scarica allegato'
-              />
-              <a
-                href={cleanDrupalFileURL(attachment)}
-                download
-                target='_blank'
-                rel='noreferrer'
-                className='ml-2'
-              >
-                <p className='font-weight-bold h6 mb-0'>Scarica allegato</p>
-              </a>
-            </div>
+            <Icon
+              icon='it-download'
+              color='primary'
+              size='sm'
+              aria-label='Scarica allegato'
+              aria-hidden
+            />
+            <a
+              href={cleanDrupalFileURL(attachment)}
+              download
+              target='_blank'
+              rel='noreferrer'
+              className='ml-2'
+            >
+              <p className='font-weight-bold h6 mb-0'>Scarica allegato</p>
+            </a>
           </Button>
         </div>
       ) : null}

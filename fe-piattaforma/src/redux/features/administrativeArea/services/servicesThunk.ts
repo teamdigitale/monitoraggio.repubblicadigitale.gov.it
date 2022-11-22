@@ -224,7 +224,10 @@ export const UpdateService =
     try {
       dispatch(showLoader());
       dispatch({ ...UpdateServiceAction, idServizio });
-      const res = await API.put(`/servizio/${idServizio}`, payload);
+      const res = await API.put(`/servizio/${idServizio}`, {
+        ...payload,
+        profilazioneParam: undefined,
+      });
       if (res) {
         return true;
       }

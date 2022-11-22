@@ -56,5 +56,7 @@
   "citizen_not_found": "Il cittadino inserito non risulta in piattaforma",
   "add_goal": "Aggiungi obiettivo",
   "add_milestone": "Aggiungi Milestone",
-  "goal_value": "Valore obiettivo {{count}}"
+  "goal_value": "Valore obiettivo {{count}}",
+  "enteGestore": "Ente gestore",
+  "policy": "Intervento"
 }

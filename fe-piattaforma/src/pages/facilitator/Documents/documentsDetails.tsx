@@ -2,7 +2,7 @@ import { Button, FormGroup, Icon, Label } from 'design-react-kit';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Form, Input } from '../../../components';
+import { Form, Input, Loader } from '../../../components';
 import CommentSection from '../../../components/Comments/commentSection';
 import SectionDetail from '../../../components/DocumentDetail/sectionDetail';
 import DeleteForumModal from '../../../components/General/DeleteForumEntity/DeleteForumEntity';
@@ -41,11 +41,21 @@ const DocumentsDetails = () => {
   const commentsList = useAppSelector(selectCommentsList);
   const [usefullStatus, setUsefullStatus] = useState<number>(0);
 
-  useEffect(() => {
+  const getItemDetails = async () => {
     if (userId && id) {
-      dispatch(GetItemDetail(id, userId, 'document'));
-      dispatch(GetCommentsList(id, userId));
+      const res = await dispatch(GetItemDetail(id, userId, 'document'));
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      if (res) {
+        dispatch(GetCommentsList(id, userId));
+      } else {
+        navigate('/documenti', { replace: true });
+      }
     }
+  };
+
+  useEffect(() => {
+    getItemDetails();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId, id]);
 
@@ -109,15 +119,20 @@ const DocumentsDetails = () => {
     <Button
       onClick={() => navigate('/documenti', { replace: true })}
       className='px-0'
+      aria-label='torna indietro'
     >
       <Icon
         icon='it-chevron-left'
         color='primary'
-        aria-label='Torna indietro'
+        aria-label='torna indietro'
+        aria-hidden
       />
       <span className='primary-color'> Torna indietro </span>
     </Button>
   );
+
+  if (!docDetails?.id) return <Loader />;
+
   return (
     <div className='container'>
       {backButton}
@@ -176,7 +191,7 @@ const DocumentsDetails = () => {
                     aria-labelledby='rate-siDescription'
                     withLabel={false}
                   />
-                  <Label check id='rate-siDescription'>
+                  <Label check htmlFor='rate-si' id='rate-siDescription'>
                     Si
                   </Label>
                 </div>
@@ -190,7 +205,7 @@ const DocumentsDetails = () => {
                     aria-labelledby='rate-noDescription'
                     withLabel={false}
                   />
-                  <Label check id='rate-noDescription'>
+                  <Label check htmlFor='rate-no' id='rate-noDescription'>
                     No
                   </Label>
                 </div>
@@ -200,7 +215,7 @@ const DocumentsDetails = () => {
         </div>
         <span className='d-none d-md-flex border-box-utility' />
       </div>
-      {commentsList.length ? <CommentSection section='ducuments' /> : null}
+      {commentsList.length ? <CommentSection section='documents' /> : null}
       <ManageDocument />
       <ManageComment />
       <ManageReport />

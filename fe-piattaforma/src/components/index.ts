@@ -13,6 +13,7 @@ import HamburgerMenu from './HamburgerMenu/hamburgerMenu';
 import Header from './Header/header';
 import HeaderMenu from './HeaderMenu/headerMenu';
 import Input from './Form/input';
+import Duration from './Form/duration';
 import PrefixPhone from './Form/prefixPhone';
 import Paginator from './Paginator/paginator';
 import Rating from './Rating/rating';
@@ -26,7 +27,7 @@ import SelectMultiple from './Form/selectMultiple';
 import Stepper from './Stepper/stepper';
 import TabGroup from './TabGroup/tabGroup';
 import Table from './Table/table';
-import NotificationsPreview from "./NotificationsPreview/notificationsPreview";
+import NotificationsPreview from './NotificationsPreview/notificationsPreview';
 import InfoPanel from './InfoPanel/infoPanel';
 import SideSelection from './SideSelection/sideSelection';
 import ButtonsBar from './ButtonsBar/buttonsBar';
@@ -64,6 +65,7 @@ export {
   InfoCard,
   InfoPanel,
   Input,
+  Duration,
   PrefixPhone,
   Loader,
   LocationIndex,
@@ -83,5 +85,5 @@ export {
   Stepper,
   TabGroup,
   Table,
-  NotificationsPreview
+  NotificationsPreview,
 };

@@ -107,41 +107,38 @@ const PillDropDown: React.FC<PageTypeI> = (props) => {
               icon='it-arrow-down-triangle'
               color='secondary'
               className='pl-2'
+              aria-label='Visualizza le opzioni per il filtro ordinamento'
             />
           </div>
         </div>
       </DropdownToggle>
-      <DropdownMenu role='menu' tag='ul' className='py-0'>
-        <LinkList role='none'>
+      <DropdownMenu role='menu' className='py-0'>
+        <LinkList role='list'>
           {isDocument
             ? pillDropdownOptionsDocument.map((item, index) => (
                 <div key={index}>
                   <li role='none' onClick={() => setIsOpen(!isOpen)}>
                     <Button
-                      className='text-secondary'
+                      className={clsx(
+                        'd-flex',
+                        'flex-row',
+                        'justify-content-start',
+                        'align-items-center',
+                        'text-secondary'
+                      )}
                       role='menuitem'
                       onClick={() => setSelected(item)}
                     >
-                      <div
+                      <span
                         className={clsx(
-                          'd-flex',
-                          'flex-row',
-                          'justify-content-start',
-                          'align-items-center'
+                          selected?.value === item.value && 'font-weight-bolder'
                         )}
                       >
-                        <div
-                          className={clsx(
-                            selected?.value === item.value &&
-                              'font-weight-bolder'
-                          )}
-                        >
-                          {item.label}
-                        </div>
-                      </div>
+                        {item.label}
+                      </span>
                     </Button>
                   </li>
-                  <LinkListItem divider role='menuitem' aria-hidden={true} />
+                  <LinkListItem divider role='none' />
                 </div>
               ))
             : isNotifications
@@ -149,60 +146,52 @@ const PillDropDown: React.FC<PageTypeI> = (props) => {
                 <div key={ind}>
                   <li role='none' onClick={() => setIsOpen(!isOpen)}>
                     <Button
-                      className='text-secondary'
+                      className={clsx(
+                        'd-flex',
+                        'flex-row',
+                        'justify-content-start',
+                        'align-items-center',
+                        'text-secondary'
+                      )}
                       role='menuitem'
                       onClick={() => setSelected(item)}
                     >
-                      <div
+                      <span
                         className={clsx(
-                          'd-flex',
-                          'flex-row',
-                          'justify-content-start',
-                          'align-items-center'
+                          selected?.value === item.value && 'font-weight-bolder'
                         )}
                       >
-                        <div
-                          className={clsx(
-                            selected?.value === item.value &&
-                              'font-weight-bolder'
-                          )}
-                        >
-                          {item.label}
-                        </div>
-                      </div>
+                        {item.label}
+                      </span>
                     </Button>
                   </li>
-                  <LinkListItem divider role='menuitem' aria-hidden={true} />
+                  <LinkListItem divider role='none' />
                 </div>
               ))
             : pillDropdownOptions.map((item, i) => (
                 <div key={i}>
                   <li role='none' onClick={() => setIsOpen(!isOpen)}>
                     <Button
-                      className='text-secondary'
+                      className={clsx(
+                        'd-flex',
+                        'flex-row',
+                        'justify-content-start',
+                        'align-items-center',
+                        'text-secondary'
+                      )}
                       role='menuitem'
                       onClick={() => setSelected(item)}
                     >
-                      <div
+                      <span
                         className={clsx(
-                          'd-flex',
-                          'flex-row',
-                          'justify-content-start',
-                          'align-items-center'
+                          selected?.value === item.value && 'font-weight-bolder'
                         )}
                       >
-                        <div
-                          className={clsx(
-                            selected?.value === item.value &&
-                              'font-weight-bolder'
-                          )}
-                        >
-                          {item.label}
-                        </div>
-                      </div>
+                        {item.label}
+                      </span>
                     </Button>
                   </li>
-                  <LinkListItem divider role='menuitem' aria-hidden={true} />
+                  <LinkListItem divider role='none' />
                 </div>
               ))}
         </LinkList>

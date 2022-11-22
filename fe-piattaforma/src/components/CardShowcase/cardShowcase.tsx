@@ -14,31 +14,38 @@ import _ from 'lodash';
 import { cleanDrupalFileURL } from '../../utils/common';
 import { formatDate } from '../../utils/datesHelper';
 
-interface CommentI {
+export interface CommentI {
   user?: string;
   picture?: string;
   commmentText?: string;
   commentDate?: string;
 }
 
-interface CardShowcaseI extends CardProps {
-  id?: string;
-  title?: string;
-  community?: string;
-  description?: string;
-  entity?: string;
-  colorLeft?: string;
-  date?: string;
-  likes?: string;
-  comment_count?: number;
-  comments?: CommentI[];
-  cover?: string;
-  category_label?: string;
-  views?: string;
-  highlighted?: boolean;
+export interface ForumCardsI extends CardProps {
+  id?: string | undefined;
+  title?: string | undefined;
+  community?: string | undefined;
+  description?: string | undefined;
+  entity?: string | undefined;
+  colorLeft?: string | undefined;
+  date?: string | undefined;
+  likes?: string | undefined;
+  comment_count?: number | undefined;
+  comments?: CommentI[] | undefined;
+  cover?: string | undefined;
+  category_label?: string | undefined;
+  views?: string | undefined;
+  highlighted?: boolean | undefined;
+  onClick?: () => void | undefined;
+  isHome?: boolean | undefined;
+  fileType?: string | undefined;
+  downloads?: number | undefined;
+  isDocument?: boolean | undefined;
+  isNews?: boolean | undefined;
+  isCommunity?: boolean | undefined;
 }
 
-const CardShowcase: React.FC<CardShowcaseI> = (props) => {
+const CardShowcase: React.FC<ForumCardsI> = (props) => {
   const {
     id,
     title,
@@ -67,16 +74,32 @@ const CardShowcase: React.FC<CardShowcaseI> = (props) => {
         'showcase-card bg-white',
         highlighted ? 'showcase-card__marked' : null
       )}
-      onKeyDown={navigateTo}
+      onKeyDown={(e) => {
+        if (e.key === ' ') {
+          e.preventDefault();
+          navigateTo();
+        }
+      }}
       onClick={navigateTo}
       tabIndex={0}
+      aria-label={`Categoria: ${category_label}. Data: ${
+        date && formatDate(date, 'shortDate')
+      }. Titolo news: ${title}. Descrizione: ${description?.replace(
+        /<[^>]+>/g,
+        ''
+      )}. Editore: ${entity}. ${likes} like. ${comment_count} ${
+        Number(comment_count) === 1 ? 'commento' : 'commenti'
+      }. ${views} ${
+        Number(views) === 1 ? 'visualizzazione' : 'visualizzazioni'
+      }`}
     >
       <div className='position-relative img-height-placeholder'>
         <div className='w-100'>
           <img
             src={cover ? cleanDrupalFileURL(cover) : coverPlaceholder}
             title='img title'
-            alt=''
+            alt={`anteprima ${title}`}
+            aria-hidden
             className='responsive'
           />
         </div>
@@ -87,6 +110,7 @@ const CardShowcase: React.FC<CardShowcaseI> = (props) => {
               icon={bookmark}
               size='lg'
               aria-label='bookmark'
+              aria-hidden
               className='showcase-card__icon-bookmark'
             />
           </div>
@@ -111,8 +135,10 @@ const CardShowcase: React.FC<CardShowcaseI> = (props) => {
                   : 'mb-4 mt-3 pt-1'
               )}
             >
-              <span className='font-weight-bold'>{category_label} — </span>
-              {date && formatDate(date, 'shortDate')}
+              <span className='font-weight-bold'>
+                {category_label}
+                {/*  —  */}
+              </span>
             </div>
           ) : null}
           {title ? (
@@ -129,9 +155,7 @@ const CardShowcase: React.FC<CardShowcaseI> = (props) => {
             </CardText>
           ) : null}
           {entity ? (
-            <div>
-              <PublishingAuthority authority={entity} />
-            </div>
+            <PublishingAuthority authority={entity} />
           ) : (
             <div className='pt-4 pb-3'></div>
           )}
@@ -140,59 +164,62 @@ const CardShowcase: React.FC<CardShowcaseI> = (props) => {
           className={clsx(
             'd-flex',
             'flex-row',
-            'justify-content-end',
+            'justify-content-between',
             'showcase-card__icon-container-alignment'
           )}
         >
-          <div
-            className={clsx(
-              'd-flex',
-              'align-items-center',
-              'category-top',
-              'mr-2'
-            )}
-          >
-            <Icon
-              color='primary'
-              icon={Heart}
-              size='xs'
-              aria-label='calendario'
-            />
-            <span className='showcase-card__span-icons pl-1'>{likes}</span>
-          </div>
-          <div
-            className={clsx(
-              'category-top',
-              'mr-2',
-              'd-flex',
-              'align-items-center'
-            )}
-          >
-            <Icon
-              color='primary'
-              icon='it-comment'
-              size='sm'
-              aria-label='commenti'
-            />
-            <span className='showcase-card__span-icons pl-1'>
-              {comment_count}
-            </span>
-          </div>
-          <div
-            className={clsx(
-              'category-top',
-              'mr-2',
-              'd-flex',
-              'align-items-center'
-            )}
-          >
-            <Icon
-              color='primary'
-              icon='it-password-visible'
-              size='sm'
-              aria-label='stella rating'
-            />
-            <span className='showcase-card__span-icons pl-1'>{views}</span>
+          <span className='showcase-card__date'>
+            {date && formatDate(date, 'shortDate')}
+          </span>
+          <div className='d-flex'>
+            <div
+              className={clsx(
+                'd-flex',
+                'align-items-center',
+                'category-top',
+                'mr-2'
+              )}
+            >
+              <Icon
+                color='primary'
+                icon={Heart}
+                size='xs'
+                aria-label='Like'
+                aria-hidden
+              />
+              <span className='showcase-card__span-icons pl-1'>{likes}</span>
+            </div>
+            <div
+              className={clsx(
+                'category-top',
+                'mr-2',
+                'd-flex',
+                'align-items-center'
+              )}
+            >
+              <Icon
+                color='primary'
+                icon='it-comment'
+                size='sm'
+                aria-label='Commento'
+                aria-hidden
+              />
+              <span className='showcase-card__span-icons pl-1'>
+                {comment_count}
+              </span>
+            </div>
+            <div
+              className={clsx('category-top', 'd-flex', 'align-items-center')}
+            >
+              <Icon
+                color='primary'
+                icon='it-password-visible'
+                size='sm'
+                aria-label='Views'
+                aria-hidden
+              />
+              <span className='showcase-card__span-icons pl-1'>{views}</span>
+            </div>
           </div>
         </div>
       </div>

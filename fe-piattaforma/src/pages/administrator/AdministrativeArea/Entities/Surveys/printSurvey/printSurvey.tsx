@@ -53,21 +53,13 @@ const PrintSurvey: React.FC = () => {
   ) => {
     switch (question.type) {
       case 'range':
-        return (
-          <PrintFieldRating
-            info={question}
-            className={classQuestion}
-          />
-        );
+        return <PrintFieldRating info={question} className={classQuestion} />;
       case 'object':
         if (question?.properties) {
           return (
             <PrintSelectField
               info={question}
-              className={clsx(
-                classQuestion,
-                question.flag && 'align-bottom'
-              )}
+              className={clsx(classQuestion, question.flag && 'align-bottom')}
               noLabel={question.flag ? true : false}
               halfWidth={question.flag ? true : false}
               multipleChoice={question.id !== '18'}
@@ -101,37 +93,22 @@ const PrintSurvey: React.FC = () => {
       case 'multiple':
       case 'string':
         if (question?.enum?.length) {
-          return (
-            <PrintSelectField
-              info={question}
-              className={classQuestion}
-            />
-          );
+          return <PrintSelectField info={question} className={classQuestion} />;
         } else {
-          return (
-            <PrintTextField
-              info={question}
-              className={classQuestion}
-            />
-          );
+          return <PrintTextField info={question} className={classQuestion} />;
         }
       case 'date':
       case 'number':
       case 'time':
       default:
-        return (
-          <PrintTextField
-            info={question}
-            className={classQuestion}
-          />
-        );
+        return <PrintTextField info={question} className={classQuestion} />;
     }
   };
 
   return (
     <div className='container my-3 py-5 print-survey'>
       <div className='header-container__main__logo mb-4'>
-        <img src={Logo} alt='logo' />
+        <img src={Logo} alt='Repubblica Digitale' />
       </div>
       <DetailLayout
         titleInfo={{

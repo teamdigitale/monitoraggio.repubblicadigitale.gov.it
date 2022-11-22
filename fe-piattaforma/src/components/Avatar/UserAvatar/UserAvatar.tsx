@@ -8,7 +8,7 @@ import AvatarInitials, {
 } from '../AvatarInitials/avatarInitials';
 
 interface UserAvatarI {
-  avatarImage?: string | undefined;
+  avatarImage?: string | File | undefined;
   user?: {
     uSurname: string | undefined;
     uName: string | undefined;
@@ -17,6 +17,7 @@ interface UserAvatarI {
   size?: AvatarSizes;
   font?: AvatarTextSizes;
   isUserProfile?: boolean | string | undefined;
+  isPreview?: boolean;
 }
 
 const UserAvatar: React.FC<UserAvatarI> = (props) => {
@@ -27,6 +28,7 @@ const UserAvatar: React.FC<UserAvatarI> = (props) => {
     /*  lightColor = false,
     font, */
     isUserProfile = false,
+    isPreview = false,
   } = props;
 
   const device = useAppSelector(selectDevice);
@@ -48,19 +50,24 @@ const UserAvatar: React.FC<UserAvatarI> = (props) => {
             ? '67px'
             : size === AvatarSizes.Medium
             ? '58px'
+            : size === AvatarSizes.Preview
+            ? '120px'
             : '39px',
         height:
           isUserProfile || size === AvatarSizes.Big
             ? '67px'
             : size === AvatarSizes.Medium
             ? '58px'
+            : size === AvatarSizes.Preview
+            ? '120px'
             : '39px',
       }}
     >
       {avatarImage ? (
         <img
-          src={avatarImage}
-          alt='avatar'
+          src={avatarImage as string}
+          alt='immagine utente'
+          aria-hidden
           className='avatar-user-container__avatar-image'
           style={{ borderRadius: '50%', width: '100%', height: '100%' }}
         />
@@ -73,6 +80,8 @@ const UserAvatar: React.FC<UserAvatarI> = (props) => {
               ? AvatarSizes.Big
               : size === AvatarSizes.Medium
               ? AvatarSizes.Medium
+              : isPreview
+              ? AvatarSizes.Preview
               : AvatarSizes.Small
           }
           font={

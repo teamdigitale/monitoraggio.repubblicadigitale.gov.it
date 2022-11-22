@@ -63,6 +63,8 @@ import { GetSurveyAllLight } from '../../../../../redux/features/administrativeA
 import clsx from 'clsx';
 import { GetProjectDetail } from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
 import { selectProfile } from '../../../../../redux/features/user/userSlice';
+import IconNote from '/public/assets/img/it-note-primary.png';
+import IconWarning from '/public/assets/img/it-warning-circle-primary.png';
 
 const tabs = {
   INFO: 'info',
@@ -270,7 +272,9 @@ const ProgramsDetails: React.FC = () => {
               payload: {
                 entity: 'project',
                 projectId: td,
-                text: 'Confermi di volere terminare il progetto?',
+                text1:
+                  'Inserisci la data di termine e conferma per terminare il progetto.',
+                text2: 'Attenzione: non è possibile inserire una data futura.',
               },
             })
           );
@@ -294,9 +298,12 @@ const ProgramsDetails: React.FC = () => {
         <FormAuthorities
           formDisabled
           enteType={formTypes.ENTE_GESTORE_PROGRAMMA}
+          legend="Form ente, i campi con l'asterisco sono obbligatori"
         />
       );
-      setCorrectModal(<ManageManagerAuthority />);
+      setCorrectModal(
+        <ManageManagerAuthority legend="form Modifica ente gestore programma, i campi con l'asterisco sono obbligatori" />
+      );
       setItemList(null);
       setCorrectButtons(
         program?.dettagliInfoProgramma?.stato !== entityStatus.TERMINATO &&
@@ -386,10 +393,10 @@ const ProgramsDetails: React.FC = () => {
       setItemAccordionList([]);
       setEmptySection(
         <EmptySection
-          title='Questa sezione è ancora vuota'
           withIcon
-          icon='it-note'
-          subtitle='Per attivare il progetto aggiungi un Ente gestore di Programma'
+          icon={IconWarning}
+          title='Per attivare il programma è necessario:'
+          subtitle2={subtitleList}
           buttons={
             program?.dettagliInfoProgramma?.stato !== entityStatus.TERMINATO &&
             hasUserPermission(['add.enti.gest.prgm'])
@@ -546,7 +553,7 @@ const ProgramsDetails: React.FC = () => {
               : []
           }
           withIcon
-          icon='it-note'
+          icon={IconNote}
         />
       );
     }
@@ -556,7 +563,12 @@ const ProgramsDetails: React.FC = () => {
     setCorrectModal(undefined);
     setItemAccordionList(null);
     setCurrentForm(undefined);
-    setCorrectModal(<ManageProject creation />);
+    setCorrectModal(
+      <ManageProject
+        legend="form aggiunta progetto, i campi con l'asterisco sono obbligatori"
+        creation
+      />
+    );
     setProgInfoButtons(false);
     cancelSurvey();
     if (
@@ -615,7 +627,7 @@ const ProgramsDetails: React.FC = () => {
               : []
           }
           withIcon
-          icon='it-note'
+          icon={IconNote}
         />
       );
       setItemList({
@@ -690,12 +702,12 @@ const ProgramsDetails: React.FC = () => {
     {
       size: 'xs',
       color: 'primary',
-      text: 'Aggiungi Ente gestore di Programma',
+      text: 'Aggiungi ente gestore',
       onClick: () =>
         dispatch(
           openModal({
             id: 'ente-gestore',
-            payload: { title: 'Aggiungi Ente gestore Programma' },
+            payload: { title: 'Aggiungi ente gestore' },
           })
         ),
     },
@@ -721,16 +733,20 @@ const ProgramsDetails: React.FC = () => {
           ? [
               {
                 size: 'xs',
-                color: 'danger',
+                color: 'secondary',
                 outline: true,
                 text: 'Termina programma',
+                buttonClass: 'terminate-entity',
                 onClick: () =>
                   dispatch(
                     openModal({
                       id: 'terminate-entity',
                       payload: {
                         entity: 'program',
-                        text: 'Confermi di volere terminare il programma?',
+                        text1:
+                          'Inserisci la data di termine e conferma per terminare il programma.',
+                        text2:
+                          'Attenzione: non è possibile inserire una data futura.',
                       },
                     })
                   ),
@@ -771,16 +787,20 @@ const ProgramsDetails: React.FC = () => {
           ? [
               {
                 size: 'xs',
-                color: 'danger',
+                color: 'secondary',
                 outline: true,
                 text: 'Termina programma',
+                buttonClass: 'terminate-entity',
                 onClick: () =>
                   dispatch(
                     openModal({
                       id: 'terminate-entity',
                       payload: {
                         entity: 'program',
-                        text: 'Confermi di volere terminare il programma?',
+                        text1:
+                          'Inserisci la data di termine e conferma per terminare il programma',
+                        text2:
+                          'Attenzione: non è possibile inserire una data futura.',
                       },
                     })
                   ),
@@ -868,8 +888,15 @@ const ProgramsDetails: React.FC = () => {
   const handleActiveTab = (tab: string) => {
     switch (tab) {
       case tabs.INFO:
-        setCurrentForm(<ProgramlInfoAccordionForm />);
-        setCorrectModal(<ManageProgram edit={edit} />);
+        setCurrentForm(
+          <ProgramlInfoAccordionForm legend="form informazioni programma, i campi con l'asterisco sono obbligatori" />
+        );
+        setCorrectModal(
+          <ManageProgram
+            legend="form modifica programma, i campi con l'asterisco sono obbligatori"
+            edit={edit}
+          />
+        );
         setItemAccordionList([]);
         setButtonsPosition('BOTTOM');
         setItemList(null);
@@ -906,20 +933,24 @@ const ProgramsDetails: React.FC = () => {
   ]);
 
   const nav = (
-    <Nav tabs className='mb-5 overflow-hidden'>
-      <li ref={infoRef}>
+    <Nav tabs className='mb-5 overflow-hidden' role='menu'>
+      <li ref={infoRef} role='none'>
         <NavLink
           to={`/area-amministrativa/programmi/${entityId}/${tabs.INFO}`}
           active={activeTab === tabs.INFO}
+          role='menuitem'
+          onKeyDown={() => setActiveTab(tabs.INFO)}
         >
           Informazioni generali
         </NavLink>
       </li>
-      <li ref={gestoreRef}>
+      <li ref={gestoreRef} role='none'>
         <NavLink
           to={`/area-amministrativa/programmi/${entityId}/${tabs.ENTE}`}
           active={activeTab === tabs.ENTE}
           enteGestore={!managerAuthorityId}
+          role='menuitem'
+          onKeyDown={() => setActiveTab(tabs.ENTE)}
         >
           {!managerAuthorityId ? (
             <div id='tab-ente-gestore'>
@@ -932,25 +963,34 @@ const ProgramsDetails: React.FC = () => {
               >
                 Compilazione obbligatoria
               </Tooltip>
-              <Icon icon='it-warning-circle' size='xs' className='ml-1' />
+              <Icon
+                icon='it-warning-circle'
+                size='xs'
+                className='ml-1'
+                aria-label='Avviso'
+              />
             </div>
           ) : (
             'Ente gestore'
           )}
         </NavLink>
       </li>
-      <li ref={questionariRef}>
+      <li ref={questionariRef} role='none'>
         <NavLink
           to={`/area-amministrativa/programmi/${entityId}/${tabs.QUESTIONARI}`}
           active={activeTab === tabs.QUESTIONARI}
+          role='menuitem'
+          onKeyDown={() => setActiveTab(tabs.QUESTIONARI)}
         >
           Questionari
         </NavLink>
       </li>
-      <li ref={projectRef}>
+      <li ref={projectRef} role='none'>
         <NavLink
           active={activeTab === tabs.PROGETTI}
           to={`/area-amministrativa/programmi/${entityId}/${tabs.PROGETTI}`}
+          role='menuitem'
+          onKeyDown={() => setActiveTab(tabs.PROGETTI)}
         >
           Progetti
         </NavLink>
@@ -1058,6 +1098,15 @@ const ProgramsDetails: React.FC = () => {
     }
   };
 
+  const subtitleList = (
+    <ol className='my-4'>
+      <li>aggiungere un ente gestore;</li>
+      <li>
+        aggiungere almeno un ente referente nella scheda dell’ente gestore.
+      </li>
+    </ol>
+  );
+
   return (
     <div
       className={clsx(
@@ -1132,7 +1181,7 @@ const ProgramsDetails: React.FC = () => {
                 ) : (
                   <EmptySection
                     title={`Non sono presenti ${item.title?.toLowerCase()} associati.`}
-                    icon='it-note'
+                    icon={IconNote}
                     withIcon
                     noMargin
                   />
@@ -1159,10 +1208,19 @@ const ProgramsDetails: React.FC = () => {
             }
           }}
         />
-        <ManageDelegate creation />
-        <ManageReferal creation />
+        <ManageDelegate
+          legend="form aggiunta delegato, i campi con l'asterisco sono obbligatori"
+          creation
+        />
+        <ManageReferal
+          legend="form aggiunta referente, i campi con l'asterisco sono obbligatori"
+          creation
+        />
         {/* /<ManageProgramManagerAuthority /> */}
-        <ManageProject creation />
+        <ManageProject
+          legend="form creazione progetto, i campi con l'asterisco sono obbligatori"
+          creation
+        />
         <DeleteEntityModal
           onClose={() => dispatch(closeModal())}
           onConfirm={async (payload) => {

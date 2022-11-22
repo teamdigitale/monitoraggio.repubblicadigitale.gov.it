@@ -60,7 +60,7 @@ const ErrorPage = () => {
           <div className={clsx('w-100', 'text-center', 'mb-5')}>
             <img
               src={LogoScrittaBlu}
-              alt='logo'
+              alt='Repubblica Digital'
               className='auth-container__logo'
             />
           </div>

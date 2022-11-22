@@ -5,7 +5,7 @@ import { Accordion, ButtonsBar } from '../index';
 import { ButtonInButtonsBar } from '../ButtonsBar/buttonsBar';
 import CardStatusAction from '../CardStatusAction/cardStatusAction';
 import SectionTitle from '../SectionTitle/sectionTitle';
-import { Button, Icon } from 'design-react-kit';
+import { Button, FormGroup, Icon } from 'design-react-kit';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
@@ -18,6 +18,7 @@ import CardStatusActionHeadquarters from '../CardStatusAction/cardStatusActionHe
 import CardStatusActionSurveys from '../CardStatusAction/cardStatusActionSurveys';
 import CardStatusActionPartnerAuthority from '../CardStatusAction/cardStatusActionPartnerAuthority';
 import EmptySection from '../EmptySection/emptySection';
+import IconNote from '/public/assets/img/it-note-primary.png';
 
 interface DetailLayoutI {
   nav?: ReactElement;
@@ -96,11 +97,13 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                 : navigate(-1)
             }
             className={clsx(device.mediaIsPhone ? 'px-0 mb-5 mr-5' : 'px-0')}
+            aria-label='torna indietro'
           >
             <Icon
               icon='it-chevron-left'
               color='primary'
-              aria-label='Torna indietro'
+              aria-label='torna indietro'
+              aria-hidden
             />
             <span className='primary-color'>{goBackTitle}</span>
           </Button>
@@ -124,7 +127,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
             {nav}
           </div>
         )}
-        <div>{children}</div>
+        <div id='content-tab'>{children}</div>
         {itemsAccordionList?.length
           ? itemsAccordionList.map((singleItem, index) => (
               <Accordion
@@ -166,7 +169,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                 ) : (
                   <EmptySection
                     title={`Non sono presenti ${singleItem.title?.toLowerCase()} associati.`}
-                    icon='it-note'
+                    icon={IconNote}
                     withIcon
                     noMargin
                   />
@@ -203,25 +206,28 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
               <h2 className='h4 neutral-1-color-a7'>{itemsList.title}</h2>
             )}
             {((currentTab === 'questionari' && isRadioButtonItem) ||
-              currentTab !== 'questionari') &&
-              itemsList.items.map((item) => {
-                return (
-                  <CardStatusActionSurveys
-                    moreThanOneSurvey={
-                      currentTab === 'questionari' && isRadioButtonItem
-                    }
-                    title={item.nome}
-                    status={item.stato}
-                    key={item.id}
-                    id={item.id}
-                    fullInfo={item.fullInfo}
-                    onActionClick={item.actions}
-                    onCheckedChange={(surveyChecked: string) =>
-                      onRadioChange ? onRadioChange(surveyChecked) : null
-                    }
-                  />
-                );
-              })}
+              currentTab !== 'questionari') && (
+              <FormGroup check>
+                {itemsList.items.map((item) => {
+                  return (
+                    <CardStatusActionSurveys
+                      moreThanOneSurvey={
+                        currentTab === 'questionari' && isRadioButtonItem
+                      }
+                      title={item.nome}
+                      status={item.stato}
+                      key={item.id}
+                      id={item.id}
+                      fullInfo={item.fullInfo}
+                      onActionClick={item.actions}
+                      onCheckedChange={(surveyChecked: string) =>
+                        onRadioChange ? onRadioChange(surveyChecked) : null
+                      }
+                    />
+                  );
+                })}
+              </FormGroup>
+            )}
           </>
         ) : null}
         {currentTab === 'progetti' && showItemsList && itemsList?.items?.length
@@ -289,74 +295,60 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
         {buttonsPosition === 'TOP' &&
         formButtons &&
         formButtons.length !== 0 ? (
-          <>
-            <div aria-hidden='true'>
-              <Sticky mode='bottom' stickyClassName='sticky bg-white'>
-                <ButtonsBar buttons={formButtons} />
-              </Sticky>
-            </div>
-            <div className='sr-only'>
-              <ButtonsBar buttons={formButtons} />
-            </div>
-          </>
+          <Sticky mode='bottom' stickyClassName='sticky bg-white'>
+            <ButtonsBar buttons={formButtons} />
+          </Sticky>
         ) : null}
       </div>
 
       {buttonsPosition === 'BOTTOM' &&
       formButtons &&
       formButtons.length !== 0 ? (
-        <>
-          <div aria-hidden='true' className='mt-5 w-100'>
-            <Sticky
-              mode='bottom'
-              stickyClassName={clsx(
-                'sticky',
-                'bg-white',
-                isUserProfile
-                  ? 'pr-4'
-                  : isUserProfile && device.mediaIsTablet && 'pr-0',
-                isRoleManagement
-                  ? 'pr-4'
-                  : isRoleManagement && device.mediaIsTablet && 'pr-0',
-                !device.mediaIsPhone && 'container'
-              )}
-            >
-              {formButtons.length === 2 &&
-              (infoProgBtn ||
-                (infoProjBtn &&
-                  titleInfo?.status !== 'ATTIVABILE' &&
-                  titleInfo?.status !== 'NON ATTIVO')) ? (
-                <div
-                  className={clsx(
-                    'd-flex',
-                    'flex-row',
-                    device.mediaIsPhone
-                      ? 'justify-content-end flex-wrap'
-                      : 'justify-content-between',
-                    'container',
-                    'w-100'
-                  )}
-                >
-                  <ButtonsBar buttons={formButtons.slice(0, 1)} />
-                  <ButtonsBar buttons={formButtons.slice(1)} />
-                </div>
-              ) : (
-                <div
-                  className={clsx(!citizenList && 'container', 'text-center')}
-                >
-                  <ButtonsBar
-                    citizenDeleteChange={citizenDeleteChange}
-                    buttons={formButtons}
-                    isUserProfile={!!isUserProfile}
-                  />
-                </div>
-              )}
-            </Sticky>
-          </div>
-          <div className='sr-only'>
-            <ButtonsBar buttons={formButtons} />
-          </div>
-        </>
+        <div className='mt-5 w-100'>
+          <Sticky
+            mode='bottom'
+            stickyClassName={clsx(
+              'sticky',
+              'bg-white',
+              isUserProfile
+                ? 'pr-4'
+                : isUserProfile && device.mediaIsTablet && 'pr-0',
+              isRoleManagement
+                ? 'pr-4'
+                : isRoleManagement && device.mediaIsTablet && 'pr-0',
+              !device.mediaIsPhone && 'container'
+            )}
+          >
+            {formButtons.length === 2 &&
+            (infoProgBtn ||
+              (infoProjBtn &&
+                titleInfo?.status !== 'ATTIVABILE' &&
+                titleInfo?.status !== 'NON ATTIVO')) ? (
+              <div
+                className={clsx(
+                  'd-flex',
+                  'flex-row',
+                  device.mediaIsPhone
+                    ? 'justify-content-end flex-wrap'
+                    : 'justify-content-between',
+                  'container',
+                  'w-100'
+                )}
+              >
+                <ButtonsBar buttons={formButtons.slice(0, 1)} />
+                <ButtonsBar buttons={formButtons.slice(1)} />
+              </div>
+            ) : (
+              <div className={clsx(!citizenList && 'container', 'text-center')}>
+                <ButtonsBar
+                  citizenDeleteChange={citizenDeleteChange}
+                  buttons={formButtons}
+                  isUserProfile={!!isUserProfile}
+                />
+              </div>
+            )}
+          </Sticky>
+        </div>
       ) : null}
     </>
   );

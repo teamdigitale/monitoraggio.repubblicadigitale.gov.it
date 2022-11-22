@@ -3,6 +3,7 @@ import { ButtonInButtonsBar } from '../ButtonsBar/buttonsBar';
 import { Icon } from 'design-react-kit';
 import { ButtonsBar } from '../index';
 import clsx from 'clsx';
+import IconWarning from '/public/assets/img/it-warning-circle-primary.png';
 
 interface EmptySectionI {
   title: string;
@@ -13,6 +14,7 @@ interface EmptySectionI {
   aside?: boolean;
   horizontal?: boolean;
   noMargin?: boolean;
+  subtitle2?: any;
 }
 
 const EmptySection: React.FC<EmptySectionI> = ({
@@ -24,6 +26,7 @@ const EmptySection: React.FC<EmptySectionI> = ({
   aside,
   horizontal,
   noMargin,
+  subtitle2,
 }) => {
   return (
     <div
@@ -40,13 +43,17 @@ const EmptySection: React.FC<EmptySectionI> = ({
     >
       {withIcon && (
         <Icon
-          icon={icon || 'it-warning-circle'}
+          icon={icon || IconWarning}
           className={clsx('empty-section__icon ', horizontal && 'mr-3')}
+          aria-label='Sezione vuota'
         />
       )}
       <div className='d-flex flex-column align-items-center'>
-        <h1 className='h5 text-black'>{title || 'Questa sezione è ancora vuota'}</h1>
+        <h1 className='h5 text-black'>
+          {title || 'Questa sezione è ancora vuota'}
+        </h1>
         {subtitle && <h2 className='h6'>{subtitle}</h2>}
+        {subtitle2 && <div>{subtitle2}</div>}
       </div>
       {buttons && <ButtonsBar buttons={buttons} />}
     </div>

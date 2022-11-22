@@ -27,13 +27,13 @@ const getErrorMessage = ({ response }: any) => {
   }
 };
 */
-export const defaultErrorMessage = 'Si è verificato un errore';
+export const defaultErrorMessage = 'Ti invitiamo a riprovare più tardi';
 const networkErrorPayload = {
   title: 'ERRORE DI RETE',
   message: 'Problemi di connessione, verificare la connettività',
 };
 const defaultErrorPayload = {
-  title: 'ERRORE GENERICO',
+  title: 'SI È VERIFICATO UN ERRORE',
   message: defaultErrorMessage,
 };
 const getDrupalErrorMessage = (errorsList: any, errorMessage: string) => {

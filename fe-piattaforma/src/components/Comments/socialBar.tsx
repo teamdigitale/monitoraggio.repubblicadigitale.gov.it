@@ -17,6 +17,7 @@ export interface SocialI {
   showReplies?: boolean | undefined;
   user_like?: boolean | undefined;
   onShowReplies?: (() => void) | undefined;
+  isReply?: boolean;
 }
 
 const SocialBar: React.FC<SocialI> = (props) => {
@@ -31,11 +32,10 @@ const SocialBar: React.FC<SocialI> = (props) => {
     user_like,
     downloads,
     replies,
+    isReply = false,
   } = props;
 
   const device = useAppSelector(selectDevice);
-
-  console.log('replies', replies)
 
   return (
     <div
@@ -56,7 +56,12 @@ const SocialBar: React.FC<SocialI> = (props) => {
         <div className='d-flex'>
           {likes !== undefined ? (
             <div className='d-flex flex-row align-items-center pr-4'>
-              <Icon icon={CuoreBluVuoto} size='xs' aria-label='like vuoto' />
+              <Icon
+                icon={CuoreBluVuoto}
+                size='xs'
+                aria-label='like vuoto'
+                aria-hidden
+              />
               <p className='neutral-1-color pl-2'> {likes} </p>
             </div>
           ) : null}
@@ -66,7 +71,8 @@ const SocialBar: React.FC<SocialI> = (props) => {
                 icon='it-comment'
                 color='primary'
                 size='sm'
-                aria-label='icone risposta'
+                aria-label='Commenti'
+                aria-hidden
               />
               <p className='neutral-1-color pl-2'> {comments} </p>
             </div>
@@ -77,7 +83,8 @@ const SocialBar: React.FC<SocialI> = (props) => {
                 icon='it-password-visible'
                 color='primary'
                 size='sm'
-                aria-label='icona visualizzato'
+                aria-label='Views'
+                aria-hidden
               />
               <p className='neutral-1-color pl-2'>{views}</p>
             </div>
@@ -89,6 +96,7 @@ const SocialBar: React.FC<SocialI> = (props) => {
                 color='primary'
                 size='sm'
                 aria-label='download effetuati'
+                aria-hidden
               />
               <p className='neutral-1-color pl-2'>{downloads}</p>
             </div>
@@ -98,46 +106,49 @@ const SocialBar: React.FC<SocialI> = (props) => {
           {onLike ? (
             <Button
               onClick={() => onLike()}
-              className='mr-4'
               style={{ padding: '0' }}
+              className={clsx(
+                'd-flex',
+                'flex-row',
+                'align-items-center',
+                'mr-4'
+                /*   device.mediaIsDesktop && 'justify-content-end' */
+              )}
+              aria-label={user_like ? 'NON MI PIACE' : 'MI PIACE'}
             >
-              <div
-                className={clsx(
-                  'd-flex',
-                  'flex-row',
-                  'align-items-center'
-                  /*   device.mediaIsDesktop && 'justify-content-end' */
-                )}
-              >
-                <Icon
-                  icon={user_like ? CuoreBluPieno : CuoreBluVuoto}
-                  size='xs'
-                  aria-label='like'
-                />
-                {device.mediaIsDesktop ? (
-                  <p className='primary-color font-weight-bold pl-2 letter-spacing'>
-                    {user_like ? 'NON MI PIACE' : 'MI PIACE'}
-                  </p>
-                ) : null}
-              </div>
+              <Icon
+                icon={user_like ? CuoreBluPieno : CuoreBluVuoto}
+                size='xs'
+                aria-label='likes'
+                aria-hidden
+              />
+              {device.mediaIsDesktop ? (
+                <p className='primary-color font-weight-bold pl-2 letter-spacing'>
+                  {user_like ? 'NON MI PIACE' : 'MI PIACE'}
+                </p>
+              ) : null}
             </Button>
           ) : null}
 
           {onComment ? (
-            <Button onClick={() => onComment()} style={{ padding: '0' }}>
-              <div className={clsx('d-flex', 'flex-row', 'align-items-center')}>
-                <Icon
-                  icon='it-comment'
-                  color='primary'
-                  size='sm'
-                  aria-label='rispota'
-                />
-                {device.mediaIsDesktop ? (
-                  <p className='primary-color font-weight-bold pl-2 letter-spacing'>
-                    COMMENTA
-                  </p>
-                ) : null}
-              </div>
+            <Button
+              onClick={() => onComment()}
+              style={{ padding: '0' }}
+              className={clsx('d-flex', 'flex-row', 'align-items-center')}
+              aria-label='Commenta'
+            >
+              <Icon
+                icon='it-comment'
+                color='primary'
+                size='sm'
+                aria-label='commenta'
+                aria-hidden
+              />
+              {device.mediaIsDesktop ? (
+                <p className='primary-color font-weight-bold pl-2 letter-spacing'>
+                  {isReply ? 'RISPONDI':'COMMENTA'}
+                </p>
+              ) : null}
             </Button>
           ) : null}
         </div>
@@ -152,38 +163,42 @@ const SocialBar: React.FC<SocialI> = (props) => {
               !device.mediaIsPhone && 'pl-3',
               'd-flex',
               'flex-row',
-              'align-items-center'
+              'align-items-center',
+              'd-flex',
+              'flex-row',
+              'align-items-center',
+              device.mediaIsPhone
+                ? 'justify-content-start py-3 pl-0'
+                : 'justify-content-end pl-2'
             )}
+            aria-label={`${
+              showReplies ? 'NASCONDI RISPOSTE' : 'MOSTRA RISPOSTE'
+            }`}
           >
-            <div
+            <Icon
+              icon='it-list'
+              color='primary'
+              size='sm'
+              aria-label='lista risposte'
+              aria-hidden
+            />
+            <p
               className={clsx(
-                'd-flex',
-                'flex-row',
-                'align-items-center',
-                device.mediaIsPhone
-                  ? 'justify-content-start py-3 pl-0'
-                  : 'justify-content-end pl-2'
+                'primary-color',
+                'font-weight-bold',
+                'pl-2',
+                'text-nowrap',
+                'letter-spacing'
               )}
             >
-              <Icon icon='it-list' color='primary' size='sm' />
-              <p
-                className={clsx(
-                  'primary-color',
-                  'font-weight-bold',
-                  'pl-2',
-                  'text-nowrap',
-                  'letter-spacing'
-                )}
-              >
-                {`${showReplies ? 'NASCONDI RISPOSTE' : 'MOSTRA RISPOSTE'}`}
-              </p>
-              {replies ? (
-                <span
-                  className='primary-color pl-1 letter-spacing'
-                  style={{ fontWeight: 400 }}
-                >{`(${replies})`}</span>
-              ) : null}
-            </div>
+              {`${showReplies ? 'NASCONDI RISPOSTE' : 'MOSTRA RISPOSTE'}`}
+            </p>
+            {replies ? (
+              <span
+                className='primary-color pl-1 letter-spacing'
+                style={{ fontWeight: 400 }}
+              >{`(${replies})`}</span>
+            ) : null}
           </Button>
         </div>
       ) : null}

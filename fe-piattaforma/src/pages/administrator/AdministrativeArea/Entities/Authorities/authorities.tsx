@@ -32,6 +32,7 @@ import {
   GetEntityValues,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 import useGuard from '../../../../../hooks/guard';
+import IconNote from '/public/assets/img/it-note-primary.png';
 
 const entity = 'ente';
 const profileDropdownLabel = 'profili';
@@ -245,9 +246,7 @@ const Authorities: React.FC = () => {
       ctaDownload={
         hasUserPermission(['list.dwnl.enti']) ? handleDownloadList : undefined
       }
-      resetFilterDropdownSelected={(filterKey: string) =>
-        setFilterDropdownSelected(filterKey)
-      }
+      resetFilterDropdownSelected={() => setFilterDropdownSelected('')}
       tooltip
       tooltiptext={searchInformation.placeholder}
     >
@@ -276,12 +275,15 @@ const Authorities: React.FC = () => {
         ) : (
           <EmptySection
             title='Non sono presenti enti per la tua ricerca'
-            icon='it-note'
+            icon={IconNote}
             withIcon
           />
         )}
       </div>
-      <ManageGenericAuthority creation />
+      <ManageGenericAuthority
+        legend="form creazione ente, i campi con l'asterisco sono obbligatori"
+        creation
+      />
     </GenericSearchFilterTableLayout>
   );
 };
