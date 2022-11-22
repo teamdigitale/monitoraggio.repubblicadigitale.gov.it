@@ -544,7 +544,7 @@ public class UtenteServiceTest {
 		//test con ruoloUtenteLoggato = DSCU/REG/DEG/REGP/DEGP/REPP/DEPP
 		sceltaContesto.setCodiceRuoloUtenteLoggato("DSCU");
 		List<String> risultato = service.getAllStatiByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRicerca);
-		assertThat(risultato.size()).isEqualTo(1);
+		assertThat(risultato.size()).isEqualTo(0);
 	}
 	
 	@Test
