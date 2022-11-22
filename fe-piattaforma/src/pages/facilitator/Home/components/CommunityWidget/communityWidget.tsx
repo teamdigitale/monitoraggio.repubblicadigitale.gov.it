@@ -72,7 +72,8 @@ const CommunityWidget = () => {
               device.mediaIsPhone ? 'pb-3' : 'responsive-width'
             )}
           >
-            Partecipa alla discussione sui temi di interesse per la comunità dei facilitatori e formatori digitali.
+            Partecipa alla discussione sui temi di interesse per la comunità dei
+            facilitatori e formatori digitali.
           </p>
           {!device.mediaIsPhone && (
             <Link className='btn btn-primary' role='button' to='/community'>
@@ -103,7 +104,7 @@ const CommunityWidget = () => {
               </div>
             ))
           ) : (
-            <Slider isItemsHome>
+            <Slider isItemsHome widgetType='topics'>
               {formatSlides(
                 topicsList.slice(
                   0,

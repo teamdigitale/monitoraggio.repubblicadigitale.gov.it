@@ -12,6 +12,7 @@ import { selectUser } from '../../../redux/features/user/userSlice';
 import { WorkDocsRegistration } from '../../../redux/features/forum/forumThunk';
 import { RegexpType } from '../../../utils/validator';
 import './workDocs.scss';
+import clsx from 'clsx';
 
 interface WorkdocsRegistrationModalI extends withFormHandlerProps {
   onClose?: () => void;
@@ -104,18 +105,34 @@ const WorkdocsRegistrationModal: React.FC<WorkdocsRegistrationModalI> = (
           login.
         </p>
         <Form id='workdocs-registration-form' className='my-3 mx-2 work-docs'>
-          <Form.Row className='justify-content-between px-0 px-lg-5 mx-4'>
+          <Form.Row
+            className={clsx(
+              'justify-content-between',
+              'px-0',
+              'px-lg-5',
+              'mx-4',
+              'margin-bottom'
+            )}
+          >
             <Input
               {...form?.password}
               col='col-12'
               onInputBlur={onInputChange}
               infoText='La password deve essere lunga tra 8 e 64 caratteri e contenere almeno una lettera maiuscola, un numero, un carattare speciale'
             />
+          </Form.Row>
+          <Form.Row
+            className={clsx(
+              'justify-content-between',
+              'px-0',
+              'px-lg-5',
+              'mx-4'
+            )}
+          >
             <Input
               {...form?.confirmPassword}
               col='col-12'
               onInputBlur={onInputChange}
-              className='confirm-password'
             />
           </Form.Row>
         </Form>

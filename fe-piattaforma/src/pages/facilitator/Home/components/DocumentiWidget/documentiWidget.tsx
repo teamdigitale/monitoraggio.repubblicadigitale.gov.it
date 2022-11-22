@@ -81,7 +81,8 @@ const DocumentsWidget = () => {
                 !device.mediaIsPhone ? 'mb-4' : 'mb-3'
               )}
             >
-              Collabora in linea con altri facilitatori per creare e condividere nuovi documenti.
+              Collabora in linea con altri facilitatori per creare e condividere
+              nuovi documenti.
             </p>
             <Link role='button' className='btn btn-primary' to='/documenti'>
               Vai ai documenti
@@ -116,7 +117,7 @@ const DocumentsWidget = () => {
                 </div>
               ))
             ) : (
-              <Slider isItemsHome>
+              <Slider isItemsHome widgetType='documents'>
                 {formatSlides(
                   docsList.slice(
                     0,
