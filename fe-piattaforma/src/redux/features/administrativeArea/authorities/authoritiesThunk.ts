@@ -599,11 +599,11 @@ export const AssignManagerAuthorityReferentDelegate =
         };
       }
       if (userDetail?.id) {
-        userDetail.codiceFiscale &&
-          (await API.put(
-            `/utente/${userDetail.id.toString().toUpperCase()}`,
-            userDetail
-          ));
+        // userDetail.codiceFiscale &&
+        //   (await API.put(
+        //     `/utente/${userDetail.id.toString().toUpperCase()}`,
+        //     userDetail
+        //   ));
         userId !== userDetail.id.toString() && (await API.post(endpoint, body));
       } else {
         const payload = {
@@ -614,7 +614,7 @@ export const AssignManagerAuthorityReferentDelegate =
           mansione: userDetail?.mansione,
           nome: userDetail?.nome,
           ruolo: role,
-          tipoContratto: '', // TODO: valore?
+          tipoContratto: userDetail?.tipoContratto,
         };
         // eslint-disable-next-line no-case-declarations
         const res = await API.post(`/utente`, payload);
