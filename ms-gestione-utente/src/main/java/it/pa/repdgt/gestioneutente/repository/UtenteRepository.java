@@ -1316,7 +1316,6 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			+ "                          ) as risultato",
 			nativeQuery = true)
 	public int countUtentiTrovatiPerReferenteDelegatoGestoreProgetti(
-			@Param(value = "idProgramma") Long idProgramma, 
 			@Param(value = "idProgetto") Long idProgetto,
 			@Param(value = "cfUtente")String cfUtente,
 			@Param(value = "criterioRicerca") String criterioRicerca,
@@ -1370,7 +1369,6 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			+ "                          ) as risultato",
 			nativeQuery = true)
 	public int countUtentiTrovatiPerReferenteDelegatoEntePartnerProgetti(
-			@Param(value = "idProgramma") Long idProgramma, 
 			@Param(value = "idProgetto") Long idProgetto,
 			@Param(value = "idEnte") Long idEnte,
 			@Param(value = "cfUtente")String cfUtente,

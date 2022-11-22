@@ -932,7 +932,6 @@ public class UtenteServiceTest {
 		//test con ruolo REGP/DEGP
 		sceltaContesto.setCodiceRuoloUtenteLoggato("REGP");
 		when(this.utenteRepository.countUtentiTrovatiPerReferenteDelegatoGestoreProgetti(
-				sceltaContesto.getIdProgramma(),
 				sceltaContesto.getIdProgetto(),
 				sceltaContesto.getCfUtenteLoggato(),
 				filtroRicerca.getCriterioRicerca(),
@@ -946,7 +945,6 @@ public class UtenteServiceTest {
 		//test con ruolo REPP/DEPP
 		sceltaContesto.setCodiceRuoloUtenteLoggato("REPP");
 		when(this.utenteRepository.countUtentiTrovatiPerReferenteDelegatoEntePartnerProgetti(
-				sceltaContesto.getIdProgramma(),
 				sceltaContesto.getIdProgetto(),
 				sceltaContesto.getIdEnte(),
 				sceltaContesto.getCfUtenteLoggato(),
