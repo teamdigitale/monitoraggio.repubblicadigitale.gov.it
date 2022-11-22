@@ -297,6 +297,7 @@ public class UtenteServiceTest {
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%",
 				filtroRequest.getRuoli(),
+				filtroRequest.getStati(),
 				currPage*pageSize,
 				pageSize
 				)).thenReturn(new HashSet<UtenteEntity>());
@@ -307,6 +308,7 @@ public class UtenteServiceTest {
 				   filtroRequest.getCriterioRicerca(),
 				   "%" + filtroRequest.getCriterioRicerca() + "%",
 				   filtroRequest.getRuoli(),
+					filtroRequest.getStati(),
 				   currPage*pageSize,
 				   pageSize)).thenReturn(new HashSet<UtenteEntity>());
 		assertThat(service.getUtentiPaginatiByRuolo(RuoloUtenteEnum.REG.toString(), "CODICE_FISCALE", 1L, 1L, 1L, filtroRequest, currPage, pageSize)).isNotNull();
@@ -316,6 +318,7 @@ public class UtenteServiceTest {
 				  filtroRequest.getCriterioRicerca(),
 				   "%" + filtroRequest.getCriterioRicerca() + "%",
 				  filtroRequest.getRuoli(),
+				  filtroRequest.getStati(),
 				  currPage*pageSize,
 				   pageSize)).thenReturn(new HashSet<UtenteEntity>());
 		assertThat(service.getUtentiPaginatiByRuolo(RuoloUtenteEnum.DEGP.toString(), "CODICE_FISCALE", 1L, 1L, 1L, filtroRequest, currPage, pageSize)).isNotNull();
@@ -326,6 +329,7 @@ public class UtenteServiceTest {
 				  filtroRequest.getCriterioRicerca(),
 				   "%" + filtroRequest.getCriterioRicerca() + "%",
 				  filtroRequest.getRuoli(),
+					filtroRequest.getStati(),
 				  currPage*pageSize,
 				  pageSize)).thenReturn(new HashSet<UtenteEntity>());
 		assertThat(service.getUtentiPaginatiByRuolo(RuoloUtenteEnum.DEPP.toString(), "CODICE_FISCALE", 1L, 1L, 1L, filtroRequest, currPage, pageSize)).isNotNull();
@@ -540,7 +544,7 @@ public class UtenteServiceTest {
 		//test con ruoloUtenteLoggato = DSCU/REG/DEG/REGP/DEGP/REPP/DEPP
 		sceltaContesto.setCodiceRuoloUtenteLoggato("DSCU");
 		List<String> risultato = service.getAllStatiByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRicerca);
-		assertThat(risultato.size()).isEqualTo(1);
+		assertThat(risultato.size()).isEqualTo(0);
 	}
 	
 	@Test
@@ -598,7 +602,8 @@ public class UtenteServiceTest {
 		when(this.utenteRepository.findRuoliPerDSCU(
 				filtroRicerca.getCriterioRicerca(),
 				"%" + filtroRicerca.getCriterioRicerca() + "%",
-				filtroRicerca.getRuoli()
+				filtroRicerca.getRuoli(),
+				filtroRicerca.getStati()
 				)).thenReturn(listaCodiciRuoli);
 		List<String> risultato = service.getAllRuoliByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRicerca);
 		assertThat(risultato.size()).isEqualTo(listaCodiciRuoli.size());
@@ -613,7 +618,8 @@ public class UtenteServiceTest {
 				sceltaContesto.getCfUtenteLoggato(),
 				filtroRicerca.getCriterioRicerca(),
 				"%" + filtroRicerca.getCriterioRicerca() + "%",
-				filtroRicerca.getRuoli()
+				filtroRicerca.getRuoli(),
+				filtroRicerca.getStati()
 				)).thenReturn(listaCodiciRuoli);
 		List<String> risultato = service.getAllRuoliByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRicerca);
 		assertThat(risultato.size()).isEqualTo(listaCodiciRuoli.size());
@@ -628,7 +634,8 @@ public class UtenteServiceTest {
 				sceltaContesto.getCfUtenteLoggato(),
 				filtroRicerca.getCriterioRicerca(),
 				"%" + filtroRicerca.getCriterioRicerca() + "%",
-				filtroRicerca.getRuoli()
+				filtroRicerca.getRuoli(),
+				filtroRicerca.getStati()
 				)).thenReturn(listaCodiciRuoli);
 		List<String> risultato = service.getAllRuoliByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRicerca);
 		assertThat(risultato.size()).isEqualTo(listaCodiciRuoli.size());
@@ -643,7 +650,8 @@ public class UtenteServiceTest {
 				sceltaContesto.getCfUtenteLoggato(),
 				filtroRicerca.getCriterioRicerca(),
 				"%" + filtroRicerca.getCriterioRicerca() + "%",
-				filtroRicerca.getRuoli()
+				filtroRicerca.getRuoli(),
+				filtroRicerca.getStati()
 				)).thenReturn(listaCodiciRuoli);
 		List<String> risultato = service.getAllRuoliByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRicerca);
 		assertThat(risultato.size()).isEqualTo(listaCodiciRuoli.size());
@@ -910,7 +918,8 @@ public class UtenteServiceTest {
 		when(this.utenteRepository.countUtentiTrovatiPerDSCU(
 				filtroRicerca.getCriterioRicerca(),
 				"%" + filtroRicerca.getCriterioRicerca() + "%",
-				filtroRicerca.getRuoli())).thenReturn(1);
+				filtroRicerca.getRuoli(),
+				filtroRicerca.getStati())).thenReturn(1);
 		service.countUtentiTrovatiByRuolo(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getIdEnte(), sceltaContesto.getFiltroRequest());
 	}
 
@@ -923,7 +932,8 @@ public class UtenteServiceTest {
 				sceltaContesto.getCfUtenteLoggato(),
 				filtroRicerca.getCriterioRicerca(),
 				"%" + filtroRicerca.getCriterioRicerca() + "%",
-				filtroRicerca.getRuoli())).thenReturn(1);
+				filtroRicerca.getRuoli(),
+				filtroRicerca.getStati())).thenReturn(1);
 		service.countUtentiTrovatiByRuolo(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getIdEnte(), sceltaContesto.getFiltroRequest());
 	}
 
@@ -936,7 +946,8 @@ public class UtenteServiceTest {
 				sceltaContesto.getCfUtenteLoggato(),
 				filtroRicerca.getCriterioRicerca(),
 				"%" + filtroRicerca.getCriterioRicerca() + "%",
-				filtroRicerca.getRuoli())).thenReturn(1);
+				filtroRicerca.getRuoli(),
+				filtroRicerca.getStati())).thenReturn(1);
 		service.countUtentiTrovatiByRuolo(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getIdEnte(), sceltaContesto.getFiltroRequest());
 	}
 
@@ -950,7 +961,8 @@ public class UtenteServiceTest {
 				sceltaContesto.getCfUtenteLoggato(),
 				filtroRicerca.getCriterioRicerca(),
 				"%" + filtroRicerca.getCriterioRicerca() + "%",
-				filtroRicerca.getRuoli())).thenReturn(1);
+				filtroRicerca.getRuoli(),
+				filtroRicerca.getStati())).thenReturn(1);
 		service.countUtentiTrovatiByRuolo(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getIdEnte(), sceltaContesto.getFiltroRequest());
 	}
 
