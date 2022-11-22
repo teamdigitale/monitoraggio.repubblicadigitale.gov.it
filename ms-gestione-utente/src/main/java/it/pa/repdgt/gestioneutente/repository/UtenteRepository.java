@@ -343,8 +343,8 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			+ "			                       WHERE 1=1"
 			+ "			                           AND u2.id = utente.id"
 			+ "			                           AND  ( COALESCE(:ruoli) IS NULL   OR   ruolo2.nome IN (:ruoli) )) = utente.id"
-			+ "			      ORDER BY utente.cognome"
 			+ "               AND (COALESCE(:stati) IS NULL OR  utente.stato in (:stati))"
+			+ "			      ORDER BY utente.cognome"
 			+ "			      LIMIT :currPageIndex, :pageSize"
 			+ "               ) as risultato"
 			+ "             INNER JOIN utente_x_ruolo ur "
@@ -1267,7 +1267,7 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			 + "			      	ON utentiPaginati.CODICE_FISCALE = ruoli.UTENTE_ID "
 			 + "			      LEFT JOIN ruolo ruolo "
 			 + "			          ON ruolo.CODICE = ruoli.RUOLO_CODICE "
-			 + "			     	 ) as utentiPaginati , ",
+			 + "			     	 ) as utentiPaginati ",
 		nativeQuery = true)
 	public int countUtentiTrovati(
 			@Param(value = "criterioRicerca") String criterioRicerca,

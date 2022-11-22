@@ -457,23 +457,26 @@ public class UtenteService {
 		switch (codiceRuolo) {
 		case "DTD":
 			stati.addAll(this.getStatoUtentiByFiltri(filtroRequest));
-			return stati;
+			break;
 		case "DSCU":
 			stati.addAll(this.getStatiiPerDSCU(filtroRequest));
 		case "REG":
 		case "DEG":
 			stati.addAll(this.getStatiPerReferenteDelegatoGestoreProgramma(idProgramma, cfUtente, filtroRequest));
+			break;
 		case "REGP":
 		case "DEGP":
 			stati.addAll(this.getStatiPerReferenteDelegatoGestoreProgetti(idProgetto, cfUtente, filtroRequest));
+			break;
 		case "REPP":
 		case "DEPP":
 			stati.addAll(this.getStatiPerReferenteDelegatoEntePartnerProgetti(idProgetto, cfUtente, filtroRequest));
-			return stati;
+			break;
 		default:
 			stati.addAll(this.getStatoUtentiByFiltri(filtroRequest));
-			return stati;
+			break;
 		}
+		return stati;
 	}
 
 	@LogMethod
