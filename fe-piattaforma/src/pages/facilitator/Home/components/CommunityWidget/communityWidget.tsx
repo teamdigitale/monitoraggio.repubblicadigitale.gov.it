@@ -72,12 +72,11 @@ const CommunityWidget = () => {
               device.mediaIsPhone ? 'pb-3' : 'responsive-width'
             )}
           >
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
-            ipsum velit, tempor at luctus quis.
+            Partecipa alla discussione sui temi di interesse per la comunità dei facilitatori e formatori digitali.
           </p>
           {!device.mediaIsPhone && (
             <Link className='btn btn-primary' role='button' to='/community'>
-              Esplora tutti i topic
+              Vai ai topic
             </Link>
           )}
         </div>
