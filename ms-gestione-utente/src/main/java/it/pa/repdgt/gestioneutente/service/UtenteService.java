@@ -211,6 +211,7 @@ public class UtenteService {
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%",
 				filtroRequest.getRuoli(),
+				filtroRequest.getStati(),
 				currPage*pageSize,
 				pageSize);
 	}
@@ -225,6 +226,7 @@ public class UtenteService {
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%",
 				filtroRequest.getRuoli(),
+				filtroRequest.getStati(),
 				currPage*pageSize,
 				pageSize);
 	}
@@ -238,6 +240,7 @@ public class UtenteService {
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%",
 				filtroRequest.getRuoli(),
+				filtroRequest.getStati(),
 				currPage*pageSize,
 				pageSize);
 	}
@@ -249,6 +252,7 @@ public class UtenteService {
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%",
 				filtroRequest.getRuoli(),
+				filtroRequest.getStati(),
 				currPage*pageSize,
 				pageSize
 				);
@@ -453,20 +457,26 @@ public class UtenteService {
 		switch (codiceRuolo) {
 		case "DTD":
 			stati.addAll(this.getStatoUtentiByFiltri(filtroRequest));
-			return stati;
+			break;
 		case "DSCU":
+			stati.addAll(this.getStatiiPerDSCU(filtroRequest));
 		case "REG":
 		case "DEG":
+			stati.addAll(this.getStatiPerReferenteDelegatoGestoreProgramma(idProgramma, cfUtente, filtroRequest));
+			break;
 		case "REGP":
 		case "DEGP":
+			stati.addAll(this.getStatiPerReferenteDelegatoGestoreProgetti(idProgetto, cfUtente, filtroRequest));
+			break;
 		case "REPP":
 		case "DEPP":
-			stati.add(StatoEnum.ATTIVO.getValue());
-			return stati;
+			stati.addAll(this.getStatiPerReferenteDelegatoEntePartnerProgetti(idProgetto, cfUtente, filtroRequest));
+			break;
 		default:
 			stati.addAll(this.getStatoUtentiByFiltri(filtroRequest));
-			return stati;
+			break;
 		}
+		return stati;
 	}
 
 	@LogMethod
@@ -515,7 +525,20 @@ public class UtenteService {
 				cfUtente,
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%",
-				filtroRequest.getRuoli()
+				filtroRequest.getRuoli(),
+				filtroRequest.getStati()
+				);
+	}
+	
+	private List<String> getStatiPerReferenteDelegatoEntePartnerProgetti(Long idProgetto,
+			String cfUtente, FiltroRequest filtroRequest) {
+		return this.utenteRepository.findStatiPerReferenteDelegatoEntePartnerProgetti(
+				idProgetto,
+				cfUtente,
+				filtroRequest.getCriterioRicerca(),
+				"%" + filtroRequest.getCriterioRicerca() + "%",
+				filtroRequest.getRuoli(),
+				filtroRequest.getStati()
 				);
 	}
 
@@ -526,7 +549,20 @@ public class UtenteService {
 				cfUtente,
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%",
-				filtroRequest.getRuoli()
+				filtroRequest.getRuoli(),
+				filtroRequest.getStati()
+				);
+	}
+	
+	private List<String> getStatiPerReferenteDelegatoGestoreProgetti(Long idProgetto, String cfUtente,
+			FiltroRequest filtroRequest) {
+		return this.utenteRepository.findStatiPerReferenteDelegatoGestoreProgetti(
+				idProgetto,
+				cfUtente,
+				filtroRequest.getCriterioRicerca(),
+				"%" + filtroRequest.getCriterioRicerca() + "%",
+				filtroRequest.getRuoli(),
+				filtroRequest.getStati()
 				);
 	}
 
@@ -537,7 +573,20 @@ public class UtenteService {
 				cfUtente,
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%",
-				filtroRequest.getRuoli()
+				filtroRequest.getRuoli(),
+				filtroRequest.getStati()
+				);
+	}
+	
+	private List<String> getStatiPerReferenteDelegatoGestoreProgramma(Long idProgramma, String cfUtente,
+			FiltroRequest filtroRequest) {
+		return this.utenteRepository.findStatiiPerReferenteDelegatoGestoreProgramma(
+				idProgramma,
+				cfUtente,
+				filtroRequest.getCriterioRicerca(),
+				"%" + filtroRequest.getCriterioRicerca() + "%",
+				filtroRequest.getRuoli(),
+				filtroRequest.getStati()
 				);
 	}
 
@@ -545,7 +594,17 @@ public class UtenteService {
 		return this.utenteRepository.findRuoliPerDSCU(
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%", 
-				filtroRequest.getRuoli()
+				filtroRequest.getRuoli(),
+				filtroRequest.getStati()
+				);
+	}
+	
+	private List<String> getStatiiPerDSCU(FiltroRequest filtroRequest) {
+		return this.utenteRepository.findStatiPerDSCU(
+				filtroRequest.getCriterioRicerca(),
+				"%" + filtroRequest.getCriterioRicerca() + "%", 
+				filtroRequest.getRuoli(),
+				filtroRequest.getStati()
 				);
 	}
 
@@ -947,11 +1006,11 @@ public class UtenteService {
 			break;
 		case "REGP":
 		case "DEGP":
-			numeroUtentiTrovati = this.countUtentiPerReferenteDelegatoGestoreProgetti(idProgramma, idProgetto, cfUtente, filtroRequest);
+			numeroUtentiTrovati = this.countUtentiPerReferenteDelegatoGestoreProgetti(idProgetto, cfUtente, filtroRequest);
 			break;
 		case "REPP":
 		case "DEPP":
-			numeroUtentiTrovati = this.countUtentiPerReferenteDelegatoEntePartnerProgetti(idProgramma, idProgetto, idEnte, cfUtente, filtroRequest);
+			numeroUtentiTrovati = this.countUtentiPerReferenteDelegatoEntePartnerProgetti(idProgetto, idEnte, cfUtente, filtroRequest);
 			break;
 		default:
 			numeroUtentiTrovati = this.countUtentiTrovati(filtroRequest);
@@ -961,28 +1020,28 @@ public class UtenteService {
 		return numeroUtentiTrovati;
 	}
 
-	private int countUtentiPerReferenteDelegatoEntePartnerProgetti(Long idProgramma, Long idProgetto, Long idEnte, String cfUtente,
+	private int countUtentiPerReferenteDelegatoEntePartnerProgetti(Long idProgetto, Long idEnte, String cfUtente,
 			FiltroRequest filtroRequest) {
 		return this.utenteRepository.countUtentiTrovatiPerReferenteDelegatoEntePartnerProgetti(
-				idProgramma,
 				idProgetto,
 				idEnte,
 				cfUtente,
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%",
-				filtroRequest.getRuoli()
+				filtroRequest.getRuoli(),
+				filtroRequest.getStati()
 				);
 	}
 
-	private int countUtentiPerReferenteDelegatoGestoreProgetti(Long idProgramma, Long idProgetto, String cfUtente,
+	private int countUtentiPerReferenteDelegatoGestoreProgetti(Long idProgetto, String cfUtente,
 			FiltroRequest filtroRequest) {
 		return this.utenteRepository.countUtentiTrovatiPerReferenteDelegatoGestoreProgetti(
-				idProgramma,
 				idProgetto,
 				cfUtente,
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%",
-				filtroRequest.getRuoli()
+				filtroRequest.getRuoli(),
+				filtroRequest.getStati()
 				);
 	}
 
@@ -993,7 +1052,8 @@ public class UtenteService {
 				cfUtente,
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%",
-				filtroRequest.getRuoli()
+				filtroRequest.getRuoli(),
+				filtroRequest.getStati()
 				);
 	}
 
@@ -1001,7 +1061,8 @@ public class UtenteService {
 		return this.utenteRepository.countUtentiTrovatiPerDSCU(
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%",
-				filtroRequest.getRuoli()
+				filtroRequest.getRuoli(),
+				filtroRequest.getStati()
 				);
 	}
 
