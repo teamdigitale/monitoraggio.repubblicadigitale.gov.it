@@ -13,7 +13,6 @@ interface TagsSelectI {
 }
 
 const TagsSelect = ({ selectedTags, tags, addTag, id = '' }: TagsSelectI) => {
-
   const getFilteredTags = async (inputValue: string) =>
     new Promise((resolve) =>
       resolve(() =>
@@ -23,16 +22,16 @@ const TagsSelect = ({ selectedTags, tags, addTag, id = '' }: TagsSelectI) => {
             t.label.toLowerCase().includes(inputValue.toLowerCase())
         ).length
           ? tags.filter(
-            (t) =>
-              !selectedTags.includes(t.label) &&
-              t.label.toLowerCase().includes(inputValue.toLowerCase())
-          )
+              (t) =>
+                !selectedTags.includes(t.label) &&
+                t.label.toLowerCase().includes(inputValue.toLowerCase())
+            )
           : [
-            {
-              label: inputValue,
-              value: inputValue,
-            },
-          ]
+              {
+                label: inputValue,
+                value: inputValue,
+              },
+            ]
       )
     );
 
@@ -42,10 +41,10 @@ const TagsSelect = ({ selectedTags, tags, addTag, id = '' }: TagsSelectI) => {
         value=''
         defaultOptions={tags as any}
         maxMenuHeight={160}
-        noOptionsMessage={() => "Nessuna opzione disponibile"}
+        noOptionsMessage={() => 'Nessuna opzione disponibile'}
         loadOptions={getFilteredTags}
         onChange={(val: any) => addTag(val.value as string)}
-        placeholder='Digita la parola chiave e utilizza il completamento automatico per evitare errori di digitazione.'
+        placeholder='Usa il completamento automatico per cercare e inserire una parola chiave già esistente'
         aria-label='campo di testo'
         id={id}
       />

@@ -63,18 +63,15 @@ const DocumentsWidget = () => {
         <h2 className='h3 text-primary'>Documenti</h2>
 
         {device.mediaIsPhone && <div className='title-border-box my-3' />}
-        {device.mediaIsPhone ? (
-          <p className='text-primary pb-3'>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
-            ipsum velit, tempor at luctus quis.
-          </p>
-        ) : (
-          <p className='text-primary py-3'>
-            <b>Lorem ipsum dolor</b> sit amet, consectetur adipiscing elit.
-            Nullam ipsum velit, tempor at luctus quis, congue eget justo.
-            Quisque auctor massa non dapibus varius.
-          </p>
-        )}
+        <p
+          className={clsx(
+            'text-primary',
+            device.mediaIsPhone ? 'pb-3' : 'py-3'
+          )}
+        >
+          Scopri risorse e informazioni utili per la gestione dei servizi a cui
+          partecipi.
+        </p>
         {device.mediaIsDesktop && (
           <div>
             <p
@@ -84,12 +81,10 @@ const DocumentsWidget = () => {
                 !device.mediaIsPhone ? 'mb-4' : 'mb-3'
               )}
             >
-              Donec rutrum <b>ipsum in vestibulum tempus</b>. Quisque ac
-              lobortis mi. Mauris dapibus rhoncus luctus. Mauris sit amet
-              pretium nibh, dictum interdum purus.
+              Collabora in linea con altri facilitatori per creare e condividere nuovi documenti.
             </p>
             <Link role='button' className='btn btn-primary' to='/documenti'>
-              Accedi alla sezione
+              Vai ai documenti
             </Link>
           </div>
         )}
