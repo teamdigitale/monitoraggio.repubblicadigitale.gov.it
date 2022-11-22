@@ -243,14 +243,18 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
         <Form.Row className={bootClass}>
           <div>
             {tags.map((item, id) => (
-              <Chip key={id} className='mr-2 rounded-pill'>
+              <Chip key={id} className='mr-2 rounded-pill forum-chip-tag'>
                 <ChipLabel className='mx-1 my-1'>{item}</ChipLabel>
                 <Button
                   close
                   onClick={handleOnDelete}
                   style={{ minWidth: '8px' }}
                 >
-                  <Icon icon='it-close' aria-label='Elimina tag' />
+                  <Icon
+                    icon='it-close'
+                    aria-label='Elimina tag'
+                    className='chip-closer'
+                  />
                 </Button>
               </Chip>
             ))}

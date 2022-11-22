@@ -749,23 +749,26 @@ const ProjectsDetails = () => {
           active={activeTab === tabs.ENTE_GESTORE}
           enteGestore={!managingAuthorityID}
         >
-          {!managingAuthorityID ||
-          authorityInfo?.dettagliInfoEnte?.statoEnte === entityStatus.NON_ATTIVO ? (
-            <div id='tab-ente-gestore-progetto'>
-              * Ente gestore
-              <Tooltip
-                placement='bottom'
-                target='tab-ente-gestore-progetto'
-                isOpen={openOne}
-                toggle={() => toggleOne(!openOne)}
-              >
-                È necessario aggiungere almeno un referente per l'ente gestore
-              </Tooltip>
-              <Icon icon='it-warning-circle' size='xs' className='ml-1' />
-            </div>
-          ) : (
-            'Ente gestore'
-          )}
+          <div id='tab-ente-gestore-progetto'>
+            {!managingAuthorityID ||
+            authorityInfo?.dettagliInfoEnte?.statoEnte ===
+              entityStatus.NON_ATTIVO ? (
+              <>
+                * Ente gestore
+                <Tooltip
+                  placement='bottom'
+                  target='tooltip-ente-gestore-progetto'
+                  isOpen={openOne}
+                  toggle={() => toggleOne(!openOne)}
+                >
+                  È necessario aggiungere almeno un referente per l'ente gestore
+                </Tooltip>
+                <Icon icon='it-warning-circle' size='xs' className='ml-1' id='tooltip-ente-gestore-progetto'/>
+              </>
+            ) : (
+              'Ente gestore'
+            )}
+          </div>
         </NavLink>
       </li>
       <li ref={partnerRef}>
