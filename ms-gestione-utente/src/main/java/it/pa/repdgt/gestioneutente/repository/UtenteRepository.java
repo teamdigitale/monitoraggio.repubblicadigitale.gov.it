@@ -1260,13 +1260,6 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 	@Query(value = "SELECT count(*) FROM ( "
 			+ "SELECT distinct id FROM ( "
 			+ "	SELECT * FROM ("
-			+ "			 SELECT distinct rdg.CF_UTENTE "
-			+ "			 	FROM referente_delegati_gestore_programma rdg "
-			+ "             INNER JOIN programma p"
-			+ "              on rdg.id_ente = p.id_ente_gestore_programma "
-			+ "              and rdg.id_programma = p.id"
-			+ "				WHERE rdg.ID_PROGRAMMA = :idProgramma"
-			+ "			 UNION "
 			+ "			 SELECT distinct rdgp.CF_UTENTE "
 			+ "				FROM referente_delegati_gestore_progetto rdgp"
 			+ "			 	INNER JOIN progetto progetto "
@@ -1323,7 +1316,6 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			+ "                          ) as risultato",
 			nativeQuery = true)
 	public int countUtentiTrovatiPerReferenteDelegatoGestoreProgetti(
-			@Param(value = "idProgramma") Long idProgramma, 
 			@Param(value = "idProgetto") Long idProgetto,
 			@Param(value = "cfUtente")String cfUtente,
 			@Param(value = "criterioRicerca") String criterioRicerca,
@@ -1333,20 +1325,6 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 	@Query(value = "SELECT count(*) FROM ( "
 			+ "SELECT distinct id FROM ( "
 			+ "	SELECT * FROM ("
-			+ "			 SELECT distinct rdg.CF_UTENTE"
-			+ "				FROM referente_delegati_gestore_programma rdg"
-			+ "             INNER JOIN programma p"
-			+ "              on rdg.id_ente = p.id_ente_gestore_programma "
-			+ "              and rdg.id_programma = p.id"
-			+ "				WHERE rdg.ID_PROGRAMMA = :idProgramma "
-			+ "			 UNION "
-			+ "			 SELECT distinct rdgp.CF_UTENTE "
-			+ "				FROM referente_delegati_gestore_progetto rdgp "
-			+ "			 	INNER JOIN progetto progetto "
-			+ "			 	ON rdgp.ID_PROGETTO = progetto.ID "
-			+ "             AND rdgp.id_ente = progetto.id_ente_gestore_progetto"
-			+ "				WHERE rdgp.ID_PROGETTO = :idProgetto"
-			+ "			 UNION "
 			+ "			SELECT distinct rdp.CF_UTENTE "
 			+ "				FROM referente_delegati_partner rdp "
 			+ "				WHERE rdp.CF_UTENTE != :cfUtente"
@@ -1391,7 +1369,6 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			+ "                          ) as risultato",
 			nativeQuery = true)
 	public int countUtentiTrovatiPerReferenteDelegatoEntePartnerProgetti(
-			@Param(value = "idProgramma") Long idProgramma, 
 			@Param(value = "idProgetto") Long idProgetto,
 			@Param(value = "idEnte") Long idEnte,
 			@Param(value = "cfUtente")String cfUtente,
