@@ -178,7 +178,7 @@ export const GetServicesDetailFilters =
       if (res?.data) {
         const filterResponse = {
           stati: res.data.map((option: string) => ({
-            label: option[0] + option.slice(1).toLowerCase().replace('_', ' '),
+            label: option.replace('_', ' '),
             value: option,
           })),
         };

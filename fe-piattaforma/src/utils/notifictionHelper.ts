@@ -30,7 +30,7 @@ const getErrorMessage = ({ response }: any) => {
 export const defaultErrorMessage = 'Ti invitiamo a riprovare più tardi';
 const networkErrorPayload = {
   title: 'ERRORE DI RETE',
-  message: 'Problemi di connessione, verificare la connettività',
+  message: 'Si è verificato un problema di connessione a Facilita. Controlla le tue impostazioni di rete e riprova.',
 };
 const defaultErrorPayload = {
   title: 'SI È VERIFICATO UN ERRORE',
@@ -44,7 +44,7 @@ const getDrupalErrorMessage = (errorsList: any, errorMessage: string) => {
       )?.data?.message?.split(':')?.[0];
       if (errorsList[errorCode]) {
         return {
-          message: `${errorsList[errorCode]?.descrizione} (${errorCode})`,
+          message: `${errorsList[errorCode]?.descrizione} (errore ${errorCode})`,
           title: errorsList[errorCode]?.titolo || 'ERRORE',
         };
       } else {
@@ -72,7 +72,7 @@ export const getErrorMessage = async (
         return getDrupalErrorMessage(errorsList, message);
       } else if (errorsList[errorCode]) {
         return {
-          message: `${errorsList[errorCode]?.descrizione} (${errorCode})`,
+          message: `${errorsList[errorCode]?.descrizione} (errore ${errorCode})`,
           title: errorsList[errorCode]?.titolo || 'ERRORE',
         };
       } else {
