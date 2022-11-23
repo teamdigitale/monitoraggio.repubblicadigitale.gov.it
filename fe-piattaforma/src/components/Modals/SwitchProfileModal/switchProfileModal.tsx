@@ -15,6 +15,7 @@ import {
   selectModalPayload,
 } from '../../../redux/features/modal/modalSlice';
 import { getSessionValues } from '../../../utils/sessionHelper';
+import {useNavigate} from "react-router-dom";
 
 const id = 'switchProfileModal';
 
@@ -29,6 +30,7 @@ const SwitchProfileModal: React.FC<SwitchProfileModalI> = ({
   profilePicture = '',
 }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useAppSelector(selectUser) || {};
   const modal = useAppSelector(selectModalPayload);
   const { profiliUtente: profiles } = user;
@@ -50,6 +52,7 @@ const SwitchProfileModal: React.FC<SwitchProfileModalI> = ({
       if (modal?.onSubmit) {
         modal.onSubmit();
       } else {
+        navigate('/', { replace: true });
         window.location.reload();
       }
     }

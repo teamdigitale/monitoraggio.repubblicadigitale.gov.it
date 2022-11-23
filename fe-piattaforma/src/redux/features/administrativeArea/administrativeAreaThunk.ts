@@ -201,7 +201,7 @@ export const GetEntityFilterQueryParamsValues =
           [payload.dropdownType]: res.data.map((option: string) => ({
             label:
               payload.dropdownType === 'stati'
-                ? option[0] + option.slice(1).toLowerCase()
+                ? option.replace('_', ' ')
                 : option,
             value: option,
           })),
