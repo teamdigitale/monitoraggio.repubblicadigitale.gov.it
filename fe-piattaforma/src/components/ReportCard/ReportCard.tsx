@@ -31,7 +31,9 @@ interface ReportCardI {
   author?: string;
   item_author: string;
   comment_author: string;
+  comment_post_date?: string;
   item_id: string;
+  item_title?: string;
   item_type: 'board_item' | 'community_item' | 'document_item';
   reason: string;
   date: string;
@@ -41,11 +43,13 @@ const ReportCard: React.FC<ReportCardI> = ({
   author,
   item_author,
   comment_author,
+  comment_post_date,
   reason,
   date,
   id,
   item_type,
   item_id,
+  item_title,
 }) => {
   const device = useAppSelector(selectDevice);
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -95,14 +99,14 @@ const ReportCard: React.FC<ReportCardI> = ({
     // },
   ];
 
-  const getItemType = () => {
+  const getItemType = (short = false) => {
     switch (item_type) {
       case 'board_item':
-        return 'la news';
+        return short ? 'news' : 'la news';
       case 'community_item':
-        return 'il topic';
+        return short ? 'topic' : 'il topic';
       case 'document_item':
-        return 'il documento';
+        return short ? 'documento' : 'il documento';
       default:
         return '';
     }
@@ -163,7 +167,13 @@ const ReportCard: React.FC<ReportCardI> = ({
   );
 
   return (
-    <div className='report-card-container__card py-4 pl-4'>
+    <div
+      className={clsx(
+        'report-card-container__card',
+        'py-4',
+        !device.mediaIsPhone && 'pl-4'
+      )}
+    >
       <div className='d-flex flex-column'>
         <div
           className={clsx(
@@ -212,13 +222,27 @@ const ReportCard: React.FC<ReportCardI> = ({
               </div>
               <p>
                 <span>
-                  Ha segnalato {comment_author ? 'il commento' : getItemType()}{' '}
-                  di{' '}
+                  Ha segnalato&nbsp;
+                  {comment_author
+                    ? `il commento${
+                        comment_post_date
+                          ? ` del ${formatDate(comment_post_date, 'dateTime')}`
+                          : ''
+                      }`
+                    : getItemType()}
+                  &nbsp;di&nbsp;
                 </span>
                 <strong>
                   {usersAnagraphic[comment_author || item_author]?.nome}&nbsp;
                   {usersAnagraphic[comment_author || item_author]?.cognome}
-                </strong>{' '}
+                  &nbsp;
+                </strong>
+                {comment_author ? (
+                  <span>
+                    del&nbsp;{getItemType(true)}
+                    <strong>{item_title ? `, ${item_title}` : ''}</strong>&nbsp;
+                  </span>
+                ) : null}
                 con la seguente motivazione:
               </p>
             </div>

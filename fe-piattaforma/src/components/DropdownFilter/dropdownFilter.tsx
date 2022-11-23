@@ -39,7 +39,7 @@ const DropdownFilter: React.FC<DropdownFilterI> = (props) => {
     className,
     id,
     // handleOnSearch,
-    valueSearch,
+    //valueSearch,
     isDetail,
     isGeneric,
     formatValues = false,
@@ -50,7 +50,7 @@ const DropdownFilter: React.FC<DropdownFilterI> = (props) => {
   const idListOptions = `filter-options-list-${id}`;
   const popoverRef = useRef(null);
   const { t } = useTranslation();
-  const [searchValue, setSearchValue] = useState<string | undefined>('');
+  const [searchValue, setSearchValue] = useState('');
   const [filteredOptions, setFilteredOptions] = useState<FilterI[] | undefined>(
     options
   );
@@ -232,13 +232,9 @@ const DropdownFilter: React.FC<DropdownFilterI> = (props) => {
                         placeholder='Cerca'
                         className='shadow-none border-bottom-0'
                         onInputChange={(value: formFieldI['value']) =>
-                          setSearchValue(value?.toString())
+                          setSearchValue(value?.toString() || '')
                         }
-                        value={
-                          valueSearch && typeof valueSearch === 'string'
-                            ? valueSearch
-                            : ''
-                        }
+                        value={searchValue}
                       />
                     </legend>
                   </fieldset>

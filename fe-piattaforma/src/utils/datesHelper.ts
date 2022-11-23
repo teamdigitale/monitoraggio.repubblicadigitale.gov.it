@@ -1,7 +1,8 @@
 import moment from 'moment';
 
 export const shortFormats: { [key: string]: string } = {
-  fullDate: 'DD/MM/YYYY - hh:mm:ss A',
+  fullDate: 'DD/MM/YYYY - hh:mm:ss',
+  dateTime: 'DD/MM/YYYY - hh:mm',
   shortDate: 'DD/MM/YYYY',
   snakeDate: 'YYYY-MM-DD',
   midDate: 'MMM Do, YYYY',
@@ -18,7 +19,7 @@ export const formatDate = (timestamp: string | number, format: string) => {
     return undefined;
   }
   if (!isNaN(Number(timeToFormat))) {
-    timeToFormat = Number(timeToFormat)
+    timeToFormat = Number(timeToFormat);
   }
   return moment(timeToFormat).format(
     shortFormats[format] || shortFormats.default
