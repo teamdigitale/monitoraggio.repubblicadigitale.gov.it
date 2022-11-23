@@ -31,7 +31,9 @@ interface ReportCardI {
   author?: string;
   item_author: string;
   comment_author: string;
+  comment_post_date?: string;
   item_id: string;
+  item_title?: string;
   item_type: 'board_item' | 'community_item' | 'document_item';
   reason: string;
   date: string;
@@ -41,11 +43,13 @@ const ReportCard: React.FC<ReportCardI> = ({
   author,
   item_author,
   comment_author,
+  comment_post_date,
   reason,
   date,
   id,
   item_type,
   item_id,
+  item_title,
 }) => {
   const device = useAppSelector(selectDevice);
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -75,34 +79,22 @@ const ReportCard: React.FC<ReportCardI> = ({
 
   const commentDropdownOptions = [
     {
-      optionName: 'ELIMINA',
-      DropdowniIcon: {
-        icon: 'it-delete',
-        color: 'primary',
-      },
+      optionName: 'RIMUOVI SEGNALAZIONE',
       action: async () => {
         await dispatch(DeleteReport(id));
         dispatch(GetReportsList());
       },
     },
-    // {
-    //   optionName: 'MODIFICA',
-    //   DropdowniIcon: {
-    //     icon: 'it-pencil',
-    //     color: 'primary',
-    //   },
-    //   // action: () => editComment
-    // },
   ];
 
-  const getItemType = () => {
+  const getItemType = (short = false) => {
     switch (item_type) {
       case 'board_item':
-        return 'la news';
+        return short ? 'news' : 'la news';
       case 'community_item':
-        return 'il topic';
+        return short ? 'topic' : 'il topic';
       case 'document_item':
-        return 'il documento';
+        return short ? 'documento' : 'il documento';
       default:
         return '';
     }
@@ -131,7 +123,7 @@ const ReportCard: React.FC<ReportCardI> = ({
         </div>
       </DropdownToggle>
       <DropdownMenu role='menu' tag='ul'>
-        <LinkList role='list'>
+        <LinkList role='list' style={{ width: '190px' }}>
           {commentDropdownOptions.map((item, i) => (
             <li key={i} role='none' onClick={() => setIsOpen(!isOpen)}>
               <Button
@@ -147,12 +139,12 @@ const ReportCard: React.FC<ReportCardI> = ({
                 role='menuitem'
                 onClick={() => item.action()}
               >
-                <Icon
+                {/* <Icon
                   icon={item.DropdowniIcon.icon}
                   color={item.DropdowniIcon.color}
                   aria-label={item.optionName}
                   aria-hidden
-                />
+                /> */}
                 <span>{item.optionName}</span>
               </Button>
             </li>
@@ -163,7 +155,7 @@ const ReportCard: React.FC<ReportCardI> = ({
   );
 
   return (
-    <div className='report-card-container__card py-4 pl-4'>
+    <div className='report-card-container__card py-4'>
       <div className='d-flex flex-column'>
         <div
           className={clsx(
@@ -189,61 +181,79 @@ const ReportCard: React.FC<ReportCardI> = ({
                   uName: authorAnagraphic?.nome,
                   uSurname: authorAnagraphic?.cognome,
                 }}
-                size={AvatarSizes.Big}
-                font={AvatarTextSizes.Big}
+                size={AvatarSizes.Medium}
+                font={AvatarTextSizes.Medium}
               />
             </div>
-            <div className='d-flex flex-column align-items-start'>
-              <div
-                className={clsx(
-                  'd-flex',
-                  device.mediaIsDesktop ? 'flex-row' : 'flex-column',
-                  'align-items-center',
-                  'justify-content-start'
-                )}
-              >
-                <span className='text-nowrap'>
-                  <strong>
-                    {authorAnagraphic?.nome}&nbsp;{authorAnagraphic?.cognome}
-                  </strong>
-                </span>
-                &nbsp;-&nbsp;
+            <div
+              className={clsx(
+                'd-flex align-items-start justify-content-start',
+                device.mediaIsPhone && 'flex-column'
+              )}
+            >
+              <span>
+                <strong>
+                  {authorAnagraphic?.nome}&nbsp;{authorAnagraphic?.cognome}
+                </strong>
+              </span>
+              {!device.mediaIsPhone && <span>&nbsp;—&nbsp;</span>}
+              <div className='d-flex align-items-center'>
                 <span>{date && formatDate(date, 'shortDate')}</span>
               </div>
-              <p>
-                <span>
-                  Ha segnalato {comment_author ? 'il commento' : getItemType()}{' '}
-                  di{' '}
-                </span>
-                <strong>
-                  {usersAnagraphic[comment_author || item_author]?.nome}&nbsp;
-                  {usersAnagraphic[comment_author || item_author]?.cognome}
-                </strong>{' '}
-                con la seguente motivazione:
-              </p>
             </div>
           </div>
-          <div className='d-flex flex-row justify-content-end align-items-center'>
+          <div className='d-flex align-items-center'>
             <Icon
               icon='it-error'
               color='danger'
               aria-label='Contenuto segnalato'
               aria-hidden
-              className='mb-1 mr-2'
+              className='mb-1'
             />
             {reportDropdown()}
           </div>
         </div>
-        <div className='report-card-container__report-section p-4 my-4 ml-5'>
+        <div className='report-card-container__report-description d-flex'>
+          <p>
+            <span>
+              Ha segnalato&nbsp;
+              {comment_author
+                ? `il commento${
+                    comment_post_date
+                      ? ` del ${formatDate(comment_post_date, 'dateTime')}`
+                      : ''
+                  }`
+                : getItemType()}
+              &nbsp;di&nbsp;
+            </span>
+            <strong>
+              {usersAnagraphic[comment_author || item_author]?.nome}&nbsp;
+              {usersAnagraphic[comment_author || item_author]?.cognome}
+              &nbsp;
+            </strong>
+            {comment_author ? (
+              <span>
+                del&nbsp;{getItemType(true)}
+                {item_title ? (
+                  <>
+                    ,&nbsp;<strong>{item_title}</strong>&nbsp;
+                  </>
+                ) : null}
+              </span>
+            ) : null}
+            con la seguente motivazione:
+          </p>
+        </div>
+        <div className='report-card-container__report-reason p-4 my-4'>
           <p>{reason}</p>
         </div>
-        <div className='report-border ml-5' />
+        <div className='report-card-container__report-border' />
       </div>
 
-      <div className='p-2'>
+      <div className='py-2 report-card-container__detail-btn'>
         <Button
           size='xs'
-          className='like-and-comment-buttons d-flex flex-row justify-content-around'
+          className='like-and-comment-buttons d-flex align-items-center pl-0'
           onClick={() => {
             switch (item_type) {
               case 'board_item':
@@ -261,7 +271,7 @@ const ReportCard: React.FC<ReportCardI> = ({
           }}
           aria-label='Vai al dettaglio della segnalazione'
         >
-          <p className='primary-color font-weight-bold pl-4 text-nowrap'>
+          <p className='primary-color font-weight-bold text-nowrap'>
             VAI AL DETTAGLIO
           </p>
           <Icon

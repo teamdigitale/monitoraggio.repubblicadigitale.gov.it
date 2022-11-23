@@ -754,16 +754,24 @@ const ProjectsDetails = () => {
             authorityInfo?.dettagliInfoEnte?.statoEnte ===
               entityStatus.NON_ATTIVO ? (
               <>
-                * Ente gestore
-                <Tooltip
-                  placement='bottom'
-                  target='tooltip-ente-gestore-progetto'
-                  isOpen={openOne}
-                  toggle={() => toggleOne(!openOne)}
-                >
-                  È necessario aggiungere almeno un referente per l'ente gestore
-                </Tooltip>
-                <Icon icon='it-warning-circle' size='xs' className='ml-1' id='tooltip-ente-gestore-progetto'/>
+                <span>{!managingAuthorityID && '*'} Ente gestore</span>
+                {managingAuthorityID && (
+                  <Tooltip
+                    placement='bottom'
+                    target='tooltip-ente-gestore-progetto'
+                    isOpen={openOne}
+                    toggle={() => toggleOne(!openOne)}
+                  >
+                    È necessario aggiungere almeno un referente per l'ente
+                    gestore
+                  </Tooltip>
+                )}
+                <Icon
+                  icon='it-warning-circle'
+                  size='xs'
+                  className='ml-1'
+                  id='tooltip-ente-gestore-progetto'
+                />
               </>
             ) : (
               'Ente gestore'
