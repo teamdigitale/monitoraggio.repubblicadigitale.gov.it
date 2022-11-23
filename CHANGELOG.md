@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.335](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.334...1.0.0-develop.335) (2022-11-23)
+
+
+### Bug Fixes
+
+* **be:** errore A02 ([4617790](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/461779088349f31efdc8aced8ce0c853aff02fae))
+
 ## [1.0.0-develop.334](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.333...1.0.0-develop.334) (2022-11-23)
 
 
