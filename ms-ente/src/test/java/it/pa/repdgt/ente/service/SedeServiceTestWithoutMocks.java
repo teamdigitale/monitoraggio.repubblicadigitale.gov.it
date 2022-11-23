@@ -17,6 +17,6 @@ public class SedeServiceTestWithoutMocks {
 	
 	@Test
 	public void getSchedaSedeByIdProgettoAndIdEnteAndIdSedeTest() {
-		sedeService.getSchedaSedeByIdProgettoAndIdEnteAndIdSede(256L, 1005L, 1L);
+		sedeService.getSchedaSedeByIdProgettoAndIdEnteAndIdSede(256L, 1005L, 1L, "DTD");
 	}
 }

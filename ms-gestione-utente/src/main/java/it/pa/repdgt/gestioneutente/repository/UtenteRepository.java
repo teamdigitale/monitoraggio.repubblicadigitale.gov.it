@@ -343,7 +343,7 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			+ "			                       WHERE 1=1"
 			+ "			                           AND u2.id = utente.id"
 			+ "			                           AND  ( COALESCE(:ruoli) IS NULL   OR   ruolo2.nome IN (:ruoli) )) = utente.id"
-			+ "               AND (COALESCE(:stati) IS NULL OR  utente.stato in (:stati))"
+			+ "                             AND (COALESCE(:stati) IS NULL OR  utente.stato in (:stati))"
 			+ "			      ORDER BY utente.cognome"
 			+ "			      LIMIT :currPageIndex, :pageSize"
 			+ "               ) as risultato"
@@ -1087,18 +1087,11 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, Long> {
 			+ " FROM   "
 			+ "		utente "
 			+ "	WHERE 1=1  "
-			+ "		AND (   "
-			+ "			   CONVERT( utente.ID, CHAR ) = :criterioRicerca ) "
-		    + "	    	   OR UPPER( utente.NOME ) LIKE UPPER( :criterioRicercaLike ) "
-            + "			   OR UPPER( utente.COGNOME ) LIKE UPPER( :criterioRicercaLike ) "
-            + "			   OR UPPER( utente.CODICE_FISCALE ) LIKE UPPER( :criterioRicercaLike "
-            + "		) "
+			+ "		AND UPPER( utente.CODICE_FISCALE ) = UPPER( :criterioRicerca) "
             + "    ORDER BY cognome", 
 			nativeQuery = true)
 	public List<UtenteEntity> findUtenteByCriterioRicerca(
-			@Param(value = "criterioRicerca") String criterioRicerca,
-			@Param(value = "criterioRicercaLike") String criterioRicercaLike
-	);
+			@Param(value = "criterioRicerca") String criterioRicerca);
 
 	public Optional<UtenteEntity> findByEmailAndCodiceFiscaleNot(String email, String codiceFiscale);
 	public Optional<UtenteEntity> findByEmailAndIdNot(String email, Long id);

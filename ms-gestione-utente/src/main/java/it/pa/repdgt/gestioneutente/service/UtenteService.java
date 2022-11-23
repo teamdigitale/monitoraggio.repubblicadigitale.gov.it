@@ -949,8 +949,7 @@ public class UtenteService {
 	@LogExecutionTime
 	public List<UtenteEntity> getUtenteByCriterioRicerca(String criterioRicerca) {
 		return this.utenteRepository.findUtenteByCriterioRicerca(
-				criterioRicerca,
-				"%" + criterioRicerca + "%"
+				criterioRicerca
 				);
 	}
 

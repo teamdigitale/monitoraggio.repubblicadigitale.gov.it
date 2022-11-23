@@ -443,6 +443,7 @@ public class CittadinoServiceTest {
 		private String codiceFiscaleFacilitatore;
 		private String idQuestionarioCompilato;
 		private String statoQuestionarioCompilato;
+		private String nomeSede;
 		
 		@Override
 		public Long getIdServizio() {
@@ -477,6 +478,11 @@ public class CittadinoServiceTest {
 		@Override
 		public String getStatoQuestionarioCompilato() {
 			return statoQuestionarioCompilato;
+		}
+
+		@Override
+		public String getNomeSede() {
+			return nomeSede;
 		}
 	}
 	

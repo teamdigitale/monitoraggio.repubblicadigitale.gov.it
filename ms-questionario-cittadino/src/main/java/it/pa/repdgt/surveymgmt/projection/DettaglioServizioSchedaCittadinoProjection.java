@@ -8,4 +8,5 @@ public interface DettaglioServizioSchedaCittadinoProjection {
 	public String getCodiceFiscaleFacilitatore();
 	public String getIdQuestionarioCompilato();
 	public String getStatoQuestionarioCompilato();
+	public String getNomeSede();
 }

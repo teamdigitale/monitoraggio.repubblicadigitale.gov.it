@@ -15,5 +15,6 @@ public class DettaglioServizioSchedaCittadinoBean implements Serializable {
 	private String nomeCompletoFacilitatore;
 	private String idQuestionarioCompilato;
 	private String statoQuestionario;
+	private String nomeSede;
 	private Boolean associatoAUtente;
 }
