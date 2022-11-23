@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.332](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.331...1.0.0-develop.332) (2022-11-23)
+
+
+### Features
+
+* **be:** nuovi coni ([285a7e2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/285a7e244ac911d1a7142a73ba6cb53e803b3466))
+
 ## [1.0.0-develop.331](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.330...1.0.0-develop.331) (2022-11-23)
 
 
