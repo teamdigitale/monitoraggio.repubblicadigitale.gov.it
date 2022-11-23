@@ -66,7 +66,7 @@ public class OpenDataService {
 //					   │ │ │ │  │ │
 //					   * * * *  * *
 	//@Scheduled(cron = "0 0 0 1 */6 *")//job schedulato il giorno 1 del mese a mezzanotte ogni 6 mesi
-	@Scheduled(cron = "0 0 0 1 */1 *")//job schedulato il giorno 1 del mese a mezzanotte ogni mese
+	@Scheduled(cron = "0 0 16 1 */1 *")//job schedulato il giorno 1 del mese a mezzanotte ogni mese
 	//@Scheduled(cron = "0 0 13 * * *")//job schedulato ogni giorno alle 13 
 	@LogMethod
 	@LogExecutionTime

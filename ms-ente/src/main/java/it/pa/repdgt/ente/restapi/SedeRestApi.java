@@ -138,6 +138,6 @@ public class SedeRestApi {
 		if(!accessControServiceUtils.checkPermessoIdSede(sceltaProfiloParam, idSede)) {
 			throw new EnteException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
 		}
-		return this.sedeService.getSchedaSedeByIdProgettoAndIdEnteAndIdSede(idProgetto, idEnte, idSede);
+		return this.sedeService.getSchedaSedeByIdProgettoAndIdEnteAndIdSede(idProgetto, idEnte, idSede, sceltaProfiloParam.getCodiceRuoloUtenteLoggato());
 	}
 }
