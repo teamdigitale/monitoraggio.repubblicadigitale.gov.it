@@ -1,8 +1,8 @@
 {
   "errors": {
     "A01": {
-      "titolo": "",
-      "descrizione": "Accesso non consentito"
+      "titolo": "ACCESSO NON CONSENTITO",
+      "descrizione": "Devi avere almeno un ruolo assegnato per accedere a Facilita"
     },
     "A02": {
       "titolo": "",
@@ -89,16 +89,16 @@
       "descrizione": "Errore impossibile aggiornare associazione ruolo al gruppo"
     },
     "RC01": {
-      "titolo": "",
-      "descrizione": "Errore durante l’inizializzazione della chat"
+      "titolo": "ACCESSO ALLA CHAT NON RIUSCITO",
+      "descrizione": "Non è stato possibile avviare Rocket.Chat, ti invitiamo a riprovare più tardi"
     },
     "RC02": {
-      "titolo": "",
-      "descrizione": "Errore durante l’inizializzazione della chat"
+      "titolo": "ACCESSO ALLA CHAT NON RIUSCITO",
+      "descrizione": "Non è stato possibile avviare Rocket.Chat, ti invitiamo a riprovare più tardi"
     },
     "RC03": {
-      "titolo": "",
-      "descrizione": "Errore durante l’inizializzazione della chat"
+      "titolo": "ACCESSO ALLA CHAT NON RIUSCITO",
+      "descrizione": "Non è stato possibile avviare Rocket.Chat, ti invitiamo a riprovare più tardi"
     },
     "U01": {
       "titolo": "CODICE FISCALE GIÀ IN USO",
@@ -150,7 +150,7 @@
     },
     "U23": {
       "titolo": "CITTADINO GIÀ ASSOCIATO AL SERVIZIO",
-      "descrizione": "Il cittadino inserito risulta già essere associato al servizio"
+      "descrizione": "Inserisci un nuovo cittadino da associare al servizio"
     },
     "S01": {
       "titolo": "CARICAMENTO NON RIUSCITO",
@@ -253,16 +253,16 @@
       "descrizione": "Non è stato possibile scaricare l'elenco enti. Ti invitiamo a riprovare più tardi"
     },
     "EN02": {
-      "titolo": "",
-      "descrizione": "Errore file upload enti non valido"
+      "titolo": "CARICAMENTO NON RIUSCITO",
+      "descrizione": "Non è stato possibile caricare la lista enti partner. Ti invitiamo a riprovare più tardi"
     },
     "EN03": {
       "titolo": "",
       "descrizione": "Errore Impossibile assegnare ente come gestore del programma"
     },
     "EN04": {
-      "titolo": "",
-      "descrizione": "Errore Impossibile assegnare referente/delegato ente partner per progetto"
+      "titolo": "REFERENTE O DELEGATO GIÀ ASSOCIATO ALL'ENTE",
+      "descrizione": "Inserisci un nuovo referente o delegato da associare all'ente partner del progetto"
     },
     "EN05": {
       "titolo": "CARICAMENTO NON RIUSCITO",
@@ -273,12 +273,12 @@
       "descrizione": "Il referente/delegato non può essere rimosso, perché è l'unico attivo sull'ente partner"
     },
     "EN07": {
-      "titolo": "",
-      "descrizione": "Errore Impossibile associare facilitatore/volontario sulla sede-ente-progetto"
+      "titolo": "FACILITATORE O VOLONTARIO GIÀ ASSOCIATO",
+      "descrizione": "Inserisci un nuovo facilitatore o volontario da associare"
     },
     "EN08": {
-      "titolo": "",
-      "descrizione": "Errore Impossibile cancellare associazione facilitatore/volontario sulla sede-ente-progetto"
+      "titolo": "RIMOZIONE NON CONSENTITA",
+      "descrizione": "Non puoi rimuovere il facilitatore o volontario dalla sede o dall'ente o dal progetto"
     },
     "EN09": {
       "titolo": "",
@@ -289,12 +289,12 @@
       "descrizione": "Il codice fiscale inserito risulta associato a un altro ente. Ti invitiamo a verificarne la correttezza"
     },
     "EN11": {
-      "titolo": "",
-      "descrizione": "Errore Impossibile assegnare referente/delegato ente gestore programma per il programma"
+      "titolo": "REFERENTE O DELEGATO GIÀ ASSOCIATO ALL'ENTE",
+      "descrizione": "Inserisci un nuovo referente o delegato da associare all'ente gestore di programma"
     },
     "EN12": {
-      "titolo": "",
-      "descrizione": "Errore Impossibile assegnare referente/delegato ente gestore progetto per il progetto"
+      "titolo": "REFERENTE O DELEGATO GIÀ ASSOCIATO ALL'ENTE",
+      "descrizione": "Inserisci un nuovo referente o delegato da associare all'ente gestore di progetto"
     },
     "EN13": {
       "titolo": "",
@@ -309,28 +309,28 @@
       "descrizione": "Il codice fiscale inserito risulta appartenere già ad un altro ente"
     },
     "EN16": {
-      "titolo": "",
-      "descrizione": "Errore Impossibile cancellare ente partner per progetto"
+      "titolo": "RIMOZIONE NON RIUSCITA",
+      "descrizione": "Ti invitiamo a riprovare più tardi. Se l'errore persiste, contatta il supporto"
     },
     "EN17": {
-      "titolo": "",
-      "descrizione": "Errore Impossibile cancellare ente gestore programma per programma"
+      "titolo": "RIMOZIONE NON RIUSCITA",
+      "descrizione": "Ti invitiamo a riprovare più tardi. Se l'errore persiste, contatta il supporto"
     },
     "EN18": {
-      "titolo": "",
-      "descrizione": "Errore Impossibile cancellare ente gestore progetto per progetto"
+      "titolo": "RIMOZIONE NON RIUSCITA",
+      "descrizione": "Ti invitiamo a riprovare più tardi. Se l'errore persiste, contatta il supporto"
     },
     "EN19": {
-      "titolo": "",
-      "descrizione": "Errore Impossibile terminare ente gestore programma per programma"
+      "titolo": "RIMOZIONE NON RIUSCITA",
+      "descrizione": "Ti invitiamo a riprovare più tardi. Se l'errore persiste, contatta il supporto"
     },
     "EN20": {
-      "titolo": "",
-      "descrizione": "Errore Impossibile terminare ente gestore progetto per progetto"
+      "titolo": "RIMOZIONE NON RIUSCITA",
+      "descrizione": "Ti invitiamo a riprovare più tardi. Se l'errore persiste, contatta il supporto"
     },
     "EN21": {
-      "titolo": "",
-      "descrizione": "Errore Impossibile terminare ente partner per progetto"
+      "titolo": "RIMOZIONE NON RIUSCITA",
+      "descrizione": "Ti invitiamo a riprovare più tardi. Se l'errore persiste, contatta il supporto"
     },
     "EN22": {
       "titolo": "RIMOZIONE NON CONSENTITA",
@@ -417,28 +417,28 @@
       "descrizione": "Non è stato possibile scaricare l'elenco progetti. Ti invitiamo a riprovare più tardi"
     },
     "PR09": {
-      "titolo": "",
-      "descrizione": "Errore Impossibile Assegnare gestore progetto per il progetto. Unico Facilitatore o Volontario attivo sul progetto"
+      "titolo": "OPERAZIONE NON RIUSCITA",
+      "descrizione": "Non è stato possibile aggiungere l'ente gestore al progetto. Ti invitiamo a riprovare più tardi. Se l'errore persiste, contatta il supporto"
     },
     "U21": {
-      "titolo": "",
-      "descrizione": "L’indirizzo email risulta già essere presente in piattaforma"
+      "titolo": "EMAIL GIÀ IN USO",
+      "descrizione": "L'indirizzo email inserito risulta già registrato sulla piattaforma. Inserisci un nuovo indirizzo email per completare la registrazione dell'utente"
     },
     "WD01": {
-      "titolo": "",
-      "descrizione": "Si è verificato un errore durante la registrazione al tool di Collaboration"
+      "titolo": "REGISTRAZIONE NON RIUSCITA",
+      "descrizione": "Non è stato possibile completare la tua registrazione all'area di collaborazione. Verifica nella pagina Documenti le istruzioni per registrarti e riprova"
     },
     "WD02": {
-      "titolo": "",
-      "descrizione": "Si è verificato un errore durante la registrazione al tool di Collaboration"
+      "titolo": "REGISTRAZIONE NON RIUSCITA",
+      "descrizione": "Non è stato possibile completare la tua registrazione all'area di collaborazione. Ti invitiamo a riprovare più tardi"
     },
     "CMCRA05": {
-      "titolo": "",
-      "descrizione": "Attenzione, hai inserito un termine non consentito"
+      "titolo": "HAI UTILIZZATO UN TERMINE NON CONSENTITO",
+      "descrizione": "Riformula il testo per poterlo salvare"
     },
     "CMRRA06": {
-      "titolo": "",
-      "descrizione": "Attenzione, hai inserito un termine non consentito"
+      "titolo": "HAI UTILIZZATO UN TERMINE NON CONSENTITO",
+      "descrizione": "Riformula il testo per poterlo salvare"
     }
   }
 }
