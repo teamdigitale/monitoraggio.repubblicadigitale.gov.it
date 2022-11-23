@@ -194,6 +194,9 @@ public class UtenteService {
 		case "DEPP":
 			listaUtenti.addAll(this.getUtentiPerReferenteDelegatoEntePartnerProgetti(idProgetto, idEnte, cfUtente, filtroRequest, currPage, pageSize));
 			break;
+		case "FAC":
+		case "VOL":
+			break;
 		default:
 			utenti = this.getUtentiByFiltri(filtroRequest, currPage, pageSize);
 			listaUtenti.addAll(utenti);
@@ -447,11 +450,12 @@ public class UtenteService {
 	@LogMethod
 	@LogExecutionTime
 	public List<String> getAllStatiDropdown(UtenteRequest sceltaContesto) {
-		return this.getAllStatiByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(),sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
+		return this.getAllStatiByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(),sceltaContesto.getCfUtenteLoggato(), 
+				sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getIdEnte(), sceltaContesto.getFiltroRequest());
 	}
 
 	public List<String> getAllStatiByRuoloAndcfUtente(String codiceRuolo, String cfUtente, Long idProgramma, Long idProgetto,
-			FiltroRequest filtroRequest) {
+			Long idEnte, FiltroRequest filtroRequest) {
 		List<String> stati = new ArrayList<>();
 
 		switch (codiceRuolo) {
@@ -470,7 +474,10 @@ public class UtenteService {
 			break;
 		case "REPP":
 		case "DEPP":
-			stati.addAll(this.getStatiPerReferenteDelegatoEntePartnerProgetti(idProgetto, cfUtente, filtroRequest));
+			stati.addAll(this.getStatiPerReferenteDelegatoEntePartnerProgetti(idProgetto, idEnte, cfUtente, filtroRequest));
+			break;
+		case "FAC":
+		case "VOL":
 			break;
 		default:
 			stati.addAll(this.getStatoUtentiByFiltri(filtroRequest));
@@ -485,10 +492,11 @@ public class UtenteService {
 		if(this.ruoloService.getRuoliByCodiceFiscaleUtente(sceltaContesto.getCfUtenteLoggato()).stream().filter(codiceRuolo -> codiceRuolo.equals(sceltaContesto.getCodiceRuoloUtenteLoggato())).count() == 0) {
 			throw new UtenteException("ERRORE: ruolo non definito per l'utente", CodiceErroreEnum.U06);
 		}
-		return this.getAllRuoliByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(),sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getFiltroRequest());
+		return this.getAllRuoliByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(),sceltaContesto.getCfUtenteLoggato(), 
+				sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getIdEnte(), sceltaContesto.getFiltroRequest());
 	}
 
-	public List<String> getAllRuoliByRuoloAndcfUtente(String codiceRuolo, String cfUtente, Long idProgramma, Long idProgetto,
+	public List<String> getAllRuoliByRuoloAndcfUtente(String codiceRuolo, String cfUtente, Long idProgramma, Long idProgetto, Long idEnte,
 			FiltroRequest filtroRequest) {
 		List<String> stati = new ArrayList<>();
 
@@ -509,7 +517,11 @@ public class UtenteService {
 			return stati;
 		case "REPP":
 		case "DEPP":
-			stati.addAll(this.getRuoliPerReferenteDelegatoEntePartnerProgetti(idProgetto, cfUtente, filtroRequest));
+			stati.addAll(this.getRuoliPerReferenteDelegatoEntePartnerProgetti(idProgetto, idEnte, cfUtente, filtroRequest));
+			return stati;
+		case "FAC":
+		case "VOL":
+			stati.addAll(this.getRuoliPerReferenteDelegatoEntePartnerProgetti(idProgetto, idEnte, cfUtente, filtroRequest));
 			return stati;
 		default:
 			stati.addAll(this.getAllRuoli(filtroRequest));
@@ -518,10 +530,11 @@ public class UtenteService {
 		return stati;
 	}
 
-	private List<String> getRuoliPerReferenteDelegatoEntePartnerProgetti(Long idProgetto,
+	private List<String> getRuoliPerReferenteDelegatoEntePartnerProgetti(Long idProgetto, Long idEnte,
 			String cfUtente, FiltroRequest filtroRequest) {
 		return this.utenteRepository.findRuoliPerReferenteDelegatoEntePartnerProgetti(
 				idProgetto,
+				idEnte,
 				cfUtente,
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%",
@@ -530,10 +543,11 @@ public class UtenteService {
 				);
 	}
 	
-	private List<String> getStatiPerReferenteDelegatoEntePartnerProgetti(Long idProgetto,
+	private List<String> getStatiPerReferenteDelegatoEntePartnerProgetti(Long idProgetto, Long idEnte,
 			String cfUtente, FiltroRequest filtroRequest) {
 		return this.utenteRepository.findStatiPerReferenteDelegatoEntePartnerProgetti(
 				idProgetto,
+				idEnte,
 				cfUtente,
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%",
@@ -654,7 +668,8 @@ public class UtenteService {
 			return this.utenteRepository.isUtenteAssociatoREPP(idUtente, sceltaProfilo.getIdProgetto(), sceltaProfilo.getIdEnte()) > 0;
 		case "FAC": 
 		case "VOL": 
-			return this.utenteRepository.isUtenteAssociatoFAC(idUtente, sceltaProfilo.getIdProgetto(), sceltaProfilo.getIdEnte(), sceltaProfilo.getCfUtenteLoggato()) > 0;
+			return false;
+			//return this.utenteRepository.isUtenteAssociatoFAC(idUtente, sceltaProfilo.getIdProgetto(), sceltaProfilo.getIdEnte(), sceltaProfilo.getCfUtenteLoggato()) > 0;
 			// DTD, DSCU, RUOLI_CUSTOM
 		case "DSCU": 
 			String codiceFiscale = utenteRepository.findById(idUtente).get().getCodiceFiscale();
