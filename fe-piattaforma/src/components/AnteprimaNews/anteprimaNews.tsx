@@ -233,7 +233,7 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
           <p className='anteprima-news-container__title pt-4 pb-5'>
             <b>{title}</b>
           </p>
-          <div className='pb-4'>
+          <div className='pb-4 anteprima-news-container__description'>
             <HTMLParser html={description} />
           </div>
           {attachment ? (

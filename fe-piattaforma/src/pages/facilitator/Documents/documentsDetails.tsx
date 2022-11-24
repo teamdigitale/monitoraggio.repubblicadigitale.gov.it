@@ -179,7 +179,7 @@ const DocumentsDetails = () => {
             Ti è stato utile?
           </span>
           <div className='d-flex'>
-            <Form id='form-utilità' legend='Form ti è stato utile?'>
+            <Form id='form-utilità' legend='Form ti è stato utile?' showMandatory={false}>
               <FormGroup check className='d-flex align-items-center mt-0 pr-2'>
                 <div className='d-flex align-items-center mr-3'>
                   <Input

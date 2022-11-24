@@ -541,14 +541,17 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
           {sections[activeSection].titolo}
         </p>
       )}
-      <div className='pt-3'>
-        <div className={clsx(device.mediaIsPhone && 'pt-0', 'pt-3')}>
-          <JsonFormRender
-            form={form}
-            onInputChange={onInputChange}
-            currentStep={activeSection}
-          />
-        </div>
+      <div
+        className={clsx(
+          device.mediaIsPhone && 'pt-0',
+          (activeSection === 1 || activeSection === 2) && 'pt-3'
+        )}
+      >
+        <JsonFormRender
+          form={form}
+          onInputChange={onInputChange}
+          currentStep={activeSection}
+        />
       </div>
       <Sticky mode='bottom' stickyClassName='sticky bg-white container'>
         {device.mediaIsPhone ? (

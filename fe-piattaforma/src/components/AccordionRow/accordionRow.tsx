@@ -1,9 +1,13 @@
 import React, { ReactElement, useState } from 'react';
-import { Icon, Button, UncontrolledTooltip } from 'design-react-kit';
+import { Icon, Button, UncontrolledTooltip, FormGroup, Label } from 'design-react-kit';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
+import { CRUDActionsI, CRUDActionTypes } from '../../utils/common';
+import Form from '../Form/form';
+import Input from '../Form/input';
 
 export interface AccordionRowI {
+  id: string;
   title: string;
   clickViewAction?: () => void;
   clickEditAction?: () => void;
@@ -16,9 +20,11 @@ export interface AccordionRowI {
   status?: string | undefined;
   StatusElement?: ReactElement | undefined;
   onTooltipInfo?: string;
+  onActionRadio?: CRUDActionsI | undefined;
 }
 
 const AccordionRow: React.FC<AccordionRowI> = ({
+  id,
   title,
   clickViewAction,
   clickEditAction,
@@ -27,6 +33,7 @@ const AccordionRow: React.FC<AccordionRowI> = ({
   status,
   StatusElement,
   onTooltipInfo = '',
+  onActionRadio,
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { t } = useTranslation();
@@ -188,6 +195,25 @@ const AccordionRow: React.FC<AccordionRowI> = ({
             {StatusElement && <div className='mr-4'>{StatusElement}</div>}
             {status && <div>{status}</div>}
           </div>
+          {onActionRadio && (
+            <Form id='form-table-dsk'>
+              <FormGroup check>
+                <Input
+                  name='group'
+                  type='radio'
+                  id={`radio-${id}`}
+                  // checked={id === idRadioSelected}
+                  withLabel={false}
+                  onInputChange={() => {
+                    onActionRadio[CRUDActionTypes.SELECT]({ id: id, label: title});
+                  }}
+                />
+                <Label className='sr-only' check htmlFor={`radio-${id}`}>
+                  {`Seleziona ${title}`}
+                </Label>
+              </FormGroup>
+            </Form>
+          )}
         </div>
       )}
     </div>

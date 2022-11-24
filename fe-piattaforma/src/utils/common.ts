@@ -134,6 +134,7 @@ export interface FormActionsI {
 }
 
 export interface ItemListElemI {
+  associatoAUtente?: boolean;
   nome: string;
   cognome?: string;
   actions: CRUDActionsI;

@@ -134,7 +134,7 @@ const AddressForm: React.FC<AddressFormI> = ({
   };
 
   return (
-    <Form id='form-address' formDisabled={formDisabled}>
+    <Form id='form-address' formDisabled={formDisabled} showMandatory={false}>
       <Form.Row>
         <Input
           className='mb-3'

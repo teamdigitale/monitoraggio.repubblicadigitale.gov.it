@@ -107,8 +107,16 @@ const PrintSurvey: React.FC = () => {
 
   return (
     <div className='container my-3 pt-3 print-survey'>
-      <div className='header-container__main__logo mb-4'>
-        <img src={Logo} alt='PNRR' />
+      <div className='d-flex justify-content-between'>
+        <div>
+          <p className='h3 primary-color-a9 m-0'>Facilita</p>
+          <span className='primary-color-a9 m-0'>
+            La piattaforma dei servizi di facilitazione digitale
+          </span>
+        </div>
+        <div className='header-container__main__logo mb-4'>
+          <img src={Logo} alt='PNRR' />
+        </div>
       </div>
       <DetailLayout
         titleInfo={{
@@ -116,7 +124,7 @@ const PrintSurvey: React.FC = () => {
           upperTitle: {
             icon: 'it-calendar',
             text:
-              serviceDetails?.progettiAssociatiAlServizio[0]?.nomeBreve ||
+              serviceDetails?.progettiAssociatiAlServizio?.[0]?.nomeBreve ||
               'Progetto',
           },
           // subTitle:
@@ -124,6 +132,7 @@ const PrintSurvey: React.FC = () => {
           //   serviceDetails?.dettaglioServizio?.nominativoFacilitatore,
         }}
         showGoBack={false}
+        noTitleEllipsis
       />
       <div className='mt-5'>
         {(sections || []).map((section: SurveySectionI, i: number) => (

@@ -482,14 +482,16 @@ const ProjectsDetails = () => {
                 ...ref,
                 id: ref.id,
                 codiceFiscale: ref.codiceFiscale,
-                actions:
-                  authorityInfo?.dettagliInfoEnte?.statoEnte ===
-                    entityStatus.TERMINATO || ref?.stato !== entityStatus.ATTIVO
+                actions: ref.associatoAUtente
+                  ? authorityInfo?.dettagliInfoEnte?.statoEnte ===
+                      entityStatus.TERMINATO ||
+                    ref?.stato !== entityStatus.ATTIVO
                     ? {
                         [CRUDActionTypes.VIEW]:
                           onActionClickReferenti[CRUDActionTypes.VIEW],
                       }
-                    : onActionClickReferenti,
+                    : onActionClickReferenti
+                  : {},
               })
             ) || [],
         },
@@ -501,14 +503,16 @@ const ProjectsDetails = () => {
                 ...del,
                 id: del.id,
                 codiceFiscale: del.codiceFiscale,
-                actions:
-                  authorityInfo?.dettagliInfoEnte?.statoEnte ===
-                    entityStatus.TERMINATO || del?.stato !== entityStatus.ATTIVO
+                actions: del.associatoAUtente
+                  ? authorityInfo?.dettagliInfoEnte?.statoEnte ===
+                      entityStatus.TERMINATO ||
+                    del?.stato !== entityStatus.ATTIVO
                     ? {
                         [CRUDActionTypes.VIEW]:
                           onActionClickDelegati[CRUDActionTypes.VIEW],
                       }
-                    : onActionClickDelegati,
+                    : onActionClickDelegati
+                  : {},
               })
             ) || [],
         },
@@ -518,9 +522,9 @@ const ProjectsDetails = () => {
             authorityInfo?.sediGestoreProgetto?.map(
               (sedi: { [key: string]: string }) => ({
                 ...sedi,
-                actions:
-                  authorityInfo?.dettagliInfoEnte?.statoEnte ===
-                    entityStatus.TERMINATO && sedi.associatoAUtente
+                actions: sedi.associatoAUtente
+                  ? authorityInfo?.dettagliInfoEnte?.statoEnte ===
+                      entityStatus.TERMINATO && sedi.associatoAUtente
                     ? {
                         [CRUDActionTypes.VIEW]:
                           onActionClickSede[CRUDActionTypes.VIEW],
@@ -536,7 +540,8 @@ const ProjectsDetails = () => {
                             ? onActionClickSede[CRUDActionTypes.DELETE]
                             : undefined,
                       }
-                    : {},
+                    : {}
+                  : {},
               })
             ) || [],
         },
@@ -691,21 +696,7 @@ const ProjectsDetails = () => {
         ),
       });
       setItemAccordionList(null);
-      setCorrectButtons([
-        // {
-        //   size: 'xs',
-        //   outline: true,
-        //   color: 'primary',
-        //   text: ' Aggiungi sede',
-        //   onClick: () =>
-        //     dispatch(
-        //       openModal({
-        //         id: formTypes.SEDE,
-        //         payload: { title: 'Sede' },
-        //       })
-        //     ),
-        // },
-      ]);
+      setCorrectButtons([]);
       setEmptySection(undefined);
       setProjInfoButtons(false);
     } else {

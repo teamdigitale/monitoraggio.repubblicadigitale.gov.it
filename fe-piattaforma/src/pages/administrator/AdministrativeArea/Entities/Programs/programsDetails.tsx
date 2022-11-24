@@ -354,14 +354,16 @@ const ProgramsDetails: React.FC = () => {
               (ref: { [key: string]: string }) => ({
                 ...ref,
                 id: ref?.id,
-                actions:
-                  authorityInfo?.dettagliInfoEnte?.statoEnte ===
-                    entityStatus.TERMINATO || ref?.stato !== entityStatus.ATTIVO
+                actions: ref.associatoAUtente
+                  ? authorityInfo?.dettagliInfoEnte?.statoEnte ===
+                      entityStatus.TERMINATO ||
+                    ref?.stato !== entityStatus.ATTIVO
                     ? {
                         [CRUDActionTypes.VIEW]:
                           onActionClickReferenti[CRUDActionTypes.VIEW],
                       }
-                    : onActionClickReferenti,
+                    : onActionClickReferenti
+                  : {},
               })
             ) || [],
         },
@@ -372,14 +374,16 @@ const ProgramsDetails: React.FC = () => {
               (del: { [key: string]: string }) => ({
                 ...del,
                 id: del?.id,
-                actions:
-                  authorityInfo?.dettagliInfoEnte?.statoEnte ===
-                    entityStatus.TERMINATO || del?.stato !== entityStatus.ATTIVO
+                actions: del.associatoAUtente
+                  ? authorityInfo?.dettagliInfoEnte?.statoEnte ===
+                      entityStatus.TERMINATO ||
+                    del?.stato !== entityStatus.ATTIVO
                     ? {
                         [CRUDActionTypes.VIEW]:
                           onActionClickDelegati[CRUDActionTypes.VIEW],
                       }
-                    : onActionClickDelegati,
+                    : onActionClickDelegati
+                  : {},
               })
             ) || [],
         },

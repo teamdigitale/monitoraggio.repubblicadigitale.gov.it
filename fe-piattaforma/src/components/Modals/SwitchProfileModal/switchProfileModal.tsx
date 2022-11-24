@@ -15,7 +15,7 @@ import {
   selectModalPayload,
 } from '../../../redux/features/modal/modalSlice';
 import { getSessionValues } from '../../../utils/sessionHelper';
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 const id = 'switchProfileModal';
 
@@ -53,7 +53,7 @@ const SwitchProfileModal: React.FC<SwitchProfileModalI> = ({
         modal.onSubmit();
       } else {
         navigate('/', { replace: true });
-        window.location.reload();
+        setTimeout(() => window.location.reload(), 500);
       }
     }
   };
