@@ -145,7 +145,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
 
   useEffect(() => {
     const newInterventionsDropdownOptions = [];
-    if ((policiesList || [])?.length > 1) {
+    if (form?.program?.value === 'public' || (policiesList || [])?.length > 1) {
       newInterventionsDropdownOptions.push({
         label: 'Tutti gli interventi',
         value: 'public',

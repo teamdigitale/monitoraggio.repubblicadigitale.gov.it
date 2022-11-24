@@ -9,8 +9,7 @@ import { selectDevice } from '../../redux/features/app/appSlice';
 import PublishingAuthority from '../CardDocument/PublishingAuthority';
 import { useNavigate } from 'react-router-dom';
 import HTMLParser from '../General/HTMLParser/HTMLParse';
-import coverPlaceholder from '/public/assets/img/img-bacheca-digitale-dettaglio.png';
-import _ from 'lodash';
+import coverPlaceholder from '/public/assets/img/placeholder-news.png';
 import { cleanDrupalFileURL } from '../../utils/common';
 import { formatDate } from '../../utils/datesHelper';
 

@@ -1,10 +1,18 @@
 import React, { ReactElement, useState } from 'react';
-import { Icon, Button, UncontrolledTooltip, FormGroup, Label } from 'design-react-kit';
+import {
+  Icon,
+  Button,
+  UncontrolledTooltip,
+  FormGroup,
+  Label,
+} from 'design-react-kit';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 import { CRUDActionsI, CRUDActionTypes } from '../../utils/common';
 import Form from '../Form/form';
 import Input from '../Form/input';
+import { useAppSelector } from '../../redux/hooks';
+import { selectDevice } from '../../redux/features/app/appSlice';
 
 export interface AccordionRowI {
   id: string;
@@ -37,6 +45,7 @@ const AccordionRow: React.FC<AccordionRowI> = ({
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { t } = useTranslation();
+  const device = useAppSelector(selectDevice);
 
   return (
     <div className='accordion-row'>
@@ -79,21 +88,16 @@ const AccordionRow: React.FC<AccordionRowI> = ({
               ) : null}
             </>
           ) : null}
-
           <span className='font-weight-semibold'>{title}</span>
         </div>
-        <div>
-          {clickViewAction ? (
-            <Button className='d-flex justify-content-start'>
-              <Icon
-                icon='it-chevron-right'
-                onClick={clickViewAction}
-                aria-label={`Vai al dettaglio di ${title}`}
-              />
-            </Button>
-          ) : null}
+        <div className={clsx(device.mediaIsPhone && 'd-flex flex-row')}>
           {clickEditAction ? (
-            <Button className='d-flex justify-content-start'>
+            <Button
+              className={clsx(
+                'd-flex justify-content-start',
+                device.mediaIsPhone && 'px-2'
+              )}
+            >
               <Icon
                 icon='it-pencil'
                 color='primary'
@@ -103,12 +107,31 @@ const AccordionRow: React.FC<AccordionRowI> = ({
             </Button>
           ) : null}
           {clickDeleteAction ? (
-            <Button className='d-flex justify-content-start'>
+            <Button
+              className={clsx(
+                'd-flex justify-content-start',
+                device.mediaIsPhone && 'px-2'
+              )}
+            >
               <Icon
                 icon='it-less-circle'
                 color='primary'
                 onClick={clickDeleteAction}
                 aria-label={`Elimina ${title}`}
+              />
+            </Button>
+          ) : null}
+          {clickViewAction ? (
+            <Button
+              className={clsx(
+                'd-flex justify-content-start',
+                device.mediaIsPhone && 'px-2'
+              )}
+            >
+              <Icon
+                icon='it-chevron-right'
+                onClick={clickViewAction}
+                aria-label={`Vai al dettaglio di ${title}`}
               />
             </Button>
           ) : null}
@@ -196,7 +219,7 @@ const AccordionRow: React.FC<AccordionRowI> = ({
             {status && <div>{status}</div>}
           </div>
           {onActionRadio && (
-            <Form id='form-table-dsk'>
+            <Form id='form-table-dsk' showMandatory={false}>
               <FormGroup check>
                 <Input
                   name='group'
@@ -205,7 +228,10 @@ const AccordionRow: React.FC<AccordionRowI> = ({
                   // checked={id === idRadioSelected}
                   withLabel={false}
                   onInputChange={() => {
-                    onActionRadio[CRUDActionTypes.SELECT]({ id: id, label: title});
+                    onActionRadio[CRUDActionTypes.SELECT]({
+                      id: id,
+                      label: title,
+                    });
                   }}
                 />
                 <Label className='sr-only' check htmlFor={`radio-${id}`}>
