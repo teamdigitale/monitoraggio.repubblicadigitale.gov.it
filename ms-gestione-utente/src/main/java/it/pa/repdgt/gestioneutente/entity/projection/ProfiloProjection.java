@@ -16,4 +16,6 @@ public interface ProfiloProjection {
 	String getNomeBreveProgetto();
 
 	String getStatoUtente();
+	
+	String getPolicy();
 }
