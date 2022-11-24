@@ -26,6 +26,7 @@ public interface ContestoRepository extends JpaRepository<ProgrammaEntity, Long>
 
 	@Query(value = "SELECT p.id as idProgramma, "
 			+ "p.nome_breve as nomeProgramma, "
+			+ "p.policy as policy, "
 			+ "e.nome_breve as nomeEnte, "
 			+ "e.id as idEnte, "
 			+ "p.stato as statoP, "
@@ -43,6 +44,7 @@ public interface ContestoRepository extends JpaRepository<ProgrammaEntity, Long>
 	
 	@Query(value = "SELECT DISTINCT p.id as idProgramma, "
 			+ "p.nome_breve as nomeProgramma, "
+			+ "p.policy as policy, "
 			+ "pr.id as idProgetto, "
 			+ "e.nome_breve as nomeEnte, "
 			+ "e.id as idEnte, "
@@ -64,6 +66,7 @@ public interface ContestoRepository extends JpaRepository<ProgrammaEntity, Long>
 	
 	@Query(value = "SELECT DISTINCT p.id as idProgramma, "
 			+ "p.nome_breve as nomeProgramma, "
+			+ "p.policy as policy, "
 			+ "pr.id as idProgetto, "
 			+ "e.nome_breve as nomeEnte, "
 			+ "e.id as idEnte, "
@@ -88,6 +91,7 @@ public interface ContestoRepository extends JpaRepository<ProgrammaEntity, Long>
 	
 	@Query(value = "SELECT DISTINCT p.id as idProgramma, "
 			+ "			p.nome_breve as nomeProgramma, "
+			+ "         p.policy as policy, "
 			+ "			pr.id as idProgetto, "
 			+ "			e.nome_breve as nomeEnte, "
 			+ "			e.id as idEnte, "
