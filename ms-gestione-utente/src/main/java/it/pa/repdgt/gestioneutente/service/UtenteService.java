@@ -1199,6 +1199,11 @@ public class UtenteService {
 			byte[] buffer = new byte[initialStream.available()];
 			initialStream.read(buffer);
 			String[] fileNameSplitted = multipartifile.getOriginalFilename().split("\\.");
+			
+			if(fileNameSplitted != null && fileNameSplitted.length > 2) {
+				throw new UtenteException("Nome file upload deve avere solo una estensione", CodiceErroreEnum.U22);
+			}
+			
 			String fileExtension = fileNameSplitted[fileNameSplitted.length - 1];
 			String nomeFileDb = PREFIX_FILE_IMG_PROFILO + idUtente + "." + fileExtension;
 			File targetFile = new File(nomeFileDb);
