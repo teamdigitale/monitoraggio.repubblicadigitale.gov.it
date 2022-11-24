@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.337](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.336...1.0.0-develop.337) (2022-11-24)
+
+
+### Bug Fixes
+
+* **be:** doppia estensione file ([0c906d9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0c906d91499206b10b365a7388643f117487311f))
+
 ## [1.0.0-develop.336](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.335...1.0.0-develop.336) (2022-11-24)
 
 
