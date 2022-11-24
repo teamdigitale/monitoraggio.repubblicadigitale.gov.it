@@ -364,6 +364,7 @@ const Comment: React.FC<CommentI> = (props) => {
                         title: 'Aggiungi risposta al commento',
                         action: 'reply',
                         id: id,
+                        textLabel: 'Testo',
                       },
                     })
                   )

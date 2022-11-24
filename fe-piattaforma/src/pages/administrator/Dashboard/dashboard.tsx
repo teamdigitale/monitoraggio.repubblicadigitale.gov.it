@@ -18,13 +18,23 @@ import PageTitle from '../../../components/PageTitle/pageTitle';
 import useGuard from '../../../hooks/guard';
 import { selectProfile } from '../../../redux/features/user/userSlice';
 import { getMediaQueryDevice } from '../../../utils/common';
+import { formatDate } from '../../../utils/datesHelper';
 
 /*
 const baseFrameURL =
   'https://oceddloir7.execute-api.eu-central-1.amazonaws.com/test/anonymous-embed-sample?mode=getUrl';
 // OLD'https://hnmhsi4ogf.execute-api.eu-central-1.amazonaws.com/test/anonymous-embed-sample';
 */
+const dateToUpdate = () => {
+  const today = new Date();
+  const yesterday = new Date(Date.now() - 86400000);
 
+  if (today.getHours() > 19) {
+    return `${formatDate(today.toString(), 'shortDate')}`;
+  } else {
+    return `${formatDate(yesterday.toString(), 'shortDate')}`;
+  }
+};
 const dashboardBaseURL =
   process.env.REACT_APP_DASHBOARD_BASE_URL ||
   'https://backend.facilitazione-dev.mitd.technology/dashboard_dev';
@@ -64,17 +74,20 @@ const publicContents = {
   title: 'Servizi di facilitazione e formazione per i cittadini',
   subtitle:
     'Rappresentazione dei dati relativi ai servizi di facilitazione e formazione erogati ai cittadini',
+  lastUpdate: null,
 };
 
 const authContents = {
   title: 'I miei report',
   subtitle:
     'Consulta le statistiche rappresentate in questa pagina, oppure accedi allo strumento di Business Intelligence per consultare, configurare e scaricare in autonomia i dati a tua disposizione',
+  lastUpdate: `${dateToUpdate()}`,
 };
 
 const authContentsShort = {
   title: 'I miei report',
   subtitle: 'Consulta le statistiche rappresentate in questa pagina',
+  lastUpdate: `${dateToUpdate()}`,
 };
 
 const iframeHeightByRole = {
@@ -246,6 +259,7 @@ const Dashboard = () => {
       <PageTitle
         title={contents?.title}
         subtitle={contents?.subtitle}
+        lastUpdate={contents?.lastUpdate}
         cta={
           hasUserPermission(['acc.self.dshb'])
             ? {

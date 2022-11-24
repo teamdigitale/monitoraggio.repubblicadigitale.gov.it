@@ -52,6 +52,7 @@ const CommentSection: React.FC<commentSectionI> = ({ section }) => {
                   action: 'edit',
                   id: comment.id,
                   body: comment.body,
+                  textLabel: 'Testo',
                 },
               })
             )

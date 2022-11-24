@@ -145,7 +145,7 @@ const Documents = () => {
 
   const dropdowns: DropdownFilterI[] = [
     {
-      filterName: 'Tipologia',
+      filterName: 'Categoria',
       options:
         dropdownFilterOptions && dropdownFilterOptions['categories']
           ? dropdownFilterOptions['categories'].map(({ label, id }) => ({
