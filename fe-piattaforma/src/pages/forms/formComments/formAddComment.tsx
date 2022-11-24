@@ -31,7 +31,7 @@ const FormAddComment: React.FC<addCommentI> = (props) => {
         newForm([
           newFormField({
             field: 'text',
-            label: 'Digita qui sotto il testo',
+            label: 'Descrivi il motivo della tua segnalazione',
             id: 'text',
             required: true,
             value: newValue,
@@ -77,7 +77,7 @@ const form = newForm([
   newFormField({
     field: 'text',
     id: 'text',
-    label: 'Digita qui sotto il testo',
+    label: 'Descrivi il motivo della tua segnalazione',
     required: true,
     type: 'textarea',
   }),

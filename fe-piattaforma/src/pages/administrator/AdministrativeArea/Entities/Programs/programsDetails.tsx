@@ -418,8 +418,9 @@ const ProgramsDetails: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if(entityId && managerAuthorityId) dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
-  },[managerAuthorityId]);
+    if (entityId && managerAuthorityId)
+      dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
+  }, [managerAuthorityId]);
 
   const cancelSurvey = () => {
     setChangeSurveyButtonVisible(true);
@@ -961,15 +962,18 @@ const ProgramsDetails: React.FC = () => {
             authorityInfo?.dettagliInfoEnte?.statoEnte ===
               entityStatus.NON_ATTIVO ? (
               <>
-                * Ente gestore
-                <Tooltip
-                  placement='bottom'
-                  target='tooltip-ente-gestore-programma'
-                  isOpen={openOne}
-                  toggle={() => toggleOne(!openOne)}
-                >
-                  È necessario aggiungere almeno un referente per l'ente gestore
-                </Tooltip>
+                <span>{!managerAuthorityId && '*'}&nbsp;Ente gestore</span>
+                {managerAuthorityId && (
+                  <Tooltip
+                    placement='bottom'
+                    target='tooltip-ente-gestore-programma'
+                    isOpen={openOne}
+                    toggle={() => toggleOne(!openOne)}
+                  >
+                    È necessario aggiungere almeno un referente per l&apos;ente
+                    gestore
+                  </Tooltip>
+                )}
                 <Icon
                   icon='it-warning-circle'
                   size='xs'
