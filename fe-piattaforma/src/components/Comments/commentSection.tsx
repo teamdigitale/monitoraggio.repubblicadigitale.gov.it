@@ -37,7 +37,8 @@ const CommentSection: React.FC<commentSectionI> = ({ section }) => {
                   text: 'Confermi di voler eliminare questo contenuto?',
                   entity: 'comment',
                   id: comment.id,
-                  author: comment.author
+                  author: comment.author,
+                  textLabel: "Inserisci il motivo dell'eliminazione",
                 },
               })
             )

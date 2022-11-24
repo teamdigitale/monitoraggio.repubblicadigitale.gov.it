@@ -47,11 +47,12 @@ const DeleteForumModal = ({ onClose, onConfirm }: DeleteForumModalI) => {
                     />
                 </div>
                 <div className='text-center'>{payload?.text}</div>
-                {payload && payload.author?.toString() !== userId?.toString() ? (
+                {payload?.author?.toString() !== userId?.toString() ? (
                     <div className='mx-auto'>
                         <FormAddComment
                             creation
                             sendNewValues={(newReason: string) => setReason(newReason)}
+                            textLabel={payload?.textLabel}
                         />
                     </div>
                 ) : null}
