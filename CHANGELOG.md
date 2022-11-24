@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.340](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.339...1.0.0-develop.340) (2022-11-24)
+
+
+### Bug Fixes
+
+* **be:** dropdown policy per fac/vol ([c0ae2cc](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c0ae2ccdf7712f95771e3032574d30f0aeeadd0a))
+
 ## [1.0.0-develop.339](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.338...1.0.0-develop.339) (2022-11-24)
 
 
