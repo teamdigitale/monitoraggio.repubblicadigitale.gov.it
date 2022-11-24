@@ -30,6 +30,7 @@ import it.pa.repdgt.shared.entity.GruppoEntity;
 import it.pa.repdgt.shared.entity.ProgrammaEntity;
 import it.pa.repdgt.shared.entity.RuoloEntity;
 import it.pa.repdgt.shared.entity.UtenteEntity;
+import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.shared.service.storico.StoricoService;
@@ -73,7 +74,7 @@ public class ContestoService implements RuoliUtentiConstants{
 						boolean utenteTerminatoSingolarmente = StatoEnum.ATTIVO.toString().equals(profilo.getStatoP()) &&
 								StatoEnum.TERMINATO.toString().equals(profilo.getStatoUtente());
 						if(!utenteTerminatoSingolarmente)
-							profili.add(new RuoloProgrammaResource(ruolo.getCodice(), descrizioneRuolo, ruolo.getNome(), profilo.getIdProgramma(), profilo.getNomeProgramma(), profilo.getNomeEnte(), profilo.getIdEnte()));
+							profili.add(new RuoloProgrammaResource(ruolo.getCodice(), descrizioneRuolo, ruolo.getNome(), profilo.getIdProgramma(), profilo.getNomeProgramma(), profilo.getNomeEnte(), profilo.getIdEnte(), profilo.getPolicy()));
 					}
 					break;
 				case REGP:
@@ -83,7 +84,7 @@ public class ContestoService implements RuoliUtentiConstants{
 						boolean utenteTerminatoSingolarmente = StatoEnum.ATTIVO.toString().equals(profilo.getStatoP()) &&
 								StatoEnum.TERMINATO.toString().equals(profilo.getStatoUtente());
 						if(!utenteTerminatoSingolarmente)
-							profili.add(new RuoloProgrammaResource(ruolo.getCodice(), descrizioneRuolo, ruolo.getNome(), profilo.getIdProgramma(), profilo.getNomeProgramma(), profilo.getIdProgetto(), profilo.getNomeBreveProgetto(), profilo.getNomeEnte(), profilo.getIdEnte()));
+							profili.add(new RuoloProgrammaResource(ruolo.getCodice(), descrizioneRuolo, ruolo.getNome(), profilo.getIdProgramma(), profilo.getNomeProgramma(), profilo.getIdProgetto(), profilo.getNomeBreveProgetto(), profilo.getNomeEnte(), profilo.getIdEnte(), profilo.getPolicy()));
 					}
 					break;
 				case REPP:
@@ -91,7 +92,7 @@ public class ContestoService implements RuoliUtentiConstants{
 					descrizioneRuolo = codiceRuolo.equalsIgnoreCase(RuoliUtentiConstants.REPP)? "REFERENTE": "DELEGATO";
 					for( ProfiloProjection profilo : this.contestoRepository.findProgrammiProgettiREPPDEPP(codiceFiscale, codiceRuolo)) {
 						String idEnte = profilo.getIdEnte();
-						profili.add(new RuoloProgrammaResource(ruolo.getCodice(), descrizioneRuolo, ruolo.getNome(), profilo.getIdProgramma(), profilo.getNomeProgramma(), profilo.getIdProgetto(), profilo.getNomeBreveProgetto(), profilo.getNomeEnte(), profilo.getIdEnte()));
+						profili.add(new RuoloProgrammaResource(ruolo.getCodice(), descrizioneRuolo, ruolo.getNome(), profilo.getIdProgramma(), profilo.getNomeProgramma(), profilo.getIdProgetto(), profilo.getNomeBreveProgetto(), profilo.getNomeEnte(), profilo.getIdEnte(), profilo.getPolicy()));
 					}
 					break;
 				case FACILITATORE:
@@ -99,8 +100,12 @@ public class ContestoService implements RuoliUtentiConstants{
 					//List<Long> listaProgettiPerFacilitatore = espfRepository.findDistinctProgettiByIdFacilitatoreNonTerminato(codiceFiscale, "FAC");
 					for( ProfiloProjection profilo : this.contestoRepository.findProgrammiProgettiFacVol(codiceFiscale, codiceRuolo)) {
 						String idEnte = profilo.getIdEnte();
-						profili.add(new RuoloProgrammaResource(ruolo.getCodice(), ruolo.getNome(), ruolo.getNome(), profilo.getIdProgramma(), profilo.getNomeProgramma(), profilo.getIdProgetto(), profilo.getNomeBreveProgetto(), profilo.getNomeEnte(), profilo.getIdEnte()));
+						profili.add(new RuoloProgrammaResource(ruolo.getCodice(), ruolo.getNome(), ruolo.getNome(), profilo.getIdProgramma(), profilo.getNomeProgramma(), profilo.getIdProgetto(), profilo.getNomeBreveProgetto(), profilo.getNomeEnte(), profilo.getIdEnte(), profilo.getPolicy()));
 					}
+					break;
+				case DSCU:
+					//PROFILI PER DSCU
+					profili.add(new RuoloProgrammaResource(ruolo.getCodice(), ruolo.getNome(), PolicyEnum.SCD.toString()));
 					break;
 				default:
 					//PROFILI PER DTD/DSCU/RUOLI CUSTOM
