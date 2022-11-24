@@ -26,11 +26,11 @@ const TableMobile: React.FC<MobileTableI> = ({
   useEffect(() => {
     if (values && values.length) {
       const temp = values.map((item) => {
-        const { attributo, actions, id, name, nome, label, status, ...rest } =
+        const { attributo, actions, id, name, nome, cognome, label, status, ...rest } =
           item;
 
         return {
-          title: nome || label || name || attributo,
+          title: cognome ? cognome + ' ' + nome: nome || nome || label || name || attributo,
           status,
           id,
           actions,

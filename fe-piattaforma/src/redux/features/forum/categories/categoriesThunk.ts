@@ -42,6 +42,10 @@ export const GetCategoriesList =
               'all',
           },
         ],
+        /*
+        page: [{ label: 'page', value: '1' }],
+        items_per_page: [{ label: 'items_per_page', value: '1000' }],
+        */
       };
       const queryParamFilters = transformFiltersToQueryParams(body).replace(
         'categorySections',
