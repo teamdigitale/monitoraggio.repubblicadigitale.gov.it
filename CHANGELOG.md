@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.338](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.337...1.0.0-develop.338) (2022-11-24)
+
+
+### Bug Fixes
+
+* **be:** visibilità ente ([6314c20](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6314c202a7fe2d23f87756a992f7256f176f094a))
+
 ## [1.0.0-develop.337](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.336...1.0.0-develop.337) (2022-11-24)
 
 
