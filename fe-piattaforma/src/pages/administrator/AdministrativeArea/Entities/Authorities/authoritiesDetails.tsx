@@ -212,9 +212,9 @@ const AuthoritiesDetails = () => {
             (ref: { [key: string]: string }) => ({
               ...ref,
               id: ref?.id,
-              actions:
-                ref.stato !== entityStatus.ATTIVO ||
-                projectState === entityStatus.TERMINATO
+              actions: ref.associatoAUtente
+                ? ref.stato !== entityStatus.ATTIVO ||
+                  projectState === entityStatus.TERMINATO
                   ? {
                       [CRUDActionTypes.VIEW]:
                         onActionClickReferenti[CRUDActionTypes.VIEW],
@@ -227,7 +227,8 @@ const AuthoritiesDetails = () => {
                       ])
                         ? onActionClickReferenti[CRUDActionTypes.DELETE]
                         : undefined,
-                    },
+                    }
+                : {},
             })
           ) || [],
       },
@@ -238,9 +239,9 @@ const AuthoritiesDetails = () => {
             (del: { [key: string]: string }) => ({
               ...del,
               id: del?.id,
-              actions:
-                del.stato !== entityStatus.ATTIVO ||
-                projectState === entityStatus.TERMINATO
+              actions: del.associatoAUtente
+                ? del.stato !== entityStatus.ATTIVO ||
+                  projectState === entityStatus.TERMINATO
                   ? {
                       [CRUDActionTypes.VIEW]:
                         onActionClickDelegati[CRUDActionTypes.VIEW],
@@ -253,7 +254,8 @@ const AuthoritiesDetails = () => {
                       ])
                         ? onActionClickDelegati[CRUDActionTypes.DELETE]
                         : undefined,
-                    },
+                    }
+                : {},
             })
           ) || [],
       },

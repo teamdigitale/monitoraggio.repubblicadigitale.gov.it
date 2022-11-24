@@ -299,37 +299,43 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
           {description}
         </p>
       </div>
-      {!device.mediaIsPhone ? (
-        <div className='mb-4 d-flex flex-row justify-content-start'>
-          {attachment ? (
-            <div className='d-flex justify-content-start'>
-              <Button
-                className={clsx(
-                  'primary-color-b1',
-                  'd-flex',
-                  'justify-content-start',
-                  'px-0',
-                  'pb-5',
-                  'd-flex',
-                  'align-items-center',
-                  external_link && 'mr-5'
-                )}
-                onClick={trackDownload}
+      <div
+        className={clsx(
+          'mb-4',
+          'd-flex',
+          'justify-content-start',
+          device.mediaIsPhone ? 'flex-column' : 'flex-row'
+        )}
+      >
+        {attachment ? (
+          <div className='d-flex justify-content-start'>
+            <Button
+              className={clsx(
+                'primary-color-b1',
+                'd-flex',
+                'justify-content-start',
+                'px-0',
+                device.mediaIsPhone ? 'pb-3' : 'pb-5',
+                'd-flex',
+                'align-items-center',
+                external_link && 'mr-5'
+              )}
+              onClick={trackDownload}
+              aria-label='Scarica allegato'
+            >
+              <Icon
+                icon='it-download'
+                color='primary'
+                size='sm'
                 aria-label='Scarica allegato'
-              >
-                <Icon
-                  icon='it-download'
-                  color='primary'
-                  size='sm'
-                  aria-label='Scarica allegato'
-                  aria-hidden
-                  className='mr-2'
-                />
-                <p className='font-weight-bold h6 mb-0'>
-                  <u>Scarica allegato</u>
-                </p>
-              </Button>
-              {/*  <a
+                aria-hidden
+                className='mr-2'
+              />
+              <p className='font-weight-bold h6 mb-0'>
+                <u>Scarica allegato</u>
+              </p>
+            </Button>
+            {/*  <a
                 href={cleanDrupalFileURL(attachment)}
                 download
                 target='_blank'
@@ -338,75 +344,41 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
               >
                 <p className='font-weight-bold h6 mb-0'>Scarica allegato</p>
               </a> */}
-            </div>
-          ) : null}
-          {external_link ? (
-            <div className='d-flex justify-content-start'>
-              <Button
-                className={clsx(
-                  'primary-color-b1',
-                  'd-flex',
-                  'justify-content-start',
-                  'px-0',
-                  'pb-5',
-                  'd-flex',
-                  'align-items-center'
-                )}
-                aria-label='Vai al link esterno'
-              >
-                <Icon
-                  icon='it-external-link'
-                  color='primary'
-                  size='sm'
-                  aria-label='vai al link esterno'
-                  aria-hidden
-                />
-                <a
-                  href={cleanDrupalFileURL(external_link)}
-                  target='_blank'
-                  rel='noreferrer'
-                  className='ml-2'
-                >
-                  <p className='font-weight-bold h6 mb-0'>Link esterno</p>
-                </a>
-              </Button>
-            </div>
-          ) : null}
-        </div>
-      ) : attachment ? (
-        <div className='mb-4'>
-          <Button
-            className={clsx(
-              'primary-color-b1',
-              'd-flex',
-              'justify-content-start',
-              'px-0',
-              'py-2',
-              'd-flex',
-              'align-items-center'
-            )}
-            onClick={trackDownload}
-            aria-label='Scarica allegato'
-          >
-            <Icon
-              icon='it-download'
-              color='primary'
-              size='sm'
-              aria-label='Scarica allegato'
-              aria-hidden
-            />
-            <a
-              href={cleanDrupalFileURL(attachment)}
-              download
-              target='_blank'
-              rel='noreferrer'
-              className='ml-2'
+          </div>
+        ) : null}
+        {external_link ? (
+          <div className='d-flex justify-content-start'>
+            <Button
+              className={clsx(
+                'primary-color-b1',
+                'd-flex',
+                'justify-content-start',
+                'px-0',
+                'pb-5',
+                'd-flex',
+                'align-items-center'
+              )}
+              aria-label='Vai al link esterno'
             >
-              <p className='font-weight-bold h6 mb-0'>Scarica allegato</p>
-            </a>
-          </Button>
-        </div>
-      ) : null}
+              <Icon
+                icon='it-external-link'
+                color='primary'
+                size='sm'
+                aria-label='vai al link esterno'
+                aria-hidden
+              />
+              <a
+                href={cleanDrupalFileURL(external_link)}
+                target='_blank'
+                rel='noreferrer'
+                className='ml-2'
+              >
+                <p className='font-weight-bold h6 mb-0'>Link esterno</p>
+              </a>
+            </Button>
+          </div>
+        ) : null}
+      </div>
       {tags ? (
         <div className='d-flex flex-row w-100 mb-5 align-items-center'>
           <b className='mr-2'>TAG:</b>

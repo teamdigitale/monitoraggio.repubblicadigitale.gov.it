@@ -557,7 +557,8 @@ export const AssignManagerAuthorityReferentDelegate =
     },
     entity: 'programma' | 'progetto',
     role: UserAuthorityRole,
-    userId?: string
+    userId?: string,
+    needToUpdate?: boolean
   ) =>
   async (dispatch: Dispatch) => {
     try {
@@ -599,11 +600,12 @@ export const AssignManagerAuthorityReferentDelegate =
         };
       }
       if (userDetail?.id) {
-        // userDetail.codiceFiscale &&
-        //   (await API.put(
-        //     `/utente/${userDetail.id.toString().toUpperCase()}`,
-        //     userDetail
-        //   ));
+        userDetail.codiceFiscale &&
+          needToUpdate &&
+          (await API.put(
+            `/utente/${userDetail.id.toString().toUpperCase()}`,
+            userDetail
+          ));
         userId !== userDetail.id.toString() && (await API.post(endpoint, body));
       } else {
         const payload = {
@@ -637,7 +639,8 @@ export const AssignPartnerAuthorityReferentDelegate =
       [key: string]: string | number | boolean | Date | string[] | undefined;
     },
     role: UserAuthorityRole,
-    userId?: string
+    userId?: string,
+    needToUpdate?: boolean
   ) =>
   async (dispatch: Dispatch) => {
     try {
@@ -647,6 +650,7 @@ export const AssignPartnerAuthorityReferentDelegate =
       const endpoint = '/ente/associa/referenteDelegato/partner';
       if (userDetail?.id) {
         userDetail.codiceFiscale &&
+          needToUpdate &&
           (await API.put(
             `/utente/${userDetail.id.toString().toUpperCase()}`,
             userDetail

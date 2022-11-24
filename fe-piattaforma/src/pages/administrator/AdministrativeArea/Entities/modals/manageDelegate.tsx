@@ -96,7 +96,8 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
               projectId,
               newFormValues,
               'DEPP',
-              userId
+              userId,
+              !isUserSelected,
             )
           );
           await dispatch(
@@ -111,7 +112,8 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
               newFormValues,
               'progetto',
               'DEGP',
-              userId
+              userId,
+              !isUserSelected,
             )
           );
 
@@ -126,7 +128,8 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
             newFormValues,
             'programma',
             'DEG',
-            userId
+            userId,
+            !isUserSelected,
           )
         );
         await dispatch(GetAuthorityManagerDetail(entityId, 'programma'));

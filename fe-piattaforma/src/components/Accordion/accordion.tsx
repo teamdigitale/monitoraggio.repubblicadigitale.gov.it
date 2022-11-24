@@ -116,7 +116,7 @@ const Accordion: React.FC<AccordionI> = (props) => {
             collapseOpen && 'accordion-container__form-checkbox--collapsed'
           )}
         >
-          <Form id={`form-${index}-${title}`}>
+          <Form id={`form-${index}-${title}`} showMandatory={false}>
             <Input
               id={`checkbox-${index}-${title.replace(/\s/g, '-')}`}
               field='authorization'

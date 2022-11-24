@@ -218,13 +218,9 @@ const ReportCard: React.FC<ReportCardI> = ({
             <span>
               Ha segnalato&nbsp;
               {comment_author
-                ? `il commento${
-                    comment_post_date
-                      ? ` del ${formatDate(comment_post_date, 'dateTime')}`
-                      : ''
-                  }`
-                : getItemType()}
-              &nbsp;di&nbsp;
+                ? 'il commento, aggiunto da'
+                : `${getItemType()} di`}
+              &nbsp;
             </span>
             <strong>
               {usersAnagraphic[comment_author || item_author]?.nome}&nbsp;
@@ -233,10 +229,19 @@ const ReportCard: React.FC<ReportCardI> = ({
             </strong>
             {comment_author ? (
               <span>
-                del&nbsp;{getItemType(true)}
+                al contenuto di tipo&nbsp;<strong>{getItemType(true)}</strong>
                 {item_title ? (
                   <>
-                    ,&nbsp;<strong>{item_title}</strong>&nbsp;
+                    , dal titolo&nbsp;<strong>{item_title}</strong>&nbsp;
+                    {comment_post_date ? (
+                      <>
+                        in data&nbsp;
+                        <strong>
+                          {formatDate(comment_post_date, 'dateTime')}
+                        </strong>
+                        ,&nbsp;
+                      </>
+                    ) : null}
                   </>
                 ) : null}
               </span>

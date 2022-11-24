@@ -216,7 +216,7 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
   return (
     <Form
       id='form-load-document'
-      className='mt-5 mb-0'
+      className='mt-3 pt-3 mb-0'
       formDisabled={formDisabled}
     >
       <Form.Row className={clsx(bootClass, !device.mediaIsDesktop && 'mb-5')}>
