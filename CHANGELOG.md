@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.129](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.128...1.0.0-test.129) (2022-11-24)
+
+
+### Features
+
+* **be:** nuovi coni visibilità ([f382760](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f3827601563fe4bc57d6a8f0de873dc6e0359a2e))
+
 ## [1.0.0-test.128](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.127...1.0.0-test.128) (2022-11-24)
 
 
