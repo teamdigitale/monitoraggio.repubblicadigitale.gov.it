@@ -116,12 +116,9 @@ public class AccessControServiceUtils {
 			break;
 		case "REGP":
 		case "DEGP":
-			if(enteSedeProgettoService.getCountSediByIdProgetto(idSede, sceltaProfiloParam.getIdProgetto()) > 0)
-				return true;
-			break;
 		case "REPP":
 		case "DEPP":
-			if(enteSedeProgettoService.getCountSediByIdProgettoAndEnte(idSede, sceltaProfiloParam.getIdProgetto(), sceltaProfiloParam.getIdEnte()) > 0)
+			if(enteSedeProgettoService.getCountSediByIdProgetto(idSede, sceltaProfiloParam.getIdProgetto()) > 0)
 				return true;
 			break;
 		case "FAC":
