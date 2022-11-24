@@ -357,6 +357,7 @@ public class ContestoServiceTest {
 		private String nomeBreveProgetto;
 		private String statoP;
 		private String statoUtente;
+		private String policy;
 		
 		@Override
 		public String getIdProgramma() {
@@ -396,6 +397,11 @@ public class ContestoServiceTest {
 		@Override
 		public String getStatoUtente() {
 			return statoUtente;
+		}
+
+		@Override
+		public String getPolicy() {
+			return policy;
 		}
 	}
 	
