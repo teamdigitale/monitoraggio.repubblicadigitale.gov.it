@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.131](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.130...1.0.0-test.131) (2022-11-24)
+
+
+### Bug Fixes
+
+* **be:** visibilità policy ([c0a14a5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c0a14a5513d367b7085229cdc3826572c7ca1f0f))
+
 ## [1.0.0-test.130](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.129...1.0.0-test.130) (2022-11-24)
 
 
