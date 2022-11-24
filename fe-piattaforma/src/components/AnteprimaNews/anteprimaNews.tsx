@@ -15,7 +15,7 @@ import { selectDevice } from '../../redux/features/app/appSlice';
 import SocialBar from '../Comments/socialBar';
 import { useDispatch } from 'react-redux';
 import { openModal } from '../../redux/features/modal/modalSlice';
-import coverPlaceholder from '/public/assets/img/img-bacheca-digitale-dettaglio.png';
+import coverPlaceholder from '/public/assets/img/placeholder-news.png';
 import HTMLParser from '../General/HTMLParser/HTMLParse';
 import {
   ActionTracker,
