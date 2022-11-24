@@ -175,7 +175,7 @@ public class SedeService {
 	
 	@LogMethod
 	@LogExecutionTime
-	public SchedaSedeBean getSchedaSedeByIdProgettoAndIdEnteAndIdSede(final Long idProgetto, final Long idEnte, final Long idSede) {
+	public SchedaSedeBean getSchedaSedeByIdProgettoAndIdEnteAndIdSede(final Long idProgetto, final Long idEnte, final Long idSede, String codiceRuoloUtente) {
 		ProgettoEntity progettoFetchDB = this.progettoService.getProgettoById(idProgetto);
 		final DettaglioProgettoLightBean dettaglioProgetto = this.sedeMapper.toDettaglioProgettoLightBeanFrom(progettoFetchDB);
 		final SchedaSedeBean schedaSede = this.getSchedaSedeByIdSede(idSede);
@@ -183,7 +183,11 @@ public class SedeService {
 		final DettaglioSedeBean dettaglioSede = schedaSede.getDettaglioSede();
 		dettaglioSede.setEnteDiRiferimento(this.enteService.getEnteById(idEnte).getNome());
 		
-		final List<UtenteProjection> facilitatori = this.sedeRepository.findFacilitatoriSedeByIdProgettoAndIdEnteAndIdSede(idProgetto, idEnte, idSede);
+		final List<UtenteProjection> facilitatori = this.sedeRepository.findFacilitatoriSedeByIdProgettoAndIdEnteAndIdSede(idProgetto, 
+				idEnte, 
+				idSede,
+				codiceRuoloUtente,
+				idEnte.equals(progettoFetchDB.getEnteGestoreProgetto().getId()) ? "Gestore" : "Partner");
 		schedaSede.setDettaglioProgetto(dettaglioProgetto);
 		schedaSede.setDettaglioSede(dettaglioSede);
 		schedaSede.setFacilitatoriSede(facilitatori);

@@ -191,6 +191,7 @@ public class CittadinoService {
 			dettaglioServizioSchedaCittadino.setNomeCompletoFacilitatore(nomeCompletoFacilitatore);
 			dettaglioServizioSchedaCittadino.setIdQuestionarioCompilato(record.getIdQuestionarioCompilato());
 			dettaglioServizioSchedaCittadino.setStatoQuestionario(record.getStatoQuestionarioCompilato());
+			dettaglioServizioSchedaCittadino.setNomeSede(record.getNomeSede());
 			dettaglioServizioSchedaCittadino.setAssociatoAUtente(this.isAssociatoAUtente(profilazione, record.getCodiceFiscaleFacilitatore(), record.getIdProgetto(), record.getIdEnte()));
 			return dettaglioServizioSchedaCittadino;
 		}).collect(Collectors.toList());

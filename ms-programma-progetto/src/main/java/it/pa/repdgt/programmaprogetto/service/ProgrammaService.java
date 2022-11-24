@@ -321,6 +321,8 @@ public class ProgrammaService {
 		case "DEG":
 		case "DEGP":
 		case "DEPP":
+		case "FAC":
+		case "VOL":
 			return Arrays.asList(
 					this.getProgrammaById(idProgramma)
 					);

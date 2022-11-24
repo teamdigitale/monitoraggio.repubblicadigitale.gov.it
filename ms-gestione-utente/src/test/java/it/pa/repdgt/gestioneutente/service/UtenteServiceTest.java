@@ -535,7 +535,7 @@ public class UtenteServiceTest {
 				filtroRicerca.getRuoli(),
 				filtroRicerca.getStati()
 		)).thenReturn(setStati);
-		List<String> risultato = service.getAllStatiByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRicerca);
+		List<String> risultato = service.getAllStatiByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getIdEnte(), filtroRicerca);
 		assertThat(risultato.size()).isEqualTo(setStati.size());
 	}
 	
@@ -543,7 +543,7 @@ public class UtenteServiceTest {
 	public void getAllStatiByRuoloAndcfUtenteTestConRuoliPrefediniti() {
 		//test con ruoloUtenteLoggato = DSCU/REG/DEG/REGP/DEGP/REPP/DEPP
 		sceltaContesto.setCodiceRuoloUtenteLoggato("DSCU");
-		List<String> risultato = service.getAllStatiByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRicerca);
+		List<String> risultato = service.getAllStatiByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(),  sceltaContesto.getIdEnte(), filtroRicerca);
 		assertThat(risultato.size()).isEqualTo(0);
 	}
 	
@@ -557,7 +557,7 @@ public class UtenteServiceTest {
 				filtroRicerca.getRuoli(),
 				filtroRicerca.getStati()
 		)).thenReturn(setStati);
-		List<String> risultato = service.getAllStatiByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRicerca);
+		List<String> risultato = service.getAllStatiByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getIdEnte(), filtroRicerca);
 		assertThat(risultato.size()).isEqualTo(setStati.size());
 	}
 	
@@ -591,7 +591,7 @@ public class UtenteServiceTest {
 				filtroRicerca.getRuoli(),
 				filtroRicerca.getStati()
 				)).thenReturn(listaCodiciRuoli);
-		List<String> risultato = service.getAllRuoliByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRicerca);
+		List<String> risultato = service.getAllRuoliByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getIdEnte(), filtroRicerca);
 		assertThat(risultato.size()).isEqualTo(listaCodiciRuoli.size());
 	}
 	
@@ -605,7 +605,7 @@ public class UtenteServiceTest {
 				filtroRicerca.getRuoli(),
 				filtroRicerca.getStati()
 				)).thenReturn(listaCodiciRuoli);
-		List<String> risultato = service.getAllRuoliByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRicerca);
+		List<String> risultato = service.getAllRuoliByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getIdEnte(), filtroRicerca);
 		assertThat(risultato.size()).isEqualTo(listaCodiciRuoli.size());
 	}
 	
@@ -621,7 +621,7 @@ public class UtenteServiceTest {
 				filtroRicerca.getRuoli(),
 				filtroRicerca.getStati()
 				)).thenReturn(listaCodiciRuoli);
-		List<String> risultato = service.getAllRuoliByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRicerca);
+		List<String> risultato = service.getAllRuoliByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getIdEnte(), filtroRicerca);
 		assertThat(risultato.size()).isEqualTo(listaCodiciRuoli.size());
 	}
 	
@@ -637,7 +637,7 @@ public class UtenteServiceTest {
 				filtroRicerca.getRuoli(),
 				filtroRicerca.getStati()
 				)).thenReturn(listaCodiciRuoli);
-		List<String> risultato = service.getAllRuoliByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRicerca);
+		List<String> risultato = service.getAllRuoliByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getIdEnte(), filtroRicerca);
 		assertThat(risultato.size()).isEqualTo(listaCodiciRuoli.size());
 	}
 	
@@ -647,13 +647,14 @@ public class UtenteServiceTest {
 		sceltaContesto.setCodiceRuoloUtenteLoggato("REPP");
 		when(this.utenteRepository.findRuoliPerReferenteDelegatoEntePartnerProgetti(
 				sceltaContesto.getIdProgetto(),
+				sceltaContesto.getIdEnte(), 
 				sceltaContesto.getCfUtenteLoggato(),
 				filtroRicerca.getCriterioRicerca(),
 				"%" + filtroRicerca.getCriterioRicerca() + "%",
 				filtroRicerca.getRuoli(),
 				filtroRicerca.getStati()
 				)).thenReturn(listaCodiciRuoli);
-		List<String> risultato = service.getAllRuoliByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRicerca);
+		List<String> risultato = service.getAllRuoliByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getIdEnte(), filtroRicerca);
 		assertThat(risultato.size()).isEqualTo(listaCodiciRuoli.size());
 	}
 	
@@ -667,7 +668,7 @@ public class UtenteServiceTest {
 				filtroRicerca.getRuoli(),
 				filtroRicerca.getStati()
 				)).thenReturn(listaCodiciRuoli);
-		List<String> risultato = service.getAllRuoliByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRicerca);
+		List<String> risultato = service.getAllRuoliByRuoloAndcfUtente(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), sceltaContesto.getIdEnte(), filtroRicerca);
 		assertThat(risultato.size()).isEqualTo(listaCodiciRuoli.size());
 	}
 
@@ -820,8 +821,7 @@ public class UtenteServiceTest {
 	@Test
 	public void getUtenteByCriterioRicercaTest() {
 		when(this.utenteRepository.findUtenteByCriterioRicerca(
-				filtroRicerca.getCriterioRicerca(),
-				"%" + filtroRicerca.getCriterioRicerca() + "%"
+				filtroRicerca.getCriterioRicerca()
 		)).thenReturn(utentiList);
 		List<UtenteEntity> risultato = service.getUtenteByCriterioRicerca(filtroRicerca.getCriterioRicerca());
 		assertThat(risultato.size()).isEqualTo(utentiList.size());

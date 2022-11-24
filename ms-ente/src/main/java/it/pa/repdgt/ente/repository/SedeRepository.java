@@ -65,6 +65,13 @@ public interface SedeRepository extends JpaRepository<SedeEntity, Long> {
 			 + "	,u.COGNOME "
 			 + "	,espf.STATO_UTENTE as stato "
 			 + "	,u.CODICE_FISCALE as codiceFiscale "
+			 + "    ,case when ("
+			 + "          :codiceRuoloUtente in ('REG', 'DEG', 'FAC', 'VOL') OR"
+			 + "          :ruoloEnte = 'Gestore' AND :codiceRuoloUtente in ('REPP', 'DEPP') OR"
+			 + "          :ruoloEnte = 'Partner' AND :codiceRuoloUtente in ('REGP', 'DEGP')"
+			 + "     )"
+			 + "     then 'false' "
+			 + "     else 'true' end as associatoAUtente"
 			 + " FROM "
 			 + "	ente_sede_progetto_facilitatore espf"
 			 + "    INNER JOIN utente u"
@@ -77,7 +84,9 @@ public interface SedeRepository extends JpaRepository<SedeEntity, Long> {
 	List<UtenteProjection> findFacilitatoriSedeByIdProgettoAndIdEnteAndIdSede(
 			@Param(value = "idProgetto") Long idProgetto, 
 			@Param(value = "idEnte") Long idEnte,
-			@Param(value = "idSede") Long idSede
+			@Param(value = "idSede") Long idSede,
+			@Param(value = "codiceRuoloUtente") String codiceRuoloUtente,
+			@Param(value = "ruoloEnte") String ruoloEnte
 	);
 	
 	@Query(value = " SELECT "
