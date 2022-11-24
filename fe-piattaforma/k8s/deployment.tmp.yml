@@ -21,10 +21,6 @@ spec:
           image: ${ECR_REPOSITORY}:${IMAGE_TAG}
           ports:
             - containerPort: 80
-          resources:
-            requests:
-              cpu: "0.5"
-              memory: "1024Mi"
           imagePullPolicy: Always
 ---
 apiVersion: v1
