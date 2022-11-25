@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.343](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.342...1.0.0-develop.343) (2022-11-25)
+
+
+### Bug Fixes
+
+* **be:** cambio taglia workdocs ([312cbd7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/312cbd7edeed25a26cef39547d64077f6dbeb000))
+
 ## [1.0.0-develop.342](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.341...1.0.0-develop.342) (2022-11-25)
 
 
