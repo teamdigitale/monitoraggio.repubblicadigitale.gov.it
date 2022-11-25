@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { useEffect } from 'react';
 // import { useDispatch } from 'react-redux';
 import { Form, Input, Select } from '../../../..';
@@ -114,9 +115,10 @@ const Sedi: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
     <Form
       id='form-headquarter'
       legend={legend}
-      className='mt-3 pt-3'
+      className={clsx(formDisabled ? 'mt-5':'mt-3', 'mb-0')}
       formDisabled={formDisabled ? formDisabled : false}
       marginShowMandatory={false}
+      customMargin='mb-3 pb-3 ml-2'
     >
       <Form.Row className='justify-content-between'>
         {formDisabled ? (

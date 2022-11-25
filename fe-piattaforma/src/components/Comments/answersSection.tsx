@@ -63,7 +63,7 @@ const AnswersSection: React.FC<AnswerSectionI> = (props) => {
                           action: 'edit',
                           id: comment.id,
                           body: comment.body,
-                          textLabel: 'Testo',
+                          textLabel: 'Digita qui sotto il testo',
                         },
                       })
                     )

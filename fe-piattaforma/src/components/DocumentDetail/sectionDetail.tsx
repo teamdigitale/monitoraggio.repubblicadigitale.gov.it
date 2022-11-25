@@ -436,7 +436,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
                 action: 'comment',
                 entity: section === 'community' ? 'community' : 'document',
                 category: category_label || category,
-                textLabel: 'Testo',
+                textLabel: 'Digita qui sotto il testo',
               },
             })
           )

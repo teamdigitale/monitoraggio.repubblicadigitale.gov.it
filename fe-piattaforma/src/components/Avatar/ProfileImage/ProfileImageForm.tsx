@@ -75,7 +75,6 @@ const ProfileImageForm: React.FC<ProfilePictureI> = (props) => {
             accept='.png, .jpeg, .jpg'
             ref={inputRef}
             className='sr-only'
-            capture
             onChange={updateImage}
           />
           <label
