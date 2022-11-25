@@ -518,7 +518,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 							}
 						}
 					} else {
-						cittadinoUpload.setEsito("UPLOAD - KO - CF NON VALIDO");
+						cittadinoUpload.setEsito("UPLOAD - KO - FORMATO CF NON VALIDO");
 					}
 				}
 				esiti.add(cittadinoUpload);
