@@ -550,14 +550,14 @@ export const uploadFile = (
 
 export const cleanDrupalFileURL = (url: string) => url.replaceAll('amp;', '');
 
-export const getUnreadNotificationsCount = () => {
+export const getUnreadNotificationsCount = (force = false) => {
   const notificationSession = JSON.parse(getSessionValues('notification'));
 
   if (notificationSession.session_timestamp) {
     const diff =
       Math.abs(new Date().getTime() - notificationSession.session_timestamp) /
       1000;
-    if (diff >= 120) {
+    if (force || diff >= 120) {
       store.dispatch(
         GetNotificationsByUser(
           {

@@ -62,7 +62,6 @@ const FileInput: React.FC<FileInputI> = (props) => {
         accept={accept}
         ref={inputRef}
         className='sr-only'
-        capture
         onChange={updateFile}
       />
       <label

@@ -96,7 +96,7 @@ const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
           </div>
           <div className='preview-header'>
             <h3 className='primary-color-a9'>
-              Area notifiche
+              Notifiche non lette
               {/*<span className='badge'>
                 {
                   notificationsList.filter(
@@ -149,7 +149,7 @@ const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
               }
             }}
           >
-            ARCHIVIO NOTIFICHE
+            Vai alle notifiche
             {/*{notificationsList.length}*/}
           </NavLink>
         </div>
