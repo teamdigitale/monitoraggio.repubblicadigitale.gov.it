@@ -166,9 +166,9 @@ public class CSVServizioUtil {
                 final Row row = rowIterator.next();
                 final CittadinoUploadBean cittadinoUpload = new CittadinoUploadBean();
                 //nell'excel sono impostati dei drop down fino alla riga 100 che fanno leggere quei record anche se vuoti
-                //quindi quando trovo il primo record con la cella "CodiceFiscale" e "NumeroDocumento" 
-                //uguale a null significa che non devo piu leggere ed esco 
-                if(row.getCell(0) == null && row.getCell(4) == null)
+                //quindi quando trovo tutte le celle 
+                //uguali a null significa che non devo piu leggere ed esco 
+                if(isEmptyRow(row))
                 	break;
                 for (int posCell=0; posCell<N_CELL; posCell++) {
                     final Cell cell = row.getCell(posCell);
@@ -285,5 +285,24 @@ public class CSVServizioUtil {
 		} catch (IOException e) {
 			throw new RuntimeException("fail to parse Excel file: " + e.getMessage(), e);
 		}
+	}
+
+	private static boolean isEmptyRow(Row row) {
+		return row.getCell(0) == null
+				&& row.getCell(1) == null
+				&& row.getCell(2) == null
+				&& row.getCell(3) == null
+				&& row.getCell(4) == null
+				&& row.getCell(5) == null
+				&& row.getCell(6) == null
+				&& row.getCell(7) == null
+				&& row.getCell(8) == null
+				&& row.getCell(9) == null
+				&& row.getCell(10) == null
+				&& row.getCell(11) == null
+				&& row.getCell(12) == null
+				&& row.getCell(13) == null
+				&& row.getCell(14) == null
+				&& row.getCell(15) == null;
 	}
 }
