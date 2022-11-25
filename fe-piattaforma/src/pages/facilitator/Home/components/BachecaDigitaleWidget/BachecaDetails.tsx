@@ -99,15 +99,15 @@ const BachecaDetails = () => {
     <Button
       onClick={() => navigate('/bacheca', { replace: true })}
       className='px-0'
-      aria-label='torna indietro'
+      aria-label='vai alla bacheca'
     >
       <Icon
         icon='it-chevron-left'
         color='primary'
-        aria-label='torna indietro'
+        aria-label='vai alla bacheca'
         aria-hidden
       />
-      <span className='primary-color'>Torna indietro</span>
+      <span className='primary-color ml-1'>Vai alla bacheca</span>
     </Button>
   );
 
@@ -149,6 +149,7 @@ const BachecaDetails = () => {
                 id: id,
                 entity: 'board',
                 author: newsDetail.author,
+                textLabel: "Inserisci il motivo dell'eliminazione",
               },
             })
           )

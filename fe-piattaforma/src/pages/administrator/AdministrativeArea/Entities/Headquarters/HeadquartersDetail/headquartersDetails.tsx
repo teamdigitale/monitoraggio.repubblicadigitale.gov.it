@@ -186,17 +186,18 @@ const HeadquartersDetails = () => {
         headquarterfacilitators?.map((facilitator: HeadquarterFacilitator) => ({
           nome: `${facilitator.cognome} ${facilitator.nome} `,
           stato: facilitator.stato,
-          actions:
-            facilitator.stato === entityStatus.ATTIVO &&
-            hasUserPermission(['add.fac']) &&
-            authorityType
+          actions: facilitator.associatoAUtente
+            ? facilitator.stato === entityStatus.ATTIVO &&
+              hasUserPermission(['add.fac']) &&
+              authorityType
               ? onActionClick
               : {
                   [CRUDActionTypes.VIEW]:
                     hasUserPermission(['add.fac']) && authorityType
                       ? onActionClick[CRUDActionTypes.VIEW]
                       : undefined,
-                },
+                }
+            : {},
           id: facilitator?.id,
           codiceFiscale: facilitator?.codiceFiscale,
         })) || [],

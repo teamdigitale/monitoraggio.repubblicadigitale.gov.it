@@ -114,8 +114,9 @@ const Sedi: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
     <Form
       id='form-headquarter'
       legend={legend}
-      className='mt-5'
+      className='mt-3 pt-3'
       formDisabled={formDisabled ? formDisabled : false}
+      marginShowMandatory={false}
     >
       <Form.Row className='justify-content-between'>
         {formDisabled ? (

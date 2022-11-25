@@ -107,8 +107,9 @@ const FormOnboarding: React.FC<FormProfileI> = (props) => {
     <div className={clsx(device.mediaIsPhone ? 'mx-4 mt-5' : 'mt-5 container')}>
       <Form
         id='form-onboarding'
-        className={clsx('mt-5', 'mb-5', 'pt-5', 'onboarding__form-container')}
+        className={clsx('mt-3', 'mb-5', 'pt-3', 'onboarding__form-container')}
         formDisabled={formDisabled}
+        marginShowMandatory={false}
       >
         <Form.Row /* className={bootClass} */>
           <Input

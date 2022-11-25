@@ -2,7 +2,7 @@ import moment from 'moment';
 
 export const shortFormats: { [key: string]: string } = {
   fullDate: 'DD/MM/YYYY - hh:mm:ss',
-  dateTime: 'DD/MM/YYYY - hh:mm',
+  dateTime: 'DD/MM/YYYY hh:mm',
   shortDate: 'DD/MM/YYYY',
   snakeDate: 'YYYY-MM-DD',
   midDate: 'MMM Do, YYYY',

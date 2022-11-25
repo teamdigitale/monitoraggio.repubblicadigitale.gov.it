@@ -117,8 +117,9 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
     <Form
       legend={legend}
       id='form-citizen'
-      className='mt-5'
+      className='mt-3 pt-3'
       formDisabled={formDisabled}
+      marginShowMandatory={false}
     >
       <Form.Row>
         <Input

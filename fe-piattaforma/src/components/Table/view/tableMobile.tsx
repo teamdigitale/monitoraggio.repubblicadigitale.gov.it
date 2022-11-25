@@ -11,6 +11,7 @@ interface MobileTableI {
   onTooltipInfo?: string;
   values?: TableRowI[];
   totalCounter?: number;
+  onActionRadio?: CRUDActionsI;
 }
 
 const TableMobile: React.FC<MobileTableI> = ({
@@ -18,17 +19,18 @@ const TableMobile: React.FC<MobileTableI> = ({
   onTooltipInfo = '',
   values = [],
   totalCounter,
+  onActionRadio,
 }) => {
   const [valuesForMobile, setValuesForMobile] = useState<AccordionRowI[]>();
 
   useEffect(() => {
     if (values && values.length) {
       const temp = values.map((item) => {
-        const { attributo, actions, id, name, nome, label, status, ...rest } =
+        const { attributo, actions, id, name, nome, cognome, label, status, ...rest } =
           item;
 
         return {
-          title: nome || label || name || attributo,
+          title: cognome ? cognome + ' ' + nome: nome || nome || label || name || attributo,
           status,
           id,
           actions,
@@ -58,7 +60,7 @@ const TableMobile: React.FC<MobileTableI> = ({
     <div>
       {valuesForMobile ? (
         valuesForMobile.map((item, index: number) => (
-          <AccordionRow {...item} key={index} onTooltipInfo={onTooltipInfo} />
+          <AccordionRow {...item} key={index} onTooltipInfo={onTooltipInfo} onActionRadio={onActionRadio}/>
         ))
       ) : (
         <div className='my-3'>

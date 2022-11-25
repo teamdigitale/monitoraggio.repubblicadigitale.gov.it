@@ -277,6 +277,7 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
         legend='interruttore sede itinerante'
         id='form-manage-headquarter'
         className='mx-5 mb-5'
+        showMandatory={false}
       >
         <Form.Row>
           <div className='col-10 col-md-6'>

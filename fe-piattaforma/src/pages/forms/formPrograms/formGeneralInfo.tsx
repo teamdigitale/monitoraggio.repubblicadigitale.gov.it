@@ -171,7 +171,7 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
     <Form
       legend={legend}
       id='form-general-info'
-      className='mt-5'
+      className='mt-3 pt-3'
       formDisabled={formDisabled}
     >
       <Form.Row className={bootClass}>

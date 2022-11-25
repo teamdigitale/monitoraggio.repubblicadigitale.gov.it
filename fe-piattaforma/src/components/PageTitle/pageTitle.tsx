@@ -31,6 +31,7 @@ export interface PageTitleI {
   innerHTML?: boolean;
   HTMLsubtitle?: string;
   defaultOpen?: boolean;
+  lastUpdate?: string | null;
 }
 
 const PageTitle: React.FC<PageTitleI> = (props) => {
@@ -39,6 +40,7 @@ const PageTitle: React.FC<PageTitleI> = (props) => {
     hasBackground,
     title,
     subtitle,
+    lastUpdate,
     sectionInfo,
     alignTitle,
     badge,
@@ -137,6 +139,19 @@ const PageTitle: React.FC<PageTitleI> = (props) => {
                 dangerouslySetInnerHTML={{ __html: HTMLsubtitle }}
                 className='section-info-list'
               />
+            ) : lastUpdate ? (
+              <div
+                className={clsx(
+                  'd-flex',
+                  'flex-column',
+                  !device.mediaIsDesktop && 'mb-4'
+                )}
+              >
+                <p className={clsx('py-2', 'mb-2')}>{subtitle}</p>
+                <p>
+                  Ultimo aggiornamento <strong>{lastUpdate} ore 19:00</strong>
+                </p>
+              </div>
             ) : (
               <p className={clsx('py-2', 'mb-2')}>{subtitle}</p>
             )}

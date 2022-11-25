@@ -53,7 +53,8 @@ const CardProfile: React.FC<CardProfileI> = (props) => {
           'flex-row',
           'align-items-center',
           'justify-content-between',
-          'card-profile-container__white-card'
+          'card-profile-container__white-card',
+          'position-relative'
         )}
       >
         <div
@@ -110,7 +111,10 @@ const CardProfile: React.FC<CardProfileI> = (props) => {
           </div>
         </div>
         {activeProfile && (
-          <div className='d-flex justify-content-between align-content-center'>
+          <div
+            className='d-flex justify-content-between align-content-center position-absolute'
+            style={{ right: '10px' }}
+          >
             <Icon
               color='primary'
               icon='it-check'

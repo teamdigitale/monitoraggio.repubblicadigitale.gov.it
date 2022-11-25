@@ -18,8 +18,14 @@
   display: block;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  @media screen and (max-width: 576px) {
+  @media screen and (min-width: 320px) and (max-width: 400px) {
     max-width: 120px;
+  }
+  @media screen and (min-width: 401px) and (max-width: 576px) {
+    max-width: 150px;
+  }
+  @media screen and (min-width: 577px) and (max-width: 768px) {
+    max-width: 190px;
   }
 }
 .switch-profile-subs {

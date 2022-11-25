@@ -88,15 +88,15 @@ const CommunityDetails = () => {
     <Button
       onClick={() => navigate('/community', { replace: true })}
       className='px-0'
-      aria-label='torna indietro'
+      aria-label='vai alla community'
     >
       <Icon
         icon='it-chevron-left'
         color='primary'
-        aria-label='torna indietro'
+        aria-label='vai alla community'
         aria-hidden
       />
-      <span className='primary-color'>Torna indietro</span>
+      <span className='primary-color ml-1'>Vai alla community</span>
     </Button>
   );
 
@@ -130,6 +130,7 @@ const CommunityDetails = () => {
                 id: id,
                 entity: 'community',
                 author: topicDetails.author,
+                textLabel: "Inserisci il motivo dell'eliminazione",
               },
             })
           )
