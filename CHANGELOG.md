@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.135](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.134...1.0.0-test.135) (2022-11-25)
+
+
+### Bug Fixes
+
+* **be:** record vuoti upload cittadino ([ae317a8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ae317a8e1863d7d6f3a3bba74d8f3d44af0c7b76))
+
 ## [1.0.0-test.134](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.133...1.0.0-test.134) (2022-11-25)
 
 
