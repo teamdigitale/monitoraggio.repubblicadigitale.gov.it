@@ -299,6 +299,8 @@ public class ProgrammaService {
 		case "DEG":
 		case "DEGP":
 		case "DEPP":
+		case "FAC":
+		case "VOL":
 			policies.add(this.getPolicyProgrammaByProgrammaId(idProgramma));
 			return policies;
 		default:
