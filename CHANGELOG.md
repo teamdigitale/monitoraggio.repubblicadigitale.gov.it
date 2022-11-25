@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.14.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.14.0...1.14.1) (2022-11-25)
+
+
+### Bug Fixes
+
+* **be:** modifica taglia workdocs ([55083d2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/55083d2529c654180fbaebec28e74fd60977cba4))
+
 ## [1.14.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.13.2...1.14.0) (2022-11-25)
 
 
