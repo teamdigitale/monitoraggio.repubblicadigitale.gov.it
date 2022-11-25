@@ -15,7 +15,7 @@ import { selectDevice } from '../../redux/features/app/appSlice';
 import SocialBar from '../Comments/socialBar';
 import { useDispatch } from 'react-redux';
 import { openModal } from '../../redux/features/modal/modalSlice';
-import coverPlaceholder from '/public/assets/img/img-bacheca-digitale-dettaglio.png';
+import coverPlaceholder from '/public/assets/img/placeholder-news.png';
 import HTMLParser from '../General/HTMLParser/HTMLParse';
 import {
   ActionTracker,
@@ -233,7 +233,7 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
           <p className='anteprima-news-container__title pt-4 pb-5'>
             <b>{title}</b>
           </p>
-          <div className='pb-4'>
+          <div className='pb-4 anteprima-news-container__description'>
             <HTMLParser html={description} />
           </div>
           {attachment ? (
@@ -314,6 +314,7 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
                               action: 'comment',
                               entity: 'board',
                               category: category_label || category,
+                              textLabel: 'Testo',
                             },
                           })
                         )

@@ -225,7 +225,7 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
   return (
     <Form
       id='form-authorities'
-      className='mt-5 mb-5'
+      className='mt-3 pt-3 mb-5'
       formDisabled={formDisabled}
       legend={legend}
     >

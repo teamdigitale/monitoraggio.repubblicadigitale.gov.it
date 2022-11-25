@@ -31,6 +31,7 @@ interface SectionTitleI {
   profilePicture?: string | undefined;
   isForumLayout?: boolean;
   inline?: boolean;
+  noTitleEllipsis?: boolean;
 }
 
 const SectionTitle: React.FC<SectionTitleI> = (props) => {
@@ -47,6 +48,7 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
     profilePicture = '',
     isForumLayout,
     inline = false,
+    noTitleEllipsis = false,
   } = props;
 
   const device = useAppSelector(selectDevice);
@@ -155,7 +157,9 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
           <div
             className={clsx(
               !isForumLayout
-                ? 'custom-section-title__section-title main-title primary-color-a9 text-center'
+                ? noTitleEllipsis
+                  ? 'custom-section-title__section-title primary-color-a9 text-center'
+                  : 'custom-section-title__section-title main-title primary-color-a9 text-center'
                 : 'font-weight-semibold h5 primary-color-a10'
             )}
           >

@@ -66,7 +66,7 @@ const ProfileImageForm: React.FC<ProfilePictureI> = (props) => {
   };
 
   return (
-    <Form id='profile-picture-form' className='w-100 py-5'>
+    <Form id='profile-picture-form' className='w-100 py-5' showMandatory={false}>
       <Form.Row className={bootClass}>
         <div className='w-100 border-bottom-box'>
           <input

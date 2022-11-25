@@ -81,7 +81,7 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
 
   useEffect(() => {
     const newInterventionsDropdownOptions = [];
-    if ((policiesList || [])?.length > 1) {
+    if (form?.program?.value === 'public' || (policiesList || [])?.length > 1) {
       newInterventionsDropdownOptions.push({
         label: 'Tutti gli interventi',
         value: 'public',
@@ -94,7 +94,7 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
       ...(policiesList || []),
     ]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [policiesList]);
+  }, [policiesList, form?.program?.value]);
 
   useEffect(() => {
     setProgramDropdownOptions([
@@ -216,7 +216,7 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
   return (
     <Form
       id='form-load-document'
-      className='mt-5 mb-0'
+      className='mt-3 pt-3 mb-0'
       formDisabled={formDisabled}
     >
       <Form.Row className={clsx(bootClass, !device.mediaIsDesktop && 'mb-5')}>

@@ -152,8 +152,8 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
 
   return (
     <Form
-      id='form-load-document'
-      className='mt-5 mb-0'
+      id='form-create-topic'
+      className='mt-3 pt-3 mb-2'
       formDisabled={formDisabled}
     >
       <Form.Row className={bootClass}>

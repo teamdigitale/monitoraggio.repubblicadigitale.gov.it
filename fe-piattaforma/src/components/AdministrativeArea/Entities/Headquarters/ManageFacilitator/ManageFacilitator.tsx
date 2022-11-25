@@ -19,7 +19,7 @@ import {
 import {
   GetUserDetails,
   GetUsersBySearch,
-  // UpdateUser,
+  UpdateUser,
 } from '../../../../../redux/features/administrativeArea/user/userThunk';
 import {
   closeModal,
@@ -58,7 +58,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
   const usersList = useAppSelector(selectUsers).list;
   const [noResult, setNoResult] = useState(false);
   const dispatch = useDispatch();
-  const { projectId, authorityId, headquarterId, /*userId*/ } = useParams();
+  const { projectId, authorityId, headquarterId, userId } = useParams();
   const programPolicy =
     useAppSelector(selectHeadquarters).detail?.programmaPolicy;
   const open = useAppSelector(selectModalState);
@@ -104,7 +104,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
           )
         );
         dispatch(GetHeadquarterDetails(headquarterId, authorityId, projectId));
-      } /*else if (userId) {
+      } else if (userId && !isUserSelected) {
         res = await dispatch(
           UpdateUser(userId, {
             ...newFormValues,
@@ -112,7 +112,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
         );
 
         dispatch(GetUserDetails(userId));
-      }*/
+      }
       if (!res?.errorCode) dispatch(closeModal());
     }
     setIsUserSelected(false);

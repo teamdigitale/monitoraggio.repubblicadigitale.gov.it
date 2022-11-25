@@ -56,6 +56,7 @@ interface DetailLayoutI {
   isRoleManagement?: boolean;
   infoProgBtn?: boolean;
   infoProjBtn?: boolean;
+  noTitleEllipsis?: boolean;
 }
 const DetailLayout: React.FC<DetailLayoutI> = ({
   formButtons,
@@ -81,6 +82,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
   isRoleManagement = false,
   infoProgBtn = false,
   infoProjBtn = false,
+  noTitleEllipsis = false,
 }) => {
   const navigate = useNavigate();
   const device = useAppSelector(selectDevice);
@@ -113,6 +115,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
           isUserProfile={isUserProfile}
           profilePicture={profilePicture}
           {...titleInfo}
+          noTitleEllipsis={noTitleEllipsis}
         />
         {nav && (
           <div

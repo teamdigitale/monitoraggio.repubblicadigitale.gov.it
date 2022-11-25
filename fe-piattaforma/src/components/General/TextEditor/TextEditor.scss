@@ -13,6 +13,9 @@
       position: relative;
       height: fit-content;
     }
+    .toolbar:before {
+      background: none;
+    }
     .editor {
       flex: 1;
       overflow-y: scroll;

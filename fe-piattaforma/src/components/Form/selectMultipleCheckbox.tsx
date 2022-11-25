@@ -108,7 +108,7 @@ const SelectMultipleCheckbox: React.FC<SelectMultipleI> = (props) => {
           {required && !isDisabled && ' *'}
         </label>
       ) : null}
-      <Form id={id} className='mx-0'>
+      <Form id={id} className='mx-0' showMandatory={false}>
         <div className='px-2'>
           {(options || []).map((val: multiLevelOptionsI, i: number) => (
             <div key={i} className='select-multiple-checkbox__options'>

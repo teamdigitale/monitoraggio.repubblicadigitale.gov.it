@@ -117,7 +117,8 @@ const ManageReferal: React.FC<ManageReferalI> = ({
               projectId,
               newFormValues,
               'REPP',
-              userId
+              userId,
+              !isUserSelected,
             )
           );
           await dispatch(GetPartnerAuthorityDetail(projectId, authorityId));
@@ -130,7 +131,8 @@ const ManageReferal: React.FC<ManageReferalI> = ({
               newFormValues,
               'progetto',
               'REGP',
-              userId
+              userId,
+              !isUserSelected,
             )
           );
           await dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
@@ -144,7 +146,8 @@ const ManageReferal: React.FC<ManageReferalI> = ({
             newFormValues,
             'programma',
             'REG',
-            userId
+            userId,
+            !isUserSelected,
           )
         );
         await dispatch(GetAuthorityManagerDetail(entityId, 'programma'));

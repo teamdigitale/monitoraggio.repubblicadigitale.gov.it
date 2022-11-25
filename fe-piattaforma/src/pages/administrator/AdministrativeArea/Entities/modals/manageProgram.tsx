@@ -420,7 +420,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
         <p
           className={clsx(
             'mt-1',
-            'mb-5',
+            'mb-3',
             'h-5',
             'primary-color',
             'mx-5',

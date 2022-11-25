@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Form, Input, Select } from '../../../components';
@@ -126,8 +127,8 @@ const FormServiceStatic: React.FC<FormEnteGestoreProgettoFullInterface> = (
   }, [form]);
 
   return (
-    <Form legend={legend} id='form-service-static' formDisabled={formDisabled}>
-      <Form.Row>
+    <Form legend={legend} id='form-service-static' formDisabled={formDisabled} marginShowMandatory={false}>
+      <Form.Row className={clsx(!formDisabled && 'mt-3 pt-3')}>
         <Input
           {...form?.nomeServizio}
           col='col-12'

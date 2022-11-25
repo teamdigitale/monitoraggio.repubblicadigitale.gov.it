@@ -302,8 +302,10 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
     <Form
       legend={legend}
       id='form-citizen'
-      className='mt-5'
+      className='mt-3 pt-3'
       formDisabled={formDisabled}
+      marginShowMandatory={false}
+      customMargin='ml-2'
     >
       <div className='d-inline-flex flex-wrap w-100'>
         {form &&

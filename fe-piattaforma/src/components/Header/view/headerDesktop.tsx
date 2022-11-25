@@ -1,6 +1,6 @@
 import React, { memo, useState } from 'react';
 import clsx from 'clsx';
-import { Link, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import {
   Button,
   Dropdown,
@@ -9,7 +9,7 @@ import {
   Icon,
   LinkList,
 } from 'design-react-kit';
-import Logo from '/public/assets/img/logo_tmp3.png';
+//import Logo from '/public/assets/img/logo_tmp3.png';
 import Bell from '/public/assets/img/campanella.png';
 import RocketChatIcon from '/public/assets/img/rocketchat-2x.png';
 import { useTranslation } from 'react-i18next';
@@ -59,7 +59,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
 
   const userDropDown = () => (
     <Dropdown
-      className='p-0 header-container__top__user-dropdown mr-4 position-relative'
+      className='p-0 header-container__top__user-dropdown position-relative'
       isOpen={openUser}
       toggle={() => setOpenUser(!openUser)}
     >
@@ -365,9 +365,23 @@ const HeaderDesktop: React.FC<HeaderI> = ({
               'd-flex',
               'align-items-center',
               'justify-content-end',
-              'my-0'
+              'my-0',
+              'position-relative'
             )}
           >
+            <a
+              href='https://innovazione.gov.it/'
+              target='_blank'
+              rel='noreferrer'
+              className={clsx('logo-url', 'text-white', 'position-absolute')}
+              style={{
+                left: '6px',
+                fontSize: '0.8rem',
+                textDecoration: 'none',
+              }}
+            >
+              Dipartimento per la trasformazione digitale
+            </a>
             {/* <div className='mr-auto'>
           {isHeaderFull ? (
             <p className='h6 m-0'>Repubblica Digitale</p>
@@ -377,172 +391,63 @@ const HeaderDesktop: React.FC<HeaderI> = ({
             </a>
           )}
         </div> */}
-
-            {/*hasUserPermission(['btn.gest.ruoli']) ? (
-              <div
-                className={clsx(
-                  'mr-2',
-                  'px-3',
-                  'border-left',
-                  'border-right',
-                  'd-inline-flex',
-                  'flex-row',
-                  'align-items-center',
-                  'primary-bg-b2',
-                  'header-panel-btn'
-                )}
-              >
-                <a
-                  href='/gestione-ruoli'
-                  className='text-decoration-none text-white'
-                >
-                  <div className='d-flex flew-row'>
-                    <Icon
-                      icon='it-settings'
-                      size='sm'
-                      color='white'
-                      aria-label=''
-                    />
-                    <span
-                      className={clsx(
-                        'h6',
-                        'm-0',
-                        'ml-2',
-                        'font-weight-light',
-                        'text-nowrap'
-                      )}
-                    >
-                      {t('role_management')}
-                    </span>
-                  </div>
-                </a>
-              </div>
-            ) : null*/}
             {userDropDownAreaGestionale()}
 
-            {/* <div>
-            <Dropdown
-              className={clsx(
-                'mr-3',
-                'd-flex',
-                'header-panel-btn-small',
-                'border-right',
-                'header-panel-btn'
-              )}
-              isOpen={open}
-              toggle={() => toggle(!open)}
-            >
-              <DropdownToggle
-                caret
-                className={clsx(
-                  'primary-bg-b2',
-                  'my-auto',
-                  'complementary-1-color-a1',
-                  'border-0 shadow-none'
-                )}
-                size='xs'
-              >
-                {language}
-                <Icon
-                  icon='it-expand'
-                  size='sm'
-                  className='color-white ml-2'
-                  color='white'
-                  aria-label=''
-                />
-              </DropdownToggle>
-              <DropdownMenu role='menu' tag='ul'>
-                {languages.map((lang, i) => (
-                  <li key={i} role='none' className='px-4'>
+            {isLogged ? (
+              <>
+                {userDropDown()}
+                {hasUserPermission(['btn.chat']) && handleOpenRocketChat ? (
+                  <div className='ml-4'>
                     <Button
-                      className={clsx(
-                        'primary-color-b1',
-                        'px-0',
-                        'py-2',
-                        'w-100',
-                        'd-flex justify-content-start'
-                      )}
-                      role='menuitem'
-                      onClick={() => setLanguage(lang)}
+                      onClick={handleOpenRocketChat}
+                      onKeyPress={(e) => {
+                        if (e.key === 'Enter') {
+                          handleOpenRocketChat();
+                        }
+                      }}
+                      className='mr-3 position-relative p-0'
+                      aria-label={`${chatToRead} messaggi da leggere su Rocketchat`}
                     >
-                      {lang}
+                      <Icon
+                        color='white'
+                        icon={RocketChatIcon}
+                        size='sm'
+                        aria-label='RocketChat'
+                        aria-hidden
+                      />
+                      {chatToRead ? (
+                        <span className='chat-notifications'>{chatToRead}</span>
+                      ) : null}
                     </Button>
-                  </li>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-          </div> */}
-
-            {
-              isLogged ? (
-                <>
-                  {userDropDown()}
-                  {hasUserPermission(['btn.chat']) && handleOpenRocketChat ? (
-                    <div className='mx-4 pr-2'>
-                      <Button
-                        onClick={handleOpenRocketChat}
-                        onKeyPress={(e) => {
-                          if (e.key === 'Enter') {
-                            handleOpenRocketChat();
-                          }
-                        }}
-                        className='mr-3 position-relative p-0'
-                        aria-label={`${chatToRead} messaggi da leggere su Rocketchat`}
-                      >
-                        <Icon
-                          color='white'
-                          icon={RocketChatIcon}
-                          size='sm'
-                          aria-label='RocketChat'
-                          aria-hidden
-                        />
-                        {chatToRead ? (
-                          <span className='chat-notifications'>
-                            {chatToRead}
-                          </span>
-                        ) : null}
-                      </Button>
-                    </div>
-                  ) : null}
-                  {hasUserPermission(['list.ntf.nr']) ? (
-                    <div className='mx-4'>
-                      <div className='ml-auto pr-3'>
-                        <Button
-                          onClick={() => setNotificationsIsOpen(true)}
-                          className='primary-bg-a6 px-2 bg-transparent position-relative'
-                        >
-                          <Icon
-                            color='white'
-                            icon={Bell}
-                            size='sm'
-                            aria-label='Notifiche'
-                          />
-                          {notification ? (
-                            <span className='badge-notifications'>
-                              {notification}
-                            </span>
-                          ) : null}
-                        </Button>
-                        <NotificationsPreview
-                          open={notificationsIsOpen}
-                          setOpen={setNotificationsIsOpen}
-                          menuRoutes={menuRoutes}
-                        />
-                      </div>
-                    </div>
-                  ) : null}
-                </>
-              ) : null
-              // <div className='d-inline-flex align-items-center px-4'>
-              //   <span className='h6 m-0'>ITA</span>
-              //   <Icon
-              //     color='white'
-              //     icon='it-expand'
-              //     size='sm'
-              //     aria-label='Selezione lingua'
-              //   />
-              // </div>
-            }
+                  </div>
+                ) : null}
+                {hasUserPermission(['list.ntf.nr']) ? (
+                  <div className='ml-4'>
+                    <Button
+                      onClick={() => setNotificationsIsOpen(true)}
+                      className='primary-bg-a6 px-2 bg-transparent position-relative'
+                    >
+                      <Icon
+                        color='white'
+                        icon={Bell}
+                        size='sm'
+                        aria-label='Notifiche'
+                      />
+                      {notification ? (
+                        <span className='badge-notifications'>
+                          {notification}
+                        </span>
+                      ) : null}
+                    </Button>
+                    <NotificationsPreview
+                      open={notificationsIsOpen}
+                      setOpen={setNotificationsIsOpen}
+                      menuRoutes={menuRoutes}
+                    />
+                  </div>
+                ) : null}
+              </>
+            ) : null}
           </div>
         </div>
       )}
@@ -564,13 +469,17 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                 'pt-3'
               )}
             >
-              <Link to={defaultRedirectUrl} replace>
-                <img
+              <NavLink to={defaultRedirectUrl} replace className='anchor-reset'>
+                {/*<img
                   src={Logo}
                   alt='logo'
-                  style={{ width: 'auto', height: '74px' }}
-                />
-              </Link>
+                  style={{width: 'auto', height: '74px'}}
+                />*/}
+                <div className='h3 text-white m-0'>Facilita</div>
+                <div className='text-white m-0'>
+                  La piattaforma dei servizi di facilitazione digitale
+                </div>
+              </NavLink>
             </div>
             {/* <div
               className={clsx(

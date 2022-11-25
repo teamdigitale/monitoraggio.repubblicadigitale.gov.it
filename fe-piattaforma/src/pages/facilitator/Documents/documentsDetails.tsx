@@ -119,15 +119,15 @@ const DocumentsDetails = () => {
     <Button
       onClick={() => navigate('/documenti', { replace: true })}
       className='px-0'
-      aria-label='torna indietro'
+      aria-label='vai ai documenti'
     >
       <Icon
         icon='it-chevron-left'
         color='primary'
-        aria-label='torna indietro'
+        aria-label='vai ai documenti'
         aria-hidden
       />
-      <span className='primary-color'> Torna indietro </span>
+      <span className='primary-color ml-1'>Vai ai documenti</span>
     </Button>
   );
 
@@ -149,6 +149,7 @@ const DocumentsDetails = () => {
                 id: id,
                 entity: 'document',
                 author: docDetails.author,
+                textLabel: "Inserisci il motivo dell'eliminazione",
               },
             })
           )
@@ -179,7 +180,7 @@ const DocumentsDetails = () => {
             Ti è stato utile?
           </span>
           <div className='d-flex'>
-            <Form id='form-utilità' legend='Form ti è stato utile?'>
+            <Form id='form-utilità' legend='Form ti è stato utile?' showMandatory={false}>
               <FormGroup check className='d-flex align-items-center mt-0 pr-2'>
                 <div className='d-flex align-items-center mr-3'>
                   <Input

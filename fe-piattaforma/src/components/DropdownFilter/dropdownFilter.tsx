@@ -240,7 +240,7 @@ const DropdownFilter: React.FC<DropdownFilterI> = (props) => {
                   </fieldset>
                 </div>
               ) : null}
-              <Form id='form-dropdown'>
+              <Form id='form-dropdown' showMandatory={false}>
                 {(filteredOptions || []).length === 0 ? (
                   <Button
                     className='dropdown-filter-container__empty-state'

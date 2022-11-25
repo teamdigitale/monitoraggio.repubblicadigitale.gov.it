@@ -14,6 +14,7 @@ export interface HeadquarterLight {
 }
 
 export interface HeadquarterFacilitator {
+  associatoAUtente?: boolean;
   nome: string;
   cognome: string;
   id: string;
