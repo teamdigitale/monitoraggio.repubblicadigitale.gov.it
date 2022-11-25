@@ -53,7 +53,7 @@ public class WorkDocsService {
 	public CreateUserResponse creaWorkDocsUser(final String username, final String email, final String password) {
 		final StorageRuleType storageRuleType = StorageRuleType.builder()
 																.storageType(StorageType.QUOTA)
-																.storageAllocatedInBytes(new Long(1048576l))
+																.storageAllocatedInBytes(new Long(1073741824))
 																.build();
 		
 		CreateUserResponse createUserResponse = null;
