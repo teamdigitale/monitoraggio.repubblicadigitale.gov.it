@@ -171,7 +171,7 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
     <Form
       legend={legend}
       id='form-general-info'
-      className={formDisabled ? 'mt-5':'mt-3'}
+      className={formDisabled ? 'mt-5' : 'mt-3'}
       formDisabled={formDisabled}
       customMargin='mb-3 pb-3 ml-3'
     >

@@ -117,7 +117,7 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
     <Form
       legend={legend}
       id='form-citizen'
-      className={clsx(formDisabled ? 'mt-5':'mt-3')}
+      className={clsx(formDisabled ? 'mt-5' : 'mt-3')}
       formDisabled={formDisabled}
       marginShowMandatory={false}
       customMargin='mb-3 pb-3'

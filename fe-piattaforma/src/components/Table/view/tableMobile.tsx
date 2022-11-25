@@ -26,11 +26,22 @@ const TableMobile: React.FC<MobileTableI> = ({
   useEffect(() => {
     if (values && values.length) {
       const temp = values.map((item) => {
-        const { attributo, actions, id, name, nome, cognome, label, status, ...rest } =
-          item;
+        const {
+          attributo,
+          actions,
+          id,
+          name,
+          nome,
+          cognome,
+          label,
+          status,
+          ...rest
+        } = item;
 
         return {
-          title: cognome ? cognome + ' ' + nome: nome || nome || label || name || attributo,
+          title: cognome
+            ? cognome + ' ' + nome
+            : nome || nome || label || name || attributo,
           status,
           id,
           actions,
@@ -60,7 +71,12 @@ const TableMobile: React.FC<MobileTableI> = ({
     <div>
       {valuesForMobile ? (
         valuesForMobile.map((item, index: number) => (
-          <AccordionRow {...item} key={index} onTooltipInfo={onTooltipInfo} onActionRadio={onActionRadio}/>
+          <AccordionRow
+            {...item}
+            key={index}
+            onTooltipInfo={onTooltipInfo}
+            onActionRadio={onActionRadio}
+          />
         ))
       ) : (
         <div className='my-3'>

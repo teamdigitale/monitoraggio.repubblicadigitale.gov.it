@@ -109,15 +109,14 @@ const NotificationsPreview: React.FC<NotificationsPreviewProps> = (props) => {
         </div>
         <div className='notifications-list'>
           {notificationsList?.length > 0 ? (
-            notificationsList.map((notification, i) => (
+            notificationsList.map((notification) => (
               <div
-                key={i}
+                key={notification.id}
                 className={clsx(
                   notification.status ? '' : 'notifications-card-unread'
                 )}
               >
                 <Notification
-                  // TODO update key with a unique value
                   {...notification}
                   notificationsPreview={true}
                   onRead={() => onReadNotification(notification.id)}

@@ -215,9 +215,8 @@ const SurveyOnline: React.FC<withFormHandlerProps> = (props) => {
       <p className='mt-2 mb-4 text-muted'>
         La tua opinione per noi è importante. Rispondi a questo breve
         questionario e aiutaci a offrirti servizi di formazione e facilitazione
-        digitale sempre migliori. <br/>
-        Le domande contrassegnate da asterisco sono
-        obbligatorie.
+        digitale sempre migliori. <br />
+        Le domande contrassegnate da asterisco sono obbligatorie.
       </p>
       {!compiled && Object.keys(surveyForm).length ? (
         <div className='my-5'>
