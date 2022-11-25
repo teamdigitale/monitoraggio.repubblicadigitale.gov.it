@@ -26,6 +26,8 @@ import Loader from '../../../components/Loader/loader';
 import BigItUserWhite from '/public/assets/img/big-white-it-user.png';
 import { convertPayloadSectionInString } from '../../../utils/common';
 import BigCheckVerde from '/public/assets/img/green-check-circle.png';
+import clsx from 'clsx';
+import { selectDevice } from '../../../redux/features/app/appSlice';
 
 const SurveyOnlineModalId = 'SurveyOnlineModalId';
 const SurveyOnlineSuccessModalId = 'SurveyOnlineSuccessModalId';
@@ -48,6 +50,7 @@ const SurveyOnline: React.FC<withFormHandlerProps> = (props) => {
     onInputChange = () => ({}),
     isValidForm,
   } = props;
+  const device = useAppSelector(selectDevice);
 
   const retrieveSurveyOnline = async () => {
     try {
@@ -207,7 +210,7 @@ const SurveyOnline: React.FC<withFormHandlerProps> = (props) => {
   );
 
   return (
-    <div>
+    <div className={clsx(!device.mediaIsDesktop && 'container')}>
       <h1 className='h4 primary-color-a9 mb-4'>Compila il questionario</h1>
       <p className='mt-2 mb-4 text-muted'>
         La tua opinione per noi è importante. Rispondi a questo breve

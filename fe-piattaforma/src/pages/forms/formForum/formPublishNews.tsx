@@ -306,8 +306,9 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
   return (
     <Form
       id='form-publish-news'
-      className='mt-3 pt-3 mb-0'
+      className='mt-3 mb-0'
       formDisabled={formDisabled}
+      customMargin='mb-3 ml-3'
     >
       <Form.Row className={bootClass}>
         <Input

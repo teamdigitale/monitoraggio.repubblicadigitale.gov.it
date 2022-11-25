@@ -153,8 +153,9 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
   return (
     <Form
       id='form-create-topic'
-      className='mt-3 pt-3 mb-2'
+      className='mt-3 mb-2'
       formDisabled={formDisabled}
+      customMargin='mb-3 ml-3'
     >
       <Form.Row className={bootClass}>
         <Input
