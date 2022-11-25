@@ -323,7 +323,7 @@ export const downloadCSV = (
 };
 
 export const transformFiltersToQueryParams = (filters: {
-  [key: string]: { label: string; value: string }[] | undefined;
+  [key: string]: { label: string; value: string | number }[] | undefined;
 }) => {
   let filterString = '';
   Object.keys(filters)?.forEach((filter: string) => {
