@@ -21,3 +21,17 @@
     background-color: #FCFDFF !important;
   }
 }
+
+.toogle-news {
+  box-shadow: inset 0 -1px 0 0 rgb(1 1 1 / 10%);
+
+  @media screen and (max-width: 576px) {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
+  &__no-shadow{
+    box-shadow: none !important;
+    margin-bottom: 0px !important;
+  }
+}

@@ -30,12 +30,16 @@ export interface TableI {
   rolesTable?: boolean;
   onActionRadio?: CRUDActionsI;
   totalCounter?: number;
+  surveysTable?: boolean;
 }
 
 const Table: React.FC<TableI> = (props) => {
   const device = useAppSelector(selectDevice);
 
-  if (device?.mediaIsPhone) {
+  if (
+    device?.mediaIsPhone ||
+    (props?.surveysTable && window.innerWidth < 950)
+  ) {
     return <TableMobile {...props} />;
   }
 

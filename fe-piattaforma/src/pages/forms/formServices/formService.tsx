@@ -124,7 +124,7 @@ const FormService: React.FC<FormServiceI> = (props) => {
   }, [newFormDynamicValues]);
 
   return (
-    <div className='my-3'>
+    <div className='mb-3'>
       <FormServiceStatic
         creation={creation}
         formDisabled={!!formDisabled}

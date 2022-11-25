@@ -216,8 +216,9 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
   return (
     <Form
       id='form-load-document'
-      className='mt-3 pt-3 mb-0'
+      className='mt-3 mb-0'
       formDisabled={formDisabled}
+      customMargin='mb-3 ml-3'
     >
       <Form.Row className={clsx(bootClass, !device.mediaIsDesktop && 'mb-5')}>
         <Input
@@ -322,7 +323,6 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
             accept='.txt, .rtf, .odt, .zip, .exe, .docx, .doc, .ppt, .pptx, .pdf, .jpg, .png, .gif, .xls, .xlsx, .csv, .mpg, .wmv'
             ref={inputRef}
             className='sr-only'
-            capture
             onChange={updateFile}
           />
           <label

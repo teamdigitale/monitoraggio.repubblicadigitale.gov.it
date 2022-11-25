@@ -410,8 +410,8 @@ const HeadquartersDetails = () => {
               ))
             : null}
           <Sticky mode='bottom' stickyClassName='sticky bg-white container '>
-            <div className='container pl-5'>
-              <ButtonsBar buttons={buttons} />
+            <div className='container'>
+              <ButtonsBar buttons={buttons} marginRight />
             </div>
           </Sticky>
           <ManageHeadquarter />

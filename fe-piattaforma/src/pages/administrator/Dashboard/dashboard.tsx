@@ -27,12 +27,12 @@ const baseFrameURL =
 */
 const dateToUpdate = () => {
   const today = new Date();
-  const yesterday = new Date(Date.now() - 86400000);
+  const yesterday = new Date(new Date().setDate(new Date().getDate() - 1));
 
   if (today.getHours() > 19) {
-    return `${formatDate(today.toString(), 'shortDate')}`;
+    return `${formatDate(today.getTime(), 'shortDate')}`;
   } else {
-    return `${formatDate(yesterday.toString(), 'shortDate')}`;
+    return `${formatDate(yesterday.getTime(), 'shortDate')}`;
   }
 };
 const dashboardBaseURL =
@@ -74,20 +74,20 @@ const publicContents = {
   title: 'Servizi di facilitazione e formazione per i cittadini',
   subtitle:
     'Rappresentazione dei dati relativi ai servizi di facilitazione e formazione erogati ai cittadini',
-  lastUpdate: null,
+  lastUpdate: dateToUpdate(),
 };
 
 const authContents = {
   title: 'I miei report',
   subtitle:
     'Consulta le statistiche rappresentate in questa pagina, oppure accedi allo strumento di Business Intelligence per consultare, configurare e scaricare in autonomia i dati a tua disposizione',
-  lastUpdate: `${dateToUpdate()}`,
+  lastUpdate: dateToUpdate(),
 };
 
 const authContentsShort = {
   title: 'I miei report',
   subtitle: 'Consulta le statistiche rappresentate in questa pagina',
-  lastUpdate: `${dateToUpdate()}`,
+  lastUpdate: dateToUpdate(),
 };
 
 const iframeHeightByRole = {

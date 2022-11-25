@@ -1,7 +1,5 @@
 import React from 'react';
 import clsx from 'clsx';
-import { selectDevice } from '../../redux/features/app/appSlice';
-import { useAppSelector } from '../../redux/hooks';
 
 interface FormI {
   autocomplete?: boolean | undefined;
@@ -28,46 +26,41 @@ const Form = (props: FormI) => {
     customMargin = '',
   } = props;
 
-  const device = useAppSelector(selectDevice);
-
   return (
-    <>
-      {!formDisabled && showMandatory && (
-        <div
-          className={clsx(
-            marginShowMandatory && !device.mediaIsPhone && 'pl-5 ml-3',
-            marginShowMandatory && device.mediaIsPhone && 'ml-2',
-            customMargin,
-            'mt-2',
-            'mandatory-fields'
-          )}
-        >
-          * Campo obbligatorio
-        </div>
-      )}
-      <form
-        className={clsx('form ', className)}
-        id={id}
-        autoComplete={autocomplete ? 'on' : 'off'}
-      >
-        <fieldset disabled={formDisabled} form={id}>
-          <legend className='sr-only'>{legend}</legend>
-          {React.Children.map(children, (child) => {
-            if (React.isValidElement(child)) {
-              return React.cloneElement(child, {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                ...child.props,
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                formDisabled,
-              });
-            }
-            return null;
-          })}
-        </fieldset>
-      </form>
-    </>
+    <form
+      className={clsx('form ', className)}
+      id={id}
+      autoComplete={autocomplete ? 'on' : 'off'}
+    >
+      <fieldset disabled={formDisabled} form={id}>
+        <legend className='sr-only'>{legend}</legend>
+        {!formDisabled && showMandatory && (
+          <div
+            className={clsx(
+              'mandatory-fields',
+              marginShowMandatory &&
+                'form-row justify-content-between px-0 px-lg-5 mx-2',
+              customMargin ? customMargin : 'mb-5'
+            )}
+          >
+            * Campo obbligatorio
+          </div>
+        )}
+        {React.Children.map(children, (child) => {
+          if (React.isValidElement(child)) {
+            return React.cloneElement(child, {
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              ...child.props,
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              formDisabled,
+            });
+          }
+          return null;
+        })}
+      </fieldset>
+    </form>
   );
 };
 
