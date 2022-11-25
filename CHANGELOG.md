@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.133](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.132...1.0.0-test.133) (2022-11-25)
+
+
+### Bug Fixes
+
+* **be:** aumento storage workdocs ([ee8fa37](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ee8fa37162b79b74d67d1fd65ad53fcfb84774b9))
+
 ## [1.0.0-test.132](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.131...1.0.0-test.132) (2022-11-25)
 
 
