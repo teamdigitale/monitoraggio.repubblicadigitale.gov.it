@@ -37,6 +37,7 @@ const PrintSelectField: React.FC<PrintFieldI> = (props) => {
       <Form
         id='form-print-select'
         className={clsx('mr-3', 'mt-3', 'd-flex', 'flex-column')}
+        showMandatory={false}
       >
         {(options || []).map((key: string, i: number) => (
           <FormGroup

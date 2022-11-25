@@ -354,14 +354,16 @@ const ProgramsDetails: React.FC = () => {
               (ref: { [key: string]: string }) => ({
                 ...ref,
                 id: ref?.id,
-                actions:
-                  authorityInfo?.dettagliInfoEnte?.statoEnte ===
-                    entityStatus.TERMINATO || ref?.stato !== entityStatus.ATTIVO
+                actions: ref.associatoAUtente
+                  ? authorityInfo?.dettagliInfoEnte?.statoEnte ===
+                      entityStatus.TERMINATO ||
+                    ref?.stato !== entityStatus.ATTIVO
                     ? {
                         [CRUDActionTypes.VIEW]:
                           onActionClickReferenti[CRUDActionTypes.VIEW],
                       }
-                    : onActionClickReferenti,
+                    : onActionClickReferenti
+                  : {},
               })
             ) || [],
         },
@@ -372,14 +374,16 @@ const ProgramsDetails: React.FC = () => {
               (del: { [key: string]: string }) => ({
                 ...del,
                 id: del?.id,
-                actions:
-                  authorityInfo?.dettagliInfoEnte?.statoEnte ===
-                    entityStatus.TERMINATO || del?.stato !== entityStatus.ATTIVO
+                actions: del.associatoAUtente
+                  ? authorityInfo?.dettagliInfoEnte?.statoEnte ===
+                      entityStatus.TERMINATO ||
+                    del?.stato !== entityStatus.ATTIVO
                     ? {
                         [CRUDActionTypes.VIEW]:
                           onActionClickDelegati[CRUDActionTypes.VIEW],
                       }
-                    : onActionClickDelegati,
+                    : onActionClickDelegati
+                  : {},
               })
             ) || [],
         },
@@ -416,6 +420,11 @@ const ProgramsDetails: React.FC = () => {
     getListaQuestionari();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (entityId && managerAuthorityId)
+      dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
+  }, [managerAuthorityId]);
 
   const cancelSurvey = () => {
     setChangeSurveyButtonVisible(true);
@@ -952,27 +961,35 @@ const ProgramsDetails: React.FC = () => {
           role='menuitem'
           onKeyDown={() => setActiveTab(tabs.ENTE)}
         >
-          {!managerAuthorityId ? (
-            <div id='tab-ente-gestore'>
-              * Ente gestore
-              <Tooltip
-                placement='bottom'
-                target='tab-ente-gestore'
-                isOpen={openOne}
-                toggle={() => toggleOne(!openOne)}
-              >
-                Compilazione obbligatoria
-              </Tooltip>
-              <Icon
-                icon='it-warning-circle'
-                size='xs'
-                className='ml-1'
-                aria-label='Avviso'
-              />
-            </div>
-          ) : (
-            'Ente gestore'
-          )}
+          <div id='tab-ente-gestore'>
+            {!managerAuthorityId ||
+            authorityInfo?.dettagliInfoEnte?.statoEnte ===
+              entityStatus.NON_ATTIVO ? (
+              <>
+                <span>{!managerAuthorityId && '*'}&nbsp;Ente gestore</span>
+                {managerAuthorityId && (
+                  <Tooltip
+                    placement='bottom'
+                    target='tooltip-ente-gestore-programma'
+                    isOpen={openOne}
+                    toggle={() => toggleOne(!openOne)}
+                  >
+                    È necessario aggiungere almeno un referente per l&apos;ente
+                    gestore
+                  </Tooltip>
+                )}
+                <Icon
+                  icon='it-warning-circle'
+                  size='xs'
+                  className='ml-1'
+                  aria-label='Avviso'
+                  id='tooltip-ente-gestore-programma'
+                />
+              </>
+            ) : (
+              'Ente gestore'
+            )}
+          </div>
         </NavLink>
       </li>
       <li ref={questionariRef} role='none'>

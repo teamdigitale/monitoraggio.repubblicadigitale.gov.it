@@ -141,7 +141,7 @@ const FormUser: React.FC<UserFormI> = (props) => {
     <Form
       id='form-user'
       legend={legend}
-      className='mt-5 mb-0'
+      className='mt-3 pt-3 mb-0'
       formDisabled={formDisabled}
     >
       <Form.Row className={bootClass}>

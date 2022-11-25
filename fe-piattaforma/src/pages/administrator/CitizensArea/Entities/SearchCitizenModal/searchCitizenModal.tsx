@@ -27,6 +27,7 @@ import {
 import { SurveySectionPayloadI } from '../../../../../redux/features/administrativeArea/surveys/surveysSlice';
 import { TableRowI } from '../../../../../components/Table/table';
 import NoResultsFoundCitizen from '../../../../../components/NoResultsFoundCitizen/noResultsFoundCitizen';
+import clsx from 'clsx';
 
 const id = 'search-citizen-modal';
 
@@ -297,7 +298,7 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
               setCurrentStep(radioFilter);
             }}
           />
-          <div className='d-block px-5 mt-5'>
+          <div className={clsx('d-block px-5', currentStep === selectedSteps.ADD_CITIZEN ? 'mt-3':'mt-5')}>
             {currentStep === selectedSteps.FISCAL_CODE ||
             currentStep === selectedSteps.DOC_NUMBER
               ? loadFirstStep()

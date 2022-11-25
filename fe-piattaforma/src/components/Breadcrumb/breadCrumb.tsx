@@ -88,6 +88,9 @@ const Breadcrumb = () => {
       const newList: { label: string; url: string; link: boolean }[] = [];
       (currentLocation || []).map((elem: string, index: number) => {
         if (elem !== '') {
+          if(elem?.toLowerCase() === 'sedi'){
+            newList.pop();
+          }
           if (
             currentLocation?.length > 3 &&
             index < currentLocation?.length - 1

@@ -171,7 +171,7 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
     <Form
       legend={legend}
       id='form-general-info'
-      className='mt-5'
+      className='mt-3 pt-3'
       formDisabled={formDisabled}
     >
       <Form.Row className={bootClass}>
@@ -298,7 +298,7 @@ const form = newForm([
     id: 'nomeBreve',
     required: true,
     maximum: 25,
-    minimum: 6,
+    //minimum: 6,
   }),
   newFormField({
     field: 'dataInizio',

@@ -12,6 +12,7 @@ interface addCommentI extends withFormHandlerProps {
   setIsFormValid?: (param: boolean | undefined) => void;
   newValue?: string;
   creation?: boolean;
+  textLabel?: string;
 }
 
 const FormAddComment: React.FC<addCommentI> = (props) => {
@@ -22,6 +23,7 @@ const FormAddComment: React.FC<addCommentI> = (props) => {
     sendNewValues = () => ({}),
     getFormValues = () => ({}),
     updateForm = () => ({}),
+    textLabel,
   } = props;
   const formDisabled = !!props.formDisabled;
 
@@ -31,7 +33,7 @@ const FormAddComment: React.FC<addCommentI> = (props) => {
         newForm([
           newFormField({
             field: 'text',
-            label: 'Testo',
+            label: 'Descrivi il motivo della tua segnalazione',
             id: 'text',
             required: true,
             value: newValue,
@@ -51,6 +53,8 @@ const FormAddComment: React.FC<addCommentI> = (props) => {
       id='form-add-comment'
       className='mt-5 mb-0 d-flex justify-content-center'
       formDisabled={formDisabled}
+      marginShowMandatory={false}
+      customMargin='pl-5 ml-2'
     >
       <Form.Row className='px-lg-5 mx-2 px-0'>
         <TextArea
@@ -62,6 +66,7 @@ const FormAddComment: React.FC<addCommentI> = (props) => {
           onInputChange={onInputChange}
           placeholder=' '
           withLabel
+          label={textLabel || form?.text?.label}
         />
       </Form.Row>
       <Form.Row className='px-lg-5 mx-2 px-0'>
@@ -77,7 +82,7 @@ const form = newForm([
   newFormField({
     field: 'text',
     id: 'text',
-    label: 'Digita qui sotto il testo',
+    label: 'Descrivi il motivo della tua segnalazione',
     required: true,
     type: 'textarea',
   }),

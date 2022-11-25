@@ -39,7 +39,7 @@ const DropdownFilter: React.FC<DropdownFilterI> = (props) => {
     className,
     id,
     // handleOnSearch,
-    valueSearch,
+    //valueSearch,
     isDetail,
     isGeneric,
     formatValues = false,
@@ -50,7 +50,7 @@ const DropdownFilter: React.FC<DropdownFilterI> = (props) => {
   const idListOptions = `filter-options-list-${id}`;
   const popoverRef = useRef(null);
   const { t } = useTranslation();
-  const [searchValue, setSearchValue] = useState<string | undefined>('');
+  const [searchValue, setSearchValue] = useState('');
   const [filteredOptions, setFilteredOptions] = useState<FilterI[] | undefined>(
     options
   );
@@ -209,7 +209,7 @@ const DropdownFilter: React.FC<DropdownFilterI> = (props) => {
         aria-owns={idListOptions}
       >
         <ClickOutside callback={() => setOpen(false)}>
-          <FocusTrap>
+          <FocusTrap focusTrapOptions={{ allowOutsideClick: true }}>
             <div>
               {options?.length && options?.length > 4 ? (
                 <div className='border-bottom d-flex flex-row'>
@@ -232,19 +232,15 @@ const DropdownFilter: React.FC<DropdownFilterI> = (props) => {
                         placeholder='Cerca'
                         className='shadow-none border-bottom-0'
                         onInputChange={(value: formFieldI['value']) =>
-                          setSearchValue(value?.toString())
+                          setSearchValue(value?.toString() || '')
                         }
-                        value={
-                          valueSearch && typeof valueSearch === 'string'
-                            ? valueSearch
-                            : ''
-                        }
+                        value={searchValue}
                       />
                     </legend>
                   </fieldset>
                 </div>
               ) : null}
-              <Form id='form-dropdown'>
+              <Form id='form-dropdown' showMandatory={false}>
                 {(filteredOptions || []).length === 0 ? (
                   <Button
                     className='dropdown-filter-container__empty-state'

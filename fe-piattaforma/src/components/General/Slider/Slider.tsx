@@ -17,17 +17,21 @@ interface SliderPropsI {
   children: JSX.Element[];
   isItemsHome?: boolean | undefined;
   cardSlider?: boolean | undefined;
+  widgetType?: string;
 }
 
 const Slider = ({
   children,
   isItemsHome = false,
   cardSlider = false,
+  widgetType = '',
 }: SliderPropsI) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const onScroll = () => {
-    const container = document.querySelector('.slides');
+    const container = document.getElementById(
+      `widget${widgetType ? '-' + widgetType : ''}`
+    );
     const containerLeft = container?.getBoundingClientRect().left;
     const slides = container?.children;
 
@@ -40,12 +44,13 @@ const Slider = ({
   };
 
   const scrollTo = (i: number) => {
-    const container = document.querySelector('.slides');
+    const container = document.getElementById(
+      `widget${widgetType ? '-' + widgetType : ''}`
+    );
     // const nextSlide = document.querySelector(`slide-${i}`);
     if (container) {
       container.scrollLeft += (i - currentSlide) * container.clientWidth;
     }
-
     // setCurrentSlide(i);
   };
 
@@ -82,9 +87,14 @@ const Slider = ({
       <div
         className={clsx('slides', cardSlider ? 'mb-4' : 'mb-5')}
         onScroll={onScroll}
+        id={`widget${widgetType ? '-' + widgetType : ''}`}
       >
         {children.map((slide, i) => (
-          <div key={i} id={`slide-${i}`} className='slide'>
+          <div
+            key={i}
+            id={`slide-${i}${widgetType ? '-' + widgetType : ''}`}
+            className='slide'
+          >
             {slide}
           </div>
         ))}

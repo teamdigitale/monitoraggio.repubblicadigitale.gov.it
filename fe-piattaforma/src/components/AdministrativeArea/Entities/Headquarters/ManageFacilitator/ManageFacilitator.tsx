@@ -47,7 +47,7 @@ interface ManageFacilitatorI
 
 const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
   clearForm = () => ({}),
-  formDisabled,
+  // formDisabled,
   creation = false,
   legend = '',
 }) => {
@@ -62,6 +62,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
   const programPolicy =
     useAppSelector(selectHeadquarters).detail?.programmaPolicy;
   const open = useAppSelector(selectModalState);
+  const [isUserSelected, setIsUserSelected] = useState(false);
 
   useEffect(() => {
     dispatch(setUsersList(null));
@@ -103,7 +104,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
           )
         );
         dispatch(GetHeadquarterDetails(headquarterId, authorityId, projectId));
-      } else if (userId) {
+      } else if (userId && !isUserSelected) {
         res = await dispatch(
           UpdateUser(userId, {
             ...newFormValues,
@@ -112,9 +113,9 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
 
         dispatch(GetUserDetails(userId));
       }
-
       if (!res?.errorCode) dispatch(closeModal());
     }
+    setIsUserSelected(false);
   };
 
   const handleSelectUser: CRUDActionsI = {
@@ -122,6 +123,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
       if (typeof td !== 'string') {
         dispatch(GetUserDetails(td.id as string, true));
         dispatch(setUsersList(null));
+        setIsUserSelected(true);
       }
     },
   };
@@ -132,7 +134,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
 
   let content = (
     <FormFacilitator
-      formDisabled={!!formDisabled}
+      formDisabled={isUserSelected}
       sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
         setNewFormValues({ ...newData })
       }
@@ -169,6 +171,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
   }
 
   const handleCancel = () => {
+    setIsUserSelected(false);
     clearForm();
     dispatch(closeModal());
   };
@@ -197,7 +200,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
               'search-bar-borders',
               'search-bar-bg'
             )}
-            placeholder='Inserisci il nome, l’ID o il codice fiscale dell’utente'
+            placeholder='Inserisci il codice fiscale dell’utente'
             onSubmit={handleSearchUser}
             onReset={() => {
               dispatch(setUsersList(null));

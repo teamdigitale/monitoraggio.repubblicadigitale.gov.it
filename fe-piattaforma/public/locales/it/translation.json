@@ -58,5 +58,6 @@
   "add_milestone": "Aggiungi Milestone",
   "goal_value": "Valore obiettivo {{count}}",
   "enteGestore": "Ente gestore",
-  "policy": "Intervento"
+  "policy": "Intervento",
+  "section": "Sezione"
 }

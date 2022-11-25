@@ -32,10 +32,11 @@ export interface CittadinoInfoI {
 export interface ServizioCittadinoI {
   idQuestionarioCompilato?: string;
   idServizio?: string;
-  nomeCompletoFacilitatore?: string;
+  /* nomeCompletoFacilitatore?: string; */
   nomeServizio?: string;
   statoQuestionario?: string;
   associatoAUtente?: boolean;
+  nomeSede?: string;
 }
 
 export interface CittadinoI {
@@ -148,7 +149,7 @@ export const citizensAreaSlice = createSlice({
     },
     resetCitizenDetails: (state) => {
       state.detail = initialState.detail;
-    }
+    },
   },
 });
 

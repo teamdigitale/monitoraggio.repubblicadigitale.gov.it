@@ -217,7 +217,10 @@ const CommentAnswer: React.FC<CommentI> = (props) => {
       </div>
       <div
         className='pb-4 left-alignment'
-        style={{ width: device.mediaIsDesktop ? '90%' : '94%' }}
+        style={{
+          width: device.mediaIsDesktop ? '90%' : '94%',
+          wordBreak: 'break-word',
+        }}
       >
         {body}
       </div>

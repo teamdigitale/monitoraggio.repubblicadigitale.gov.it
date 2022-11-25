@@ -66,7 +66,7 @@ interface ManageReferalI extends withFormHandlerProps, ManageReferalFormI {}
 
 const ManageReferal: React.FC<ManageReferalI> = ({
   clearForm = () => ({}),
-  formDisabled,
+  // formDisabled,
   creation = false,
   legend = '',
 }) => {
@@ -81,11 +81,13 @@ const ManageReferal: React.FC<ManageReferalI> = ({
   const { entityId, projectId, authorityId, userId } = useParams();
   const authority = useAppSelector(selectAuthorities).detail.dettagliInfoEnte;
   const open = useAppSelector(selectModalState);
+  const [isUserSelected, setIsUserSelected] = useState(false);
 
   const resetModal = (toClose = true) => {
     clearForm();
     setShowForm(true);
     setAlreadySearched(false);
+    setIsUserSelected(false);
     dispatch(setUsersList(null));
     if (toClose) dispatch(closeModal());
   };
@@ -115,7 +117,8 @@ const ManageReferal: React.FC<ManageReferalI> = ({
               projectId,
               newFormValues,
               'REPP',
-              userId
+              userId,
+              !isUserSelected,
             )
           );
           await dispatch(GetPartnerAuthorityDetail(projectId, authorityId));
@@ -128,7 +131,8 @@ const ManageReferal: React.FC<ManageReferalI> = ({
               newFormValues,
               'progetto',
               'REGP',
-              userId
+              userId,
+              !isUserSelected,
             )
           );
           await dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
@@ -142,7 +146,8 @@ const ManageReferal: React.FC<ManageReferalI> = ({
             newFormValues,
             'programma',
             'REG',
-            userId
+            userId,
+            !isUserSelected,
           )
         );
         await dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
@@ -166,6 +171,7 @@ const ManageReferal: React.FC<ManageReferalI> = ({
         dispatch(GetUserDetails(td.id as string, true));
       }
       setShowForm(true);
+      setIsUserSelected(true);
     },
   };
 
@@ -175,7 +181,7 @@ const ManageReferal: React.FC<ManageReferalI> = ({
     content = (
       <FormUser
         creation={creation}
-        formDisabled={!!formDisabled}
+        formDisabled={isUserSelected}
         sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
           setNewFormValues({ ...newData })
         }
@@ -230,7 +236,7 @@ const ManageReferal: React.FC<ManageReferalI> = ({
               'search-bar-borders',
               'search-bar-bg'
             )}
-            placeholder='Inserisci il nome, l’ID o il codice fiscale dell’utente'
+            placeholder='Inserisci il codice fiscale dell’utente'
             onSubmit={handleSearchUser}
             onReset={() => {
               resetModal(false);

@@ -1,5 +1,11 @@
 import clsx from 'clsx';
-import { Button, Chip, ChipLabel, Icon } from 'design-react-kit';
+import {
+  Button,
+  Chip,
+  ChipLabel,
+  Icon,
+  UncontrolledTooltip,
+} from 'design-react-kit';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Form, Input, Select } from '../../../components';
@@ -146,8 +152,8 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
 
   return (
     <Form
-      id='form-load-document'
-      className='mt-5 mb-0'
+      id='form-create-topic'
+      className='mt-3 pt-3 mb-2'
       formDisabled={formDisabled}
     >
       <Form.Row className={bootClass}>
@@ -206,13 +212,20 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
       <Form.Row className={bootClass}>
         <div className='mt-5 d-flex align-items-center'>
           <strong className='mr-2'>AGGIUNGI TAG</strong>
-          <Icon
-            icon='it-info-circle'
-            size='sm'
-            color='primary'
-            aria-label='Aggiungi tag'
-            aria-hidden
-          />
+          <div id='tooltip-aggiungi-tag'>
+            <Icon
+              icon='it-info-circle'
+              size='sm'
+              color='primary'
+              aria-label='Aggiungi tag'
+              aria-hidden
+            />
+          </div>
+          <UncontrolledTooltip placement='bottom' target='tooltip-aggiungi-tag'>
+            Puoi cercare e inserire tag già esistenti utilizzando il
+            completamento automatico oppure creare un nuovo tag digitando la
+            nuova parola chiave nel campo di testo e dando Invio
+          </UncontrolledTooltip>
         </div>
       </Form.Row>
       <Form.Row className={bootClass}>
@@ -243,14 +256,18 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
         <Form.Row className={bootClass}>
           <div>
             {tags.map((item, id) => (
-              <Chip key={id} className='mr-2 rounded-pill'>
+              <Chip key={id} className='mr-2 rounded-pill forum-chip-tag'>
                 <ChipLabel className='mx-1 my-1'>{item}</ChipLabel>
                 <Button
                   close
                   onClick={handleOnDelete}
                   style={{ minWidth: '8px' }}
                 >
-                  <Icon icon='it-close' aria-label='Elimina tag' />
+                  <Icon
+                    icon='it-close'
+                    aria-label='Elimina tag'
+                    className='chip-closer'
+                  />
                 </Button>
               </Chip>
             ))}
@@ -262,16 +279,24 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
       <Form.Row className={bootClass}>
         <div className='mt-5 d-flex align-items-center'>
           <strong className='mr-2'>ALLEGA FILE</strong>
-          <Icon
-            icon='it-info-circle'
-            size='sm'
-            color='primary'
-            aria-label='Informazioni'
-            aria-hidden
-          />
+          <div id='tooltip-allega-file'>
+            <Icon
+              icon='it-info-circle'
+              size='sm'
+              color='primary'
+              aria-label='Informazioni'
+              aria-hidden
+            />
+          </div>
+          <UncontrolledTooltip placement='bottom' target='tooltip-allega-file'>
+            - Formati supportati: .txt, .rtf, .odt, .zip, .exe, .docx, .doc,
+            .ppt, .pptx, .pdf, .jpg, .png, .gif, .xls, .xlsx, .csv, .mpg, .wmv,
+            .pdf
+            <br />- Peso: max 10 MB
+          </UncontrolledTooltip>
         </div>
       </Form.Row>
-      <Form.Row className={bootClass}>
+      <Form.Row className={clsx(bootClass, 'mb-4')}>
         <div className='w-100 border-bottom-box'>
           <input
             type='file'
@@ -318,7 +343,7 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
             )}
           </label>
         </div>
-        <small className='font-italic form-text text-muted'>massimo 5 Mb</small>
+        {/*<small className='font-italic form-text text-muted'>massimo 5 Mb</small>*/}
       </Form.Row>
     </Form>
   );

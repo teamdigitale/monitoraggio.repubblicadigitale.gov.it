@@ -136,7 +136,7 @@ const TerminateEntityModal = ({
           />
         </div>
         <div className='text-center pb-3 px-5'>{payload?.text1}<br/>{payload?.text2}</div>
-        <Form id='form-terminate-entity'>
+        <Form id='form-terminate-entity' showMandatory={false}>
           <Form.Row>
             <div className='col'></div>
             <Input

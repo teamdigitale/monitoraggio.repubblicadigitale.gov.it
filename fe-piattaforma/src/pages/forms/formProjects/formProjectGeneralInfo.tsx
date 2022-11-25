@@ -253,7 +253,7 @@ const FormProjectGeneralInfo: React.FC<FormProjectGeneralInfoInterface> = (
   return (
     <Form
       id='form-project-general-info'
-      className='mt-5'
+      className='mt-3 pt-3'
       formDisabled={formDisabled}
       legend={legend}
     >
@@ -325,7 +325,7 @@ const form = newForm([
     id: 'short-name',
     required: true,
     maximum: 25,
-    minimum: 6,
+    //minimum: 6,
   }),
   newFormField({
     field: 'cup',

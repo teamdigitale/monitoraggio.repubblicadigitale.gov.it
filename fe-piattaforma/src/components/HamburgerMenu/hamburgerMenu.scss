@@ -7,6 +7,9 @@
     border: 2px solid white;
   }
 
+  li:not(.manage-profile-container, .sublist-container) {
+    border-left: solid 5px transparent;
+  }
   li:hover:not(.manage-profile-container, .sublist-container) {
     background-color: rgba(0, 102, 204, 0.06);
     border-left: solid 5px #0066cc;

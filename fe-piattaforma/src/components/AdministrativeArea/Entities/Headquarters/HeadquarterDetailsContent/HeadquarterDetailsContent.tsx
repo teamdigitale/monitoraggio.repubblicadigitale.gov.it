@@ -13,7 +13,7 @@ const HeadquarterDetailsContent = () => {
   return (
     <>
       <FormHeadquarter formDisabled />
-      <Form id='form-headquarter-details' className='mb-5 pr-5'>
+      <Form id='form-headquarter-details' className='mb-5 pr-5' showMandatory={false}>
         <Form.Row>
           <div className='col-10 col-md-4'>
             <Toggle

@@ -86,7 +86,7 @@ const SurveyTemplate: React.FC<SurveyTemplateI> = ({
 
   return (
     <>
-      <Form legend={legend} id='form-survey-template' className='pt-5'>
+      <Form legend={legend} id='form-survey-template' className='mt-3 pt-3' showMandatory={editMode || cloneMode} marginShowMandatory={false}>
         <Form.Row
           className={clsx(
             device.mediaIsPhone ? '' : 'd-flex justify-content-start'

@@ -79,7 +79,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
             <tr key={`tr-${i}`} onClick={() => onRowClick(td)}>
               {onActionRadio && (
                 <td>
-                  <Form id='form-table-dsk'>
+                  <Form id='form-table-dsk' showMandatory={false}>
                     <FormGroup check>
                       <Input
                         name='group'
