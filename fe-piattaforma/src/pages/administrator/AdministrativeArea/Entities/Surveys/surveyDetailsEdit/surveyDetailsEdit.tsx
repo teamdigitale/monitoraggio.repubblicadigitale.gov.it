@@ -317,7 +317,10 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
               <div className='mt-5 w-100'>
                 <Sticky
                   mode='bottom'
-                  stickyClassName='sticky bg-white container'
+                  stickyClassName={clsx(
+                    'sticky bg-white container',
+                    device.mediaIsPhone && 'pr-5'
+                  )}
                 >
                   <ButtonsBar buttons={cancelSaveButtons} />
                 </Sticky>
@@ -327,9 +330,8 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
                 <Sticky
                   mode='bottom'
                   stickyClassName={clsx(
-                    'sticky ',
-                    'bg-white',
-                    !device.mediaIsPhone && 'container'
+                    'sticky bg-white container',
+                    device.mediaIsPhone && 'pr-5'
                   )}
                 >
                   {surveyStatus === entityStatus.NON_ATTIVO ? (

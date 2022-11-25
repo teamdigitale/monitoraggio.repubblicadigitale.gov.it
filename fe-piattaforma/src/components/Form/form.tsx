@@ -38,7 +38,8 @@ const Form = (props: FormI) => {
           <div
             className={clsx(
               'mandatory-fields',
-              marginShowMandatory && 'form-row justify-content-between px-0 px-lg-5 mx-2',
+              marginShowMandatory &&
+                'form-row justify-content-between px-0 px-lg-5 mx-2',
               customMargin ? customMargin : 'mb-5'
             )}
           >

@@ -8,9 +8,8 @@ import { useAppSelector } from '../../../redux/hooks';
 import './notifications.scss';
 import clsx from 'clsx';
 import Input from '../../../components/Form/input';
-import MailRead from '/public/assets/img/mail-open.png';
+import MailReadOutline from '/public/assets/img/mail-open-outline.png';
 import MailReadCheck from '/public/assets/img/mail-open-check.png';
-import Delete from '/public/assets/img/delete.png';
 import DeleteCheck from '/public/assets/img/delete-check.png';
 import PillDropDown from '../../../components/PillDropDown/pillDropDown';
 import Notification from './components/Notifications/notification';
@@ -120,7 +119,9 @@ const Notifications: React.FC = () => {
                 >
                   <Icon
                     icon={
-                      selectedNotifications.length ? MailReadCheck : MailRead
+                      selectedNotifications.length
+                        ? MailReadCheck
+                        : MailReadOutline
                     }
                     size='sm'
                     aria-label='Segna come letto'
@@ -135,7 +136,9 @@ const Notifications: React.FC = () => {
                   onClick={onDeleteSelected}
                 >
                   <Icon
-                    icon={selectedNotifications.length ? DeleteCheck : Delete}
+                    icon={
+                      selectedNotifications.length ? DeleteCheck : 'it-delete'
+                    }
                     size='sm'
                     aria-label='Elimina'
                     aria-hidden
@@ -194,7 +197,11 @@ const Notifications: React.FC = () => {
                 onClick={onReadSelected}
               >
                 <Icon
-                  icon={selectedNotifications.length ? MailReadCheck : MailRead}
+                  icon={
+                    selectedNotifications.length
+                      ? MailReadCheck
+                      : MailReadOutline
+                  }
                   size='sm'
                   aria-label='Segna come letto'
                   aria-hidden
@@ -217,7 +224,9 @@ const Notifications: React.FC = () => {
                 onClick={onDeleteSelected}
               >
                 <Icon
-                  icon={selectedNotifications.length ? DeleteCheck : Delete}
+                  icon={
+                    selectedNotifications.length ? DeleteCheck : 'it-delete'
+                  }
                   size='sm'
                   aria-label='Elimina'
                   aria-hidden

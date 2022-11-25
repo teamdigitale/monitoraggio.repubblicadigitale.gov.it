@@ -226,7 +226,7 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
   return (
     <Form
       id='form-authorities'
-      className={clsx(formDisabled ? 'mt-5':'mt-3', 'mb-0')}
+      className={clsx(formDisabled ? 'mt-5' : 'mt-3', 'mb-0')}
       formDisabled={formDisabled}
       legend={legend}
       customMargin='mb-3 pb-3 ml-3'

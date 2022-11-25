@@ -533,8 +533,11 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
         {/*<small className='font-italic form-text text-muted'>massimo 5 Mb</small>*/}
       </Form.Row>
       <Form.Row className={bootClass}>
-        <div className='d-flex flex-row w-75 align-items-center pt-5 pb-3'>
-          <FormGroup check className='form-check-group'>
+        <div className='d-flex flex-row w-75 align-items-center pt-5 pb-3 w-100 toogle-news'>
+          <FormGroup
+            check
+            className='form-check-group toogle-news__no-shadow mr-4'
+          >
             <Toggle
               // defaultChecked={!!enableComments}
               checked={enableComments}
@@ -542,7 +545,10 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
               label='Abilita commenti'
             />
           </FormGroup>
-          <FormGroup check className='form-check-group'>
+          <FormGroup
+            check
+            className='form-check-group toogle-news__no-shadow mr-4'
+          >
             <Toggle
               checked={highlighted}
               onChange={() => setHighlighted((prev) => !prev)}

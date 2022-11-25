@@ -115,7 +115,7 @@ const Sedi: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
     <Form
       id='form-headquarter'
       legend={legend}
-      className={clsx(formDisabled ? 'mt-5':'mt-3', 'mb-0')}
+      className={clsx(formDisabled ? 'mt-5' : 'mt-3', 'mb-0')}
       formDisabled={formDisabled ? formDisabled : false}
       marginShowMandatory={false}
       customMargin='mb-3 pb-3 ml-2'
