@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.14.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.13.2...1.14.0) (2022-11-25)
+
+
+### Features
+
+* **be:** upload cittadino check cf ([b0f29e3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b0f29e3f656dc1e306ae325e20b6e9438b31dd3c))
+
 ## [1.13.2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.13.1...1.13.2) (2022-11-24)
 
 
