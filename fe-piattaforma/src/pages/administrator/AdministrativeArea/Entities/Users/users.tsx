@@ -217,7 +217,7 @@ const Users = () => {
     placeholder:
       'Inserisci il cognome e/o il nome, oppure l’ID o il codice fiscale dell’utente',
     isClearable: true,
-    title: 'Cerca programma',
+    title: 'Cerca utente',
   };
 
   const onActionClick: CRUDActionsI = hasUserPermission(['view.card.utenti'])

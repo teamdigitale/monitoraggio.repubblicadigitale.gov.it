@@ -127,8 +127,14 @@ const FormServiceStatic: React.FC<FormEnteGestoreProgettoFullInterface> = (
   }, [form]);
 
   return (
-    <Form legend={legend} id='form-service-static' formDisabled={formDisabled} marginShowMandatory={false}>
-      <Form.Row className={clsx(!formDisabled && 'mt-3 pt-3')}>
+    <Form
+      legend={legend}
+      id='form-service-static'
+      formDisabled={formDisabled}
+      marginShowMandatory={false}
+      customMargin='mb-3 pb-3'
+    >
+      <Form.Row className={clsx(!formDisabled && 'mt-3')}>
         <Input
           {...form?.nomeServizio}
           col='col-12'

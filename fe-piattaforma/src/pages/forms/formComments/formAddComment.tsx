@@ -51,10 +51,9 @@ const FormAddComment: React.FC<addCommentI> = (props) => {
   return (
     <Form
       id='form-add-comment'
-      className='mt-5 mb-0 d-flex justify-content-center'
+      className='mb-0 d-flex justify-content-center'
       formDisabled={formDisabled}
-      marginShowMandatory={false}
-      customMargin='pl-5 ml-2'
+      customMargin='mb-3 pb-3'
     >
       <Form.Row className='px-lg-5 mx-2 px-0'>
         <TextArea

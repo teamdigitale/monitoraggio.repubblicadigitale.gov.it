@@ -249,9 +249,20 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
   };
 
   return (
-    <Form id='compile-survey-form' showMandatory={currentStep === 0 || currentStep === 3} marginShowMandatory={false}>
+    <Form
+      id='compile-survey-form'
+      showMandatory={currentStep === 0 || currentStep === 3}
+      marginShowMandatory={false}
+      customMargin={
+        currentStep === 0
+          ? 'ml-2 mb-3 pb-3'
+          : currentStep === 3
+          ? 'ml-2 mb-3'
+          : ''
+      }
+    >
       <div
-        className={clsx('d-inline-flex flex-wrap w-100', viewMode && 'pt-5', currentStep === 0 && 'mt-3 pt-3', currentStep === 3 && 'mt-3' )}
+        className={clsx('d-inline-flex flex-wrap w-100', viewMode && 'pt-5')}
       >
         {orderedForm.map((field) => (
           <React.Fragment key={field}>

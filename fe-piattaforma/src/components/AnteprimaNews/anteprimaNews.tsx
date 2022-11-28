@@ -314,7 +314,7 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
                               action: 'comment',
                               entity: 'board',
                               category: category_label || category,
-                              textLabel: 'Testo',
+                              textLabel: 'Digita qui sotto il testo',
                             },
                           })
                         )

@@ -227,7 +227,7 @@ const Authorities: React.FC = () => {
     onHandleSearch: handleOnSearch,
     placeholder: "Inserisci il nome, l'ID o il codice fiscale dell'ente",
     isClearable: true,
-    title: 'Cerca progetto',
+    title: 'Cerca ente',
   };
 
   const onActionClick: CRUDActionsI = hasUserPermission(['view.card.enti'])

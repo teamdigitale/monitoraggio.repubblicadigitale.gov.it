@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -225,9 +226,10 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
   return (
     <Form
       id='form-authorities'
-      className='mt-3 pt-3 mb-5'
+      className={clsx(formDisabled ? 'mt-5' : 'mt-3', 'mb-0')}
       formDisabled={formDisabled}
       legend={legend}
+      customMargin='mb-3 pb-3 ml-3'
     >
       {creation || noIdField ? (
         <Form.Row className={bootClass}>

@@ -25,7 +25,7 @@ export interface HeaderI {
   user: UserStateI['user'];
   userProfile: UserStateI['profilo'];
   isLogged: boolean;
-  notification: number | undefined;
+  notification: number | string | undefined;
   menuRoutes: MenuItem[];
   profilePicture: string | undefined;
   handleOpenRocketChat?: () => void;
