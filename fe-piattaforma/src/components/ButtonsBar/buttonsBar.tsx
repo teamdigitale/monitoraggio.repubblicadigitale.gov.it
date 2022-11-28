@@ -37,7 +37,7 @@ const ButtonsBar: React.FC<StickyButtonsI> = ({
   return (
     <div
       className={clsx(
-        marginRight ? 'buttons-bar-marginRight' : 'buttons-bar',
+        marginRight ? 'buttons-bar-marginRight buttons-mobile' : 'buttons-bar',
         forumAlignment ? 'buttons-bar-alignment' : 'button-bar',
         isDocumentsCta && 'flex-column',
         citizenList ? 'justify-content-start' : 'align-items-end',
@@ -45,7 +45,7 @@ const ButtonsBar: React.FC<StickyButtonsI> = ({
         isUserProfile && 'mr-2',
         'pt-2',
         device.mediaIsPhone && 'py-2',
-        notActiveSurvey && !device.mediaIsDesktop && 'flex-column'
+        notActiveSurvey && !device.mediaIsDesktop && 'flex-column',
       )}
     >
       {buttons.map((button: ButtonInButtonsBar, index: number) => {

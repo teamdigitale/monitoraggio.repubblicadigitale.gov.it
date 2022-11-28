@@ -52,6 +52,13 @@
   }
 }
 
+.buttons-mobile {
+  @media screen and (min-width: 250px) and (max-width: 400px) {
+    margin-right: 1.3rem;
+  }
+}
+
+
 .buttons-bar-alignment {
   display: flex;
   justify-content: flex-end;
