@@ -5,12 +5,12 @@
 import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { Button, Collapse, Icon, LinkList } from 'design-react-kit';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import './hamburgerMenu.scss';
 import ClickOutside from '../../hoc/ClickOutside';
-import LogoSmall from '/public/assets/img/logo-mobile.png';
 import { focusId, MenuItem } from '../../utils/common';
 import useGuard from '../../hooks/guard';
+import { defaultRedirectUrl } from '../../routes';
 
 interface HBMenuProps {
   open: boolean;
@@ -68,6 +68,7 @@ const HamburgerMenu: React.FC<HBMenuProps> = (props) => {
                             'primary-color d-flex',
                             'd-flex',
                             'justify-content-between',
+                            'align-items-center',
                             'anchor-button'
                           )}
                           onClick={() => setCollapseOpen(!collapseOpen)}
@@ -145,7 +146,7 @@ const HamburgerMenu: React.FC<HBMenuProps> = (props) => {
                         {hasUserPermission(['btn.gest.ruoli']) ? (
                           <Link
                             to='/gestione-ruoli'
-                            className='primary-color manage-profile mt-4 font-weight-normal'
+                            className='primary-color manage-profile mt-2 font-weight-normal'
                           >
                             Gestione ruoli
                           </Link>
@@ -153,7 +154,7 @@ const HamburgerMenu: React.FC<HBMenuProps> = (props) => {
                         {hasUserPermission(['btn.cat']) ? (
                           <Link
                             to='/area-gestionale/gestione-categorie'
-                            className='primary-color manage-profile mt-4 font-weight-normal'
+                            className='primary-color manage-profile mt-2 font-weight-normal'
                           >
                             Gestione categorie
                           </Link>
@@ -161,7 +162,7 @@ const HamburgerMenu: React.FC<HBMenuProps> = (props) => {
                         {hasUserPermission(['btn.rprt']) ? (
                           <Link
                             to='/area-gestionale/gestione-segnalazioni'
-                            className='primary-color manage-profile mt-4 font-weight-normal'
+                            className='primary-color manage-profile mt-2 font-weight-normal'
                           >
                             Gestione segnalazioni
                           </Link>
@@ -174,7 +175,9 @@ const HamburgerMenu: React.FC<HBMenuProps> = (props) => {
             </ul>
 
             <div className={clsx('primary-bg-a6', 'p-4', 'pl-0', 'mb-3')}>
-              <img src={LogoSmall} alt='' />
+              <NavLink to={defaultRedirectUrl} replace>
+                <div className='h3 text-white'>Facilita</div>
+              </NavLink>
               <Button
                 className={clsx('button-close-ham')}
                 onClick={() => setOpen(false)}

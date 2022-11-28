@@ -58,5 +58,18 @@
   "add_milestone": "Aggiungi Milestone",
   "goal_value": "Valore obiettivo {{count}}",
   "enteGestore": "Ente gestore",
-  "policy": "Intervento"
+  "policy": "Intervento",
+  "role": "RUOLO",
+  "tipologiaServizio" : "TIPOLOGIA SERVIZIO",
+  "durataServizio": "DURATA SERVIZIO",
+  "nomeSede": "NOME SEDE",
+  "nomeServizio": "NOME SERVIZIO",
+  "numeroServizi" : "NUMERO SERVIZI",
+  "numeroQuestionariCompilati" : "NUMERO QUESTIONARI COMPILATI",
+  "idServizio" : "ID SERVIZIO",
+  "statoQuestionario" : "STATO QUESTIONARIO",
+  "idQuestionarioCompilato" : "ID QUESTIONARIO COMPILATO",
+  "associatoAUtente" : "ASSOCIATO A UTENTE",
+  "citizen" : "CITTADINO",
+  "section" : "Sezione"
 }

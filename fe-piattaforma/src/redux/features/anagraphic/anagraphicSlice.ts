@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../../store';
+import { RegexpType, validator } from '../../../utils/validator';
 
 export interface UserAnagraphicStateI {
   id: string;
@@ -33,9 +34,18 @@ export const anagraphicSlice = createSlice({
       state,
       action: PayloadAction<{ id: string | number }>
     ) => {
-      state.idsToGet = [
-        ...new Set([...state.idsToGet, action.payload.id.toString()]),
-      ];
+      if (
+        action?.payload?.id?.toString()?.trim()?.length &&
+        validator(
+          { regex: RegexpType.NUMBER },
+          action?.payload?.id?.toString()?.trim(),
+          true
+        )
+      ) {
+        state.idsToGet = [
+          ...new Set([...state.idsToGet, action.payload.id.toString()?.trim()]),
+        ];
+      }
     },
     setAnagraphics: (state, action: PayloadAction<any>) => {
       state.anagraphics = {

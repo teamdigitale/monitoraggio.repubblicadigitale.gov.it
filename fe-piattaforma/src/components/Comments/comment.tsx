@@ -296,7 +296,7 @@ const Comment: React.FC<CommentI> = (props) => {
                 {authorAnagraphic?.nome}&nbsp;{authorAnagraphic?.cognome}
               </strong>
               {' — '}
-              <span>{date && formatDate(date, 'shortDate')}</span>
+              <span>{date && formatDate(date, 'dateTime')}</span>
             </p>
           </div>
         </div>
@@ -321,7 +321,7 @@ const Comment: React.FC<CommentI> = (props) => {
             : null
         )}
       >
-        <div style={{ width: '94%' }}>{body}</div>
+        <div style={{ width: '94%', wordBreak: 'break-word' }}>{body}</div>
         <div className='comment-container__border mt-4 mb-3'></div>
         <SocialBar
           replies={
@@ -364,6 +364,7 @@ const Comment: React.FC<CommentI> = (props) => {
                         title: 'Aggiungi risposta al commento',
                         action: 'reply',
                         id: id,
+                        textLabel: 'Digita qui sotto il testo',
                       },
                     })
                   )

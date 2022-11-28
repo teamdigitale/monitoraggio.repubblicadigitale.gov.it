@@ -434,9 +434,17 @@ const ForumLayout: React.FC<ForumLayoutI> = (props) => {
       {children}
       {device.mediaIsPhone && cta && !ctaToolCollaboration ? (
         <div>
-          <Sticky mode='bottom' stickyClassName='sticky bg-white'>
+          <Sticky
+            mode='bottom'
+            stickyClassName={clsx(
+              'sticky',
+              'bg-white',
+              device.mediaIsPhone && 'pr-3'
+            )}
+          >
             <div className='container'>
               <ButtonsBar
+                forumAlignment
                 isDocumentsCta={isDocumentsCta}
                 buttons={[
                   {
@@ -454,9 +462,17 @@ const ForumLayout: React.FC<ForumLayoutI> = (props) => {
         </div>
       ) : device.mediaIsPhone && cta && ctaToolCollaboration ? (
         <div>
-          <Sticky mode='bottom' stickyClassName='sticky bg-white'>
+          <Sticky
+            mode='bottom'
+            stickyClassName={clsx(
+              'sticky',
+              'bg-white',
+              device.mediaIsPhone && 'pr-3'
+            )}
+          >
             <div className='container'>
               <ButtonsBar
+                forumAlignment
                 buttons={[
                   {
                     size: 'xs',

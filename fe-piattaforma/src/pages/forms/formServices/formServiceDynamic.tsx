@@ -272,7 +272,7 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
   };
 
   return (
-    <Form id='form-service-dynamic' formDisabled={formDisabled}>
+    <Form id='form-service-dynamic' formDisabled={formDisabled} showMandatory={false}>
       <div className='d-inline-flex flex-wrap w-100'>
         {form &&
           Object.keys(form).map((key) => (

@@ -557,7 +557,8 @@ export const AssignManagerAuthorityReferentDelegate =
     },
     entity: 'programma' | 'progetto',
     role: UserAuthorityRole,
-    userId?: string
+    userId?: string,
+    needToUpdate?: boolean
   ) =>
   async (dispatch: Dispatch) => {
     try {
@@ -600,6 +601,7 @@ export const AssignManagerAuthorityReferentDelegate =
       }
       if (userDetail?.id) {
         userDetail.codiceFiscale &&
+          needToUpdate &&
           (await API.put(
             `/utente/${userDetail.id.toString().toUpperCase()}`,
             userDetail
@@ -614,7 +616,7 @@ export const AssignManagerAuthorityReferentDelegate =
           mansione: userDetail?.mansione,
           nome: userDetail?.nome,
           ruolo: role,
-          tipoContratto: '', // TODO: valore?
+          tipoContratto: userDetail?.tipoContratto,
         };
         // eslint-disable-next-line no-case-declarations
         const res = await API.post(`/utente`, payload);
@@ -637,7 +639,8 @@ export const AssignPartnerAuthorityReferentDelegate =
       [key: string]: string | number | boolean | Date | string[] | undefined;
     },
     role: UserAuthorityRole,
-    userId?: string
+    userId?: string,
+    needToUpdate?: boolean
   ) =>
   async (dispatch: Dispatch) => {
     try {
@@ -647,6 +650,7 @@ export const AssignPartnerAuthorityReferentDelegate =
       const endpoint = '/ente/associa/referenteDelegato/partner';
       if (userDetail?.id) {
         userDetail.codiceFiscale &&
+          needToUpdate &&
           (await API.put(
             `/utente/${userDetail.id.toString().toUpperCase()}`,
             userDetail

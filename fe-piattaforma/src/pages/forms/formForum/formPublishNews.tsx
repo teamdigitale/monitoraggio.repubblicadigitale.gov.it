@@ -1,5 +1,11 @@
 import clsx from 'clsx';
-import { Button, FormGroup, Icon, Toggle } from 'design-react-kit';
+import {
+  Button,
+  FormGroup,
+  Icon,
+  Toggle,
+  UncontrolledTooltip,
+} from 'design-react-kit';
 import _ from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -139,7 +145,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
 
   useEffect(() => {
     const newInterventionsDropdownOptions = [];
-    if ((policiesList || [])?.length > 1) {
+    if (form?.program?.value === 'public' || (policiesList || [])?.length > 1) {
       newInterventionsDropdownOptions.push({
         label: 'Tutti gli interventi',
         value: 'public',
@@ -203,7 +209,13 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
 
         updateForm(newForm(populatedForm));
       }
-      dispatch(GetEntityFilterValues({ entity, dropdownType: 'programmi', noFilters: true }));
+      dispatch(
+        GetEntityFilterValues({
+          entity,
+          dropdownType: 'programmi',
+          noFilters: true,
+        })
+      );
       dispatch(GetCategoriesList({ type: 'board_categories' }));
       setEnableComments((newFormValues.enable_comments as boolean) || false);
       setHighlighted((newFormValues.highlighted as boolean) || false);
@@ -293,9 +305,10 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
 
   return (
     <Form
-      id='form-load-document'
-      className='mt-5 mb-0'
+      id='form-publish-news'
+      className='mt-3 mb-0'
       formDisabled={formDisabled}
+      customMargin='mb-3 ml-3'
     >
       <Form.Row className={bootClass}>
         <Input
@@ -387,12 +400,20 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
       <Form.Row className={bootClass}>
         <div className='mt-5 d-flex align-items-center'>
           <strong className='mr-2'>AGGIUNGI IMMAGINE</strong>
-          <Icon
-            icon='it-info-circle'
-            size='sm'
-            color='primary'
-            aria-label='Informazione'
-          />
+          <div id='tooltip-allega-img'>
+            <Icon
+              icon='it-info-circle'
+              size='sm'
+              color='primary'
+              aria-label='Informazione'
+            />
+          </div>
+          <UncontrolledTooltip placement='bottom' target='tooltip-allega-img'>
+            - Dimensione consigliata: 1200x650 px
+            <br />
+            - Formati supportati: .jpg, .jpeg, .png
+            <br />- Peso: max 10 MB
+          </UncontrolledTooltip>
         </div>
       </Form.Row>
       <Form.Row className={bootClass}>
@@ -403,7 +424,6 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
             accept='.png, .jpeg, .jpg'
             ref={inputRefImg}
             className='sr-only'
-            capture
             onChange={updateImage}
           />
 
@@ -443,17 +463,25 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
             )}
           </label>
         </div>
-        <small className='font-italic form-text text-muted'>massimo 1 Mb</small>
+        {/*<small className='font-italic form-text text-muted'>massimo 1 Mb</small>*/}
       </Form.Row>
       <Form.Row className={bootClass}>
         <div className='mt-5 d-flex align-items-center'>
           <strong className='mr-2'>ALLEGA FILE</strong>
-          <Icon
-            icon='it-info-circle'
-            size='sm'
-            color='primary'
-            aria-label='Informazione'
-          />
+          <div id='tooltip-allega-file'>
+            <Icon
+              icon='it-info-circle'
+              size='sm'
+              color='primary'
+              aria-label='Informazione'
+            />
+          </div>
+          <UncontrolledTooltip placement='bottom' target='tooltip-allega-file'>
+            - Formati supportati: .txt, .rtf, .odt, .zip, .exe, .docx, .doc,
+            .ppt, .pptx, .pdf, .jpg, .png, .gif, .xls, .xlsx, .csv, .mpg, .wmv,
+            .pdf
+            <br />- Peso: max 10 MB
+          </UncontrolledTooltip>
         </div>
       </Form.Row>
       <Form.Row className={bootClass}>
@@ -464,7 +492,6 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
             accept='.txt, .rtf, .odt, .zip, .exe, .docx, .doc, .ppt, .pptx, .pdf, .jpg, .png, .gif, .xls, .xlsx, .csv, .mpg, .wmv'
             ref={inputRef}
             className='sr-only'
-            capture
             onChange={updateAttachment}
           />
           <label
@@ -503,11 +530,14 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
             )}
           </label>
         </div>
-        <small className='font-italic form-text text-muted'>massimo 5 Mb</small>
+        {/*<small className='font-italic form-text text-muted'>massimo 5 Mb</small>*/}
       </Form.Row>
       <Form.Row className={bootClass}>
-        <div className='d-flex flex-row w-75 align-items-center pt-5 pb-3'>
-          <FormGroup check className='form-check-group'>
+        <div className='d-flex flex-row w-75 align-items-center pt-5 pb-3 w-100 toogle-news'>
+          <FormGroup
+            check
+            className='form-check-group toogle-news__no-shadow mr-4'
+          >
             <Toggle
               // defaultChecked={!!enableComments}
               checked={enableComments}
@@ -515,7 +545,10 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
               label='Abilita commenti'
             />
           </FormGroup>
-          <FormGroup check className='form-check-group'>
+          <FormGroup
+            check
+            className='form-check-group toogle-news__no-shadow mr-4'
+          >
             <Toggle
               checked={highlighted}
               onChange={() => setHighlighted((prev) => !prev)}

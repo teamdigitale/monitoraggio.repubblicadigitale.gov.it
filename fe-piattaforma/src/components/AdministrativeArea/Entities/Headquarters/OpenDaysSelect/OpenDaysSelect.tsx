@@ -52,7 +52,7 @@ const OpenDaysSelect: React.FC<OpenDaysSelectI> = ({
                   </p>
                 </div>
               </div>
-              <Form id='form-open-days' formDisabled={isReadOnly} className='mr-2'>
+              <Form id='form-open-days' formDisabled={isReadOnly} className='mr-2' showMandatory={false}>
                 {isReadOnly ? (
                   <Input value={v} withLabel={false} />
                 ) : (

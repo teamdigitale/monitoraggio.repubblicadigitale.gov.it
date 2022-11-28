@@ -86,7 +86,7 @@ const PrintBoxField: React.FC<PrintFieldI> = (props) => {
 
   return (
     <div className={clsx(className, 'w-100')}>
-      <Form id='form-print-box' className={clsx('mx-0')}>
+      <Form id='form-print-box' className={clsx('mx-0')} showMandatory={false}>
         <p>
           <strong>{info.title}</strong>&nbsp;(scelta mutipla)
         </p>

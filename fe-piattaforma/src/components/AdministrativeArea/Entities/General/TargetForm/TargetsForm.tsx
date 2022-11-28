@@ -222,8 +222,10 @@ const TargetsForm = ({
     <Form
       id='form-targets'
       formDisabled={disabled}
-      className='pt-5 px-4 pr-lg-5'
+      className='px-5'
       legend={legend}
+      marginShowMandatory={false}
+      customMargin='mb-3 pb-3'
     >
       {form && (
         <>

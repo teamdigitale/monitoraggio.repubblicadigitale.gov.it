@@ -186,17 +186,18 @@ const HeadquartersDetails = () => {
         headquarterfacilitators?.map((facilitator: HeadquarterFacilitator) => ({
           nome: `${facilitator.cognome} ${facilitator.nome} `,
           stato: facilitator.stato,
-          actions:
-            facilitator.stato === entityStatus.ATTIVO &&
-            hasUserPermission(['add.fac']) &&
-            authorityType
+          actions: facilitator.associatoAUtente
+            ? facilitator.stato === entityStatus.ATTIVO &&
+              hasUserPermission(['add.fac']) &&
+              authorityType
               ? onActionClick
               : {
                   [CRUDActionTypes.VIEW]:
                     hasUserPermission(['add.fac']) && authorityType
                       ? onActionClick[CRUDActionTypes.VIEW]
                       : undefined,
-                },
+                }
+            : {},
           id: facilitator?.id,
           codiceFiscale: facilitator?.codiceFiscale,
         })) || [],
@@ -409,8 +410,8 @@ const HeadquartersDetails = () => {
               ))
             : null}
           <Sticky mode='bottom' stickyClassName='sticky bg-white container '>
-            <div className='container pl-5'>
-              <ButtonsBar buttons={buttons} />
+            <div className='container'>
+              <ButtonsBar buttons={buttons} marginRight />
             </div>
           </Sticky>
           <ManageHeadquarter />

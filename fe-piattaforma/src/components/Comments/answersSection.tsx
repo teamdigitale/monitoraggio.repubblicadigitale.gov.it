@@ -36,38 +36,40 @@ const AnswersSection: React.FC<AnswerSectionI> = (props) => {
           )}
         >
           {(replies || []).map((comment, index: number) => (
-                <CommentAnswer
-                  key={index}
-                  {...comment}
-                  noBorder={replies.length > 1 && index < replies.length - 1}
-                  onDeleteComment={() =>
-                    dispatch(
-                      openModal({
-                        id: 'delete-forum-entity',
-                        payload: {
-                          text: 'Confermi di voler eliminare questo contenuto?',
-                          entity: 'comment',
-                          id: comment.id,
-                          author: comment.author,
-                        },
-                      })
-                    )
-                  }
-                  onEditComment={() =>
-                    dispatch(
-                      openModal({
-                        id: 'comment-modal',
-                        payload: {
-                          title: 'Modifica commento',
-                          action: 'edit',
-                          id: comment.id,
-                          body: comment.body,
-                        },
-                      })
-                    )
-                  }
-                />
-              ))}
+            <CommentAnswer
+              key={index}
+              {...comment}
+              noBorder={replies.length > 1 && index < replies.length - 1}
+              onDeleteComment={() =>
+                dispatch(
+                  openModal({
+                    id: 'delete-forum-entity',
+                    payload: {
+                      text: 'Confermi di voler eliminare questo contenuto?',
+                      entity: 'comment',
+                      id: comment.id,
+                      author: comment.author,
+                      textLabel: "Inserisci il motivo dell'eliminazione",
+                    },
+                  })
+                )
+              }
+              onEditComment={() =>
+                dispatch(
+                  openModal({
+                    id: 'comment-modal',
+                    payload: {
+                      title: 'Modifica commento',
+                      action: 'edit',
+                      id: comment.id,
+                      body: comment.body,
+                      textLabel: 'Digita qui sotto il testo',
+                    },
+                  })
+                )
+              }
+            />
+          ))}
         </div>
       )}
     </div>

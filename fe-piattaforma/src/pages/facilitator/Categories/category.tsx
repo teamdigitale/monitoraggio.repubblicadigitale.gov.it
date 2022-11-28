@@ -29,13 +29,22 @@ import { useAppSelector } from '../../../redux/hooks';
 import { CRUDActionsI, CRUDActionTypes } from '../../../utils/common';
 import ManageCategory from '../../administrator/AdministrativeArea/Entities/modals/manageCategory';
 import { TableCategories } from '../../administrator/AdministrativeArea/Entities/utils';
+import {
+  selectEntityPagination,
+  setEntityPagination,
+} from '../../../redux/features/administrativeArea/administrativeAreaSlice';
+import { Paginator } from '../../../components';
 
 const categorySectionsLabel = 'categorySections';
+const categorySearchLabel = 'searchValue';
 
 const Category = () => {
   const dispatch = useDispatch();
   const categoriesList = useAppSelector(selectCategoriesList);
   const filtersList = useAppSelector(selectFilters);
+  const pagination = useAppSelector(selectEntityPagination);
+
+  const { pageNumber, pageSize } = pagination;
 
   const handleGetCategoriesList = (keys?: string) => {
     dispatch(GetCategoriesList({ keys }));
@@ -44,7 +53,12 @@ const Category = () => {
   useEffect(() => {
     handleGetCategoriesList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filtersList[categorySectionsLabel]]);
+  }, [
+    filtersList[categorySectionsLabel],
+    filtersList[categorySearchLabel],
+    pageSize,
+    pageNumber,
+  ]);
 
   const getCategoryLabel = (
     category:
@@ -120,8 +134,25 @@ const Category = () => {
 
   const [tableValues, setTableValues] = useState(updateTableValues());
 
-  const handleOnSearch = (searchValue: string) => {
-    if (searchValue?.length >= 2) handleGetCategoriesList(searchValue);
+  const handleOnChangePage = (
+    pageNumber: number = pagination?.pageNumber,
+    pageSize = pagination?.pageSize
+  ) => {
+    dispatch(setEntityPagination({ pageNumber: pageNumber, pageSize }));
+  };
+
+  const handleOnSearch = (searchValue?: string) => {
+    dispatch(
+      setForumFilters({
+        searchValue: [
+          {
+            label: searchValue,
+            value: (searchValue?.length || 0) >= 2 ? searchValue : '',
+          },
+        ],
+      })
+    );
+    handleOnChangePage(1);
   };
 
   const handleDropdownFilters = (values: FilterI[], filterKey: string) => {
@@ -163,7 +194,7 @@ const Category = () => {
     placeholder: 'Inserisci il nome della categoria che stai cercando',
     isClearable: true,
     title: 'Cerca categoria',
-    onReset: handleGetCategoriesList,
+    onReset: handleOnSearch,
   };
 
   const categoryCta = {
@@ -187,6 +218,7 @@ const Category = () => {
           )
         }
         searchInformation={searchInformation}
+        minLength={2}
       >
         <div className='mb-2' />
         <Table
@@ -195,6 +227,18 @@ const Category = () => {
           onActionClick={onActionClick}
           withActions
         />
+        {pagination?.totalPages ? (
+          <div className='pb-5'>
+            <Paginator
+              activePage={pagination?.pageNumber}
+              center
+              refID='#grid'
+              pageSize={pagination?.pageSize}
+              total={pagination?.totalPages}
+              onChange={handleOnChangePage}
+            />
+          </div>
+        ) : null}
       </GenericSearchFilterTableLayout>
       <DeleteEntityModal
         onClose={() => dispatch(closeModal())}

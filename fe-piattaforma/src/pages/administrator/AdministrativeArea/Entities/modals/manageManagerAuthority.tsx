@@ -102,6 +102,7 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
       entityId && dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
     }
     setNoResult(false);
+    dispatch(setAuthoritiesList(null));
     dispatch(closeModal());
     //dispatch(resetAuthorityDetails());
   };

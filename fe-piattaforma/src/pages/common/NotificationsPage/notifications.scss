@@ -41,16 +41,17 @@
   width: fit-content;
   
   .badge {
-    width: 22px;
-    height: 22px;
+    min-width: 20px;
+    font-size: 12px;
+    max-width: 24px;
+    padding: 2px;
+    height: 20px;
+    top: 0;
+    right: -20px;
     border-radius: 100%;
-    background-color: #B62032;
-    color: #FFFFFF;
+    background-color: #b62032;
+    color: #ffffff;
     position: absolute;
-    right: -10%;
-    top: -20%;
-    font-weight: 400;
-    font-size: 16px;
     display: flex;
     align-items: center;
     justify-content: center;

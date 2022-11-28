@@ -4,6 +4,7 @@ import { setCategoriesList } from '../forumSlice';
 import { proxyCall } from '../forumThunk';
 import { RootState } from '../../../store';
 import { transformFiltersToQueryParams } from '../../../../utils/common';
+import { setEntityPagination } from '../../administrativeArea/administrativeAreaSlice';
 
 const GetCategoriesListAction = {
   type: 'forum/GetCategorisList',
@@ -12,7 +13,6 @@ const GetCategoriesListAction = {
 export const GetCategoriesList =
   ({
     type = 'all',
-    keys,
   }: {
     type?:
       | 'all'
@@ -28,8 +28,16 @@ export const GetCategoriesList =
       const {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
+        administrativeArea: { pagination },
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         forum: { filters },
       } = select((state: RootState) => state);
+      const keys =
+        (filters.searchValue || [])
+          .map(({ value }: { value: string }) => value)
+          .join(',')
+          ?.trim() || undefined;
       const body = {
         categorySections: [
           {
@@ -42,6 +50,12 @@ export const GetCategoriesList =
               'all',
           },
         ],
+        page: [
+          { label: 'page', value: Math.max(0, pagination.pageNumber - 1) },
+        ],
+        items_per_page: [
+          { label: 'items_per_page', value: pagination.pageSize },
+        ],
       };
       const queryParamFilters = transformFiltersToQueryParams(body).replace(
         'categorySections',
@@ -51,12 +65,20 @@ export const GetCategoriesList =
         `/category/retrieve${queryParamFilters}${keys ? `&keys=${keys}` : ''}`,
         'GET'
       );
-      // const res = await API.get(`/category/retrieve`)
-      if (res) {
+      if (res?.data?.data) {
         dispatch(setCategoriesList(res.data.data.items || []));
+        dispatch(
+          setEntityPagination({
+            totalPages: res.data.data.pager?.total_pages || 0,
+            totalElements: res.data.data.pager?.total_items || 0,
+          })
+        );
+        return res;
       }
+      return false;
     } catch (error) {
       console.log('GetCategoriesList error', error);
+      return false;
     } finally {
       dispatch(hideLoader());
     }

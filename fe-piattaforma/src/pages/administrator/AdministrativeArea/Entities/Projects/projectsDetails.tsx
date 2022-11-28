@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Icon, Nav } from 'design-react-kit';
+import { Icon, Nav, Tooltip } from 'design-react-kit';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { entityStatus, formTypes, userRoles } from '../utils';
 import {
@@ -116,7 +116,7 @@ const ProjectsDetails = () => {
   const [itemAccordionList, setItemAccordionList] = useState<
     ItemsListI[] | null
   >();
-  // const [openOne, toggleOne] = useState(false);
+  const [openOne, toggleOne] = useState(false);
   const [correctButtons, setCorrectButtons] = useState<ButtonInButtonsBar[]>(
     []
   );
@@ -482,14 +482,16 @@ const ProjectsDetails = () => {
                 ...ref,
                 id: ref.id,
                 codiceFiscale: ref.codiceFiscale,
-                actions:
-                  authorityInfo?.dettagliInfoEnte?.statoEnte ===
-                    entityStatus.TERMINATO || ref?.stato !== entityStatus.ATTIVO
+                actions: ref.associatoAUtente
+                  ? authorityInfo?.dettagliInfoEnte?.statoEnte ===
+                      entityStatus.TERMINATO ||
+                    ref?.stato !== entityStatus.ATTIVO
                     ? {
                         [CRUDActionTypes.VIEW]:
                           onActionClickReferenti[CRUDActionTypes.VIEW],
                       }
-                    : onActionClickReferenti,
+                    : onActionClickReferenti
+                  : {},
               })
             ) || [],
         },
@@ -501,14 +503,16 @@ const ProjectsDetails = () => {
                 ...del,
                 id: del.id,
                 codiceFiscale: del.codiceFiscale,
-                actions:
-                  authorityInfo?.dettagliInfoEnte?.statoEnte ===
-                    entityStatus.TERMINATO || del?.stato !== entityStatus.ATTIVO
+                actions: del.associatoAUtente
+                  ? authorityInfo?.dettagliInfoEnte?.statoEnte ===
+                      entityStatus.TERMINATO ||
+                    del?.stato !== entityStatus.ATTIVO
                     ? {
                         [CRUDActionTypes.VIEW]:
                           onActionClickDelegati[CRUDActionTypes.VIEW],
                       }
-                    : onActionClickDelegati,
+                    : onActionClickDelegati
+                  : {},
               })
             ) || [],
         },
@@ -518,9 +522,9 @@ const ProjectsDetails = () => {
             authorityInfo?.sediGestoreProgetto?.map(
               (sedi: { [key: string]: string }) => ({
                 ...sedi,
-                actions:
-                  authorityInfo?.dettagliInfoEnte?.statoEnte ===
-                    entityStatus.TERMINATO && sedi.associatoAUtente
+                actions: sedi.associatoAUtente
+                  ? authorityInfo?.dettagliInfoEnte?.statoEnte ===
+                      entityStatus.TERMINATO && sedi.associatoAUtente
                     ? {
                         [CRUDActionTypes.VIEW]:
                           onActionClickSede[CRUDActionTypes.VIEW],
@@ -536,7 +540,8 @@ const ProjectsDetails = () => {
                             ? onActionClickSede[CRUDActionTypes.DELETE]
                             : undefined,
                       }
-                    : {},
+                    : {}
+                  : {},
               })
             ) || [],
         },
@@ -691,21 +696,7 @@ const ProjectsDetails = () => {
         ),
       });
       setItemAccordionList(null);
-      setCorrectButtons([
-        // {
-        //   size: 'xs',
-        //   outline: true,
-        //   color: 'primary',
-        //   text: ' Aggiungi sede',
-        //   onClick: () =>
-        //     dispatch(
-        //       openModal({
-        //         id: formTypes.SEDE,
-        //         payload: { title: 'Sede' },
-        //       })
-        //     ),
-        // },
-      ]);
+      setCorrectButtons([]);
       setEmptySection(undefined);
       setProjInfoButtons(false);
     } else {
@@ -749,22 +740,34 @@ const ProjectsDetails = () => {
           active={activeTab === tabs.ENTE_GESTORE}
           enteGestore={!managingAuthorityID}
         >
-          {!managingAuthorityID ? (
-            <div id='tab-ente-gestore-progetto'>
-              * Ente gestore
-              {/* <Tooltip
-                placement='bottom'
-                target='tab-ente-gestore-progetto'
-                isOpen={openOne}
-                toggle={() => toggleOne(!openOne)}
-              >
-                Compilazione obbligatoria
-              </Tooltip> */}
-              <Icon icon='it-warning-circle' size='xs' className='ml-1' />
-            </div>
-          ) : (
-            'Ente gestore'
-          )}
+          <div id='tab-ente-gestore-progetto'>
+            {!managingAuthorityID ||
+            authorityInfo?.dettagliInfoEnte?.statoEnte ===
+              entityStatus.NON_ATTIVO ? (
+              <>
+                <span>{!managingAuthorityID && '*'} Ente gestore</span>
+                {managingAuthorityID && (
+                  <Tooltip
+                    placement='bottom'
+                    target='tooltip-ente-gestore-progetto'
+                    isOpen={openOne}
+                    toggle={() => toggleOne(!openOne)}
+                  >
+                    È necessario aggiungere almeno un referente per l'ente
+                    gestore
+                  </Tooltip>
+                )}
+                <Icon
+                  icon='it-warning-circle'
+                  size='xs'
+                  className='ml-1'
+                  id='tooltip-ente-gestore-progetto'
+                />
+              </>
+            ) : (
+              'Ente gestore'
+            )}
+          </div>
         </NavLink>
       </li>
       <li ref={partnerRef}>

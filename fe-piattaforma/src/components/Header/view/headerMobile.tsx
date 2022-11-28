@@ -1,6 +1,6 @@
 import React, { memo, useState } from 'react';
 import clsx from 'clsx';
-import { Link, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import {
   Button,
   Dropdown,
@@ -9,7 +9,7 @@ import {
   Icon,
 } from 'design-react-kit';
 //import LogoMobile from '/public/assets/img/logo-mobile.png';
-import LogoMobile from '/public/assets/img/logo_tmp3.png';
+//import LogoMobile from '/public/assets/img/logo_tmp3.png';
 import Bell from '/public/assets/img/campanella.png';
 import RocketChatIcon from '/public/assets/img/rocketchat-2x.png';
 import { HeaderI } from '../header';
@@ -259,44 +259,50 @@ const HeaderMobile: React.FC<HeaderI> = ({
                 {userDropDown()}
                 <div className='d-flex align-items-center'>
                   {hasUserPermission(['btn.chat']) && handleOpenRocketChat ? (
+                    <div className='ml-3'>
+                      <Button
+                        onClick={handleOpenRocketChat}
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter') {
+                            handleOpenRocketChat();
+                          }
+                        }}
+                        className='mr-3 position-relative p-0'
+                        aria-label={`${chatToRead} messaggi da leggere su Rocketchat`}
+                      >
+                        <Icon
+                          color='white'
+                          icon={RocketChatIcon}
+                          size='sm'
+                          aria-label='RocketChat'
+                          aria-hidden
+                        />
+                        {chatToRead ? (
+                          <span className='chat-notifications'>
+                            {chatToRead}
+                          </span>
+                        ) : null}
+                      </Button>
+                    </div>
+                  ) : null}
+                  <div className='ml-3'>
                     <Button
-                      onClick={handleOpenRocketChat}
-                      onKeyPress={(e) => {
-                        if (e.key === 'Enter') {
-                          handleOpenRocketChat();
-                        }
-                      }}
-                      className='mr-3 position-relative p-0'
-                      aria-label={`${chatToRead} messaggi da leggere su Rocketchat`}
+                      onClick={() => setNotificationsIsOpen(true)}
+                      className='primary-bg-a6 px-2 bg-transparent position-relative'
                     >
                       <Icon
                         color='white'
-                        icon={RocketChatIcon}
+                        icon={Bell}
                         size='sm'
-                        aria-label='RocketChat'
-                        aria-hidden
+                        aria-label='Notifiche'
                       />
-                      {chatToRead ? (
-                        <span className='chat-notifications'>{chatToRead}</span>
+                      {notification ? (
+                        <span className='badge-notifications'>
+                          {notification}
+                        </span>
                       ) : null}
                     </Button>
-                  ) : null}
-                  <Button
-                    onClick={() => setNotificationsIsOpen(true)}
-                    className='primary-bg-a6 px-2 bg-transparent position-relative'
-                  >
-                    <Icon
-                      color='white'
-                      icon={Bell}
-                      size='sm'
-                      aria-label='Notifiche'
-                    />
-                    {notification ? (
-                      <span className='badge-notifications'>
-                        {notification}
-                      </span>
-                    ) : null}
-                  </Button>
+                  </div>
                   <NotificationsPreview
                     open={notificationsIsOpen}
                     setOpen={setNotificationsIsOpen}
@@ -341,13 +347,14 @@ const HeaderMobile: React.FC<HeaderI> = ({
               'ml-2'
             )}
           >
-            <Link to={defaultRedirectUrl} replace>
-              <img
+            <NavLink to={defaultRedirectUrl} replace className='anchor-reset'>
+              {/*<img
                 src={LogoMobile}
                 alt='logo'
-                style={{ width: 'auto', height: '74px' }}
-              />
-            </Link>
+                style={{width: 'auto', height: '74px'}}
+              />*/}
+              <div className='h3 text-white m-0'>Facilita</div>
+            </NavLink>
           </div>
           {isLogged ? (
             <div className='header-container__main__search ml-auto'>

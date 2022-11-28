@@ -62,7 +62,7 @@ const ManageReport: React.FC<ManageReportI> = ({
       id={modalId}
       primaryCTA={{
         disabled: newReport.trim() === '',
-        label: creation ? 'Conferma' : 'Salva',
+        label: creation ? 'Conferma' : 'Invia',
         onClick: handleSaveReport,
       }}
       secondaryCTA={{
