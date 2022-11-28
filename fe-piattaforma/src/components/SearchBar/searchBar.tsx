@@ -18,7 +18,7 @@ interface SearchBarI extends Omit<SelectI, 'onInputChange'> {
   autocomplete?: boolean;
   field?: string;
   filterOptions?: (inputValue: string) => Promise<OptionType[]>;
-  minLength?: number;
+  minLength?: number | undefined;
   onInputChange?: (
     value:
       | SingleValue<OptionType | undefined>

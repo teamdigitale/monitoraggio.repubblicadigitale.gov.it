@@ -306,8 +306,9 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
   return (
     <Form
       id='form-publish-news'
-      className='mt-3 pt-3 mb-0'
+      className='mt-3 mb-0'
       formDisabled={formDisabled}
+      customMargin='mb-3 ml-3'
     >
       <Form.Row className={bootClass}>
         <Input
@@ -423,7 +424,6 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
             accept='.png, .jpeg, .jpg'
             ref={inputRefImg}
             className='sr-only'
-            capture
             onChange={updateImage}
           />
 
@@ -492,7 +492,6 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
             accept='.txt, .rtf, .odt, .zip, .exe, .docx, .doc, .ppt, .pptx, .pdf, .jpg, .png, .gif, .xls, .xlsx, .csv, .mpg, .wmv'
             ref={inputRef}
             className='sr-only'
-            capture
             onChange={updateAttachment}
           />
           <label
@@ -534,8 +533,11 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
         {/*<small className='font-italic form-text text-muted'>massimo 5 Mb</small>*/}
       </Form.Row>
       <Form.Row className={bootClass}>
-        <div className='d-flex flex-row w-75 align-items-center pt-5 pb-3'>
-          <FormGroup check className='form-check-group'>
+        <div className='d-flex flex-row w-75 align-items-center pt-5 pb-3 w-100 toogle-news'>
+          <FormGroup
+            check
+            className='form-check-group toogle-news__no-shadow mr-4'
+          >
             <Toggle
               // defaultChecked={!!enableComments}
               checked={enableComments}
@@ -543,7 +545,10 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
               label='Abilita commenti'
             />
           </FormGroup>
-          <FormGroup check className='form-check-group'>
+          <FormGroup
+            check
+            className='form-check-group toogle-news__no-shadow mr-4'
+          >
             <Toggle
               checked={highlighted}
               onChange={() => setHighlighted((prev) => !prev)}

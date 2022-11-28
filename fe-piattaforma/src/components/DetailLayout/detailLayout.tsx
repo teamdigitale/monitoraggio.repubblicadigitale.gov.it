@@ -313,13 +313,11 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
             stickyClassName={clsx(
               'sticky',
               'bg-white',
-              isUserProfile
-                ? 'pr-4'
-                : isUserProfile && device.mediaIsTablet && 'pr-0',
-              isRoleManagement
-                ? 'pr-4'
-                : isRoleManagement && device.mediaIsTablet && 'pr-0',
-              !device.mediaIsPhone && 'container'
+              'container',
+              isUserProfile && 'pr-4',
+              isRoleManagement && 'pr-4',
+              device.mediaIsPhone && 'pr-5',
+              device.mediaIsTablet && 'pr-0'
             )}
           >
             {formButtons.length === 2 &&
@@ -330,12 +328,9 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
               <div
                 className={clsx(
                   'd-flex',
-                  'flex-row',
-                  device.mediaIsPhone
-                    ? 'justify-content-end flex-wrap'
-                    : 'justify-content-between',
-                  'container',
-                  'w-100'
+                  'justify-content-between',
+                  'w-100',
+                  device.mediaIsPhone && 'flex-column container'
                 )}
               >
                 <ButtonsBar buttons={formButtons.slice(0, 1)} />

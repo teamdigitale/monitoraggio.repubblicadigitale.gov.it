@@ -323,7 +323,7 @@ export const downloadCSV = (
 };
 
 export const transformFiltersToQueryParams = (filters: {
-  [key: string]: { label: string; value: string }[] | undefined;
+  [key: string]: { label: string; value: string | number }[] | undefined;
 }) => {
   let filterString = '';
   Object.keys(filters)?.forEach((filter: string) => {
@@ -389,13 +389,13 @@ export const createStringOfCompiledSurveySection = (
       formattedData[key] = formattedData[key]
         ?.toString()
         .split('§')
-        .map((e) => e.replaceAll(',', '§').replaceAll("'", "’"));
+        .map((e) => e.replaceAll(',', '§').replaceAll("'", '’'));
     } else if (Array.isArray(formattedData[key])) {
       if (key === '25' || key === '26') {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         formattedData[key] = (formattedData[key] || ['']).map((e) =>
-          e.toString().replaceAll(',', '§').replaceAll("'", "’")
+          e.toString().replaceAll(',', '§').replaceAll("'", '’')
         );
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
@@ -407,12 +407,12 @@ export const createStringOfCompiledSurveySection = (
           .split('§')
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          .map((e) => e.toString().replaceAll(',', '§').replaceAll("'", "’"));
+          .map((e) => e.toString().replaceAll(',', '§').replaceAll("'", '’'));
       } else {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         formattedData[key] = (formattedData[key] || ['']).map((e) =>
-          e.toString().replaceAll(',', '§').replaceAll("'", "’")
+          e.toString().replaceAll(',', '§').replaceAll("'", '’')
         );
       }
     }
@@ -550,14 +550,14 @@ export const uploadFile = (
 
 export const cleanDrupalFileURL = (url: string) => url.replaceAll('amp;', '');
 
-export const getUnreadNotificationsCount = () => {
+export const getUnreadNotificationsCount = (force = false) => {
   const notificationSession = JSON.parse(getSessionValues('notification'));
 
   if (notificationSession.session_timestamp) {
     const diff =
       Math.abs(new Date().getTime() - notificationSession.session_timestamp) /
       1000;
-    if (diff >= 120) {
+    if (force || diff >= 120) {
       store.dispatch(
         GetNotificationsByUser(
           {

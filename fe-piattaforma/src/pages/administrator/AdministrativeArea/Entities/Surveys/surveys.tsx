@@ -354,6 +354,7 @@ const Surveys = () => {
                 onCellClick={(field, row) => console.log(field, row)}
                 withActions
                 totalCounter={pagination?.totalElements}
+                surveysTable
               />
               {pagination?.pageNumber ? (
                 <Paginator

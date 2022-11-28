@@ -2,7 +2,7 @@
   display: flex;
   justify-content: flex-end;
   padding: rem(15px 0);
- // margin-right: rem(20px);
+  // margin-right: rem(20px);
   flex-wrap: wrap;
   gap: rem(5px);
 
@@ -18,4 +18,66 @@
   @media (min-width: 320px) {
     justify-content: flex-end;
   }
+}
+
+.buttons-bar-marginRight {
+  display: flex;
+  justify-content: flex-end;
+  padding: rem(15px 0);
+  // margin-right: rem(20px);
+  flex-wrap: wrap;
+  gap: rem(5px);
+
+  @media (max-width: 764px) {
+    justify-content: space-between;
+    .btn-xs {
+      min-width: rem(160px);
+      max-width: rem(220px);
+      max-height: rem(48px);
+      width: unset;
+    }
+  }
+  @media (min-width: 320px) {
+    justify-content: flex-end;
+  }
+  .btn:last-child {
+    @media screen and (min-width: 360px) and (max-width: 576px) {
+      margin-right: 1.3rem;
+    }
+  }
+  .btn:first-child {
+    @media screen and (min-width: 360px) and (max-width: 442px) {
+      margin-right: 1.3rem;
+    }
+  }
+}
+
+.buttons-bar-alignment {
+  display: flex;
+  justify-content: flex-end;
+  padding: rem(15px 0);
+  // margin-right: rem(20px);
+  flex-wrap: wrap;
+  gap: rem(5px);
+
+  @media (max-width: 764px) {
+    justify-content: end;
+    .btn-xs {
+      min-width: rem(160px);
+      max-width: rem(220px);
+      max-height: rem(48px);
+      width: unset;
+    }
+  }
+  
+  /* .btn:last-child {
+    @media screen and (min-width: 360px) and (max-width: 576px) {
+      margin-right: 1.3rem;
+    }
+  }
+  .btn:first-child {
+    @media screen and (min-width: 360px) and (max-width: 442px) {
+      margin-right: 1.3rem;
+    }
+  } */
 }

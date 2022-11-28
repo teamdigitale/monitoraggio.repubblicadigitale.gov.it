@@ -37,7 +37,7 @@ const ProfileImageForm: React.FC<ProfilePictureI> = (props) => {
     setSelectedImage('');
     setIsFormValid(true);
     if (inputRef.current !== null) {
-      inputRef.current.value = "";
+      inputRef.current.value = '';
     }
     e.preventDefault();
   };
@@ -66,7 +66,11 @@ const ProfileImageForm: React.FC<ProfilePictureI> = (props) => {
   };
 
   return (
-    <Form id='profile-picture-form' className='w-100 py-5' showMandatory={false}>
+    <Form
+      id='profile-picture-form'
+      className='w-100 py-5'
+      showMandatory={false}
+    >
       <Form.Row className={bootClass}>
         <div className='w-100 border-bottom-box'>
           <input
@@ -75,7 +79,6 @@ const ProfileImageForm: React.FC<ProfilePictureI> = (props) => {
             accept='.png, .jpeg, .jpg'
             ref={inputRef}
             className='sr-only'
-            capture
             onChange={updateImage}
           />
           <label

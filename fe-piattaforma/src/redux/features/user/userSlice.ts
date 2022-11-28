@@ -182,7 +182,7 @@ export const selectUserNotification = (state: RootState) =>
 export const selectUserNotificationsPreview = (state: RootState) =>
   state.user.notificationsPreview;
 export const selectUserNotificationToRead = (state: RootState) =>
-  state.user.notificationToRead;
+  state.user.notificationToRead > 100 ? '99+' : state.user.notificationToRead;
 export const selectUserChatToRead = (state: RootState) => state.user.chatToRead;
 export const selectImmagineProfilo = (state: RootState) =>
   state.user.user?.immagineProfilo;

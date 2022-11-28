@@ -4,7 +4,6 @@ import { Card, Icon } from 'design-react-kit';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import Authicon from '/public/assets/img/auth-box-icon.png';
-import LogoScrittaBlu from '/public/assets/img/logo-scritta-blu-x2.png';
 import { Footer } from '../../../components';
 import { selectDevice } from '../../../redux/features/app/appSlice';
 import { useAppSelector } from '../../../redux/hooks';
@@ -40,11 +39,18 @@ const ErrorPage = () => {
   return (
     <div>
       <div className='mt-0 py-3 primary-bg '>
-        <div className='mr-auto'>
-          <p className={clsx('h6', 'm-0', 'pl-5', 'text-white')}>
-            Repubblica Digitale
-          </p>
-        </div>
+        <a
+          href='https://innovazione.gov.it/'
+          target='_blank'
+          rel='noreferrer'
+          style={{ textDecoration: 'none' }}
+        >
+          <div className='mr-auto'>
+            <p className={clsx('h6', 'm-0', 'pl-5', 'text-white')}>
+              Dipartimento per la trasformazione digitale
+            </p>
+          </div>
+        </a>
       </div>
 
       <main
@@ -57,12 +63,11 @@ const ErrorPage = () => {
         tabIndex={-1}
       >
         <div className={clsx('auth-container')}>
-          <div className={clsx('w-100', 'text-center', 'mb-5')}>
-            <img
-              src={LogoScrittaBlu}
-              alt='Repubblica Digital'
-              className='auth-container__logo'
-            />
+          <div className={clsx('w-100', 'text-center', 'mb-5', 'text-primary')}>
+            <p className='h1' style={{ marginBottom: '0' }}>
+              Facilita
+            </p>
+            <p>La piattaforma dei servizi di facilitazione digitale</p>
           </div>
           <div
             className={clsx(
