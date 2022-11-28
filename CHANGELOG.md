@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.348](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.347...1.0.0-develop.348) (2022-11-28)
+
+
+### Bug Fixes
+
+* **be:** update file size multipart ([4fe8fa0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4fe8fa05d5877239df46ed07ad8bfe568b145e4a))
+
 ## [1.0.0-develop.347](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.346...1.0.0-develop.347) (2022-11-28)
 
 
