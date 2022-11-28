@@ -79,7 +79,7 @@ public class EnteSedeProgettoFacilitatoreService {
 		boolean esisteUtente = this.utenteService.esisteUtenteByCodiceFiscale(codiceFiscaleUtente);
 		if(!esisteUtente) {
 			throw new EnteSedeProgettoFacilitatoreException(
-					String.format("Impossibile associare facilitatore. Utente con codiceFiscale=%s non trovato", codiceFiscaleUtente),
+					String.format("Impossibile associare facilitatore. Utente non trovato", codiceFiscaleUtente),
 					CodiceErroreEnum.EN07);
 		}
 		
@@ -89,13 +89,43 @@ public class EnteSedeProgettoFacilitatoreService {
 		boolean esisteProgetto = this.progettoService.esisteProgettoById(idProgetto);
 		
 		if(!(esisteEnte && esisteSede && esisteProgetto)) {
-			String errorMessage = String.format("Impossibile associare facilitatore/volontario codiceFiscale=%s alla sede con id=%s per l'ente con id=%s sul progetto con id=%s, sede e/o ente e/o progetto non esistente/i", 
+			String errorMessage = String.format("Impossibile associare facilitatore/volontario alla sede con id=%s per l'ente con id=%s sul progetto con id=%s, sede e/o ente e/o progetto non esistente/i", 
 					codiceFiscaleUtente, idSede, idEnte, idProgetto);
 			throw new EnteSedeProgettoFacilitatoreException(errorMessage, CodiceErroreEnum.EN07);
 		}
 		
+		
 		final ProgettoEntity progettoDBFEtch = this.progettoService.getProgettoById(idProgetto);
 		
+		/*
+		 * verifico:
+		 * 1) se l'utente è REGP/DEGP può aggiungere solo un FAC/VOL a una sede associata a ente gestore progetto
+		 * 2) se l'utente è REPP/DEPP può aggiungere solo un FAC/VOL a una sede associata a ente partner 
+		 */
+		if(
+			(
+				//caso ente gestore progetto e REPP/DEPP
+				progettoDBFEtch.getEnteGestoreProgetto() != null && 
+				idEnte.equals(progettoDBFEtch.getEnteGestoreProgetto().getId()) &&
+				(
+						enteSedeProgettoFacilitatoreRequest.getCodiceRuoloUtenteLoggato().equals(RuoloUtenteEnum.REPP.toString()) ||
+						enteSedeProgettoFacilitatoreRequest.getCodiceRuoloUtenteLoggato().equals(RuoloUtenteEnum.DEPP.toString())
+				)
+			)
+				||
+			(	
+				//caso ente partner e REGP/DEGP
+				progettoDBFEtch.getEnteGestoreProgetto() != null && 
+				!idEnte.equals(progettoDBFEtch.getEnteGestoreProgetto().getId()) &&
+				(
+						enteSedeProgettoFacilitatoreRequest.getCodiceRuoloUtenteLoggato().equals(RuoloUtenteEnum.REGP.toString()) ||
+						enteSedeProgettoFacilitatoreRequest.getCodiceRuoloUtenteLoggato().equals(RuoloUtenteEnum.DEGP.toString())
+				)	
+			)	
+		) {
+			String errorMessage = "Impossibile associare facilitatore/volontario alla sede. L'utente non possiede il ruolo corretto per effettuare l'operazione";
+			throw new EnteSedeProgettoFacilitatoreException(errorMessage, CodiceErroreEnum.EN07);
+		}
 		final UtenteEntity utenteDBFetch = this.utenteService.getUtenteByCodiceFiscale(codiceFiscaleUtente);
 		final RuoloEntity ruoloFacilitatore = this.ruoloService.getRuoloByCodiceRuolo(RuoloUtenteEnum.FAC.toString());
 		final RuoloEntity ruoloVolontario = this.ruoloService.getRuoloByCodiceRuolo(RuoloUtenteEnum.VOL.toString());
