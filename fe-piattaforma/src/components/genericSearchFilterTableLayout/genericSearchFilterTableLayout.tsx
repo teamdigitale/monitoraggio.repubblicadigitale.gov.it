@@ -51,6 +51,7 @@ interface GenericSearchFilterTableLayoutI {
   citizenList?: boolean;
   tooltip?: boolean;
   tooltiptext?: string;
+  minLength?: number;
 }
 
 const GenericSearchFilterTableLayout: React.FC<
@@ -77,6 +78,7 @@ const GenericSearchFilterTableLayout: React.FC<
   citizenList = false,
   tooltip = false,
   tooltiptext = '',
+  minLength,
 }) => {
   const dispatch = useDispatch();
   const [showChips, setShowChips] = useState<boolean>(false);
@@ -94,6 +96,7 @@ const GenericSearchFilterTableLayout: React.FC<
       case 'filtroCriterioRicerca':
       case 'filtroNomeRuolo':
       case 'criterioRicerca':
+      case 'searchValue':
         return 'Ricerca';
       case 'filtroPolicies':
       case 'policies':
@@ -171,20 +174,26 @@ const GenericSearchFilterTableLayout: React.FC<
     } else if (Array.isArray(filter) && filter?.length) {
       return (
         <>
-          {filter.map((f: FilterI, j: number) => (
-            <Chip key={i + '-' + j} className='mr-2 rounded-pill'>
-              <ChipLabel className='mx-1 my-1'>
-                {getFilterLabel(filterKey)}: {f.label}
-              </ChipLabel>
-              <Button
-                close
-                onClick={() => cleanFilters(filterKey, f.value)}
-                aria-label={`Elimina filtro ${f.label}`}
-              >
-                <Icon icon='it-close' aria-label='Elimina filtro' aria-hidden />
-              </Button>
-            </Chip>
-          ))}
+          {filter.map((f: FilterI, j: number) =>
+            f.label?.trim()?.length ? (
+              <Chip key={i + '-' + j} className='mr-2 rounded-pill'>
+                <ChipLabel className='mx-1 my-1'>
+                  {getFilterLabel(filterKey)}: {f.label}
+                </ChipLabel>
+                <Button
+                  close
+                  onClick={() => cleanFilters(filterKey, f.value)}
+                  aria-label={`Elimina filtro ${f.label}`}
+                >
+                  <Icon
+                    icon='it-close'
+                    aria-label='Elimina filtro'
+                    aria-hidden
+                  />
+                </Button>
+              </Chip>
+            ) : null
+          )}
         </>
       );
     }
@@ -257,6 +266,7 @@ const GenericSearchFilterTableLayout: React.FC<
                 tooltip={tooltip}
                 tooltipText={tooltiptext}
                 onReset={searchInformation.onReset}
+                minLength={minLength}
               />
             </div>
           </div>
@@ -287,7 +297,7 @@ const GenericSearchFilterTableLayout: React.FC<
                     icon={iconCta}
                     className='mr-2'
                     aria-label={'Aggiungi'}
-                    aria-hidden={textCta ? true : false}
+                    aria-hidden={!!textCta}
                   />
                 ) : null}
                 <span className='text-nowrap'>{textCta}</span>
@@ -300,7 +310,7 @@ const GenericSearchFilterTableLayout: React.FC<
                     icon={iconCta}
                     className='mr-2'
                     aria-label={'Aggiungi'}
-                    aria-hidden={textCta ? true : false}
+                    aria-hidden={!!textCta}
                   />
                 ) : null}
                 {textCta}
@@ -319,7 +329,7 @@ const GenericSearchFilterTableLayout: React.FC<
                   icon='it-print'
                   className='mr-2'
                   aria-label={'Stampa questionario'}
-                  aria-hidden={ctaPrintText ? true : false}
+                  aria-hidden={!!ctaPrintText}
                 />
                 <span className='text-nowrap'>{ctaPrintText}</span>
               </Button>
@@ -405,7 +415,7 @@ const GenericSearchFilterTableLayout: React.FC<
                 color='primary'
                 size='sm'
                 aria-label={t('download_list')}
-                aria-hidden={!device.mediaIsPhone ? true : false}
+                aria-hidden={!device.mediaIsPhone}
                 className='mr-1'
               />
               {!device.mediaIsPhone && (

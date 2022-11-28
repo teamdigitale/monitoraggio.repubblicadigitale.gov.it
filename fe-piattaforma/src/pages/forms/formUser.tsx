@@ -20,6 +20,7 @@ import {
   contractTypes,
   userRoles,
 } from '../administrator/AdministrativeArea/Entities/utils';
+import clsx from 'clsx';
 
 interface UserInformationI {
   /*formData:
@@ -141,8 +142,9 @@ const FormUser: React.FC<UserFormI> = (props) => {
     <Form
       id='form-user'
       legend={legend}
-      className='mt-5 mb-0'
+      className={clsx(formDisabled ? 'mt-5' : 'mt-3', 'mb-0')}
       formDisabled={formDisabled}
+      customMargin='mb-3 pb-3 ml-3'
     >
       <Form.Row className={bootClass}>
         <>

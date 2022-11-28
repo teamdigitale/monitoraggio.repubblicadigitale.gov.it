@@ -1,8 +1,17 @@
 .work-docs {
-    .form-control{
-        &[type='password'],
-        &[type='text'] {
-          width: 95%;
-        }
+  .form-control {
+    &[type='password'],
+    &[type='text'] {
+      width: 95%;
     }
+    @media screen and (max-width: 768px) {
+      width: 90% !important;
+    }
+  }
+}
+.margin-bottom {
+  margin-bottom: 1rem;
+  @media screen and (max-width: 576px) {
+    margin-bottom: 2.25rem;
+  }
 }

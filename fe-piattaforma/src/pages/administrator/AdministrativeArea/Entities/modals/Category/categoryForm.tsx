@@ -64,7 +64,11 @@ const CategoryForm: React.FC<CategoriesFormI> = (props) => {
 
   const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
   return (
-    <Form id='form-categories' className='my-5 pb-5'>
+    <Form
+      id='form-categories'
+      className='mt-3 mb-5 pb-5'
+      customMargin='mb-3 pb-3'
+    >
       <Form.Row className={bootClass}>
         <Input
           {...form?.term_name}

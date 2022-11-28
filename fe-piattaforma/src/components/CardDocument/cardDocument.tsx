@@ -126,7 +126,7 @@ const CardDocument: React.FC<ForumCardsI> = (props) => {
               <Icon
                 icon='it-download'
                 size='sm'
-                color='primary'
+                color='note'
                 aria-label='Downloads'
                 aria-hidden
               />
@@ -136,7 +136,7 @@ const CardDocument: React.FC<ForumCardsI> = (props) => {
               <Icon
                 icon='it-comment'
                 size='sm'
-                color='primary'
+                color='note'
                 aria-label='Comments'
                 aria-hidden
               />

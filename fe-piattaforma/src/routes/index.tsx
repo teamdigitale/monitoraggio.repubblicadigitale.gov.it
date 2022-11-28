@@ -310,7 +310,7 @@ const AppRoutes: React.FC = () => {
                   </ProtectedComponent>
                 }
               />
-              <Route path='/accessibilita' element={<Accessibility />} />
+              <Route path='/legal' element={<Accessibility />} />
               <Route
                 path='/area-amministrativa/*'
                 element={
@@ -336,7 +336,7 @@ const AppRoutes: React.FC = () => {
             <Route path='/report-dati' element={<Dashboard />} />
             <Route path='/' element={<FullLayout />}>
               {/* Public Paths */}
-              <Route path='/accessibilita' element={<Accessibility />} />
+              <Route path='/legal' element={<Accessibility />} />
               <Route path='/onboarding' element={<Onboarding />} />
               <Route path='/' element={<AuthRedirect />} />
             </Route>

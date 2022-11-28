@@ -20,8 +20,8 @@ const TableHeadingEntities: TableHeadingI[] = [
     field: 'nomeServizio',
   },
   {
-    label: 'Facilitatore',
-    field: 'nomeCompletoFacilitatore',
+    label: 'Sede',
+    field: 'nomeSede',
   },
   {
     label: 'Stato questionario',
@@ -40,7 +40,7 @@ const CitizenServices: React.FC<{
       (servizi || []).map((td) => ({
         idServizio: td.idServizio || '',
         nomeServizio: td.nomeServizio || '',
-        nomeCompletoFacilitatore: td.nomeCompletoFacilitatore || '',
+        nomeSede: td.nomeSede || '',
         statoQuestionario: (
           <div className='d-flex flex-row'>
             <StatusChip

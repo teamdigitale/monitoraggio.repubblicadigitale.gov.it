@@ -99,9 +99,6 @@ const StatusChip: React.FC<StatusChipI> = (props) => {
           className={clsx(
             statusColor(status),
             chipWidth && 'px-3',
-            device.mediaIsPhone &&
-              status?.length >= 11 &&
-              'chip-label__chip-height',
             status === 'NON ATTIVO' && 'not-active-chip'
           )}
           role='status'

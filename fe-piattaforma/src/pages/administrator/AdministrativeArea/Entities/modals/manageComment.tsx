@@ -127,6 +127,7 @@ const ManageComment: React.FC<ManageCommentI> = ({
         formDisabled={!!formDisabled}
         newValue={newComment}
         sendNewValues={(newComment: string) => setNewComment(newComment)}
+        textLabel={payload?.textLabel}
       />
     </GenericModal>
   );

@@ -38,11 +38,11 @@ const LocationIndex: React.FC<LocationIndexProps> = ({ routes, title }) => {
           'primary-color d-flex',
           'd-flex',
           'justify-content-center',
-          'align-item-center'
+          'align-items-center'
         )}
         onClick={() => setCollapseOpen(!collapseOpen)}
       >
-        <span className='h5 font-weight-semibold'>{title}</span>
+        <span className='h5 font-weight-semibold mb-0'>{title}</span>
 
         <Icon
           className='right'

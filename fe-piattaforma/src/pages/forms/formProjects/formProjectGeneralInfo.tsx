@@ -253,9 +253,10 @@ const FormProjectGeneralInfo: React.FC<FormProjectGeneralInfoInterface> = (
   return (
     <Form
       id='form-project-general-info'
-      className='mt-5'
+      className={formDisabled ? 'mt-5' : 'mt-3'}
       formDisabled={formDisabled}
       legend={legend}
+      customMargin='mb-3 pb-3 ml-3'
     >
       <Form.Row className={bootClass}>
         {formDisabled ? (
@@ -325,7 +326,7 @@ const form = newForm([
     id: 'short-name',
     required: true,
     maximum: 25,
-    minimum: 6,
+    //minimum: 6,
   }),
   newFormField({
     field: 'cup',

@@ -1,32 +1,11 @@
 import { Icon } from 'design-react-kit';
 import React from 'react';
 import './cardSlider.scss';
-import CuoreBluVuoto from '../../../public/assets/img/hollow-blue-heart.png';
+import CuoreVuoto from '../../../public/assets/img/hollow-grey-heart.png';
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
 import { formatDate } from '../../utils/datesHelper';
 import { ForumCardsI } from '../CardShowcase/cardShowcase';
-/* 
-import { useAppSelector } from '../../redux/hooks';
-import { selectDevice } from '../../redux/features/app/appSlice';
- */
-/* interface CardSliderI {
-  id: string | number;
-  category_label?: string;
-  date?: string;
-  title?: string;
-  downloads?: number;
-  comment_count?: number;
-  likes?: number;
-  views?: number;
-  isDocument?: boolean;
-  isNews?: boolean;
-  isCommunity?: boolean; */
-/*  rightArrow?: boolean;
-  leftArrow?: boolean;
-  increment?: () => void;
-  decrement?: () => void; */
-/* } */
 
 const CardSlider: React.FC<ForumCardsI> = (props) => {
   const {
@@ -107,9 +86,9 @@ const CardSlider: React.FC<ForumCardsI> = (props) => {
             {!isDocument ? (
               <div className='d-flex align-items-center'>
                 <Icon
-                  icon={CuoreBluVuoto}
+                  icon={CuoreVuoto}
                   size='xs'
-                  color='primary'
+                  color='note'
                   aria-label='Like'
                   aria-hidden
                 />
@@ -122,7 +101,7 @@ const CardSlider: React.FC<ForumCardsI> = (props) => {
               <Icon
                 icon='it-comment'
                 size='sm'
-                color='primary'
+                color='note'
                 aria-label='Commento'
                 aria-hidden
               />
@@ -135,7 +114,7 @@ const CardSlider: React.FC<ForumCardsI> = (props) => {
                 <Icon
                   icon='it-download'
                   size='sm'
-                  color='primary'
+                  color='note'
                   aria-label='Download'
                   aria-hidden
                 />
@@ -149,7 +128,7 @@ const CardSlider: React.FC<ForumCardsI> = (props) => {
                 <Icon
                   icon='it-password-visible'
                   size='sm'
-                  color='primary'
+                  color='note'
                   aria-label='Views'
                   aria-hidden
                 />

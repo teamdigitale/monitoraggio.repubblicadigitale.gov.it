@@ -24,7 +24,8 @@ import {
   DeleteNotification,
   GetNotificationsByUser,
 } from '../../../../../redux/features/user/userThunk';
-import DeleteCheck from '/public/assets/img/delete-check.png';
+import Delete from '/public/assets/img/delete.png';
+import DeleteChecked from '/public/assets/img/delete-check.png';
 import { useNavigate } from 'react-router-dom';
 
 export interface NotificationI {
@@ -33,7 +34,7 @@ export interface NotificationI {
   node_id?: string;
   node_bundle?: string;
   message?: string;
-  status?: boolean;
+  status?: number;
   action?: string;
   onSelect?: (value: string) => void;
   notificationsPreview?: boolean;
@@ -46,7 +47,7 @@ const Notification: React.FC<NotificationI> = (props) => {
   const {
     date,
     message,
-    status = false,
+    status = 1,
     id,
     action = '',
     node_id = '',
@@ -81,10 +82,15 @@ const Notification: React.FC<NotificationI> = (props) => {
       const splittedMessage = message.split('$');
       if (userId)
         splittedMessage[1] = usersAnagraphic[userId]
-          ? `<span style=${status ? '' : 'color:#06c;font-weight:600;'} >${
-              usersAnagraphic[userId].nome
-            } ${usersAnagraphic[userId].cognome}</span>`
+          ? `<span style=${
+              status === 1 ? '' : 'color:#06c;font-weight:600;'
+            } >${usersAnagraphic[userId].nome} ${
+              usersAnagraphic[userId].cognome
+            }</span>`
           : '';
+      splittedMessage[2] = `<span style=${
+        status === 1 ? '' : 'font-weight:600;'
+      }>${splittedMessage[2]}</span>`;
       if (authorId)
         splittedMessage[3] = usersAnagraphic[authorId]
           ? `${usersAnagraphic[authorId].nome} ${usersAnagraphic[authorId].cognome}`
@@ -100,18 +106,29 @@ const Notification: React.FC<NotificationI> = (props) => {
   };
 
   const onNavigateToItem = () => {
-    switch (node_bundle) {
-      case 'board_item':
-        navigate(`/bacheca/${node_id}`);
-        break;
-      case 'community_item':
-        navigate(`/community/${node_id}`);
-        break;
-      case 'document_item':
-        navigate(`/documenti/${node_id}`);
-        break;
-      default:
-        break;
+    if (
+      [
+        'board_report',
+        'community_report',
+        'document_report',
+        'comment_report',
+      ].includes(action)
+    ) {
+      navigate('/area-gestionale/gestione-segnalazioni');
+    } else {
+      switch (node_bundle) {
+        case 'board_item':
+          navigate(`/bacheca/${node_id}`);
+          break;
+        case 'community_item':
+          navigate(`/community/${node_id}`);
+          break;
+        case 'document_item':
+          navigate(`/documenti/${node_id}`);
+          break;
+        default:
+          break;
+      }
     }
   };
 
@@ -150,7 +167,10 @@ const Notification: React.FC<NotificationI> = (props) => {
                 'justify-content-between'
               )}
               role='menuitem'
-              onClick={onRead}
+              onClick={() => {
+                onRead();
+                setOpenUser(false);
+              }}
             >
               <Icon
                 className='pr-2'
@@ -169,15 +189,7 @@ const Notification: React.FC<NotificationI> = (props) => {
   );
 
   return (
-    <div
-    // className={clsx(
-    //   'd-flex',
-    //   'flex-column',
-    //   'notifications-list-container',
-    //   'pt-3',
-    //   status && 'notifications-list-container__unread'
-    // )}
-    >
+    <div>
       <div
         className={clsx(
           `notifications-list-container`,
@@ -201,7 +213,9 @@ const Notification: React.FC<NotificationI> = (props) => {
               role='checkbox'
               className='notification-list-checkbar'
               type='checkbox'
-              onClick={(e) => e.stopPropagation()}
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
               onInputChange={() => onSelect && id && onSelect(id)}
               checked={isChecked}
               aria-label='checkbox della notifica'
@@ -210,7 +224,10 @@ const Notification: React.FC<NotificationI> = (props) => {
         ) : null}
         <div>
           <div className='d-flex align-items-center'>
-            <NotificationIcon status={status} action={action} />
+            <NotificationIcon
+              status={status === 1}
+              action={action}
+            />
             <div
               role='button'
               className='neutral-1-color-a8 pl-3 notification-link'
@@ -257,7 +274,7 @@ const Notification: React.FC<NotificationI> = (props) => {
           <div className='ml-auto d-flex align-items-center' role='button'>
             <Icon
               color='primary'
-              icon={DeleteCheck}
+              icon={isChecked ? DeleteChecked : Delete}
               size='sm'
               onClick={(e) => {
                 e.stopPropagation();

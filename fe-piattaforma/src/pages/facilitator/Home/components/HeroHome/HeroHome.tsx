@@ -20,9 +20,9 @@ const HeroHome = () => {
           {'ti diamo il benvenuto su Facilita'.toUpperCase()}
         </HeroTitle>
         <p className='d-lg-block mt-5'>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at
-          elementum risus. Praesent vitae ullamcorper elit. Nunc congue
-          consectetur mi tempor egestas.
+          La piattaforma dei servizi di facilitazione e formazione digitale:
+          gestisci le iniziative, monitora i risultati e interagisci con la
+          community
         </p>
       </HeroBody>
     </Hero>

@@ -16,7 +16,7 @@ import PrintFieldRating from './components/printFieldRating';
 import { selectServices } from '../../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { GetServicesDetail } from '../../../../../../redux/features/administrativeArea/services/servicesThunk';
 import DetailLayout from '../../../../../../components/DetailLayout/detailLayout';
-import Logo from '/public/assets/img/logo-scritta-blu-x2.png';
+import Logo from '/public/assets/img/logo-eu-pnrr.png';
 import './printSurvey.scss';
 
 export interface PrintSurveyQuestionI extends Omit<formFieldI, 'type'> {
@@ -106,9 +106,17 @@ const PrintSurvey: React.FC = () => {
   };
 
   return (
-    <div className='container my-3 py-5 print-survey'>
-      <div className='header-container__main__logo mb-4'>
-        <img src={Logo} alt='Repubblica Digitale' />
+    <div className='container my-3 pt-3 print-survey'>
+      <div className='d-flex justify-content-between'>
+        <div>
+          <p className='h3 primary-color-a9 m-0'>Facilita</p>
+          <span className='primary-color-a9 m-0'>
+            La piattaforma dei servizi di facilitazione digitale
+          </span>
+        </div>
+        <div className='header-container__main__logo mb-4'>
+          <img src={Logo} alt='PNRR' />
+        </div>
       </div>
       <DetailLayout
         titleInfo={{
@@ -116,14 +124,15 @@ const PrintSurvey: React.FC = () => {
           upperTitle: {
             icon: 'it-calendar',
             text:
-              serviceDetails?.progettiAssociatiAlServizio[0]?.nomeBreve ||
+              serviceDetails?.progettiAssociatiAlServizio?.[0]?.nomeBreve ||
               'Progetto',
           },
-          subTitle:
-            'Facilitatore: ' +
-            serviceDetails?.dettaglioServizio?.nominativoFacilitatore,
+          // subTitle:
+          //   'Facilitatore: ' +
+          //   serviceDetails?.dettaglioServizio?.nominativoFacilitatore,
         }}
         showGoBack={false}
+        noTitleEllipsis
       />
       <div className='mt-5'>
         {(sections || []).map((section: SurveySectionI, i: number) => (
