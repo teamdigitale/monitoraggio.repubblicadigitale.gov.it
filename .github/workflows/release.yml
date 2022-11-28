@@ -48,43 +48,43 @@ jobs:
           in="${{ github.event.inputs.modules }}"
           in=${in// /}
           if [[ "$in" != "" ]] && [[ "$environment" == "Development" ]]; then
-            echo "::set-output name=fe-piattaforma::false"
-            echo "::set-output name=ms-ente::false"
-            echo "::set-output name=ms-gestione-utente::false"
-            echo "::set-output name=ms-notifiche-integration::false"
-            echo "::set-output name=ms-open-data::false"
-            echo "::set-output name=ms-programma-progetto::false"
-            echo "::set-output name=ms-questionario-cittadino::false"
+            echo "fe-piattaforma=false" >> $GITHUB_OUTPUT
+            echo "ms-ente=false" >> $GITHUB_OUTPUT
+            echo "ms-gestione-utente=false" >> $GITHUB_OUTPUT
+            echo "ms-notifiche-integration=false" >> $GITHUB_OUTPUT
+            echo "ms-open-data=false" >> $GITHUB_OUTPUT
+            echo "ms-programma-progetto=false" >> $GITHUB_OUTPUT
+            echo "ms-questionario-cittadino=false" >> $GITHUB_OUTPUT
             arrIN=(${in//,/ })
             for i in "${arrIN[@]}"; do
             	case $i in
 
             		fe-piattaforma)
-            			echo "::set-output name=fe-piattaforma::true"
+            			echo "fe-piattaforma=true" >> $GITHUB_OUTPUT
             			;;
 
             		ms-ente)
-            			echo "::set-output name=ms-ente::true"
+            			 echo "ms-ente=true" >> $GITHUB_OUTPUT
             			;;
 
                 ms-gestione-utente)
-            			echo "::set-output name=ms-gestione-utente::true"
+            			echo "ms-gestione-utente=true" >> $GITHUB_OUTPUT
             			;;
 
                 ms-notifiche-integration)
-            			echo "::set-output name=ms-notifiche-integration::true"
+            			echo "ms-notifiche-integration=true" >> $GITHUB_OUTPUT
             			;;
 
                 ms-open-data)
-            			echo "::set-output name=ms-open-data::true"
+            			echo "ms-open-data=true" >> $GITHUB_OUTPUT
             			;;
 
                 ms-programma-progetto)
-            			echo "::set-output name=ms-programma-progetto::true"
+            			echo "ms-programma-progetto=true" >> $GITHUB_OUTPUT
             			;;
 
                 ms-questionario-cittadino)
-            			echo "::set-output name=ms-questionario-cittadino::true"
+            			echo "ms-questionario-cittadino=true" >> $GITHUB_OUTPUT
             			;;
 
             		*)
@@ -94,13 +94,13 @@ jobs:
             	esac
             done
           else
-            echo "::set-output name=fe-piattaforma::true"
-            echo "::set-output name=ms-ente::true"
-            echo "::set-output name=ms-gestione-utente::true"
-            echo "::set-output name=ms-notifiche-integration::true"
-            echo "::set-output name=ms-open-data::true"
-            echo "::set-output name=ms-programma-progetto::true"
-            echo "::set-output name=ms-questionario-cittadino::true"
+            echo "fe-piattaforma=true" >> $GITHUB_OUTPUT
+            echo "ms-ente=true" >> $GITHUB_OUTPUT
+            echo "ms-gestione-utente=true" >> $GITHUB_OUTPUT
+            echo "ms-notifiche-integration=true" >> $GITHUB_OUTPUT
+            echo "ms-open-data=true" >> $GITHUB_OUTPUT
+            echo "ms-programma-progetto=true" >> $GITHUB_OUTPUT
+            echo "ms-questionario-cittadino=true" >> $GITHUB_OUTPUT
           fi
 
   DryRunRelease:
@@ -146,7 +146,7 @@ jobs:
         id: version
         run: |
           nextversion=$(cat .VERSION)
-          echo "::set-output name=VERSION::$nextversion"
+          echo "VERSION=$nextversion" >> $GITHUB_OUTPUT
           echo "Next version: $nextversion"
 
       - name: Check changes
@@ -489,9 +489,9 @@ jobs:
         id: imagetag
         run: |
           if [ "${{ github.event.inputs.version }}" = "" ]; then
-            echo "::set-output name=IMAGETAG::$(echo ${{needs.DryRunRelease.outputs.version}} )"
+            echo "IMAGETAG=$(echo ${{needs.DryRunRelease.outputs.version}} )" >> $GITHUB_OUTPUT
           else
-            echo "::set-output name=IMAGETAG::$(echo ${{ github.event.inputs.version }} )"
+            echo "IMAGETAG=$(echo ${{ github.event.inputs.version }} )" >> $GITHUB_OUTPUT
           fi
 
       - name: Setup 'fe-piattaforma' deployment.tmp.yaml
@@ -721,5 +721,5 @@ jobs:
         id: version
         run: |
           nextversion=$(cat .VERSION)
-          echo "::set-output name=VERSION::$nextversion"
+          echo "VERSION=$nextversion" >> $GITHUB_OUTPUT
           echo "### Release $nextversion created!" >> $GITHUB_STEP_SUMMARY
