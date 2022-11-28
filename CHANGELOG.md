@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.137](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.136...1.0.0-test.137) (2022-11-28)
+
+
+### Bug Fixes
+
+* **be:** associa facilitatore + resizing ([e803465](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e80346515541ec48df415c311002ed0309ef244d))
+
 ## [1.0.0-test.136](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.135...1.0.0-test.136) (2022-11-28)
 
 
