@@ -202,7 +202,6 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
         {
           text: 'Duplica',
           color: 'primary',
-          buttonClass: 'btn-secondary',
           outline: true,
           onClick: () => {
             setCloneModeState(true);

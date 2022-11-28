@@ -10,11 +10,11 @@ const Home: React.FC = () => {
   const { hasUserPermission } = useGuard();
   return (
     <>
-      <section aria-label='Home' className='lightgrey-bg-c1'>
+      <section aria-label='Home' >
         <HeroHome />
       </section>
       {hasUserPermission(['list.news']) ? (
-        <section aria-label='Bacheca digitale' className='lightgrey-bg-c1'>
+        <section aria-label='Bacheca digitale' >
           <Container>
             <BachecaDigitaleWidget />
           </Container>
@@ -28,7 +28,7 @@ const Home: React.FC = () => {
       </section>
         ) : null}
       {hasUserPermission(['list.doc']) ? (
-        <section aria-label='Documenti' className='lightgrey-bg-c1'>
+        <section aria-label='Documenti' >
           <Container>
             <DocumentsWidget />
           </Container>

@@ -16,6 +16,10 @@
     min-width: 50vw;
     max-width: 60vw;
   }
+  @media screen and (max-width: 500px) {
+    min-width: 50vw;
+    max-width: 80vw;
+  }
 
   .alert {
     pointer-events: all !important;

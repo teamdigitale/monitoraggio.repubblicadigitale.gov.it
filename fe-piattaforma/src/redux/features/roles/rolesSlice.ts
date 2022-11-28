@@ -74,6 +74,7 @@ export type RolePermissionI =
   | 'list.dwnl.citt'
   // Headquarters
   | 'add.fac'
+  | 'add.fac.partner'
   | 'del.sede.gest.prgt'
   | 'del.sede.partner'
   // Roles

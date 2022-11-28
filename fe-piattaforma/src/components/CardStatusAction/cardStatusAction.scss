@@ -33,10 +33,39 @@
     max-width: rem(250px);
     display: block;
   }
-
- 
 }
 
 .active-role-border {
   border-left: 8px solid #0066CC;
+}
+
+.partner-card {
+  &__title {
+    @media screen and (min-width: 600px) and (max-width: 1000px) {
+      min-width: rem(80px);
+      max-width: rem(120px);
+    }
+  }
+
+  &__content {
+    @media screen and (min-width: 600px) and (max-width: 1000px) {
+      padding-right: 0px !important;
+    }
+  }
+
+  &__margins {
+    @media screen and (min-width: 600px) and (max-width: 1000px) {
+      margin-right: 4px !important;
+      margin-left: 4px !important;
+    }
+  }
+}
+
+.status-action-width {
+  @media screen and (min-width: 770px) {
+    width: 33%
+  }
+  @media screen and (max-width: 770px) {
+    width: 100%
+  }
 }
