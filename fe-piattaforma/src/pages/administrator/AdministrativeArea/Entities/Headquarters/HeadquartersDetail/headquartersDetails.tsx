@@ -52,6 +52,7 @@ const HeadquartersDetails = () => {
   const { mediaIsPhone } = useAppSelector(selectDevice);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const device = useAppSelector(selectDevice);
   const { hasUserPermission } = useGuard();
   const {
     headquarterId,
@@ -421,9 +422,15 @@ const HeadquartersDetails = () => {
                 </Accordion>
               ))
             : null}
-          <Sticky mode='bottom' stickyClassName='sticky bg-white container '>
+          <Sticky
+            mode='bottom'
+            stickyClassName={clsx(
+              'sticky bg-white container',
+              device.mediaIsPhone && 'pr-5'
+            )}
+          >
             <div className='container'>
-              <ButtonsBar buttons={buttons} marginRight />
+              <ButtonsBar buttons={buttons} />
             </div>
           </Sticky>
           <ManageHeadquarter />
