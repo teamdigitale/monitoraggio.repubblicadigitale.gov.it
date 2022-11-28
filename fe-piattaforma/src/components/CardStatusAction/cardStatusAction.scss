@@ -60,3 +60,12 @@
     }
   }
 }
+
+.status-action-width {
+  @media screen and (min-width: 770px) {
+    width: 33%
+  }
+  @media screen and (max-width: 770px) {
+    width: 100%
+  }
+}

@@ -106,8 +106,16 @@
 }
 
 .footer-content {
-  min-height: 264px;
+  min-height: 200px;
 }
+
+@media screen and (min-width: 1200px) {
+  .put-right{
+    float:right !important;
+    margin-right:0px !important;
+  }
+}
+
 @media screen and (max-width: 1200px) {
   .footer-content {
     padding-block: 16px;
@@ -131,7 +139,7 @@
 
 .footer-content-partner a {
   margin-top: 2rem;
-  margin-right: 2rem;
+  margin-right: 3.55rem;
 }
 
 @media (max-width: 1200px) {
@@ -140,6 +148,11 @@
   }
   .footer-content-partner a {
     min-width: calc(50% - 2rem);
+  }
+
+  .footer-content-partner a {
+    margin-top: 2rem;
+    margin-right: 2rem;
   }
 }
 
@@ -151,6 +164,7 @@
 .sub-footer-container {
   background-color: #011830;
 }
+
 @media (max-width: 767px) {
   .footer-content-partner a {
     margin-top: 1.5rem;
@@ -167,11 +181,23 @@
   .sub-footer-container a:last-child {
     position: relative !important;
   }
+
+  .sub-footer-container a {
+    color: #fff;
+    text-decoration: none;
+    margin-top: 1rem;
+  }
+
+  .footer-content-partner a {
+    margin-top: 2rem;
+    margin-right: 2rem;
+  }
 }
+
+
 .sub-footer-container a {
   color: #fff;
   text-decoration: none;
-  margin-top: 1rem;
 }
 .sub-footer-container a img {
   height: 20px;
@@ -179,8 +205,8 @@
 }
 
 .sub-footer-container a:last-child {
-  position: absolute;
-  right: 0;
+  /* position: absolute;
+  right: 0; */
 }
 
 .footer-content-assistenza {
