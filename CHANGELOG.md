@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.138](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.137...1.0.0-test.138) (2022-11-28)
+
+
+### Bug Fixes
+
+* **be:** update size multipart ([1ce62fd](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1ce62fd2f29bce7ae3efb7be8ac36690ea3eb140))
+
 ## [1.0.0-test.137](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.136...1.0.0-test.137) (2022-11-28)
 
 
