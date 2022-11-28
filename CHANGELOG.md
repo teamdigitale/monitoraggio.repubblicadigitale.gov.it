@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.14.3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.14.2...1.14.3) (2022-11-28)
+
+
+### Bug Fixes
+
+* **be:** associa facilitatore ([47c9a6a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/47c9a6a08983a59afd86874f784c1ef425131ecd))
+
 ## [1.14.2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.14.1...1.14.2) (2022-11-25)
 
 
