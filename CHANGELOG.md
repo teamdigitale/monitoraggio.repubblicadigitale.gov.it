@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.347](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.346...1.0.0-develop.347) (2022-11-28)
+
+
+### Bug Fixes
+
+* **be:** associa facilitatore a corretto ente ([cb35580](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/cb3558088abac6072ec8afe02d14c7dd2fb0f7fb))
+
 ## [1.0.0-develop.346](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.345...1.0.0-develop.346) (2022-11-25)
 
 
