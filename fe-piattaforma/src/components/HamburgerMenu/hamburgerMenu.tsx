@@ -146,7 +146,7 @@ const HamburgerMenu: React.FC<HBMenuProps> = (props) => {
                         {hasUserPermission(['btn.gest.ruoli']) ? (
                           <Link
                             to='/gestione-ruoli'
-                            className='primary-color manage-profile mt-2 font-weight-normal'
+                            className='primary-color manage-profile font-weight-normal'
                           >
                             Gestione ruoli
                           </Link>
@@ -154,7 +154,7 @@ const HamburgerMenu: React.FC<HBMenuProps> = (props) => {
                         {hasUserPermission(['btn.cat']) ? (
                           <Link
                             to='/area-gestionale/gestione-categorie'
-                            className='primary-color manage-profile mt-2 font-weight-normal'
+                            className='primary-color manage-profile font-weight-normal'
                           >
                             Gestione categorie
                           </Link>
@@ -162,7 +162,7 @@ const HamburgerMenu: React.FC<HBMenuProps> = (props) => {
                         {hasUserPermission(['btn.rprt']) ? (
                           <Link
                             to='/area-gestionale/gestione-segnalazioni'
-                            className='primary-color manage-profile mt-2 font-weight-normal'
+                            className='primary-color manage-profile font-weight-normal'
                           >
                             Gestione segnalazioni
                           </Link>
