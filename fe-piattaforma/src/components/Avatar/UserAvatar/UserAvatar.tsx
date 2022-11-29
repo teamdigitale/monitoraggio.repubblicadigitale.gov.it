@@ -21,6 +21,7 @@ interface UserAvatarI {
 }
 
 const UserAvatar: React.FC<UserAvatarI> = (props) => {
+  const device = useAppSelector(selectDevice);
   const {
     avatarImage = '',
     size,
@@ -31,7 +32,6 @@ const UserAvatar: React.FC<UserAvatarI> = (props) => {
     isPreview = false,
   } = props;
 
-  const device = useAppSelector(selectDevice);
   return (
     <div
       className={clsx(
@@ -41,7 +41,7 @@ const UserAvatar: React.FC<UserAvatarI> = (props) => {
         'justify-content-center',
         'font-weight-light',
         `avatar-user-container__circle-width${size}`,
-        'mr-2',
+        !(isUserProfile && device.mediaIsPhone) && 'mr-2',
         avatarImage && 'border border-primary'
       )}
       style={{

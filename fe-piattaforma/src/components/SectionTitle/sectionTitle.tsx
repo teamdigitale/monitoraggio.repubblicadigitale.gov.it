@@ -94,7 +94,7 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
           device.mediaIsPhone && !isForumLayout && 'flex-column'
         )}
       >
-        {iconAvatar && !device.mediaIsPhone ? (
+        {iconAvatar ? (
           <div className={clsx('position-relative')}>
             <UserAvatar
               avatarImage={profilePicture || immagineProfilo}
@@ -124,8 +124,8 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
                   'profile-picture-btn'
                 )}
                 style={{
-                  bottom: device.mediaIsPhone ? '' : '-10px',
-                  left: device.mediaIsPhone ? '' : '-10px',
+                  bottom: '-10px',
+                  left: '-10px',
                 }}
               >
                 <Icon
