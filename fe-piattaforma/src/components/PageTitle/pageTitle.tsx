@@ -5,7 +5,7 @@ import './pageTitle.scss';
 import SectionInfo from '../../components/SectionInfo/sectionInfo';
 import '../SectionInfo/sectionInfo.scss';
 import { useLocation } from 'react-router-dom';
-import { surveyBody } from '../SectionInfo/bodies';
+import { documentsBody, surveyBody } from '../SectionInfo/bodies';
 import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
 import { selectUserNotification } from '../../redux/features/user/userSlice';
@@ -77,7 +77,7 @@ const PageTitle: React.FC<PageTitleI> = (props) => {
       case '/report-dati':
         return 'Per una consultazione ottimale dei grafici si consiglia di visualizzare la pagina da desktop';
       case '/documenti':
-        return 'In Documenti puoi scoprire risorse utili per la gestione dei servizi a cui partecipi. Utilizza l’Area di collaborazione per lavorare in simultanea alla creazione di nuovi documenti con altri utenti aggiungendo il loro indirizzo email. Hai a disposizione fino a 1 Giga di spazio per caricare e condividere file in formato doc, docx, xls, .xlsx, ppt e pptx. Per accedere dopo esserti registrato, utilizza il tuo indirizzo email come username.';
+        return documentsBody;
       default:
         return '';
     }
