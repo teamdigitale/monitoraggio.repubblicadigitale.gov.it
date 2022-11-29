@@ -592,3 +592,15 @@ export const getUnreadNotificationsCount = (force = false) => {
     );
   }
 };
+
+export const isSafariBrowser = () => {
+  const isChrome = navigator.userAgent.indexOf('Chrome') > -1;
+  const isSafari = navigator.userAgent.indexOf('Safari') > -1;
+  
+  if (isSafari) {
+    if (isChrome) // Chrome seems to have both Chrome and Safari userAgents
+      return false;
+    else return true;
+  }
+  return false;
+};

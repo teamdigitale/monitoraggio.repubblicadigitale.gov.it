@@ -297,3 +297,10 @@ input > span {
   font-size: 14px;
   color: #435a70;
 }
+
+.safari-field-color {
+  input {
+    -webkit-text-fill-color: #17324d;
+    opacity: 1; /* required on iOS */
+  }
+}
