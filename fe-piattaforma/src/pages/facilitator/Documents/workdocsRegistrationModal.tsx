@@ -98,11 +98,11 @@ const WorkdocsRegistrationModal: React.FC<WorkdocsRegistrationModalI> = (
     >
       <div className='my-3 px-4'>
         <p className='text-center mb-5'>
-          Crea una nuova utenza <strong>WorkDocs</strong> per accedere
-          all&apos;area di collaborazione. Scegli la tua{' '}
-          <strong>password per registrarti</strong> e usa la{' '}
-          <strong>tua email {email} come username</strong> per il successivo
-          login.
+          Crea una nuova utenza&nbsp;<strong>WorkDocs</strong>&nbsp;per accedere
+          all&apos;area di collaborazione. Scegli la tua&nbsp;
+          <strong>password per registrarti</strong>&nbsp;e usa la&nbsp;
+          <strong>tua email {email} come username</strong>&nbsp;per il
+          successivo login.
         </p>
         <Form id='workdocs-registration-form' className='my-3 mx-2 work-docs'>
           <Form.Row

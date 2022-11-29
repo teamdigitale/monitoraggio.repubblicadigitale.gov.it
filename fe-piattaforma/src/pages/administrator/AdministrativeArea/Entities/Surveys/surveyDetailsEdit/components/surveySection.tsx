@@ -33,7 +33,7 @@ const SurveySection: React.FC<SurveySectionI> = (props) => {
       >
         {sectionTitle}
         <span className='survey-section-container__section-title-items'>
-          ({questions.length})
+          &nbsp;({questions.length})
         </span>
       </h2>
       <Col>
