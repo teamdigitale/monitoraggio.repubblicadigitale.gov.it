@@ -4,6 +4,10 @@
   position: relative;
   width: 100%;
 
+  &.has-focus {
+    border: 2px solid #f90 !important;
+  }
+
   .wrapper {
     height: 430px;
 
@@ -28,4 +32,12 @@
   .public-DraftStyleDefault-block {
     margin: 0 !important;
   }
+
+  .public-DraftStyleDefault-block, .public-DraftEditor-content {
+    &:focus, &:focus:not(.focus--mouse):not([data-focus-mouse=true]) {
+      border-color: transparent !important;
+      box-shadow: 0 0 0 2px transparent !important;
+    }
+  }
+
 }

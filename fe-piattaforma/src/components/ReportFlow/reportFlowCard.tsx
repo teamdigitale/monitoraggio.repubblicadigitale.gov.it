@@ -85,14 +85,12 @@ const ReportFlowCard: React.FC<ReportFlowI> = (props) => {
                 >
                   <Icon icon='it-delete' color='primary' className='mr-2' />
                   <span className='font-weight-bold primary-color'>
-                    {' '}
-                    ELIMINA{' '}
+                    ELIMINA
                   </span>
                 </div>
 
                 <p className='text-center'>
-                  {' '}
-                  per eliminare il contenuto <br /> (apre la modale di conferma){' '}
+                  per eliminare il contenuto <br /> (apre la modale di conferma)
                 </p>
               </div>
               <div

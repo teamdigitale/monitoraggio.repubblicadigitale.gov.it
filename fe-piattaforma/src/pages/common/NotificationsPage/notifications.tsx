@@ -246,15 +246,14 @@ const Notifications: React.FC = () => {
       )}
       <Container className='pb-lg-5 pb-5'>
         {notificationsList?.length > 0 ? (
-          (notificationsList || []).map((notification, i) => (
+          (notificationsList || []).map((notification) => (
             <div
-              key={i}
+              key={notification.id}
               className={clsx(
                 notification.status ? '' : 'notifications-card-unread'
               )}
             >
               <Notification
-                // TODO update key with a unique value
                 {...notification}
                 onSelect={(id: string) =>
                   setSelectedNotifications((prev) =>

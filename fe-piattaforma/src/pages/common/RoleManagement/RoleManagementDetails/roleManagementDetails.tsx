@@ -297,7 +297,13 @@ const RolesManagementDetails: React.FC<RolesManagementDetailsI> = (props) => {
           isRoleManagement
         >
           <>
-            <Form id='form-role-management' className='mt-1' marginShowMandatory={false} customMargin='ml-2'>
+            <Form
+              id='form-role-management'
+              className='mt-1'
+              showMandatory={formEnabled}
+              marginShowMandatory={false}
+              customMargin='ml-2'
+            >
               <Input
                 {...form.roleName}
                 disabled={creation ? false : !formEnabled}
