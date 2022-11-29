@@ -163,9 +163,9 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
                       'py-3',
                       device.mediaIsPhone && 'px-1',
                       device.mediaIsTablet && 'pr-2',
-                      device.mediaIsDesktop && 'pr-5'
+                      device.mediaIsDesktop && 'pr-5',
+                      'status-action-width',
                     )}
-                    style={{ width: '33%' }}
                     key={index}
                   >
                     <span className='primary-color-a12 mr-2 text-wrap'>

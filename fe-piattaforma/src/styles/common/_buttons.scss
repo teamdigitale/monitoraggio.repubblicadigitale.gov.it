@@ -110,3 +110,9 @@
   box-shadow: none !important;
   color: #5c6f82 !important;
 }
+@media screen and (max-width: 600px) {
+  .btn-outline-primary:hover {
+    color: #0066cc !important;
+    box-shadow: inset 0 0 0 1px #0066cc !important;
+  }
+}

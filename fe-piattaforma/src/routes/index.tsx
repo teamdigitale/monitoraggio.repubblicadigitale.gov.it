@@ -212,7 +212,8 @@ const AppRoutes: React.FC = () => {
                 element={<Navigate replace to={defaultRedirectUrl} />}
               />
             </Route>
-            <Route path='/' element={<FullLayout />}>
+            <Route path='/' element={<FullLayout withBreadcrumb />}>
+              <Route path='/legal' element={<Accessibility />} />
               <Route
                 path='/area-personale/contenuti-pubblicati'
                 element={
@@ -310,7 +311,6 @@ const AppRoutes: React.FC = () => {
                   </ProtectedComponent>
                 }
               />
-              <Route path='/legal' element={<Accessibility />} />
               <Route
                 path='/area-amministrativa/*'
                 element={
@@ -336,11 +336,11 @@ const AppRoutes: React.FC = () => {
             <Route path='/report-dati' element={<Dashboard />} />
             <Route path='/' element={<FullLayout />}>
               {/* Public Paths */}
-              <Route path='/legal' element={<Accessibility />} />
               <Route path='/onboarding' element={<Onboarding />} />
               <Route path='/' element={<AuthRedirect />} />
             </Route>
             <Route path='/' element={<FullLayout withBreadcrumb={false} />}>
+              <Route path='/legal' element={<Accessibility />} />
               <Route
                 path='/servizi/questionario/:idQuestionario/online/:token'
                 element={<SurveyOnline />}
