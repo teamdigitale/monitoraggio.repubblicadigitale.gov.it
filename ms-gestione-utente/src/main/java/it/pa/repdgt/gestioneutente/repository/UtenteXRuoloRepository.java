@@ -1,5 +1,7 @@
 package it.pa.repdgt.gestioneutente.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -30,6 +32,12 @@ public interface UtenteXRuoloRepository extends JpaRepository<UtenteXRuolo, Uten
 			nativeQuery = true)
 	public UtenteXRuolo findUtenteXRuoloByCfUtenteAndCodiceRuolo(@Param(value = "codFiscaleUtente")String codFiscaleUtente, 
 			@Param(value = "codiceRuolo")String codiceRuolo);
+	
+	@Query(value = "SELECT * "
+			+ "FROM utente_x_ruolo uxr "
+			+ "WHERE uxr.UTENTE_ID = :codFiscaleUtente ",
+			nativeQuery = true)
+	public List<UtenteXRuolo> findListUtenteXRuoloByCfUtenteAndCodiceRuolo(@Param(value = "codFiscaleUtente")String codFiscaleUtente);
 
 	@Query(value = "SELECT COUNT(*) "
 			+ "FROM utente_x_ruolo uxr "
