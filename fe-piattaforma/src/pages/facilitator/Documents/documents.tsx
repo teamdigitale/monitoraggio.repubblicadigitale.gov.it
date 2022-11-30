@@ -42,7 +42,7 @@ const documentCta = {
 };
 
 const toolCollaborationCta = {
-  textCtaToolCollaboration: 'Vai al tool di Collaboration',
+  textCtaToolCollaboration: "Vai all'area di collaborazione",
   iconCtaToolCollaboration: 'it-external-link',
 };
 
