@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import it.pa.repdgt.gestioneutente.entity.projection.ReferenteDelegatoEnteGestoreProgettoProjection;
 import it.pa.repdgt.shared.entity.ReferentiDelegatiEnteGestoreProgettoEntity;
+import it.pa.repdgt.shared.entity.ReferentiDelegatiEnteGestoreProgrammaEntity;
 import it.pa.repdgt.shared.entity.key.ReferentiDelegatiEnteGestoreProgettoKey;
 
 @Repository
@@ -53,4 +54,10 @@ public interface ReferentiDelegatiEnteGestoreProgettoRepository extends JpaRepos
 	public Integer countByCfUtenteAndCodiceRuolo(
 			String cfUtente, 
 			String codiceRuolo);
+	
+	@Query(value = "select * "
+			+ "FROM referente_delegati_gestore_progetto rdg "
+			+ "WHERE rdg.CF_UTENTE = :cfUtente ", 
+			nativeQuery = true)
+	public List<ReferentiDelegatiEnteGestoreProgettoEntity> findByCodFiscaleUtente(String cfUtente);
 }
