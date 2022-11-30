@@ -8,9 +8,9 @@ import { useAppSelector } from '../../../redux/hooks';
 import './notifications.scss';
 import clsx from 'clsx';
 import Input from '../../../components/Form/input';
-import MailReadOutline from '/public/assets/img/mail-open-outline.png';
-import MailReadCheck from '/public/assets/img/mail-open-check.png';
-import DeleteCheck from '/public/assets/img/delete-check.png';
+import MailReadDark from '/public/assets/img/mail-open-dark.png';
+import MailReadCheck from '/public/assets/img/mail-open-primary.png';
+import DeleteCheck from '/public/assets/img/it-delete-primary.png';
 import PillDropDown from '../../../components/PillDropDown/pillDropDown';
 import Notification from './components/Notifications/notification';
 import {
@@ -121,7 +121,7 @@ const Notifications: React.FC = () => {
                     icon={
                       selectedNotifications.length
                         ? MailReadCheck
-                        : MailReadOutline
+                        : MailReadDark
                     }
                     size='sm'
                     aria-label='Segna come letto'
@@ -198,9 +198,7 @@ const Notifications: React.FC = () => {
               >
                 <Icon
                   icon={
-                    selectedNotifications.length
-                      ? MailReadCheck
-                      : MailReadOutline
+                    selectedNotifications.length ? MailReadCheck : MailReadDark
                   }
                   size='sm'
                   aria-label='Segna come letto'
@@ -248,15 +246,14 @@ const Notifications: React.FC = () => {
       )}
       <Container className='pb-lg-5 pb-5'>
         {notificationsList?.length > 0 ? (
-          (notificationsList || []).map((notification, i) => (
+          (notificationsList || []).map((notification) => (
             <div
-              key={i}
+              key={notification.id}
               className={clsx(
                 notification.status ? '' : 'notifications-card-unread'
               )}
             >
               <Notification
-                // TODO update key with a unique value
                 {...notification}
                 onSelect={(id: string) =>
                   setSelectedNotifications((prev) =>

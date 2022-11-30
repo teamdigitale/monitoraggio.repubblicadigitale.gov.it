@@ -3,6 +3,9 @@ import React, { /* useEffect, */ useRef } from 'react';
 import { withFormHandlerProps } from '../../../hoc/withFormHandler';
 import { formFieldI } from '../../../utils/formHelper';
 import Form from '../../Form/form';
+import {useAppSelector} from "../../../redux/hooks";
+import {selectDevice} from "../../../redux/features/app/appSlice";
+import clsx from "clsx";
 
 interface ProfilePictureI extends withFormHandlerProps {
   formDisabled?: boolean;
@@ -23,6 +26,7 @@ interface ProfilePictureI extends withFormHandlerProps {
 }
 
 const ProfileImageForm: React.FC<ProfilePictureI> = (props) => {
+  const device = useAppSelector(selectDevice);
   const {
     setSelectedImage = () => ({}),
     setImage = () => ({}),
@@ -93,7 +97,7 @@ const ProfileImageForm: React.FC<ProfilePictureI> = (props) => {
               <Button
                 outline
                 color='primary'
-                className='py-2 px-0 btn-document-modal'
+                className={clsx('py-2 px-0 btn-document-modal', device.mediaIsPhone && 'px-2')}
                 onClick={addImage}
               >
                 <Icon

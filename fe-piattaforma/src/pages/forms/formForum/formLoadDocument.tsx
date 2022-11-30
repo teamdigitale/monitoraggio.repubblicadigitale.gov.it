@@ -9,7 +9,7 @@ import {
   newForm,
   newFormField,
 } from '../../../utils/formHelper';
-import { Button, Icon } from 'design-react-kit';
+import { Button, Icon, UncontrolledTooltip } from 'design-react-kit';
 import clsx from 'clsx';
 import TextArea from '../../../components/Form/textarea';
 import './formForum.scss';
@@ -307,12 +307,28 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
       <Form.Row className={bootClass}>
         <div className='mt-5 d-flex align-items-center'>
           <strong className='mr-2'>ALLEGA FILE</strong>
-          <Icon
-            icon='it-info-circle'
-            size='sm'
-            color='primary'
-            aria-label='Informazioni'
-          />
+          <div id='tooltip-allega-file'>
+            <Icon
+              icon='it-info-circle'
+              size='sm'
+              color='primary'
+              aria-label='Informazioni'
+            />
+            <UncontrolledTooltip
+              placement='bottom'
+              target='tooltip-allega-file'
+            >
+              Aggiungi almeno una risorsa: carica un file e/o inserisci un
+              collegamento esterno nel campo &quot;Inserisci URL&quot;.
+              <br />- Formati supportati: .txt, .rtf, .odt, .zip, .exe, .docx,
+              .doc, .ppt, .pptx, .pdf, .jpg, .png, .gif, .xls, .xlsx, .csv,
+              .mpg, .wmv, .pdf
+              <br />- Peso: max 10 MB
+              <br />- Nome: non deve contenere altri punti
+              &quot;&nbsp;.&nbsp;&quot; oltre a quello che precede
+              l&apos;estensione
+            </UncontrolledTooltip>
+          </div>
         </div>
       </Form.Row>
       <Form.Row className={bootClass}>
@@ -362,17 +378,27 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
             )}
           </label>
         </div>
-        <small className='font-italic form-text text-muted'>massimo 5 Mb</small>
       </Form.Row>
       <Form.Row className={bootClass}>
         <div className='mt-5 d-flex align-items-center'>
           <strong className='mr-2'>INSERISCI URL</strong>
-          <Icon
-            icon='it-info-circle'
-            size='sm'
-            color='primary'
-            aria-label='Informazioni'
-          />
+          <div id='tooltip-inserisci-url'>
+            <Icon
+              icon='it-info-circle'
+              size='sm'
+              color='primary'
+              aria-label='Informazioni'
+            />
+            <UncontrolledTooltip
+              placement='bottom'
+              target='tooltip-inserisci-url'
+            >
+              Aggiungi almeno una risorsa: inserisci un collegamento esterno e/o
+              carica un file nel campo &quot;Allega file&quot;.
+              <br />
+              Assicurati che la url contenga sempre http:// o https://
+            </UncontrolledTooltip>
+          </div>
         </div>
       </Form.Row>
       <Form.Row className={bootClass}>

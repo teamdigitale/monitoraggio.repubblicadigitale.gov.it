@@ -294,6 +294,8 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
             .ppt, .pptx, .pdf, .jpg, .png, .gif, .xls, .xlsx, .csv, .mpg, .wmv,
             .pdf
             <br />- Peso: max 10 MB
+            <br />- Nome: non deve contenere altri punti &quot;&nbsp;.&nbsp;&quot; oltre a quello che
+            precede l&apos;estensione
           </UncontrolledTooltip>
         </div>
       </Form.Row>

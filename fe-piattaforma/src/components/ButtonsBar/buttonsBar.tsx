@@ -18,7 +18,6 @@ interface StickyButtonsI {
   isUserProfile?: boolean;
   notActiveSurvey?: boolean;
   isDocumentsCta?: boolean;
-  marginRight?: boolean;
   forumAlignment?: boolean;
 }
 
@@ -29,7 +28,6 @@ const ButtonsBar: React.FC<StickyButtonsI> = ({
   isUserProfile = false,
   notActiveSurvey = false,
   isDocumentsCta = false,
-  marginRight = false,
   forumAlignment = false,
 }) => {
   const device = useAppSelector(selectDevice);
@@ -37,8 +35,7 @@ const ButtonsBar: React.FC<StickyButtonsI> = ({
   return (
     <div
       className={clsx(
-        marginRight ? 'buttons-bar-marginRight' : 'buttons-bar',
-        forumAlignment ? 'buttons-bar-alignment' : 'button-bar',
+        forumAlignment ? 'buttons-bar-alignment' : 'buttons-bar',
         isDocumentsCta && 'flex-column',
         citizenList ? 'justify-content-start' : 'align-items-end',
         citizenDeleteChange ? 'flex-nowrap' : null,

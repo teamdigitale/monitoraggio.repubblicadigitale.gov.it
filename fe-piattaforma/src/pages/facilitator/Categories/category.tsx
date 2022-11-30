@@ -156,6 +156,7 @@ const Category = () => {
   };
 
   const handleDropdownFilters = (values: FilterI[], filterKey: string) => {
+    handleOnChangePage(1);
     dispatch(setForumFilters({ [filterKey]: [...values] }));
   };
 
@@ -226,6 +227,7 @@ const Category = () => {
           id='table'
           onActionClick={onActionClick}
           withActions
+          totalCounter={pagination?.totalElements}
         />
         {pagination?.totalPages ? (
           <div className='pb-5'>

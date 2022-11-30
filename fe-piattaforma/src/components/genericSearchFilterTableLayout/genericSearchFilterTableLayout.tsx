@@ -438,7 +438,13 @@ const GenericSearchFilterTableLayout: React.FC<
       )}
       {device.mediaIsPhone && cta && (
         <div>
-          <Sticky mode='bottom' stickyClassName='sticky bg-white'>
+          <Sticky
+            mode='bottom'
+            stickyClassName={clsx(
+              'sticky bg-white container',
+              device.mediaIsPhone && 'pr-5'
+            )}
+          >
             <div className='container'>
               <ButtonsBar
                 buttons={[

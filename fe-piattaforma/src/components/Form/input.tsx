@@ -3,6 +3,7 @@ import { Input as InputKit, InputProps, Label } from 'design-react-kit';
 import clsx from 'clsx';
 import { formFieldI } from '../../utils/formHelper';
 import { dayOfWeek } from '../../pages/administrator/AdministrativeArea/Entities/utils';
+import { isSafariBrowser } from '../../utils/common';
 
 const blackList = [
   'checked',
@@ -204,7 +205,7 @@ const Input: React.FC<InputI> = (props) => {
       onChange={handleOnChange}
       value={typeof val === 'number' ? val : val?.toString() || ''}
       innerRef={inputRef}
-      className={clsx(className, 'pr-lg-3')}
+      className={clsx(className, 'pr-lg-3', isSafariBrowser() && 'safari-field-color')}
     />
   );
 };
