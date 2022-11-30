@@ -318,12 +318,15 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
               placement='bottom'
               target='tooltip-allega-file'
             >
-              - Formati supportati: .txt, .rtf, .odt, .zip, .exe, .docx, .doc,
-              .ppt, .pptx, .pdf, .jpg, .png, .gif, .xls, .xlsx, .csv, .mpg,
-              .wmv, .pdf
+              Aggiungi almeno una risorsa: carica un file e/o inserisci un
+              collegamento esterno nel campo &quot;Inserisci URL&quot;.
+              <br />- Formati supportati: .txt, .rtf, .odt, .zip, .exe, .docx,
+              .doc, .ppt, .pptx, .pdf, .jpg, .png, .gif, .xls, .xlsx, .csv,
+              .mpg, .wmv, .pdf
               <br />- Peso: max 10 MB
-              <br />- Nome: non deve contenere altri punti &quot;&nbsp;.&nbsp;&quot; oltre a quello
-              che precede l&apos;estensione
+              <br />- Nome: non deve contenere altri punti
+              &quot;&nbsp;.&nbsp;&quot; oltre a quello che precede
+              l&apos;estensione
             </UncontrolledTooltip>
           </div>
         </div>
@@ -391,7 +394,7 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
               target='tooltip-inserisci-url'
             >
               Aggiungi almeno una risorsa: inserisci un collegamento esterno e/o
-              carica un file nel campo “Allega file”.
+              carica un file nel campo &quot;Allega file&quot;.
               <br />
               Assicurati che la url contenga sempre http:// o https://
             </UncontrolledTooltip>
