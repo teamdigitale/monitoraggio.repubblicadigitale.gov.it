@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.353](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.352...1.0.0-develop.353) (2022-11-30)
+
+
+### Bug Fixes
+
+* **be:** filtro utenteall ([d91db42](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d91db42e8a71843399ef244a95be6b64280cc47a))
+
 ## [1.0.0-develop.352](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.351...1.0.0-develop.352) (2022-11-30)
 
 
