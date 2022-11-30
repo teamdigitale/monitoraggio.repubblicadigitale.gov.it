@@ -2,6 +2,8 @@ package it.pa.repdgt.gestioneutente.service;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +11,7 @@ import it.pa.repdgt.gestioneutente.entity.projection.ProgettoEnteProjection;
 import it.pa.repdgt.gestioneutente.repository.EnteSedeProgettoFacilitatoreRepository;
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
+import it.pa.repdgt.shared.entity.EnteSedeProgettoFacilitatoreEntity;
 
 @Service
 public class EnteSedeProgettoFacilitatoreService {
@@ -40,6 +43,24 @@ public class EnteSedeProgettoFacilitatoreService {
 		return this.enteSedeProgettoFacilitatoreRepository.countByIdFacilitatore(cfUtente, codiceRuolo);
 	}
 	
+	@LogMethod
+	@LogExecutionTime
+	public List<EnteSedeProgettoFacilitatoreEntity> findRuoloFacVolPerUtente(String cfUtente) {
+		return this.enteSedeProgettoFacilitatoreRepository.findRuoloFacVolPerUtente(cfUtente);
+	}	
 	
+	@Transactional
+	@LogMethod
+	@LogExecutionTime
+	public void cancellaRelazioneESPF(EnteSedeProgettoFacilitatoreEntity rec) {
+		this.enteSedeProgettoFacilitatoreRepository.delete(rec);
+	}	
+	
+	@Transactional
+	@LogMethod
+	@LogExecutionTime
+	public void saveAll(List<EnteSedeProgettoFacilitatoreEntity> recsToSave) {
+		this.enteSedeProgettoFacilitatoreRepository.saveAll(recsToSave);
+	}	
 }
 

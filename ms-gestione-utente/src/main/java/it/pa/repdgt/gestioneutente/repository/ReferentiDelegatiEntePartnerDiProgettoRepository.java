@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import it.pa.repdgt.shared.entity.ReferentiDelegatiEnteGestoreProgettoEntity;
 import it.pa.repdgt.shared.entity.ReferentiDelegatiEntePartnerDiProgettoEntity;
 import it.pa.repdgt.shared.entity.key.ReferentiDelegatiEntePartnerDiProgettoKey;
 
@@ -30,4 +31,10 @@ public interface ReferentiDelegatiEntePartnerDiProgettoRepository extends JpaRep
 	public Integer countByCfUtenteAndCodiceRuolo(
 			String cfUtente, 
 			String codiceRuolo);
+	
+	@Query(value = "select * "
+			+ "FROM referente_delegati_partner rdg "
+			+ "WHERE rdg.CF_UTENTE = :cfUtente ", 
+			nativeQuery = true)
+	public List<ReferentiDelegatiEntePartnerDiProgettoEntity> findByCodFiscaleUtente(String cfUtente);
 }
