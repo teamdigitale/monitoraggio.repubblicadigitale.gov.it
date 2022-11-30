@@ -64,6 +64,7 @@ const CardDocument: React.FC<ForumCardsI> = (props) => {
       role='button'
       className={clsx(
         'document-card-container p-4',
+        'bg-white',
         !device.mediaIsPhone && 'pt-2',
         isHome
           ? 'document-card-container__home-document-card'

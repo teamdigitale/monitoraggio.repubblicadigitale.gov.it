@@ -248,14 +248,14 @@ const ForumLayout: React.FC<ForumLayoutI> = (props) => {
                   !device.mediaIsTablet && 'mr-3'
                 )}
                 onClick={ctaToolCollaboration}
-                aria-label='Vai al tool di Collaboration'
+                aria-label={ctaToolCollaboration?.toString()}
               >
                 {iconCtaToolCollaboration ? (
                   <Icon
                     icon={iconCtaToolCollaboration}
                     color='primary'
                     className='mr-1'
-                    aria-label='Vai al tool di Collaboration'
+                    aria-label={ctaToolCollaboration?.toString()}
                     aria-hidden
                   />
                 ) : null}
