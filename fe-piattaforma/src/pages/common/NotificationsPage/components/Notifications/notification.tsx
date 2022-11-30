@@ -24,8 +24,7 @@ import {
   DeleteNotification,
   GetNotificationsByUser,
 } from '../../../../../redux/features/user/userThunk';
-import Delete from '/public/assets/img/delete.png';
-import DeleteChecked from '/public/assets/img/delete-check.png';
+//import DeleteChecked from '/public/assets/img/it-delete-primary.png';
 import { useNavigate } from 'react-router-dom';
 
 export interface NotificationI {
@@ -224,10 +223,7 @@ const Notification: React.FC<NotificationI> = (props) => {
         ) : null}
         <div>
           <div className='d-flex align-items-center'>
-            <NotificationIcon
-              status={status === 1}
-              action={action}
-            />
+            <NotificationIcon status={status === 1} action={action} />
             <div
               role='button'
               className='neutral-1-color-a8 pl-3 notification-link'
@@ -273,8 +269,8 @@ const Notification: React.FC<NotificationI> = (props) => {
         {!isMobile && !notificationsPreview ? (
           <div className='ml-auto d-flex align-items-center' role='button'>
             <Icon
+              icon='it-delete'
               color='primary'
-              icon={isChecked ? DeleteChecked : Delete}
               size='sm'
               onClick={(e) => {
                 e.stopPropagation();

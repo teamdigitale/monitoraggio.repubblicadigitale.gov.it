@@ -10,6 +10,7 @@ import draftToHtml from 'draftjs-to-html';
 // import htmlToDraft from 'html-to-draftjs';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './TextEditor.scss';
+import clsx from 'clsx';
 
 interface TextEditorI {
   text: string;
@@ -18,6 +19,7 @@ interface TextEditorI {
 }
 
 const TextEditor = ({ text, onChange, maxLength = 1501 }: TextEditorI) => {
+  const [hasFocus, setHasFocus] = useState(false);
   const [editorState, setEditorState] = useState(
     EditorState.createWithContent(
       ContentState.createFromBlockArray(
@@ -40,7 +42,7 @@ const TextEditor = ({ text, onChange, maxLength = 1501 }: TextEditorI) => {
   }, [text]);
 
   return (
-    <div className='editor-container'>
+    <div className={clsx('editor-container', hasFocus && 'has-focus')}>
       <Editor
         toolbar={{
           options: ['inline'],
@@ -72,10 +74,12 @@ const TextEditor = ({ text, onChange, maxLength = 1501 }: TextEditorI) => {
         wrapperClassName='wrapper'
         editorClassName='editor'
         toolbarClassName='toolbar'
-        onBlur={() =>
-          onChange(draftToHtml(convertToRaw(editorState.getCurrentContent())))
-        }
-        onFocus={() =>
+        onBlur={() => {
+          setHasFocus(false);
+          onChange(draftToHtml(convertToRaw(editorState.getCurrentContent())));
+        }}
+        onFocus={() => {
+          setHasFocus(true);
           setEditorState(
             EditorState.createWithContent(
               ContentState.createFromBlockArray(
@@ -83,8 +87,8 @@ const TextEditor = ({ text, onChange, maxLength = 1501 }: TextEditorI) => {
                 convertFromHTML(text).entityMap
               )
             )
-          )
-        }
+          );
+        }}
       />
     </div>
   );

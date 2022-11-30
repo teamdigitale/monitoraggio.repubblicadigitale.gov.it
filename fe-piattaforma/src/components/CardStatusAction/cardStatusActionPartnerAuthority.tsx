@@ -49,7 +49,8 @@ const CardStatusActionPartnerAuthority: React.FC<CardStatusActionI> = (
         'd-flex',
         'flex-row',
         'align-items-center',
-        device.mediaIsPhone && 'position-relative'
+        device.mediaIsPhone && 'position-relative',
+        'partner-card__margins'
       )}
     >
       <div
@@ -69,7 +70,7 @@ const CardStatusActionPartnerAuthority: React.FC<CardStatusActionI> = (
               : 'flex-column align-items-start'
           )}
         >
-          <div className='card-status-action__title w-100 pr-4 text-wrap'>
+          <div className='card-status-action__title partner-card__title w-100 pr-4 text-wrap'>
             <span className='neutral-1-color-a8'>
               <strong>{title}</strong>
               {subtitle && (
@@ -96,7 +97,8 @@ const CardStatusActionPartnerAuthority: React.FC<CardStatusActionI> = (
                         'd-flex',
                         'flex-column',
                         'py-3',
-                        device.mediaIsPhone ? 'px-1' : 'pr-5'
+                        device.mediaIsPhone ? 'px-1' : 'pr-5',
+                        'partner-card__content'
                       )}
                       key={index}
                       style={{ minWidth: '120px' }}

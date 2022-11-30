@@ -59,10 +59,7 @@ const SectionInfo: React.FC<SectionInfoI> = (props) => {
             </div>
           </CardTitle>
         </Col>
-        <div
-          dangerouslySetInnerHTML={{ __html: body }}
-          className='section-info-list'
-        />
+        <div dangerouslySetInnerHTML={{ __html: body }} />
       </div>
     </div>
   );

@@ -4,7 +4,7 @@ export const surveyBody = `
       cittadini. Ogni questionario caricato sulla piattaforma presenta le
       seguenti informazioni:
     </p>
-    <ul class="section-info-list" style="padding-bottom: 24px; padding-left: 24px">
+    <ul style="padding-bottom: 24px; padding-left: 24px">
       <li>
         <strong> Nome </strong>
       </li>
@@ -38,7 +38,7 @@ export const surveyBody = `
       `;
 
 export const openDataBody = (dateCoverage: string, lastDate: string) => `
-<ul class="section-info-list" style="padding-bottom: 24px; padding-left: 24px;">
+<ul style="padding-bottom: 24px; padding-left: 24px;">
 <li >
   <strong>Nome Dataset: 
   </strong> Servizi di facilitazione e formazione
@@ -109,3 +109,5 @@ export const surveyDocumentBody = `
       <b>Vestibulum convallis sapien quis finibus lacinia.</b>
     </p><br>
   </div>`;
+
+export const documentsBody = `In Documenti puoi scoprire risorse utili per la gestione dei servizi a cui partecipi.<br>Utilizza l&apos;<b>Area di collaborazione</b> per lavorare in simultanea alla creazione di nuovi documenti&nbsp;<b>con altri utenti aggiungendo il loro indirizzo email</b>. Hai a disposizione fino a&nbsp;<b>1 Giga di spazio</b>&nbsp;per caricare e condividere file in formato doc, docx, xls, .xlsx, ppt e pptx. Per accedere dopo esserti registrato, utilizza il&nbsp;<b>tuo indirizzo email come username</b>.`;

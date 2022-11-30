@@ -52,6 +52,7 @@ const HeadquartersDetails = () => {
   const { mediaIsPhone } = useAppSelector(selectDevice);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const device = useAppSelector(selectDevice);
   const { hasUserPermission } = useGuard();
   const {
     headquarterId,
@@ -188,12 +189,20 @@ const HeadquartersDetails = () => {
           stato: facilitator.stato,
           actions: facilitator.associatoAUtente
             ? facilitator.stato === entityStatus.ATTIVO &&
-              hasUserPermission(['add.fac']) &&
-              authorityType
+              authorityType &&
+              (((authorityType === formTypes.ENTE_GESTORE_PROGRAMMA ||
+                authorityType === formTypes.ENTE_GESTORE_PROGETTO) &&
+                hasUserPermission(['add.fac'])) ||
+                (authorityType === formTypes.ENTI_PARTNER &&
+                  hasUserPermission(['add.fac.partner'])))
               ? onActionClick
               : {
                   [CRUDActionTypes.VIEW]:
-                    hasUserPermission(['add.fac']) && authorityType
+                    ((authorityType === formTypes.ENTE_GESTORE_PROGRAMMA ||
+                      authorityType === formTypes.ENTE_GESTORE_PROGETTO) &&
+                      hasUserPermission(['add.fac'])) ||
+                    (authorityType === formTypes.ENTI_PARTNER &&
+                      hasUserPermission(['add.fac.partner']))
                       ? onActionClick[CRUDActionTypes.VIEW]
                       : undefined,
                 }
@@ -319,8 +328,12 @@ const HeadquartersDetails = () => {
   const getAccordionCTA = (title?: string) => {
     switch (title) {
       case 'Facilitatori':
-        return hasUserPermission(['add.fac']) &&
-          authorityType &&
+        return authorityType &&
+          (((authorityType === formTypes.ENTE_GESTORE_PROGRAMMA ||
+            authorityType === formTypes.ENTE_GESTORE_PROGETTO) &&
+            hasUserPermission(['add.fac'])) ||
+            (authorityType === formTypes.ENTI_PARTNER &&
+              hasUserPermission(['add.fac.partner']))) &&
           headquarterDetails?.stato !== entityStatus.TERMINATO
           ? {
               cta: `Aggiungi ${programPolicy !== 'SCD' ? title : 'Volontari'}`,
@@ -409,9 +422,15 @@ const HeadquartersDetails = () => {
                 </Accordion>
               ))
             : null}
-          <Sticky mode='bottom' stickyClassName='sticky bg-white container '>
+          <Sticky
+            mode='bottom'
+            stickyClassName={clsx(
+              'sticky bg-white container',
+              device.mediaIsPhone && 'pr-5'
+            )}
+          >
             <div className='container'>
-              <ButtonsBar buttons={buttons} marginRight />
+              <ButtonsBar buttons={buttons} />
             </div>
           </Sticky>
           <ManageHeadquarter />
