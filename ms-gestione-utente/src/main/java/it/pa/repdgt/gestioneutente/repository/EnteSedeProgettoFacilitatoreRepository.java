@@ -22,6 +22,11 @@ public interface EnteSedeProgettoFacilitatoreRepository extends JpaRepository<En
 	List<Long> findDistinctProgettiByIdFacilitatoreNonTerminato(@Param(value = "codiceFiscale")String codiceFiscale, 
 			@Param(value = "ruolo")String ruolo);
 	
+	@Query(value = "SELECT * "
+			+ "		FROM ente_sede_progetto_facilitatore espf "
+			+ "		WHERE espf.ID_FACILITATORE = :codiceFiscale", nativeQuery = true)
+	List<EnteSedeProgettoFacilitatoreEntity> findRuoloFacVolPerUtente(@Param(value = "codiceFiscale")String codiceFiscale);
+	
 	@Query(value = ""
 			+ "     	SELECT DISTINCT espf.ID_PROGETTO as idProgetto, espf.ID_ENTE as idEnte"
 			+ "			FROM ente_sede_progetto_facilitatore espf "

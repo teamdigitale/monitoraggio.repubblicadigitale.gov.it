@@ -35,10 +35,12 @@ import it.pa.repdgt.gestioneutente.exception.ResourceNotFoundException;
 import it.pa.repdgt.gestioneutente.exception.RuoloException;
 import it.pa.repdgt.gestioneutente.exception.UtenteException;
 import it.pa.repdgt.gestioneutente.repository.EnteRepository;
+import it.pa.repdgt.gestioneutente.repository.EnteSedeProgettoFacilitatoreRepository;
 import it.pa.repdgt.gestioneutente.repository.ReferentiDelegatiEnteGestoreProgettoRepository;
 import it.pa.repdgt.gestioneutente.repository.ReferentiDelegatiEnteGestoreProgrammaRepository;
 import it.pa.repdgt.gestioneutente.repository.ReferentiDelegatiEntePartnerDiProgettoRepository;
 import it.pa.repdgt.gestioneutente.repository.UtenteRepository;
+import it.pa.repdgt.gestioneutente.repository.UtenteXRuoloRepository;
 import it.pa.repdgt.gestioneutente.request.AggiornaUtenteRequest;
 import it.pa.repdgt.gestioneutente.request.FiltroRequest;
 import it.pa.repdgt.gestioneutente.request.UtenteRequest;
@@ -51,12 +53,21 @@ import it.pa.repdgt.shared.awsintegration.service.S3Service;
 import it.pa.repdgt.shared.constants.RuoliUtentiConstants;
 import it.pa.repdgt.shared.entity.EnteEntity;
 import it.pa.repdgt.shared.entity.EntePartnerEntity;
+import it.pa.repdgt.shared.entity.EnteSedeProgettoFacilitatoreEntity;
 import it.pa.repdgt.shared.entity.IntegrazioniUtenteEntity;
 import it.pa.repdgt.shared.entity.ProgettoEntity;
 import it.pa.repdgt.shared.entity.ProgrammaEntity;
+import it.pa.repdgt.shared.entity.ReferentiDelegatiEnteGestoreProgettoEntity;
+import it.pa.repdgt.shared.entity.ReferentiDelegatiEnteGestoreProgrammaEntity;
+import it.pa.repdgt.shared.entity.ReferentiDelegatiEntePartnerDiProgettoEntity;
 import it.pa.repdgt.shared.entity.RuoloEntity;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entity.UtenteXRuolo;
+import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
+import it.pa.repdgt.shared.entity.key.ReferentiDelegatiEnteGestoreProgettoKey;
+import it.pa.repdgt.shared.entity.key.ReferentiDelegatiEnteGestoreProgrammaKey;
+import it.pa.repdgt.shared.entity.key.ReferentiDelegatiEntePartnerDiProgettoKey;
+import it.pa.repdgt.shared.entity.key.UtenteXRuoloKey;
 import it.pa.repdgt.shared.entityenum.EmailTemplateEnum;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
@@ -71,7 +82,11 @@ public class UtenteService {
 	@Autowired
 	private UtenteXRuoloService utenteXRuoloService;
 	@Autowired
+	private UtenteXRuoloRepository utenteXRuoloRepository;
+	@Autowired
 	private  EnteSedeProgettoFacilitatoreService enteSedeProgettoFacilitatoreService;
+	@Autowired
+	private EnteSedeProgettoFacilitatoreRepository enteSedeProgettoFacilitatoreRepository;
 	@Autowired
 	private RuoloService ruoloService;
 	@Autowired
@@ -339,6 +354,7 @@ public class UtenteService {
 		return this.utenteRepository.findByEmailAndIdNot(email, id).isPresent();
 	}
 
+	@Transactional
 	@LogExecutionTime
 	@LogMethod
 	public void aggiornaUtente(AggiornaUtenteRequest aggiornaUtenteRequest, Long idUtente) {
@@ -352,10 +368,126 @@ public class UtenteService {
 		if(isEmailDuplicataPerId(aggiornaUtenteRequest.getEmail(),idUtente)) {
 			throw new UtenteException("ERRORE: non possono esistere a sistema due email per due utenti diversi", CodiceErroreEnum.U21);
 		}
-		if(this.utenteRepository.findUtenteByCodiceFiscaleAndIdDiverso(aggiornaUtenteRequest.getCodiceFiscale(), idUtente).isPresent()) {
-			String messaggioErrore = String.format("utente con codice fiscale=%s già presente", aggiornaUtenteRequest.getCodiceFiscale());
-			throw new UtenteException(messaggioErrore, CodiceErroreEnum.U01);
+		
+		if(!utenteFetchDB.getCodiceFiscale().equals(aggiornaUtenteRequest.getCodiceFiscale())) {
+			
+			String codiceFiscaleCorrente = utenteFetchDB.getCodiceFiscale();
+			String codiceFiscaleDaAggiornare = aggiornaUtenteRequest.getCodiceFiscale();
+			
+			if(this.utenteRepository.findUtenteByCodiceFiscaleAndIdDiverso(codiceFiscaleDaAggiornare, idUtente).isPresent()) {
+				String messaggioErrore = String.format("utente con codice fiscale=%s già presente", aggiornaUtenteRequest.getCodiceFiscale());
+				throw new UtenteException(messaggioErrore, CodiceErroreEnum.U01);
+			}
+			//se è stato modificato il CF potenzialmente devo aggiornarlo in tutte le tabelle in cui è presente come FK
+			List<UtenteXRuolo> ruoliUtente = utenteXRuoloService.getListUtenteXRuoloByCfUtenteAndCodiceRuolo(codiceFiscaleCorrente);
+			List<UtenteXRuolo> ruoliUtenteUpd = new ArrayList<UtenteXRuolo>();
+			for(UtenteXRuolo utenteXruolo: ruoliUtente) {				
+				utenteXRuoloRepository.delete(utenteXruolo);
+				utenteXRuoloRepository.flush();
+				
+				UtenteXRuolo utenteXruoloUpd = new UtenteXRuolo();
+				utenteXruoloUpd.setDataOraAggiornamento(utenteXruolo.getDataOraAggiornamento());
+				utenteXruoloUpd.setDataOraCreazione(utenteXruolo.getDataOraCreazione());
+				utenteXruoloUpd.setId(new UtenteXRuoloKey(codiceFiscaleDaAggiornare, utenteXruolo.getId().getRuoloCodice()));
+				
+				ruoliUtenteUpd.add(utenteXruoloUpd);
+			}
+			
+			List<ReferentiDelegatiEnteGestoreProgrammaEntity> refDegGestProgramma = referentiDelegatiEnteGestoreProgrammaRepository.findByCodFiscaleUtente(codiceFiscaleCorrente);
+			List<ReferentiDelegatiEnteGestoreProgrammaEntity> refDegGestProgrammaUpd = new ArrayList<ReferentiDelegatiEnteGestoreProgrammaEntity>();
+			for(ReferentiDelegatiEnteGestoreProgrammaEntity refDegGestProgrammaRec: refDegGestProgramma) {				
+				referentiDelegatiEnteGestoreProgrammaRepository.delete(refDegGestProgrammaRec);
+				referentiDelegatiEnteGestoreProgrammaRepository.flush();
+				
+				ReferentiDelegatiEnteGestoreProgrammaEntity refDegGestProgrammaRecUpd = new ReferentiDelegatiEnteGestoreProgrammaEntity();
+				refDegGestProgrammaRecUpd.setCodiceRuolo(refDegGestProgrammaRec.getCodiceRuolo());
+				refDegGestProgrammaRecUpd.setDataOraAggiornamento(refDegGestProgrammaRec.getDataOraAggiornamento());
+				refDegGestProgrammaRecUpd.setDataOraAttivazione(refDegGestProgrammaRec.getDataOraAttivazione());
+				refDegGestProgrammaRecUpd.setDataOraCreazione(refDegGestProgrammaRec.getDataOraCreazione());
+				refDegGestProgrammaRecUpd.setDataOraTerminazione(refDegGestProgrammaRec.getDataOraTerminazione());
+				refDegGestProgrammaRecUpd.setId(new ReferentiDelegatiEnteGestoreProgrammaKey(refDegGestProgrammaRec.getId().getIdProgramma(), 
+						codiceFiscaleDaAggiornare, 
+						refDegGestProgrammaRec.getId().getIdEnte()));
+				refDegGestProgrammaRecUpd.setStatoUtente(refDegGestProgrammaRec.getStatoUtente());
+				
+				refDegGestProgrammaUpd.add(refDegGestProgrammaRecUpd);
+			}
+			
+			List<ReferentiDelegatiEnteGestoreProgettoEntity> refDegGestProgetto = referentiDelegatiEnteGestoreProgettoRepository.findByCodFiscaleUtente(codiceFiscaleCorrente);
+			List<ReferentiDelegatiEnteGestoreProgettoEntity> refDegGestProgettoUpd = new ArrayList<ReferentiDelegatiEnteGestoreProgettoEntity>();
+			for(ReferentiDelegatiEnteGestoreProgettoEntity refDegGestProgettoRec: refDegGestProgetto) {				
+				referentiDelegatiEnteGestoreProgettoRepository.delete(refDegGestProgettoRec);
+				referentiDelegatiEnteGestoreProgettoRepository.flush();
+				
+				ReferentiDelegatiEnteGestoreProgettoEntity refDegGestProgettoRecUpd = new ReferentiDelegatiEnteGestoreProgettoEntity();
+				refDegGestProgettoRecUpd.setCodiceRuolo(refDegGestProgettoRec.getCodiceRuolo());
+				refDegGestProgettoRecUpd.setDataOraAggiornamento(refDegGestProgettoRec.getDataOraAggiornamento());
+				refDegGestProgettoRecUpd.setDataOraAttivazione(refDegGestProgettoRec.getDataOraAttivazione());
+				refDegGestProgettoRecUpd.setDataOraCreazione(refDegGestProgettoRec.getDataOraCreazione());
+				refDegGestProgettoRecUpd.setDataOraTerminazione(refDegGestProgettoRec.getDataOraTerminazione());
+				refDegGestProgettoRecUpd.setId(new ReferentiDelegatiEnteGestoreProgettoKey(refDegGestProgettoRec.getId().getIdProgetto(), 
+						codiceFiscaleDaAggiornare, 
+						refDegGestProgettoRec.getId().getIdEnte()));
+				refDegGestProgettoRecUpd.setStatoUtente(refDegGestProgettoRec.getStatoUtente());
+				
+				refDegGestProgettoUpd.add(refDegGestProgettoRecUpd);
+			}
+			
+			List<ReferentiDelegatiEntePartnerDiProgettoEntity> refDegPartner = referentiDelegatiEntePartnerDiProgettoRepository.findByCodFiscaleUtente(codiceFiscaleCorrente);
+			List<ReferentiDelegatiEntePartnerDiProgettoEntity> refDegPartnerUpd = new ArrayList<ReferentiDelegatiEntePartnerDiProgettoEntity>();
+
+			for(ReferentiDelegatiEntePartnerDiProgettoEntity refDegPartnerRec: refDegPartner) {				
+				referentiDelegatiEntePartnerDiProgettoRepository.delete(refDegPartnerRec);
+				referentiDelegatiEntePartnerDiProgettoRepository.flush();
+				
+				ReferentiDelegatiEntePartnerDiProgettoEntity refDegPartnerRecUpd = new ReferentiDelegatiEntePartnerDiProgettoEntity();
+				refDegPartnerRecUpd.setCodiceRuolo(refDegPartnerRec.getCodiceRuolo());
+				refDegPartnerRecUpd.setDataOraAggiornamento(refDegPartnerRec.getDataOraAggiornamento());
+				refDegPartnerRecUpd.setDataOraAttivazione(refDegPartnerRec.getDataOraAttivazione());
+				refDegPartnerRecUpd.setDataOraCreazione(refDegPartnerRec.getDataOraCreazione());
+				refDegPartnerRecUpd.setDataOraTerminazione(refDegPartnerRec.getDataOraTerminazione());
+				refDegPartnerRecUpd.setId(new ReferentiDelegatiEntePartnerDiProgettoKey(refDegPartnerRec.getId().getIdProgetto(), 
+						refDegPartnerRec.getId().getIdEnte(),
+						codiceFiscaleDaAggiornare 
+						));
+				refDegPartnerRecUpd.setStatoUtente(refDegPartnerRec.getStatoUtente());
+				
+				refDegPartnerUpd.add(refDegPartnerRecUpd);
+			}
+			
+			List<EnteSedeProgettoFacilitatoreEntity> eSpfList = enteSedeProgettoFacilitatoreService.findRuoloFacVolPerUtente(codiceFiscaleCorrente);
+			List<EnteSedeProgettoFacilitatoreEntity> eSpfListUpd = new ArrayList<EnteSedeProgettoFacilitatoreEntity>();
+			for(EnteSedeProgettoFacilitatoreEntity eSpfListRec: eSpfList) {				
+				enteSedeProgettoFacilitatoreRepository.delete(eSpfListRec);
+				enteSedeProgettoFacilitatoreRepository.flush();
+
+				EnteSedeProgettoFacilitatoreEntity eSpfListRecUpd = new EnteSedeProgettoFacilitatoreEntity();
+				eSpfListRecUpd.setDataOraAggiornamento(eSpfListRec.getDataOraAggiornamento());
+				eSpfListRecUpd.setDataOraAttivazione(eSpfListRec.getDataOraAttivazione());
+				eSpfListRecUpd.setDataOraCreazione(eSpfListRec.getDataOraCreazione());
+				eSpfListRecUpd.setDataOraTerminazione(eSpfListRec.getDataOraTerminazione());
+				eSpfListRecUpd.setId(new EnteSedeProgettoFacilitatoreKey(eSpfListRec.getId().getIdEnte(), 
+						eSpfListRec.getId().getIdSede(), 
+						eSpfListRec.getId().getIdProgetto(), 
+						codiceFiscaleDaAggiornare));
+				eSpfListRecUpd.setRuoloUtente(eSpfListRec.getRuoloUtente());
+				eSpfListRecUpd.setStatoUtente(eSpfListRec.getStatoUtente());
+				
+				eSpfListUpd.add(eSpfListRecUpd);
+			}
+			
+			aggiornaUtente(aggiornaUtenteRequest, utenteFetchDB);
+			utenteXRuoloService.saveAll(ruoliUtenteUpd);
+			referentiDelegatiEnteGestoreProgrammaRepository.saveAllAndFlush(refDegGestProgrammaUpd);
+			referentiDelegatiEnteGestoreProgettoRepository.saveAllAndFlush(refDegGestProgettoUpd);
+			referentiDelegatiEntePartnerDiProgettoRepository.saveAllAndFlush(refDegPartnerUpd);
+			enteSedeProgettoFacilitatoreService.saveAll(eSpfListUpd);
+		}else {
+			aggiornaUtente(aggiornaUtenteRequest, utenteFetchDB);			
 		}
+	}
+
+	private void aggiornaUtente(AggiornaUtenteRequest aggiornaUtenteRequest, UtenteEntity utenteFetchDB) {
 		utenteFetchDB.setEmail(aggiornaUtenteRequest.getEmail());
 		utenteFetchDB.setCodiceFiscale(aggiornaUtenteRequest.getCodiceFiscale());
 		utenteFetchDB.setTelefono(aggiornaUtenteRequest.getTelefono());
@@ -364,7 +496,7 @@ public class UtenteService {
 		utenteFetchDB.setMansione(aggiornaUtenteRequest.getMansione());
 		utenteFetchDB.setTipoContratto(aggiornaUtenteRequest.getTipoContratto());
 		utenteFetchDB.setDataOraAggiornamento(new Date());
-		this.utenteRepository.save(utenteFetchDB);
+		this.utenteRepository.saveAndFlush(utenteFetchDB);
 	}
 
 	@LogExecutionTime
@@ -671,6 +803,7 @@ public class UtenteService {
 		case "VOL": 
 			//i FAC/VOL possono vedere solo se stessi
 			return this.utenteRepository.findById(idUtente).get().getCodiceFiscale().equals(sceltaProfilo.getCfUtenteLoggato());
+			//return this.utenteRepository.isUtenteAssociatoFAC(idUtente, sceltaProfilo.getIdProgetto(), sceltaProfilo.getIdEnte(), sceltaProfilo.getCfUtenteLoggato()) > 0;
 			// DTD, DSCU, RUOLI_CUSTOM
 		case "DSCU": 
 			String codiceFiscale = utenteRepository.findById(idUtente).get().getCodiceFiscale();
