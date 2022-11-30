@@ -1,5 +1,7 @@
 package it.pa.repdgt.gestioneutente.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,12 @@ public class UtenteXRuoloService {
 	public void save(UtenteXRuolo utenteXRuolo) {
 		this.utenteXRuoloRepository.save(utenteXRuolo);
 	}
+	
+	@LogMethod
+	@LogExecutionTime
+	public void saveAll(List<UtenteXRuolo> utenteXRuoli) {
+		this.utenteXRuoloRepository.saveAll(utenteXRuoli);
+	}
 
 	@LogMethod
 	@LogExecutionTime
@@ -41,6 +49,12 @@ public class UtenteXRuoloService {
 	@LogExecutionTime
 	public UtenteXRuolo getUtenteXRuoloByCfUtenteAndCodiceRuolo(String codFiscaleUtente, String codiceRuolo) {
 		return this.utenteXRuoloRepository.findUtenteXRuoloByCfUtenteAndCodiceRuolo(codFiscaleUtente, codiceRuolo);
+	}
+	
+	@LogMethod
+	@LogExecutionTime
+	public List<UtenteXRuolo> getListUtenteXRuoloByCfUtenteAndCodiceRuolo(String codFiscaleUtente) {
+		return this.utenteXRuoloRepository.findListUtenteXRuoloByCfUtenteAndCodiceRuolo(codFiscaleUtente);
 	}
 
 	@LogMethod
