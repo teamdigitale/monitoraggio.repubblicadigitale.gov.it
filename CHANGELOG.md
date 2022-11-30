@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.356](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.355...1.0.0-develop.356) (2022-11-30)
+
+
+### Bug Fixes
+
+* **be:** aggiorna cf utente ([494f679](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/494f679044e863c1a5d53455701a9543bb4bd4c1))
+
 ## [1.0.0-develop.355](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.354...1.0.0-develop.355) (2022-11-30)
 
 
