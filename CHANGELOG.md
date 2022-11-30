@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.142](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.141...1.0.0-test.142) (2022-11-30)
+
+
+### Features
+
+* **be:** upd cf utente ([a64abe6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a64abe6f3f0a844cb9ddb99e32c326e8206c7351))
+
 ## [1.0.0-test.141](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.140...1.0.0-test.141) (2022-11-30)
 
 
