@@ -671,7 +671,6 @@ public class UtenteService {
 		case "VOL": 
 			//i FAC/VOL possono vedere solo se stessi
 			return this.utenteRepository.findById(idUtente).get().getCodiceFiscale().equals(sceltaProfilo.getCfUtenteLoggato());
-			//return this.utenteRepository.isUtenteAssociatoFAC(idUtente, sceltaProfilo.getIdProgetto(), sceltaProfilo.getIdEnte(), sceltaProfilo.getCfUtenteLoggato()) > 0;
 			// DTD, DSCU, RUOLI_CUSTOM
 		case "DSCU": 
 			String codiceFiscale = utenteRepository.findById(idUtente).get().getCodiceFiscale();
