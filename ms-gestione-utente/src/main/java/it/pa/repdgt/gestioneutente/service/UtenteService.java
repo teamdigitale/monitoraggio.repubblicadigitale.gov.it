@@ -357,6 +357,7 @@ public class UtenteService {
 			throw new UtenteException(messaggioErrore, CodiceErroreEnum.U01);
 		}
 		utenteFetchDB.setEmail(aggiornaUtenteRequest.getEmail());
+		utenteFetchDB.setCodiceFiscale(aggiornaUtenteRequest.getCodiceFiscale());
 		utenteFetchDB.setTelefono(aggiornaUtenteRequest.getTelefono());
 		utenteFetchDB.setNome(Utils.toCamelCase(aggiornaUtenteRequest.getNome()));
 		utenteFetchDB.setCognome(aggiornaUtenteRequest.getCognome().toUpperCase());
