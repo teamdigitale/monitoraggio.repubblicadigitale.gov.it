@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.17.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.17.0...1.17.1) (2022-12-20)
+
+
+### Bug Fixes
+
+* **be:** drupal forward + scheda utente + env s3 ([d35a0ef](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d35a0efc62320345f111d550da66270008a44800))
+
 ## [1.17.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.16.0...1.17.0) (2022-11-30)
 
 
