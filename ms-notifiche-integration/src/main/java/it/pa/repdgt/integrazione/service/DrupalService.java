@@ -172,7 +172,9 @@ public class DrupalService {
 				 						 .stream()
 										 .map(prog -> prog.getId().toString().concat("-").concat(prog.getPolicy().toString()).concat("+"))
 										 .forEach(progIntervention -> stringBuilder.append(progIntervention));
-				String programmiIntervention = stringBuilder.toString().substring(0, stringBuilder.length()-1);
+				String programmiIntervention = stringBuilder.length() > 0 ? 
+						stringBuilder.toString().substring(0, stringBuilder.length()-1) :
+							"";
 
 				programInterventionValue = programInterventionValue.concat("public-SCD+").concat(programmiIntervention);
 				break;
