@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.357](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.356...1.0.0-develop.357) (2022-12-20)
+
+
+### Bug Fixes
+
+* **be:** scheda utente + drupal forward ([3224669](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3224669cf3489384828b81c27149b0e4ef6c6474))
+
 ## [1.0.0-develop.356](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.355...1.0.0-develop.356) (2022-11-30)
 
 
