@@ -807,7 +807,8 @@ public class UtenteService {
 			// DTD, DSCU, RUOLI_CUSTOM
 		case "DSCU": 
 			String codiceFiscale = utenteRepository.findById(idUtente).get().getCodiceFiscale();
-			return utenteRepository.isUtenteConRelazioneProgrammaSCD(codiceFiscale) > 0;
+			//nel caso di DSCU torna true o se l'utente vede la propria scheda utente oppure la scheda di un utente che partecipa ad un programma SCD
+			return codiceFiscale.equals(sceltaProfilo.getCfUtenteLoggato()) || utenteRepository.isUtenteConRelazioneProgrammaSCD(codiceFiscale) > 0;
 		default: return true;
 		}
 	}
