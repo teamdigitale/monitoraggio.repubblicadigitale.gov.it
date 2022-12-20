@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.143](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.142...1.0.0-test.143) (2022-12-20)
+
+
+### Bug Fixes
+
+* **be:** scheda utente + drupal forward ([cde7fe5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/cde7fe52027c8872bdeac799c7d86a7ebd60c3de))
+
 ## [1.0.0-test.142](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.141...1.0.0-test.142) (2022-11-30)
 
 
