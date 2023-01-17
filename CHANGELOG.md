@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.18.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.17.1...1.18.0) (2023-01-17)
+
+
+### Features
+
+* **test:** env activation ([6dc2991](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6dc2991ea80ed38a49f525e877ff1ee156124e6a))
+
 ## [1.17.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.17.0...1.17.1) (2022-12-20)
 
 
