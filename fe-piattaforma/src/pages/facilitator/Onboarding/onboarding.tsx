@@ -19,7 +19,11 @@ import withFormHandler, {
 } from '../../../hoc/withFormHandler';
 import { Form, Input } from '../../../components';
 import { Button, FormGroup, Icon, Label } from 'design-react-kit';
-import { login, selectUser } from '../../../redux/features/user/userSlice';
+import {
+  login,
+  logout,
+  selectUser,
+} from '../../../redux/features/user/userSlice';
 import {
   CreateUserContext,
   EditUser,
@@ -62,14 +66,16 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
   if (!user?.codiceFiscale) return <Navigate to={defaultRedirectUrl} replace />;
 
   const loginUser = () => {
-    navigate(defaultRedirectUrl, { replace: true });
+    //navigate(defaultRedirectUrl, { replace: true });
     dispatch(login());
   };
 
-  const selectUserRole = async () => {
-    if (!user.profiliUtente?.length) {
+  const selectUserRole = async (newUser?: any) => {
+    const usr = newUser || user;
+    if (!usr.profiliUtente?.length) {
+      dispatch(logout());
       navigate('/errore/A01', { replace: true });
-    } else if (user.profiliUtente?.length > 1) {
+    } else if (usr.profiliUtente?.length > 1) {
       dispatch(
         openModal({
           id: 'switchProfileModal',
@@ -79,7 +85,7 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
         })
       );
     } else {
-      const res = await dispatch(SelectUserRole(user.profiliUtente[0]));
+      const res = await dispatch(SelectUserRole(usr.profiliUtente[0], true));
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       if (res) loginUser();
@@ -93,11 +99,11 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         if (res) {
-          const res2 = await dispatch(CreateUserContext(user.codiceFiscale));
+          const res2 = await dispatch(CreateUserContext());
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           if (res2) {
-            selectUserRole();
+            selectUserRole(res2);
           }
         }
       }
@@ -173,7 +179,7 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
             </div>
             <div>
               <p className='complementary-1-color-b8 mb-0'>
-                <strong>Foto profilo*</strong>
+                <strong>Foto profilo</strong>
               </p>
               <p className='complementary-1-color-b8' style={{ fontSize: 14 }}>
                 Carica una foto per personalizzare il tuo profilo.
@@ -185,6 +191,7 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
         <Form
           id='form-onboarding'
           className={clsx('mt-5', 'mb-5', 'pt-5', 'onboarding__form-container')}
+          showMandatory={false}
         >
           <div
             className={clsx(
@@ -223,9 +230,9 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
               Completa Registrazione
             </Button>
           </div>
-          <p className={clsx('primary-color-a12', 'mt-5', 'mb-1', 'pb-2')}>
+          {/* <p className={clsx('primary-color-a12', 'mt-5', 'mb-1', 'pb-2')}>
             *Campo obbligatorio
-          </p>
+          </p> */}
         </Form>
       </div>
     </div>

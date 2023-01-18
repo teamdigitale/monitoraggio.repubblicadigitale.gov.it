@@ -333,6 +333,7 @@ const Surveys = () => {
         }
         sectionInfo={hasUserPermission(['new.quest.templ'])}
         defaultOpen={hasUserPermission(['new.quest.templ'])}
+        isSurveyList
       />
       <GenericSearchFilterTableLayout
         searchInformation={searchInformation}

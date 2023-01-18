@@ -8,7 +8,7 @@ import { useAppSelector } from '../../../redux/hooks';
 import './notifications.scss';
 import clsx from 'clsx';
 import Input from '../../../components/Form/input';
-import MailReadDark from '/public/assets/img/mail-open-dark.png';
+import MailReadDark from '/public/assets/img/mail-open-grey.png';
 import MailReadCheck from '/public/assets/img/mail-open-primary.png';
 import DeleteCheck from '/public/assets/img/it-delete-primary.png';
 import PillDropDown from '../../../components/PillDropDown/pillDropDown';
@@ -228,7 +228,7 @@ const Notifications: React.FC = () => {
                   size='sm'
                   aria-label='Elimina'
                   aria-hidden
-                  className='mr-1'
+                  className='mr-1 icon-disabled'
                 />
                 <span
                   className={clsx(

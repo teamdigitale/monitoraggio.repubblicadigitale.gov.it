@@ -30,13 +30,12 @@
         list-style: none;
         li {
           min-width: 400px;
-          padding:  10px 20px 10px 20px;
-          
+          padding: 10px 20px 10px 20px;
+
           @media screen and (max-width: 990px) {
             width: 100%;
             min-width: unset;
             max-width: unset;
-            
           }
         }
       }
@@ -57,5 +56,12 @@
   &__text-list {
     white-space: break-spaces;
     overflow: visible;
+  }
+
+  &__open-data-subtitle {
+    @media screen and (max-width: 755px) {
+      padding-left: 14px;
+      padding-right: 14px;
+    }
   }
 }

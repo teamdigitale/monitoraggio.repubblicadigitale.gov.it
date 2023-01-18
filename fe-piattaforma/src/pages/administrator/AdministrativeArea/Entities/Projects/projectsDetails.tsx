@@ -724,21 +724,27 @@ const ProjectsDetails = () => {
   };
 
   const nav = (
-    <Nav tabs className='mb-5 overflow-hidden'>
-      <li ref={infoRef}>
+    <Nav
+      tabs
+      className={clsx('mb-5', !mediaIsPhone && 'overflow-hidden')}
+      role='menu'
+    >
+      <li ref={infoRef} role='none'>
         <NavLink
           to={replaceLastUrlSection(tabs.INFO)}
           // onClick={() => replaceLastUrlSection(tabs.INFO)}
           active={activeTab === tabs.INFO}
+          role='menuitem'
         >
           Informazioni generali
         </NavLink>
       </li>
-      <li ref={gestoreRef}>
+      <li ref={gestoreRef} role='none'>
         <NavLink
           to={replaceLastUrlSection(tabs.ENTE_GESTORE)}
           active={activeTab === tabs.ENTE_GESTORE}
           enteGestore={!managingAuthorityID}
+          role='menuitem'
         >
           <div id='tab-ente-gestore-progetto'>
             {!managingAuthorityID ||
@@ -753,7 +759,7 @@ const ProjectsDetails = () => {
                     isOpen={openOne}
                     toggle={() => toggleOne(!openOne)}
                   >
-                    È necessario aggiungere almeno un referente per l'ente
+                    È necessario aggiungere almeno un referente per l&apos;ente
                     gestore
                   </Tooltip>
                 )}
@@ -770,18 +776,20 @@ const ProjectsDetails = () => {
           </div>
         </NavLink>
       </li>
-      <li ref={partnerRef}>
+      <li ref={partnerRef} role='none'>
         <NavLink
           to={replaceLastUrlSection(tabs.ENTI_PARTNER)}
           active={activeTab === tabs.ENTI_PARTNER}
+          role='menuitem'
         >
           <span> Enti partner </span>
         </NavLink>
       </li>
-      <li ref={sediRef}>
+      <li ref={sediRef} role='none'>
         <NavLink
           to={replaceLastUrlSection(tabs.SEDI)}
           active={activeTab === tabs.SEDI}
+          role='menuitem'
         >
           Sedi
         </NavLink>

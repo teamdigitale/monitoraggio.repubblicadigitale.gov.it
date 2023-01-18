@@ -10,10 +10,11 @@ export interface SectionInfoI extends CardProps {
   body?: string;
   open?: boolean | undefined;
   setIsOpen?: (value: boolean) => void;
+  isSurveyList?: boolean;
 }
 
 const SectionInfo: React.FC<SectionInfoI> = (props) => {
-  const { title, body = '', open, setIsOpen } = props;
+  const { title, body = '', open, setIsOpen, isSurveyList = false } = props;
 
   const device = useAppSelector(selectDevice);
 
@@ -59,7 +60,10 @@ const SectionInfo: React.FC<SectionInfoI> = (props) => {
             </div>
           </CardTitle>
         </Col>
-        <div dangerouslySetInnerHTML={{ __html: body }} />
+        <div
+          dangerouslySetInnerHTML={{ __html: body }}
+          className={isSurveyList ? 'section-info-list' : ''}
+        />
       </div>
     </div>
   );
