@@ -179,7 +179,7 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
             </div>
             <div>
               <p className='complementary-1-color-b8 mb-0'>
-                <strong>Foto profilo*</strong>
+                <strong>Foto profilo</strong>
               </p>
               <p className='complementary-1-color-b8' style={{ fontSize: 14 }}>
                 Carica una foto per personalizzare il tuo profilo.
