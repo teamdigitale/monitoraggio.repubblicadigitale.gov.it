@@ -14,7 +14,6 @@ import UsersAnagraphic from './components/UsersAnagraphic/usersAnagraphic';
 i18nInit();
 
 const MyApp: React.FC = () => {
-  console.log('20230118');
   return (
     <Provider store={store}>
       <FontLoader />

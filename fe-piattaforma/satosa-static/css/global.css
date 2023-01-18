@@ -2,38 +2,220 @@
     background-color: #005CB8 !important;
 } */
 
+.main-body {
+  min-height: calc(100vh - 32px - 260px);
+}
+
 .top-icon {
-    height: 48px;
-    width: 48px;
+  height: 48px;
+  width: 48px;
+}
+
+/* for disco1 */
+@media (min-width: 768px) {
+  .panel-right {
+    border-left: solid 1px #ccc;
+  }
+}
+
+.login-form {
+  max-width: 38rem;
+  padding: 2rem;
+}
+
+.tab-content {
+  border-color: #cbccce;
+  border-style: solid;
+  border-width: 0 1px 1px 1px;
+  padding: 1rem;
+}
+
+/* TABS */
+
+.nav-tabs {
+  border-bottom-color: #cbccce;
+  overflow-x: hidden;
+  background-color: #fff !important;
+}
+
+.nav-tabs .nav-item {
+  margin-bottom: -1px;
+}
+
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-link.active:focus,
+.nav-tabs .nav-link.active:hover {
+  border-top-color: #004080 !important;
+  color: #004080 !important;
+}
+
+@media (min-width: 768px) {
+  .nav-tabs .nav-link.active,
+  .nav-tabs .nav-link.active:focus,
+  .nav-tabs .nav-link.active:hover {
+    border-bottom-color: transparent !important;
+  }
+}
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-link.active:focus,
+.nav-tabs .nav-link.active:hover {
+  background-color: #fff;
+}
+
+.nav-tabs .nav-link.active {
+  border-top-width: 0.25rem !important;
+}
+
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-link.active:focus,
+.nav-tabs .nav-link.active:hover {
+  border-color: transparent #cbccce #cbccce #cbccce;
+}
+
+.nav-tabs .nav-link {
+  border: 1px solid transparent;
+}
+
+.nav-tabs .nav-link.active img:first-child {
+  display: none;
+}
+
+.nav-tabs .nav-link img:last-child {
+  display: none;
+}
+
+.nav-tabs .nav-link.active img:last-child {
+  display: inline;
+}
+
+.nav-tabs .nav-link:hover {
+  background-color: #f0f1f3;
+  border-color: #f0f1f3 #f0f1f3 #cbccce #f0f1f3;
+  color: #5c6f82 !important;
+}
+
+.img-width {
+  max-width: 214px;
+  margin-top: 1rem;
+}
+@media (min-width: 768px) {
+  .img-width {
+    max-width: 220px;
+  }
 }
 
 .footer {
-   background-color: #01254c; 
-   color: #fff;
-   min-height: 264px;
+  background-color: #003467;
+  color: #fff;
 }
 
-.footer div:first-child {
-    flex-grow: 1;
+.footer-content {
+  min-height: 200px;
 }
 
-.footer h5 {
-    font-size: 20px;
+@media screen and (min-width: 1200px) {
+  .put-right{
+    float:right !important;
+    margin-right:0 !important;
+  }
 }
 
-.footer .text-1 {
-    font-size: 16px;
+@media screen and (max-width: 1200px) {
+  .footer-content {
+    padding-block: 16px;
+    flex-wrap: wrap;
+  }
+  .footer-content-partner > div {
+    flex-wrap: wrap !important;
+  }
+}
+@media screen and (max-width: 575px) {
+  .footer-content,
+  .sub-footer-container {
+    padding-left: 16px;
+  }
 }
 
-.footer .text-2 {
-    font-size: 14px;
+.footer-content-partner img {
+  height: 60px;
+  width: auto;
 }
 
-.footer .text-3 {
-    font-size: 12px;
-    margin-bottom: 0;
+.footer-content-partner a {
+  margin-top: 2rem;
+  margin-right: 3.55rem;
 }
 
-.footer .digital-skills {
-    max-width: 300px;
+@media (max-width: 1200px) {
+  .footer-content-partner img {
+    height: 50px;
+  }
+  .footer-content-partner a {
+    min-width: calc(50% - 2rem);
+  }
+
+  .footer-content-partner a {
+    margin-top: 2rem;
+    margin-right: 2rem;
+  }
+}
+
+.footer .text a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.sub-footer-container {
+  background-color: #011830;
+}
+.sub-footer-container a {
+  text-decoration: underline !important;
+}
+
+@media (max-width: 767px) {
+  .footer-content-partner a {
+    margin-top: 1.5rem;
+    margin-right: unset;
+    width: 100%;
+  }
+  .sub-footer-container {
+    padding-bottom: 2rem !important;
+  }
+  .sub-footer-container > div {
+    flex-wrap: wrap !important;
+  }
+
+  .sub-footer-container a:last-child {
+    position: relative !important;
+  }
+
+  .sub-footer-container a {
+    color: #fff;
+    text-decoration: none;
+    margin-top: 1rem;
+  }
+
+  .footer-content-partner a {
+    margin-top: 2rem;
+    margin-right: 2rem;
+  }
+}
+
+
+.sub-footer-container a {
+  color: #fff;
+  text-decoration: none;
+}
+.sub-footer-container a img {
+  height: 20px;
+  width: auto;
+}
+
+.sub-footer-container a:last-child {
+  /* position: absolute;
+  right: 0; */
+}
+
+.footer-content-assistenza {
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
 }

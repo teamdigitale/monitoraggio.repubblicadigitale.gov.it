@@ -4,7 +4,7 @@ export const surveyBody = `
       cittadini. Ogni questionario caricato sulla piattaforma presenta le
       seguenti informazioni:
     </p>
-    <ul style="padding-bottom: 24px; padding-left: 24px">
+    <ul class="section-info-list" style="padding-bottom: 24px; padding-left: 24px">
       <li>
         <strong> Nome </strong>
       </li>
@@ -38,7 +38,7 @@ export const surveyBody = `
       `;
 
 export const openDataBody = (dateCoverage: string, lastDate: string) => `
-<ul style="padding-bottom: 24px; padding-left: 24px;">
+<ul class="section-info-list" style="padding-bottom: 24px; padding-left: 24px;">
 <li >
   <strong>Nome Dataset: 
   </strong> Servizi di facilitazione e formazione
@@ -67,7 +67,7 @@ export const openDataBody = (dateCoverage: string, lastDate: string) => `
 `;
 
 export const openDataSubtitle = `
-<p class='text-muted' style='padding-bottom: 24px;'>
+<p class='text-muted info-panel__open-data-subtitle' style='padding-bottom: 24px;'>
 Allo scopo di incrementare le competenze digitali dei cittadini, nell'ambito di <strong>Repubblica Digitale</strong> sono previsti servizi di facilitazione e formazione, organizzati a livello nazionale e con sedi distribuite in tutto il Paese. 
 In relazione a questi servizi, sono rilevate le principali caratteristiche della popolazione partecipante e la tipologia di servizio erogato.
 </p>
