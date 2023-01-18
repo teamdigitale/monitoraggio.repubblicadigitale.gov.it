@@ -91,11 +91,12 @@ export const CreateUserContext =
 
       if (res?.data) {
         dispatch(setUserContext(res.data));
-        return true;
+        return res.data;
       }
+      return false;
     } catch (error) {
       console.log('CreateUserContext error', error);
-      return error;
+      return false;
     } finally {
       dispatch(hideLoader());
     }

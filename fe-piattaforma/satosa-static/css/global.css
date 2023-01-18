@@ -2,6 +2,10 @@
     background-color: #005CB8 !important;
 } */
 
+.main-body {
+  min-height: calc(100vh - 32px - 260px);
+}
+
 .top-icon {
   height: 48px;
   width: 48px;
@@ -112,7 +116,7 @@
 @media screen and (min-width: 1200px) {
   .put-right{
     float:right !important;
-    margin-right:0px !important;
+    margin-right:0 !important;
   }
 }
 
@@ -163,6 +167,9 @@
 
 .sub-footer-container {
   background-color: #011830;
+}
+.sub-footer-container a {
+  text-decoration: underline !important;
 }
 
 @media (max-width: 767px) {

@@ -46,10 +46,10 @@ const Auth: React.FC<withFormHandlerProps> = ({
     );
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    if (validUser === true) {
+    if (validUser) {
       navigate('/onboarding');
     } else {
-      console.log('manage context error', validUser, validUser);
+      console.log('manage context error', validUser);
       navigate(
         `/errore${
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment

@@ -1,134 +1,159 @@
 <!DOCTYPE html>
 <html lang="it">
-	<head>
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<title>Accedi Con SPID - Errore</title>
-		<meta name="description" content="Accedi con SPID - Errore">
-		<link rel="stylesheet" href="{{ static }}spid/bootstrap-italia.css">
-		<link rel="shortcut icon" href="{{ static }}spid/favicon-32x32.png">
-		<link type="text/css" rel="stylesheet" href="{{ static }}spid/spid-sp-access-button.css">
-		<link type="text/css" rel="stylesheet" href="{{ static }}spid/spid-sp-access-button.css">
-		<link type="text/css" rel="stylesheet" href="{{ static }}css/global.css">
-	  </head>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>Accedi Con SPID - Errore</title>
+    <meta name="description" content="Accedi con SPID - Errore" />
+    <link rel="stylesheet" href="{{ static }}spid/bootstrap-italia.css" />
+    <link rel="shortcut icon" href="{{ static }}spid/favicon-32x32.png" />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="{{ static }}spid/spid-sp-access-button.css"
+    />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="{{ static }}spid/spid-sp-access-button.css"
+    />
+    <link type="text/css" rel="stylesheet" href="{{ static }}css/global.css" />
+  </head>
   <body>
-  <div class="py-3 primary-bg"></div>
-  <!-- Container - Body of page-->
-  <div class="main-body">
-    <div class="container">
-      <div class="col-12 py-md-5 bd-content">
-        <a
-          href="https://facilita.repubblicadigitale.gov.it"
-          target="_blank"
-          style="text-decoration: none"
-        >
-          <div class="w-100 mb-5 text-center text-primary">
-            <h1 style="margin-bottom: 0">Facilita</h1>
-            <p>La piattaforma dei servizi di facilitazione digitale</p>
-          </div>
-        </a>
-      </div>
-
-
+    <div class="py-3 primary-bg"></div>
     <!-- Container - Body of page-->
     <div class="main-body">
       <div class="container">
-	{%  block container %} {% endblock %}
+        <div class="col-12 py-md-5 bd-content">
+          <a
+            href="https://facilita.repubblicadigitale.gov.it"
+            target="_blank"
+            style="text-decoration: none"
+          >
+            <div class="w-100 mb-5 text-center text-primary">
+              <h1 style="margin-bottom: 0">Facilita</h1>
+              <p>La piattaforma dei servizi di facilitazione digitale</p>
+            </div>
+          </a>
+        </div>
       </div>
     </div>
 
-      <!-- Footer -->
-      <footer class="footer w-100 primary-bg-a10">
-        <div
-          class="footer-content container d-flex align-items-center py-3 flex-wrap"
-        >
-          <div class="footer-content-partner d-flex flex-grow-1 pb-4">
-            <div class="d-flex flex-nowrap w-100">
-              <a
-                aria-label="repubblica digitale"
-                href="https://repubblicadigitale.innovazione.gov.it/it/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <img alt="repubblica digitale" src="assets/logo-rd-white.png" />
-              </a>
-              <a
-                aria-label="dipartimento per la trasformazione digitale"
-                href="https://innovazione.gov.it/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <img
-                  alt="dipartimento per la trasformazione digitale"
-                  src="assets/mitd-logo_tmp.png"
-                />
-              </a>
-              <a
-                aria-label="servizio civile digitale"
-                href="https://www.scelgoilserviziocivile.gov.it/cerca-il-progetto/servizio-civile-digitale/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <img
-                  alt="servizio civile digitale"
-                  src="assets/logo-dpgscu.png"
-                />
-              </a>
-              <a
-                aria-label="finanziato dall'unione europea"
-                href="https://ec.europa.eu/info/index_it"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <img
-                  alt="finanziato dall'unione europea"
-                  src="assets/logo-eu-pnrr-white.png"
-                />
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="sub-footer-container w-100 py-3 d-flex">
-          <div class="container">
-            <div>
-              <a href="https://facilita.repubblicadigitale.gov.it/legal#note" target="_blank" class="mr-5"> Note legali </a>
-              <a href="https://facilita.repubblicadigitale.gov.it/legal#cookie" target="_blank" class="mr-5">
-                Cookie policy
-              </a>
-              <a href="https://facilita.repubblicadigitale.gov.it/dichiarazione-accessibilita" target="_blank" class="mr-5">
-                Dichiarazione d&apos;accessibilità
-                <img
-                  alt="external link"
-                  src="assets/icon-external-link-white.png"
-                  class="pb-1 ml-1"
-                />
-              </a>
-              <a
-                href="https://italiadomani.gov.it/it/home.html"
-                target="_blank"
-                rel="noreferrer"
-                class="mr-5 put-right"
-              >
-                Italia domani
-                <img
-                  alt="external link"
-                  src="assets/icon-external-link-white.png"
-                  class="pb-1 ml-1"
-                /> </a>
-            </div>
-          </div>
-        </div>
-      </footer>
+    <!-- Container - Body of page-->
+    <div class="main-body">
+      <div class="container">{% block container %} {% endblock %}</div>
+    </div>
 
-    <script>window.__PUBLIC_PATH__ = "{{ static }}spid/fonts"</script>
+    <!-- Footer -->
+    <footer class="footer w-100 primary-bg-a10">
+      <div
+        class="footer-content container d-flex align-items-center py-3 flex-wrap"
+      >
+        <div class="footer-content-partner d-flex flex-grow-1 pb-4">
+          <div class="d-flex flex-nowrap w-100">
+            <a
+              aria-label="repubblica digitale"
+              href="https://repubblicadigitale.innovazione.gov.it/it/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <img alt="repubblica digitale" src="assets/logo-rd-white.png" />
+            </a>
+            <a
+              aria-label="dipartimento per la trasformazione digitale"
+              href="https://innovazione.gov.it/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <img
+                alt="dipartimento per la trasformazione digitale"
+                src="assets/mitd-logo_tmp.png"
+              />
+            </a>
+            <a
+              aria-label="servizio civile digitale"
+              href="https://www.scelgoilserviziocivile.gov.it/cerca-il-progetto/servizio-civile-digitale/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <img
+                alt="servizio civile digitale"
+                src="assets/logo-dpgscu.png"
+              />
+            </a>
+            <a
+              aria-label="finanziato dall'unione europea"
+              href="https://ec.europa.eu/info/index_it"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <img
+                alt="finanziato dall'unione europea"
+                src="assets/logo-eu-pnrr-white.png"
+              />
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="sub-footer-container w-100 py-3 d-flex">
+        <div class="container">
+          <div>
+            <a
+              href="https://facilita.repubblicadigitale.gov.it/legal#note"
+              target="_blank"
+              class="mr-5"
+            >
+              Note legali
+            </a>
+            <a
+              href="https://facilita.repubblicadigitale.gov.it/legal#cookie"
+              target="_blank"
+              class="mr-5"
+            >
+              Cookie policy
+            </a>
+            <a
+              href="https://facilita.repubblicadigitale.gov.it/dichiarazione-accessibilita"
+              target="_blank"
+              class="mr-5"
+            >
+              Dichiarazione d&apos;accessibilità
+              <img
+                alt="external link"
+                src="assets/icon-external-link-white.png"
+                class="pb-1 ml-1"
+              />
+            </a>
+            <a
+              href="https://italiadomani.gov.it/it/home.html"
+              target="_blank"
+              rel="noreferrer"
+              class="mr-5 put-right"
+            >
+              Italia domani
+              <img
+                alt="external link"
+                src="assets/icon-external-link-white.png"
+                class="pb-1 ml-1"
+              />
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      window.__PUBLIC_PATH__ = '{{ static }}spid/fonts';
+    </script>
     <script src="{{ static }}spid/bootstrap-italia.js"></script>
 
     <script src="{{ static }}spid/spid-sp-access-button.js"></script>
     <script src="{{ static }}spid/spid_button.js"></script>
 
     {% block extra_scripts %} {% endblock %}
-
   </body>
 </html>
-
