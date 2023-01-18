@@ -455,7 +455,7 @@ jobs:
             exit 1
           fi
 
-      - uses: azure/setup-kubectl@v3.0
+      - uses: azure/setup-kubectl@v3.2
         with:
           version: 'v1.23.6' # default is latest stable
         id: install
