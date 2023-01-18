@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.19.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.18.0...1.19.0) (2023-01-18)
+
+
+### Features
+
+* **test:** env activation ([cecdadd](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/cecdadd9ab6bd75b9fbbfe0185e9d91644210df7))
+
 ## [1.18.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.17.1...1.18.0) (2023-01-17)
 
 
