@@ -652,30 +652,25 @@ const ProgramsDetails: React.FC = () => {
   }, [activeTab]);
 
   const centerActiveItem = () => {
+    const baseConfig: {
+      block: ScrollLogicalPosition;
+      inline: ScrollLogicalPosition;
+    } = { block: 'center', inline: 'center' };
     switch (activeTab) {
       case tabs.INFO:
-        infoRef.current?.scrollIntoView({ block: 'center', inline: 'center' });
+        infoRef.current?.scrollIntoView(baseConfig);
         break;
       case tabs.ENTE:
-        gestoreRef.current?.scrollIntoView({
-          block: 'center',
-          inline: 'center',
-        });
+        gestoreRef.current?.scrollIntoView(baseConfig);
         break;
       case tabs.QUESTIONARI:
-        questionariRef.current?.scrollIntoView({
-          block: 'center',
-          inline: 'center',
-        });
+        questionariRef.current?.scrollIntoView(baseConfig);
         break;
       case tabs.PROGETTI:
-        projectRef.current?.scrollIntoView({
-          block: 'center',
-          inline: 'center',
-        });
+        projectRef.current?.scrollIntoView(baseConfig);
         break;
       default:
-        infoRef.current?.scrollIntoView({ block: 'center', inline: 'center' });
+        infoRef.current?.scrollIntoView(baseConfig);
         break;
     }
   };
@@ -942,7 +937,11 @@ const ProgramsDetails: React.FC = () => {
   ]);
 
   const nav = (
-    <Nav tabs className='mb-5 overflow-hidden' role='menu'>
+    <Nav
+      tabs
+      className={clsx('mb-5', !device.mediaIsPhone && 'overflow-hidden')}
+      role='menu'
+    >
       <li ref={infoRef} role='none'>
         <NavLink
           to={`/area-amministrativa/programmi/${entityId}/${tabs.INFO}`}

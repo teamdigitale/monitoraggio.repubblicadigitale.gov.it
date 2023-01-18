@@ -9,7 +9,7 @@
     <title>Accedi Con SPID</title>
     <meta name="description" content="Accedi con SPID" />
     <link rel="stylesheet" href="spid/bootstrap-italia.css" />
-    <link rel="shortcut icon" href="spid/favicon-32x32.png" />
+    <link rel="shortcut icon" href="spid/favicon-32x32.ico" />
     <link
       type="text/css"
       rel="stylesheet"
@@ -25,142 +25,95 @@
   </head>
   <body>
     <div class="py-3 primary-bg"></div>
-    <div class="container">
-      <div class="col-12 py-5 bd-content">
-        <a
-          href="https://facilita.repubblicadigitale.gov.it"
-          target="_blank"
-          style="text-decoration: none"
-        >
-          <div class="w-100 mb-5 text-center text-primary">
-            <h1 style="margin-bottom: 0">Facilita</h1>
-            <p>La piattaforma dei servizi di facilitazione digitale</p>
-          </div>
-        </a>
-        <div class="login-form shadow mx-auto">
-          <h3 class="mb-3">Accedi a Facilita:</h3>
-          <ul class="nav nav-tabs flex-column flex-sm-row flex-sm-nowrap">
-            <li class="nav-item text-sm-center">
-              <a
-                href="#tab-spid"
-                class="nav-link h-100 active"
-                data-toggle="tab"
-                aria-controls="tab-spid"
-                aria-expanded="false"
-              >
-                <img
-                  src="assets/user-circle-spid-not-active.png"
-                  alt="img user spid"
-                  class="mr-2"
-                  style="width: 16px; height: 16px"
-                />
-                <img
-                  src="assets/user-circle-spid.png"
-                  alt="img user spid"
-                  class="mr-2"
-                  style="width: 16px; height: 16px"
-                />SPID</a
-              >
-            </li>
-            <li class="nav-item text-sm-center">
-              <a
-                href="#tab-cie"
-                class="nav-link h-100"
-                data-toggle="tab"
-                aria-controls="tab-cie"
-                aria-expanded="false"
-              >
-                <img
-                  src="assets/address-card-cie-not-active.png"
-                  alt="img card cie"
-                  class="mr-2"
-                  style="width: 18px; height: 16px"
-                />
-                <img
-                  src="assets/address-card-cie.png"
-                  alt="img card cie"
-                  class="mr-2"
-                  style="width: 18px; height: 16px"
-                />CIE</a
-              >
-            </li>
-          </ul>
-          <div class="tab-content">
-            <div id="tab-spid" class="tab-pane fade active show">
-              <p>
-                SPID, il <strong>Sistema Pubblico di Identità Digitale</strong>,
-                è il sistema di accesso che consente di utilizzare, con
-                un'identità digitale unica, i servizi online della Pubblica
-                Amministrazione e dei privati accreditati. Se sei già in
-                possesso di un'identità digitale, accedi con le credenziali del
-                tuo gestore. Se non hai ancora un'identità digitale, richiedila
-                ad uno dei gestori.
-              </p>
-              <div class="row align-items-center">
-                <div class="col-12 col-md-6">
-                  <ul class="px-1" style="list-style: none">
-                    <li class="mb-1">
-                      <a href="https://www.spid.gov.it" target="_blank"
-                        >Maggiori informazioni su SPID</a
-                      >
-                    </li>
-                    <li class="mb-1">
-                      <a
-                        href="https://www.spid.gov.it/richiedi-spid"
-                        target="_blank"
-                        >Non hai SPID?</a
-                      >
-                    </li>
-                    <li class="mb-1">
-                      <a
-                        href="https://www.spid.gov.it/serve-aiuto"
-                        target="_blank"
-                        >Serve aiuto?</a
-                      >
-                    </li>
-                  </ul>
-                </div>
-                <div class="col-12 col-md-6 text-center">
-                  <!-- AGID - SPID IDP BUTTON SMALL "ENTRA CON SPID" * begin * -->
-                  <a
-                    href="#"
-                    class="italia-it-button italia-it-button-size-m button-spid"
-                    spid-idp-button="#spid-idp-button-medium-post"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    <span class="italia-it-button-icon"
-                      ><img
-                        src="spid/spid-ico-circle-bb.svg"
-                        onerror="this.src='img/spid-ico-circle-bb.png'; this.onerror=null;"
-                        alt=""
-                    /></span>
-                    <span class="italia-it-button-text button-text"
-                      >Entra con SPID</span
-                    >
-                  </a>
-                  <div
-                    id="spid-idp-button-medium-post"
-                    class="spid-idp-button spid-idp-button-tip spid-idp-button-relative"
-                  >
-                    <ul
-                      id="spid-idp-list-medium-root-get"
-                      class="spid-idp-button-menu"
-                      aria-label="spid idp list"
-                    >
-                      <li class="spid-idp-support-link">
-                        <a href="https://www.spid.gov.it/" target="_blank"
-                          >Maggiori informazioni</a
+    <!-- Container - Body of page-->
+    <div class="main-body">
+      <div class="container">
+        <div class="col-12 py-5 bd-content">
+          <a
+            href="https://facilita.repubblicadigitale.gov.it"
+            style="text-decoration: none"
+          >
+            <div class="w-100 mb-5 text-center text-primary">
+              <h1 style="margin-bottom: 0">Facilita</h1>
+              <p>La piattaforma dei servizi di facilitazione digitale</p>
+            </div>
+          </a>
+          <div class="login-form shadow mx-auto">
+            <h3 class="mb-3">Accedi a Facilita:</h3>
+            <ul class="nav nav-tabs flex-column flex-sm-row flex-sm-nowrap">
+              <li class="nav-item text-sm-center">
+                <a
+                  href="#tab-spid"
+                  class="nav-link h-100 active"
+                  data-toggle="tab"
+                  aria-controls="tab-spid"
+                  aria-expanded="false"
+                >
+                  <img
+                    src="assets/user-circle-spid-not-active.png"
+                    alt="img user spid"
+                    class="mr-2"
+                    style="width: 16px; height: 16px"
+                  />
+                  <img
+                    src="assets/user-circle-spid.png"
+                    alt="img user spid"
+                    class="mr-2"
+                    style="width: 16px; height: 16px"
+                  />SPID</a
+                >
+              </li>
+              <li class="nav-item text-sm-center">
+                <a
+                  href="#tab-cie"
+                  class="nav-link h-100"
+                  data-toggle="tab"
+                  aria-controls="tab-cie"
+                  aria-expanded="false"
+                >
+                  <img
+                    src="assets/address-card-cie-not-active.png"
+                    alt="img card cie"
+                    class="mr-2"
+                    style="width: 18px; height: 16px"
+                  />
+                  <img
+                    src="assets/address-card-cie.png"
+                    alt="img card cie"
+                    class="mr-2"
+                    style="width: 18px; height: 16px"
+                  />CIE</a
+                >
+              </li>
+            </ul>
+            <div class="tab-content">
+              <div id="tab-spid" class="tab-pane fade active show">
+                <p>
+                  SPID, il
+                  <strong>Sistema Pubblico di Identità Digitale</strong>, è il
+                  sistema di accesso che consente di utilizzare, con un'identità
+                  digitale unica, i servizi online della Pubblica
+                  Amministrazione e dei privati accreditati. Se sei già in
+                  possesso di un'identità digitale, accedi con le credenziali
+                  del tuo gestore. Se non hai ancora un'identità digitale,
+                  richiedila ad uno dei gestori.
+                </p>
+                <div class="row align-items-center">
+                  <div class="col-12 col-md-6">
+                    <ul class="px-1" style="list-style: none">
+                      <li class="mb-1">
+                        <a href="https://www.spid.gov.it" target="_blank"
+                          >Maggiori informazioni su SPID</a
                         >
                       </li>
-                      <li class="spid-idp-support-link">
+                      <li class="mb-1">
                         <a
                           href="https://www.spid.gov.it/richiedi-spid"
                           target="_blank"
                           >Non hai SPID?</a
                         >
                       </li>
-                      <li class="spid-idp-support-link">
+                      <li class="mb-1">
                         <a
                           href="https://www.spid.gov.it/serve-aiuto"
                           target="_blank"
@@ -169,42 +122,92 @@
                       </li>
                     </ul>
                   </div>
-                  <!-- AGID - SPID IDP BUTTON SMALL "ENTRA CON SPID" * end * -->
+                  <div class="col-12 col-md-6 text-center">
+                    <!-- AGID - SPID IDP BUTTON SMALL "ENTRA CON SPID" * begin * -->
+                    <a
+                      href="#"
+                      class="italia-it-button italia-it-button-size-m button-spid"
+                      spid-idp-button="#spid-idp-button-medium-post"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    >
+                      <span class="italia-it-button-icon"
+                        ><img
+                          src="spid/spid-ico-circle-bb.svg"
+                          onerror="this.src='img/spid-ico-circle-bb.png'; this.onerror=null;"
+                          alt=""
+                      /></span>
+                      <span class="italia-it-button-text button-text"
+                        >Entra con SPID</span
+                      >
+                    </a>
+                    <div
+                      id="spid-idp-button-medium-post"
+                      class="spid-idp-button spid-idp-button-tip spid-idp-button-relative"
+                    >
+                      <ul
+                        id="spid-idp-list-medium-root-get"
+                        class="spid-idp-button-menu"
+                        aria-label="spid idp list"
+                      >
+                        <li class="spid-idp-support-link">
+                          <a href="https://www.spid.gov.it/" target="_blank"
+                            >Maggiori informazioni</a
+                          >
+                        </li>
+                        <li class="spid-idp-support-link">
+                          <a
+                            href="https://www.spid.gov.it/richiedi-spid"
+                            target="_blank"
+                            >Non hai SPID?</a
+                          >
+                        </li>
+                        <li class="spid-idp-support-link">
+                          <a
+                            href="https://www.spid.gov.it/serve-aiuto"
+                            target="_blank"
+                            >Serve aiuto?</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                    <!-- AGID - SPID IDP BUTTON SMALL "ENTRA CON SPID" * end * -->
+                  </div>
+                </div>
+                <div id="logo-row" class="text-center">
+                  <img
+                    src="spid/spid-agid-logo-lb.png"
+                    alt="logo SPID e AGID"
+                    class="img-width"
+                  />
                 </div>
               </div>
-              <div id="logo-row" class="text-center">
-                <img
-                  src="spid/spid-agid-logo-lb.png"
-                  alt="logo SPID e AGID"
-                  class="img-width"
-                />
-              </div>
-            </div>
-            <div id="tab-cie" class="tab-pane fade" role="tabpanel">
-              <p>
-                La <strong>Carta di Identità Elettronica (CIE)</strong> è il
-                documento personale che attesta l'identità del cittadino.
-                <br />Dotata di microprocessore, oltre a comprovare l'identità
-                personale, permette l'accesso ai servizi digitali della Pubblica
-                Amministrazione.
-              </p>
-              <div class="row justify-content-center text-center mt-5">
-                <!-- AGID - eIDAS IDP BUTTON SMALL "ENTRA CON CIE" * begin * -->
-                <a
-                  href="https://satosa-be.facilitazione-test.repubblicadigitale.gov.it/cieSaml2/disco?entityID=https://idserver.servizicie.interno.gov.it/idp/profile/SAML2/POST/SSO&return=https://sso.isprambiente.it/Saml2/disco"
-                  class="italia-it-button italia-it-button-size-m button-eidas"
-                  eidas-idp-button="#eidas-idp-button-medium-post"
-                  aria-haspopup="false"
-                  aria-expanded="false"
-                >
-                  <span class="italia-it-button-icon"
-                    ><img src="cie/cie_white.svg" alt="Logo CIE"
-                  /></span>
-                  <span class="italia-it-button-text button-text"
-                    >Entra con CIE</span
+              <div id="tab-cie" class="tab-pane fade" role="tabpanel">
+                <p>
+                  La <strong>Carta di Identità Elettronica (CIE)</strong> è il
+                  documento personale che attesta l'identità del cittadino.
+                  <br />Dotata di microprocessore, oltre a comprovare l'identità
+                  personale, permette l'accesso ai servizi digitali della
+                  Pubblica Amministrazione.
+                </p>
+                <div class="row justify-content-center text-center mt-5">
+                  <!-- AGID - eIDAS IDP BUTTON SMALL "ENTRA CON CIE" * begin * -->
+                  <a
+                    href="https://satosa-be.facilitazione-test.repubblicadigitale.gov.it/cieSaml2/disco?entityID=https://idserver.servizicie.interno.gov.it/idp/profile/SAML2/POST/SSO&return=https://sso.isprambiente.it/Saml2/disco"
+                    class="italia-it-button italia-it-button-size-m button-eidas"
+                    eidas-idp-button="#eidas-idp-button-medium-post"
+                    aria-haspopup="false"
+                    aria-expanded="false"
                   >
-                </a>
-                <!-- AGID - eIDAS IDP BUTTON SMALL "ENTRA CON CIE" * end * -->
+                    <span class="italia-it-button-icon"
+                      ><img src="cie/cie_white.svg" alt="Logo CIE"
+                    /></span>
+                    <span class="italia-it-button-text button-text"
+                      >Entra con CIE</span
+                    >
+                  </a>
+                  <!-- AGID - eIDAS IDP BUTTON SMALL "ENTRA CON CIE" * end * -->
+                </div>
               </div>
             </div>
           </div>

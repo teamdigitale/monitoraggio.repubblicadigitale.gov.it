@@ -32,6 +32,7 @@ export interface PageTitleI {
   HTMLsubtitle?: string;
   defaultOpen?: boolean;
   lastUpdate?: string | null;
+  isSurveyList?: boolean;
 }
 
 const PageTitle: React.FC<PageTitleI> = (props) => {
@@ -47,6 +48,7 @@ const PageTitle: React.FC<PageTitleI> = (props) => {
     innerHTML,
     HTMLsubtitle = '',
     defaultOpen = false,
+    isSurveyList = false,
   } = props;
 
   const [sectionInfoOpened, setSectionInfoOpened] =
@@ -189,6 +191,7 @@ const PageTitle: React.FC<PageTitleI> = (props) => {
             setIsOpen={(value) => {
               setSectionInfoOpened(value);
             }}
+            isSurveyList={isSurveyList}
           />
         ) : null}
         {badge ? (
