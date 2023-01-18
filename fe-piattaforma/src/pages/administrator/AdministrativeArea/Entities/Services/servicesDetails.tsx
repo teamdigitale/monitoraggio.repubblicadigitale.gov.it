@@ -21,7 +21,10 @@ import {
   openModal,
 } from '../../../../../redux/features/modal/modalSlice';
 import { formTypes } from '../utils';
-import { setInfoIdsBreadcrumb } from '../../../../../redux/features/app/appSlice';
+import {
+  selectDevice,
+  setInfoIdsBreadcrumb,
+} from '../../../../../redux/features/app/appSlice';
 import { Nav, NavItem } from 'design-react-kit';
 import { NavLink } from '../../../../../components';
 import ManageServices from '../modals/manageService';
@@ -68,6 +71,7 @@ const ServicesDetails = () => {
   const idQuestionarioTemplate = useAppSelector(
     selectQuestionarioTemplateSnapshot
   )?.idQuestionarioTemplate;
+  const device = useAppSelector(selectDevice);
 
   useEffect(() => {
     // For breadcrumb
@@ -292,7 +296,11 @@ const ServicesDetails = () => {
   };
 
   const nav = (
-    <Nav tabs className='mb-5 overflow-hidden' role='menu'>
+    <Nav
+      tabs
+      className={clsx('mb-5', !device.mediaIsPhone && 'overflow-hidden')}
+      role='menu'
+    >
       <NavItem role='none'>
         <span ref={dettagliRef}>
           <NavLink

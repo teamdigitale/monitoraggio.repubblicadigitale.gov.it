@@ -29,17 +29,21 @@
 }
 
 .text-primary-action {
-  color: #0066CC !important;
+  color: #0066cc !important;
 }
 
 .text-secondary-action {
-  color: #ADB2B8 !important;
+  color: #adb2b8 !important;
+  color: #768594 !important;
+}
+.icon-disabled {
+  fill: #768594 !important;
 }
 
 .title {
   position: relative;
   width: fit-content;
-  
+
   .badge {
     min-width: 20px;
     font-size: 12px;

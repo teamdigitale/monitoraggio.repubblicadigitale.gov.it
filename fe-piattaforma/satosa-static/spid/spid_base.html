@@ -9,19 +9,19 @@
     />
     <title>Accedi Con SPID - Errore</title>
     <meta name="description" content="Accedi con SPID - Errore" />
-    <link rel="stylesheet" href="spid/bootstrap-italia.css" />
-    <link rel="shortcut icon" href="spid/favicon-32x32.ico" />
+    <link rel="stylesheet" href="{{ static }}spid/bootstrap-italia.css" />
+    <link rel="shortcut icon" href="{{ static }}spid/favicon-32x32.png" />
     <link
       type="text/css"
       rel="stylesheet"
-      href="spid/spid-sp-access-button.css"
+      href="{{ static }}spid/spid-sp-access-button.css"
     />
     <link
       type="text/css"
       rel="stylesheet"
-      href="spid/spid-sp-access-button.css"
+      href="{{ static }}spid/spid-sp-access-button.css"
     />
-    <link type="text/css" rel="stylesheet" href="css/global.css" />
+    <link type="text/css" rel="stylesheet" href="{{ static }}css/global.css" />
   </head>
   <body>
     <div class="py-3 primary-bg"></div>
@@ -31,6 +31,7 @@
         <div class="col-12 py-md-5 bd-content">
           <a
             href="https://facilita.repubblicadigitale.gov.it"
+            target="_blank"
             style="text-decoration: none"
           >
             <div class="w-100 mb-5 text-center text-primary">
@@ -38,57 +39,15 @@
               <p>La piattaforma dei servizi di facilitazione digitale</p>
             </div>
           </a>
-          <h3 class="mb-4 ml-2">AuthProxy Error Page</h3>
-          <div class="card-wrapper card-space">
-            <div class="card card-bg no-after">
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-sm">
-                    <ul
-                      class="list-group list-group-flush"
-                      style="padding-left: 0"
-                    >
-                      <li class="mt-2 list-group-item">
-                        <p></p>
-                        <p>Dear User,</p>
-                        <p>
-                          There has been an exception in managing your
-                          Authentication flow. This cannot depend on your
-                          credentials, otherwise it would have been the page
-                          where you entered these to provide you with a Failed
-                          Authentication notice.
-                        </p>
-                        <p>
-                          The problem you have encountered has been communicated
-                          in real time to the platform administrators, in the
-                          event that it was a temporary problem we ask you to:
-                        </p>
-                        <p>
-                          - Try to authenticate again, starting from the page of
-                          the service provider website;<br />
-                          - If the problem occurs again, wait a few minutes and
-                          try again;<br />
-                          - If the problem persists for more than 1 hour, we ask
-                          you to open a support ticket at
-                          https://ticket.example.org
-                        </p>
-                        <p>
-                          In most cases, it is a temporary problem that arose
-                          following an update of the platforms in progress, an
-                          advancement of the software version or a server
-                          migration.
-                        </p>
-                        <p></p>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
+
+    <!-- Container - Body of page-->
+    <div class="main-body">
+      <div class="container">{% block container %} {% endblock %}</div>
+    </div>
+
     <!-- Footer -->
     <footer class="footer w-100 primary-bg-a10">
       <div
@@ -186,10 +145,15 @@
         </div>
       </div>
     </footer>
+
     <script>
-      window.__PUBLIC_PATH__ = 'spid/fonts';
+      window.__PUBLIC_PATH__ = '{{ static }}spid/fonts';
     </script>
-    <script src="spid/bootstrap-italia.js"></script>
-    <script src="spid/spid-sp-access-button.js"></script>
+    <script src="{{ static }}spid/bootstrap-italia.js"></script>
+
+    <script src="{{ static }}spid/spid-sp-access-button.js"></script>
+    <script src="{{ static }}spid/spid_button.js"></script>
+
+    {% block extra_scripts %} {% endblock %}
   </body>
 </html>
