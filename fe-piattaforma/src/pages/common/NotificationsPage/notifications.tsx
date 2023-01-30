@@ -142,7 +142,7 @@ const Notifications: React.FC = () => {
                     size='sm'
                     aria-label='Elimina'
                     aria-hidden
-                    className='mr-1'
+                    className='mr-1 icon-disabled'
                   />
                 </Button>
               </div>
