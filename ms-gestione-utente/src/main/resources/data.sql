@@ -1,6 +1,7 @@
 -- CREAZIONE PERMESSI
 insert into permesso (CODICE, DESCRIZIONE) values('AAA', 'prova permesso 1');
 insert into permesso (CODICE, DESCRIZIONE) values('BBB', 'prova permesso 2');
+insert into permesso (CODICE, DESCRIZIONE) values('CCC', 'prova permesso 3');
 
 
 
