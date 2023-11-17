@@ -44,54 +44,22 @@ export const GetAllServices =
         administrativeArea: { filters, pagination },
       } = select((state: RootState) => state);
       const queryParamFilters = transformFiltersToQueryParams(filters);
-      const entityEndpoint = `${process?.env?.QUESTIONARIO_CITTADINO}/servizio/all${queryParamFilters}`;
+      const entityEndpoint = `/servizio/all${queryParamFilters}`;
       const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
         getUserHeaders();
       const body = {
-        cfUtenteLoggato: codiceFiscale,
+        codiceFiscaleUtenteLoggato: codiceFiscale,
         codiceRuoloUtenteLoggato: codiceRuolo,
         idProgetto,
         idProgramma,
         idEnte,
       };
-      /*const res = await API.post(entityEndpoint, body, {
+      const res = await API.post(entityEndpoint, body, {
         params: {
           currPage: Math.max(0, pagination.pageNumber - 1),
           pageSize: pagination.pageSize,
         },
-      });*/
-      const res = {
-        data: {
-          "numeroPagine": 1,
-          "numeroTotaleElementi": 3,
-          "servizi": [
-            {
-              "data": "2022-06-27T12:49:26.762Z",
-              "facilitatore": "Simone Viola",
-              "id": "1",
-              "nome": "Nome Servizio 1",
-              "stato": "ATTIVO",
-              "tipologiaServizio": "Facilitazione"
-            },
-            {
-              "data": "2022-06-27T12:49:26.762Z",
-              "facilitatore": "Paola Neri",
-              "id": "2",
-              "nome": "Nome Servizio 2",
-              "stato": "ATTIVO",
-              "tipologiaServizio": "Formazione in presenza"
-            },
-            {
-              "data": "2022-06-27T12:49:26.762Z",
-              "facilitatore": "Sofia Bianchi",
-              "id": "3",
-              "nome": "Nome Servizio 3",
-              "stato": "ATTIVO",
-              "tipologiaServizio": "Formazione online"
-            }
-          ]
-        }
-      }      
+      });
       if (res?.data) {
         dispatch(setServicesList({ data: res.data.servizi || [] }));
         dispatch(
@@ -116,47 +84,12 @@ export const GetServicesDetail =
     try {
       dispatch(showLoader());
       dispatch({ ...GetServicesDetailAction, id });
-      //const { idProgramma, idProgetto, idEnte } = getUserHeaders();
-      /*const res = await API.post(`${process?.env?.QUESTIONARIO_CITTADINO}/servizio/${id}/schedaDettaglio`, {
+      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
+      const res = await API.post(`/servizio/${id}/schedaDettaglio`, {
         idProgramma,
         idProgetto,
         idEnte,
-      });*/
-      const res = {
-        "data": {
-          "dettaglioServizio": {
-            "nomeEnte": "nome ente",
-            "nomeSede": "nome sede",
-            "nomeServizio": "servizio",
-            "sezioneQ3compilato": {
-              "dataOraCreazione": "2022-07-07T09:01:45.308Z",
-              "dataOraUltimoAggiornamento": "2022-07-07T09:01:45.308Z",
-              "id": "1",
-              "mongoId": "string",
-              "sezioneQ1Compilato": "{'id':'anagraphic-service-section','title':'Anagrafica del servizio','properties':[{'22':['2022-07-24'],'23':['10:00'],'24':['18:00'],'25':['Facilitazione'],'26':['Comunicazione e collaborazione'],'27':['Interagire attraverso le tecnologie digitali'],'28':['test'],'29':['dettagli']}']}",
-              "sezioneQ3Compilato": "{'id':'anagraphic-service-section','title':'Anagrafica del servizio','properties':[{'22':['2022-07-24'],'23':['10:00'],'24':['18:00'],'25':['Facilitazione'],'26':['Comunicazione e collaborazione'],'27':['Interagire attraverso le tecnologie digitali'],'28':['test'],'29':['dettagli']}']}"
-            },
-            "tipologiaServizio": "tipo servizio"
-          },
-          "progettiAssociatiAlServizio": [
-            {
-              "id": 1,
-              "nomeBreve": "progetto 1",
-              "stato": "NON ATTIVO"
-            },
-            {
-              "id": 2,
-              "nomeBreve": "progetto 2",
-              "stato": "NON ATTIVO"
-            },
-            {
-              "id": 3,
-              "nomeBreve": "progetto 3",
-              "stato": "NON ATTIVO"
-            }
-          ]
-        }
-      }      
+      });
       if (res?.data) {
         dispatch(setServicesDetail(res.data));
       }
@@ -190,7 +123,6 @@ export const GetCitizenListServiceDetail =
         idProgramma,
         idEnte,
       };
-      console.log(body)
       let queryParamFilters = transformFiltersToQueryParams(filters);
       if (pagination) {
         queryParamFilters =
@@ -198,28 +130,10 @@ export const GetCitizenListServiceDetail =
             ? '?currPage=0&pageSize=1000'
             : queryParamFilters + '&currPage=0&pageSize=1000';
       }
-      console.log(queryParamFilters)
-      /*const res = await API.post(
-        `${process?.env?.QUESTIONARIO_CITTADINO}/cittadino/all/${idServizio}${queryParamFilters}`,
+      const res = await API.post(
+        `/servizio/cittadino/all/${idServizio}${queryParamFilters}`,
         body
-      );*/
-      const res = {
-        "data": {
-          "numeroCittadini": 0,
-          "numeroPagine": 0,
-          "numeroQuestionariCompilati": 0,
-          "servizi": [
-            {
-              "codiceFiscale": "string",
-              "cognome": "Rossi",
-              "idCittadino": 0,
-              "idQuestionario": "1",
-              "nome": "Nino",
-              "statoQuestionario": "INVIATO"
-            }
-          ]
-        }
-      }      
+      );
       if (res?.data) {
         dispatch(setServicesDetailCitizenList(res.data));
       }
@@ -437,14 +351,12 @@ export const AssociateCitizenToService =
     try {
       dispatch({ ...AssociateCitizenToServiceAction });
       dispatch(showLoader());
-      const { idProgramma, idProgetto, idEnte, codiceFiscale, codiceRuolo } = getUserHeaders();
+      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
       const res = await API.post(`/servizio/cittadino/${payload.idServizio}`, {
         ...payload.body,
         idProgramma,
         idProgetto,
         idEnte,
-        cfUtenteLoggato: codiceFiscale,
-        codiceRuoloUtenteLoggato: codiceRuolo
       });
       if (res) {
         return true;

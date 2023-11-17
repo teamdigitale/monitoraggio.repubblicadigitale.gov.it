@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Input, PrefixPhone, Select } from '../../../components';
 import CheckboxGroup from '../../../components/Form/checkboxGroup';
 import { OptionType } from '../../../components/Form/select';
@@ -12,18 +12,14 @@ import { selectEntityDetail } from '../../../redux/features/citizensArea/citizen
 import { useAppSelector } from '../../../redux/hooks';
 import { formatDate } from '../../../utils/datesHelper';
 import {
-  CommonFields,
   formFieldI,
   FormHelper,
   FormI,
   newForm,
-  newFormField,
 } from '../../../utils/formHelper';
 import { generateForm } from '../../../utils/jsonFormHelper';
 import { RegexpType } from '../../../utils/validator';
 import { FormCitizenI } from '../formCitizen';
-import { citizenFormDropdownOptions } from '../constantsFormCitizen';
-import { mappaMesi } from '../../../consts/monthsMapForFiscalCode';
 
 interface FormEnteGestoreProgettoFullInterface
   extends withFormHandlerProps,
@@ -39,17 +35,13 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
     sendNewValues = () => ({}),
     // isValidForm,
     setIsFormValid = () => ({}),
-    getFormValues = () => ({}),
+    getFormValues,
     updateForm = () => ({}),
-    searchValue,
     creation = false,
     legend = '',
   } = props;
 
   // const device = useAppSelector(selectDevice);
-  if(form && form['3'] && searchValue?.type === 'numeroDoc') {
-    form['3'].required = true;
-  }
   const formDisabled = !!props.formDisabled;
   const formData: {
     [key: string]: formFieldI['value'] | undefined;
@@ -132,68 +124,32 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
           newValues[key] = '$consenso';
         }
       });
-      /*if (formData?.codiceFiscale === '') {
+      if (formData?.codiceFiscale === '') {
         newValues['4'] = 'Codice fiscale non disponibile';
         handleCheckboxChange('Codice fiscale non disponibile', '4');
-      }*/
+      }
       setFormValues(newValues);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData]);
 
-  /*const handleCheckboxChange = (
+  const handleCheckboxChange = (
     value?: formFieldI['value'],
     field?: formFieldI['field']
   ) => {
     const tmpForm = FormHelper.onInputChange(form, value, field);
-    const referenceBoolean = !tmpForm[2]?.value;
-    tmpForm[1].required = referenceBoolean;
-    tmpForm[1].disabled = !referenceBoolean;
+    const referenceBoolean = !tmpForm[4]?.value;
+    tmpForm[3].required = referenceBoolean;
+    tmpForm[3].disabled = !referenceBoolean;
     if (referenceBoolean === false) {
-      tmpForm[1].valid = true;
-      tmpForm[1].value = '';
+      tmpForm[3].valid = true;
+      tmpForm[3].value = '';
     }
-    tmpForm[3].required = !referenceBoolean;
-    tmpForm[4].required = !referenceBoolean;
+    tmpForm[5].required = !referenceBoolean;
+    tmpForm[6].required = !referenceBoolean;
     updateForm(tmpForm);
-  };*/
+  };
 
-  const decodeGenderFromFiscalCode = useCallback((cf: string) =>  {
-    const mese = parseInt(cf.substring(9, 11), 10);
-    return mese <= 31 ? 'M' : 'F';
-  }, []);
-
-  const determineAgeGroup = useCallback((age: number): string => {
-    if (age >= 18 && age <= 29) {
-      return '1';
-    } else if (age >= 30 && age <= 54) {
-      return '2';
-    } else if (age >= 55 && age <= 74) {
-      return '3';
-    } else {
-      return '4';
-    }
-  }, []);
-
-  const decodeAgeFromFiscalCode = useCallback((cf: string) => {
-    const today = new Date();
-    const rangeCentury = parseInt(today.getFullYear().toString().substring(2));
-    const isFemale = cf.charAt(9) >= '4';
-    const dayOfBirth = parseInt(cf.substring(9, 11)) - (isFemale ? 40 : 0);
-    const century = parseInt(cf.substring(6, 8));
-    const yearOfBirth = (century <= rangeCentury) ? 2000 + century : 1900 + century;
-    const month = mappaMesi.get(cf.charAt(8).toUpperCase()) as number;
-    const dateOfBirth = new Date(yearOfBirth, month, dayOfBirth);
-    const age = today.getFullYear() - dateOfBirth.getFullYear();
-    if (
-      today.getMonth() < dateOfBirth.getMonth() ||
-      (today.getMonth() === dateOfBirth.getMonth() && today.getDate() < dateOfBirth.getDate())
-    ) {
-      return determineAgeGroup(age-1)
-    }
-    return determineAgeGroup(age);
-  },[determineAgeGroup])
-  
   const onInputDataChange = (
     value: formFieldI['value'],
     field?: formFieldI['field']
@@ -258,49 +214,6 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
           else return null;
         }
 
-        if(field.keyBE === 'codiceFiscale') {
-          return (
-            <Input
-              {...field}
-              id={`input-${field.field}`}
-              col={
-                  field.label && field.label?.length > 30
-                  ? 'col-12'
-                  : 'col-12 col-lg-6'
-              }
-              label={field.label}
-              type={field.type}
-              disabled={true}
-              onInputChange={onInputDataChange}
-              placeholder={`${field.label}`}
-              required={searchValue?.type === 'codiceFiscale'}
-              value={searchValue?.type === 'codiceFiscale' ? searchValue?.value : ''}
-            />
-          );
-        }
-
-        if(field.keyBE === 'numeroDocumento') {
-          return (
-            <Input
-              {...field}
-              id={`input-${field.field}`}
-              col={
-                  field.label && field.label?.length > 30
-                  ? 'col-12'
-                  : 'col-12 col-lg-6'
-              }
-              label={field.label}
-              type={field.type}
-              disabled={true}
-              onInputChange={onInputDataChange}
-              placeholder={`${field.label}`}
-              touched={true}
-              required={searchValue?.type === 'numeroDoc'}
-              value={searchValue?.type === 'numeroDoc' ? searchValue?.value : ''}
-            />
-          );
-        }
-
         return (
           <Input
             {...field}
@@ -321,61 +234,6 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
         );
       }
       case 'select': {
-        if(field.keyBE === 'tipoDocumento') {
-          return (
-            <Select
-              {...field}
-              id={`input-${field}`}
-              field={field.field}
-              label={field.label || ''}
-              col={field.field === '9' ? 'col-12' : 'col-12 col-lg-6'}
-              onInputChange={onInputDataChange}
-              placeholder={`Seleziona ${field.label?.toLowerCase()}`}
-              options={field.options}
-              required={searchValue?.type === 'numeroDoc'}
-              isDisabled={formDisabled || searchValue?.type === 'codiceFiscale'}
-              value={searchValue?.type === 'numeroDoc' ? searchValue?.value : field.value}
-              wrapperClassName='mb-5 pr-lg-3'
-            />
-          );
-        }
-
-        if(field.keyBE === 'genere') {
-          return (
-            <Select
-              {...field}
-              id={`input-${field}`}
-              field={field.field}
-              label={field.label || ''}
-              col={field.field === '9' ? 'col-12' : 'col-12 col-lg-6'}
-              onInputChange={onInputDataChange}
-              placeholder={`Seleziona ${field.label?.toLowerCase()}`}
-              options={field.options}
-              isDisabled={formDisabled || searchValue?.type === 'codiceFiscale'}
-              value={decodeGenderFromFiscalCode(searchValue?.value as string)}
-              wrapperClassName='mb-5 pr-lg-3'
-            />
-          );
-        }
-
-        if(field.keyBE === 'fasciaDiEtaId') {
-          return (
-            <Select
-              {...field}
-              id={`input-${field}`}
-              field={field.field}
-              label={field.label || ''}
-              col={field.field === '9' ? 'col-12' : 'col-12 col-lg-6'}
-              onInputChange={onInputDataChange}
-              placeholder={`Seleziona ${field.label?.toLowerCase()}`}
-              options={field.options}
-              isDisabled={formDisabled || searchValue?.type === 'codiceFiscale'}
-              value={searchValue?.type === 'codiceFiscale' ? decodeAgeFromFiscalCode(searchValue?.value as string) : ''}
-              wrapperClassName='mb-5 pr-lg-3'
-            />
-          );
-        }
-
         return (
           <Select
             {...field}
@@ -411,18 +269,16 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
                   ? 'Presa visione dell’informativa privacy'
                   : ''
               }
-              noLabel={field.keyBE === 'codiceFiscaleNonDisponibile'}
+              noLabel={field.field === '4'}
               options={
                 field.field === '18' && field.value === '$consenso'
                   ? [{ label: "Gestita dall'ente", value: '$consenso' }]
                   : field.options
               }
-              //onInputChange={handleCheckboxChange}
+              onInputChange={handleCheckboxChange}
               styleLabelForm
               classNameLabelOption='pl-5'
-              disabled={searchValue?.type !== ''}
-              value={searchValue?.type === 'numeroDoc'}
-              required={searchValue?.type === 'numeroDoc'}
+              disabled={!creation && field.field === '18'}
             />
           );
         }
@@ -463,95 +319,7 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
   );
 };
 
-const form = newForm([
-  newFormField({
-    ...CommonFields.CODICE_FISCALE,
-    keyBE: 'codiceFiscale',
-    id: '1',
-    field: '1',
-    label: 'Codice fiscale',
-    required: false
-  }),
-  newFormField({
-    keyBE: 'codiceFiscaleNonDisponibile',
-    id: '2',
-    field: '2',
-    type: 'checkbox',
-    options: citizenFormDropdownOptions['codiceFiscaleNonDisponibile'],
-    required: false,
-  }),
-  newFormField({
-    keyBE: 'tipoDocumento',
-    id: '3',
-    field: '3',
-    label: 'Tipo documento',
-    options: citizenFormDropdownOptions['tipoDocumento'],
-    type: 'select',
-    required: false,
-  }),
-  newFormField({
-    keyBE: 'numeroDocumento',
-    id: '4',
-    field: '4',
-    label: 'Numero documento',
-    type: 'text',
-    required: false,
-    regex: RegexpType.DOCUMENT_NUMBER,
-  }),
-  newFormField({
-    keyBE: 'genere',
-    id: '5',
-    field: '5',
-    label: 'Genere',
-    options: citizenFormDropdownOptions['genere'],
-    type: 'select',
-    required: false,
-  }),
-  newFormField({
-    keyBE: 'fasciaDiEtaId',
-    id: '6',
-    field: '6',
-    label: 'Fascia di età',
-    options: citizenFormDropdownOptions['fasciaDiEta'],
-    type: 'select',
-    required: true,
-  }),
-  newFormField({
-    keyBE: 'titoloDiStudio',
-    id: '7',
-    field: '7',
-    label: 'Titolo di studio (livello più alto raggiunto)',
-    options: citizenFormDropdownOptions['titoloDiStudio'],
-    type: 'select',
-    required: true,
-  }),
-  newFormField({
-    keyBE: 'occupazione',
-    id: '8',
-    field: '8',
-    label: 'Stato occupazionale',
-    options: citizenFormDropdownOptions['statoOccupazionale'],
-    type: 'select',
-    required: true,
-  }),
-  newFormField({
-    keyBE: 'provincia',
-    id: '9',
-    field: '9',
-    label: 'Provincia di domicilio',
-    type: 'text',
-    required: true,
-  }),
-  newFormField({
-    keyBE: 'cittadinanza',
-    id: '10',
-    field: '10',
-    label: 'Cittadinanza',
-    options: citizenFormDropdownOptions['cittadinanza'],
-    type: 'select',
-    required: true,
-  }),
-]);
+const form = newForm([]);
 
 export default withFormHandler({ form }, FormServiceCitizenFull);
 

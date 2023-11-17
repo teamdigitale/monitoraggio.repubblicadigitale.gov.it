@@ -39,10 +39,9 @@ const TableMobile: React.FC<MobileTableI> = ({
         } = item;
 
         return {
-          title: id ,
-          /*title: cognome
+          title: cognome
             ? cognome + ' ' + nome
-            : nome || nome || label || name || attributo,*/
+            : nome || nome || label || name || attributo,
           status,
           id,
           actions,
