@@ -47,6 +47,6 @@ export const validateSession = () => {
       Math.abs(new Date().getTime() - currentSession.session_timestamp) / 1000;
     if (diff >= (currentSession.expires_in || 3600) - 600) {
       refreshSession(currentSession);
-    }
+    } 
   }
 };
