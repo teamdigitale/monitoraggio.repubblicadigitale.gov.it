@@ -349,6 +349,7 @@ const AppRoutes: React.FC = () => {
             </Route>
           </>
         )}
+        {/*
         <Route
           path='/'
           element={<Navigate replace to={defaultRedirectUrl} />}
@@ -356,7 +357,7 @@ const AppRoutes: React.FC = () => {
         <Route
           path='*'
           element={<Navigate replace to={defaultRedirectUrl} />}
-        />
+        />*/}
       </Routes>
     </Suspense>
   );

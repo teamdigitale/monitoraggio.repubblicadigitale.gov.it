@@ -30,6 +30,7 @@ import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
 import { formFieldI } from '../../../../../utils/formHelper';
 import PageTitle from '../../../../../components/PageTitle/pageTitle';
 import IconNote from '/public/assets/img/it-note-primary.png';
+import moment from "moment";
 
 const entity = 'citizensArea';
 const siteDropdownLabel = 'idsSedi';
@@ -104,7 +105,7 @@ const Citizens = () => {
     autocomplete: false,
     onHandleSearch: handleOnSearch,
     placeholder:
-      'Inserisci il cognome e/o il nome, oppure l’ID o il codice fiscale dell’utente',
+    'Inserisci il codice fiscale o il numero documento del cittadino',
     isClearable: true,
     title: 'Cerca cittadino',
   };
@@ -139,6 +140,7 @@ const Citizens = () => {
         name: td.cognome + ' ' + td.nome,
         numeroServizi: td.numeroServizi,
         numeroQuestionariCompilati: td.numeroQuestionariCompilati,
+        dataOraAggiornamento: moment(td.dataOraAggiornamento).format('YYYY-MM-DD HH:mm:ss')
       }))
     );
     return table;
