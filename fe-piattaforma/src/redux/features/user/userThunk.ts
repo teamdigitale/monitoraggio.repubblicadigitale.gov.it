@@ -77,12 +77,17 @@ export const SessionCheck = async (dispatch: any) => {
 
 const CreateUserContextAction = { type: 'user/CreateUserContext' };
 export const CreateUserContext =
-  (cfUtenteLoggato?: string) => async (dispatch: Dispatch) => {
+  (codiceFiscale?: string) => async (dispatch: Dispatch) => {
     try {
-      dispatch({ ...CreateUserContextAction, cfUtenteLoggato }); // TODO manage dispatch for dev env only
+      dispatch({ ...CreateUserContextAction, codiceFiscale }); // TODO manage dispatch for dev env only
       dispatch(showLoader());
-
-      const res = await API.post(`${process?.env?.GESTIONE_UTENTE}/contesto`, {cfUtenteLoggato});
+      let body = {};
+      if (isActiveProvisionalLogin) {
+        body = {
+          codiceFiscale,
+        };
+      }
+      const res = await API.post('/contesto', body);
 
       if (res?.data) {
         dispatch(setUserContext(res.data));
@@ -111,33 +116,22 @@ export const SelectUserRole =
           user: { codiceFiscale },
         },
       } = select((state: RootState) => state);
-      let request;
       if (codiceFiscale && profile?.codiceRuolo) {
         const { codiceRuolo, idProgramma, idProgetto, idEnte } = profile;
         setSessionValues('profile', profile);
-        if(isActiveProvisionalLogin) {
-          request = {
-              cfUtenteLoggato: codiceFiscale,
-              codiceRuoloUtenteLoggato: codiceRuolo,
-              idProgramma,
-              idProgetto,
-              idEnte,
-            }
-          } else {
-            request = {
-              cfUtente: codiceFiscale,
-              codiceRuolo: codiceRuolo,
-              idProgramma,
-              idProgetto,
-              idEnte,
-            }
-          } 
-        }
-        const res = await API.post(`${process?.env?.GESTIONE_UTENTE}/contesto/sceltaProfilo`, request);
+        const res = await API.post('/contesto/sceltaProfilo', {
+          cfUtente: isActiveProvisionalLogin ? codiceFiscale : undefined,
+          codiceRuolo: isActiveProvisionalLogin ? codiceRuolo : undefined,
+          idProgramma,
+          idProgetto,
+          idEnte,
+        });
+
         if (res) {
           dispatch(setUserProfile({ ...profile, saveSession }));
           return true;
         }
+      }
     } catch (error) {
       console.log('SelectUserRole error', error);
       clearSessionValues('profile');
@@ -160,7 +154,7 @@ export const EditUser =
         },
       } = select((state: RootState) => state);
       if (newUser?.codiceFiscale === codiceFiscale) {
-        const res = await API.post(`${process?.env?.GESTIONE_UTENTE}/contesto/confermaIntegrazione`, {
+        const res = await API.post('/contesto/confermaIntegrazione', {
           ...newUser,
           abilitazioneConsensoTrattamentoDatiPersonali: true,
         });
@@ -289,6 +283,7 @@ export const GetNotificationsByUser =
     try {
       dispatch(showLoader());
       dispatch({ ...GetNotificationsByUserAction });
+
       const {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
@@ -319,22 +314,10 @@ export const GetNotificationsByUser =
           'sort',
           'sort_by'
         );
-        console.log(queryParam)
-        /*const res = await proxyCall(
+        const res = await proxyCall(
           `/user/${id}/notifications${queryParam}`,
           'GET'
-        )*/
-        const res = {
-          data: {
-            data: {
-              items: [],
-              pager: {
-                total_items: 1,
-                total_pages: 1
-              }
-            }
-          }
-        }
+        );
         if (res) {
           if (updateCount) {
             dispatch(

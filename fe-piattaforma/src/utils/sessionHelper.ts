@@ -1,4 +1,4 @@
-import { RefreshSPIDToken } from "../redux/features/auth/authThunk";
+import { RefreshSPIDToken } from '../redux/features/auth/authThunk';
 
 export const getSessionValues = (key: string) => {
   return sessionStorage.getItem(key) || '{}';
@@ -41,7 +41,7 @@ const refreshSession = async (currentSession: {
 };
 
 export const validateSession = () => {
-  const currentSession = getSessionValues('auth') !== 'fguhbjinokj8765d578t9yvghugyftr646tg' ? JSON.parse(getSessionValues('auth')) : getSessionValues('auth');
+  const currentSession = JSON.parse(getSessionValues('auth'));
   if (currentSession?.refresh_token) {
     const diff =
       Math.abs(new Date().getTime() - currentSession.session_timestamp) / 1000;

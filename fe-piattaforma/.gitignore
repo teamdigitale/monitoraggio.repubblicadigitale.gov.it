@@ -9,6 +9,7 @@ cypress*
 # Log files
 *.log
 *.eslintcache
+.env*
 .editorconfig
 
 ../.DS_Store

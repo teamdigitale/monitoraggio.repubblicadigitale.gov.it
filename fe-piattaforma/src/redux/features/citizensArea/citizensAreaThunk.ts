@@ -13,7 +13,6 @@ import { RootState } from '../../store';
 import { OptionType } from '../../../components/Form/select';
 import { downloadCSV, mapOptionsCitizens } from '../../../utils/common';
 import { getUserHeaders } from '../user/userThunk';
-import { AES } from 'crypto-js';
 
 const GetValuesAction = { type: 'citizensArea/GetEntityValues' };
 
@@ -27,14 +26,14 @@ export const GetEntityValues =
         // @ts-ignore
         citizensArea: { filters, pagination },
       } = select((state: RootState) => state);
-      const entityEndpoint = `${process?.env?.QUESTIONARIO_CITTADINO}/cittadino/all`;
+      const entityEndpoint = `/cittadino/all`;
       const filtroRequest: {
-        [key: string]: string | undefined;
+        [key: string]: string[] | undefined;
       } = {};
       Object.keys(filters).forEach((filter: string) => {
         if (filter === 'criterioRicerca') {
           filtroRequest[filter] =
-          filters[filter]?.value || filters[filter] || null;
+            filters[filter]?.value || filters[filter] || null;
         } else {
           filtroRequest[filter] = filters[filter]?.map(
             (value: OptionType) => value.value
@@ -43,77 +42,31 @@ export const GetEntityValues =
       });
       const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
         getUserHeaders();
-        if(filtroRequest.criterioRicerca) {
-          filtroRequest.criterioRicerca = AES.encrypt(filtroRequest.criterioRicerca, process?.env?.KEY_SECRET as string).toString();
-        }
       const body = {
         filtro: filtroRequest,
         idProgetto,
         idProgramma,
         idEnte,
-        cfUtenteLoggato: codiceFiscale,
+        codiceFiscaleUtenteLoggato: codiceFiscale,
         codiceRuoloUtenteLoggato: codiceRuolo,
       };
-      /*API.post(entityEndpoint, body, {
+      const res = await API.post(entityEndpoint, body, {
         params: {
           currPage: Math.max(0, pagination.pageNumber - 1),
           pageSize: pagination.pageSize,
         },
-      }).then((res: any) => {*/
-      const res = {
-        data: 
-        {
-          cittadini: [
-            {
-              id: 1,
-              nome: "Cittadino 1",
-              cognome: "Cognome 1",
-              numeroQuestionariCompilati: 0,
-              numeroServizi: 0,
-              dataOraAggiornamento: new Date()
-            },
-            {
-              id: 2,
-              nome: "Cittadino 2",
-              cognome: "Cognome 2",
-              numeroQuestionariCompilati: 0,
-              numeroServizi: 0,
-              dataOraAggiornamento: new Date(),
-              submitted: "2",
-              onDraft: "1",
-              status: "COMPLETATO"
-            },
-            {
-              id: 3,
-              nome: "Cittadino 3",
-              cognome: "Cognome 3",
-              numeroQuestionariCompilati: 0,
-              numeroServizi: 0,
-              dataOraAggiornamento: new Date(),
-              submitted: "11",
-              onDraft: "1",
-              status: "IN BOZZA"
-            }
-          ],
-          numeroPagine: 0,
-          numeroTotaleElementi: 3
-        }        
+      });
+      if (res?.data) {
+        dispatch(
+          setEntityValues({ entity: payload.entity, data: res.data.cittadini })
+        );
+        dispatch(
+          setEntityPagination({
+            totalPages: res.data.numeroPagine,
+            totalElements: res.data.numeroTotaleElementi,
+          })
+        );
       }
-        if (res?.data) {
-          dispatch(
-            setEntityValues({
-              entity: payload.entity,
-              data: res.data.cittadini,
-            })
-          );
-          dispatch(
-            setEntityPagination({
-              totalPages: res.data.numeroPagine,
-              totalElements: res.data.numeroTotaleElementi,
-            })
-          );
-        }
-      
     } catch (error) {
       console.log('GetEntityValues citizensArea error', error);
     } finally {
@@ -135,7 +88,7 @@ export const GetEntityFilterValues =
         citizensArea: { filters },
       } = select((state: RootState) => state);
       // } = select((state: RootState) => state);
-      const entityFilterEndpoint = `${process?.env?.QUESTIONARIO_CITTADINO}/cittadino/${entityFilter}/dropdown`;
+      const entityFilterEndpoint = `cittadino/${entityFilter}/dropdown`;
       const filtroRequest: {
         [key: string]: string[] | undefined;
       } = {};
@@ -156,18 +109,17 @@ export const GetEntityFilterValues =
         idProgetto,
         idProgramma,
         idEnte,
-        cfUtenteLoggato: codiceFiscale,
+        codiceFiscaleUtenteLoggato: codiceFiscale,
         codiceRuoloUtenteLoggato: codiceRuolo,
       };
-      API.post(entityFilterEndpoint, body).then((res) => {
-        if (res?.data) {
-          dispatch(
-            setEntityFilterOptions({
-              [entityFilter]: mapOptionsCitizens(res.data),
-            })
-          );
-        }
-      });
+      const res = await API.post(entityFilterEndpoint, body);
+      if (res?.data) {
+        dispatch(
+          setEntityFilterOptions({
+            [entityFilter]: mapOptionsCitizens(res.data),
+          })
+        );
+      }
     } catch (error) {
       console.log('GetEntityFilterValues citizensArea error', error);
     } finally {
@@ -192,34 +144,7 @@ export const GetEntityDetail =
         idProgramma,
         idEnte,
       };
-      console.log(body)
-      //const res = await API.post(`cittadino/${idCittadino}`, body);
-      const res = {
-        data: {
-          dettaglioCittadino: {
-            id: 1,
-            codiceFiscale: "RSSNTN82D14A783S",
-            tipoDocumento: "Patente",
-            numeroDocumento: "576545",
-            genere: "F",
-            fasciaDiEta: "5",
-            titoloDiStudio: "Laurea magistrale (5 anni) / Master di I livello / Specializzazione post-laurea (2 anni)",
-            occupazione: "Disoccupato/a",
-            provincia: "Caserta",
-            cittadinanza: "Italiana"
-          },
-          serviziCittadino: [
-            {
-              idQuestionarioCompilato: 1,
-              idServizio: 1,
-              nomeCompletoFacilitatore: "nome facilitatore",
-              nomeServizio: "Servizio 1",
-              nomeSede: "CAMPANIA",
-              statoQuestionario: "ATTIVO"
-            }
-          ]
-        }
-      }      
+      const res = await API.post(`cittadino/${idCittadino}`, body);
       if (res?.data) {
         dispatch(getEntityDetail(res.data));
       }

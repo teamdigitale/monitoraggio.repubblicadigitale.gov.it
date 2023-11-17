@@ -11,10 +11,10 @@ import FormCitizen from '../../../../forms/formCitizen';
 import DetailLayout from '../../../../../components/DetailLayout/detailLayout';
 import {
   closeModal,
-  //openModal,
+  openModal,
 } from '../../../../../redux/features/modal/modalSlice';
 import ManageCitizens from '../../../AdministrativeArea/Entities/modals/manageCitizens';
-//import { formTypes } from '../../../AdministrativeArea/Entities/utils';
+import { formTypes } from '../../../AdministrativeArea/Entities/utils';
 import { setInfoIdsBreadcrumb } from '../../../../../redux/features/app/appSlice';
 import CitizenServices from './CitizenServices';
 
@@ -43,7 +43,7 @@ const CitizensDetail: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  /*const citizenButtons = [
+  const citizenButtons = [
     {
       color: 'primary',
       text: 'Modifica',
@@ -58,21 +58,23 @@ const CitizensDetail: React.FC = () => {
           })
         ),
     },
-  ];*/
+  ];
 
   return (
     <div className='container pb-3'>
       <DetailLayout
         titleInfo={{
           title:
-            citizen?.dettaglioCittadino?.id as string,
+            citizen?.dettaglioCittadino?.cognome +
+            ' ' +
+            citizen?.dettaglioCittadino?.nome,
           status: '',
           upperTitle: { icon: 'it-user', text: 'Cittadino' },
         }}
         buttonsPosition='BOTTOM'
         goBackTitle='I miei cittadini'
         goBackPath='/area-cittadini'
-        //formButtons={citizenButtons}
+        formButtons={citizenButtons}
       >
         <FormCitizen legend='form cittadino' formDisabled />
       </DetailLayout>

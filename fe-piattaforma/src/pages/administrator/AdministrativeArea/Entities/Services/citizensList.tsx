@@ -236,7 +236,7 @@ const CitizensList: React.FC = () => {
   };
 
   const buttons: ButtonInButtonsBar[] = [
-    /*{
+    {
       text: 'Carica lista cittadini',
       outline: true,
       iconForButton: 'it-upload',
@@ -254,7 +254,7 @@ const CitizensList: React.FC = () => {
             },
           })
         ),
-    },*/
+    },
     {
       text: 'Aggiungi cittadino',
       color: 'primary',
@@ -309,7 +309,7 @@ const CitizensList: React.FC = () => {
           isDetail
           citizenList={true}
           tooltip
-          tooltiptext='Cerca cittadino per codice fiscale o numero documento'
+          tooltiptext='Cerca cittadino per nome, cognome, codice fiscale o  numero  documento'
         >
           {(citizens?.cittadini || []).map((citizen: CitizenI, i: number) => (
             <DetailsRow

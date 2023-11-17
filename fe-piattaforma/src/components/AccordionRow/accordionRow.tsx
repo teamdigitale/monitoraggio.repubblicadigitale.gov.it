@@ -88,7 +88,7 @@ const AccordionRow: React.FC<AccordionRowI> = ({
               ) : null}
             </>
           ) : null}
-          <span className='font-weight-semibold ' >{title}</span>
+          <span className='font-weight-semibold'>{title}</span>
         </div>
         <div className={clsx(device.mediaIsPhone && 'd-flex flex-row')}>
           {clickEditAction ? (

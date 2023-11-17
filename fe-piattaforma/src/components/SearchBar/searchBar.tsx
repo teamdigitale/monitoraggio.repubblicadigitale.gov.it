@@ -38,8 +38,6 @@ interface SearchBarI extends Omit<SelectI, 'onInputChange'> {
   tooltip?: boolean;
   tooltipText?: string;
   infoText?: string;
-  onQueryChange?: (query: string) => void;
-  disableSubmit?: boolean;
 }
 
 const SearchBar: React.FC<SearchBarI> = (props) => {
@@ -91,7 +89,6 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
   };
 
   const handleOnSubmit = () => {
-    if (props.disableSubmit) return;
     if (!autocomplete && onSubmit) {
       onSubmit(searchValue);
       setSearchValue(searchValue);
@@ -161,11 +158,6 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
 
   const device = useAppSelector(selectDevice);
 
-  const onInputQueryChange = useCallback((search) => {
-    setSearchValue((search ?? '').toString());
-    if (props.onQueryChange) props.onQueryChange(search ? search.toString(): '');
-  }, [props.onQueryChange]);
-  
   return (
     <div className={clsx(className, 'search-bar-custom')}>
       {!device.mediaIsPhone && search ? (
@@ -209,7 +201,9 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
                   device.mediaIsPhone && 'pl-0'
                 )}
                 field={id}
-                onInputChange={onInputQueryChange}
+                onInputChange={(search) =>
+                  setSearchValue((search || '').toString())
+                }
                 placeholder={device.mediaIsPhone ? '' : placeholder}
                 value={searchValue}
                 withLabel={false}
@@ -281,7 +275,6 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
                   className='border-0'
                   onClick={handleOnSubmit}
                   color='primary'
-                  disabled={props.disableSubmit}
                 >
                   Cerca
                 </Button>
@@ -290,7 +283,6 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
                   className='border-0'
                   onClick={handleOnSubmit}
                   aria-label='Avvia ricerca'
-                  disabled={props.disableSubmit}
                 >
                   <Icon
                     icon='it-search'

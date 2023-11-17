@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import SearchBar from '../SearchBar/searchBar';
 import { Form } from '..';
 import { FormGroup, Label } from 'design-react-kit';
@@ -15,7 +15,6 @@ interface SearchBarOptionsI {
   currentStep: string | undefined;
   steps: { [key: string]: string };
   alreadySearched?: (param: boolean) => void;
-  setSearchValue: (param: { type: string; value: string }) => void;
   resetModal?: () => void;
 }
 
@@ -25,7 +24,6 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
   currentStep,
   steps,
   alreadySearched,
-  setSearchValue,
   resetModal,
 }) => {
   const { t } = useTranslation();
@@ -35,26 +33,6 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
     dispatch(setCitizenSearchResults([]));
     if (resetModal) resetModal();
   };
-
-  const [canSubmit, setCanSubmit] = useState<boolean>(false);
-  const [query, setQuery] = useState<string>('');
-  const [mustValidateCf, setMustValidateCf] = useState<boolean>(true);
-
-  const isValidFiscalCode = useCallback((query: string) => {
-    return /^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$/i.test(query);
-  }, []);
-
-  const onRadioChange = useCallback((value: string) => {
-    setCurrentStep(value);
-    setRadioFilter(value);
-    setMustValidateCf(value === 'codiceFiscale');
-    setCanSubmit(value !== 'codiceFiscale' || isValidFiscalCode(query));
-  }, [setCurrentStep, setRadioFilter, query]);
-
-  const onQueryChange = useCallback(((query: string) => {
-    setCanSubmit(mustValidateCf ? isValidFiscalCode(query) : true);
-    setQuery(query);
-  }), [isValidFiscalCode, mustValidateCf]);
 
   return (
     <div
@@ -70,17 +48,19 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
         <Form id='form-searchbar-opt' className='m-3' showMandatory={false}>
           <FormGroup check className='justify-content-around'>
             {Object.keys(steps).map((item, index) => (
-              <div key={item} className='d-flex align-items-center'>
+              <div key={index} className='d-flex align-items-center'>
                 <Input
                   name='docType'
                   type='radio'
                   id={`current-step-${index}`}
                   checked={currentStep === steps[item]}
                   onClick={() => {
-                    onRadioChange(steps[item]);
+                    setCurrentStep(steps[item]);
+                    setRadioFilter(steps[item]);
                   }}
                   onInputChange={() => {
-                    onRadioChange(steps[item]);
+                    setCurrentStep(steps[item]);
+                    setRadioFilter(steps[item]);
                   }}
                 />
                 <Label check htmlFor={`current-step-${index}`}>
@@ -96,21 +76,13 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
         onSubmit={(data) => {
           if (resetModal) resetModal();
           if (data) {
-            const crypted = AES.encrypt(data, process?.env?.KEY_SECRET as string).toString();
-            const searchValue: SearchValue = {
-              type: currentStep as string,
-              value: data,
-            };
-            setSearchValue(searchValue);
             dispatch(
-              GetEntitySearchResult(crypted, currentStep ? currentStep : '')
+              GetEntitySearchResult(data, currentStep ? currentStep : '')
             );
             if (alreadySearched) alreadySearched(true);
           }
         }}
         onReset={handleSearchReset}
-        onQueryChange={onQueryChange}
-        disableSubmit={!canSubmit}
       />
     </div>
   );
