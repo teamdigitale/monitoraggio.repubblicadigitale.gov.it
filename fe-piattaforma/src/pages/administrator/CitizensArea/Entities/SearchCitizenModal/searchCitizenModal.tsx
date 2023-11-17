@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
 import { useDispatch } from 'react-redux';
 import { closeModal } from '../../../../../redux/features/modal/modalSlice';
@@ -18,7 +18,6 @@ import {
 import SearchBarOptionsCitizen from '../../../../../components/SearchBarOptionsCitizen/searchBarOptionsCitizen';
 import FormServiceCitizenBase from '../../../../forms/formServices/formServiceCitizenBase';
 import FormServiceCitizenFull from '../../../../forms/formServices/formServiceCitizenFull';
-import { generateForm } from '../../../../../utils/jsonFormHelper';
 import { useParams } from 'react-router-dom';
 import {
   AssociateCitizenToService,
@@ -28,6 +27,10 @@ import { SurveySectionPayloadI } from '../../../../../redux/features/administrat
 import { TableRowI } from '../../../../../components/Table/table';
 import NoResultsFoundCitizen from '../../../../../components/NoResultsFoundCitizen/noResultsFoundCitizen';
 import clsx from 'clsx';
+import { SearchValue } from '../../../../forms/models/searchValue.model';
+import { NewUserValuesFormCitizen } from '../../../../forms/models/newUserValuesFormCitizen.model';
+import { mappaMesi } from '../../../../../consts/monthsMapForFiscalCode';
+import { AES } from 'crypto-js';
 
 const id = 'search-citizen-modal';
 
@@ -77,23 +80,30 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
   >({});
   const [validForm, setFormValid] = useState<boolean>(false);
   const [alreadySearched, setAlreadySearched] = useState<boolean>(false);
+  const [searchValue, setSearchValue] = useState<SearchValue>();
   const [showFormCompleteForm, setShowFormCompleteForm] =
     useState<boolean>(false);
   const surveyTemplateQ1: SurveySectionPayloadI | string = useAppSelector(
     selectQuestionarioTemplateSnapshot
   )?.sezioniQuestionarioTemplate?.[0];
-  const [stringQ1, setStringQ1] = useState<string>('');
+  //const [stringQ1, setStringQ1] = useState<string>('');
 
   useEffect(() => {
     if (typeof surveyTemplateQ1 !== 'string') {
       typeof surveyTemplateQ1?.schema !== 'string'
-        ? setStringQ1(surveyTemplateQ1?.schema.json)
+        ? null
+        //setStringQ1(surveyTemplateQ1?.schema.json)
         : null;
     }
   }, [surveyTemplateQ1]);
 
   useEffect(() => {
     if (currentStep !== selectedSteps.ADD_CITIZEN) {
+      const newSearchValue: SearchValue = {
+        type: currentStep,
+        value: searchValue?.value as string
+      }
+      setSearchValue(newSearchValue)
       setShowFormCompleteForm(false);
     }
   }, [currentStep]);
@@ -156,6 +166,7 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
           sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) => {
             setNewUserValues({ ...newData });
           }}
+          searchValue={searchValue as SearchValue}
           setIsFormValid={(isValid: boolean) => setFormValid(isValid)}
           creation
           legend="Form di creazione cittadino, i campi con l'asterisco sono obbligatori"
@@ -193,6 +204,40 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
     );
   };
 
+  const decodeGenderFromFiscalCode = useCallback((cf: string) =>  {
+    const giorno = parseInt(cf.substring(9, 11), 10);
+    return giorno <= 31 ? 'M' : 'F';
+  }, []);
+  const determineAgeGroup = useCallback((age: number): string => {
+    if (age >= 18 && age <= 29) {
+      return '1';
+    } else if (age >= 30 && age <= 54) {
+      return '2';
+    } else if (age >= 55 && age <= 74) {
+      return '3';
+    } else {
+      return '4';
+    }
+  }, []);
+  const decodeAgeFromFiscalCode = useCallback((cf: string) => {
+    const today = new Date();
+    const rangeCentury = parseInt(today.getFullYear().toString().substring(2));
+    const isFemale = cf.charAt(9) >= '4';
+    const dayOfBirth = parseInt(cf.substring(9, 11)) - (isFemale ? 40 : 0);
+    const century = parseInt(cf.substring(6, 8));
+    const yearOfBirth = (century <= rangeCentury) ? 2000 + century : 1900 + century;
+    const month = mappaMesi.get(cf.charAt(8).toUpperCase()) as number;
+    const dateOfBirth = new Date(yearOfBirth, month, dayOfBirth);
+    const age = today.getFullYear() - dateOfBirth.getFullYear();
+    if (
+      today.getMonth() < dateOfBirth.getMonth() ||
+      (today.getMonth() === dateOfBirth.getMonth() && today.getDate() < dateOfBirth.getDate())
+    ) {
+      return determineAgeGroup(age-1)
+    }
+    return determineAgeGroup(age);
+  },[determineAgeGroup])
+
   const onConfirm = async () => {
     if (
       currentStep === selectedSteps.FISCAL_CODE ||
@@ -201,8 +246,25 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
       setCurrentStep(selectedSteps.ADD_CITIZEN);
     } else if (currentStep === selectedSteps.ADD_CITIZEN) {
       let body: { [key: string]: formFieldI['value'] } = {};
-      if (showFormCompleteForm) {
-        const sezioneQ1Template = generateForm(JSON.parse(stringQ1));
+      if (showFormCompleteForm && newUserValues) {
+        for (let i = 0; i < NewUserValuesFormCitizen.length; i++) {
+          const key = NewUserValuesFormCitizen[i];
+          const userValue = newUserValues[i + 1];
+          if ((searchValue?.type === 'codiceFiscale' && key === 'codiceFiscale')) {
+            body[key] = AES.encrypt(searchValue.value, process?.env?.KEY_SECRET as string).toString();
+          } else if(searchValue?.type === 'codiceFiscale' && key === 'genere') {
+            body[key] = decodeGenderFromFiscalCode(userValue as string);
+          } else if(searchValue?.type === 'codiceFiscale' && key === 'fasciaDiEtaId') {
+            body[key] = decodeAgeFromFiscalCode(userValue as string);
+          } else if (searchValue?.type === 'numeroDoc' && key === 'codiceFiscaleNonDisponibile') {
+            body[key] = true;
+          } else if(key === 'numeroDocumento') {
+            body[key] = AES.encrypt(searchValue?.value as string, process?.env?.KEY_SECRET as string).toString();
+          } else {
+            body[key] = userValue;
+          }
+        }
+      /*const sezioneQ1Template = generateForm(JSON.parse(stringQ1));
         Object.keys(sezioneQ1Template).map((key: string) => {
           if (sezioneQ1Template[key]?.keyBE && newUserValues) {
             if (
@@ -222,7 +284,7 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
                   : JSON.stringify(newUserValues[key]);
             }
           }
-        });
+        });*/
         body['nuovoCittadino'] = true;
       } else {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -292,6 +354,7 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
               DOC_NUMBER,
             }))(selectedSteps)}
             alreadySearched={(searched) => setAlreadySearched(searched)}
+            setSearchValue={(searchValue) => setSearchValue(searchValue)}
             resetModal={() => {
               resetModal(true);
 

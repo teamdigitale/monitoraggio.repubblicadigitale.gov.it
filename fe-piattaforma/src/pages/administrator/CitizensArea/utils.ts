@@ -1,10 +1,10 @@
 import { TableHeadingI } from '../../../components/Table/table';
 
 export const TableHeading: TableHeadingI[] = [
-  {
+   /* {
     label: 'Nome',
     field: 'name',
-  },
+  },*/
   {
     label: 'ID',
     field: 'id',
@@ -18,6 +18,10 @@ export const TableHeading: TableHeadingI[] = [
     label: 'N. questionari compilati',
     field: 'numeroQuestionariCompilati',
   },
+  {
+    label: 'data ultimo aggiornamento',
+    field: 'dataOraAggiornamento',
+  }
 ];
 
 export const TableHeadingSearchResults: TableHeadingI[] = [

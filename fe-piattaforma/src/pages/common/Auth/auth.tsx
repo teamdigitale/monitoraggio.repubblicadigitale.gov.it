@@ -23,7 +23,7 @@ import { setSessionValues } from '../../../utils/sessionHelper';
 
 const COGNITO_HREF = `${process?.env?.REACT_APP_COGNITO_BASE_URL}oauth2/authorize?client_id=${process?.env?.REACT_APP_COGNITO_CLIENT_ID}&redirect_uri=${process?.env?.REACT_APP_COGNITO_FE_REDIRECT_URL}&scope=openid&response_type=code`;
 
-export const isActiveProvisionalLogin = false;
+export const isActiveProvisionalLogin = true;
 
 const Auth: React.FC<withFormHandlerProps> = ({
   form = {},

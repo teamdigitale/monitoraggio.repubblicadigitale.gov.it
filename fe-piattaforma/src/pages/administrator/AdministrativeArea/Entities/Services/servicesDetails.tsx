@@ -10,8 +10,8 @@ import {
   DeleteService,
   GetCitizenListServiceDetail,
   GetServicesDetail,
-  GetServicesDetailFilters,
-  SendSurveyToAll,
+  //GetServicesDetailFilters,
+  //SendSurveyToAll,
 } from '../../../../../redux/features/administrativeArea/services/servicesThunk';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import DetailLayout from '../../../../../components/DetailLayout/detailLayout';
@@ -254,7 +254,7 @@ const ServicesDetails = () => {
           '_blank'
         ),
     },
-    {
+    /*{
       size: 'xs',
       color: 'primary',
       text: 'Invia questionario a tutti',
@@ -286,7 +286,7 @@ const ServicesDetails = () => {
         dispatch(GetCitizenListServiceDetail(serviceId));
         dispatch(GetServicesDetailFilters(serviceId));
       },
-    },
+    },*/
   ];
 
   const onConfirmDelete = async () => {

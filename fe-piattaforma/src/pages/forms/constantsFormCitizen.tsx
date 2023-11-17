@@ -2,13 +2,14 @@ export const citizenFormDropdownOptions = {
   codiceFiscaleNonDisponibile: [
     {
       label: 'Codice fiscale non disponibile',
-      value: 'Codice fiscale non disponibile',
+      value: 'true',
     },
   ],
   genere: [
     { label: 'F', value: 'F' },
     { label: 'M', value: 'M' },
     { label: 'Non binario', value: 'Non binario' },
+    { label: 'Preferisco non rispondere', value: 'Preferisco non rispondere'}
   ],
   tipoDocumento: [
     { label: 'Carta di Identità', value: 'Carta di Identità' },
@@ -38,7 +39,7 @@ export const citizenFormDropdownOptions = {
       value: 'Altro percettore di sussidio (es. reddito di cittadinanza)',
     },
   ],
-  titoloStudio: [
+  titoloDiStudio: [
     {
       label: 'Licenza elementare / Scuola primaria',
       value: 'Licenza elementare / Scuola primaria',
@@ -109,5 +110,11 @@ export const citizenFormDropdownOptions = {
     { label: 'Casalinga/o', value: 'Casalinga/o' },
     { label: 'Inabile al lavoro', value: 'Inabile al lavoro' },
     { label: 'Altro', value: 'Altro' },
+  ],
+  fasciaDiEta: [
+    { label: '18-29', value: '1' },
+    { label: '30-54', value: '2' },
+    { label: '55-74', value: '3' },
+    { label: '75 e oltre', value: '4' }
   ],
 };
