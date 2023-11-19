@@ -8,6 +8,8 @@ import clsx from 'clsx';
 import { GetEntitySearchResult } from '../../redux/features/citizensArea/citizensAreaThunk';
 import Input from '../Form/input';
 import { setCitizenSearchResults } from '../../redux/features/citizensArea/citizensAreaSlice';
+import { SearchValue } from '../../pages/forms/models/searchValue.model';
+import { AES } from 'crypto-js';
 
 interface SearchBarOptionsI {
   setCurrentStep: (value: string) => void;

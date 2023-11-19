@@ -77,7 +77,7 @@ const DetailsRow: React.FC<DetailsRowI> = ({
             </UncontrolledTooltip>
           </>
         );
-      case statusCases.NOT_SENT:
+      case statusCases.NOT_FILLED:
         return (
           <>
             <Button

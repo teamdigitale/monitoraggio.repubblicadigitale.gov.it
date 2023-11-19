@@ -44,16 +44,16 @@ export const GetAllServices =
         administrativeArea: { filters, pagination },
       } = select((state: RootState) => state);
       const queryParamFilters = transformFiltersToQueryParams(filters);
-      const entityEndpoint = `${process?.env?.QUESTIONARIO_CITTADINO}/servizio/all${queryParamFilters}`;
-      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
-        getUserHeaders();
-      const body = {
+      //const entityEndpoint = `${process?.env?.QUESTIONARIO_CITTADINO}/servizio/all${queryParamFilters}`;
+      //const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
+        //getUserHeaders();
+      /*const body = {
         cfUtenteLoggato: codiceFiscale,
         codiceRuoloUtenteLoggato: codiceRuolo,
         idProgetto,
         idProgramma,
         idEnte,
-      };
+      };*/
       /*const res = await API.post(entityEndpoint, body, {
         params: {
           currPage: Math.max(0, pagination.pageNumber - 1),
