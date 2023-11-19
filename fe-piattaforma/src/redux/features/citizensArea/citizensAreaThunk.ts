@@ -27,7 +27,7 @@ export const GetEntityValues =
         // @ts-ignore
         citizensArea: { filters, pagination },
       } = select((state: RootState) => state);
-      const entityEndpoint = `${process?.env?.QUESTIONARIO_CITTADINO}/cittadino/all`;
+      //const entityEndpoint = `${process?.env?.QUESTIONARIO_CITTADINO}/cittadino/all`;
       const filtroRequest: {
         [key: string]: string | undefined;
       } = {};
@@ -41,19 +41,19 @@ export const GetEntityValues =
           );
         }
       });
-      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
-        getUserHeaders();
+      //const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
+        //getUserHeaders();
         if(filtroRequest.criterioRicerca) {
           filtroRequest.criterioRicerca = AES.encrypt(filtroRequest.criterioRicerca, process?.env?.KEY_SECRET as string).toString();
         }
-      const body = {
+      /*const body = {
         filtro: filtroRequest,
         idProgetto,
         idProgramma,
         idEnte,
         cfUtenteLoggato: codiceFiscale,
         codiceRuoloUtenteLoggato: codiceRuolo,
-      };
+      };*/
       /*API.post(entityEndpoint, body, {
         params: {
           currPage: Math.max(0, pagination.pageNumber - 1),
