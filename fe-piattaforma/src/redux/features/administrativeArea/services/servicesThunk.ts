@@ -43,7 +43,7 @@ export const GetAllServices =
         // @ts-ignore
         administrativeArea: { filters, pagination },
       } = select((state: RootState) => state);
-      const queryParamFilters = transformFiltersToQueryParams(filters);
+      //const queryParamFilters = transformFiltersToQueryParams(filters);
       //const entityEndpoint = `${process?.env?.QUESTIONARIO_CITTADINO}/servizio/all${queryParamFilters}`;
       //const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
         //getUserHeaders();
