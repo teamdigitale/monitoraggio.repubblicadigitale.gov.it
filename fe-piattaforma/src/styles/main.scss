@@ -16,7 +16,7 @@
 
   &:focus,
   &:focus:not(.focus--mouse):not([data-focus-mouse='true']) {
-    box-shadow: none !important;
+    box-shadow: none !important; 
   }
 }
 

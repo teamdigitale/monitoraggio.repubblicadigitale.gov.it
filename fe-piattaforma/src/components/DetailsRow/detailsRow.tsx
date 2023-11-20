@@ -19,7 +19,7 @@ interface DetailsRowI {
 
 const statusCases = {
   SENT: 'INVIATO',
-  NOT_SENT: 'NON INVIATO',
+  NOT_FILLED: 'NON COMPILATO',
   FILLED_OUT: 'COMPILATO',
 };
 
@@ -77,7 +77,7 @@ const DetailsRow: React.FC<DetailsRowI> = ({
             </UncontrolledTooltip>
           </>
         );
-      case statusCases.NOT_SENT:
+      case statusCases.NOT_FILLED:
         return (
           <>
             <Button

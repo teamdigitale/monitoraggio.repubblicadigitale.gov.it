@@ -13,6 +13,7 @@ import { RootState } from '../../store';
 import { OptionType } from '../../../components/Form/select';
 import { downloadCSV, mapOptionsCitizens } from '../../../utils/common';
 import { getUserHeaders } from '../user/userThunk';
+import { AES } from 'crypto-js';
 
 const GetValuesAction = { type: 'citizensArea/GetEntityValues' };
 
@@ -26,14 +27,14 @@ export const GetEntityValues =
         // @ts-ignore
         citizensArea: { filters, pagination },
       } = select((state: RootState) => state);
-      const entityEndpoint = `/cittadino/all`;
+      const entityEndpoint = `${process?.env?.QUESTIONARIO_CITTADINO}/cittadino/all`;
       const filtroRequest: {
-        [key: string]: string[] | undefined;
+        [key: string]: string | undefined;
       } = {};
       Object.keys(filters).forEach((filter: string) => {
         if (filter === 'criterioRicerca') {
           filtroRequest[filter] =
-            filters[filter]?.value || filters[filter] || null;
+          filters[filter]?.value || filters[filter] || null;
         } else {
           filtroRequest[filter] = filters[filter]?.map(
             (value: OptionType) => value.value
@@ -42,31 +43,37 @@ export const GetEntityValues =
       });
       const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
         getUserHeaders();
+        if(filtroRequest.criterioRicerca) {
+          filtroRequest.criterioRicerca = AES.encrypt(filtroRequest.criterioRicerca, process?.env?.KEY_SECRET as string).toString();
+        }
       const body = {
         filtro: filtroRequest,
         idProgetto,
         idProgramma,
         idEnte,
-        codiceFiscaleUtenteLoggato: codiceFiscale,
+        cfUtenteLoggato: codiceFiscale,
         codiceRuoloUtenteLoggato: codiceRuolo,
       };
-      const res = await API.post(entityEndpoint, body, {
+      API.post(entityEndpoint, body, {
         params: {
           currPage: Math.max(0, pagination.pageNumber - 1),
           pageSize: pagination.pageSize,
         },
-      });
-      if (res?.data) {
-        dispatch(
-          setEntityValues({ entity: payload.entity, data: res.data.cittadini })
-        );
-        dispatch(
-          setEntityPagination({
-            totalPages: res.data.numeroPagine,
-            totalElements: res.data.numeroTotaleElementi,
-          })
-        );
-      }
+      }).then((res: any) => {
+        if (res?.data) {
+          dispatch(
+            setEntityValues({
+              entity: payload.entity,
+              data: res.data.cittadini,
+            })
+          );
+          dispatch(
+            setEntityPagination({
+              totalPages: res.data.numeroPagine,
+              totalElements: res.data.numeroTotaleElementi,
+            })
+          );
+      }})
     } catch (error) {
       console.log('GetEntityValues citizensArea error', error);
     } finally {
@@ -88,7 +95,7 @@ export const GetEntityFilterValues =
         citizensArea: { filters },
       } = select((state: RootState) => state);
       // } = select((state: RootState) => state);
-      const entityFilterEndpoint = `cittadino/${entityFilter}/dropdown`;
+      const entityFilterEndpoint = `${process?.env?.QUESTIONARIO_CITTADINO}cittadino/${entityFilter}/dropdown`;
       const filtroRequest: {
         [key: string]: string[] | undefined;
       } = {};
@@ -109,17 +116,18 @@ export const GetEntityFilterValues =
         idProgetto,
         idProgramma,
         idEnte,
-        codiceFiscaleUtenteLoggato: codiceFiscale,
+        cfUtenteLoggato: codiceFiscale,
         codiceRuoloUtenteLoggato: codiceRuolo,
       };
-      const res = await API.post(entityFilterEndpoint, body);
-      if (res?.data) {
-        dispatch(
-          setEntityFilterOptions({
-            [entityFilter]: mapOptionsCitizens(res.data),
-          })
-        );
-      }
+      API.post(entityFilterEndpoint, body).then((res) => {
+        if (res?.data) {
+          dispatch(
+            setEntityFilterOptions({
+              [entityFilter]: mapOptionsCitizens(res.data),
+            })
+          );
+        }
+      });
     } catch (error) {
       console.log('GetEntityFilterValues citizensArea error', error);
     } finally {
@@ -144,7 +152,7 @@ export const GetEntityDetail =
         idProgramma,
         idEnte,
       };
-      const res = await API.post(`cittadino/${idCittadino}`, body);
+      const res = await API.post(`cittadino/${idCittadino}`, body);  
       if (res?.data) {
         dispatch(getEntityDetail(res.data));
       }

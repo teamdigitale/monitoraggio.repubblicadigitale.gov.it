@@ -14,7 +14,7 @@
 
 	<groupId>it.pa.repdgt</groupId>
 	<artifactId>ms-integrazione</artifactId>
-	<version>1.0.0-test.144</version>
+	<version>1.0.0-develop.357</version>
 	<packaging>jar</packaging>
 
 	<properties>
@@ -66,6 +66,10 @@
 			<groupId>it.pa.repdgt</groupId>
 			<artifactId>repdgt-shared</artifactId>
 			<version>LATEST</version>
+		</dependency>
+		<dependency>
+   		 	<groupId>commons-codec</groupId>
+   			<artifactId>commons-codec</artifactId>
 		</dependency>
 	</dependencies>
 

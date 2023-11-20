@@ -14,7 +14,7 @@
 
 	<groupId>it.pa.repdgt</groupId>
 	<artifactId>ms-questionario-cittadino</artifactId>
-	<version>1.0.0-test.144</version>
+	<version>1.0.0-develop.349</version>
 	<packaging>jar</packaging>
 
 	<properties>
@@ -94,7 +94,7 @@
 		<dependency>
 		    <groupId>de.flapdoodle.embed</groupId>
 		    <artifactId>de.flapdoodle.embed.mongo</artifactId>
-		    <!-- da commentare si vuole lanciare in locale -->
+		    <!-- da commentare se si vuole lanciare in locale il DB come h2, altrimenti viene usato solo duurante i test junit -->
 		    <scope>test</scope>
 		</dependency>
 	</dependencies>

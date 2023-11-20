@@ -158,7 +158,7 @@ metadata:
     service.beta.kubernetes.io/aws-load-balancer-type: external
     service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
     service.beta.kubernetes.io/aws-load-balancer-scheme: internal
-    external-dns.alpha.kubernetes.io/hostname: notificheintegration.api-${K8S_NAMESPACE}.repubblicadigitale.gov.it
+    external-dns.alpha.kubernetes.io/hostname: notificheintegration.backend-${K8S_NAMESPACE}.mitd.technology
     service.beta.kubernetes.io/aws-load-balancer-name: nlb-ms-notifiche-integ-${K8S_NAMESPACE}
 spec:
   type: LoadBalancer
