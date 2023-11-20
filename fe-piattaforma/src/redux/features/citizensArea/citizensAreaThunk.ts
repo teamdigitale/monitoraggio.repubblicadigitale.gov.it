@@ -135,7 +135,7 @@ export const GetEntityFilterValues =
         citizensArea: { filters },
       } = select((state: RootState) => state);
       // } = select((state: RootState) => state);
-      const entityFilterEndpoint = `${process?.env?.QUESTIONARIO_CITTADINO}/cittadino/${entityFilter}/dropdown`;
+      const entityFilterEndpoint = `${process?.env?.QUESTIONARIO_CITTADINO}cittadino/${entityFilter}/dropdown`;
       const filtroRequest: {
         [key: string]: string[] | undefined;
       } = {};
