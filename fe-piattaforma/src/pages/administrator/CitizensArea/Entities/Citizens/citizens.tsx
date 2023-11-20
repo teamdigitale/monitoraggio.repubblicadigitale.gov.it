@@ -140,7 +140,7 @@ const Citizens = () => {
         name: td.cognome + ' ' + td.nome,
         numeroServizi: td.numeroServizi,
         numeroQuestionariCompilati: td.numeroQuestionariCompilati,
-        dataOraAggiornamento: moment(td.dataOraAggiornamento).format('YYYY-MM-DD HH:mm:ss')
+        dataOraAggiornamento: moment(td.dataOraAggiornamento).format('GG-MM-YYYY')
       }))
     );
     return table;
