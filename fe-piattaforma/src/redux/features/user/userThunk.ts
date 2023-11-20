@@ -77,12 +77,12 @@ export const SessionCheck = async (dispatch: any) => {
 
 const CreateUserContextAction = { type: 'user/CreateUserContext' };
 export const CreateUserContext =
-  (cfUtenteLoggato?: string) => async (dispatch: Dispatch) => {
+  (codiceFiscale ?: string) => async (dispatch: Dispatch) => {
     try {
-      dispatch({ ...CreateUserContextAction, cfUtenteLoggato }); // TODO manage dispatch for dev env only
+      dispatch({ ...CreateUserContextAction, codiceFiscale  }); // TODO manage dispatch for dev env only
       dispatch(showLoader());
 
-      const res = await API.post(`${process?.env?.GESTIONE_UTENTE}contesto`, {cfUtenteLoggato});
+      const res = await API.post(`${process?.env?.GESTIONE_UTENTE}contesto`, {codiceFiscale });
 
       if (res?.data) {
         dispatch(setUserContext(res.data));
