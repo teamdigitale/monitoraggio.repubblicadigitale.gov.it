@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.365](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.364...1.0.0-develop.365) (2023-11-20)
+
+
+### Features
+
+* **fe-piattaforma:** updates 20231120 fix-endpoint ([8b3ba10](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8b3ba10707b8ce29be2592ed2463777b0ff2c322))
+
 ## [1.0.0-develop.364](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.363...1.0.0-develop.364) (2023-11-20)
 
 
