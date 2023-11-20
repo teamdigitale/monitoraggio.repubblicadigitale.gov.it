@@ -82,7 +82,7 @@ export const CreateUserContext =
       dispatch({ ...CreateUserContextAction, cfUtenteLoggato }); // TODO manage dispatch for dev env only
       dispatch(showLoader());
 
-      const res = await API.post(`${process?.env?.GESTIONE_UTENTE}/contesto`, {cfUtenteLoggato});
+      const res = await API.post(`${process?.env?.GESTIONE_UTENTE}contesto`, {cfUtenteLoggato});
 
       if (res?.data) {
         dispatch(setUserContext(res.data));
@@ -133,7 +133,7 @@ export const SelectUserRole =
             }
           } 
         }
-        const res = await API.post(`${process?.env?.GESTIONE_UTENTE}/contesto/sceltaProfilo`, request);
+        const res = await API.post(`${process?.env?.GESTIONE_UTENTE}contesto/sceltaProfilo`, request);
         if (res) {
           dispatch(setUserProfile({ ...profile, saveSession }));
           return true;
@@ -160,7 +160,7 @@ export const EditUser =
         },
       } = select((state: RootState) => state);
       if (newUser?.codiceFiscale === codiceFiscale) {
-        const res = await API.post(`${process?.env?.GESTIONE_UTENTE}/contesto/confermaIntegrazione`, {
+        const res = await API.post(`${process?.env?.GESTIONE_UTENTE}contesto/confermaIntegrazione`, {
           ...newUser,
           abilitazioneConsensoTrattamentoDatiPersonali: true,
         });
