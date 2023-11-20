@@ -27,21 +27,21 @@
         "idServizio": 0,
         "nomeCompletoFacilitatore": "nome facilitatore",
         "nomeServizio": "Servizio 1",
-        "statoQuestionario": "ATTIVO"
+        "statoQuestionario": "COMPILATO"
       },
       {
         "idQuestionarioCompilato": "questionario2",
         "idServizio": 1,
         "nomeCompletoFacilitatore": "nome facilitatore",
         "nomeServizio": "Servizio 2",
-        "statoQuestionario": "ATTIVO"
+        "statoQuestionario": "COMPILATO"
       },
       {
         "idQuestionarioCompilato": "questionario2",
         "idServizio": 2,
         "nomeCompletoFacilitatore": "nome facilitatore",
         "nomeServizio": "Servizio 3",
-        "statoQuestionario": "ATTIVO"
+        "statoQuestionario": "COMPILATO"
       }
     ]
   }

@@ -159,6 +159,7 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
           col='col-12 col-lg-6'
           options={citizenFormDropdownOptions['genere']}
           isDisabled={formDisabled}
+          value={form?.[2].value ? form?.[5].value : 'Preferisco non rispondere'}
           wrapperClassName='mb-5 pr-lg-3'
         />
         <Select

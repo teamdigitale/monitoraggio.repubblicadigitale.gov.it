@@ -352,7 +352,7 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
               placeholder={`Seleziona ${field.label?.toLowerCase()}`}
               options={field.options}
               isDisabled={formDisabled || searchValue?.type === 'codiceFiscale'}
-              value={decodeGenderFromFiscalCode(searchValue?.value as string)}
+              value={searchValue?.type === 'codiceFiscale' ? decodeGenderFromFiscalCode(searchValue?.value as string) : 'Preferisco non rispondere'}
               wrapperClassName='mb-5 pr-lg-3'
             />
           );
