@@ -39,7 +39,7 @@ export const citizenFormDropdownOptions = {
       value: 'Altro percettore di sussidio (es. reddito di cittadinanza)',
     },
   ],
-  titoloStudio: [
+  titoloDiStudio: [
     {
       label: 'Licenza elementare / Scuola primaria',
       value: 'Licenza elementare / Scuola primaria',

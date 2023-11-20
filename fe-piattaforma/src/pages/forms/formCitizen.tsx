@@ -176,7 +176,7 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
           placeholder={`Seleziona ${form?.['7']?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
           col='col-12 col-lg-6'
-          options={citizenFormDropdownOptions['titoloStudio']}
+          options={citizenFormDropdownOptions['titoloDiStudio']}
           isDisabled={formDisabled}
           wrapperClassName='mb-5 pr-lg-3'
         />
