@@ -12,7 +12,6 @@ import { selectEntityDetail } from '../../../redux/features/citizensArea/citizen
 import { useAppSelector } from '../../../redux/hooks';
 import { formatDate } from '../../../utils/datesHelper';
 import {
-  CommonFields,
   formFieldI,
   FormHelper,
   FormI,
@@ -128,9 +127,9 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
       Object.keys(form).map((key: string) => {
         const keyBE = form[key]?.keyBE;
         if (keyBE) newValues[key] = formData[keyBE];
-        if (key === '18' && (!newValues[key] || newValues[key] === '')) {
+        /*if (key === '18' && (!newValues[key] || newValues[key] === '')) {
           newValues[key] = '$consenso';
-        }
+        }*/
       });
       /*if (formData?.codiceFiscale === '') {
         newValues['4'] = 'Codice fiscale non disponibile';
@@ -193,6 +192,34 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
     }
     return determineAgeGroup(age);
   },[determineAgeGroup])
+
+  useEffect(() => {
+    if(form && form['1'] && searchValue?.type === 'codiceFiscale') {
+      form['1'].required = true;
+      form['1'].value = searchValue?.value
+    }
+    if(form && form['2']) {
+      form['2'].value = searchValue?.type === 'numeroDoc';
+    }
+    if(form && form['3'] && searchValue?.type === 'numeroDoc') {
+      form['3'].required = true;
+    }
+    if(form && form['4'] && searchValue?.type === 'numeroDoc') {
+      form['4'].value = searchValue?.value;
+    }
+    if(form && form['5']) {
+      form['5'].required = true;
+      if(searchValue?.type === 'codiceFiscale') {
+        form['5'].value = decodeGenderFromFiscalCode(searchValue.value);
+      }
+    }
+    if(form && form['6']) {
+      form['6'].required = true;
+      if(searchValue?.type === 'codiceFiscale') {
+        form['6'].value = decodeAgeFromFiscalCode(searchValue.value);
+      }
+    }
+  }, [form, decodeAgeFromFiscalCode, decodeGenderFromFiscalCode, searchValue])
   
   const onInputDataChange = (
     value: formFieldI['value'],
@@ -394,6 +421,25 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
         );
       }
       case 'checkbox': {
+        if(field.keyBE === 'codiceFiscaleNonDisponibile') {
+          return (
+          <CheckboxGroup
+            {...field}
+            id={`input-${field}`}
+            field={field.field}
+            className={clsx(
+              field.field !== '18' && 'col-12 col-lg-6',
+              field.field === '18' &&
+                'compile-survey-container__checkbox-margin'
+            )}
+            noLabel={field.keyBE === 'codiceFiscaleNonDisponibile'}
+            styleLabelForm
+            classNameLabelOption='pl-5'
+            disabled={searchValue?.type !== ''}
+            value={searchValue?.type === 'numeroDoc'}
+            required={searchValue?.type === 'numeroDoc'}
+          />)
+            }
         // checkbox if options
         if (field.options && field.options?.length) {
           return (
@@ -465,7 +511,6 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
 
 const form = newForm([
   newFormField({
-    ...CommonFields.CODICE_FISCALE,
     keyBE: 'codiceFiscale',
     id: '1',
     field: '1',

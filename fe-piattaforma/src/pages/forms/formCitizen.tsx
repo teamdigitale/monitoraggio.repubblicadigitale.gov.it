@@ -159,7 +159,6 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
           col='col-12 col-lg-6'
           options={citizenFormDropdownOptions['genere']}
           isDisabled={formDisabled}
-          value={form?.[2].value ? form?.[5].value : 'Preferisco non rispondere'}
           wrapperClassName='mb-5 pr-lg-3'
         />
         <Select
@@ -259,7 +258,7 @@ const form = newForm([
     required: true,
   }),
   newFormField({
-    keyBE: 'titoloDiStudio',
+    keyBE: 'titoloStudio',
     id: '7',
     field: '7',
     label: 'Titolo di studio (livello più alto raggiunto)',
@@ -267,7 +266,7 @@ const form = newForm([
     required: true,
   }),
   newFormField({
-    keyBE: 'occupazione',
+    keyBE: 'statoOccupazionale',
     id: '8',
     field: '8',
     label: 'Stato occupazionale',

@@ -20,8 +20,8 @@ export const citizenFormDropdownOptions = {
   cittadinanza: [
     { label: 'Italiana', value: 'Italiana' },
     {
-      label: "Straniera, di un Paese ALL'INTERNO dell'Unione Europea",
-      value: "Straniera, di un Paese ALL'INTERNO dell'Unione Europea",
+      label: "Straniera, di un Paese ALL’INTERNO dell’Unione Europea",
+      value: "Straniera, di un Paese ALL’INTERNO dell’Unione Europea",
     },
     {
       label: "Straniera, di un Paese AL DI FUORI dell'Unione Europea",

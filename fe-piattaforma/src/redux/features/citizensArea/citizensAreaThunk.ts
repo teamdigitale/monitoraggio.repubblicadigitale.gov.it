@@ -13,7 +13,6 @@ import { RootState } from '../../store';
 import { OptionType } from '../../../components/Form/select';
 import { downloadCSV, mapOptionsCitizens } from '../../../utils/common';
 import { getUserHeaders } from '../user/userThunk';
-import { AES } from 'crypto-js';
 
 const GetValuesAction = { type: 'citizensArea/GetEntityValues' };
 
@@ -27,7 +26,7 @@ export const GetEntityValues =
         // @ts-ignore
         citizensArea: { filters, pagination },
       } = select((state: RootState) => state);
-      const entityEndpoint = `${process?.env?.QUESTIONARIO_CITTADINO}/cittadino/all`;
+      const entityEndpoint = `${process?.env?.QUESTIONARIO_CITTADINO}cittadino/all`;
       const filtroRequest: {
         [key: string]: string | undefined;
       } = {};
@@ -43,9 +42,9 @@ export const GetEntityValues =
       });
       const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
         getUserHeaders();
-        if(filtroRequest.criterioRicerca) {
+        /*if(filtroRequest.criterioRicerca) {
           filtroRequest.criterioRicerca = AES.encrypt(filtroRequest.criterioRicerca, process?.env?.KEY_SECRET as string).toString();
-        }
+        }*/
       const body = {
         filtro: filtroRequest,
         idProgetto,
@@ -146,13 +145,13 @@ export const GetEntityDetail =
       const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
         getUserHeaders();
       const body = {
-        codiceFiscaleUtenteLoggato: codiceFiscale,
+        cfUtenteLoggato: codiceFiscale,
         codiceRuoloUtenteLoggato: codiceRuolo,
         idProgetto,
         idProgramma,
         idEnte,
       };
-      const res = await API.post(`cittadino/${idCittadino}`, body);  
+      const res = await API.post(`${process?.env?.QUESTIONARIO_CITTADINO}cittadino/${idCittadino}`, body);
       if (res?.data) {
         dispatch(getEntityDetail(res.data));
       }
@@ -176,7 +175,7 @@ export const GetEntitySearchResult =
         criterioRicerca: searchValue,
         tipoDocumento: searchType === 'codiceFiscale' ? 'CF' : 'NUM_DOC',
       };
-      const res = await API.post(`/servizio/cittadino`, body);
+      const res = await API.post(`${process?.env?.QUESTIONARIO_CITTADINO}servizio/cittadino`, body);
       if (res?.data) {
         if (Array.isArray(res.data)) {
           dispatch(setCitizenSearchResults(res.data));
@@ -204,7 +203,7 @@ export const UpdateCitizenDetail =
       dispatch(showLoader());
       dispatch({ ...UpdateCitizenDetailAction, idCittadino, body });
       const { idProgramma, idProgetto, idEnte } = getUserHeaders();
-      const res = await API.put(`cittadino/${idCittadino}`, {
+      const res = await API.put(`${process?.env?.QUESTIONARIO_CITTADINO}cittadino/${idCittadino}`, {
         ...body,
         idProgramma,
         idProgetto,
@@ -237,7 +236,7 @@ export const DownloadEntityValues =
       const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
         getUserHeaders();
       const body = {
-        codiceFiscaleUtenteLoggato: codiceFiscale,
+        cfUtenteLoggato: codiceFiscale,
         codiceRuoloUtenteLoggato: codiceRuolo,
         filtro: {
           ...filters,
