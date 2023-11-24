@@ -19,7 +19,7 @@ public class CSVUtil {
 
 	private static final List<String> HEADERS = Arrays.asList(
 			"ID",
-			"ANNO_DI_NASCITA",
+			"FASCIA_DI_ETA",
 			"GENERE",
 			"OCCUPAZIONE",
 			"TITOLO_DI_STUDIO",
@@ -35,12 +35,12 @@ public class CSVUtil {
 			"PROVINCIA",
 			"COMUNE",
 			"CAP",
-			"INTERVENTO",			
-			"ID_PROGRAMMA",			
-			"ID_PROGETTO"
-		);
+			"INTERVENTO",
+			"ID_PROGRAMMA",
+			"ID_PROGETTO");
 
-	public static ByteArrayInputStream exportCSVOpenData(List<OpenDataCittadinoCSVBean> openDataCittadinoCSVBeanList, CSVFormat csvFormat) {
+	public static ByteArrayInputStream exportCSVOpenData(List<OpenDataCittadinoCSVBean> openDataCittadinoCSVBeanList,
+			CSVFormat csvFormat) {
 		try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 				CSVPrinter csvPrinter = new CSVPrinter(new PrintWriter(outputStream), csvFormat);) {
 			if (openDataCittadinoCSVBeanList == null || openDataCittadinoCSVBeanList.isEmpty()) {
@@ -50,12 +50,11 @@ public class CSVUtil {
 
 			csvPrinter.printRecord(HEADERS);
 			int indiceRiga = 1;
-			for(OpenDataCittadinoCSVBean openDataCittadinoCSVBean : openDataCittadinoCSVBeanList) {
+			for (OpenDataCittadinoCSVBean openDataCittadinoCSVBean : openDataCittadinoCSVBeanList) {
 				csvPrinter.printRecord(CSVUtil.getCSVRecord(String.valueOf(indiceRiga),
-															openDataCittadinoCSVBean.getOpenDataCittadinoProjection(), 
-															openDataCittadinoCSVBean.getCompetenzeTrattate(),
-															openDataCittadinoCSVBean.getAmbitoServizi()
-															));
+						openDataCittadinoCSVBean.getOpenDataCittadinoProjection(),
+						openDataCittadinoCSVBean.getCompetenzeTrattate(),
+						openDataCittadinoCSVBean.getAmbitoServizi()));
 				indiceRiga++;
 			}
 			csvPrinter.flush();
@@ -65,16 +64,17 @@ public class CSVUtil {
 		}
 	}
 
-	private static List<String> getCSVRecord(String indiceRiga, OpenDataCittadinoProjection openDataCittadinoProjection, String competenzeTrattate, String ambitoServizi) {
-		return  Arrays.asList(
+	private static List<String> getCSVRecord(String indiceRiga, OpenDataCittadinoProjection openDataCittadinoProjection,
+			String competenzeTrattate, String ambitoServizi) {
+		return Arrays.asList(
 				indiceRiga,
-				openDataCittadinoProjection.getAnnoDiNascita().toString(),
+				openDataCittadinoProjection.getFasciaDiEta().getValore(),
 				openDataCittadinoProjection.getGenere(),
 				openDataCittadinoProjection.getOccupazione(),
 				openDataCittadinoProjection.getTitoloDiStudio(),
 				openDataCittadinoProjection.getServizioId(),
 				openDataCittadinoProjection.getNomeServizio(),
-				openDataCittadinoProjection.getDataFruizioneServizio(),//data servizio in servizio
+				openDataCittadinoProjection.getDataFruizioneServizio(), // data servizio in servizio
 				ambitoServizi,
 				openDataCittadinoProjection.getTipologiaServizio(),
 				competenzeTrattate,
@@ -87,8 +87,9 @@ public class CSVUtil {
 				openDataCittadinoProjection.getPolicy(),
 				openDataCittadinoProjection.getIdProgramma(),
 				openDataCittadinoProjection.getIdProgetto()
-				//gestione arco temporale (inserire in tabella data ultimo caricamente + restituire nel servizio di
-				// count download la lista degli anni da prima pubblicazione a ultima)
-			);
+		// gestione arco temporale (inserire in tabella data ultimo caricamente +
+		// restituire nel servizio di
+		// count download la lista degli anni da prima pubblicazione a ultima)
+		);
 	}
 }
