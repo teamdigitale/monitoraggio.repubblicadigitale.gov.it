@@ -71,22 +71,7 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
   };
 
   const selectUserRole = async (newUser?: any) => {
-    //const usr = newUser || user;
-    let usr;
-    if(user.codiceFiscale === 'FACILITATORE1') {
-      usr = {
-        codiceFiscale: user.codiceFiscale,
-        profiliUtente: [{
-          codiceRuolo: 'FAC',
-          descrizioneRuolo: 'Facilitatore',
-          idProgramma: 100,
-          idProgetto: 251,
-          idEnte: 1000,
-        }]
-      }
-    } else {
-      usr = newUser || user;
-    }
+    const usr = newUser || user;
     if (!usr.profiliUtente?.length) {
       dispatch(logout());
       navigate('/errore/A01', { replace: true });

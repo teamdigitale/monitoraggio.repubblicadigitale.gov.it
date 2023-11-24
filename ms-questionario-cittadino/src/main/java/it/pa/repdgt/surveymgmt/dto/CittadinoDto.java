@@ -7,8 +7,7 @@ import lombok.Setter;
 @Setter
 public class CittadinoDto {
 	private Long id;
-	private String nome;
-	private String cognome;
+	private String codiceFiscale;
 	private Long numeroServizi;
 	private Long numeroQuestionariCompilati;
 

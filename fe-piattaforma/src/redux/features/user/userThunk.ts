@@ -77,12 +77,12 @@ export const SessionCheck = async (dispatch: any) => {
 
 const CreateUserContextAction = { type: 'user/CreateUserContext' };
 export const CreateUserContext =
-  (codiceFiscale ?: string) => async (dispatch: Dispatch) => {
+  (cfUtenteLoggato ?: string) => async (dispatch: Dispatch) => {
     try {
-      dispatch({ ...CreateUserContextAction, codiceFiscale  }); // TODO manage dispatch for dev env only
+      dispatch({ ...CreateUserContextAction, cfUtenteLoggato  }); // TODO manage dispatch for dev env only
       dispatch(showLoader());
 
-      const res = await API.post(`${process?.env?.GESTIONE_UTENTE}contesto`, {codiceFiscale });
+      const res = await API.post(`${process?.env?.GESTIONE_UTENTE}contesto`, {cfUtenteLoggato});
 
       if (res?.data) {
         dispatch(setUserContext(res.data));
@@ -315,11 +315,11 @@ export const GetNotificationsByUser =
           ...forcedFilters,
         };
 
+        // @ts-ignore
         const queryParam = transformFiltersToQueryParams(body).replace(
           'sort',
           'sort_by'
         );
-        console.log(queryParam)
         /*const res = await proxyCall(
           `/user/${id}/notifications${queryParam}`,
           'GET'

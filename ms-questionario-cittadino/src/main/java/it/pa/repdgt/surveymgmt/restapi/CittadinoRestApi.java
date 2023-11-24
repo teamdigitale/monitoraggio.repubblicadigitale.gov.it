@@ -39,85 +39,86 @@ import it.pa.repdgt.surveymgmt.util.CSVCittadiniUtil;
 public class CittadinoRestApi {
 	@Autowired
 	private CittadinoService cittadinoService;
-	
+
 	/***
-	 * Restituisce tutti i cittadini paginati 
+	 * Restituisce tutti i cittadini paginati
 	 * 
-	 * */
+	 */
 	// Lista cittadini paginata
 	@PostMapping(path = "/all")
 	@ResponseStatus(value = HttpStatus.OK)
 	public CittadiniPaginatiResource getAllCittadini(
-		@RequestParam(name = "currPage", defaultValue = "0")  Integer currPage,
-		@RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
-		@RequestBody @Valid final CittadiniPaginatiParam cittadiniPaginatiParam) {
+			@RequestParam(name = "currPage", defaultValue = "0") Integer currPage,
+			@RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
+			@RequestBody @Valid final CittadiniPaginatiParam cittadiniPaginatiParam) {
 		final List<CittadinoDto> cittadiniList = this.cittadinoService.getAllCittadiniPaginati(
 				cittadiniPaginatiParam,
 				currPage,
-				pageSize
-			);
-		
-		final Integer totaleElementi = this.cittadinoService.getNumeroTotaleCittadiniFacilitatoreByFiltro(cittadiniPaginatiParam);
-		final int numeroPagine = (int) (totaleElementi /pageSize);
+				pageSize);
+
+		final Integer totaleElementi = this.cittadinoService
+				.getNumeroTotaleCittadiniFacilitatoreByFiltro(cittadiniPaginatiParam);
+		final int numeroPagine = totaleElementi / pageSize;
 
 		return new CittadiniPaginatiResource(
-				cittadiniList, 
-				totaleElementi % pageSize > 0 ? numeroPagine+1 : numeroPagine,
-				Long.valueOf(totaleElementi)
-			);
+				cittadiniList,
+				totaleElementi % pageSize > 0 ? numeroPagine + 1 : numeroPagine,
+				Long.valueOf(totaleElementi));
 	}
-	
+
 	/***
-	 * Restituisce le sedi per popolare il filtro dei cittadini 
+	 * Restituisce le sedi per popolare il filtro dei cittadini
 	 * 
-	 * */
+	 */
 	// Lista sedi dropdown
 	@PostMapping(path = "/sedi/dropdown")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<SedeDto> getAllSediDropdown(@RequestBody @Valid final CittadiniPaginatiParam cittadiniPaginatiParam) {
 		return this.cittadinoService.getAllSediDropdown(cittadiniPaginatiParam);
 	}
-	
+
 	/***
 	 * Aggiorna i dati del cittadino
 	 * 
-	 * */
+	 */
 	@PutMapping(path = "/{id}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void aggiornaCittadino(
 			@PathVariable(value = "id") Long id,
 			@RequestBody @Valid final CittadinoRequest cittadinoRequest) {
-		if(!this.cittadinoService.isAutorizzato(id, cittadinoRequest)) {
+		if (!this.cittadinoService.isAutorizzato(id, cittadinoRequest)) {
 			throw new CittadinoException("Errore tentativo accesso a risorsa non permesso", CodiceErroreEnum.A02);
 		}
 		this.cittadinoService.aggiornaCittadino(id, cittadinoRequest);
 	}
-	
-	
+
 	/***
-	 * Restituisce la scheda del cittadino 
+	 * Restituisce la scheda del cittadino
 	 * 
-	 * */
+	 */
 	// Scheda cittadino
 	@PostMapping(path = "/{idCittadino}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public SchedaCittadinoBean getSchedaCittadino(@PathVariable(value = "idCittadino") final Long idCittadino,
 			@RequestBody @Valid final SceltaProfiloParam profilazioneParam) {
-		if(!this.cittadinoService.isAutorizzato(idCittadino, profilazioneParam)) {
+		if (!this.cittadinoService.isAutorizzato(idCittadino, profilazioneParam)) {
 			throw new CittadinoException("Errore tentativo accesso a risorsa non permesso", CodiceErroreEnum.A02);
 		}
 		return this.cittadinoService.getSchedaCittadinoById(idCittadino, profilazioneParam);
 	}
-	
+
 	/**
-	 *  Download lista cittadini
+	 * Download lista cittadini
 	 */
 	@PostMapping(path = "/download")
-	public ResponseEntity<InputStreamResource> downloadListaCSVCittadini(@RequestBody @Valid CittadiniPaginatiParam cittadiniPaginatiParam) {
-		List<CittadinoProjection> cittadiniProjection = this.cittadinoService.getAllCittadiniFacilitatoreByFiltro(cittadiniPaginatiParam);
-		ByteArrayInputStream byteArrayInputStream = CSVCittadiniUtil.exportCSVCittadini(cittadiniProjection, CSVFormat.DEFAULT);
+	public ResponseEntity<InputStreamResource> downloadListaCSVCittadini(
+			@RequestBody @Valid CittadiniPaginatiParam cittadiniPaginatiParam) {
+		List<CittadinoProjection> cittadiniProjection = this.cittadinoService
+				.getAllCittadiniFacilitatoreByFiltro(cittadiniPaginatiParam);
+		ByteArrayInputStream byteArrayInputStream = CSVCittadiniUtil.exportCSVCittadini(cittadiniProjection,
+				CSVFormat.DEFAULT);
 		InputStreamResource fileCSV = new InputStreamResource(byteArrayInputStream);
-		
+
 		return ResponseEntity.ok()
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=cittadini.csv")
 				.contentType(MediaType.parseMediaType("application/csv"))
