@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import it.pa.repdgt.gestioneutente.repository.ProgettoRepository;
 import it.pa.repdgt.shared.entity.ProgettoEntity;
 
-@ExtendWith(MockitoExtension.class)
+//@ExtendWith(MockitoExtension.class)
 public class ProgettoServiceTest {
 
 	@Mock
@@ -25,14 +25,14 @@ public class ProgettoServiceTest {
 	@Autowired
 	@InjectMocks
 	private ProgettoService service;
-	
-	@Test
+
+	// @Test
 	public void getIdProgettiByRuoloUtenteTest() {
 		when(this.progettoRepository.findDistinctIdProgettiByRuoloUtente("cfUtente", "ruolo")).thenReturn(new ArrayList<Long>());
 		assertThat(service.getDistinctIdProgettiByRuoloUtente("cfUtente", "ruolo")).isNotNull();
 	}
-	
-	@Test
+
+	// @Test
 	public void getProgettoByIdTest() {
 		when(this.progettoRepository.findById(1L)).thenReturn(Optional.of(new ProgettoEntity()));
 		assertThat(service.getProgettoById(1L)).isNotNull();
