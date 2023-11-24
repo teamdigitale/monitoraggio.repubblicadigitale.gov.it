@@ -32,216 +32,229 @@ import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 //@ExtendWith(MockitoExtension.class)
 public class OpenDataServiceTest {
 
-	@Mock
-	private S3Service s3Service;
-	@Mock
-	private OpenDataCSVService openDataCSVService;
-	@Mock
-	private CittadinoRepository cittadinoRepository;
-
-	@Autowired
-	@InjectMocks
-	private OpenDataService openDataService;
-
-	@Value("${AWS.S3.BUCKET-NAME:}")
-	private String nomeDelBucketS3;
-	final static String NOME_FILE = "opendata_cittadini.csv";
-	List<OpenDataCittadinoCSVBean> listaOpenDataCittadino;
-	OpenDataCittadinoProjectionImplementation openDataCittadinoProjection;
-	File file;
-	ResponseBytes<GetObjectResponse> responseBytes;
-
-	@BeforeEach
-	public void setUp() {
-		openDataCittadinoProjection = new OpenDataCittadinoProjectionImplementation();
-		openDataCittadinoProjection.setIdProgetto("1L");
-		openDataCittadinoProjection.setIdProgramma("1L");
-		file = new File(NOME_FILE);
-	}
-
-	// @Test
-	public void caricaFileListaCittadiniSuAmazonS3Test() throws IOException {
-		when(this.openDataCSVService.getAllOpenDataCittadino()).thenReturn(listaOpenDataCittadino);
-		doNothing().when(cittadinoRepository).azzeraCountDownloadAndAggiornaDimensioneFile(NOME_FILE, String.valueOf(0L));
-		openDataService.caricaFileListaCittadiniSuAmazonS3();
-	}
-
-	// @Test
-	public void cancellaFileTest() throws IOException {
-		file.createNewFile();
-		openDataService.cancellaFile(file);
-	}
-
-	// @Test
-	public void cancellaFileKOTest() throws IOException {
-		// test KO per file inesistente
-		Assertions.assertThrows(FileNotFoundException.class, () -> openDataService.cancellaFile(file));
-		assertThatExceptionOfType(FileNotFoundException.class);
-	}
-
-	// @Test
-	public void getDetailsFileTest() throws IOException {
-		OpenDataDetailsBean details = new OpenDataDetailsBean();
-		details.setAnniCopertura("2022");
-		details.setConteggioDownload("5");
-		details.setDimensioneFile("46354");
-
-		OpenDataImplementation impl = new OpenDataImplementation();
-		impl.setCountDownload(5L);
-		impl.setDataPrimoUpload(new Date());
-		impl.setDataUltimoUpload(new Date());
-		impl.setDimensioneFile(46354L);
-
-		when(cittadinoRepository.getOpenDataDetails(NOME_FILE)).thenReturn(impl);
-		assertThat(openDataService.getDetails(NOME_FILE).getDimensioneFile()).isEqualTo(details.getDimensioneFile());
-	}
-
-	// @Test
-	public void getPresignedUrlTest() throws IOException {
-		doNothing().when(cittadinoRepository).updateCountDownload(Mockito.anyString(), Mockito.any(Date.class));
-		when(this.s3Service.getPresignedUrl(NOME_FILE, this.nomeDelBucketS3)).thenReturn(NOME_FILE);
-		openDataService.getPresignedUrl(NOME_FILE);
-	}
-
-	@Setter
-	public class OpenDataCittadinoProjectionImplementation implements OpenDataCittadinoProjection {
-		private String genere;
-		private String titoloDiStudio;
-		private Integer annoDiNascita;
-		private String occupazione;
-		private String policy;
-		private String servizioId;
-		private String tipologiaServizio;
-		private String nomeServizio;
-		private String IdTemplateQ3Compilato;
-		private String sedeId;
-		private String nomeSede;
-		private String comuneSede;
-		private String provinciaSede;
-		private String regioneSede;
-		private String capSede;
-		private String idProgramma;
-		private String idProgetto;
-		private String dataFruizioneServizio;
-
-		@Override
-		public String getGenere() {
-			return genere;
-		}
-
-		@Override
-		public String getTitoloDiStudio() {
-			return titoloDiStudio;
-		}
-
-		@Override
-		public Integer getAnnoDiNascita() {
-			return annoDiNascita;
-		}
-
-		@Override
-		public String getOccupazione() {
-			return occupazione;
-		}
-
-		@Override
-		public String getPolicy() {
-			return policy;
-		}
-
-		@Override
-		public String getServizioId() {
-			return servizioId;
-		}
-
-		@Override
-		public String getTipologiaServizio() {
-			return tipologiaServizio;
-		}
-
-		@Override
-		public String getNomeServizio() {
-			return nomeServizio;
-		}
-
-		@Override
-		public String getIdTemplateQ3Compilato() {
-			return IdTemplateQ3Compilato;
-		}
-
-		@Override
-		public String getSedeId() {
-			return sedeId;
-		}
-
-		@Override
-		public String getNomeSede() {
-			return nomeSede;
-		}
-
-		@Override
-		public String getComuneSede() {
-			return comuneSede;
-		}
-
-		@Override
-		public String getProvinciaSede() {
-			return provinciaSede;
-		}
-
-		@Override
-		public String getRegioneSede() {
-			return regioneSede;
-		}
-
-		@Override
-		public String getCapSede() {
-			return capSede;
-		}
-
-		@Override
-		public String getIdProgramma() {
-			return idProgramma;
-		}
-
-		@Override
-		public String getIdProgetto() {
-			return idProgetto;
-		}
-
-		@Override
-		public String getDataFruizioneServizio() {
-			return dataFruizioneServizio;
-		}
-	}
-
-	@Setter
-	class OpenDataImplementation implements OpenDataSqlProjection {
-
-		private Long countDownload;
-		private Long dimensioneFile;
-		private Date dataPrimoUpload;
-		private Date dataUltimoUpload;
-
-		@Override
-		public Long getCountDownload() {
-			return countDownload;
-		}
-
-		@Override
-		public Long getDimensioneFile() {
-			return dimensioneFile;
-		}
-
-		@Override
-		public Date getDataPrimoUpload() {
-			return dataPrimoUpload;
-		}
-
-		@Override
-		public Date getDataUltimoUpload() {
-			return dataUltimoUpload;
-		}
-
-	}
+	/*
+	 * @Mock
+	 * private S3Service s3Service;
+	 * 
+	 * @Mock
+	 * private OpenDataCSVService openDataCSVService;
+	 * 
+	 * @Mock
+	 * private CittadinoRepository cittadinoRepository;
+	 * 
+	 * @Autowired
+	 * 
+	 * @InjectMocks
+	 * private OpenDataService openDataService;
+	 * 
+	 * @Value("${AWS.S3.BUCKET-NAME:}")
+	 * private String nomeDelBucketS3;
+	 * final static String NOME_FILE = "opendata_cittadini.csv";
+	 * List<OpenDataCittadinoCSVBean> listaOpenDataCittadino;
+	 * OpenDataCittadinoProjectionImplementation openDataCittadinoProjection;
+	 * File file;
+	 * ResponseBytes<GetObjectResponse> responseBytes;
+	 * 
+	 * @BeforeEach
+	 * public void setUp() {
+	 * openDataCittadinoProjection = new
+	 * OpenDataCittadinoProjectionImplementation();
+	 * openDataCittadinoProjection.setIdProgetto("1L");
+	 * openDataCittadinoProjection.setIdProgramma("1L");
+	 * file = new File(NOME_FILE);
+	 * }
+	 * 
+	 * // @Test
+	 * public void caricaFileListaCittadiniSuAmazonS3Test() throws IOException {
+	 * when(this.openDataCSVService.getAllOpenDataCittadino()).thenReturn(
+	 * listaOpenDataCittadino);
+	 * doNothing().when(cittadinoRepository).
+	 * azzeraCountDownloadAndAggiornaDimensioneFile(NOME_FILE, String.valueOf(0L));
+	 * openDataService.caricaFileListaCittadiniSuAmazonS3();
+	 * }
+	 * 
+	 * // @Test
+	 * public void cancellaFileTest() throws IOException {
+	 * file.createNewFile();
+	 * openDataService.cancellaFile(file);
+	 * }
+	 * 
+	 * // @Test
+	 * public void cancellaFileKOTest() throws IOException {
+	 * // test KO per file inesistente
+	 * Assertions.assertThrows(FileNotFoundException.class, () ->
+	 * openDataService.cancellaFile(file));
+	 * assertThatExceptionOfType(FileNotFoundException.class);
+	 * }
+	 * 
+	 * // @Test
+	 * public void getDetailsFileTest() throws IOException {
+	 * OpenDataDetailsBean details = new OpenDataDetailsBean();
+	 * details.setAnniCopertura("2022");
+	 * details.setConteggioDownload("5");
+	 * details.setDimensioneFile("46354");
+	 * 
+	 * OpenDataImplementation impl = new OpenDataImplementation();
+	 * impl.setCountDownload(5L);
+	 * impl.setDataPrimoUpload(new Date());
+	 * impl.setDataUltimoUpload(new Date());
+	 * impl.setDimensioneFile(46354L);
+	 * 
+	 * when(cittadinoRepository.getOpenDataDetails(NOME_FILE)).thenReturn(impl);
+	 * assertThat(openDataService.getDetails(NOME_FILE).getDimensioneFile()).
+	 * isEqualTo(details.getDimensioneFile());
+	 * }
+	 * 
+	 * // @Test
+	 * public void getPresignedUrlTest() throws IOException {
+	 * doNothing().when(cittadinoRepository).updateCountDownload(Mockito.anyString()
+	 * , Mockito.any(Date.class));
+	 * when(this.s3Service.getPresignedUrl(NOME_FILE,
+	 * this.nomeDelBucketS3)).thenReturn(NOME_FILE);
+	 * openDataService.getPresignedUrl(NOME_FILE);
+	 * }
+	 * 
+	 * @Setter
+	 * public class OpenDataCittadinoProjectionImplementation implements
+	 * OpenDataCittadinoProjection {
+	 * private String genere;
+	 * private String titoloDiStudio;
+	 * private Integer annoDiNascita;
+	 * private String occupazione;
+	 * private String policy;
+	 * private String servizioId;
+	 * private String tipologiaServizio;
+	 * private String nomeServizio;
+	 * private String IdTemplateQ3Compilato;
+	 * private String sedeId;
+	 * private String nomeSede;
+	 * private String comuneSede;
+	 * private String provinciaSede;
+	 * private String regioneSede;
+	 * private String capSede;
+	 * private String idProgramma;
+	 * private String idProgetto;
+	 * private String dataFruizioneServizio;
+	 * 
+	 * @Override
+	 * public String getGenere() {
+	 * return genere;
+	 * }
+	 * 
+	 * @Override
+	 * public String getTitoloDiStudio() {
+	 * return titoloDiStudio;
+	 * }
+	 * 
+	 * @Override
+	 * public Integer getAnnoDiNascita() {
+	 * return annoDiNascita;
+	 * }
+	 * 
+	 * @Override
+	 * public String getOccupazione() {
+	 * return occupazione;
+	 * }
+	 * 
+	 * @Override
+	 * public String getPolicy() {
+	 * return policy;
+	 * }
+	 * 
+	 * @Override
+	 * public String getServizioId() {
+	 * return servizioId;
+	 * }
+	 * 
+	 * @Override
+	 * public String getTipologiaServizio() {
+	 * return tipologiaServizio;
+	 * }
+	 * 
+	 * @Override
+	 * public String getNomeServizio() {
+	 * return nomeServizio;
+	 * }
+	 * 
+	 * @Override
+	 * public String getIdTemplateQ3Compilato() {
+	 * return IdTemplateQ3Compilato;
+	 * }
+	 * 
+	 * @Override
+	 * public String getSedeId() {
+	 * return sedeId;
+	 * }
+	 * 
+	 * @Override
+	 * public String getNomeSede() {
+	 * return nomeSede;
+	 * }
+	 * 
+	 * @Override
+	 * public String getComuneSede() {
+	 * return comuneSede;
+	 * }
+	 * 
+	 * @Override
+	 * public String getProvinciaSede() {
+	 * return provinciaSede;
+	 * }
+	 * 
+	 * @Override
+	 * public String getRegioneSede() {
+	 * return regioneSede;
+	 * }
+	 * 
+	 * @Override
+	 * public String getCapSede() {
+	 * return capSede;
+	 * }
+	 * 
+	 * @Override
+	 * public String getIdProgramma() {
+	 * return idProgramma;
+	 * }
+	 * 
+	 * @Override
+	 * public String getIdProgetto() {
+	 * return idProgetto;
+	 * }
+	 * 
+	 * @Override
+	 * public String getDataFruizioneServizio() {
+	 * return dataFruizioneServizio;
+	 * }
+	 * }
+	 * 
+	 * @Setter
+	 * class OpenDataImplementation implements OpenDataSqlProjection {
+	 * 
+	 * private Long countDownload;
+	 * private Long dimensioneFile;
+	 * private Date dataPrimoUpload;
+	 * private Date dataUltimoUpload;
+	 * 
+	 * @Override
+	 * public Long getCountDownload() {
+	 * return countDownload;
+	 * }
+	 * 
+	 * @Override
+	 * public Long getDimensioneFile() {
+	 * return dimensioneFile;
+	 * }
+	 * 
+	 * @Override
+	 * public Date getDataPrimoUpload() {
+	 * return dataPrimoUpload;
+	 * }
+	 * 
+	 * @Override
+	 * public Date getDataUltimoUpload() {
+	 * return dataUltimoUpload;
+	 * }
+	 * 
+	 * }
+	 */
 }

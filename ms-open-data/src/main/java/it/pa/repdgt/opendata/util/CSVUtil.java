@@ -68,7 +68,7 @@ public class CSVUtil {
 			String competenzeTrattate, String ambitoServizi) {
 		return Arrays.asList(
 				indiceRiga,
-				openDataCittadinoProjection.getFasciaDiEta().getValore(),
+				openDataCittadinoProjection.getFasciaDiEta().getFascia(),
 				openDataCittadinoProjection.getGenere(),
 				openDataCittadinoProjection.getOccupazione(),
 				openDataCittadinoProjection.getTitoloDiStudio(),

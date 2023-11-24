@@ -13,17 +13,13 @@ import it.pa.repdgt.shared.entity.QuestionarioCompilatoEntity;
 public interface QuestionarioCompilatoRepository extends JpaRepository<QuestionarioCompilatoEntity, String> {
 
 	@Query(value = " "
-				 + " SELECT "
-				 + "	*"
-			     + " FROM "
-			     + "	questionario_compilato qc "
-			     + " WHERE 1=1"
-			     + "	AND qc.ID_CITTADINO = :idCittadino "
-			     + "    AND qc.STATO <> 'COMPILATO'        ",
-		   nativeQuery = true)
+			+ " SELECT "
+			+ "	*"
+			+ " FROM "
+			+ "	questionario_compilato qc "
+			+ " WHERE 1=1"
+			+ "	AND qc.ID_CITTADINO = :idCittadino "
+			+ "    AND qc.STATO <> 'COMPILATO'        ", nativeQuery = true)
 	List<QuestionarioCompilatoEntity> findQuestionariCompilatiByCittadinoAndStatoNonCompilato(
-			@Param(value = "idCittadino") Long idCittadino
-		);
-
-	List<QuestionarioCompilatoEntity> findByIdServizioAndStato(Long idServizio, String string);
+			@Param(value = "idCittadino") Long idCittadino);
 }
