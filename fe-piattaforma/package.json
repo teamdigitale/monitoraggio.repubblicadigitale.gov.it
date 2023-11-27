@@ -21,6 +21,7 @@
     "@reduxjs/toolkit": "^1.8.0",
     "axios": "^0.26.1",
     "bootstrap-italia": "^1.6.3",
+    "buffer": "^6.0.3",
     "crypto-js": "^4.2.0",
     "cypress-axe": "^0.14.0",
     "design-react-kit": "^4.0.2",

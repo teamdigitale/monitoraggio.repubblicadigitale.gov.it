@@ -1,3 +1,5 @@
+import {province} from "../../consts/province";
+
 export const citizenFormDropdownOptions = {
   codiceFiscaleNonDisponibile: [
     {
@@ -16,6 +18,7 @@ export const citizenFormDropdownOptions = {
     { label: 'Patente', value: 'Patente' },
     { label: 'Passaporto', value: 'Passaporto' },
     { label: 'Permesso di soggiorno', value: 'Permesso di soggiorno' },
+    { label: 'Altro', value: 'Altro'}
   ],
   cittadinanza: [
     { label: 'Italiana', value: 'Italiana' },
@@ -111,10 +114,11 @@ export const citizenFormDropdownOptions = {
     { label: 'Inabile al lavoro', value: 'Inabile al lavoro' },
     { label: 'Altro', value: 'Altro' },
   ],
-  fasciaDiEta: [
+  fasciaDiEtaId: [
     { label: '18-29', value: '1' },
     { label: '30-54', value: '2' },
     { label: '55-74', value: '3' },
     { label: '75 e oltre', value: '4' }
   ],
+  provincia: province
 };

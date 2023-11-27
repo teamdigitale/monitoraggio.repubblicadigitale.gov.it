@@ -74,6 +74,12 @@ public interface CittadinoRepository extends JpaRepository<CittadinoEntity, Long
 			@Param("idsSedi") List<String> idsSedi,
 			@Param("codiceFiscaleUtenteLoggato") String codiceFiscaleUtenteLoggato);
 
+	@Query(value = "SELECT cittadini.conteggio_id from (SELECT DISTINCT qc_cittadino.id_cittadino as id,qc_cittadino.codice_fiscale as codiceFiscale,count_servizi.conteggio as numeroServizi,count_quest_compilati.conteggio as numeroQuestionariCompilati,count(qc_cittadino.id_cittadino) as conteggio_id FROM (SELECT DISTINCT qc.id_cittadino,c.codice_fiscale,c.num_documento,count(qc.id_cittadino) FROM questionario_compilato qc INNER JOIN cittadino c ON c.id=qc.id_cittadino INNER JOIN servizio s ON qc.servizio_id=s.id WHERE s.id_facilitatore=:codiceFiscaleUtenteLoggato AND COALESCE(:idsSedi) IS NULL OR sede_id IN (:idsSedi)) AS qc_cittadino INNER JOIN (SELECT id_cittadino,count(servizio_id) as conteggio FROM questionario_compilato WHERE 1=1 GROUP BY id_cittadino) AS count_servizi ON count_servizi.id_cittadino=qc_cittadino.id_cittadino LEFT JOIN (SELECT id_cittadino,count(*) as conteggio FROM questionario_compilato WHERE stato='COMPILATO' GROUP BY id_cittadino) AS count_quest_compilati ON count_quest_compilati.id_cittadino=qc_cittadino.id_cittadino WHERE (:criterioRicerca IS NULL OR UPPER(qc_cittadino.CODICE_FISCALE)=UPPER(:criterioRicerca) OR UPPER(qc_cittadino.NUM_DOCUMENTO)=UPPER(:criterioRicerca))) as cittadini", nativeQuery = true)
+	Integer conteggioCittadini(
+			@Param("criterioRicerca") String criterioRicerca,
+			@Param("idsSedi") List<String> idsSedi,
+			@Param("codiceFiscaleUtenteLoggato") String codiceFiscaleUtenteLoggato);
+
 	@Query(value = "SELECT DISTINCT qc_cittadino.id_cittadino as id,qc_cittadino.codice_fiscale as codiceFiscale,count_servizi.conteggio as numeroServizi,count_quest_compilati.conteggio as numeroQuestionariCompilati FROM (SELECT DISTINCT qc.id_cittadino,c.codice_fiscale,c.num_documento FROM questionario_compilato qc INNER JOIN cittadino c ON c.id=qc.id_cittadino INNER JOIN servizio s ON qc.servizio_id=s.id WHERE s.id_facilitatore=:codiceFiscaleUtenteLoggato AND COALESCE(:idsSedi) IS NULL OR sede_id IN (:idsSedi)) AS qc_cittadino INNER JOIN (SELECT id_cittadino,count(servizio_id) as conteggio FROM questionario_compilato WHERE 1=1 GROUP BY id_cittadino) AS count_servizi ON count_servizi.id_cittadino=qc_cittadino.id_cittadino LEFT JOIN (SELECT id_cittadino,count(*) as conteggio FROM questionario_compilato WHERE stato='COMPILATO' GROUP BY id_cittadino) AS count_quest_compilati ON count_quest_compilati.id_cittadino=qc_cittadino.id_cittadino WHERE (:criterioRicerca IS NULL OR UPPER(qc_cittadino.CODICE_FISCALE)=UPPER(:criterioRicerca) OR UPPER(qc_cittadino.NUM_DOCUMENTO)=UPPER(:criterioRicerca)) ORDER BY qc_cittadino.codice_fiscale LIMIT :currPage, :pageSize", nativeQuery = true)
 	List<CittadinoProjection> findAllCittadiniPaginatiByFiltro(
 			@Param("criterioRicerca") String criterioRicerca,
@@ -107,6 +113,23 @@ public interface CittadinoRepository extends JpaRepository<CittadinoEntity, Long
 			+ "     ORDER BY s.nome", nativeQuery = true)
 	List<DettaglioServizioSchedaCittadinoProjection> findDettaglioServiziSchedaCittadino(
 			@Param("idCittadino") Long idCittadino);
+
+	@Query(value = "SELECT "
+			+ "       sede.provincia as provincia"
+			+ "		FROM "
+			+ "			questionario_compilato qc "
+			+ "		INNER JOIN "
+			+ "			servizio s "
+			+ "		ON "
+			+ "			qc.servizio_id = s.id "
+			+ "		INNER JOIN "
+			+ "			sede sede "
+			+ "		ON "
+			+ "			s.id_sede = sede.id "
+			+ "		WHERE "
+			+ "			qc.id_cittadino = :idCittadino "
+			+ "     LIMIT 1", nativeQuery = true)
+	String findProvinciaByIdCittadino(@Param("idCittadino") Long idCittadino);
 
 	Optional<CittadinoEntity> findByCodiceFiscale(String codiceFiscale);
 

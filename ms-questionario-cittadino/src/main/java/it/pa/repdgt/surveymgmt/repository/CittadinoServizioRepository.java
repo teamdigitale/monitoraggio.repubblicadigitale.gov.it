@@ -35,7 +35,7 @@ public interface CittadinoServizioRepository extends JpaRepository<CittadinoEnti
 			+ "		 OR UPPER(c.codice_fiscale) = UPPER( :criterioRicercaServizio ) "
 			+ "    ) "
 			+ "    AND ( COALESCE( :statiQuestionariFiltro  ) IS NULL OR q_c.STATO IN ( :statiQuestionariFiltro ) ) "
-			+ "    ORDER BY c.cognome"
+			+ "    ORDER BY c.codice_fiscale"
 			+ "	LIMIT :currPage, :pageSize", nativeQuery = true)
 	List<CittadinoServizioProjection> findAllCittadiniServizioPaginatiByFiltro(
 			@Param(value = "idServizio") Long idServizio,
@@ -103,7 +103,7 @@ public interface CittadinoServizioRepository extends JpaRepository<CittadinoEnti
 			+ " WHERE 1=1     "
 			+ "		AND ((UPPER(:tipoDocumento) = 'CF' AND UPPER(codice_fiscale) = UPPER(:criterioRicerca))       "
 			+ " 	OR (UPPER(:tipoDocumento) = 'NUM_DOC' AND UPPER(num_documento) = UPPER(:criterioRicerca))) "
-			+ " ORDER BY cognome", nativeQuery = true)
+			+ " ORDER BY codice_fiscale", nativeQuery = true)
 	List<GetCittadinoProjection> getAllCittadiniByCodFiscOrNumDoc(@Param(value = "tipoDocumento") String tipoDocumento,
 			@Param(value = "criterioRicerca") String criterioRicerca);
 }

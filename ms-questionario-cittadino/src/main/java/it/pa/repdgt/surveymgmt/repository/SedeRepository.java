@@ -45,10 +45,9 @@ public interface SedeRepository extends JpaRepository<SedeEntity, Long> {
 			+ "                               WHERE 1=1"
 			+ " 		                      AND (     :criterioRicerca IS NULL  "
 			+ "			                      OR CONVERT( qc_cittadino.ID_CITTADINO, CHAR ) = :criterioRicerca "
-			+ "		  	                      OR UPPER( qc_cittadino.CODICE_FISCALE ) = UPPER( :criterioRicercaLike ) "
-			+ "		  	                      OR UPPER( qc_cittadino.NUM_DOCUMENTO ) = UPPER( :criterioRicercaLike )) ", nativeQuery = true)
+			+ "		  	                      OR UPPER( qc_cittadino.CODICE_FISCALE ) = UPPER( :criterioRicerca ) "
+			+ "		  	                      OR UPPER( qc_cittadino.NUM_DOCUMENTO ) = UPPER( :criterioRicerca )) ", nativeQuery = true)
 	List<SedeProjection> findAllSediFiltrate(
 			@Param("criterioRicerca") String criterioRicerca,
-			@Param("criterioRicercaLike") String criterioRicercaLike,
 			@Param("idsSedi") List<String> idsSedi);
 }

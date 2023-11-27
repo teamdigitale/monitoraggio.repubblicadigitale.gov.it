@@ -13,6 +13,7 @@ import { RootState } from '../../store';
 import { OptionType } from '../../../components/Form/select';
 import { downloadCSV, mapOptionsCitizens } from '../../../utils/common';
 import { getUserHeaders } from '../user/userThunk';
+import { Buffer } from 'buffer';
 
 const GetValuesAction = { type: 'citizensArea/GetEntityValues' };
 
@@ -42,9 +43,9 @@ export const GetEntityValues =
       });
       const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
         getUserHeaders();
-        /*if(filtroRequest.criterioRicerca) {
-          filtroRequest.criterioRicerca = AES.encrypt(filtroRequest.criterioRicerca, process?.env?.KEY_SECRET as string).toString();
-        }*/
+        if(filtroRequest.criterioRicerca) {
+          filtroRequest.criterioRicerca = Buffer.from(filtroRequest.criterioRicerca).toString('base64');
+        }
       const body = {
         filtro: filtroRequest,
         idProgetto,

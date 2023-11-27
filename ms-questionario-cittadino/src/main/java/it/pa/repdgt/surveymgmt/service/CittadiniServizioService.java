@@ -8,9 +8,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
-import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -245,8 +242,13 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 	public CittadinoEntity creaNuovoCittadino(
 			@NotNull final Long idServizio,
 			@NotNull final NuovoCittadinoServizioRequest nuovoCittadinoRequest) throws ParseException {
+		String codiceFiscaleDecrypted;
 		if (nuovoCittadinoRequest.getCodiceFiscale() != null && !nuovoCittadinoRequest.getCodiceFiscale().isEmpty()) {
-			if (!isCittadinoMaggiorenne(nuovoCittadinoRequest.getCodiceFiscale()))
+			codiceFiscaleDecrypted = decryptFromBase64(nuovoCittadinoRequest.getCodiceFiscale());
+			if (codiceFiscaleDecrypted.length() != 16)
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+						"Il codice fiscale deve essere composto da 16 caratteri");
+			if (!isCittadinoMaggiorenne(codiceFiscaleDecrypted))
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Il cittadino non è maggiorenne");
 		}
 		// Verifico se il facilitatore è il creatore di quel servizio
@@ -257,7 +259,6 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 					nuovoCittadinoRequest.getCfUtenteLoggato());
 			throw new ServizioException(messaggioErrore, CodiceErroreEnum.A02);
 		}
-
 		final Optional<CittadinoEntity> optionalCittadinoDBFetch = this.cittadinoService
 				.getCittadinoByCodiceFiscaleOrNumeroDocumento(
 						nuovoCittadinoRequest.getCodiceFiscaleNonDisponibile(),
@@ -316,23 +317,16 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 
 	public boolean isCittadinoMaggiorenne(String codiceFiscale) {
 		try {
-			String codiceFiscaleDecrypted = decryptCodiceFiscale(codiceFiscale);
-			Date dataDiNascita = estraiDataDiNascita(codiceFiscaleDecrypted);
+			Date dataDiNascita = estraiDataDiNascita(codiceFiscale);
 			return isMaggiorenne(dataDiNascita);
 		} catch (ParseException e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Errore nella data di nascita");
 		}
 	}
 
-	private String decryptCodiceFiscale(String codiceFiscale) {
+	private String decryptFromBase64(String encryptedData) {
 		try {
-			Cipher cipher = Cipher.getInstance("AES");
-			SecretKey secretKey = new SecretKeySpec(Base64.getDecoder().decode(System.getenv("CF_ST_KEY").getBytes()),
-					"AES");
-			cipher.init(Cipher.DECRYPT_MODE, secretKey);
-			byte[] decodedCodiceFiscale = Base64.getDecoder().decode(codiceFiscale);
-			byte[] decryptedCodiceFiscale = cipher.doFinal(decodedCodiceFiscale);
-			return new String(decryptedCodiceFiscale);
+			return new String(Base64.getDecoder().decode(encryptedData));
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Il codice fiscale inviato non è corretto");
 		}
@@ -344,7 +338,8 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		int secolo = Integer.parseInt(codiceFiscaleDecrypted.substring(6, 8));
 		int annoDiNascita = (secolo <= RANGE_SECOLO) ? 2000 + secolo : 1900 + secolo;
 		Calendar cal = Calendar.getInstance();
-		cal.set(annoDiNascita, mappaMesi.get(String.valueOf(codiceFiscaleDecrypted.charAt(8))), giornoDiNascita);
+		cal.set(annoDiNascita, mappaMesi.get(String.valueOf(codiceFiscaleDecrypted.charAt(8)).toUpperCase()),
+				giornoDiNascita);
 		return cal.getTime();
 	}
 
@@ -447,10 +442,11 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 				ID_DOMANDA_TIPO_DOCUMENTO, cittadino.getTipoDocumento(),
 				ID_DOMANDA_NUMERO_DOCUMENTO, cittadino.getNumeroDocumento(),
 				ID_DOMANDA_GENERE, cittadino.getGenere(),
+				ID_DOMANDA_FASCIA_DI_ETA, cittadino.getFasciaDiEta().getFascia(),
 				ID_DOMANDA_TITOLO_DI_STUDIO, cittadino.getTitoloDiStudio(),
 				ID_DOMANDA_STATO_OCCUPAZIONALE, cittadino.getOccupazione(),
-				ID_DOMANDA_CITTADINANZA, cittadino.getCittadinanza(),
-				ID_DOMANDA_FASCIA_DI_ETA, cittadino.getFasciaDiEta().getFascia());
+				ID_DOMANDA_PROVINCIA, this.cittadinoRepository.findProvinciaByIdCittadino(cittadino.getId()),
+				ID_DOMANDA_CITTADINANZA, cittadino.getCittadinanza());
 	}
 
 	@LogMethod

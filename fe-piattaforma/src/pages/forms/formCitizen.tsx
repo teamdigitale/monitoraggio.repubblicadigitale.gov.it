@@ -134,7 +134,11 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
           col='col-12 col-lg-6'
           placeholder={`${form?.['2']?.label}`}
           onInputChange={onInputDataChange}
-          value={form?.[2].value ? 'Codice fiscale disponibile ma non visualizzabile' : 'Codice fiscale non presente'}
+          value={
+            form?.[2].value
+              ? 'Codice fiscale disponibile ma non visualizzabile'
+              : 'Codice fiscale non presente'
+          }
         />
         <Select
           {...form?.['3']}
@@ -150,7 +154,11 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
           col='col-12 col-lg-6'
           placeholder={`${form?.['4']?.label}`}
           onInputChange={onInputDataChange}
-          value={form?.[4].value ? 'Documento disponibile ma non visualizzabile' : 'Documento non presente'}
+          value={
+            form?.[4].value
+              ? 'Documento disponibile ma non visualizzabile'
+              : 'Documento non presente'
+          }
         />
         <Select
           {...form?.['5']}
@@ -166,7 +174,7 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
           placeholder={`${form?.['6']?.label}`}
           onInputChange={onInputDataChange}
           col='col-12 col-lg-6'
-          options={citizenFormDropdownOptions['fasciaDiEta']}
+          options={citizenFormDropdownOptions['fasciaDiEtaId']}
           isDisabled={formDisabled}
           wrapperClassName='mb-5 pr-lg-3'
         />
@@ -188,11 +196,14 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
           isDisabled={formDisabled}
           wrapperClassName='mb-5 pr-lg-3'
         />
-        <Input
+        <Select
           {...form?.['9']}
-          placeholder={`${form?.['9']?.label}`}
-          onInputChange={onInputDataChange}
+          placeholder={`Seleziona ${form?.['9']?.label?.toLowerCase()}`}
           col='col-12 col-lg-6'
+          options={citizenFormDropdownOptions['provincia']}
+          isDisabled={formDisabled}
+          onInputChange={onInputDataChange}
+          wrapperClassName='mb-5 pr-lg-3'
         />
         <Select
           {...form?.['10']}
@@ -214,7 +225,7 @@ const form = newForm([
     label: 'ID Cittadino',
     id: '1',
     field: '1',
-    required: true
+    required: true,
   }),
   newFormField({
     ...CommonFields.CODICE_FISCALE,
@@ -278,7 +289,7 @@ const form = newForm([
     id: '9',
     field: '9',
     label: 'Provincia di domicilio',
-    type: 'text',
+    type: 'select',
     required: true,
   }),
   newFormField({
