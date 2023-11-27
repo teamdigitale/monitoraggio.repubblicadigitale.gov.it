@@ -237,6 +237,8 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
                 }
               );
               body[key] = fasciaDiEtaId;
+            } else {
+              body[key] = userValue;
             }
           } else {
             body[key] = userValue;
