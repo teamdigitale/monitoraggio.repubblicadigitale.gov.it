@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.368](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.367...1.0.0-develop.368) (2023-11-27)
+
+
+### Features
+
+* **fe-piattaforma:** updates 20231127 sprint-2 ([86a45d8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/86a45d853a76c7adc38f0834bbb866770e4a0e5f))
+
 ## [1.0.0-develop.367](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.366...1.0.0-develop.367) (2023-11-27)
 
 
