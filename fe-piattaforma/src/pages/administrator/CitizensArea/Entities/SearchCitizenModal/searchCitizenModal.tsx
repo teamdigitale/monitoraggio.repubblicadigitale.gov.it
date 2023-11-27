@@ -228,14 +228,16 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
               'base64'
             );
           } else if (key === 'fasciaDiEtaId') {
-            let fasciaDiEtaId: string | undefined;
-            citizenFormDropdownOptions['fasciaDiEtaId'].forEach(
-              (fasciaDiEta: any) => {
-                if (fasciaDiEta.label === userValue)
-                  fasciaDiEtaId = fasciaDiEta.value;
-              }
-            );
-            body[key] = fasciaDiEtaId;
+            if(searchValue?.type !== 'codiceFiscale') {
+              let fasciaDiEtaId: string | undefined;
+              citizenFormDropdownOptions['fasciaDiEtaId'].forEach(
+                (fasciaDiEta: any) => {
+                  if (fasciaDiEta.label === userValue)
+                    fasciaDiEtaId = fasciaDiEta.value;
+                }
+              );
+              body[key] = fasciaDiEtaId;
+            }
           } else {
             body[key] = userValue;
           }
