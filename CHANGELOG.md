@@ -1,5 +1,21 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.146](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.145...1.0.0-test.146) (2023-11-29)
+
+
+### Features
+
+* **fe-piattaforma:** updates 20231129 ([eb65f04](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/eb65f045b974798557e7c7740a8bee5cf383df32))
+* **fe-piattaforma:** updates 20231127 fix ([8e70703](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8e70703600fe018a2afc3643a7022bbe63d77691))
+* **fe-piattaforma:** updates 20231127 sprint-2 ([86a45d8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/86a45d853a76c7adc38f0834bbb866770e4a0e5f))
+* **be-fe:** updates 20231127 sprint-2 ([b458d09](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b458d09c48813bd8a908e5d601613e78a3162f72))
+* **ms-questionario-cittadino:** updates 20231124 ([c0936f3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c0936f3708a3552685c8e3dc01d9b2f091bc0e32))
+* **lib-repdgt-shared:** updates 20231124 ([8a94596](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8a94596c24e06753604007bf1080f97332b46ded))
+* **ms-programma-progetto:** updates 20231124 ([0d21c09](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0d21c09cd806959854f8a9369e77c8400f33610f))
+* **ms-open-data:** updates 20231124 ([8dc97a1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8dc97a1a1a56b170e4a1c6f01ca4fc96a4b9fa1d))
+* **ms-gestione-utente:** updates 20231124 ([284b515](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/284b515d09d60e000f442e36f774884a08a7f030))
+* **fe-piattaforma:** updates 20231123 ([865f348](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/865f3482839285b4e77c22a3f84a014206218139))
+
 ## [1.0.0-test.145](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.144...1.0.0-test.145) (2023-11-20)
 
 
