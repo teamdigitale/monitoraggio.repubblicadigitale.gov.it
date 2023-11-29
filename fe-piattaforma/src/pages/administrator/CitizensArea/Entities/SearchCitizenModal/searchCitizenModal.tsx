@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
 import { useDispatch } from 'react-redux';
 import { closeModal } from '../../../../../redux/features/modal/modalSlice';
@@ -29,8 +29,8 @@ import NoResultsFoundCitizen from '../../../../../components/NoResultsFoundCitiz
 import clsx from 'clsx';
 import { SearchValue } from '../../../../forms/models/searchValue.model';
 import { NewUserValuesFormCitizen } from '../../../../forms/models/newUserValuesFormCitizen.model';
-import { mappaMesi } from '../../../../../consts/monthsMapForFiscalCode';
-import { AES } from 'crypto-js';
+import { Buffer } from 'buffer';
+import { citizenFormDropdownOptions } from '../../../../forms/constantsFormCitizen';
 
 const id = 'search-citizen-modal';
 
@@ -92,8 +92,8 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
     if (typeof surveyTemplateQ1 !== 'string') {
       typeof surveyTemplateQ1?.schema !== 'string'
         ? null
-        //setStringQ1(surveyTemplateQ1?.schema.json)
-        : null;
+        : //setStringQ1(surveyTemplateQ1?.schema.json)
+          null;
     }
   }, [surveyTemplateQ1]);
 
@@ -101,9 +101,9 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
     if (currentStep !== selectedSteps.ADD_CITIZEN) {
       const newSearchValue: SearchValue = {
         type: currentStep,
-        value: searchValue?.value as string
-      }
-      setSearchValue(newSearchValue)
+        value: searchValue?.value as string,
+      };
+      setSearchValue(newSearchValue);
       setShowFormCompleteForm(false);
     }
   }, [currentStep]);
@@ -204,40 +204,6 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
     );
   };
 
-  const decodeGenderFromFiscalCode = useCallback((cf: string) =>  {
-    const giorno = parseInt(cf.substring(9, 11), 10);
-    return giorno <= 31 ? 'M' : 'F';
-  }, []);
-  const determineAgeGroup = useCallback((age: number): string => {
-    if (age >= 18 && age <= 29) {
-      return '1';
-    } else if (age >= 30 && age <= 54) {
-      return '2';
-    } else if (age >= 55 && age <= 74) {
-      return '3';
-    } else {
-      return '4';
-    }
-  }, []);
-  const decodeAgeFromFiscalCode = useCallback((cf: string) => {
-    const today = new Date();
-    const rangeCentury = parseInt(today.getFullYear().toString().substring(2));
-    const isFemale = cf.charAt(9) >= '4';
-    const dayOfBirth = parseInt(cf.substring(9, 11)) - (isFemale ? 40 : 0);
-    const century = parseInt(cf.substring(6, 8));
-    const yearOfBirth = (century <= rangeCentury) ? 2000 + century : 1900 + century;
-    const month = mappaMesi.get(cf.charAt(8).toUpperCase()) as number;
-    const dateOfBirth = new Date(yearOfBirth, month, dayOfBirth);
-    const age = today.getFullYear() - dateOfBirth.getFullYear();
-    if (
-      today.getMonth() < dateOfBirth.getMonth() ||
-      (today.getMonth() === dateOfBirth.getMonth() && today.getDate() < dateOfBirth.getDate())
-    ) {
-      return determineAgeGroup(age-1)
-    }
-    return determineAgeGroup(age);
-  },[determineAgeGroup])
-
   const onConfirm = async () => {
     if (
       currentStep === selectedSteps.FISCAL_CODE ||
@@ -250,41 +216,55 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
         for (let i = 0; i < NewUserValuesFormCitizen.length; i++) {
           const key = NewUserValuesFormCitizen[i];
           const userValue = newUserValues[i + 1];
-          if ((searchValue?.type === 'codiceFiscale' && key === 'codiceFiscale')) {
-            body[key] = AES.encrypt(searchValue.value, process?.env?.KEY_SECRET as string).toString();
-          } else if(searchValue?.type === 'codiceFiscale' && key === 'genere') {
-            body[key] = decodeGenderFromFiscalCode(userValue as string);
-          } else if(searchValue?.type === 'codiceFiscale' && key === 'fasciaDiEtaId') {
-            body[key] = decodeAgeFromFiscalCode(userValue as string);
-          } else if (searchValue?.type === 'numeroDoc' && key === 'codiceFiscaleNonDisponibile') {
-            body[key] = true;
-          } else if(key === 'numeroDocumento') {
-            body[key] = AES.encrypt(searchValue?.value as string, process?.env?.KEY_SECRET as string).toString();
+          if (
+            searchValue?.type === 'codiceFiscale' &&
+            key === 'codiceFiscale'
+          ) {
+            body[key] = Buffer.from(searchValue.value.toUpperCase()).toString(
+              'base64'
+            );
+          } else if (key === 'numeroDocumento') {
+            body[key] = Buffer.from(searchValue?.value as string).toString(
+              'base64'
+            );
+          } else if (key === 'fasciaDiEtaId') {
+            if(searchValue?.type !== 'codiceFiscale') {
+              let fasciaDiEtaId: string | undefined;
+              citizenFormDropdownOptions['fasciaDiEtaId'].forEach(
+                (fasciaDiEta: any) => {
+                  if (fasciaDiEta.label === userValue)
+                    fasciaDiEtaId = fasciaDiEta.value;
+                }
+              );
+              body[key] = fasciaDiEtaId;
+            } else {
+              body[key] = userValue;
+            }
           } else {
             body[key] = userValue;
           }
         }
-      /*const sezioneQ1Template = generateForm(JSON.parse(stringQ1));
-        Object.keys(sezioneQ1Template).map((key: string) => {
-          if (sezioneQ1Template[key]?.keyBE && newUserValues) {
-            if (
-              sezioneQ1Template[key].keyBE === 'codiceFiscaleNonDisponibile'
-            ) {
-              // FLAG codiceFiscaleNonDisponibile
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
-              body[sezioneQ1Template[key].keyBE] =
-                newUserValues[key] !== '' ? true : false;
-            } else {
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
-              body[sezioneQ1Template[key].keyBE] =
-                typeof newUserValues[key] === 'string'
-                  ? newUserValues[key]?.toString().replaceAll("'", "’")
-                  : JSON.stringify(newUserValues[key]);
-            }
-          }
-        });*/
+        /*const sezioneQ1Template = generateForm(JSON.parse(stringQ1));
+                                                                        Object.keys(sezioneQ1Template).map((key: string) => {
+                                                                          if (sezioneQ1Template[key]?.keyBE && newUserValues) {
+                                                                            if (
+                                                                              sezioneQ1Template[key].keyBE === 'codiceFiscaleNonDisponibile'
+                                                                            ) {
+                                                                              // FLAG codiceFiscaleNonDisponibile
+                                                                              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                                                              // @ts-ignore
+                                                                              body[sezioneQ1Template[key].keyBE] =
+                                                                                newUserValues[key] !== '' ? true : false;
+                                                                            } else {
+                                                                              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                                                              // @ts-ignore
+                                                                              body[sezioneQ1Template[key].keyBE] =
+                                                                                typeof newUserValues[key] === 'string'
+                                                                                  ? newUserValues[key]?.toString().replaceAll("'", "’")
+                                                                                  : JSON.stringify(newUserValues[key]);
+                                                                            }
+                                                                          }
+                                                                        });*/
         body['nuovoCittadino'] = true;
       } else {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -357,11 +337,15 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
             setSearchValue={(searchValue) => setSearchValue(searchValue)}
             resetModal={() => {
               resetModal(true);
-
               setCurrentStep(radioFilter);
             }}
           />
-          <div className={clsx('d-block px-5', currentStep === selectedSteps.ADD_CITIZEN ? 'mt-3':'mt-5')}>
+          <div
+            className={clsx(
+              'd-block px-5',
+              currentStep === selectedSteps.ADD_CITIZEN ? 'mt-3' : 'mt-5'
+            )}
+          >
             {currentStep === selectedSteps.FISCAL_CODE ||
             currentStep === selectedSteps.DOC_NUMBER
               ? loadFirstStep()

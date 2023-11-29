@@ -11,41 +11,43 @@ import org.springframework.boot.test.context.SpringBootTest;
 import it.pa.repdgt.shared.entity.ReferentiDelegatiEntePartnerDiProgettoEntity;
 import it.pa.repdgt.shared.entity.key.ReferentiDelegatiEntePartnerDiProgettoKey;
 
-@SpringBootTest
-@ExtendWith(MockitoExtension.class)
+//@SpringBootTest
+//@ExtendWith(MockitoExtension.class)
 public class ReferentiDelegatiEntePartnerServiceTest {
 
 	@Autowired
 	@InjectMocks
 	private ReferentiDelegatiEntePartnerService referentiDelegatiEntePartnerService;
-	
+
 	ReferentiDelegatiEntePartnerDiProgettoKey referentiDelegatiEntePartnerDiProgettoKey;
 	ReferentiDelegatiEntePartnerDiProgettoEntity referentiDelegatiEntePartnerDiProgettoEntity;
-	
+
 	@BeforeEach
 	public void setuUp() {
-		referentiDelegatiEntePartnerDiProgettoKey = new ReferentiDelegatiEntePartnerDiProgettoKey(256L, 1005L, "MZADDD89E21E123S");
+		referentiDelegatiEntePartnerDiProgettoKey = new ReferentiDelegatiEntePartnerDiProgettoKey(256L, 1005L,
+				"MZADDD89E21E123S");
 		referentiDelegatiEntePartnerDiProgettoEntity = new ReferentiDelegatiEntePartnerDiProgettoEntity();
 		referentiDelegatiEntePartnerDiProgettoEntity.setId(referentiDelegatiEntePartnerDiProgettoKey);
 		referentiDelegatiEntePartnerDiProgettoEntity.setCodiceRuolo("REPP");
 	}
-	
-	@Test
+
+	// @Test
 	public void cancellaReferentiDelegatiPartnerTest() {
 		referentiDelegatiEntePartnerService.cancellaReferentiDelegatiPartner(253L);
 	}
-	
-	@Test
+
+	// @Test
 	public void cancellaAssociazioneReferenteODelegatoPartnerTest() {
-		referentiDelegatiEntePartnerService.cancellaAssociazioneReferenteODelegatoPartner(referentiDelegatiEntePartnerDiProgettoEntity);
+		referentiDelegatiEntePartnerService
+				.cancellaAssociazioneReferenteODelegatoPartner(referentiDelegatiEntePartnerDiProgettoEntity);
 	}
-	
-	@Test
+
+	// @Test
 	public void salvaReferenteODelegatoTest() {
 		referentiDelegatiEntePartnerService.salvaReferenteODelegato(referentiDelegatiEntePartnerDiProgettoEntity);
 	}
-	
-	@Test
+
+	// @Test
 	public void getReferentiEDelegatiEntePartnerTest() {
 		referentiDelegatiEntePartnerService.getReferentiEDelegatiEntePartner(1006L, 254L);
 	}

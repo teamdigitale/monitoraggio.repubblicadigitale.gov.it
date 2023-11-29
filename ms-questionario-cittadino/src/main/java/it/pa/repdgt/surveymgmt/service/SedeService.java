@@ -37,12 +37,16 @@ public class SedeService {
 		FiltroListaCittadiniParam filtro = cittadiniPaginatiParam.getFiltro();
 		String criterioRicerca = filtro.getCriterioRicerca();
 		List<String> idsSedi;
-		if(filtro.getIdsSedi() == null) {
-			idsSedi = this.servizioSqlService.getIdsSediFacilitatoreConServiziAndCittadiniCensitiByCodFiscaleAndIdProgettoAndIdEnte(cittadiniPaginatiParam.getCfUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto(), cittadiniPaginatiParam.getIdEnte());
+		if (filtro.getIdsSedi() == null) {
+			idsSedi = this.servizioSqlService
+					.getIdsSediFacilitatoreConServiziAndCittadiniCensitiByCodFiscaleAndIdProgettoAndIdEnte(
+							cittadiniPaginatiParam.getCfUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto(),
+							cittadiniPaginatiParam.getIdEnte());
 		} else {
 			idsSedi = filtro.getIdsSedi();
 		}
-		
-		return idsSedi.isEmpty()? new ArrayList<>(): this.sedeRepository.findAllSediFiltrate(criterioRicerca, "%" + criterioRicerca + "%", idsSedi);
+
+		return idsSedi.isEmpty() ? new ArrayList<>()
+				: this.sedeRepository.findAllSediFiltrate(criterioRicerca, idsSedi);
 	}
 }

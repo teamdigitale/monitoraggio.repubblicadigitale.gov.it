@@ -17,30 +17,11 @@ public class GetCittadinoResource implements Serializable {
 
 	@JsonProperty(value = "idCittadino")
 	private Long IdCittadino;
-	
-	@JsonProperty(value = "nome")
-	private String nome;
-	
-	@JsonProperty(value = "cognome")
-	private String cognome;
-	
+
 	@JsonProperty(value = "codiceFiscale")
 	private String codiceFiscale;
-	
+
 	@JsonProperty(value = "numeroDocumento")
 	private String numeroDocumento;
-	
-	@JsonProperty(value = "email")
-	private String email;
-	
-	@JsonProperty(value = "telefono")
-	private String telefono;
-	
-	@JsonProperty(value = "prefisso")
-	private String prefisso;
-	
-	@JsonProperty(value = "cellulare")
-	private String cellulare;
-	
-	
+
 }

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Form, Input, PrefixPhone } from '../../../components';
+import { Form, Input } from '../../../components';
 import { TableRowI } from '../../../components/Table/table';
 import withFormHandler, {
   withFormHandlerProps,
@@ -10,18 +10,13 @@ import {
 } from '../../../redux/features/citizensArea/citizensAreaSlice';
 // import { selectDevice } from '../../../redux/features/app/appSlice';
 import { useAppSelector } from '../../../redux/hooks';
-import {
-  CommonFields,
-  formFieldI,
-  newForm,
-  newFormField,
-} from '../../../utils/formHelper';
-import { RegexpType } from '../../../utils/validator';
+import { formFieldI, newForm, newFormField } from '../../../utils/formHelper';
 import { FormCitizenI } from '../formCitizen';
 
 interface FormServiceCitizenBaseI {
   selectedCitizen?: CittadinoInfoI | TableRowI | string;
 }
+
 interface FormEnteGestoreProgettoFullInterface
   extends withFormHandlerProps,
     FormServiceCitizenBaseI,
@@ -90,43 +85,34 @@ const FormServiceCitizenBase: React.FC<FormEnteGestoreProgettoFullInterface> = (
     >
       <Form.Row>
         <Input
-          {...form?.nome}
+          {...form?.idCittadino}
           col='col-12 col-lg-6'
-          placeholder={`${form?.nome?.label}`}
+          label='ID'
+          placeholder='ID'
           onInputChange={onInputDataChange}
-          required
-        />
-        <Input
-          {...form?.cognome}
-          col='col-12 col-lg-6'
-          placeholder={`${form?.cognome?.label}`}
-          onInputChange={onInputDataChange}
-          required
         />
         <Input
           {...form?.codiceFiscale}
           col='col-12 col-lg-6'
           label='Codice fiscale'
           placeholder='Codice fiscale'
+          value={`${
+            form?.codiceFiscale.value
+              ? 'Codice fiscale disponibile ma non visualizzabile'
+              : 'Codice fiscale non presente'
+          }  `}
           onInputChange={onInputDataChange}
-          required
         />
         <Input
-          {...form?.email}
+          {...form?.numeroDocumento}
           col='col-12 col-lg-6'
-          placeholder={`${form?.email?.label}`}
-          onInputChange={onInputDataChange}
-          required
-        />
-        <PrefixPhone
-          {...form?.prefisso}
-          placeholder={`${form?.prefisso?.label}`}
-          onInputChange={onInputDataChange}
-        />
-        <Input
-          {...form?.cellulare}
-          col='col-8 col-lg-4'
-          placeholder={`${form?.cellulare?.label}`}
+          label='Numero Documento'
+          placeholder='Numero documento'
+          value={`${
+            form?.numeroDocumento.value
+              ? 'Numero Documento disponibile ma non visualizzabile'
+              : 'Numero Documento non presente'
+          }  `}
           onInputChange={onInputDataChange}
         />
       </Form.Row>
@@ -136,53 +122,18 @@ const FormServiceCitizenBase: React.FC<FormEnteGestoreProgettoFullInterface> = (
 
 const form = newForm([
   newFormField({
-    ...CommonFields.NOME,
-    field: 'nome',
-    label: 'Nome',
-    id: 'name',
-    regex: RegexpType.NAME_SURNAME,
+    field: 'idCittadino',
+    id: 'idCittadino',
+    type: 'text',
   }),
   newFormField({
-    ...CommonFields.COGNOME,
-    field: 'cognome',
-    label: 'Cognome',
-    id: 'surname',
-    regex: RegexpType.NAME_SURNAME,
-  }),
-  newFormField({
-    ...CommonFields.CODICE_FISCALE,
     field: 'codiceFiscale',
     id: 'codiceFiscale',
-    label: 'Codice fiscale',
-  }),
-  newFormField({
-    ...CommonFields.EMAIL,
-    field: 'email',
-    id: 'email',
-    label: 'Email',
-    required: true,
-  }),
-  newFormField({
-    field: 'prefisso',
-    id: 'prefisso',
-    regex: RegexpType.MOBILE_PHONE_PREFIX,
-    label: 'Prefisso',
     type: 'text',
-    //required: true,
   }),
   newFormField({
-    ...CommonFields.NUMERO_TELEFONICO,
-    field: 'cellulare',
-    id: 'numeroCellulare',
-    label: 'Cellulare',
-    type: 'text',
-    //required: true,
-  }),
-  newFormField({
-    ...CommonFields.NUMERO_TELEFONICO,
-    field: 'telefono',
-    id: 'telefono',
-    label: 'Cellulare',
+    field: 'numeroDocumento',
+    id: 'numeroDocumento',
     type: 'text',
   }),
 ]);

@@ -186,13 +186,13 @@ export const GetEntityFilterQueryParamsValues =
       const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
         getUserHeaders();
       const body = {
-        codiceFiscaleUtenteLoggato: codiceFiscale,
+        cfUtenteLoggato: codiceFiscale,
         codiceRuoloUtenteLoggato: codiceRuolo,
         idProgetto,
         idProgramma,
         idEnte,
       };
-      const entityFilterEndpoint = `/${payload.entity}/${
+      const entityFilterEndpoint = `${process?.env?.QUESTIONARIO_CITTADINO}${payload.entity}/${
         payload.dropdownType
       }/dropdown${payload?.noFilters ? '' : queryParamFilters}`;
       const res = await API.post(entityFilterEndpoint, body);

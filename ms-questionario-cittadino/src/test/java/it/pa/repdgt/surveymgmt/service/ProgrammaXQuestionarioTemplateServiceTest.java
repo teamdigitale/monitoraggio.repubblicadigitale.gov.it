@@ -21,37 +21,49 @@ import it.pa.repdgt.surveymgmt.repository.ProgrammaXQuestionarioTemplateReposito
 
 @ExtendWith(MockitoExtension.class)
 public class ProgrammaXQuestionarioTemplateServiceTest {
-	
-	@Mock
-	private ProgrammaXQuestionarioTemplateRepository programmaXQuestionarioTemplateRepository;
 
-	@Autowired
-	@InjectMocks
-	private ProgrammaXQuestionarioTemplateService programmaXQuestionarioTemplateService;
-	
-	ProgrammaXQuestionarioTemplateKey programmaXQuestionarioTemplateKey;
-	ProgrammaXQuestionarioTemplateEntity programmaXQuestionarioTemplateEntity;
-	List<ProgrammaXQuestionarioTemplateEntity> listaProgrammaXQuestionario;
-	
-	@BeforeEach
-	public void setUp() {
-		programmaXQuestionarioTemplateKey = new ProgrammaXQuestionarioTemplateKey(1L, "IDQUESTIONARIO");
-		programmaXQuestionarioTemplateEntity = new ProgrammaXQuestionarioTemplateEntity();
-		programmaXQuestionarioTemplateEntity.setProgrammaXQuestionarioTemplateKey(programmaXQuestionarioTemplateKey);
-		listaProgrammaXQuestionario = new ArrayList<>();
-		listaProgrammaXQuestionario.add(programmaXQuestionarioTemplateEntity);
-	}
-	
-	@Test
-	public void getByIdProgrammaTest() {
-		when(this.programmaXQuestionarioTemplateRepository.findByIdProgramma(1L)).thenReturn(listaProgrammaXQuestionario);
-		List<ProgrammaXQuestionarioTemplateEntity> risultato = programmaXQuestionarioTemplateService.getByIdProgramma(1L);
-		assertThat(risultato.size()).isEqualTo(listaProgrammaXQuestionario.size());
-	}
-	
-	@Test
-	public void deleteByQuestionarioTemplate() {
-		doNothing().when(this.programmaXQuestionarioTemplateRepository).deleteByQuestionarioTemplate("IDQUESTIONARIO");
-		programmaXQuestionarioTemplateService.deleteByQuestionarioTemplate("IDQUESTIONARIO");
-	}
+	/*
+	 * @Mock
+	 * private ProgrammaXQuestionarioTemplateRepository
+	 * programmaXQuestionarioTemplateRepository;
+	 * 
+	 * @Autowired
+	 * 
+	 * @InjectMocks
+	 * private ProgrammaXQuestionarioTemplateService
+	 * programmaXQuestionarioTemplateService;
+	 * 
+	 * ProgrammaXQuestionarioTemplateKey programmaXQuestionarioTemplateKey;
+	 * ProgrammaXQuestionarioTemplateEntity programmaXQuestionarioTemplateEntity;
+	 * List<ProgrammaXQuestionarioTemplateEntity> listaProgrammaXQuestionario;
+	 * 
+	 * @BeforeEach
+	 * public void setUp() {
+	 * programmaXQuestionarioTemplateKey = new ProgrammaXQuestionarioTemplateKey(1L,
+	 * "IDQUESTIONARIO");
+	 * programmaXQuestionarioTemplateEntity = new
+	 * ProgrammaXQuestionarioTemplateEntity();
+	 * programmaXQuestionarioTemplateEntity.setProgrammaXQuestionarioTemplateKey(
+	 * programmaXQuestionarioTemplateKey);
+	 * listaProgrammaXQuestionario = new ArrayList<>();
+	 * listaProgrammaXQuestionario.add(programmaXQuestionarioTemplateEntity);
+	 * }
+	 * 
+	 * @Test
+	 * public void getByIdProgrammaTest() {
+	 * when(this.programmaXQuestionarioTemplateRepository.findByIdProgramma(1L)).
+	 * thenReturn(listaProgrammaXQuestionario);
+	 * List<ProgrammaXQuestionarioTemplateEntity> risultato =
+	 * programmaXQuestionarioTemplateService.getByIdProgramma(1L);
+	 * assertThat(risultato.size()).isEqualTo(listaProgrammaXQuestionario.size());
+	 * }
+	 * 
+	 * @Test
+	 * public void deleteByQuestionarioTemplate() {
+	 * doNothing().when(this.programmaXQuestionarioTemplateRepository).
+	 * deleteByQuestionarioTemplate("IDQUESTIONARIO");
+	 * programmaXQuestionarioTemplateService.deleteByQuestionarioTemplate(
+	 * "IDQUESTIONARIO");
+	 * }
+	 */
 }

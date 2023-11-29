@@ -4,7 +4,7 @@ import { RootState } from '../../store';
 import { PaginationI } from '../administrativeArea/administrativeAreaSlice';
 
 export interface CittadinoInfoI {
-  idCittadino?: string;
+  idCittadino?: string | number;
   name?: string;
   lastName?: string;
   fiscalCode?: string;

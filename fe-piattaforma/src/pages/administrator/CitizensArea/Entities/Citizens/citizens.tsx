@@ -30,7 +30,7 @@ import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
 import { formFieldI } from '../../../../../utils/formHelper';
 import PageTitle from '../../../../../components/PageTitle/pageTitle';
 import IconNote from '/public/assets/img/it-note-primary.png';
-import moment from "moment";
+import moment from 'moment';
 
 const entity = 'citizensArea';
 const siteDropdownLabel = 'idsSedi';

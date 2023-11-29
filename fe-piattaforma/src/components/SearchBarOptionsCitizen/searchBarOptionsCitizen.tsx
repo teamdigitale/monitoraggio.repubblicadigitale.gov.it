@@ -9,7 +9,7 @@ import { GetEntitySearchResult } from '../../redux/features/citizensArea/citizen
 import Input from '../Form/input';
 import { setCitizenSearchResults } from '../../redux/features/citizensArea/citizensAreaSlice';
 import { SearchValue } from '../../pages/forms/models/searchValue.model';
-import { AES } from 'crypto-js';
+import { Buffer } from 'buffer';
 
 interface SearchBarOptionsI {
   setCurrentStep: (value: string) => void;
@@ -98,7 +98,7 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
         onSubmit={(data) => {
           if (resetModal) resetModal();
           if (data) {
-            const crypted = AES.encrypt(data, process?.env?.KEY_SECRET as string).toString();
+            const crypted = Buffer.from(data).toString('base64');
             const searchValue: SearchValue = {
               type: currentStep as string,
               value: data,
