@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import React, { useEffect } from 'react';
-import { Form, Input } from '../../components';
+import { Form, Input, Select } from '../../components';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../hoc/withFormHandler';
@@ -16,6 +16,7 @@ import {
   newFormField,
 } from '../../utils/formHelper';
 import { SearchValue } from './models/searchValue.model';
+import { citizenFormDropdownOptions } from './constantsFormCitizen';
 
 export interface FormCitizenI {
   formDisabled?: boolean;
@@ -162,10 +163,12 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
           col='col-12 col-lg-6'
           wrapperClassName='mb-5 pr-lg-3'
         />
-        <Input
+        <Select
           {...form?.['6']}
           placeholder={`${form?.['6']?.label}`}
           onInputChange={onInputDataChange}
+          options={citizenFormDropdownOptions['fasciaDiEtaId']}
+          isDisabled={formDisabled}
           col='col-12 col-lg-6'
           wrapperClassName='mb-5 pr-lg-3'
         />
@@ -241,7 +244,7 @@ const form = newForm([
     id: '6',
     field: '6',
     label: 'Fascia di età',
-    type: 'text',
+    type: 'select',
   }),
   newFormField({
     keyBE: 'titoloStudio',
@@ -273,4 +276,4 @@ const form = newForm([
   }),
 ]);
 
-export default withFormHandler({ form }, FormCitizen);
+export default withFormHandler({form}, FormCitizen);
