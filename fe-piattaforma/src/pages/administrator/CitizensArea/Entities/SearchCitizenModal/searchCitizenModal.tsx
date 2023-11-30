@@ -224,10 +224,10 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
               'base64'
             );
           } else if (
-            searchValue?.type === 'numeroDocumento' &&
+            searchValue?.type === 'numeroDoc' &&
             key === 'numeroDocumento'
           ) {
-            body[key] = Buffer.from(searchValue?.value as string).toString(
+            body[key] = Buffer.from(searchValue?.value.toUpperCase()).toString(
               'base64'
             );
           } else if (key === 'fasciaDiEtaId') {

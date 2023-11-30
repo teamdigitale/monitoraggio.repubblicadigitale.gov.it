@@ -99,13 +99,14 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
       setMustValidateCf(value === 'codiceFiscale');
       setCanSubmit(value !== 'codiceFiscale' || isValidFiscalCode(query));
     },
-    [setCurrentStep, setRadioFilter, query]
+    [setCurrentStep, setRadioFilter, isValidFiscalCode, query]
   );
 
   const onQueryChange = useCallback(
     (query: string) => {
-      setCanSubmit(mustValidateCf ? isValidFiscalCode(query) : true);
-      setQuery(query);
+      const upperCaseQuery = query.toUpperCase();
+      setCanSubmit(mustValidateCf ? isValidFiscalCode(upperCaseQuery) : true);
+      setQuery(upperCaseQuery);
     },
     [isValidFiscalCode, mustValidateCf]
   );
@@ -150,7 +151,7 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
         onSubmit={(data) => {
           if (resetModal) resetModal();
           if (data) {
-            const crypted = Buffer.from(data).toString('base64');
+            const crypted = Buffer.from(data.toUpperCase()).toString('base64');
             const searchValue: SearchValue = {
               type: currentStep as string,
               value: data,
