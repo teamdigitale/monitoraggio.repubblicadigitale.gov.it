@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.371](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.370...1.0.0-develop.371) (2023-11-30)
+
+
+### Features
+
+* **be:** updates 20231130 fix-citt-rep ([23850de](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/23850de9147ef43ba3721be74b744335d2d15cfe))
+
 ## [1.0.0-develop.370](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.369...1.0.0-develop.370) (2023-11-30)
 
 
