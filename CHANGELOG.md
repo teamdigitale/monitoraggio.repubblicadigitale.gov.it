@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.373](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.372...1.0.0-develop.373) (2023-11-30)
+
+
+### Features
+
+* **be:** updates 20231130 fix-provincia ([8b91c48](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8b91c482ee7725712f66b3ff792faf26be07c3b9))
+
 ## [1.0.0-develop.372](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.371...1.0.0-develop.372) (2023-11-30)
 
 
