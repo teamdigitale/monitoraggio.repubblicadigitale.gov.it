@@ -5,16 +5,17 @@ import { hideLoader, showLoader } from '../../app/appSlice';
 import { RootState } from '../../../store';
 import {
   setEntityFilterOptions,
-  setServicesList,
+  setEntityPagination,
+  setServiceQuestionarioTemplateIstanze,
   setServicesDetail,
   setServicesDetailCitizenList,
-  setEntityPagination,
   setServicesDropdownCreation,
+  setServicesList,
   setServicesSchemaFieldsCreation,
-  setServiceQuestionarioTemplateIstanze,
 } from '../administrativeAreaSlice';
 import { transformFiltersToQueryParams } from '../../../../utils/common';
 import { getUserHeaders } from '../../user/userThunk';
+import { Buffer } from 'buffer';
 
 export interface ServicesI {
   id: string;
@@ -59,7 +60,7 @@ export const GetAllServices =
           currPage: Math.max(0, pagination.pageNumber - 1),
           pageSize: pagination.pageSize,
         },
-      });   
+      });
       if (res?.data) {
         dispatch(setServicesList({ data: res.data.servizi || [] }));
         dispatch(
@@ -84,14 +85,18 @@ export const GetServicesDetail =
     try {
       dispatch(showLoader());
       dispatch({ ...GetServicesDetailAction, id });
-      const { idProgramma, idProgetto, idEnte, codiceFiscale, codiceRuolo } = getUserHeaders();
-      const res = await API.post(`${process?.env?.QUESTIONARIO_CITTADINO}/servizio/${id}/schedaDettaglio`, {
-        idProgramma,
-        idProgetto,
-        idEnte,
-        cfUtenteLoggato: codiceFiscale,
-        codiceRuoloUtenteLoggato: codiceRuolo
-      });
+      const { idProgramma, idProgetto, idEnte, codiceFiscale, codiceRuolo } =
+        getUserHeaders();
+      const res = await API.post(
+        `${process?.env?.QUESTIONARIO_CITTADINO}servizio/${id}/schedaDettaglio`,
+        {
+          idProgramma,
+          idProgetto,
+          idEnte,
+          cfUtenteLoggato: codiceFiscale,
+          codiceRuoloUtenteLoggato: codiceRuolo,
+        }
+      );
       if (res?.data) {
         dispatch(setServicesDetail(res.data));
       }
@@ -116,6 +121,7 @@ export const GetCitizenListServiceDetail =
         // @ts-ignore
         administrativeArea: { filters },
       } = select((state: RootState) => state);
+      let newFilters;
       const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
         getUserHeaders();
       const body = {
@@ -125,7 +131,20 @@ export const GetCitizenListServiceDetail =
         idProgramma,
         idEnte,
       };
-      let queryParamFilters = transformFiltersToQueryParams(filters);
+      if (
+        filters &&
+        filters.criterioRicerca &&
+        filters.criterioRicerca !== ''
+      ) {
+        newFilters = {
+          criterioRicerca: Buffer.from(filters.criterioRicerca).toString(
+            'base64'
+          ),
+        };
+      }
+      let queryParamFilters = transformFiltersToQueryParams(
+        newFilters ? newFilters : filters
+      );
       if (pagination) {
         queryParamFilters =
           queryParamFilters === ''
@@ -163,6 +182,7 @@ export const GetServicesDetailFilters =
         // @ts-ignore
         administrativeArea: { filters },
       } = select((state: RootState) => state);
+      let newFilters;
       const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
         getUserHeaders();
       const body = {
@@ -172,7 +192,20 @@ export const GetServicesDetailFilters =
         idProgramma,
         idEnte,
       };
-      const queryParamFilters = transformFiltersToQueryParams(filters);
+      if (
+        filters &&
+        filters.criterioRicerca &&
+        filters.criterioRicerca !== ''
+      ) {
+        newFilters = {
+          criterioRicerca: Buffer.from(filters.criterioRicerca).toString(
+            'base64'
+          ),
+        };
+      }
+      const queryParamFilters = transformFiltersToQueryParams(
+        newFilters ? newFilters : filters
+      );
       const res = await API.post(
         `${process?.env?.QUESTIONARIO_CITTADINO}servizio/cittadino/stati/dropdown/${idServizio}${queryParamFilters}`,
         body
@@ -250,7 +283,7 @@ export const GetValuesDropdownServiceCreation =
     try {
       dispatch({ ...GetValuesDropdownServiceCreationAction });
       dispatch(showLoader());
-      const entityEndpoint = `/servizio/facilitatore/${payload.dropdownType}/dropdown`;
+      const entityEndpoint = `${process?.env?.QUESTIONARIO_CITTADINO}servizio/facilitatore/${payload.dropdownType}/dropdown`;
       const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
         getUserHeaders();
       let body = {};
@@ -264,7 +297,7 @@ export const GetValuesDropdownServiceCreation =
         };
       } else {
         body = {
-          codiceFiscaleUtenteLoggato: codiceFiscale,
+          cfUtenteLoggato: codiceFiscale,
           codiceRuoloUtenteLoggato: codiceRuolo,
           idProgetto,
           idProgramma,
@@ -353,15 +386,19 @@ export const AssociateCitizenToService =
     try {
       dispatch({ ...AssociateCitizenToServiceAction });
       dispatch(showLoader());
-      const { idProgramma, idProgetto, idEnte, codiceFiscale, codiceRuolo } = getUserHeaders();
-      const res = await API.post(`${process?.env?.QUESTIONARIO_CITTADINO}servizio/cittadino/${payload.idServizio}`, {
-        ...payload.body,
-        idProgramma,
-        idProgetto,
-        idEnte,
-        cfUtenteLoggato: codiceFiscale,
-        codiceRuoloUtenteLoggato: codiceRuolo
-      });
+      const { idProgramma, idProgetto, idEnte, codiceFiscale, codiceRuolo } =
+        getUserHeaders();
+      const res = await API.post(
+        `${process?.env?.QUESTIONARIO_CITTADINO}servizio/cittadino/${payload.idServizio}`,
+        {
+          ...payload.body,
+          idProgramma,
+          idProgetto,
+          idEnte,
+          cfUtenteLoggato: codiceFiscale,
+          codiceRuoloUtenteLoggato: codiceRuolo,
+        }
+      );
       if (res) {
         return true;
       }
@@ -428,11 +465,18 @@ export const GetCompiledSurveyCitizenService =
   (idQuestionarioCompilato: string) => async (dispatch: Dispatch) => {
     try {
       dispatch({ ...GetCompiledSurveyCitizenServiceAction });
-      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
+      const { idProgramma, idProgetto, idEnte, codiceFiscale, codiceRuolo } =
+        getUserHeaders();
       dispatch(showLoader());
       const res = await API.post(
-        `/servizio/cittadino/questionarioCompilato/compilato/${idQuestionarioCompilato}`,
-        { idProgramma, idProgetto, idEnte }
+        `${process?.env?.QUESTIONARIO_CITTADINO}servizio/cittadino/questionarioCompilato/compilato/${idQuestionarioCompilato}`,
+        {
+          idProgramma,
+          idProgetto,
+          idEnte,
+          cfUtenteLoggato: codiceFiscale,
+          codiceRuoloUtenteLoggato: codiceRuolo,
+        }
       );
       if (res?.data) {
         dispatch(

@@ -169,9 +169,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		return cittadinoServizioRepository.findAllCittadiniServizioPaginatiByFiltro(
 				idServizio,
 				criterioRicercaCittadinoServizio,
-				filtroListaCittadiniServizio.getStatiQuestionario(),
-				currPage,
-				pageSize);
+				filtroListaCittadiniServizio.getStatiQuestionario());
 	}
 
 	@LogMethod
@@ -297,6 +295,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 			cittadino.setGenere(nuovoCittadinoRequest.getGenere());
 			cittadino.setOccupazione(nuovoCittadinoRequest.getStatoOccupazionale());
 			cittadino.setTitoloDiStudio(nuovoCittadinoRequest.getTitoloStudio());
+			cittadino.setProvinciaDiDomicilio(nuovoCittadinoRequest.getProvinciaDiDomicilio());
 			cittadino = cittadinoRepository.save(cittadino);
 		}
 

@@ -42,4 +42,7 @@ public class NuovoCittadinoServizioRequest extends SceltaProfiloParam implements
 
 	@JsonProperty(value = "nuovoCittadino")
 	private Boolean nuovoCittadino;
+
+	@JsonProperty(value = "provinciaDiDomicilio")
+	private String provinciaDiDomicilio;
 }

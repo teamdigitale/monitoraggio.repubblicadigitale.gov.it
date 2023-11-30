@@ -30,8 +30,7 @@ public class CittadinoServizioMapper {
 			@NotNull final CittadinoServizioProjection cittadiniServizi) {
 		final CittadinoServizioResource cittadinoServizioResource = new CittadinoServizioResource();
 		cittadinoServizioResource.setIdCittadino(cittadiniServizi.getIdCittadino());
-		cittadinoServizioResource.setCodiceFiscale(cittadiniServizi.getCodiceFiscale());
-		cittadinoServizioResource.setNumeroDocumento(cittadiniServizi.getNumeroDocumento());
+		cittadinoServizioResource.setDataUltimoAggiornamento(cittadiniServizi.getDataUltimoAggiornamento());
 		cittadinoServizioResource.setIdQuestionario(cittadiniServizi.getIdQuestionario());
 		cittadinoServizioResource.setStatoQuestionario(cittadiniServizi.getStatoQuestionario());
 		return cittadinoServizioResource;

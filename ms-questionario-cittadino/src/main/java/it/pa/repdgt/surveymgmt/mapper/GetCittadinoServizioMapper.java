@@ -27,6 +27,12 @@ public class GetCittadinoServizioMapper {
 		getCittadinoResource.setIdCittadino(getCittadino.getId());
 		getCittadinoResource.setCodiceFiscale(getCittadino.getCodiceFiscale());
 		getCittadinoResource.setNumeroDocumento(getCittadino.getNumeroDocumento());
+		getCittadinoResource.setCittadinanza(getCittadino.getCittadinanza());
+		getCittadinoResource.setGenere(getCittadino.getGenere());
+		getCittadinoResource.setTitoloStudio(getCittadino.getTitoloStudio());
+		getCittadinoResource.setFasciaDiEta(getCittadino.getFasciaDiEta());
+		getCittadinoResource.setStatoOccupazionale(getCittadino.getStatoOccupazionale());
+		getCittadinoResource.setProvinciaDiDomicilio(getCittadino.getProvinciaDiDomicilio());
 		return getCittadinoResource;
 	}
 }

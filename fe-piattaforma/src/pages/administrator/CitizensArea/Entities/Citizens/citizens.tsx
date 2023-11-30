@@ -137,10 +137,11 @@ const Citizens = () => {
       TableHeading,
       (citizensList || []).map((td) => ({
         id: td.id,
-        name: td.cognome + ' ' + td.nome,
         numeroServizi: td.numeroServizi,
         numeroQuestionariCompilati: td.numeroQuestionariCompilati,
-        dataOraAggiornamento: moment(td.dataOraAggiornamento).format('GG-MM-YYYY')
+        dataUltimoAggiornamento: moment(td.dataUltimoAggiornamento).format(
+          'YYYY-MM-DD HH:MM'
+        ),
       }))
     );
     return table;

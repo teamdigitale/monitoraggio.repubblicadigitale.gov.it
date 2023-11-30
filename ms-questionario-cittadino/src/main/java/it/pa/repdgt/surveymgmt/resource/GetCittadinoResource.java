@@ -24,4 +24,16 @@ public class GetCittadinoResource implements Serializable {
 	@JsonProperty(value = "numeroDocumento")
 	private String numeroDocumento;
 
+	private String genere;
+
+	public Integer fasciaDiEta;
+
+	public String titoloStudio;
+
+	public String statoOccupazionale;
+
+	public String provinciaDiDomicilio;
+
+	public String cittadinanza;
+
 }

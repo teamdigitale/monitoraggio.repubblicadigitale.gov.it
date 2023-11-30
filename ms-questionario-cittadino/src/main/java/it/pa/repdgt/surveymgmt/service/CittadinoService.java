@@ -85,6 +85,7 @@ public class CittadinoService {
 				.map(cittadino -> {
 					CittadinoDto cittadinoDto = new CittadinoDto();
 					cittadinoDto.setId(cittadino.getId());
+					cittadinoDto.setDataUltimoAggiornamento(cittadino.getDataUltimoAggiornamento());
 					cittadinoDto.setCodiceFiscale(cittadino.getCodiceFiscale());
 					cittadinoDto.setNumeroServizi(cittadino.getNumeroServizi());
 					cittadinoDto.setNumeroQuestionariCompilati(cittadino.getNumeroQuestionariCompilati() == null ? 0L
@@ -131,7 +132,8 @@ public class CittadinoService {
 				criterioRicerca,
 				idsSedi,
 				cittadiniPaginatiParam.getCfUtenteLoggato(),
-				currPage * pageSize, pageSize);
+				currPage * pageSize,
+				pageSize);
 	}
 
 	public Integer getNumeroTotaleCittadiniFacilitatoreByFiltro(CittadiniPaginatiParam cittadiniPaginatiParam) {

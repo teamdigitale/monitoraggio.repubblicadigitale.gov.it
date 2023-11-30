@@ -41,7 +41,6 @@ import { RegexpType } from '../../../../../../utils/validator';
 
 const separator = '§';
 const saltoCondizionaleAttivo = false;
-
 const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
   const {
     onInputChange = () => ({}),
@@ -154,7 +153,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
     } else {
       // create form and prefill the sections
       if (sections?.length) {
-        const newForm = generateForm(
+        const newForm: FormI = generateForm(
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           JSON.parse(sections[activeSection].schema?.json),
@@ -179,9 +178,27 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
             Object.keys(newForm).map((key: string) => {
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
-              newForm[key].value = values[key]
-                ?.toString()
-                .replaceAll(separator, ',');
+              if (key === '1') {
+                const cf: string = values[key];
+                newForm[key].value = cf
+                  ? 'Codice fiscale disponibile ma non visualizzabile'
+                  : 'Codice fiscale non disponibile';
+              }
+              if (key === '4') {
+                const docNumber: string = values[key];
+                newForm[key].value = docNumber
+                  ? 'Numero documento disponibile ma non visualizzabile'
+                  : 'Numero documento non disponibile';
+              }
+              if (key !== '1' && key !== '4') {
+                newForm[key].value = values[key]
+                  ?.toString()
+                  .replaceAll(separator, ',');
+              }
+              if (activeSection === 0) {
+                newForm[key].disabled = true;
+                newForm[key].required = false;
+              }
               if (activeSection === 1 || activeSection === 2) {
                 newForm[key].disabled = true;
               }
