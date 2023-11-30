@@ -1,10 +1,10 @@
 import { TableHeadingI } from '../../../components/Table/table';
 
 export const TableHeading: TableHeadingI[] = [
-   /* {
-    label: 'Nome',
-    field: 'name',
-  },*/
+  /* {
+           label: 'Nome',
+           field: 'name',
+         },*/
   {
     label: 'ID',
     field: 'id',
@@ -19,9 +19,9 @@ export const TableHeading: TableHeadingI[] = [
     field: 'numeroQuestionariCompilati',
   },
   {
-    label: 'data ultimo aggiornamento',
-    field: 'dataOraAggiornamento',
-  }
+    label: 'Data ultimo aggiornamento',
+    field: 'dataUltimoAggiornamento',
+  },
 ];
 
 export const TableHeadingSearchResults: TableHeadingI[] = [
@@ -55,9 +55,9 @@ export const TableHeadingServicesList: TableHeadingI[] = [
     //size: 'small',
   },
   /*{
-    field: 'facilitatore',
-    label: 'Facilitatore',
-  },*/
+          field: 'facilitatore',
+          label: 'Facilitatore',
+        },*/
   {
     field: 'nomeSede',
     label: 'Sede',

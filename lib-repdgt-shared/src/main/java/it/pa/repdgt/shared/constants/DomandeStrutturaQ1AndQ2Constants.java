@@ -28,7 +28,7 @@ public interface DomandeStrutturaQ1AndQ2Constants {
 			+ " \"{'%s': ['%s']}\", "
 			+ " \"{'%s': ['%s']}\", "
 			+ " \"{'%s': ['%s']}\", "
-			+ " \"{'%s': ['%s']}\", "
+			+ " \"{'%s': ['%s']}\" "
 			+ "]"
 			+ "}";
 

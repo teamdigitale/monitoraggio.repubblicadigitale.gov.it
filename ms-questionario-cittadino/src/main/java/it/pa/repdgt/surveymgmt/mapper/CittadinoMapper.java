@@ -27,6 +27,7 @@ public class CittadinoMapper {
 		dettaglioCittadino.setTitoloStudio(cittadinoFetchDB.getTitoloDiStudio());
 		dettaglioCittadino.setStatoOccupazionale(cittadinoFetchDB.getOccupazione());
 		dettaglioCittadino.setCittadinanza(cittadinoFetchDB.getCittadinanza());
+		dettaglioCittadino.setProvincia(cittadinoFetchDB.getProvinciaDiDomicilio());
 
 		return dettaglioCittadino;
 	}

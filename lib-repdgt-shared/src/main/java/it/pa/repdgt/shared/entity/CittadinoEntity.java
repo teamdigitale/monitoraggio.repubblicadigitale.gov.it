@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 
 import it.pa.repdgt.shared.entity.tipologica.FasciaDiEtaEntity;
 import lombok.EqualsAndHashCode;
@@ -52,10 +53,13 @@ public class CittadinoEntity implements Serializable {
 	@Column(name = "DATA_ORA_CREAZIONE")
 	private Date dataOraCreazione;
 
-	@Temporal(value = TemporalType.TIMESTAMP)
+	@Temporal(value = TemporalType.DATE)
 	@Column(name = "DATA_ORA_AGGIORNAMENTO")
 	private Date dataOraAggiornamento;
 
 	@OneToOne(mappedBy = "cittadino", cascade = CascadeType.ALL)
 	private QuestionarioCompilatoEntity questionarioCompilato;
+
+	@Column(name = "PROVINCIA_DI_DOMICILIO")
+	private String provinciaDiDomicilio;
 }

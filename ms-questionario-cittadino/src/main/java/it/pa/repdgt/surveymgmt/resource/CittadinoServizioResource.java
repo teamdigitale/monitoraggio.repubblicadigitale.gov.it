@@ -1,6 +1,7 @@
 package it.pa.repdgt.surveymgmt.resource;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -18,15 +19,11 @@ public class CittadinoServizioResource implements Serializable {
 	@JsonProperty(value = "idCittadino")
 	private Long IdCittadino;
 
-	@JsonProperty(value = "codiceFiscale")
-	private String codiceFiscale;
-
-	@JsonProperty(value = "numeroDocumento")
-	private String numeroDocumento;
-
 	@JsonProperty(value = "idQuestionario")
 	private String idQuestionario;
 
 	@JsonProperty(value = "statoQuestionario")
 	private String statoQuestionario;
+
+	private Date dataUltimoAggiornamento;
 }

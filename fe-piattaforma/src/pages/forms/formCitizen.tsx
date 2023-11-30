@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import React, { useEffect } from 'react';
-import { Form, Input, Select } from '../../components';
+import { Form, Input } from '../../components';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../hoc/withFormHandler';
@@ -10,14 +10,11 @@ import {
 } from '../../redux/features/citizensArea/citizensAreaSlice';
 import { useAppSelector } from '../../redux/hooks';
 import {
-  CommonFields,
   formFieldI,
   FormHelper,
   newForm,
   newFormField,
 } from '../../utils/formHelper';
-import { RegexpType } from '../../utils/validator';
-import { citizenFormDropdownOptions } from './constantsFormCitizen';
 import { SearchValue } from './models/searchValue.model';
 
 export interface FormCitizenI {
@@ -140,13 +137,11 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
               : 'Codice fiscale non presente'
           }
         />
-        <Select
+        <Input
           {...form?.['3']}
           placeholder={`${form?.['3']?.label}`}
           onInputChange={onInputDataChange}
           col='col-12 col-lg-6'
-          options={citizenFormDropdownOptions['tipoDocumento']}
-          isDisabled={formDisabled}
           wrapperClassName='mb-5 pr-lg-3'
         />
         <Input
@@ -160,58 +155,46 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
               : 'Documento non presente'
           }
         />
-        <Select
+        <Input
           {...form?.['5']}
           placeholder={`${form?.['5']?.label}`}
           onInputChange={onInputDataChange}
           col='col-12 col-lg-6'
-          options={citizenFormDropdownOptions['genere']}
-          isDisabled={formDisabled}
           wrapperClassName='mb-5 pr-lg-3'
         />
-        <Select
+        <Input
           {...form?.['6']}
           placeholder={`${form?.['6']?.label}`}
           onInputChange={onInputDataChange}
           col='col-12 col-lg-6'
-          options={citizenFormDropdownOptions['fasciaDiEtaId']}
-          isDisabled={formDisabled}
           wrapperClassName='mb-5 pr-lg-3'
         />
-        <Select
+        <Input
           {...form?.['7']}
           placeholder={`Seleziona ${form?.['7']?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
           col='col-12 col-lg-6'
-          options={citizenFormDropdownOptions['titoloDiStudio']}
-          isDisabled={formDisabled}
           wrapperClassName='mb-5 pr-lg-3'
         />
-        <Select
+        <Input
           {...form?.['8']}
           placeholder={`Seleziona ${form?.['8']?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
           col='col-12 col-lg-6'
-          options={citizenFormDropdownOptions['statoOccupazionale']}
-          isDisabled={formDisabled}
           wrapperClassName='mb-5 pr-lg-3'
         />
-        <Select
+        <Input
           {...form?.['9']}
           placeholder={`Seleziona ${form?.['9']?.label?.toLowerCase()}`}
           col='col-12 col-lg-6'
-          options={citizenFormDropdownOptions['provincia']}
-          isDisabled={formDisabled}
           onInputChange={onInputDataChange}
           wrapperClassName='mb-5 pr-lg-3'
         />
-        <Select
+        <Input
           {...form?.['10']}
           placeholder={`Seleziona ${form?.['10']?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
           col='col-12 col-lg-6'
-          options={citizenFormDropdownOptions['cittadinanza']}
-          isDisabled={formDisabled}
           wrapperClassName='mb-5 pr-lg-3'
         />
       </Form.Row>
@@ -225,23 +208,19 @@ const form = newForm([
     label: 'ID Cittadino',
     id: '1',
     field: '1',
-    required: true,
   }),
   newFormField({
-    ...CommonFields.CODICE_FISCALE,
     keyBE: 'codiceFiscale',
     id: '2',
     field: '2',
     label: 'Codice fiscale',
-    required: true,
   }),
   newFormField({
     keyBE: 'tipoDocumento',
     id: '3',
     field: '3',
     label: 'Tipo documento',
-    type: 'select',
-    required: false,
+    type: 'text',
   }),
   newFormField({
     keyBE: 'numeroDocumento',
@@ -249,58 +228,48 @@ const form = newForm([
     field: '4',
     label: 'Numero documento',
     type: 'text',
-    required: false,
-    regex: RegexpType.DOCUMENT_NUMBER,
   }),
   newFormField({
     keyBE: 'genere',
     id: '5',
     field: '5',
     label: 'Genere',
-    type: 'select',
-    required: true,
+    type: 'text',
   }),
   newFormField({
     keyBE: 'fasciaDiEta',
     id: '6',
     field: '6',
     label: 'Fascia di età',
-    type: 'select',
-    required: true,
-    minimum: 1920,
-    maximum: 2020,
+    type: 'text',
   }),
   newFormField({
     keyBE: 'titoloStudio',
     id: '7',
     field: '7',
     label: 'Titolo di studio (livello più alto raggiunto)',
-    type: 'select',
-    required: true,
+    type: 'text',
   }),
   newFormField({
     keyBE: 'statoOccupazionale',
     id: '8',
     field: '8',
     label: 'Stato occupazionale',
-    type: 'select',
-    required: true,
+    type: 'text',
   }),
   newFormField({
     keyBE: 'provincia',
     id: '9',
     field: '9',
     label: 'Provincia di domicilio',
-    type: 'select',
-    required: true,
+    type: 'text',
   }),
   newFormField({
     keyBE: 'cittadinanza',
     id: '10',
     field: '10',
     label: 'Cittadinanza',
-    type: 'select',
-    required: true,
+    type: 'text',
   }),
 ]);
 

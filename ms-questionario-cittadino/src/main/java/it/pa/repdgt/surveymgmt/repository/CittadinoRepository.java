@@ -15,60 +15,7 @@ import it.pa.repdgt.surveymgmt.projection.DettaglioServizioSchedaCittadinoProjec
 @Repository
 public interface CittadinoRepository extends JpaRepository<CittadinoEntity, Long> {
 
-	@Query(value = "SELECT DISTINCT "
-			+ "          qc_cittadino.id_cittadino   	  as id "
-			+ "         ,qc_cittadino.codice_fiscale           	  as codiceFiscale "
-			+ "         ,count_servizi.conteggio       		  as numeroServizi "
-			+ "         ,count_quest_compilati.conteggio 	  as numeroQuestionariCompilati "
-			+ "		FROM "
-			+ "           ( SELECT DISTINCT "
-			+ "                 qc.id_cittadino "
-			+ "                 ,c.codice_fiscale "
-			+ "                 ,c.num_documento "
-			+ "            FROM "
-			+ "                 questionario_compilato qc "
-			+ "                 INNER JOIN cittadino c "
-			+ "                 ON c.id = qc.id_cittadino"
-			+ "					INNER JOIN servizio s"
-			+ "					ON qc.servizio_id = s.id"
-			+ "            WHERE 1=1 "
-			+ "					 AND s.id_facilitatore = :codiceFiscaleUtenteLoggato"
-			+ "  	  			 AND (  "
-			+ "							COALESCE(:idsSedi) IS NULL  OR sede_id IN (:idsSedi) ) "
-			+ "					) AS qc_cittadino "
-			+ "            INNER JOIN "
-			+ "                              (SELECT "
-			+ "                                        id_cittadino "
-			+ "                                      , count(servizio_id) as conteggio "
-			+ "                               FROM "
-			+ "                                        questionario_compilato "
-			+ "                               WHERE  1=1 "
-			+ "  	  						  AND      ( COALESCE(:idsSedi)  	 IS NULL  OR sede_id IN (:idsSedi) )  "
-			+ "                               GROUP BY "
-			+ "                                        ( id_cittadino)"
-			+ "								  ) "
-			+ "                      AS count_servizi "
-			+ "                      ON "
-			+ "                                 count_servizi.id_cittadino = qc_cittadino.id_cittadino "
-			+ "           	 LEFT JOIN "
-			+ "                              (SELECT "
-			+ "                                        id_cittadino "
-			+ "                                      , count(*) as conteggio "
-			+ "                               FROM "
-			+ "                                        questionario_compilato "
-			+ "                               WHERE stato = 'COMPILATO' "
-			+ "  	  						  AND      ( COALESCE(:idsSedi)  	 IS NULL  OR sede_id IN (:idsSedi) )  "
-			+ "                               GROUP BY "
-			+ "                                        ( id_cittadino)"
-			+ "								  ) "
-			+ "                      AS count_quest_compilati "
-			+ "                      ON "
-			+ "                                 count_quest_compilati.id_cittadino = qc_cittadino.id_cittadino "
-			+ "    WHERE 1=1"
-			+ " 		 AND (  :criterioRicerca IS NULL  "
-			+ "		  	     	OR UPPER( qc_cittadino.CODICE_FISCALE ) = UPPER( :criterioRicerca ) "
-			+ "		  	      	OR UPPER( qc_cittadino.NUM_DOCUMENTO ) = UPPER( :criterioRicerca )"
-			+ "			) ", nativeQuery = true)
+	@Query(value = "SELECT DISTINCT c.id as id,c.data_ora_aggiornamento as dataUltimoAggiornamento, c.codice_fiscale as codiceFiscale, COUNT(qc_servizi.conteggio) as numeroServizi, COUNT(qc_quest_compilati.conteggio) as numeroQuestionariCompilati FROM cittadino c LEFT JOIN (SELECT qc.id_cittadino, qc.data_ora_aggiornamento, COUNT(qc.servizio_id) as conteggio FROM questionario_compilato qc INNER JOIN servizio s ON qc.servizio_id = s.id WHERE s.id_facilitatore = :codiceFiscaleUtenteLoggato AND (COALESCE(:idsSedi) IS NULL OR s.id_sede IN (:idsSedi)) GROUP BY qc.id_cittadino, qc.data_ora_aggiornamento) qc_servizi ON c.id = qc_servizi.id_cittadino LEFT JOIN (SELECT qc.id_cittadino, COUNT(qc.id) as conteggio FROM questionario_compilato qc WHERE qc.stato = 'COMPILATO' GROUP BY qc.id_cittadino) qc_quest_compilati ON c.id = qc_quest_compilati.id_cittadino WHERE (:criterioRicerca IS NULL OR UPPER(c.codice_fiscale) = UPPER(:criterioRicerca) OR UPPER(c.num_documento) = UPPER(:criterioRicerca)) GROUP BY c.id, c.data_ora_aggiornamento, c.codice_fiscale ORDER BY c.codice_fiscale", nativeQuery = true)
 	List<CittadinoProjection> findAllCittadiniByFiltro(
 			@Param("criterioRicerca") String criterioRicerca,
 			@Param("idsSedi") List<String> idsSedi,
@@ -80,7 +27,7 @@ public interface CittadinoRepository extends JpaRepository<CittadinoEntity, Long
 			@Param("idsSedi") List<String> idsSedi,
 			@Param("codiceFiscaleUtenteLoggato") String codiceFiscaleUtenteLoggato);
 
-	@Query(value = "SELECT DISTINCT qc_cittadino.id_cittadino as id,qc_cittadino.codice_fiscale as codiceFiscale,count_servizi.conteggio as numeroServizi,count_quest_compilati.conteggio as numeroQuestionariCompilati FROM (SELECT DISTINCT qc.id_cittadino,c.codice_fiscale,c.num_documento FROM questionario_compilato qc INNER JOIN cittadino c ON c.id=qc.id_cittadino INNER JOIN servizio s ON qc.servizio_id=s.id WHERE s.id_facilitatore=:codiceFiscaleUtenteLoggato AND COALESCE(:idsSedi) IS NULL OR sede_id IN (:idsSedi)) AS qc_cittadino INNER JOIN (SELECT id_cittadino,count(servizio_id) as conteggio FROM questionario_compilato WHERE 1=1 GROUP BY id_cittadino) AS count_servizi ON count_servizi.id_cittadino=qc_cittadino.id_cittadino LEFT JOIN (SELECT id_cittadino,count(*) as conteggio FROM questionario_compilato WHERE stato='COMPILATO' GROUP BY id_cittadino) AS count_quest_compilati ON count_quest_compilati.id_cittadino=qc_cittadino.id_cittadino WHERE (:criterioRicerca IS NULL OR UPPER(qc_cittadino.CODICE_FISCALE)=UPPER(:criterioRicerca) OR UPPER(qc_cittadino.NUM_DOCUMENTO)=UPPER(:criterioRicerca)) ORDER BY qc_cittadino.codice_fiscale LIMIT :currPage, :pageSize", nativeQuery = true)
+	@Query(value = "SELECT DISTINCT c.id as id,c.data_ora_aggiornamento as dataUltimoAggiornamento, c.codice_fiscale as codiceFiscale, COUNT(qc_servizi.conteggio) as numeroServizi, COUNT(qc_quest_compilati.conteggio) as numeroQuestionariCompilati FROM cittadino c LEFT JOIN (SELECT qc.id_cittadino, qc.data_ora_aggiornamento, COUNT(qc.servizio_id) as conteggio FROM questionario_compilato qc INNER JOIN servizio s ON qc.servizio_id = s.id WHERE s.id_facilitatore = :codiceFiscaleUtenteLoggato AND (COALESCE(:idsSedi) IS NULL OR s.id_sede IN (:idsSedi)) GROUP BY qc.id_cittadino, qc.data_ora_aggiornamento) qc_servizi ON c.id = qc_servizi.id_cittadino LEFT JOIN (SELECT qc.id_cittadino, COUNT(qc.id) as conteggio FROM questionario_compilato qc WHERE qc.stato = 'COMPILATO' GROUP BY qc.id_cittadino) qc_quest_compilati ON c.id = qc_quest_compilati.id_cittadino WHERE (:criterioRicerca IS NULL OR UPPER(c.codice_fiscale) = UPPER(:criterioRicerca) OR UPPER(c.num_documento) = UPPER(:criterioRicerca)) GROUP BY c.id, c.data_ora_aggiornamento, c.codice_fiscale ORDER BY c.codice_fiscale LIMIT :currPage, :pageSize", nativeQuery = true)
 	List<CittadinoProjection> findAllCittadiniPaginatiByFiltro(
 			@Param("criterioRicerca") String criterioRicerca,
 			@Param("idsSedi") List<String> idsSedi,

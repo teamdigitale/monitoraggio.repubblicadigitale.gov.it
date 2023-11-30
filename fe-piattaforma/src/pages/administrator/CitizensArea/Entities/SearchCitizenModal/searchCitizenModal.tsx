@@ -223,12 +223,15 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
             body[key] = Buffer.from(searchValue.value.toUpperCase()).toString(
               'base64'
             );
-          } else if (key === 'numeroDocumento') {
+          } else if (
+            searchValue?.type === 'numeroDocumento' &&
+            key === 'numeroDocumento'
+          ) {
             body[key] = Buffer.from(searchValue?.value as string).toString(
               'base64'
             );
           } else if (key === 'fasciaDiEtaId') {
-            if(searchValue?.type !== 'codiceFiscale') {
+            if (searchValue?.type !== 'codiceFiscale') {
               let fasciaDiEtaId: string | undefined;
               citizenFormDropdownOptions['fasciaDiEtaId'].forEach(
                 (fasciaDiEta: any) => {
@@ -244,27 +247,6 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
             body[key] = userValue;
           }
         }
-        /*const sezioneQ1Template = generateForm(JSON.parse(stringQ1));
-                                                                        Object.keys(sezioneQ1Template).map((key: string) => {
-                                                                          if (sezioneQ1Template[key]?.keyBE && newUserValues) {
-                                                                            if (
-                                                                              sezioneQ1Template[key].keyBE === 'codiceFiscaleNonDisponibile'
-                                                                            ) {
-                                                                              // FLAG codiceFiscaleNonDisponibile
-                                                                              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                                                              // @ts-ignore
-                                                                              body[sezioneQ1Template[key].keyBE] =
-                                                                                newUserValues[key] !== '' ? true : false;
-                                                                            } else {
-                                                                              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                                                              // @ts-ignore
-                                                                              body[sezioneQ1Template[key].keyBE] =
-                                                                                typeof newUserValues[key] === 'string'
-                                                                                  ? newUserValues[key]?.toString().replaceAll("'", "’")
-                                                                                  : JSON.stringify(newUserValues[key]);
-                                                                            }
-                                                                          }
-                                                                        });*/
         body['nuovoCittadino'] = true;
       } else {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment

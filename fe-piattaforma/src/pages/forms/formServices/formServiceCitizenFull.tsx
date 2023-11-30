@@ -470,7 +470,7 @@ const form = newForm([
     required: true,
   }),
   newFormField({
-    keyBE: 'provincia',
+    keyBE: 'provinciaDiDomicilio',
     id: '9',
     field: '9',
     label: 'Provincia di domicilio',

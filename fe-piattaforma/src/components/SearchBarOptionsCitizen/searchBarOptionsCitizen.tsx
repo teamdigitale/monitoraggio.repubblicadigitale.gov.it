@@ -10,6 +10,8 @@ import Input from '../Form/input';
 import { setCitizenSearchResults } from '../../redux/features/citizensArea/citizensAreaSlice';
 import { SearchValue } from '../../pages/forms/models/searchValue.model';
 import { Buffer } from 'buffer';
+import { mappaMesi } from '../../consts/monthsMapForFiscalCode';
+import { emitNotify } from '../../redux/features/notification/notificationSlice';
 
 interface SearchBarOptionsI {
   setCurrentStep: (value: string) => void;
@@ -42,21 +44,71 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
   const [query, setQuery] = useState<string>('');
   const [mustValidateCf, setMustValidateCf] = useState<boolean>(true);
 
-  const isValidFiscalCode = useCallback((query: string) => {
-    return /^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$/i.test(query);
+  const isMaggiorenne = useCallback((cf: string): boolean => {
+    const today: Date = new Date();
+    const rangeCentury: number = parseInt(
+      today.getFullYear().toString().substring(2)
+    );
+    const isFemale: boolean = cf.charAt(9) >= '4';
+    const dayOfBirth: number =
+      parseInt(cf.substring(9, 11)) - (isFemale ? 40 : 0);
+    const century: number = parseInt(cf.substring(6, 8));
+    const yearOfBirth: number =
+      century <= rangeCentury ? 2000 + century : 1900 + century;
+    const month: number = mappaMesi.get(cf.charAt(8).toUpperCase()) as number;
+    const dateOfBirth: Date = new Date(yearOfBirth, month, dayOfBirth);
+    const age: number = today.getFullYear() - dateOfBirth.getFullYear();
+    return age > 18;
   }, []);
 
-  const onRadioChange = useCallback((value: string) => {
-    setCurrentStep(value);
-    setRadioFilter(value);
-    setMustValidateCf(value === 'codiceFiscale');
-    setCanSubmit(value !== 'codiceFiscale' || isValidFiscalCode(query));
-  }, [setCurrentStep, setRadioFilter, query]);
+  const dispatchNotify = useCallback(
+    (id, title, status, message, duration) => {
+      dispatch(
+        emitNotify({ id, title, status, message, closable: true, duration })
+      );
+    },
+    [dispatch]
+  );
 
-  const onQueryChange = useCallback(((query: string) => {
-    setCanSubmit(mustValidateCf ? isValidFiscalCode(query) : true);
-    setQuery(query);
-  }), [isValidFiscalCode, mustValidateCf]);
+  const isValidFiscalCode = useCallback(
+    (query: string) => {
+      const isValid: boolean =
+        /^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$/i.test(query);
+      if (isValid) {
+        const isAdult = isMaggiorenne(query);
+        if (!isAdult) {
+          dispatchNotify(
+            1,
+            'ERRORE',
+            'error',
+            'Il codice fiscale risulta essere di un minorenne',
+            'medium'
+          );
+        }
+        return isAdult;
+      }
+      return isValid;
+    },
+    [dispatch, isMaggiorenne]
+  );
+
+  const onRadioChange = useCallback(
+    (value: string) => {
+      setCurrentStep(value);
+      setRadioFilter(value);
+      setMustValidateCf(value === 'codiceFiscale');
+      setCanSubmit(value !== 'codiceFiscale' || isValidFiscalCode(query));
+    },
+    [setCurrentStep, setRadioFilter, query]
+  );
+
+  const onQueryChange = useCallback(
+    (query: string) => {
+      setCanSubmit(mustValidateCf ? isValidFiscalCode(query) : true);
+      setQuery(query);
+    },
+    [isValidFiscalCode, mustValidateCf]
+  );
 
   return (
     <div

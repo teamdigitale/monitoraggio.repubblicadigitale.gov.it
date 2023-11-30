@@ -3,10 +3,10 @@ import API from '../../../utils/apiHelper';
 import { hideLoader, showLoader } from '../app/appSlice';
 import {
   getEntityDetail,
-  setEntityFilterOptions,
-  setEntityValues,
-  setEntityPagination,
   setCitizenSearchResults,
+  setEntityFilterOptions,
+  setEntityPagination,
+  setEntityValues,
 } from './citizensAreaSlice';
 import { RootState } from '../../store';
 // import { mapOptions } from '../../../utils/common';
@@ -34,7 +34,7 @@ export const GetEntityValues =
       Object.keys(filters).forEach((filter: string) => {
         if (filter === 'criterioRicerca') {
           filtroRequest[filter] =
-          filters[filter]?.value || filters[filter] || null;
+            filters[filter]?.value || filters[filter] || null;
         } else {
           filtroRequest[filter] = filters[filter]?.map(
             (value: OptionType) => value.value
@@ -43,9 +43,11 @@ export const GetEntityValues =
       });
       const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
         getUserHeaders();
-        if(filtroRequest.criterioRicerca) {
-          filtroRequest.criterioRicerca = Buffer.from(filtroRequest.criterioRicerca).toString('base64');
-        }
+      if (filtroRequest.criterioRicerca) {
+        filtroRequest.criterioRicerca = Buffer.from(
+          filtroRequest.criterioRicerca
+        ).toString('base64');
+      }
       const body = {
         filtro: filtroRequest,
         idProgetto,
@@ -73,7 +75,8 @@ export const GetEntityValues =
               totalElements: res.data.numeroTotaleElementi,
             })
           );
-      }})
+        }
+      });
     } catch (error) {
       console.log('GetEntityValues citizensArea error', error);
     } finally {
@@ -152,7 +155,10 @@ export const GetEntityDetail =
         idProgramma,
         idEnte,
       };
-      const res = await API.post(`${process?.env?.QUESTIONARIO_CITTADINO}cittadino/${idCittadino}`, body);
+      const res = await API.post(
+        `${process?.env?.QUESTIONARIO_CITTADINO}cittadino/${idCittadino}`,
+        body
+      );
       if (res?.data) {
         dispatch(getEntityDetail(res.data));
       }
@@ -176,7 +182,10 @@ export const GetEntitySearchResult =
         criterioRicerca: searchValue,
         tipoDocumento: searchType === 'codiceFiscale' ? 'CF' : 'NUM_DOC',
       };
-      const res = await API.post(`${process?.env?.QUESTIONARIO_CITTADINO}servizio/cittadino`, body);
+      const res = await API.post(
+        `${process?.env?.QUESTIONARIO_CITTADINO}servizio/cittadino`,
+        body
+      );
       if (res?.data) {
         if (Array.isArray(res.data)) {
           dispatch(setCitizenSearchResults(res.data));
@@ -204,12 +213,15 @@ export const UpdateCitizenDetail =
       dispatch(showLoader());
       dispatch({ ...UpdateCitizenDetailAction, idCittadino, body });
       const { idProgramma, idProgetto, idEnte } = getUserHeaders();
-      const res = await API.put(`${process?.env?.QUESTIONARIO_CITTADINO}cittadino/${idCittadino}`, {
-        ...body,
-        idProgramma,
-        idProgetto,
-        idEnte,
-      });
+      const res = await API.put(
+        `${process?.env?.QUESTIONARIO_CITTADINO}cittadino/${idCittadino}`,
+        {
+          ...body,
+          idProgramma,
+          idProgetto,
+          idEnte,
+        }
+      );
       if (res) {
         return true;
       }

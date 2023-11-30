@@ -15,6 +15,7 @@ public interface CittadinoServizioRepository extends JpaRepository<CittadinoEnti
 			+ " SELECT "
 			+ "	DISTINCT c.id as idCittadino,"
 			+ "			 c.codice_fiscale as codiceFiscale,"
+			+ "             c.data_ora_aggiornamento as dataUltimoAggiornamento,"
 			+ "			 c.num_documento as numeroDocumento,"
 			+ "			 q_c.id as idQuestionario,"
 			+ "			 q_c.stato as statoQuestionario"
@@ -35,14 +36,11 @@ public interface CittadinoServizioRepository extends JpaRepository<CittadinoEnti
 			+ "		 OR UPPER(c.codice_fiscale) = UPPER( :criterioRicercaServizio ) "
 			+ "    ) "
 			+ "    AND ( COALESCE( :statiQuestionariFiltro  ) IS NULL OR q_c.STATO IN ( :statiQuestionariFiltro ) ) "
-			+ "    ORDER BY c.codice_fiscale"
-			+ "	LIMIT :currPage, :pageSize", nativeQuery = true)
+			+ "    ORDER BY c.codice_fiscale", nativeQuery = true)
 	List<CittadinoServizioProjection> findAllCittadiniServizioPaginatiByFiltro(
 			@Param(value = "idServizio") Long idServizio,
 			@Param(value = "criterioRicercaServizio") String criterioRicercaServizio,
-			@Param(value = "statiQuestionariFiltro") List<String> statiQuestionariFiltro,
-			@Param(value = "currPage") Integer currPage,
-			@Param(value = "pageSize") Integer pageSize);
+			@Param(value = "statiQuestionariFiltro") List<String> statiQuestionariFiltro);
 
 	@Query(value = " SELECT "
 			+ "	DISTINCT c.id as idCittadino,"
@@ -97,7 +95,7 @@ public interface CittadinoServizioRepository extends JpaRepository<CittadinoEnti
 			+ " SELECT  "
 			+ "		id, "
 			+ "		codice_fiscale as codiceFiscale, "
-			+ "		num_documento as numeroDocumento   "
+			+ "		num_documento as numeroDocumento, genere as genere, fascia_di_eta_id as fasciaDiEta, titolo_di_Studio as titoloStudio, occupazione as statoOccupazionale, cittadinanza as cittadinanza, provincia_di_domicilio as provinciaDiDomicilio  "
 			+ " FROM          "
 			+ "		cittadino "
 			+ " WHERE 1=1     "

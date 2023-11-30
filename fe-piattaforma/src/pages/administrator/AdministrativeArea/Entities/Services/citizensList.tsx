@@ -37,6 +37,7 @@ import ManageCitizenInService from '../modals/manageCitizenInService';
 import ConfirmSentSurveyModal from '../modals/confirmSentSurveyModal';
 import { resetCompilingSurveyForm } from '../../../../../redux/features/administrativeArea/surveys/surveysSlice';
 import UploadCSVModal from '../../../../../components/AdministrativeArea/Entities/General/UploadCSVModal/UploadCSVModal';
+import moment from 'moment';
 
 const CitizenTemplate = '/assets/entity_templates/template_cittadino.xlsx';
 
@@ -53,7 +54,9 @@ export interface CitizenI {
     ID: string;
     codiceFiscale: string;
     numeroDocumento: string;
+    dataUltimoAggiornamento: number;
   };
+  dataUltimoAggiornamento?: number;
 }
 
 const statusDropdownLabel = 'statiQuestionario';
@@ -117,15 +120,18 @@ const CitizensList: React.FC = () => {
   }, [criterioRicerca, statiQuestionario]);
 
   const handleOnSearch = (searchValue: string) => {
-    dispatch(setEntityFilters({ criterioRicerca: searchValue }));
+    dispatch(
+      setEntityFilters({
+        criterioRicerca: searchValue,
+      })
+    );
     setAlreadySearched(true);
   };
 
   const searchInformation: SearchInformationI = {
     title: 'Cerca cittadino',
     onHandleSearch: handleOnSearch,
-    placeholder:
-      'Cerca cittadino per nome, cognome, codice fiscale o  numero  documento',
+    placeholder: 'Cerca cittadino per codice fiscale o  numero  documento',
     autocomplete: false,
     isClearable: true,
   };
@@ -237,24 +243,24 @@ const CitizensList: React.FC = () => {
 
   const buttons: ButtonInButtonsBar[] = [
     /*{
-      text: 'Carica lista cittadini',
-      outline: true,
-      iconForButton: 'it-upload',
-      buttonClass: 'btn-secondary',
-      iconColor: 'primary',
-      color: 'primary',
-      onClick: () =>
-        dispatch(
-          openModal({
-            id: 'upload-csv',
-            payload: {
-              title: 'Carica lista cittadini',
-              entity: 'cittadini',
-              endpoint: `/servizio/cittadino/${serviceId}/listaCittadini/upload`,
-            },
-          })
-        ),
-    },*/
+                                                  text: 'Carica lista cittadini',
+                                                  outline: true,
+                                                  iconForButton: 'it-upload',
+                                                  buttonClass: 'btn-secondary',
+                                                  iconColor: 'primary',
+                                                  color: 'primary',
+                                                  onClick: () =>
+                                                    dispatch(
+                                                      openModal({
+                                                        id: 'upload-csv',
+                                                        payload: {
+                                                          title: 'Carica lista cittadini',
+                                                          entity: 'cittadini',
+                                                          endpoint: `/servizio/cittadino/${serviceId}/listaCittadini/upload`,
+                                                        },
+                                                      })
+                                                    ),
+                                                },*/
     {
       text: 'Aggiungi cittadino',
       color: 'primary',
@@ -314,14 +320,14 @@ const CitizensList: React.FC = () => {
           {(citizens?.cittadini || []).map((citizen: CitizenI, i: number) => (
             <DetailsRow
               key={i}
-              nome={citizen?.cognome + ' ' + citizen?.nome}
               stato={citizen?.statoQuestionario?.replace('_', ' ') || ''}
               onActionClick={onActionClick}
               id={citizen?.idCittadino || ''}
               innerInfo={{
-                ID: citizen?.idCittadino || '-',
-                'Codice Fiscale': citizen?.codiceFiscale || '-',
-                'Numero Documento': citizen?.numeroDocumento || '-',
+                id: citizen?.idCittadino || '-',
+                DataUltimoAggiornamento: moment(
+                  citizen?.dataUltimoAggiornamento
+                ).format('YYYY-MM-DD HH:MM'),
               }}
               rowInfoType='questionario'
               idQuestionario={citizen?.idQuestionario || ''}

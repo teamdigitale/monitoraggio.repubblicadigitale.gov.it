@@ -169,9 +169,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		return cittadinoServizioRepository.findAllCittadiniServizioPaginatiByFiltro(
 				idServizio,
 				criterioRicercaCittadinoServizio,
-				filtroListaCittadiniServizio.getStatiQuestionario(),
-				currPage,
-				pageSize);
+				filtroListaCittadiniServizio.getStatiQuestionario());
 	}
 
 	@LogMethod
@@ -297,6 +295,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 			cittadino.setGenere(nuovoCittadinoRequest.getGenere());
 			cittadino.setOccupazione(nuovoCittadinoRequest.getStatoOccupazionale());
 			cittadino.setTitoloDiStudio(nuovoCittadinoRequest.getTitoloStudio());
+			cittadino.setProvinciaDiDomicilio(nuovoCittadinoRequest.getProvinciaDiDomicilio());
 			cittadino = cittadinoRepository.save(cittadino);
 		}
 
@@ -445,7 +444,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 				ID_DOMANDA_FASCIA_DI_ETA, cittadino.getFasciaDiEta().getFascia(),
 				ID_DOMANDA_TITOLO_DI_STUDIO, cittadino.getTitoloDiStudio(),
 				ID_DOMANDA_STATO_OCCUPAZIONALE, cittadino.getOccupazione(),
-				ID_DOMANDA_PROVINCIA, this.cittadinoRepository.findProvinciaByIdCittadino(cittadino.getId()),
+				ID_DOMANDA_PROVINCIA, cittadino.getProvinciaDiDomicilio(),
 				ID_DOMANDA_CITTADINANZA, cittadino.getCittadinanza());
 	}
 

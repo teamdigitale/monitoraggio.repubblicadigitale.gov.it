@@ -7,5 +7,6 @@ export const NewUserValuesFormCitizen = [
   'fasciaDiEtaId',
   'titoloStudio',
   'statoOccupazionale',
+  'provinciaDiDomicilio',
   'cittadinanza',
 ] as const;
