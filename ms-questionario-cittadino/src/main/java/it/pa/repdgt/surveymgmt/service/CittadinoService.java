@@ -187,7 +187,6 @@ public class CittadinoService {
 		List<DettaglioServizioSchedaCittadinoProjection> serviziProjection = this
 				.getDettaglioServiziSchedaCittadino(idCittadino);
 		List<DettaglioServizioSchedaCittadinoBean> serviziBean = serviziProjection.stream().map(record -> {
-			dettaglioCittadino.setProvincia(record.getProvincia());
 			DettaglioServizioSchedaCittadinoBean dettaglioServizioSchedaCittadino = new DettaglioServizioSchedaCittadinoBean();
 			dettaglioServizioSchedaCittadino.setIdServizio(record.getIdServizio());
 			dettaglioServizioSchedaCittadino.setNomeServizio(record.getNomeServizio());

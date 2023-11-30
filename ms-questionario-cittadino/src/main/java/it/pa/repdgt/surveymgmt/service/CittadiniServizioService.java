@@ -444,7 +444,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 				ID_DOMANDA_FASCIA_DI_ETA, cittadino.getFasciaDiEta().getFascia(),
 				ID_DOMANDA_TITOLO_DI_STUDIO, cittadino.getTitoloDiStudio(),
 				ID_DOMANDA_STATO_OCCUPAZIONALE, cittadino.getOccupazione(),
-				ID_DOMANDA_PROVINCIA, this.cittadinoRepository.findProvinciaByIdCittadino(cittadino.getId()),
+				ID_DOMANDA_PROVINCIA, cittadino.getProvinciaDiDomicilio(),
 				ID_DOMANDA_CITTADINANZA, cittadino.getCittadinanza());
 	}
 
