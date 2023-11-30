@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Form, Input } from '../../../components';
+import { Form, Input, Select } from '../../../components';
 import { TableRowI } from '../../../components/Table/table';
 import withFormHandler, {
   withFormHandlerProps,
@@ -12,6 +12,7 @@ import { useAppSelector } from '../../../redux/hooks';
 import { formFieldI, newForm, newFormField } from '../../../utils/formHelper';
 import { FormCitizenI } from '../formCitizen';
 import ExistingCitizenInfo from './ExistingCitizenInfo';
+import { citizenFormDropdownOptions } from '../constantsFormCitizen';
 
 interface FormServiceCitizenBaseI {
   selectedCitizen?: CittadinoInfoI | TableRowI | string;
@@ -128,11 +129,13 @@ const FormServiceCitizenBase: React.FC<FormEnteGestoreProgettoFullInterface> = (
             col='col-12 col-lg-6'
             wrapperClassName='mb-5 pr-lg-3'
           />
-          <Input
+          <Select
             {...form?.fasciaDiEta}
             placeholder='Fascia di età'
             onInputChange={onInputDataChange}
             col='col-12 col-lg-6'
+            options={citizenFormDropdownOptions['fasciaDiEtaId']}
+            isDisabled={formDisabled}
             wrapperClassName='mb-5 pr-lg-3'
           />
           <Input
@@ -203,7 +206,7 @@ const form = newForm([
   newFormField({
     field: 'fasciaDiEta',
     id: 'fasciaDiEta',
-    type: 'text',
+    type: 'select',
     label: 'Fascia di età',
   }),
   newFormField({
