@@ -1,5 +1,17 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.147](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.146...1.0.0-test.147) (2023-11-30)
+
+
+### Features
+
+* **fe-piattaforma:** updates fe ([f9cd3b2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f9cd3b269d2f2843987240193a5c7d66f5b6e3c3))
+* **be:** updates 20231130 fix-provincia ([8b91c48](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8b91c482ee7725712f66b3ff792faf26be07c3b9))
+* **be:** updates 20231130 build-questionario ([b58a0cf](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b58a0cfafd1e365d4d2e833a110f04374f7f82e2))
+* **be:** updates 20231130 fix-citt-rep ([23850de](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/23850de9147ef43ba3721be74b744335d2d15cfe))
+* **fe-be:** updates 20231130 fix-cittadino ([d431df2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d431df2486b8cb9bcb45e9393434d1bd7a022b7b))
+* **fe-be:** updates 20231130 ([697004e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/697004e350c893ff2dfdc02f4e569b2e78f05896))
+
 ## [1.0.0-test.146](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.145...1.0.0-test.146) (2023-11-29)
 
 
