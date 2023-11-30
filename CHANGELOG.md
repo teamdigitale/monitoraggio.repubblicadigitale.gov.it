@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.370](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.369...1.0.0-develop.370) (2023-11-30)
+
+
+### Features
+
+* **fe-be:** updates 20231130 fix-cittadino ([d431df2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d431df2486b8cb9bcb45e9393434d1bd7a022b7b))
+* **fe-be:** updates 20231130 ([697004e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/697004e350c893ff2dfdc02f4e569b2e78f05896))
+
 ## [1.0.0-develop.369](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.368...1.0.0-develop.369) (2023-11-27)
 
 
