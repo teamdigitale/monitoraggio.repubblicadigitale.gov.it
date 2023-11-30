@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.375](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.374...1.0.0-develop.375) (2023-11-30)
+
+
+### Features
+
+* **fe-piattaforma:** updates 20231130 fascia-di-eta ([29d3bac](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/29d3bac3b466407d612e7236f883eedc10bb8f38))
+
 ## [1.0.0-develop.374](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.373...1.0.0-develop.374) (2023-11-30)
 
 
