@@ -45,7 +45,7 @@ export const GetEntityValues =
         getUserHeaders();
       if (filtroRequest.criterioRicerca) {
         filtroRequest.criterioRicerca = Buffer.from(
-          filtroRequest.criterioRicerca
+          filtroRequest.criterioRicerca.toUpperCase()
         ).toString('base64');
       }
       const body = {

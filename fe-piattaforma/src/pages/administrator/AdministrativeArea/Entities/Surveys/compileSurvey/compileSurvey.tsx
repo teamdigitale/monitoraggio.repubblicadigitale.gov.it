@@ -52,6 +52,8 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
   const { serviceId, idQuestionarioCompilato } = useParams();
   const [sections, setSections] = useState<SurveySectionPayloadI[]>([]);
   const [activeSection, setActiveSection] = useState(0);
+  const [codiceFiscale, setCodiceFiscale] = useState('');
+  const [numeroDocumento, setNumeroDocumento] = useState('');
   const surveyStore: string | SurveySectionPayloadI[] = useAppSelector(
     selectQuestionarioTemplateSnapshot
   )?.sezioniQuestionarioTemplate;
@@ -60,8 +62,6 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
   );
   const surveyAnswersToSave = useAppSelector(selectCompilingSurveyForms);
   const serviceDetails = useAppSelector(selectServices)?.detail;
-
-  const [originalCF, setOriginalCF] = useState<string>('');
 
   useEffect(() => {
     // For breadcrumb
@@ -112,7 +112,6 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
                   : value[id][0],
             },
           };
-          if (id.toString() === '3') setOriginalCF(value[id][0]);
         });
       } else if (typeof value === 'string') {
         const val = jsonParseValues(decodeURI(value).replaceAll("'", '"'));
@@ -128,7 +127,6 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
                   : val[id][0],
             },
           };
-          if (id.toString() === '3') setOriginalCF(val[id][0]);
         });
       }
     });
@@ -180,12 +178,14 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
               // @ts-ignore
               if (key === '1') {
                 const cf: string = values[key];
+                setCodiceFiscale(cf);
                 newForm[key].value = cf
                   ? 'Codice fiscale disponibile ma non visualizzabile'
                   : 'Codice fiscale non disponibile';
               }
               if (key === '4') {
                 const docNumber: string = values[key];
+                setNumeroDocumento(docNumber);
                 newForm[key].value = docNumber
                   ? 'Numero documento disponibile ma non visualizzabile'
                   : 'Numero documento non disponibile';
@@ -381,7 +381,12 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
       body[0][19] = moment().format('DD-MM-YYYY');
     }
     const res = await dispatch(
-      PostFormCompletedByCitizen(idQuestionarioCompilato, body, originalCF)
+      PostFormCompletedByCitizen(
+        idQuestionarioCompilato,
+        body,
+        codiceFiscale,
+        numeroDocumento
+      )
     );
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore

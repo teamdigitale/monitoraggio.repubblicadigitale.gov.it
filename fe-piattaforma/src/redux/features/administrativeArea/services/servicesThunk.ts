@@ -137,9 +137,9 @@ export const GetCitizenListServiceDetail =
         filters.criterioRicerca !== ''
       ) {
         newFilters = {
-          criterioRicerca: Buffer.from(filters.criterioRicerca).toString(
-            'base64'
-          ),
+          criterioRicerca: Buffer.from(
+            filters.criterioRicerca.toUpperCase()
+          ).toString('base64'),
         };
       }
       let queryParamFilters = transformFiltersToQueryParams(
