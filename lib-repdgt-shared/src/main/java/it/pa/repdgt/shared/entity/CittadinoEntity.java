@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 
 import it.pa.repdgt.shared.entity.tipologica.FasciaDiEtaEntity;
 import lombok.EqualsAndHashCode;
@@ -53,7 +52,7 @@ public class CittadinoEntity implements Serializable {
 	@Column(name = "DATA_ORA_CREAZIONE")
 	private Date dataOraCreazione;
 
-	@Temporal(value = TemporalType.DATE)
+	@Temporal(value = TemporalType.TIMESTAMP)
 	@Column(name = "DATA_ORA_AGGIORNAMENTO")
 	private Date dataOraAggiornamento;
 

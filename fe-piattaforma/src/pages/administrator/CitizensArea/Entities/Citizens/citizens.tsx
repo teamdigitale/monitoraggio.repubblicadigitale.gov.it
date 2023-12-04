@@ -140,7 +140,7 @@ const Citizens = () => {
         numeroServizi: td.numeroServizi,
         numeroQuestionariCompilati: td.numeroQuestionariCompilati,
         dataUltimoAggiornamento: moment(td.dataUltimoAggiornamento).format(
-          'YYYY-MM-DD HH:MM'
+          'YYYY-MM-DD HH:mm'
         ),
       }))
     );

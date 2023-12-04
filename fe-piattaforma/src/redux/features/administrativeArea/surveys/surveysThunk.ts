@@ -17,9 +17,9 @@ import { hideLoader, showLoader } from '../../app/appSlice';
 import { getUserHeaders } from '../../user/userThunk';
 import {
   setEntityFilterOptions,
-  setSurveysList,
-  setSurveyDetail,
   setEntityPagination,
+  setSurveyDetail,
+  setSurveysList,
 } from '../administrativeAreaSlice';
 import {
   resetCompilingSurveyForm,
@@ -33,6 +33,9 @@ import {
   SurveySectionPayloadI,
   SurveySectionResponseI,
 } from './surveysSlice';
+import { QuestionarioRequestModel } from '../../../../models/QuestionarioRequest.model';
+import { Cittadino } from '../../../../models/Cittadino.model';
+import { citizenFormDropdownOptions } from '../../../../pages/forms/constantsFormCitizen';
 
 export interface SurveyLightI {
   id: string;
@@ -314,7 +317,7 @@ const getSchemaTypeQuestion = (form: FormI) => {
         const values: { label: string; value: string }[] = JSON.parse(
           form['question-values'].value
         );
-        values.map((val) => valuesEnum.push(val.value.replaceAll("'", "’")));
+        values.map((val) => valuesEnum.push(val.value.replaceAll("'", '’')));
         properties.enum = valuesEnum;
       }
       break;
@@ -326,7 +329,9 @@ const getSchemaTypeQuestion = (form: FormI) => {
           form['question-values'].value
         );
         values.map((val) => {
-          valuesProperties[val.value.replaceAll("'", "’")] = { type: 'boolean' };
+          valuesProperties[val.value.replaceAll("'", '’')] = {
+            type: 'boolean',
+          };
         });
         properties.properties = valuesProperties;
       }
@@ -367,7 +372,10 @@ const getSchemaSection = (
         const id = question.id;
         schemaSection.properties[id] = {
           id: id,
-          title: question.form['question-description'].value.replaceAll("'", "’"),
+          title: question.form['question-description'].value.replaceAll(
+            "'",
+            '’'
+          ),
           ...getSchemaTypeQuestion(question.form),
           order: index + 1,
         };
@@ -485,58 +493,35 @@ const PostFormCompletedByCitizenAction = {
   type: 'surveys/PostFormCompletedByCitizen',
 };
 export const PostFormCompletedByCitizen =
-  (idQuestionario: string | undefined, payload: any, originalCF: string) =>
+  (
+    idQuestionario: string | undefined,
+    payload: any,
+    codiceFiscaleCittadino: string,
+    numeroDocumento: string
+  ) =>
   async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
       dispatch({ ...PostFormCompletedByCitizenAction, payload });
-      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
-      const entityEndpoint = `/servizio/cittadino/questionarioCompilato/${idQuestionario}/compila`;
-      const consenso = payload?.[0]['18']?.includes('ONLINE')
-        ? 'ONLINE'
-        : payload?.[0]['18']?.includes('CARTACEO')
-        ? 'CARTACEO'
-        : 'EMAIL';
-      /*(payload || []).map((section: any) => {
-        Object.keys(section).map((key: string) => {
-          if (typeof section[key] === 'string' && section[key]?.includes('§')) {
-            const arrayValues: string[] = section[key]?.split('§');
-            section[key] = arrayValues;
-          }
-        });
-      });*/
-      const body = {
-        annoDiNascitaDaAggiornare: payload?.[0]['8'],
-        categoriaFragiliDaAggiornare: payload?.[0]['13'],
-        cittadinanzaDaAggiornare: payload?.[0]['11'],
-        codiceFiscaleDaAggiornare: payload?.[0]['3'],
-        cognomeDaAggiornare: payload?.[0]['2'],
-        comuneDiDomicilioDaAggiornare: payload?.[0]['12'],
-        consensoTrattamentoDatiRequest: {
-          codiceFiscaleCittadino: originalCF,
-          consensoTrattamentoDatiEnum: consenso,
-          numeroDocumentoCittadino: payload?.[0]['6'],
-        },
-        emailDaAggiornare: payload?.[0]['14'],
-        genereDaAggiornare: payload?.[0]['7'],
-        nomeDaAggiornare: payload?.[0]['1'],
-        numeroDiCellulareDaAggiornare: payload?.[0]['16'],
-        numeroDocumentoDaAggiornare: payload?.[0]['6'],
-        occupazioneDaAggiornare: payload?.[0]['10'],
-        prefissoTelefonoDaAggiornare: payload?.[0]['15'],
-        sezioneQ1Questionario: convertPayloadSectionInString(payload[0], 0),
-        sezioneQ2Questionario: convertPayloadSectionInString(payload[1], 1),
-        sezioneQ3Questionario: convertPayloadSectionInString(payload[2], 2),
-        sezioneQ4Questionario: convertPayloadSectionInString(payload[3], 3),
-        telefonoDaAggiornare: payload?.[0]['17'],
-        tipoDocumentoDaAggiornare: payload?.[0]['5'],
-        titoloDiStudioDaAggiornare: payload?.[0]['9'],
-      };
+      const { idProgramma, idProgetto, idEnte, codiceFiscale, codiceRuolo } =
+        getUserHeaders();
+      const entityEndpoint = `${process?.env?.QUESTIONARIO_CITTADINO}servizio/cittadino/questionarioCompilato/${idQuestionario}/compila`;
+      const cittadino: Cittadino = createCittadino(
+        payload[0],
+        codiceFiscaleCittadino,
+        numeroDocumento
+      );
+      const body: QuestionarioRequestModel = createQuestionarioRequestModel(
+        cittadino,
+        payload
+      );
       await API.post(entityEndpoint, {
         ...body,
         idProgramma,
         idProgetto,
         idEnte,
+        cfUtenteLoggato: codiceFiscale,
+        codiceRuoloUtenteLoggato: codiceRuolo,
       });
       dispatch(resetCompilingSurveyForm());
       return true;
@@ -666,3 +651,57 @@ export const CompileSurveyOnline =
       dispatch(hideLoader());
     }
   };
+
+function createCittadino(
+  payload: any,
+  codiceFiscaleCittadino?: string,
+  numeroDocumento?: string
+): Cittadino {
+  return {
+    id: payload[0],
+    codiceFiscale: codiceFiscaleCittadino ? codiceFiscaleCittadino : '',
+    codiceFiscaleNonDisponibile: payload[2],
+    tipoDocumento: payload[3],
+    numeroDocumento: numeroDocumento ? numeroDocumento : '',
+    genere: payload[5],
+    fasciaDiEta: payload[6],
+    titoloDiStudio: payload[7],
+    occupazione: payload[8],
+    provinciaDiDomicilio: payload[9],
+    cittadinanza: payload[10],
+  } as Cittadino;
+}
+
+function createQuestionarioRequestModel(
+  cittadino: Cittadino,
+  payload: any
+): QuestionarioRequestModel {
+  return {
+    fasciaDiEtaIdDaAggiornare: decodeFasciaDiEtaId(cittadino.fasciaDiEta),
+    cittadinanzaDaAggiornare: cittadino.cittadinanza,
+    codiceFiscaleDaAggiornare: cittadino.codiceFiscale,
+    genereDaAggiornare: cittadino.genere,
+    numeroDocumentoDaAggiornare: cittadino.numeroDocumento,
+    occupazioneDaAggiornare: cittadino.occupazione,
+    tipoDocumentoDaAggiornare: cittadino.tipoDocumento,
+    titoloDiStudioDaAggiornare: cittadino.titoloDiStudio,
+    consensoTrattamentoDatiRequest: {
+      codiceFiscaleCittadino: cittadino.codiceFiscale,
+      numeroDocumentoCittadino: cittadino.numeroDocumento,
+    },
+    sezioneQ1Questionario: convertPayloadSectionInString(payload[0], 0),
+    sezioneQ2Questionario: convertPayloadSectionInString(payload[1], 1),
+    sezioneQ3Questionario: convertPayloadSectionInString(payload[2], 2),
+    sezioneQ4Questionario: convertPayloadSectionInString(payload[3], 3),
+  } as QuestionarioRequestModel;
+}
+
+function decodeFasciaDiEtaId(fasciaDiEtaLabel: string): string {
+  let fasciaDiEtaId = '';
+  citizenFormDropdownOptions['fasciaDiEtaId'].forEach((fasciaDiEta: any) => {
+    if (fasciaDiEta.label === fasciaDiEtaLabel) {
+      fasciaDiEtaId = fasciaDiEta.value;
+    }
+  });
+  return fasciaDiEtaId;
+}

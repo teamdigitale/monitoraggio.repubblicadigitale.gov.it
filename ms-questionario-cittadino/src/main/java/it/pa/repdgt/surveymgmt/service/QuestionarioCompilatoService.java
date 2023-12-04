@@ -25,7 +25,6 @@ import it.pa.repdgt.shared.awsintegration.service.EmailService;
 import it.pa.repdgt.shared.entity.CittadinoEntity;
 import it.pa.repdgt.shared.entity.QuestionarioCompilatoEntity;
 import it.pa.repdgt.shared.entity.QuestionarioInviatoOnlineEntity;
-import it.pa.repdgt.shared.entityenum.ConsensoTrattamentoDatiEnum;
 import it.pa.repdgt.shared.entityenum.StatoQuestionarioEnum;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.surveymgmt.bean.QuestionarioCompilatoBean;
@@ -112,8 +111,6 @@ public class QuestionarioCompilatoService {
 				.getCodiceFiscaleCittadino();
 		String numeroDocumentoCittadino = questionarioCompilatoRequest.getConsensoTrattamentoDatiRequest()
 				.getNumeroDocumentoCittadino();
-		ConsensoTrattamentoDatiEnum consensoTrattamentoDati = questionarioCompilatoRequest
-				.getConsensoTrattamentoDatiRequest().getConsensoTrattamentoDatiEnum();
 
 		// Verifico il consenso trattamento dati per il cittadino e in caso non lo abbia
 		// già dato,
