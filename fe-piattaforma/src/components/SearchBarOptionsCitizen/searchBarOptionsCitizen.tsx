@@ -94,6 +94,7 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
 
   const onRadioChange = useCallback(
     (value: string) => {
+      handleSearchReset();
       setCurrentStep(value);
       setRadioFilter(value);
       setMustValidateCf(value === 'codiceFiscale');
