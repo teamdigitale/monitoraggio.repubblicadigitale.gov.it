@@ -7,6 +7,13 @@
 
 * **fe-be:** updates 20231213 ([fbb8a94](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fbb8a94f9a178707079c75bcb3821c9211854b07))
 
+## [1.0.0-develop.379](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.378...1.0.0-develop.379) (2023-12-13)
+
+
+### Features
+
+* **fe-be:** updates 20231213 ([fbb8a94](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fbb8a94f9a178707079c75bcb3821c9211854b07))
+
 ## [1.0.0-develop.378](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.377...1.0.0-develop.378) (2023-12-06)
 
 
