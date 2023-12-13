@@ -73,7 +73,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
         })
       );
     }
-  }, [serviceId, serviceDetails]);
+  }, [serviceId, serviceDetails, dispatch]);
 
   useEffect(() => {
     if (surveyStore?.length && typeof surveyStore !== 'string')
@@ -83,7 +83,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
   useEffect(() => {
     // se refresh get service detail per recuperare surveyStore
     dispatch(GetServicesDetail(serviceId));
-  }, []);
+  }, [dispatch, serviceId]);
 
   const jsonParseValues = (value: string) => {
     try {
@@ -113,7 +113,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
             },
           };
         });
-      } else if (typeof value === 'string') {
+      } else {
         const val = jsonParseValues(decodeURI(value).replaceAll("'", '"'));
         Object.keys(val).map((id: string) => {
           values = {
@@ -146,7 +146,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
       setActiveSection(0);
     }
   }, [compiledSurveyCitizen]);
-  
+
   useEffect(() => {
     if (surveyAnswersToSave?.length && surveyAnswersToSave[activeSection]) {
       // upload answers when step back
@@ -165,9 +165,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
           JSON.parse(sections[activeSection].schema?.json),
           true
         );
-
         if (
-          activeSection < 3 &&
           compiledSurveyCitizen?.length &&
           compiledSurveyCitizen?.[activeSection]?.domandaRisposta?.json
         ) {
@@ -182,6 +180,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
             const values: { [key: string]: string } =
               getValuesSurvey(sectionParsed);
             Object.keys(newForm).map((key: string) => {
+              debugger;
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
               if (key === '1') {
@@ -255,7 +254,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
                 } else {
                   newForm[key].value =
                     moment(values[key]?.toString(), 'DD-MM-YYYY').format(
-                      'YYYY-MM-DD'
+                      'DD-MM-YYYY'
                     ) || '';
                   newForm[key].disabled = true;
                 }
@@ -378,16 +377,12 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
     ) {
       updateSkippedQuestion();
     }
-  }, [form['31']?.value]);
+  }, [activeSection, form, updateSkippedQuestion]);
 
   const generateFormCompleted = async (surveyStore: FormI[]) => {
     const body = surveyStore.map((section) =>
       FormHelper.getFormValues(section)
     );
-    if (!body[0][19]) {
-      // caso $dataConferimentoConsenso
-      body[0][19] = moment().format('DD-MM-YYYY');
-    }
     const res = await dispatch(
       PostFormCompletedByCitizen(
         idQuestionarioCompilato,

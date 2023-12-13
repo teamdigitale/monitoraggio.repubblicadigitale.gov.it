@@ -140,7 +140,7 @@ const ViewSurvey: React.FC = () => {
             if (key === '19') {
               newForm[key].value =
                 moment(values[key]?.toString(), 'DD-MM-YYYY').format(
-                  'YYYY-MM-DD'
+                  'DD-MM-YYYY'
                 ) || '';
             }
           });
