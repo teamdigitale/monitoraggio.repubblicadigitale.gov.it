@@ -34,7 +34,7 @@ export const getUserIdsFromNotification = (notification: string) => {
 
 export const formatDate = (date?: string) => {
   if (date) {
-    return moment(date).format('YYYY-MM-DD');
+    return moment(date).format('DD-MM-YYYY');
   }
 
   return undefined;

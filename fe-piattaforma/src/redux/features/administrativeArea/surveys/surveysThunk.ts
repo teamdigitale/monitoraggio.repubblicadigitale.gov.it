@@ -506,15 +506,27 @@ export const PostFormCompletedByCitizen =
       const { idProgramma, idProgetto, idEnte, codiceFiscale, codiceRuolo } =
         getUserHeaders();
       const entityEndpoint = `${process?.env?.QUESTIONARIO_CITTADINO}servizio/cittadino/questionarioCompilato/${idQuestionario}/compila`;
-      const cittadino: Cittadino = createCittadino(
-        payload[0],
-        codiceFiscaleCittadino,
-        numeroDocumento
-      );
+      let cittadino: Cittadino | undefined;
+      if (payload[0]) {
+        cittadino = createCittadino(
+          payload[0],
+          codiceFiscaleCittadino,
+          numeroDocumento
+        );
+      }
       const body: QuestionarioRequestModel = createQuestionarioRequestModel(
-        cittadino,
-        payload
+        payload,
+        cittadino
       );
+      if (!cittadino) {
+        body.sezioneQ1Questionario = '{}';
+        body.sezioneQ2Questionario = '{}';
+        body.sezioneQ3Questionario = '{}';
+        body.consensoTrattamentoDatiRequest = {
+          codiceFiscaleCittadino: codiceFiscaleCittadino,
+          numeroDocumentoCittadino: numeroDocumento,
+        };
+      }
       await API.post(entityEndpoint, {
         ...body,
         idProgramma,
@@ -673,27 +685,33 @@ function createCittadino(
 }
 
 function createQuestionarioRequestModel(
-  cittadino: Cittadino,
-  payload: any
+  payload: any,
+  cittadino?: Cittadino
 ): QuestionarioRequestModel {
-  return {
-    fasciaDiEtaIdDaAggiornare: decodeFasciaDiEtaId(cittadino.fasciaDiEta),
-    cittadinanzaDaAggiornare: cittadino.cittadinanza,
-    codiceFiscaleDaAggiornare: cittadino.codiceFiscale,
-    genereDaAggiornare: cittadino.genere,
-    numeroDocumentoDaAggiornare: cittadino.numeroDocumento,
-    occupazioneDaAggiornare: cittadino.occupazione,
-    tipoDocumentoDaAggiornare: cittadino.tipoDocumento,
-    titoloDiStudioDaAggiornare: cittadino.titoloDiStudio,
-    consensoTrattamentoDatiRequest: {
-      codiceFiscaleCittadino: cittadino.codiceFiscale,
-      numeroDocumentoCittadino: cittadino.numeroDocumento,
-    },
-    sezioneQ1Questionario: convertPayloadSectionInString(payload[0], 0),
-    sezioneQ2Questionario: convertPayloadSectionInString(payload[1], 1),
-    sezioneQ3Questionario: convertPayloadSectionInString(payload[2], 2),
-    sezioneQ4Questionario: convertPayloadSectionInString(payload[3], 3),
-  } as QuestionarioRequestModel;
+  if (cittadino) {
+    return {
+      fasciaDiEtaIdDaAggiornare: decodeFasciaDiEtaId(cittadino.fasciaDiEta),
+      cittadinanzaDaAggiornare: cittadino.cittadinanza,
+      codiceFiscaleDaAggiornare: cittadino.codiceFiscale,
+      genereDaAggiornare: cittadino.genere,
+      numeroDocumentoDaAggiornare: cittadino.numeroDocumento,
+      occupazioneDaAggiornare: cittadino.occupazione,
+      tipoDocumentoDaAggiornare: cittadino.tipoDocumento,
+      titoloDiStudioDaAggiornare: cittadino.titoloDiStudio,
+      consensoTrattamentoDatiRequest: {
+        codiceFiscaleCittadino: cittadino.codiceFiscale,
+        numeroDocumentoCittadino: cittadino.numeroDocumento,
+      },
+      sezioneQ1Questionario: convertPayloadSectionInString(payload[0], 0),
+      sezioneQ2Questionario: convertPayloadSectionInString(payload[1], 1),
+      sezioneQ3Questionario: convertPayloadSectionInString(payload[2], 2),
+      sezioneQ4Questionario: convertPayloadSectionInString(payload[3], 3),
+    } as QuestionarioRequestModel;
+  } else {
+    return {
+      sezioneQ4Questionario: convertPayloadSectionInString(payload[3], 3),
+    } as QuestionarioRequestModel;
+  }
 }
 
 function decodeFasciaDiEtaId(fasciaDiEtaLabel: string): string {

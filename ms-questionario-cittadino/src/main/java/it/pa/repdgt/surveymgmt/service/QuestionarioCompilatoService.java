@@ -122,15 +122,6 @@ public class QuestionarioCompilatoService {
 		Optional<CittadinoEntity> optionalCittadinoDBFetch = this.cittadinoService
 				.getByCodiceFiscaleOrNumeroDocumento(codiceFiscaleCittadino, numeroDocumentoCittadino);
 		optionalCittadinoDBFetch.ifPresent(cittadino -> {
-			cittadino.setFasciaDiEta(
-					fasciaDiEtaRepository.findById(questionarioCompilatoRequest.getFasciaDiEtaIdDaAggiornare()).get());
-			cittadino.setCittadinanza(questionarioCompilatoRequest.getCittadinanzaDaAggiornare());
-			cittadino.setCodiceFiscale(questionarioCompilatoRequest.getCodiceFiscaleDaAggiornare());
-			cittadino.setGenere(questionarioCompilatoRequest.getGenereDaAggiornare());
-			cittadino.setNumeroDocumento(questionarioCompilatoRequest.getNumeroDocumentoDaAggiornare());
-			cittadino.setOccupazione(questionarioCompilatoRequest.getOccupazioneDaAggiornare());
-			cittadino.setTipoDocumento(questionarioCompilatoRequest.getTipoDocumentoDaAggiornare());
-			cittadino.setTitoloDiStudio(questionarioCompilatoRequest.getTitoloDiStudioDaAggiornare());
 			cittadino.setDataOraAggiornamento(new Date());
 			this.cittadinoService.salvaCittadino(cittadino);
 		});

@@ -16,17 +16,13 @@ public class QuestionarioCompilatoRequest extends SceltaProfiloParam implements 
 
 	// Dati consenso cittadino e (codice fiscale e/o numero documento del cittadino
 	// che compila il questionario)
-	@NotNull
 	private ConsensoTrattamentoDatiRequest ConsensoTrattamentoDatiRequest;
 
 	// Sezioni del questionario compilato (Q1, Q2, Q3, Q4)
-	@NotNull
 	@JsonString
 	private String sezioneQ1Questionario;
-	@NotNull
 	@JsonString
 	private String sezioneQ2Questionario;
-	@NotNull
 	@JsonString
 	private String sezioneQ3Questionario;
 	@NotNull
