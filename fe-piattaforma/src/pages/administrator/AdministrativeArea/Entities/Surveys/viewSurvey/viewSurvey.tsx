@@ -84,7 +84,19 @@ const ViewSurvey: React.FC = () => {
                       .split('§')
                       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                       // @ts-ignore
-                      .map((e) => e.toString().replaceAll('§', ',')),
+                      .map((e) => {
+                        if (key === '2' && id === '4') {
+                          return e === 'Codice fiscale non disponibile'
+                            ? e.toString().replaceAll('§', ',')
+                            : 'Codice fiscale disponibile ma non visualizzabile';
+                        } else if (key === '4' && id === '6') {
+                          return e === 'Numero documento non disponibile'
+                            ? e.toString().replaceAll('§', ',')
+                            : 'Numero documento disponibile ma non visualizzabile';
+                        } else {
+                          return e.toString().replaceAll('§', ',');
+                        }
+                      }),
             },
           };
         });

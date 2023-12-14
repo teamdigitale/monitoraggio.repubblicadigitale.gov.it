@@ -131,7 +131,7 @@ const CitizensList: React.FC = () => {
   const searchInformation: SearchInformationI = {
     title: 'Cerca cittadino',
     onHandleSearch: handleOnSearch,
-    placeholder: 'Cerca cittadino per codice fiscale o  numero  documento',
+    placeholder: 'Cerca cittadino per codice fiscale o numero documento',
     autocomplete: false,
     isClearable: true,
   };
@@ -243,24 +243,24 @@ const CitizensList: React.FC = () => {
 
   const buttons: ButtonInButtonsBar[] = [
     /*{
-                                                  text: 'Carica lista cittadini',
-                                                  outline: true,
-                                                  iconForButton: 'it-upload',
-                                                  buttonClass: 'btn-secondary',
-                                                  iconColor: 'primary',
-                                                  color: 'primary',
-                                                  onClick: () =>
-                                                    dispatch(
-                                                      openModal({
-                                                        id: 'upload-csv',
-                                                        payload: {
-                                                          title: 'Carica lista cittadini',
-                                                          entity: 'cittadini',
-                                                          endpoint: `/servizio/cittadino/${serviceId}/listaCittadini/upload`,
-                                                        },
-                                                      })
-                                                    ),
-                                                },*/
+                                                              text: 'Carica lista cittadini',
+                                                              outline: true,
+                                                              iconForButton: 'it-upload',
+                                                              buttonClass: 'btn-secondary',
+                                                              iconColor: 'primary',
+                                                              color: 'primary',
+                                                              onClick: () =>
+                                                                dispatch(
+                                                                  openModal({
+                                                                    id: 'upload-csv',
+                                                                    payload: {
+                                                                      title: 'Carica lista cittadini',
+                                                                      entity: 'cittadini',
+                                                                      endpoint: `/servizio/cittadino/${serviceId}/listaCittadini/upload`,
+                                                                    },
+                                                                  })
+                                                                ),
+                                                            },*/
     {
       text: 'Aggiungi cittadino',
       color: 'primary',
