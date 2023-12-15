@@ -13,6 +13,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import it.pa.repdgt.shared.entityenum.EmailTemplateEnum;
 import it.pa.repdgt.shared.repository.tipologica.FasciaDiEtaRepository;
 import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import org.bson.json.JsonObject;
@@ -67,6 +68,11 @@ public class QuestionarioCompilatoService {
 				idQuestionarioCompilato);
 		return questionarioCompilatoMongoRepository.findQuestionarioCompilatoById(idQuestionarioCompilato)
 				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore, CodiceErroreEnum.C01));
+	}
+
+	public void invioEmail(){
+		String[] argomenti = new String[0];
+		emailService.inviaEmail("indirizzo@email.com", EmailTemplateEnum.CONSENSO, argomenti);
 	}
 
 	@LogMethod
