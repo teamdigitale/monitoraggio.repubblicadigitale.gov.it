@@ -214,7 +214,7 @@ public class ServizioCittadinoRestApi {
 	public void compilaQuestionario(
 			@PathVariable(value = "idQuestionario") String idQuestionario,
 			@Valid @RequestBody QuestionarioCompilatoRequest questionarioCompilatoRequest) {
-		valorizzaIPrimiTreQuestionari(idQuestionario, questionarioCompilatoRequest);
+		questionarioCompilatoService.valorizzaIPrimiTreQuestionari(idQuestionario, questionarioCompilatoRequest);
 		if (!cittadiniServizioService.checkPermessoIdQuestionarioCompilato(questionarioCompilatoRequest,
 				idQuestionario)) {
 			new ServizioException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
@@ -222,24 +222,6 @@ public class ServizioCittadinoRestApi {
 		this.questionarioCompilatoService.compilaQuestionario(idQuestionario, questionarioCompilatoRequest);
 	}
 
-	private void valorizzaIPrimiTreQuestionari(String idQuestionario,
-											   QuestionarioCompilatoRequest questionarioCompilatoRequest) {
-		SceltaProfiloParam sceltaProfiloParam = new SceltaProfiloParam();
-		sceltaProfiloParam.setCfUtenteLoggato(questionarioCompilatoRequest.getCfUtenteLoggato());
-		sceltaProfiloParam.setIdEnte(questionarioCompilatoRequest.getIdEnte());
-		sceltaProfiloParam.setIdProgetto(questionarioCompilatoRequest.getIdProgetto());
-		sceltaProfiloParam.setIdProgramma(questionarioCompilatoRequest.getIdProgramma());
-		sceltaProfiloParam.setCodiceRuoloUtenteLoggato(questionarioCompilatoRequest.getCodiceRuoloUtenteLoggato());
-		QuestionarioCompilatoCollection questionarioCompilatoCollection = getQuestioanarioCompilatoByIdAndSceltaProfilo(
-				idQuestionario,sceltaProfiloParam
-		);
-		QuestionarioCompilatoCollection.DatiIstanza dato = questionarioCompilatoCollection.getSezioniQuestionarioTemplateIstanze().get(0);
-		questionarioCompilatoRequest.setSezioneQ1Questionario(dato.getDomandaRisposta().toString());
-		dato = questionarioCompilatoCollection.getSezioniQuestionarioTemplateIstanze().get(1);
-		questionarioCompilatoRequest.setSezioneQ2Questionario(dato.getDomandaRisposta().toString());
-		dato = questionarioCompilatoCollection.getSezioniQuestionarioTemplateIstanze().get(2);
-		questionarioCompilatoRequest.setSezioneQ3Questionario(dato.getDomandaRisposta().toString());
-	}
 
 	/**
 	 * 
