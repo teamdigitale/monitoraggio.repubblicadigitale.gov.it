@@ -61,6 +61,8 @@ export interface CitizenI {
 
 const statusDropdownLabel = 'statiQuestionario';
 
+let variabileInutilePull = 'variabileInutile';
+
 const CitizenListTableHeading: TableHeadingI[] = [
   {
     label: 'Nome',
@@ -286,6 +288,7 @@ const CitizensList: React.FC = () => {
 
   const handleCitizenUploadEsito = (esito: { list: any[] }) => {
     const { list = [] } = esito;
+    variabileInutilePull = 'ciao';
     const table = newTable(
       CitizenListTableHeading,
       list.map((td: any) => ({
