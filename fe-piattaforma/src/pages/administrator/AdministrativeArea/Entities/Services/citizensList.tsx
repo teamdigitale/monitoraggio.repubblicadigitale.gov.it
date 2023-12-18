@@ -286,7 +286,6 @@ const CitizensList: React.FC = () => {
 
   const handleCitizenUploadEsito = (esito: { list: any[] }) => {
     const { list = [] } = esito;
-    variabileInutilePull = 'ciao';
     const table = newTable(
       CitizenListTableHeading,
       list.map((td: any) => ({
