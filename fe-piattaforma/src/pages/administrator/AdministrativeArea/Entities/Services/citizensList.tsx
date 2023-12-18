@@ -61,8 +61,6 @@ export interface CitizenI {
 
 const statusDropdownLabel = 'statiQuestionario';
 
-let variabileInutilePull = 'variabileInutile';
-
 const CitizenListTableHeading: TableHeadingI[] = [
   {
     label: 'Nome',
