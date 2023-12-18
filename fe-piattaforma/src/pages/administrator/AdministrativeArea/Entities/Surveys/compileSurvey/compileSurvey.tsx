@@ -180,7 +180,6 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
             const values: { [key: string]: string } =
               getValuesSurvey(sectionParsed);
             Object.keys(newForm).map((key: string) => {
-              debugger;
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
               if (key === '1') {
