@@ -242,25 +242,6 @@ const CitizensList: React.FC = () => {
   };
 
   const buttons: ButtonInButtonsBar[] = [
-    /*{
-                                                              text: 'Carica lista cittadini',
-                                                              outline: true,
-                                                              iconForButton: 'it-upload',
-                                                              buttonClass: 'btn-secondary',
-                                                              iconColor: 'primary',
-                                                              color: 'primary',
-                                                              onClick: () =>
-                                                                dispatch(
-                                                                  openModal({
-                                                                    id: 'upload-csv',
-                                                                    payload: {
-                                                                      title: 'Carica lista cittadini',
-                                                                      entity: 'cittadini',
-                                                                      endpoint: `/servizio/cittadino/${serviceId}/listaCittadini/upload`,
-                                                                    },
-                                                                  })
-                                                                ),
-                                                            },*/
     {
       text: 'Aggiungi cittadino',
       color: 'primary',
@@ -317,22 +298,24 @@ const CitizensList: React.FC = () => {
           tooltip
           tooltiptext='Cerca cittadino per codice fiscale o numero documento'
         >
-          {(citizens?.cittadini || []).map((citizen: CitizenI, i: number) => (
-            <DetailsRow
-              key={i}
-              stato={citizen?.statoQuestionario?.replace('_', ' ') || ''}
-              onActionClick={onActionClick}
-              id={citizen?.idCittadino || ''}
-              innerInfo={{
-                id: citizen?.idCittadino || '-',
-                DataUltimoAggiornamento: moment(
-                  citizen?.dataUltimoAggiornamento
-                ).format('DD-MM-YYYY HH:mm'),
-              }}
-              rowInfoType='questionario'
-              idQuestionario={citizen?.idQuestionario || ''}
-            />
-          ))}
+          <div className='details-table-container'>
+            {(citizens?.cittadini || []).map((citizen: CitizenI, i: number) => (
+              <DetailsRow
+                key={i}
+                stato={citizen?.statoQuestionario?.replace('_', ' ') || ''}
+                onActionClick={onActionClick}
+                id={citizen?.idCittadino || ''}
+                innerInfo={{
+                  id: citizen?.idCittadino || '-',
+                  DataUltimoAggiornamento: moment(
+                    citizen?.dataUltimoAggiornamento
+                  ).format('DD-MM-YYYY HH:mm'),
+                }}
+                rowInfoType='questionario'
+                idQuestionario={citizen?.idQuestionario || ''}
+              />
+            ))}
+          </div>
           {citizens?.cittadini?.length === 0 && alreadySearched && (
             <EmptySection title='Cittadino non associato al servizio' />
           )}
