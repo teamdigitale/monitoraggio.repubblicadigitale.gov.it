@@ -1,5 +1,20 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.153](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.152...1.0.0-test.153) (2023-12-20)
+
+
+### Features
+
+* **fe-piattaforma:** updates 20231219 ([544c07c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/544c07c5d50a2b164a1ee30b4769c16f67097410))
+* **fe-piattaforma:** updates 20231218 fix-variabili ([3f344aa](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3f344aa7369ec2c3fbc79ca67246697474bbd2ff))
+* **fe-piattaforma:** updates 20231218 fix ([dbc3a40](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/dbc3a40b0ebc845f589a51e077d4e05136cdd58c))
+* **fe-piattaforma:** updates 20231218 ([332d10b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/332d10b04f7089b9891cf9a4645a0fb2ae778e84))
+* **fe-piattaforma:** updates 20231215 fe-importantissima ([92bc500](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/92bc5001be86b97e32afb73cf7f5e9abc71b5ae8))
+* **be:** updates 20231215 invio-email ([6ef8e89](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6ef8e897e4c4fd5d2155eda34ca813d22a990743))
+* **be:** updates 20231215 ([4f73649](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4f7364937a563bba467e28ae94aff89e2a01144f))
+* **be:** updates 20231214 ([501472b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/501472bd35cd9538f9710eb3dcd6581242f439a7))
+* **fe-piattaforma:** updates 20231214 ([421d58f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/421d58f20d88994d5712a40481a5fe9e74337e51))
+
 ## [1.0.0-test.152](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.151...1.0.0-test.152) (2023-12-13)
 
 
