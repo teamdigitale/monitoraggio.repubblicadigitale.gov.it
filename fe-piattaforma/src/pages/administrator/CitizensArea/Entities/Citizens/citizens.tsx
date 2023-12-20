@@ -31,6 +31,7 @@ import { formFieldI } from '../../../../../utils/formHelper';
 import PageTitle from '../../../../../components/PageTitle/pageTitle';
 import IconNote from '/public/assets/img/it-note-primary.png';
 import moment from 'moment';
+import clsx from 'clsx';
 
 const entity = 'citizensArea';
 const siteDropdownLabel = 'idsSedi';
@@ -203,6 +204,7 @@ const Citizens = () => {
             <Table
               {...tableValues}
               id='table'
+              className={clsx('table-container center-text')}
               onCellClick={(field, row) => console.log(field, row)}
               //onRowClick={row => console.log(row)}
               withActions

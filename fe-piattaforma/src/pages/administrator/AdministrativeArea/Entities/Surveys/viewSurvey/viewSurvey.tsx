@@ -76,15 +76,27 @@ const ViewSurvey: React.FC = () => {
                 valuesInArray[key][id]?.length > 1
                   ? // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore
-                    valuesInArray[key][id].map((e) =>
-                      e.toString().replaceAll('§', ',')
-                    )
+                    valuesInArray[key][id].map((e) => {
+                      return e.toString().replaceAll('§', ',');
+                    })
                   : valuesInArray[key][id][0]
                       .toString()
                       .split('§')
                       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                       // @ts-ignore
-                      .map((e) => e.toString().replaceAll('§', ',')),
+                      .map((e) => {
+                        if (key === '2' && id === '4') {
+                          return e === 'Codice fiscale non disponibile'
+                            ? e.toString().replaceAll('§', ',')
+                            : 'Codice fiscale disponibile ma non visualizzabile';
+                        } else if (key === '4' && id === '6') {
+                          return e === 'Numero documento non disponibile'
+                            ? e.toString().replaceAll('§', ',')
+                            : 'Numero documento disponibile ma non visualizzabile';
+                        } else {
+                          return e.toString().replaceAll('§', ',');
+                        }
+                      }),
             },
           };
         });
@@ -94,6 +106,17 @@ const ViewSurvey: React.FC = () => {
         const val = JSON.parse(
           decodeURI(valuesInArray[key]).replaceAll("'", '"')
         );
+        if (val && val['1']) {
+          val['1'][0] =
+            val['1'][0] !== ''
+              ? 'Codice Fiscale disponibile ma non visualizzabile'
+              : 'Codice fiscale non disponibile';
+        } else if (val && val['4']) {
+          val['4'][0] =
+            val['4'][0] !== ''
+              ? 'Numero documento disponibile ma non visualizzabile'
+              : 'Numero documento non disponibile';
+        }
         values = {
           ...values,
           ...val,

@@ -13,7 +13,9 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import it.pa.repdgt.shared.entityenum.EmailTemplateEnum;
 import it.pa.repdgt.shared.repository.tipologica.FasciaDiEtaRepository;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import org.bson.json.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -66,6 +68,11 @@ public class QuestionarioCompilatoService {
 				idQuestionarioCompilato);
 		return questionarioCompilatoMongoRepository.findQuestionarioCompilatoById(idQuestionarioCompilato)
 				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore, CodiceErroreEnum.C01));
+	}
+
+	public void invioEmail(){
+		String[] argomenti = new String[0];
+		emailService.inviaEmail("indirizzo@email.com", EmailTemplateEnum.CONSENSO, argomenti);
 	}
 
 	@LogMethod
@@ -144,6 +151,19 @@ public class QuestionarioCompilatoService {
 
 		// Aggiorno questionarioCompilatoCollection
 		this.questionarioCompilatoMongoRepository.save(questionarioCompilatoDBMongoFetch);
+	}
+
+	@LogMethod
+	@LogExecutionTime
+	public void valorizzaIPrimiTreQuestionari(String idQuestionario,
+											   QuestionarioCompilatoRequest questionarioCompilatoRequest) {
+		QuestionarioCompilatoCollection questionarioCompilatoCollection = getQuestionarioCompilatoById(idQuestionario);
+		QuestionarioCompilatoCollection.DatiIstanza dato = questionarioCompilatoCollection.getSezioniQuestionarioTemplateIstanze().get(0);
+		questionarioCompilatoRequest.setSezioneQ1Questionario(dato.getDomandaRisposta().toString());
+		dato = questionarioCompilatoCollection.getSezioniQuestionarioTemplateIstanze().get(1);
+		questionarioCompilatoRequest.setSezioneQ2Questionario(dato.getDomandaRisposta().toString());
+		dato = questionarioCompilatoCollection.getSezioniQuestionarioTemplateIstanze().get(2);
+		questionarioCompilatoRequest.setSezioneQ3Questionario(dato.getDomandaRisposta().toString());
 	}
 
 	@LogMethod

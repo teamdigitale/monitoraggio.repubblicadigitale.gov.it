@@ -18,6 +18,7 @@ const statusCases = {
   SENT: 'INVIATO',
   NOT_FILLED: 'NON COMPILATO',
   FILLED_OUT: 'COMPILATO',
+  NOT_SENT: 'NON INVIATO',
 };
 
 const DetailsRow: React.FC<DetailsRowI> = ({
@@ -30,6 +31,16 @@ const DetailsRow: React.FC<DetailsRowI> = ({
 }) => {
   const loadIcons = () => {
     switch (stato.toUpperCase()) {
+      case statusCases.NOT_SENT:
+        return (
+          <Button
+            tabIndex={-1}
+            className='button-hidden'
+            id={`button-1-not-sent-${id}`}
+          >
+            <Icon icon={ItPlusCircle} color='primary' size='sm' />
+          </Button>
+        );
       case statusCases.SENT:
         return (
           <>
@@ -147,55 +158,30 @@ const DetailsRow: React.FC<DetailsRowI> = ({
   };
 
   return (
-    <div className='details-row neutral-1-color-a8'>
-      <div className='details-row__left-section'>
-        {/*}
-        {onActionClick[CRUDActionTypes.EDIT] && (
-          <>
-            <Button
-              onClick={() => onActionClick[CRUDActionTypes.EDIT](id)}
-              className='mr-2 p-0 details-row__name'
-              id={`button-edit-citizen-${id}`}
-            >
-              <Icon
-                icon={ItPencil}
-                color='primary'
-                size='sm'
-                aria-label={`Modifica anagrafica del cittadino ${id}`}
-              />
-            </Button>
-            <UncontrolledTooltip
-              placement='top'
-              target={`button-edit-citizen-${id}`}
-            >
-              Modifica cittadino
-            </UncontrolledTooltip>
-          </>
-        )}*/}
-        <div className='details-row__info'>
-          <div>
-            <span className='text-uppercase font-weight-bold primary-color-a12 text-nowrap'>
-              ID Cittadino:
-            </span>
-            <span className='text-uppercase'>{id}</span>
-          </div>
+    <div className='details-row-table neutral-1-color-a8'>
+      <div className='details-row__info'>
+        <div>
+          <span className='text-uppercase font-weight-bold primary-color-a12 text-nowrap'>
+            ID Cittadino:
+          </span>
+          <span className='text-uppercase'>{id}</span>
         </div>
-        <div className='details-row__info'>
-          <div>
-            <span className='text-uppercase font-weight-bold primary-color-a12 text-nowrap'>
-              Data ultimo aggiornamento:
-            </span>
-            <span className='text-uppercase'>
-              {innerInfo['DataUltimoAggiornamento']}
-            </span>
-          </div>
+      </div>
+      <div className='details-row__info'>
+        <div>
+          <span className='text-uppercase font-weight-bold primary-color-a12 text-nowrap'>
+            Data ultimo aggiornamento:
+          </span>
+          <span className='text-uppercase'>
+            {innerInfo['DataUltimoAggiornamento']}
+          </span>
         </div>
-        <div className='details-row__right-section primary-color-b1'>
-          <span className='text-uppercase'>{rowInfoType}</span>
-          <div>
-            <StatusChip status={stato} />
-            {loadIcons()}
-          </div>
+      </div>
+      <div className='details-row__right-section primary-color-b1'>
+        <span className='text-uppercase'>{rowInfoType}</span>
+        <div className='details-cell-button'>
+          <StatusChip status={stato} />
+          <div>{loadIcons()}</div>
         </div>
       </div>
     </div>
