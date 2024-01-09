@@ -22,7 +22,7 @@ const ErrorPage = () => {
   useEffect(() => {
     setTimeout(() => {
       dispatch(LogoutRedirect());
-    }, 35000);
+    }, 55000);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
