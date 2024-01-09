@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.384](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.383...1.0.0-develop.384) (2024-01-09)
+
+
+### Features
+
+* **fe-piattaforma:** updates 20240109 timeoutApiHelper ([0a04757](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0a047578e3dbdbb4119aab31a0c6da0ca16cf363))
+* **fe-piattaforma:** updates 20240109 aggiornatoTimeOut ([56b7b7d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/56b7b7d4640c0b66b95af7cfdf5bdfced6e4b254))
+
 ## [1.0.0-develop.383](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.382...1.0.0-develop.383) (2024-01-09)
 
 
