@@ -193,7 +193,7 @@ export const UploadUserPic =
           headers: {
             'Content-Type': 'multipart/form-data',
           },
-          timeout: 55000,
+          timeout: 60000,
         }
       );
 
