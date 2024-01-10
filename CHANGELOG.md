@@ -1,5 +1,16 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.155](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.154...1.0.0-test.155) (2024-01-10)
+
+
+### Features
+
+* **fe-be:** updates 20240110 ([f7701d6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f7701d6f0928b4d11923a6ec730189e3e3c865f6))
+* **fe-piattaforma:** updates 20240109 feat ([34d049c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/34d049c9b56f0d7ab284b9845340889eb875ba83))
+* **fe-piattaforma:** updates 20240109 timeoutApiHelper ([0a04757](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0a047578e3dbdbb4119aab31a0c6da0ca16cf363))
+* **fe-piattaforma:** updates 20240109 aggiornatoTimeOut ([56b7b7d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/56b7b7d4640c0b66b95af7cfdf5bdfced6e4b254))
+* **fe-piattaforma:** updates 20240109 ([4c51dd7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4c51dd779b49950d4d06a8dcff30c336685d1339))
+
 ## [1.0.0-test.154](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.153...1.0.0-test.154) (2024-01-05)
 
 
