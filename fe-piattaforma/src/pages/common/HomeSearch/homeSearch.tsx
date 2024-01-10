@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { Container } from 'design-react-kit';
-import React, { /* useEffect, */ useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {
   Accordion,
@@ -97,12 +97,12 @@ const HomeSearch = () => {
                     </div>
                   ))
                 ) : (
-                  <EmptySection title='Non ci sono news' />
+                  <EmptySection title='Non ci sono annunci' />
                 )}
               </div>
             </Accordion>
             <Accordion
-              title='Community'
+              title='Forum'
               totElem={topicsList.length}
               iconLeft={false}
             >
@@ -123,7 +123,7 @@ const HomeSearch = () => {
                     </div>
                   ))
                 ) : (
-                  <EmptySection title='Non ci sono topic' />
+                  <EmptySection title='Non ci sono argomenti' />
                 )}
               </div>
             </Accordion>

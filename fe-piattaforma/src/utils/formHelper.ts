@@ -56,6 +56,7 @@ export interface formFieldI {
     | undefined;
   keyBE?: string | undefined;
 }
+
 export interface FormI {
   [key: string]: formFieldI;
 }
@@ -209,6 +210,21 @@ export const FormHelper = {
     });
     return isValid;
   },
+
+  validateAnswer: (form: FormI = {}) => {
+    let atLeastOneValid = false;
+    Object.keys(form).forEach((key: string) => {
+      const { value, valid = false, regex } = form[key] || {};
+      if (regex === RegexpType.BOOLEAN) {
+        atLeastOneValid =
+          atLeastOneValid || (value !== undefined && value !== null && valid);
+      } else {
+        atLeastOneValid = atLeastOneValid || (Boolean(value) && valid);
+      }
+    });
+    return atLeastOneValid;
+  },
+
   getFormValues: (form: FormI = {}) => {
     const values: {
       [key: string]: formFieldI['value'];

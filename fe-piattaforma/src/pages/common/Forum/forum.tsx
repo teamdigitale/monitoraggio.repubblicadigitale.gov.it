@@ -25,8 +25,8 @@ import { openModal } from '../../../redux/features/modal/modalSlice';
 
 import { useAppSelector } from '../../../redux/hooks';
 import ManageTopic from '../../administrator/AdministrativeArea/Entities/modals/manageTopic';
-/* import { CommunityPropsMock } from '../../facilitator/Home/components/CommunityWidget/communityWidget'; */
-import './community.scss';
+/* import { CommunityPropsMock } from '../../facilitator/Home/components/ForumWidget/communityWidget'; */
+import './forum.scss';
 import {
   selectEntityPagination,
   setEntityPagination,
@@ -38,11 +38,11 @@ import useGuard from '../../../hooks/guard';
 const categoryDropdownLabel = 'categories';
 
 const TopicCta = {
-  textCta: 'Crea topic',
+  textCta: 'Crea argormento',
   iconCta: 'it-plus',
 };
 
-const Community = () => {
+const Forum = () => {
   const topicsList = useAppSelector(selectTopicsList);
   const filtersList = useAppSelector(selectFilters);
   const dropdownFilterOptions = useAppSelector(selectFilterOptions);
@@ -160,8 +160,10 @@ const Community = () => {
     <div>
       <div>
         <ForumLayout
-          title='Community'
-          sectionTitle='I topic più popolari'
+          title='Forum'
+          subtitle='Partecipa alla discussione sugli argomenti di interesse con gli altri facilitatori della
+community'
+          sectionTitle='Gli argomenti più popolari'
           dropdowns={dropdowns}
           filtersList={{}}
           {...TopicCta}
@@ -197,7 +199,7 @@ const Community = () => {
                   </div>
                 ))
               ) : (
-                <EmptySection title='Non ci sono topic' />
+                <EmptySection title='Non ci sono argomenti' />
               )}
             </div>
           </Container>
@@ -220,4 +222,4 @@ const Community = () => {
   );
 };
 
-export default Community;
+export default Forum;

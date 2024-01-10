@@ -1,14 +1,10 @@
 import React from 'react';
-import { Footer, Header, Loader } from '../../index';
+import {Footer, Header, Loader} from '../../index';
 import Breadcrumb from '../../Breadcrumb/breadCrumb';
-import { useAppSelector } from '../../../redux/hooks';
-import {
-  selectDevice,
-  selectLoader,
-  selectPublishedContent,
-} from '../../../redux/features/app/appSlice';
+import {useAppSelector} from '../../../redux/hooks';
+import {selectDevice, selectLoader, selectPublishedContent,} from '../../../redux/features/app/appSlice';
 import LocationInterceptor from '../../locationInterceptor';
-import { Outlet, useLocation } from 'react-router-dom';
+import {Outlet, useLocation} from 'react-router-dom';
 import clsx from 'clsx';
 import UserPublishedContents from '../../UserPublishedContents/userPublishedContents';
 
@@ -46,7 +42,8 @@ const FullLayout: React.FC<LayoutProp> = (props) => {
         <div className={clsx(publishedContent && 'lightgrey-bg-b4')}>
           <div
             className={clsx(
-              publishedContent && 'd-flex justify-content-around container position-relative'
+              publishedContent &&
+                'd-flex justify-content-around container position-relative'
             )}
           >
             <Breadcrumb />

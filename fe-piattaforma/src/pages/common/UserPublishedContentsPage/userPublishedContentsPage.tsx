@@ -17,7 +17,7 @@ import { useAppSelector } from '../../../redux/hooks';
 import '../HomeSearch/homeSearch.scss';
 
 const PageTitleMock = {
-  title: 'I miei contenuti pubblicati',
+  title: 'I miei contenuti',
 };
 
 const UserPublishedContentsPage = () => {
@@ -29,12 +29,15 @@ const UserPublishedContentsPage = () => {
 
   useEffect(() => {
     dispatch(GetItemsByUser());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div>
       <div className={clsx(device.mediaIsPhone && 'pl-4')}>
-        <PageTitle {...PageTitleMock} />
+        <PageTitle
+          subtitle='Gestisci gli annunci, gli argomenti e i documenti che hai pubblicato'
+          {...PageTitleMock}
+        />
       </div>
       <Container className='mb-5'>
         <Accordion
@@ -50,12 +53,12 @@ const UserPublishedContentsPage = () => {
                 </div>
               ))
             ) : (
-              <EmptySection title='Non ci sono news' />
+              <EmptySection title='Non ci sono annunci' />
             )}
           </div>
         </Accordion>
         <Accordion
-          title='Community'
+          title='Forum'
           totElem={topicsList.length}
           userPublishedContent
         >
@@ -67,7 +70,7 @@ const UserPublishedContentsPage = () => {
                 </div>
               ))
             ) : (
-              <EmptySection title='Non ci sono topic' />
+              <EmptySection title='Non ci sono argomenti' />
             )}
           </div>
         </Accordion>

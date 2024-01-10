@@ -69,21 +69,11 @@ const DocumentsWidget = () => {
             device.mediaIsPhone ? 'pb-3' : 'py-3'
           )}
         >
-          Scopri risorse e informazioni utili per la gestione dei servizi a cui
-          partecipi.
+          Consulta le risorse utili per gestire i servizi a cui partecipi e
+          collabora in linea per creare nuovi documenti.
         </p>
         {device.mediaIsDesktop && (
           <div>
-            <p
-              className={clsx(
-                'text-primary',
-                'py-3',
-                !device.mediaIsPhone ? 'mb-4' : 'mb-3'
-              )}
-            >
-              Collabora in linea con altri facilitatori per creare e condividere
-              nuovi documenti.
-            </p>
             <Link role='button' className='btn btn-primary' to='/documenti'>
               Vai ai documenti
             </Link>

@@ -18,6 +18,7 @@ import ManageProfilePic from '../../pages/administrator/AdministrativeArea/Entit
 interface SectionTitleI {
   title: string | undefined;
   status?: string | undefined;
+  className?: string | undefined;
   upperTitle?: {
     icon: string | any;
     text: string;
@@ -45,6 +46,7 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
     surname,
     isUserProfile = false,
     enteIcon = false,
+    className,
     profilePicture = '',
     isForumLayout,
     inline = false,
@@ -91,6 +93,8 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
         className={clsx(
           !isForumLayout &&
             'd-flex flex-row w-100 justify-content-center align-items-center',
+          !isForumLayout && 'd-flex flex-row w-100 align-items-center',
+          className ? className : 'justify-content-center',
           device.mediaIsPhone && !isForumLayout && 'flex-column'
         )}
       >

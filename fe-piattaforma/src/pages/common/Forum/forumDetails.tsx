@@ -31,7 +31,7 @@ import { setInfoIdsBreadcrumb } from '../../../redux/features/app/appSlice';
 import DeleteForumModal from '../../../components/General/DeleteForumEntity/DeleteForumEntity';
 import { Loader } from '../../../components';
 
-const CommunityDetails = () => {
+const ForumDetails = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const topicDetails = useAppSelector(selectTopicDetail);
@@ -191,4 +191,4 @@ const CommunityDetails = () => {
   );
 };
 
-export default CommunityDetails;
+export default ForumDetails;

@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, useEffect, useState } from 'react';
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../redux/hooks';
 import { selectLogged } from '../redux/features/user/userSlice';
@@ -7,10 +7,7 @@ import ProtectedComponent from '../hoc/AuthGuard/ProtectedComponent/ProtectedCom
 import FullLayout from '../components/PageLayout/FullLayout/fullLayout';
 import { Loader } from '../components';
 import Notifications from '../pages/common/NotificationsPage/notifications';
-import {
-  // GetNotificationsByUser,
-  SessionCheck,
-} from '../redux/features/user/userThunk';
+import { SessionCheck } from '../redux/features/user/userThunk';
 import ErrorPage from '../pages/common/Error/errorPage';
 
 // TODO import with lazy
@@ -70,14 +67,12 @@ const SurveyOnline = lazy(
 
 // WAVE 3
 const Reports = lazy(() => import('../pages/common/Reports/reports'));
-const Community = lazy(() => import('../pages/common/Community/community'));
+const Forum = lazy(() => import('../pages/common/Forum/forum'));
 const Category = lazy(() => import('../pages/facilitator/Categories/category'));
-const CommunityDetails = lazy(
-  () => import('../pages/common/Community/communityDetails')
-);
+const ForumDetails = lazy(() => import('../pages/common/Forum/forumDetails'));
 
 /**
- The "routes.tsx" file is now useless, lazy loading is implemented for every 
+ The "routes.tsx" file is now useless, lazy loading is implemented for every
  routes and this file is the top of the routes tree.
  In the way to implement lazy loading and to semplify further changes, routes are expandend
  in this component
@@ -149,15 +144,15 @@ const AppRoutes: React.FC = () => {
                 path='/community/:id'
                 element={
                   <ProtectedComponent visibleTo={['view.card.topic']}>
-                    <CommunityDetails />
+                    <ForumDetails />
                   </ProtectedComponent>
                 }
               />
               <Route
-                path='/community'
+                path='/forum'
                 element={
                   <ProtectedComponent visibleTo={['tab.comm', 'list.topic']}>
-                    <Community />
+                    <Forum />
                   </ProtectedComponent>
                 }
               />
