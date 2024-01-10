@@ -69,12 +69,12 @@ const BachecaDigitaleWidget = () => {
               !device.mediaIsPhone && 'responsive-width'
             )}
           >
-            Scopri gli aggiornamenti sulla community di Facilita e sui programmi
-            a cui partecipi.
+            Scopri gli annunci da non perdere rivolti alla community dei
+            facilitatori.
           </p>
           {!device.mediaIsPhone && (
             <Link className='btn btn-primary' role='button' to='/bacheca'>
-              Vai alle news
+              Vai agli annunci
             </Link>
           )}
         </div>
@@ -105,7 +105,7 @@ const BachecaDigitaleWidget = () => {
             ))}
           </Slider>
         ) : (
-          <EmptySection title='Non ci sono news' />
+          <EmptySection title='Non ci sono annunci' />
         )}
       </div>
       {device.mediaIsPhone && (

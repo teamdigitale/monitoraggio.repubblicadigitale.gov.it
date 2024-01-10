@@ -100,6 +100,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
   }) => {
     let values = {};
     const valuesInArray = section?.properties || section;
+
     (valuesInArray || []).map((value: string | { [key: string]: string[] }) => {
       if (typeof value === 'object') {
         Object.keys(value).map((id: string) => {
@@ -218,9 +219,6 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
               ) {
                 if (newForm[key].value === 'true')
                   newForm[key].value = 'Codice fiscale non disponibile';
-                newForm['3'].required = false;
-                newForm['5'].required = true;
-                newForm['6'].required = true;
               }
               if (key === '18') {
                 newForm[key].options = newForm[key]?.options?.map(
@@ -266,6 +264,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
                 );
               } else if (Array.isArray(values[key])) {
                 newForm[key].value = (values[key] || [''])
+
                   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                   // @ts-ignore
                   .map((e: string) => e.replaceAll(separator, ','))
@@ -274,6 +273,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
             });
           }
         }
+        console.log(newForm, 'newForm');
         updateForm(
           {
             ...newForm,
@@ -310,13 +310,11 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
         if (shouldBeRequired) {
           tmpForm[key] = {
             ...tmpForm[key],
-            required: shouldBeRequired,
             disabled: !shouldBeRequired,
           };
         } else {
           tmpForm[key] = {
             ...tmpForm[key],
-            required: shouldBeRequired,
             disabled: !shouldBeRequired,
             value: '',
             valid: true,
@@ -326,7 +324,6 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
         // field 5-6
         tmpForm[key] = {
           ...tmpForm[key],
-          required: !shouldBeRequired,
         };
       }
     });
@@ -346,7 +343,6 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
       if (key === '32') {
         tmpForm[key] = {
           ...tmpForm[key],
-          required: !shouldBeSkipped,
           disabled: shouldBeSkipped,
         };
       }
@@ -425,7 +421,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
       color: 'primary',
       className: 'mr-4',
       text: 'Invia questionario',
-      disabled: !FormHelper.isValidForm(form),
+      disabled: !FormHelper.validateAnswer(form),
       onClick: () => {
         generateFormCompleted(surveyAnswersToSave);
       },
@@ -592,4 +588,4 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
 
 const form = newForm();
 
-export default withFormHandler({ form }, CompileSurvey);
+export default withFormHandler({form}, CompileSurvey);

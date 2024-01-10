@@ -257,6 +257,7 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
           ? 'ml-2 mb-3'
           : ''
       }
+      customMandatoryText='* Selezionare almeno una risposta'
     >
       <div
         className={clsx('d-inline-flex flex-wrap w-100', viewMode && 'pt-5')}

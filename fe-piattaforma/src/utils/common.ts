@@ -237,9 +237,9 @@ export const MenuRoutes = [
     visible: ['tab.bach'],
   }),
   newMenuItem({
-    label: 'Community',
-    path: '/community',
-    id: 'tab-community',
+    label: 'Forum',
+    path: '/forum',
+    id: 'tab-forum',
     visible: ['tab.comm'],
   }),
   newMenuItem({
@@ -455,6 +455,7 @@ export const convertPayloadSectionInString = (
       return `{"id":"${idQ1}","title":"${titleQ1}","properties":${createStringOfCompiledSurveySection(
         newObject
       ).replaceAll('"', "'")}}`;
+
     case 1:
       return `{"id":"${idQ2}","title":"${titleQ2}","properties":${createStringOfCompiledSurveySection(
         newObject
@@ -533,18 +534,18 @@ export const uploadFile = (
     };
 
     /*
-                                    const selectedFile = input.files[0];
-                                    if (selectedFile) {
-                                      file.data = selectedFile;
-                                    }
-                                
-                                    const reader = new FileReader();
-                                    reader.readAsDataURL(selectedFile);
-                                    reader.onloadend = () => {
-                                      file.name = selectedFile.name as string;
-                                      callback(file);
-                                    };
-                                    */
+                                            const selectedFile = input.files[0];
+                                            if (selectedFile) {
+                                              file.data = selectedFile;
+                                            }
+                                        
+                                            const reader = new FileReader();
+                                            reader.readAsDataURL(selectedFile);
+                                            reader.onloadend = () => {
+                                              file.name = selectedFile.name as string;
+                                              callback(file);
+                                            };
+                                            */
   }
 };
 

@@ -24,7 +24,7 @@ const carouselPagination = {
   tablet: 3,
 };
 
-const CommunityWidget = () => {
+const ForumWidget = () => {
   const dispatch = useDispatch();
   const device = useAppSelector(selectDevice);
   const [topicsList, setTopicsList] = useState([]);
@@ -58,7 +58,7 @@ const CommunityWidget = () => {
   return (
     <div className='py-5'>
       <div className='container'>
-        <h2 className='h3 text-primary mb-3'>Community</h2>
+        <h2 className='h3 text-primary mb-3'>Forum</h2>
         {device.mediaIsPhone && <div className='title-border-box my-3' />}
         <div
           className={clsx(
@@ -76,8 +76,8 @@ const CommunityWidget = () => {
             facilitatori e formatori digitali.
           </p>
           {!device.mediaIsPhone && (
-            <Link className='btn btn-primary' role='button' to='/community'>
-              Vai ai topic
+            <Link className='btn btn-primary' role='button' to='/forum'>
+              Vai agli argomenti
             </Link>
           )}
         </div>
@@ -129,12 +129,12 @@ const CommunityWidget = () => {
             </Slider>
           )
         ) : (
-          <EmptySection title='Non ci sono topic' />
+          <EmptySection title='Non ci sono argomenti' />
         )}
       </div>
       {device.mediaIsPhone && (
         <div className='d-flex justify-content-center mt-5'>
-          <a role='button' className='btn btn-primary' href='/community'>
+          <a role='button' className='btn btn-primary' href='/forum'>
             Esplora tutti i topic
           </a>
         </div>
@@ -143,4 +143,4 @@ const CommunityWidget = () => {
   );
 };
 
-export default CommunityWidget;
+export default ForumWidget;
