@@ -36,17 +36,20 @@ export const GetProjectDetail =
       if (projectId) {
         const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
           getUserHeaders();
-        const res = await API.post(`progetto/${projectId}`, {
-          idProgramma,
-          idProgetto,
-          idEnte,
-          cfUtente: codiceFiscale,
-          codiceRuolo,
-        });
+        const res = await API.post(
+          `${process?.env?.PROGRAMMA_PROGETTO}progetto/${projectId}`,
+          {
+            idProgramma,
+            idProgetto,
+            idEnte,
+            cfUtenteLoggato: codiceFiscale,
+            codiceRuoloUtenteLoggato: codiceRuolo,
+          }
+        );
 
         /* OLD
-        const res = await API.get(`progetto/${idProgetto}`);
-        */
+                                        const res = await API.get(`progetto/${idProgetto}`);
+                                        */
 
         if (res?.data) {
           dispatch(
