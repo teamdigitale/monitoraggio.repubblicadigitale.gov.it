@@ -148,9 +148,13 @@ public class CittadinoService {
 			idsSedi = filtro.getIdsSedi();
 		}
 
-		return this.cittadinoRepository.findAllCittadiniByFiltro(
+		List<CittadinoProjection> cittadiniList = this.cittadinoRepository.findAllCittadiniByFiltro(
 				criterioRicerca,
-				idsSedi, cittadiniPaginatiParam.getCfUtenteLoggato()).size();
+				idsSedi, cittadiniPaginatiParam.getCfUtenteLoggato());
+		List<CittadinoProjection> cittadiniFilteredList = cittadiniList.stream()
+				.filter(cittadino -> cittadino.getNumeroServizi() > 0 && cittadino.getNumeroQuestionariCompilati() > 0)
+				.collect(Collectors.toList());
+		return cittadiniFilteredList.size();
 	}
 
 	@LogMethod
@@ -185,7 +189,7 @@ public class CittadinoService {
 
 		DettaglioCittadinoBean dettaglioCittadino = this.cittadinoMapper.toDettaglioCittadinoBeanFrom(cittadinoFetchDB);
 		List<DettaglioServizioSchedaCittadinoProjection> serviziProjection = this
-				.getDettaglioServiziSchedaCittadino(idCittadino);
+				.getDettaglioServiziSchedaCittadino(idCittadino, profilazione.getCfUtenteLoggato());
 		List<DettaglioServizioSchedaCittadinoBean> serviziBean = serviziProjection.stream().map(record -> {
 			DettaglioServizioSchedaCittadinoBean dettaglioServizioSchedaCittadino = new DettaglioServizioSchedaCittadinoBean();
 			dettaglioServizioSchedaCittadino.setIdServizio(record.getIdServizio());
@@ -228,8 +232,9 @@ public class CittadinoService {
 		}
 	}
 
-	public List<DettaglioServizioSchedaCittadinoProjection> getDettaglioServiziSchedaCittadino(Long idCittadino) {
-		return this.cittadinoRepository.findDettaglioServiziSchedaCittadino(idCittadino);
+	public List<DettaglioServizioSchedaCittadinoProjection> getDettaglioServiziSchedaCittadino(Long idCittadino,
+			String cfUtenteLoggato) {
+		return this.cittadinoRepository.findDettaglioServiziSchedaCittadino(idCittadino, cfUtenteLoggato);
 	}
 
 	@LogMethod
