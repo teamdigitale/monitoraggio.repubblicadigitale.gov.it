@@ -2,6 +2,7 @@ package it.pa.repdgt.shared.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -56,8 +57,8 @@ public class CittadinoEntity implements Serializable {
 	@Column(name = "DATA_ORA_AGGIORNAMENTO")
 	private Date dataOraAggiornamento;
 
-	@OneToOne(mappedBy = "cittadino", cascade = CascadeType.ALL)
-	private QuestionarioCompilatoEntity questionarioCompilato;
+	@OneToMany(mappedBy = "cittadino", cascade = CascadeType.ALL)
+	private List<QuestionarioCompilatoEntity> questionarioCompilato;
 
 	@Column(name = "PROVINCIA_DI_DOMICILIO")
 	private String provinciaDiDomicilio;
