@@ -34,7 +34,7 @@ interface ReportCardI {
   comment_post_date?: string;
   item_id: string;
   item_title?: string;
-  item_type: 'board_item' | 'community_item' | 'document_item';
+  item_type: 'board_item' | 'forum_item' | 'document_item';
   reason: string;
   date: string;
 }
@@ -91,7 +91,7 @@ const ReportCard: React.FC<ReportCardI> = ({
     switch (item_type) {
       case 'board_item':
         return short ? 'news' : 'la news';
-      case 'community_item':
+      case 'forum_item':
         return short ? 'topic' : 'il topic';
       case 'document_item':
         return short ? 'documento' : 'il documento';
@@ -264,8 +264,8 @@ const ReportCard: React.FC<ReportCardI> = ({
               case 'board_item':
                 navigate(`/bacheca/${item_id}`);
                 break;
-              case 'community_item':
-                navigate(`/community/${item_id}`);
+              case 'forum_item':
+                navigate(`/forum/${item_id}`);
                 break;
               case 'document_item':
                 navigate(`/documenti/${item_id}`);

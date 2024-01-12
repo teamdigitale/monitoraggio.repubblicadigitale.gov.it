@@ -5,7 +5,7 @@ import { selectDevice } from '../../redux/features/app/appSlice';
 import { useAppSelector } from '../../redux/hooks';
 
 export interface DetailCardI {
-  isCommunity?: boolean | undefined;
+  isForum?: boolean | undefined;
   entity?: string | undefined;
   entity_type?: string | undefined;
   program_label?: string | undefined;
@@ -13,7 +13,7 @@ export interface DetailCardI {
 }
 
 const DetailCard: React.FC<DetailCardI> = (props) => {
-  const { isCommunity, intervention, program_label, entity, entity_type } =
+  const { isForum, intervention, program_label, entity, entity_type } =
     props;
   const device = useAppSelector(selectDevice);
   return (
@@ -22,10 +22,10 @@ const DetailCard: React.FC<DetailCardI> = (props) => {
         'detail-card-container',
         'lightgrey-bg-b4',
         'd-flex',
-        !device.mediaIsPhone && isCommunity
+        !device.mediaIsPhone && isForum
           ? 'align-items-center'
           : 'align-items-start',
-        isCommunity && !device.mediaIsPhone
+        isForum && !device.mediaIsPhone
           ? 'p-3'
           : device.mediaIsPhone
           ? 'py-3 px-2'
@@ -36,8 +36,8 @@ const DetailCard: React.FC<DetailCardI> = (props) => {
         className={clsx(
           device.mediaIsPhone
             ? 'detail-card-container icon-it-pa-container__phone'
-            : isCommunity
-            ? 'detail-card-container icon-it-pa-container__community'
+            : isForum
+            ? 'detail-card-container icon-it-pa-container__forum'
             : 'detail-card-container icon-it-pa-container',
           'd-flex',
           'justify-content-center',
@@ -47,7 +47,7 @@ const DetailCard: React.FC<DetailCardI> = (props) => {
       >
         <Icon
           icon='it-pa'
-          size={device.mediaIsPhone ? 'sm' : isCommunity ? '' : 'lg'}
+          size={device.mediaIsPhone ? 'sm' : isForum ? '' : 'lg'}
           fill='#2066AC'
           aria-label='Editore'
           aria-hidden

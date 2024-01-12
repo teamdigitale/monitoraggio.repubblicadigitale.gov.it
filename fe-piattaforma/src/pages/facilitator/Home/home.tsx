@@ -1,10 +1,10 @@
 import React from 'react';
 import HeroHome from './components/HeroHome/HeroHome';
 import BachecaDigitaleWidget from './components/BachecaDigitaleWidget/bachecaDigitaleWidget';
+import ForumWidget from './components/ForumWidget/forumWidget';
 import { Container } from 'design-react-kit';
 import DocumentsWidget from './components/DocumentiWidget/documentiWidget';
 import useGuard from '../../../hooks/guard';
-import ForumWidget from './components/ForumWidget/forumWidget';
 
 const Home: React.FC = () => {
   const { hasUserPermission } = useGuard();

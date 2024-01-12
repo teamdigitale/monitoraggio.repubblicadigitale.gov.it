@@ -1,8 +1,7 @@
-
 {
   "code": 200,
-    "result": true,
-      "data": {
+  "result": true,
+  "data": {
     "items": [
       {
         "id": 33,
@@ -71,7 +70,7 @@
       {
         "id": 29,
         "author": 1,
-        "item_type": "community_item",
+        "item_type": "forum_item",
         "title": "titolo test",
         "category_label": "Servizi",
         "category_id": 4,
@@ -87,7 +86,7 @@
       {
         "id": 29,
         "author": 1,
-        "item_type": "community_item",
+        "item_type": "forum_item",
         "title": "titolo test",
         "category_label": "Servizi",
         "category_id": 4,
@@ -103,7 +102,7 @@
       {
         "id": 29,
         "author": 1,
-        "item_type": "community_item",
+        "item_type": "forum_item",
         "title": "titolo test",
         "category_label": "Servizi",
         "category_id": 4,
@@ -119,7 +118,7 @@
       {
         "id": 29,
         "author": 1,
-        "item_type": "community_item",
+        "item_type": "forum_item",
         "title": "titolo test",
         "category_label": "Servizi",
         "category_id": 4,

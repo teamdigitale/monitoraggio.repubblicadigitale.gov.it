@@ -43,7 +43,7 @@ export interface ForumLayoutI {
   sortFilter?: boolean;
   isDocument?: boolean;
   isNews?: boolean;
-  isCommunity?: boolean;
+  isForum?: boolean;
   title?: string;
   cta?: (() => void) | undefined;
   ctaToolCollaboration?: (() => void) | undefined;
@@ -65,7 +65,7 @@ const ForumLayout: React.FC<ForumLayoutI> = (props) => {
     sortFilter = false,
     isDocument = false,
     isNews = false,
-    isCommunity = false,
+    isForum = false,
     title,
     subtitle,
     cta,
@@ -283,7 +283,7 @@ const ForumLayout: React.FC<ForumLayoutI> = (props) => {
                 onClick={cta}
                 data-testid='create-new-entity'
                 aria-label={`Crea ${
-                  isCommunity ? 'topic' : isDocument ? 'documento' : 'news'
+                  isForum ? 'topic' : isDocument ? 'documento' : 'news'
                 }`}
               >
                 {iconCta ? (
@@ -332,7 +332,7 @@ const ForumLayout: React.FC<ForumLayoutI> = (props) => {
                         id={e.id}
                         isDocument={isDocument}
                         isNews={isNews}
-                        isCommunity={isCommunity}
+                        isForum={isForum}
                         category_label={e.category_label}
                         date={e.date}
                         title={e.title}

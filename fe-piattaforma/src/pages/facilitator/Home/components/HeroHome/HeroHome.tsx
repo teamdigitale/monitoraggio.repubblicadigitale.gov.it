@@ -21,8 +21,9 @@ const HeroHome = () => {
         </HeroTitle>
         <p className='d-lg-block mt-5'>
           La piattaforma dedicata alle attività di facilitazione digitale:
-          gestisci i servizi, monitora i risultati e interagisci con la
-          community dei facilitatori.
+          <strong>gestisci</strong> i servizi, <strong>monitora</strong> i
+          risultati e <strong>interagisci</strong> con la community dei
+          facilitatori.
         </p>
       </HeroBody>
     </Hero>

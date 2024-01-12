@@ -7,8 +7,14 @@ import GenericModal from '../../../../../components/Modals/GenericModal/genericM
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
 import { GetCommentsList } from '../../../../../redux/features/forum/comments/commentsThunk';
 import { GetItemDetail } from '../../../../../redux/features/forum/forumThunk';
-import { CreateCommentReport, CreateItemReport } from '../../../../../redux/features/forum/reports/reportsThunk';
-import { closeModal, selectModalPayload } from '../../../../../redux/features/modal/modalSlice';
+import {
+  CreateCommentReport,
+  CreateItemReport,
+} from '../../../../../redux/features/forum/reports/reportsThunk';
+import {
+  closeModal,
+  selectModalPayload,
+} from '../../../../../redux/features/modal/modalSlice';
 import { selectUser } from '../../../../../redux/features/user/userSlice';
 import { useAppSelector } from '../../../../../redux/hooks';
 import FormAddComment from '../../../../forms/formComments/formAddComment';
@@ -20,7 +26,7 @@ interface ManageReportFormI {
   creation?: boolean;
 }
 
-interface ManageReportI extends ManageReportFormI, withFormHandlerProps { }
+interface ManageReportI extends ManageReportFormI, withFormHandlerProps {}
 
 const ManageReport: React.FC<ManageReportI> = ({
   clearForm,
@@ -28,32 +34,32 @@ const ManageReport: React.FC<ManageReportI> = ({
   creation = false,
 }) => {
   const [newReport, setNewReport] = useState('');
-  const payload = useAppSelector(selectModalPayload)
+  const payload = useAppSelector(selectModalPayload);
   const dispatch = useDispatch();
-  const { id } = useParams()
-  const userId = useAppSelector(selectUser)?.id
+  const { id } = useParams();
+  const userId = useAppSelector(selectUser)?.id;
 
   const handleSaveReport = async () => {
     if (newReport.trim() !== '' && payload) {
       switch (payload.entity) {
         case 'board':
-        case 'community':
+        case 'forum':
         case 'document':
           if (id && userId) {
-            await dispatch(CreateItemReport(id, newReport))
-            dispatch(GetItemDetail(id, userId, payload.entity))
+            await dispatch(CreateItemReport(id, newReport));
+            dispatch(GetItemDetail(id, userId, payload.entity));
           }
           break;
         case 'comment':
-          await dispatch(CreateCommentReport(payload.id, newReport))
+          await dispatch(CreateCommentReport(payload.id, newReport));
           break;
         default:
           break;
       }
 
-      (id && userId) && await dispatch(GetCommentsList(id, userId))
-      setNewReport('')
-      dispatch(closeModal())
+      id && userId && (await dispatch(GetCommentsList(id, userId)));
+      setNewReport('');
+      dispatch(closeModal());
     }
   };
 
@@ -91,9 +97,7 @@ const ManageReport: React.FC<ManageReportI> = ({
       <FormAddComment
         creation={creation}
         formDisabled={!!formDisabled}
-        sendNewValues={(newReport: string) =>
-          setNewReport(newReport)
-        }
+        sendNewValues={(newReport: string) => setNewReport(newReport)}
       />
     </GenericModal>
   );

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { CardCommunity, EmptySection } from '../../../../../components';
+import { EmptySection } from '../../../../../components';
 import { selectDevice } from '../../../../../redux/features/app/appSlice';
 import { useAppSelector } from '../../../../../redux/hooks';
 import '../../../../../pages/facilitator/Home/components/BachecaDigitaleWidget/bachecaDigitaleWidget.scss';
@@ -11,8 +11,9 @@ import Slider, {
 import { getMediaQueryDevice } from '../../../../../utils/common';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
+import CardForum from '../../../../../components/CardForum/cardForum';
 
-const communityPagination = {
+const forumPagination = {
   desktop: 6,
   mobile: 8,
   tablet: 3,
@@ -30,8 +31,7 @@ const ForumWidget = () => {
   const [topicsList, setTopicsList] = useState([]);
 
   const topicWidgetSet = async () => {
-    const itemPerPage =
-      communityPagination[getMediaQueryDevice(device)].toString();
+    const itemPerPage = forumPagination[getMediaQueryDevice(device)].toString();
     const res = await dispatch(
       GetTopicsList(
         {
@@ -52,7 +52,7 @@ const ForumWidget = () => {
   }, [device]);
 
   const cardArray: any[] = [
-    topicsList.slice(0, communityPagination[getMediaQueryDevice(device)]),
+    topicsList.slice(0, forumPagination[getMediaQueryDevice(device)]),
   ];
 
   return (
@@ -98,7 +98,7 @@ const ForumWidget = () => {
                       'align-cards'
                     )}
                   >
-                    <CardCommunity {...e} />
+                    <CardForum {...e} />
                   </div>
                 ))}
               </div>
@@ -108,7 +108,7 @@ const ForumWidget = () => {
               {formatSlides(
                 topicsList.slice(
                   0,
-                  communityPagination[getMediaQueryDevice(device)]
+                  forumPagination[getMediaQueryDevice(device)]
                 ),
                 carouselPagination[getMediaQueryDevice(device)]
               ).map((el, i) => (
@@ -121,7 +121,7 @@ const ForumWidget = () => {
                       key={`card-${i}-${index}`}
                       className='flex-grow-0 my-2'
                     >
-                      <CardCommunity {...e} />
+                      <CardForum {...e} />
                     </div>
                   ))}
                 </div>
