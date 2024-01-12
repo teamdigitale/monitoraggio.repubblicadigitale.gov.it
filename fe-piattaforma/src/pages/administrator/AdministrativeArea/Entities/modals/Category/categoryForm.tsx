@@ -36,9 +36,9 @@ const CategoryForm: React.FC<CategoriesFormI> = (props) => {
     updateForm = () => ({}),
     creation = false,
     /*
-    noIdField = false,
+                noIdField = false,
     
-    clearForm = () => ({}), */
+                clearForm = () => ({}), */
   } = props;
 
   useEffect(() => {
@@ -86,7 +86,7 @@ const CategoryForm: React.FC<CategoriesFormI> = (props) => {
           label='Sezione'
           options={[
             { label: 'Bacheca', value: 'board_categories' },
-            { label: 'Community', value: 'community_categories' },
+            { label: 'Forum', value: 'forum_categories' },
             { label: 'Documenti', value: 'document_categories' },
           ]}
           placeholder='Seleziona la sezione'

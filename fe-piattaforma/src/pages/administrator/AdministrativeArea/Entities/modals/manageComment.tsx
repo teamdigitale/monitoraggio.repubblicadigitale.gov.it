@@ -22,6 +22,7 @@ import {
 } from '../../../../../redux/features/forum/forumThunk';
 
 const modalId = 'comment-modal';
+
 interface ManageCommentFormI {
   formDisabled?: boolean;
   creation?: boolean;
@@ -59,9 +60,7 @@ const ManageComment: React.FC<ManageCommentI> = ({
           // @ts-ignore
           if (res) {
             userId &&
-              dispatch(
-                GetItemDetail(id, userId, payload.entity || 'community')
-              );
+              dispatch(GetItemDetail(id, userId, payload.entity || 'forum'));
             dispatch(
               ActionTracker({
                 target: 'tnd',
@@ -69,7 +68,7 @@ const ManageComment: React.FC<ManageCommentI> = ({
                 event_type:
                   payload.entity === 'board'
                     ? 'NEWS'
-                    : payload.entity === 'community'
+                    : payload.entity === 'forum'
                     ? 'TOPIC'
                     : 'DOCUMENTI',
                 category: payload.category_label || payload.category,

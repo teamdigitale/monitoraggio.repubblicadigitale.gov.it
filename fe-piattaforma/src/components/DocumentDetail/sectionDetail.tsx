@@ -1,12 +1,12 @@
 import {
-  Icon,
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  LinkList,
   Button,
   Chip,
   ChipLabel,
+  Dropdown,
+  DropdownMenu,
+  DropdownToggle,
+  Icon,
+  LinkList,
 } from 'design-react-kit';
 import React, { useEffect, useState } from 'react';
 import iconFile from '../../../public/assets/img/icon-file-blue-medium.png';
@@ -48,7 +48,7 @@ export interface CardDocumentDetailI {
   user_like?: boolean;
   likes?: number;
   views?: number;
-  section?: 'community' | 'documents';
+  section?: 'forum' | 'documents';
   isDocument?: boolean | undefined;
   onDeleteClick?: () => void;
   onEditClick?: () => void;
@@ -138,7 +138,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
       hasUserPermission([
         section === 'documents' || isDocument
           ? 'del.doc'
-          : section === 'community'
+          : section === 'forum'
           ? 'del.topic'
           : 'hidden',
       ]) ||
@@ -146,7 +146,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
         hasUserPermission([
           section === 'documents' || isDocument
             ? 'new.doc'
-            : section === 'community'
+            : section === 'forum'
             ? 'new.topic'
             : 'hidden',
         ]))
@@ -157,7 +157,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
       hasUserPermission([
         section === 'documents' || isDocument
           ? 'upd.doc'
-          : section === 'community'
+          : section === 'forum'
           ? 'upd.topic'
           : 'hidden',
       ]) ||
@@ -165,7 +165,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
         hasUserPermission([
           section === 'documents' || isDocument
             ? 'new.doc'
-            : section === 'community'
+            : section === 'forum'
             ? 'new.topic'
             : 'hidden',
         ]))
@@ -176,7 +176,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
       hasUserPermission([
         section === 'documents' || isDocument
           ? 'rprt.doc'
-          : section === 'community'
+          : section === 'forum'
           ? 'rprt.topic'
           : 'hidden',
       ])
@@ -392,7 +392,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
         </div>
       ) : null}
       <DetailCard
-        isCommunity={section === 'community'}
+        isForum={section === 'forum'}
         entity={entity}
         entity_type={entity_type}
         intervention={intervention}
@@ -406,7 +406,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
         downloads={downloads}
         user_like={user_like}
         onLike={
-          section === 'community'
+          section === 'forum'
             ? async () => {
                 if (id) {
                   if (user_like as boolean) {
@@ -422,7 +422,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
                       })
                     );
                   }
-                  userId && dispatch(GetItemDetail(id, userId, 'community'));
+                  userId && dispatch(GetItemDetail(id, userId, 'forum'));
                 }
               }
             : undefined
@@ -434,7 +434,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
               payload: {
                 title: 'Aggiungi commento',
                 action: 'comment',
-                entity: section === 'community' ? 'community' : 'document',
+                entity: section === 'forum' ? 'forum' : 'document',
                 category: category_label || category,
                 textLabel: 'Digita qui sotto il testo',
               },

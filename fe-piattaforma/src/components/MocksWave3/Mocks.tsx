@@ -10,7 +10,7 @@ export const DocumentCardMock = {
   comment: 12,
 };
 
-export const CommunityPropsMock = [
+export const ForumPropsMock = [
   {
     title: 'La Digital Skills and Jobs Platform: un anno da festeggiare',
     description:
