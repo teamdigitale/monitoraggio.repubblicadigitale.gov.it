@@ -1,14 +1,11 @@
 import clsx from 'clsx';
-import { Container } from 'design-react-kit';
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { CardCommunity, EmptySection, Paginator } from '../../../components';
-import {
-  DropdownFilterI,
-  FilterI,
-} from '../../../components/DropdownFilter/dropdownFilter';
+import {Container} from 'design-react-kit';
+import React, {useEffect, useState} from 'react';
+import {useDispatch} from 'react-redux';
+import {EmptySection, Paginator} from '../../../components';
+import {DropdownFilterI, FilterI,} from '../../../components/DropdownFilter/dropdownFilter';
 import ForumLayout from '../../../components/ForumLayout/ForumLayout';
-import { setPublishedContent } from '../../../redux/features/app/appSlice';
+import {setPublishedContent} from '../../../redux/features/app/appSlice';
 import {
   selectFilterOptions,
   selectFilters,
@@ -16,23 +13,21 @@ import {
   setForumFilters,
 } from '../../../redux/features/forum/forumSlice';
 
-import {
-  GetTopicsFilters,
-  GetTopicsList,
-} from '../../../redux/features/forum/forumThunk';
+import {GetTopicsFilters, GetTopicsList,} from '../../../redux/features/forum/forumThunk';
 
-import { openModal } from '../../../redux/features/modal/modalSlice';
+import {openModal} from '../../../redux/features/modal/modalSlice';
 
-import { useAppSelector } from '../../../redux/hooks';
+import {useAppSelector} from '../../../redux/hooks';
 import ManageTopic from '../../administrator/AdministrativeArea/Entities/modals/manageTopic';
-/* import { CommunityPropsMock } from '../../facilitator/Home/components/ForumWidget/communityWidget'; */
+/* import { ForumPropsMock } from '../../facilitator/Home/components/ForumWidget/forumWidget'; */
 import './forum.scss';
 import {
   selectEntityPagination,
   setEntityPagination,
 } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
-import { formFieldI } from '../../../utils/formHelper';
+import {formFieldI} from '../../../utils/formHelper';
 import useGuard from '../../../hooks/guard';
+import CardForum from '../../../components/CardForum/cardForum';
 
 // for dropdown filters, don't change
 const categoryDropdownLabel = 'categories';
@@ -162,7 +157,7 @@ const Forum = () => {
         <ForumLayout
           title='Forum'
           subtitle='Partecipa alla discussione sugli argomenti di interesse con gli altri facilitatori della
-community'
+community.'
           sectionTitle='Gli argomenti più popolari'
           dropdowns={dropdowns}
           filtersList={{}}
@@ -179,12 +174,12 @@ community'
               : undefined
           }
           cards={popularTopics}
-          isCommunity
+          isForum
         >
           <Container className='pb-5' id='grid'>
             <div className='row'>
               {topicsList?.length ? (
-                topicsList.map((communityElement, i) => (
+                topicsList.map((forumElement, i) => (
                   <div
                     key={i}
                     className={clsx(
@@ -195,7 +190,7 @@ community'
                       'align-cards'
                     )}
                   >
-                    <CardCommunity {...communityElement} role='button' />
+                    <CardForum {...forumElement} role='button' />
                   </div>
                 ))
               ) : (

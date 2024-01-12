@@ -35,7 +35,7 @@ const UserPublishedContentsPage = () => {
     <div>
       <div className={clsx(device.mediaIsPhone && 'pl-4')}>
         <PageTitle
-          subtitle='Gestisci gli annunci, gli argomenti e i documenti che hai pubblicato'
+          subtitle='Gestisci gli annunci, gli argomenti e i documenti che hai pubblicato.'
           {...PageTitleMock}
         />
       </div>
