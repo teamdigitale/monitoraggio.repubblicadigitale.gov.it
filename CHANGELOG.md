@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.158](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.157...1.0.0-test.158) (2024-01-12)
+
+
+### Features
+
+* **fd-shared:** updates 20240112 ([fde219b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fde219b1b69b6fe8c86859513ff61384d21c5c87))
+* **fe-piafforma:** updates 20240112 fix-fe ([0f1e154](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0f1e1544298858cd7210e471e0ae3f0d56b1758e))
+
 ## [1.0.0-test.157](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.156...1.0.0-test.157) (2024-01-12)
 
 
