@@ -11,6 +11,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
 @Entity
 @Table(name = "cittadino")
 @Setter
@@ -50,10 +53,12 @@ public class CittadinoEntity implements Serializable {
 	private String cittadinanza;
 
 	@Temporal(value = TemporalType.TIMESTAMP)
+	@CreatedDate
 	@Column(name = "DATA_ORA_CREAZIONE")
 	private Date dataOraCreazione;
 
 	@Temporal(value = TemporalType.TIMESTAMP)
+	@LastModifiedDate
 	@Column(name = "DATA_ORA_AGGIORNAMENTO")
 	private Date dataOraAggiornamento;
 

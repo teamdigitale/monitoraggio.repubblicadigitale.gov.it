@@ -151,10 +151,7 @@ public class CittadinoService {
 		List<CittadinoProjection> cittadiniList = this.cittadinoRepository.findAllCittadiniByFiltro(
 				criterioRicerca,
 				idsSedi, cittadiniPaginatiParam.getCfUtenteLoggato());
-		List<CittadinoProjection> cittadiniFilteredList = cittadiniList.stream()
-				.filter(cittadino -> cittadino.getNumeroServizi() > 0 && cittadino.getNumeroQuestionariCompilati() > 0)
-				.collect(Collectors.toList());
-		return cittadiniFilteredList.size();
+		return cittadiniList.size();
 	}
 
 	@LogMethod

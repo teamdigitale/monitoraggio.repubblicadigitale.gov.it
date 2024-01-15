@@ -1,39 +1,15 @@
 package it.pa.repdgt.surveymgmt.service;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.annotation.PostConstruct;
-import javax.transaction.Transactional;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-
-import it.pa.repdgt.shared.repository.tipologica.FasciaDiEtaRepository;
-import org.bson.json.JsonObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.multipart.MultipartFile;
-
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.awsintegration.service.EmailService;
 import it.pa.repdgt.shared.constants.DomandeStrutturaQ1AndQ2Constants;
-import it.pa.repdgt.shared.entity.CittadinoEntity;
-import it.pa.repdgt.shared.entity.QuestionarioCompilatoEntity;
-import it.pa.repdgt.shared.entity.QuestionarioInviatoOnlineEntity;
-import it.pa.repdgt.shared.entity.ServizioEntity;
-import it.pa.repdgt.shared.entity.ServizioXCittadinoEntity;
-import it.pa.repdgt.shared.entity.TipologiaServizioEntity;
+import it.pa.repdgt.shared.entity.*;
 import it.pa.repdgt.shared.entity.key.ServizioCittadinoKey;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.entityenum.StatoQuestionarioEnum;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
+import it.pa.repdgt.shared.repository.tipologica.FasciaDiEtaRepository;
 import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import it.pa.repdgt.surveymgmt.bean.CittadinoServizioBean;
 import it.pa.repdgt.surveymgmt.bean.CittadinoUploadBean;
@@ -48,16 +24,28 @@ import it.pa.repdgt.surveymgmt.mongo.repository.SezioneQ3Respository;
 import it.pa.repdgt.surveymgmt.param.FiltroListaCittadiniServizioParam;
 import it.pa.repdgt.surveymgmt.projection.CittadinoServizioProjection;
 import it.pa.repdgt.surveymgmt.projection.GetCittadinoProjection;
-import it.pa.repdgt.surveymgmt.repository.CittadinoRepository;
-import it.pa.repdgt.surveymgmt.repository.CittadinoServizioRepository;
-import it.pa.repdgt.surveymgmt.repository.QuestionarioCompilatoRepository;
-import it.pa.repdgt.surveymgmt.repository.QuestionarioInviatoOnlineRepository;
-import it.pa.repdgt.surveymgmt.repository.ServizioSqlRepository;
-import it.pa.repdgt.surveymgmt.repository.ServizioXCittadinoRepository;
+import it.pa.repdgt.surveymgmt.repository.*;
 import it.pa.repdgt.surveymgmt.request.NuovoCittadinoServizioRequest;
 import it.pa.repdgt.surveymgmt.util.CSVServizioUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.bson.json.JsonObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+
+import javax.annotation.PostConstruct;
+import javax.transaction.Transactional;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Slf4j
 @Service
@@ -270,35 +258,24 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 					optionalCittadinoDBFetch.get().getNumeroDocumento());
 			throw new CittadinoException(messaggioErrore, CodiceErroreEnum.U07);
 		}
-
 		CittadinoEntity cittadino = new CittadinoEntity();
 		if (optionalCittadinoDBFetch.isPresent()) {
 			cittadino = optionalCittadinoDBFetch.get();
-			// verifico se già esiste il cittadino per quel determinato servizio
-			// e in caso affermativo sollevo eccezione
-			if (this.esisteCittadinoByIdServizioAndIdCittadino(idServizio, cittadino.getId())) {
-				final String messaggioErrore = String.format(
-						"Cittadino già esistente sul Servizio con id=%s",
-						cittadino.getCodiceFiscale(),
-						cittadino.getNumeroDocumento(),
-						idServizio);
-				throw new CittadinoException(messaggioErrore, CodiceErroreEnum.U23);
-			}
 		} else {
-			cittadino.setCodiceFiscale(nuovoCittadinoRequest.getCodiceFiscale());
-			cittadino.setTipoDocumento(nuovoCittadinoRequest.getTipoDocumento());
-			cittadino.setNumeroDocumento(nuovoCittadinoRequest.getNumeroDocumento());
-			cittadino.setDataOraCreazione(new Date());
-			cittadino.setDataOraAggiornamento(new Date());
-			cittadino.setFasciaDiEta(fasciaDiEtaRepository.getReferenceById(nuovoCittadinoRequest.getFasciaDiEtaId()));
-			cittadino.setCittadinanza(nuovoCittadinoRequest.getCittadinanza());
-			cittadino.setGenere(nuovoCittadinoRequest.getGenere());
-			cittadino.setOccupazione(nuovoCittadinoRequest.getStatoOccupazionale());
-			cittadino.setTitoloDiStudio(nuovoCittadinoRequest.getTitoloStudio());
-			cittadino.setProvinciaDiDomicilio(nuovoCittadinoRequest.getProvinciaDiDomicilio());
-			cittadino = cittadinoRepository.save(cittadino);
+			mapNuovoCittadinoRequestToCittadino(cittadino, nuovoCittadinoRequest);
 		}
-
+		// verifico se già esiste il cittadino per quel determinato servizio
+		// e in caso affermativo sollevo eccezione
+		if (this.esisteCittadinoByIdServizioAndIdCittadino(idServizio, cittadino.getId())) {
+			final String messaggioErrore = String.format(
+					"Cittadino già esistente sul Servizio con id=%s",
+					cittadino.getCodiceFiscale(),
+					cittadino.getNumeroDocumento(),
+					idServizio);
+			throw new CittadinoException(messaggioErrore, CodiceErroreEnum.U23);
+		}
+		cittadino.setDataOraAggiornamento(new Date());
+		cittadino = cittadinoRepository.save(cittadino);
 		// associo il cittadino al servizio
 		this.associaCittadinoAServizio(idServizio, cittadino);
 
@@ -311,6 +288,24 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 		// creo il questionario in stato NON_INVIATO
 		this.creaQuestionarioNonInviato(servizioDBFetch, cittadino);
 
+		return cittadino;
+	}
+
+	private CittadinoEntity mapNuovoCittadinoRequestToCittadino(CittadinoEntity cittadino,
+			NuovoCittadinoServizioRequest nuovoCittadinoRequest) {
+		if (nuovoCittadinoRequest.getCodiceFiscale() != null)
+			cittadino.setCodiceFiscale(nuovoCittadinoRequest.getCodiceFiscale());
+		if (nuovoCittadinoRequest.getNumeroDocumento() != null) {
+			cittadino.setTipoDocumento(nuovoCittadinoRequest.getTipoDocumento());
+			cittadino.setNumeroDocumento(nuovoCittadinoRequest.getNumeroDocumento());
+		}
+		cittadino.setFasciaDiEta(fasciaDiEtaRepository.getReferenceById(nuovoCittadinoRequest.getFasciaDiEtaId()));
+		cittadino.setCittadinanza(nuovoCittadinoRequest.getCittadinanza());
+		cittadino.setGenere(nuovoCittadinoRequest.getGenere());
+		cittadino.setDataOraCreazione(new Date());
+		cittadino.setOccupazione(nuovoCittadinoRequest.getStatoOccupazionale());
+		cittadino.setTitoloDiStudio(nuovoCittadinoRequest.getTitoloStudio());
+		cittadino.setProvinciaDiDomicilio(nuovoCittadinoRequest.getProvinciaDiDomicilio());
 		return cittadino;
 	}
 

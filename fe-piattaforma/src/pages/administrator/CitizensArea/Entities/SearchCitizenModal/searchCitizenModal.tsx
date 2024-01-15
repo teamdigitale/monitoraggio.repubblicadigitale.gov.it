@@ -251,13 +251,16 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
       } else {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        if (selectedCitizen?.codiceFiscale) {
+        if (selectedCitizen?.codiceFiscale && selectedCitizen?.fasciaDiEta) {
           body = {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             codiceFiscale: selectedCitizen?.codiceFiscale,
             codiceFiscaleNonDisponibile: false,
             nuovoCittadino: false,
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            fasciaDiEtaId: selectedCitizen?.fasciaDiEta,
           };
         } else {
           body = {
@@ -266,6 +269,9 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
             numeroDocumento: selectedCitizen?.numeroDocumento,
             codiceFiscaleNonDisponibile: true,
             nuovoCittadino: false,
+             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            fasciaDiEtaId: selectedCitizen?.fasciaDiEta,
           };
         }
       }

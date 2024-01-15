@@ -8,6 +8,8 @@ import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
+
 @Setter
 @Getter
 public class NuovoCittadinoServizioRequest extends SceltaProfiloParam implements Serializable {
@@ -29,6 +31,7 @@ public class NuovoCittadinoServizioRequest extends SceltaProfiloParam implements
 	private String genere;
 
 	@JsonProperty(value = "fasciaDiEtaId")
+	@NotNull
 	private Long fasciaDiEtaId;
 
 	@JsonProperty(value = "titoloStudio")

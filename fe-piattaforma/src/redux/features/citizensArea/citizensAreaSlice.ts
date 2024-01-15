@@ -27,6 +27,7 @@ export interface CittadinoInfoI {
   numeroQuestionariCompilati?: string;
   numeroServizi?: string;
   numeroDocumento?: string;
+  fasciaDiEta?: string;
 }
 
 export interface ServizioCittadinoI {
