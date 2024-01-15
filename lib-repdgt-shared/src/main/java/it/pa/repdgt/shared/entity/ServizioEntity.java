@@ -11,11 +11,13 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
 import lombok.Getter;
@@ -32,39 +34,41 @@ public class ServizioEntity implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
 	private Long id;
-	
+
 	@Column(name = "NOME")
 	private String nome;
-	
+
 	@Column(name = "ID_TEMPLATE_Q3_COMPILATO")
 	private String idTemplateCompilatoQ3;
-	
+
 	@Column(name = "ID_QUESTIONARIO_TEMPLATE_SNAPSHOT")
 	private String idQuestionarioTemplateSnapshot;
-	
+
 	@OneToMany(mappedBy = "servizio", targetEntity = TipologiaServizioEntity.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<TipologiaServizioEntity> listaTipologiaServizi;
-	
+
 	@Temporal(value = TemporalType.DATE)
 	@Column(name = "DATA_SERVIZIO")
 	private Date dataServizio;
-	
+
 	@Column(name = "DURATA_SERVIZIO")
 	private String durataServizio;
-	
+
 	private EnteSedeProgettoFacilitatoreKey idEnteSedeProgettoFacilitatore;
-	
+
 	@Column(name = "STATO")
 	private String stato;
-	
+
 	@Column(name = "TIPOLOGIA_SERVIZIO")
 	private String tipologiaServizio;
-	
+
 	@Temporal(value = TemporalType.TIMESTAMP)
+	@CreatedDate
 	@Column(name = "DATA_ORA_CREAZIONE")
 	private Date dataOraCreazione;
-	
+
 	@Temporal(value = TemporalType.TIMESTAMP)
+	@LastModifiedDate
 	@Column(name = "DATA_ORA_AGGIORNAMENTO")
 	private Date dataOraAggiornamento;
 }
