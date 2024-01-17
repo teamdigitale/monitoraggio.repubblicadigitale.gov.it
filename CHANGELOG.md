@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.393](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.392...1.0.0-develop.393) (2024-01-17)
+
+
+### Features
+
+* **fe-fd:** updates 20240117 ([b1834ef](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b1834ef38e8b74f5f0c3aa825bd3091730b51e99))
+
 ## [1.0.0-develop.392](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.391...1.0.0-develop.392) (2024-01-15)
 
 
