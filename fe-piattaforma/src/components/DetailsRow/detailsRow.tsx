@@ -35,7 +35,7 @@ const DetailsRow: React.FC<DetailsRowI> = ({
         return (
           <Button
             tabIndex={-1}
-            className='button-hidden'
+            className='button-hidden button-icon'
             id={`button-1-not-sent-${id}`}
           >
             <Icon icon={ItPlusCircle} color='primary' size='sm' />
@@ -45,6 +45,7 @@ const DetailsRow: React.FC<DetailsRowI> = ({
         return (
           <>
             <Button
+              className='button-icon'
               onClick={() =>
                 onActionClick[CRUDActionTypes.COMPILE](idQuestionario)
               }
@@ -90,6 +91,7 @@ const DetailsRow: React.FC<DetailsRowI> = ({
         return (
           <>
             <Button
+              className='button-icon'
               onClick={() =>
                 onActionClick[CRUDActionTypes.COMPILE](idQuestionario)
               }
@@ -134,6 +136,7 @@ const DetailsRow: React.FC<DetailsRowI> = ({
         return (
           <>
             <Button
+              className='button-icon'
               onClick={() =>
                 onActionClick[CRUDActionTypes.VIEW](idQuestionario)
               }
@@ -177,11 +180,13 @@ const DetailsRow: React.FC<DetailsRowI> = ({
           </span>
         </div>
       </div>
-      <div className='details-row__right-section primary-color-b1'>
+      <div className='left-primary-row primary-color-b1'>
         <span className='text-uppercase'>{rowInfoType}</span>
-        <div className='details-cell-button'>
-          <StatusChip status={stato} />
-          <div>{loadIcons()}</div>
+      </div>
+      <div className='details-row__right-section '>
+        <StatusChip status={stato} />
+        <div className='icon-button-relative'>
+          <div className='icon-container'>{loadIcons()}</div>
         </div>
       </div>
     </div>
