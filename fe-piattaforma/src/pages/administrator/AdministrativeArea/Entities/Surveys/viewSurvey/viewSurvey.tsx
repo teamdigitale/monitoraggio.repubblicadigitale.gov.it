@@ -93,6 +93,10 @@ const ViewSurvey: React.FC = () => {
                           return e === 'Numero documento non disponibile'
                             ? e.toString().replaceAll('§', ',')
                             : 'Numero documento disponibile ma non visualizzabile';
+                        } else if (key === '2' && id === '31') {
+                            return valuesInArray[key][id][0]
+                              .toString()
+                              .replaceAll('§', ',');
                         } else {
                           return e.toString().replaceAll('§', ',');
                         }
