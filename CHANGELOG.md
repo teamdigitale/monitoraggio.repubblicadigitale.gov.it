@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.395](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.394...1.0.0-develop.395) (2024-01-17)
+
+
+### Features
+
+* **fd-questionario:** updates 20240117 sizeAreaCittadini ([80deee4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/80deee4c0ce79ed12199fd657d90c98568e4c912))
+
 ## [1.0.0-develop.394](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.393...1.0.0-develop.394) (2024-01-17)
 
 
