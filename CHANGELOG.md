@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.166](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.165...1.0.0-test.166) (2024-01-18)
+
+
+### Features
+
+* **fe-piattaforma:** updates 20240118 fix ([8ea3f56](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8ea3f5646d8c7e05b7a3a6d92ce3bc8ec437c11d))
+
 ## [1.0.0-test.165](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.164...1.0.0-test.165) (2024-01-18)
 
 
