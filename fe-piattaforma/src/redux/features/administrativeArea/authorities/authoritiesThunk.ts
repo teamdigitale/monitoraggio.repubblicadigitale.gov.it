@@ -1,18 +1,18 @@
-import { Dispatch, Selector } from '@reduxjs/toolkit';
-import { hideLoader, showLoader } from '../../app/appSlice';
-import { RootState } from '../../../store';
+import {Dispatch, Selector} from '@reduxjs/toolkit';
+import {hideLoader, showLoader} from '../../app/appSlice';
+import {RootState} from '../../../store';
 import isEmpty from 'lodash.isempty';
 import API from '../../../../utils/apiHelper';
 import {
-  // setAuthorityGeneralInfo,
-  setAuthoritiesList,
-  setEntityFilterOptions,
-  setAuthorityDetails,
   resetAuthorityDetails,
+  setAuthoritiesList,
+  setAuthorityDetails,
+  setEntityFilterOptions,
   setHeadquarterDetails,
 } from '../administrativeAreaSlice';
-import { mapOptions } from '../../../../utils/common';
-import { getUserHeaders } from '../../user/userThunk';
+import {mapOptions} from '../../../../utils/common';
+import {getUserHeaders} from '../../user/userThunk';
+
 // import { formTypes } from '../../../../pages/administrator/AdministrativeArea/Entities/utils';
 
 export interface AuthoritiesLightI {
@@ -204,8 +204,8 @@ export const GetAuthorityManagerDetail =
       const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
         getUserHeaders();
       const body = {
-        cfUtente: codiceFiscale,
-        codiceRuolo,
+        cfUtenteLoggato: codiceFiscale,
+        codiceRuoloUtenteLoggato: codiceRuolo,
         idProgramma,
         idProgetto,
         idEnte,
@@ -214,9 +214,15 @@ export const GetAuthorityManagerDetail =
       let res;
 
       if (entity === 'programma') {
-        res = await API.post(`/ente/gestoreProgramma/${entityId}`, body);
+        res = await API.post(
+          `${process?.env?.ENTE}ente/gestoreProgramma/${entityId}`,
+          body
+        );
       } else {
-        res = await API.post(`/ente/gestoreProgetto/${entityId}`, body);
+        res = await API.post(
+          `${process?.env?.ENTE}ente/gestoreProgetto/${entityId}`,
+          body
+        );
       }
 
       if (res.data) {
