@@ -61,7 +61,7 @@ const Footer: React.FC = () => {
               >
                 <h6 className='title_link_footer'>Assistenza</h6>
                 <p>
-                  Per richieste di supporto scrivi a<br />
+                  Per richiedere supporto tecnico, contattaci all'indirizzo email:<br />
                   <a
                     href='mailto:supporto-facilita@repubblicadigitale.gov.it'
                     className='link_common_assistance link_style_assistance'
