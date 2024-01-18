@@ -237,13 +237,13 @@ const TargetsForm = ({
                 type={disabled ? 'text' : 'number'}
                 col={clsx('col-12', !disabled ? 'col-lg-5' : 'col-lg-6')}
                 minimum={0}
+                className='first_input_target'
               />
               <Input
                 {...form[row[1]]}
                 onInputChange={onInputDataChange}
                 disabled={disabled}
                 col={clsx('col-12', !disabled ? 'col-lg-5' : 'col-lg-6')}
-                className='mb-3'
               />
               <div className='col-12 col-lg-2 d-flex justify-content-lg-center'>
                 {!disabled ? (

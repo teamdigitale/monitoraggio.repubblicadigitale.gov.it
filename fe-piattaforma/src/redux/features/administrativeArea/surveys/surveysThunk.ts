@@ -576,13 +576,16 @@ export const GetSurveyAllLight = () => async (dispatch: Dispatch) => {
     const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
       getUserHeaders();
     const body = {
-      codiceFiscaleUtenteLoggato: codiceFiscale,
+      cfUtenteLoggato: codiceFiscale,
       codiceRuoloUtenteLoggato: codiceRuolo,
       idProgetto,
       idProgramma,
       idEnte,
     };
-    const res = await API.post(`questionarioTemplate/all/light`, body);
+    const res = await API.post(
+      `${process?.env?.QUESTIONARIO_CITTADINO}questionarioTemplate/all/light`,
+      body
+    );
     if (res.data) dispatch(setSurveysList({ data: res.data }));
   } catch (error) {
     console.log('GetSurveyAllLight error', error);

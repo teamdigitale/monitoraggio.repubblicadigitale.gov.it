@@ -17,6 +17,7 @@ import BachecaDigitale from '../pages/facilitator/Home/components/BachecaDigital
 import HomeSearch from '../pages/common/HomeSearch/homeSearch';
 import UserPublishedContentsPage from '../pages/common/UserPublishedContentsPage/userPublishedContentsPage';
 import { selectModalState } from '../redux/features/modal/modalSlice';
+import { PrivacyDisclaimer } from '../pages/common/Privacy/PrivacyDisclaimer';
 
 const AuthRedirect = lazy(() => import('../pages/common/Auth/authRedirect'));
 
@@ -319,6 +320,14 @@ const AppRoutes: React.FC = () => {
                 element={
                   <ProtectedComponent visibleTo={[]}>
                     <CitizenArea />
+                  </ProtectedComponent>
+                }
+              />
+              <Route
+                path='/privacy-disclaimer/*'
+                element={
+                  <ProtectedComponent visibleTo={[]}>
+                    <PrivacyDisclaimer />
                   </ProtectedComponent>
                 }
               />

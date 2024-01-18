@@ -324,6 +324,47 @@ input > span {
   }
 }
 
+@media screen and (min-width: 992px) {
+  .collapse-body {
+    padding-bottom: 0px !important;
+
+    .form-row {
+      margin-bottom: 0px !important;
+
+      .form-group {
+        margin-bottom: 30px !important;
+      }
+
+      label.active {
+        height: 50px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .collapse-body {
+    padding-bottom: 0px !important;
+
+    .form-row {
+      margin-bottom: 10px !important;
+
+      .form-group {
+        margin-bottom: 24px !important;
+      }
+
+      label.active {
+        height: 50px;
+      }
+
+      .first_input_target {
+        margin-bottom: 20px !important;
+      }
+    }
+  }
+}
+
+
 .public-DraftEditor-content {
   color: color('dark-blue') !important;
   font-weight: 400 !important;

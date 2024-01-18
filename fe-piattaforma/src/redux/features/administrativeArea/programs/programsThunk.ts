@@ -47,17 +47,20 @@ export const GetProgramDetail =
       if (programId) {
         const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
           getUserHeaders();
-        const res = await API.post(`/programma/${programId}`, {
-          idProgramma,
-          idProgetto,
-          idEnte,
-          cfUtente: codiceFiscale,
-          codiceRuolo,
-        });
+        const res = await API.post(
+          `${process?.env?.PROGRAMMA_PROGETTO}programma/${programId}`,
+          {
+            idProgramma,
+            idProgetto,
+            idEnte,
+            cfUtenteLoggato: codiceFiscale,
+            codiceRuoloUtenteLoggato: codiceRuolo,
+          }
+        );
 
         /* old
-        const res = await API.get(`/programma/${programId}`);
-        */
+                        const res = await API.get(`/programma/${programId}`);
+                        */
 
         if (res?.data) {
           dispatch(
@@ -189,52 +192,3 @@ export const UpdateProgramSurveyDefault =
       dispatch(hideLoader());
     }
   };
-
-//   export interface ProgramDetailsI extends ProgramsLightI {
-//     bando?: string;
-//     cup?: string;
-//     dataFine: string;
-//     dataInizio: string;
-//     nomeProgramma: string;
-//     nomeBreve: string;
-//     nfacilitatoriDataTarget1: string;
-//     nfacilitatoriDataTarget2: string;
-//     nfacilitatoriDataTarget3: string;
-//     nfacilitatoriDataTarget4: string;
-//     nfacilitatoriDataTarget5: string;
-//     nfacilitatoriTarget1: number;
-//     nfacilitatoriTarget2: number;
-//     nfacilitatoriTarget3: number;
-//     nfacilitatoriTarget4: number;
-//     nfacilitatoriTarget5: number;
-//     npuntiFacilitazioneDataTarget1: string;
-//     npuntiFacilitazioneDataTarget2: string;
-//     npuntiFacilitazioneDataTarget3: string;
-//     npuntiFacilitazioneDataTarget4: string;
-//     npuntiFacilitazioneDataTarget5: string;
-//     npuntiFacilitazioneTarget1: number;
-//     npuntiFacilitazioneTarget2: number;
-//     npuntiFacilitazioneTarget3: number;
-//     npuntiFacilitazioneTarget4: number;
-//     npuntiFacilitazioneTarget5: number;
-//     nserviziDataTarget1: string;
-//     nserviziDataTarget2: string;
-//     nserviziDataTarget3: string;
-//     nserviziDataTarget4: string;
-//     nserviziDataTarget5: string;
-//     nserviziTarget1: number;
-//     nserviziTarget2: number;
-//     nserviziTarget3: number;
-//     nserviziTarget4: number;
-//     nserviziTarget5: number;
-//     nutentiUniciDataTarget1: string;
-//     nutentiUniciDataTarget2: string;
-//     nutentiUniciDataTarget3: string;
-//     nutentiUniciDataTarget4: string;
-//     nutentiUniciDataTarget5: string;
-//     nutentiUniciTarget1: number;
-//     nutentiUniciTarget2: number;
-//     nutentiUniciTarget3: number;
-//     nutentiUniciTarget4: number;
-//     nutentiUniciTarget5: number;
-// }

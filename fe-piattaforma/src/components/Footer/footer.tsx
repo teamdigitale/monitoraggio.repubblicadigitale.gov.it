@@ -53,7 +53,7 @@ const Footer: React.FC = () => {
               </a>
             </div>
           </div>
-          <div className='row border-top-style'>
+          <div className='row'>
             <div className='col-sm-12 col-md-4 col-md-4 col-lg-4'>
               <div
                 className='footer_contact_widget'
@@ -72,6 +72,60 @@ const Footer: React.FC = () => {
               </div>
             </div>
             <div className='col-sm-12 col-md-4 col-md-4 col-lg-4'>
+              <div className='footer_company_widget'>
+                <div
+                  className='footer_contact_widget'
+                  style={{ display: 'flex', flexDirection: 'column' }}
+                >
+                  <h4 className='title_link_footer'>
+                    Altri siti dell'iniziativa
+                  </h4>
+                  <b>
+                    <a
+                      href='https://competenze.repubblicadigitale.gov.it'
+                      className='link_common link_label'
+                      target='_blank'
+                      rel='noreferrer'
+                    >
+                      Formazione
+                      <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        className='svg_style'
+                      >
+                        <path
+                          fillRule='evenodd'
+                          clipRule='evenodd'
+                          d='M19.5 4H14C13.7239 4 13.5 4.22386 13.5 4.5C13.5 4.77614 13.7239 5 14 5H18.6996L10.3307 13.3689C10.1355 13.5642 10.1355 13.8808 10.3307 14.076C10.526 14.2713 10.8426 14.2713 11.0378 14.076L19.5 5.61385V10.5C19.5 10.7761 19.7239 11 20 11C20.2761 11 20.5 10.7761 20.5 10.5V5C20.5 4.44772 20.0523 4 19.5 4ZM17.51 12.5C17.51 12.2239 17.7339 12 18.01 12C18.2784 12.0053 18.4947 12.2216 18.5 12.49V18C18.5 19.6569 17.1569 21 15.5 21H6.5C4.84315 21 3.5 19.6569 3.5 18V9C3.5 7.34315 4.84315 6 6.5 6H11.5C11.7739 6.00532 11.9947 6.22609 12 6.5C12 6.77614 11.7761 7 11.5 7H6.5C5.39543 7 4.5 7.89543 4.5 9V18C4.5 19.1046 5.39543 20 6.5 20H15.51C16.6146 20 17.51 19.1046 17.51 18V12.5Z'
+                          fill='#63D6D1'
+                        ></path>
+                      </svg>
+                    </a>
+                  </b>
+                  <b>
+                    <a
+                      href='https://repubblicadigitale.gov.it'
+                      className='link_common link_label'
+                      target='_blank'
+                      rel='noreferrer'
+                    >
+                      Repubblica DIGITALE
+                      <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        className='svg_style'
+                      >
+                        <path
+                          fillRule='evenodd'
+                          clipRule='evenodd'
+                          d='M19.5 4H14C13.7239 4 13.5 4.22386 13.5 4.5C13.5 4.77614 13.7239 5 14 5H18.6996L10.3307 13.3689C10.1355 13.5642 10.1355 13.8808 10.3307 14.076C10.526 14.2713 10.8426 14.2713 11.0378 14.076L19.5 5.61385V10.5C19.5 10.7761 19.7239 11 20 11C20.2761 11 20.5 10.7761 20.5 10.5V5C20.5 4.44772 20.0523 4 19.5 4ZM17.51 12.5C17.51 12.2239 17.7339 12 18.01 12C18.2784 12.0053 18.4947 12.2216 18.5 12.49V18C18.5 19.6569 17.1569 21 15.5 21H6.5C4.84315 21 3.5 19.6569 3.5 18V9C3.5 7.34315 4.84315 6 6.5 6H11.5C11.7739 6.00532 11.9947 6.22609 12 6.5C12 6.77614 11.7761 7 11.5 7H6.5C5.39543 7 4.5 7.89543 4.5 9V18C4.5 19.1046 5.39543 20 6.5 20H15.51C16.6146 20 17.51 19.1046 17.51 18V12.5Z'
+                          fill='#63D6D1'
+                        ></path>
+                      </svg>
+                    </a>
+                  </b>
+                </div>
+              </div>
+            </div>
+            <div className='col-sm-12 col-md-4 col-md-4 col-lg-4'>
               <div className='footer_apps_widget'>
                 <h4></h4>
               </div>
@@ -83,14 +137,11 @@ const Footer: React.FC = () => {
         <div className='container'>
           <div className='row row_style'>
             <div className='col-12'>
-              <a
-                href='https://elearning-test.repubblicadigitale.gov.it/mod/page/view.php?id=374'
-                className='link_common link_style'
-              >
+              <a href='/privacy-disclaimer' className='link_common link_style'>
                 Informativa privacy
               </a>
               <a
-                href='https://elearning-test.repubblicadigitale.gov.it'
+                href='javascript:'
                 className='link_common link_style'
                 target='_blank'
                 rel='noreferrer'
