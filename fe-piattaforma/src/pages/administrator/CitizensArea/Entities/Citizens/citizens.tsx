@@ -106,7 +106,7 @@ const Citizens = () => {
     autocomplete: false,
     onHandleSearch: handleOnSearch,
     placeholder:
-    'Inserisci il codice fiscale o il numero documento del cittadino',
+      'Inserisci il codice fiscale o il numero documento del cittadino',
     isClearable: true,
     title: 'Cerca cittadino',
   };
@@ -210,6 +210,8 @@ const Citizens = () => {
               withActions
               onActionClick={onActionClick}
               totalCounter={pagination?.totalElements}
+              pageNumber={pagination?.pageNumber}
+              pageSize={pagination?.pageSize}
             />
             {pagination?.pageNumber ? (
               <Paginator

@@ -31,6 +31,8 @@ export interface TableI {
   onActionRadio?: CRUDActionsI;
   totalCounter?: number;
   surveysTable?: boolean;
+  pageNumber?: number;
+  pageSize?: number;
 }
 
 const Table: React.FC<TableI> = (props) => {
