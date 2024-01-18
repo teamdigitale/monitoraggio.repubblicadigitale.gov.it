@@ -1,5 +1,14 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.164](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.163...1.0.0-test.164) (2024-01-18)
+
+
+### Features
+
+* **fe-piattaforma:** updates 20240118 dev ([1346a8d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1346a8d1378cc54ded9ffa18238b3d2b89baf962))
+* **fe-piattaforma:** updates 20240118 fe ([1e445a7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1e445a7af6dd0913f8e7ff57d575e4b671bb0345))
+* **fd-questionario:** updates 20240117 sizeAreaCittadini ([80deee4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/80deee4c0ce79ed12199fd657d90c98568e4c912))
+
 ## [1.0.0-test.163](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.162...1.0.0-test.163) (2024-01-17)
 
 
