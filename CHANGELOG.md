@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.165](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.164...1.0.0-test.165) (2024-01-18)
+
+
+### Features
+
+* **footer-fix:** updates 20240118 footer ([7fb205a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7fb205a00cb41f54df182d098d8d7ef242cb29bb))
+
 ## [1.0.0-test.164](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.163...1.0.0-test.164) (2024-01-18)
 
 
