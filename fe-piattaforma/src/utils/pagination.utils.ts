@@ -10,10 +10,11 @@ export interface PaginationBounds {
     let displayItem = '';
   
     if (pageNumber && pageSize && totalCounter) {
-      const startElement = (pageNumber - 1) * pageSize;
-      const endElement = Math.min(startElement + pageSize, totalCounter);
+      const startElement = pageNumber * pageSize;
+      const endElement = Math.min(startElement, totalCounter);
       displayItem = `${endElement} di ${totalCounter}`;
     }
   
     return { displayItem };
   }
+  

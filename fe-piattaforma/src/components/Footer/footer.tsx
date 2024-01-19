@@ -108,7 +108,7 @@ const Footer: React.FC = () => {
                       target='_blank'
                       rel='noreferrer'
                     >
-                      Repubblica DIGITALE
+                      Repubblica Digitale
                       <svg
                         xmlns='http://www.w3.org/2000/svg'
                         className='svg_style'
