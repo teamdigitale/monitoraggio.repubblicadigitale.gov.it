@@ -10,6 +10,7 @@ input {
     font-weight: 600 !important;
   }
 }
+
 textarea {
   color: color('dark-blue') !important;
   font-weight: 600 !important;
@@ -19,12 +20,14 @@ textarea {
   input:focus {
     border-bottom: 2px solid color('progress-bar-line');
   }
+
   .form-group {
     label {
       z-index: unset;
       padding-left: 2;
     }
   }
+
   button {
     min-width: 186px;
   }
@@ -42,14 +45,17 @@ input > span {
     border-bottom: 1px solid color('grey-input') !important;
     background: color('grey-150');
   }
+
   &[type='password'] {
     width: 95%;
   }
+
   &[type='text']:disabled,
   &[type='date']:disabled,
   &[type='number']:disabled {
     border-bottom: 1px solid color('grey-input') !important;
   }
+
   &[type='text'][value=''],
   &[type='date'][value=''],
   &[type='number'][value=''],
@@ -58,6 +64,7 @@ input > span {
   &[type='url'][value=''] {
     border-bottom: 1px solid color('progress-bar-line');
   }
+
   &[type='text'][value]:not([value='']),
   &[type='date'][value]:not([value='']),
   &[type='number'][value]:not([value='']),
@@ -66,6 +73,7 @@ input > span {
   &[type='url'][value]:not([value='']) {
     border-bottom: 2px solid color('progress-bar-line');
   }
+
   &.is-valid {
     border-bottom: 2px solid color('progress-bar-line');
   }
@@ -84,6 +92,7 @@ input > span {
     &__control {
       border-bottom: 2px solid color('progress-bar-line') !important;
     }
+
     &__control:focus {
       border-bottom: 2px solid color('progress-bar-line') !important;
     }
@@ -98,28 +107,34 @@ input > span {
   &__menu {
     margin-top: 0 !important;
   }
+
   &-value {
     border-bottom: 2px solid color('progress-bar-line') !important;
   }
+
   &__control {
     border-bottom: 1px solid color('progress-bar-line') !important;
 
     &--menu-is-open {
       border-bottom: 2px solid color('progress-bar-line') !important;
     }
+
     &--is-focused {
       border-color: color('accessibility-orange') !important;
       box-shadow: 0 0 0 2px color('accessibility-orange') !important;
       outline: 0 !important;
     }
+
     &--is-disabled {
       border-bottom: 1px solid color('grey-input') !important;
       background: color('grey-150') !important;
     }
   }
+
   &__single-value {
     color: color('dark-blue') !important;
     font-weight: 600 !important;
+
     &--is-disabled {
       color: color('dark-blue') !important;
     }
@@ -132,28 +147,34 @@ input > span {
     max-height: 160px;
     overflow: scroll;
   }
+
   &-value {
     border-bottom: 2px solid color('progress-bar-line') !important;
   }
+
   &__control {
     border-bottom: 1px solid color('progress-bar-line') !important;
 
     &--menu-is-open {
       border-bottom: 2px solid color('progress-bar-line') !important;
     }
+
     &--is-focused {
       border-color: color('accessibility-orange') !important;
       box-shadow: 0 0 0 2px color('accessibility-orange') !important;
       outline: 0 !important;
     }
+
     &--is-disabled {
       border-bottom: 1px solid color('grey-input') !important;
       background: color('grey-150') !important;
     }
   }
+
   &__single-value {
     color: color('dark-blue') !important;
     font-weight: 600 !important;
+
     &--is-disabled {
       color: color('dark-blue') !important;
     }
@@ -167,8 +188,10 @@ input > span {
       background: color('grey-150') !important;
     }
   }
+
   &__multi-value {
     margin: 2px 2px 14px !important;
+
     &--is-disabled {
       border: 1px outset color('grey-150') !important;
       background: color('grey-150') !important;
@@ -178,17 +201,20 @@ input > span {
 
 .multiple-select {
   font-weight: 600;
+
   &__control {
     &--is-disabled {
       border-bottom: 1px solid color('grey-input') !important;
       background: color('grey-150') !important;
     }
   }
+
   &__multi-value {
     &__label {
       background: color('grey-150') !important;
       border: 1px outset color('grey-150') !important;
     }
+
     &__remove {
       background: color('grey-150') !important;
     }
@@ -220,6 +246,10 @@ input > span {
 .form-check [type='radio']:disabled:checked + label::after {
   border-color: #d1d6db;
   background-color: #d1d6db;
+}
+
+.form-check [type=checkbox]:disabled:not(:checked) + label::after {
+  background-color: #e6e9f2;
 }
 
 .toggles label input[type='checkbox']:checked + .lever:after {
@@ -255,6 +285,7 @@ input > span {
 
 .duration-input {
   padding-left: 0px !important;
+
   input {
     padding-left: 9px !important;
   }
@@ -267,17 +298,22 @@ input > span {
     border-radius: 10px;
     margin-bottom: 16px;
   }
+
   &__box-field {
     border: 1px solid #001a33;
     border-radius: 5px;
+
     &__box-title {
       padding: 16px 20px 0px 16px;
       font-size: 16px;
     }
+
     &__box-content {
       padding: 0px 16px 16px 16px;
+
       .form-group {
         margin-bottom: 0;
+
         label {
           overflow: visible;
           text-overflow: wrap;
@@ -287,6 +323,47 @@ input > span {
     }
   }
 }
+
+@media screen and (min-width: 992px) {
+  .collapse-body {
+    padding-bottom: 0px !important;
+
+    .form-row {
+      margin-bottom: 0px !important;
+
+      .form-group {
+        margin-bottom: 30px !important;
+      }
+
+      label.active {
+        height: 50px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .collapse-body {
+    padding-bottom: 0px !important;
+
+    .form-row {
+      margin-bottom: 10px !important;
+
+      .form-group {
+        margin-bottom: 24px !important;
+      }
+
+      label.active {
+        height: 50px;
+      }
+
+      .first_input_target {
+        margin-bottom: 20px !important;
+      }
+    }
+  }
+}
+
 
 .public-DraftEditor-content {
   color: color('dark-blue') !important;
@@ -303,4 +380,8 @@ input > span {
     -webkit-text-fill-color: #17324d;
     opacity: 1; /* required on iOS */
   }
+}
+
+.deleteArrowInSelect .bootstrap-select__indicators {
+  display: none;
 }

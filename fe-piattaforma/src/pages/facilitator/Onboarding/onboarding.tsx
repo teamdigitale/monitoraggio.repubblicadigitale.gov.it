@@ -49,7 +49,7 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
   const image = user?.immagineProfilo || Profile;
   const {
     form,
-    isValidForm,
+    //isValidForm,
     getFormValues = () => ({}),
     onInputChange = () => ({}),
     updateForm = () => ({}),
@@ -94,7 +94,7 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
 
   const onSubmitForm = async () => {
     try {
-      if (isValidForm) {
+      //if (isValidForm) {
         const res = await dispatch(EditUser(getFormValues()));
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
@@ -106,7 +106,7 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
             selectUserRole(res2);
           }
         }
-      }
+     // }
     } catch {
       dispatch(LogoutRedirect());
     }
@@ -223,7 +223,7 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
             )}
           >
             <Button
-              disabled={!isValidForm}
+              //disabled={!isValidForm}
               color='primary'
               onClick={onSubmitForm}
             >

@@ -76,7 +76,7 @@ const Breadcrumb = () => {
     if (!isEqual(location, currentLocation)) {
       setCurrentLocation(location);
     }
-  }, [location]);
+  }, [currentLocation, location]);
 
   useEffect(() => {
     if (
@@ -88,7 +88,7 @@ const Breadcrumb = () => {
       const newList: { label: string; url: string; link: boolean }[] = [];
       (currentLocation || []).map((elem: string, index: number) => {
         if (elem !== '') {
-          if(elem?.toLowerCase() === 'sedi'){
+          if (elem?.toLowerCase() === 'sedi') {
             newList.pop();
           }
           if (

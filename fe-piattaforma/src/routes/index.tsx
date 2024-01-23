@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, useEffect, useState } from 'react';
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../redux/hooks';
 import { selectLogged } from '../redux/features/user/userSlice';
@@ -7,10 +7,7 @@ import ProtectedComponent from '../hoc/AuthGuard/ProtectedComponent/ProtectedCom
 import FullLayout from '../components/PageLayout/FullLayout/fullLayout';
 import { Loader } from '../components';
 import Notifications from '../pages/common/NotificationsPage/notifications';
-import {
-  // GetNotificationsByUser,
-  SessionCheck,
-} from '../redux/features/user/userThunk';
+import { SessionCheck } from '../redux/features/user/userThunk';
 import ErrorPage from '../pages/common/Error/errorPage';
 
 // TODO import with lazy
@@ -20,6 +17,7 @@ import BachecaDigitale from '../pages/facilitator/Home/components/BachecaDigital
 import HomeSearch from '../pages/common/HomeSearch/homeSearch';
 import UserPublishedContentsPage from '../pages/common/UserPublishedContentsPage/userPublishedContentsPage';
 import { selectModalState } from '../redux/features/modal/modalSlice';
+import { PrivacyDisclaimer } from '../pages/common/Privacy/PrivacyDisclaimer';
 
 const AuthRedirect = lazy(() => import('../pages/common/Auth/authRedirect'));
 
@@ -77,7 +75,7 @@ const CommunityDetails = lazy(
 );
 
 /**
- The "routes.tsx" file is now useless, lazy loading is implemented for every 
+ The "routes.tsx" file is now useless, lazy loading is implemented for every
  routes and this file is the top of the routes tree.
  In the way to implement lazy loading and to semplify further changes, routes are expandend
  in this component
@@ -327,6 +325,14 @@ const AppRoutes: React.FC = () => {
                   </ProtectedComponent>
                 }
               />
+              <Route
+                path='/privacy-disclaimer/*'
+                element={
+                  <ProtectedComponent visibleTo={[]}>
+                    <PrivacyDisclaimer />
+                  </ProtectedComponent>
+                }
+              />
             </Route>
           </>
         ) : (
@@ -349,6 +355,7 @@ const AppRoutes: React.FC = () => {
             </Route>
           </>
         )}
+        {/*
         <Route
           path='/'
           element={<Navigate replace to={defaultRedirectUrl} />}
@@ -356,7 +363,7 @@ const AppRoutes: React.FC = () => {
         <Route
           path='*'
           element={<Navigate replace to={defaultRedirectUrl} />}
-        />
+        />*/}
       </Routes>
     </Suspense>
   );

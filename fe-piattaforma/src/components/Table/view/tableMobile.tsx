@@ -5,6 +5,7 @@ import { TableRowI } from '../table';
 import { CRUDActionsI, CRUDActionTypes } from '../../../utils/common';
 import EmptySection from '../../EmptySection/emptySection';
 import clsx from 'clsx';
+import { calculatePaginationBounds } from '../../../utils/pagination.utils';
 
 interface MobileTableI {
   onActionClick?: CRUDActionsI;
@@ -12,6 +13,8 @@ interface MobileTableI {
   values?: TableRowI[];
   totalCounter?: number;
   onActionRadio?: CRUDActionsI;
+  pageNumber?: number;
+  pageSize?: number;
 }
 
 const TableMobile: React.FC<MobileTableI> = ({
@@ -19,9 +22,17 @@ const TableMobile: React.FC<MobileTableI> = ({
   onTooltipInfo = '',
   values = [],
   totalCounter,
+  pageNumber,
+  pageSize,
   onActionRadio,
 }) => {
   const [valuesForMobile, setValuesForMobile] = useState<AccordionRowI[]>();
+
+  const { displayItem } = calculatePaginationBounds(
+    pageNumber,
+    pageSize,
+    totalCounter
+  );
 
   useEffect(() => {
     if (values && values.length) {
@@ -39,9 +50,10 @@ const TableMobile: React.FC<MobileTableI> = ({
         } = item;
 
         return {
-          title: cognome
-            ? cognome + ' ' + nome
-            : nome || nome || label || name || attributo,
+          title: id,
+          /*title: cognome
+                                          ? cognome + ' ' + nome
+                                          : nome || nome || label || name || attributo,*/
           status,
           id,
           actions,
@@ -84,9 +96,9 @@ const TableMobile: React.FC<MobileTableI> = ({
         </div>
       )}
       {totalCounter ? (
-        <div
-          className={clsx('text-right', 'total-counter-text-color')}
-        >{`${values.length} di ${totalCounter}`}</div>
+        <div className={clsx('text-right', 'total-counter-text-color')}>
+          {displayItem}
+        </div>
       ) : null}
     </div>
   );

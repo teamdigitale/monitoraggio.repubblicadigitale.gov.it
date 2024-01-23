@@ -4,12 +4,9 @@ import { CRUDActionsI, CRUDActionTypes } from '../../utils/common';
 import StatusChip from '../StatusChip/statusChip';
 import PasswordVisible from '/public/assets/img/it-password-visible.png';
 import ItPlusCircle from '/public/assets/img/it-plus-circle-primary.png';
-import ItMail from '/public/assets/img/it-mail-primary.png';
-import ItPencil from '/public/assets/img/it-pencil-primary.png';
 
 interface DetailsRowI {
   id: string;
-  nome: string;
   stato: string;
   onActionClick: CRUDActionsI;
   innerInfo: { [key: string]: string };
@@ -19,13 +16,13 @@ interface DetailsRowI {
 
 const statusCases = {
   SENT: 'INVIATO',
-  NOT_SENT: 'NON INVIATO',
+  NOT_FILLED: 'NON COMPILATO',
   FILLED_OUT: 'COMPILATO',
+  NOT_SENT: 'NON INVIATO',
 };
 
 const DetailsRow: React.FC<DetailsRowI> = ({
   id,
-  nome,
   stato,
   onActionClick,
   innerInfo,
@@ -34,10 +31,21 @@ const DetailsRow: React.FC<DetailsRowI> = ({
 }) => {
   const loadIcons = () => {
     switch (stato.toUpperCase()) {
+      case statusCases.NOT_SENT:
+        return (
+          <Button
+            tabIndex={-1}
+            className='button-hidden button-icon'
+            id={`button-1-not-sent-${id}`}
+          >
+            <Icon icon={ItPlusCircle} color='primary' size='sm' />
+          </Button>
+        );
       case statusCases.SENT:
         return (
           <>
             <Button
+              className='button-icon'
               onClick={() =>
                 onActionClick[CRUDActionTypes.COMPILE](idQuestionario)
               }
@@ -47,9 +55,10 @@ const DetailsRow: React.FC<DetailsRowI> = ({
                 icon={ItPlusCircle}
                 color='primary'
                 size='sm'
-                aria-label={`Compila questionario di ${nome}`}
+                aria-label={`Compila questionario di ${id}`}
               />
             </Button>
+            {/*
             <Button
               onClick={() =>
                 onActionClick[CRUDActionTypes.SEND]({
@@ -66,6 +75,7 @@ const DetailsRow: React.FC<DetailsRowI> = ({
                 aria-label={`Invia questionario a ${nome}`}
               />
             </Button>
+
             <UncontrolledTooltip
               placement='top'
               target={`button-1-compile-${id}`}
@@ -74,13 +84,14 @@ const DetailsRow: React.FC<DetailsRowI> = ({
             </UncontrolledTooltip>
             <UncontrolledTooltip placement='top' target={`button-1-send-${id}`}>
               Invia questionario
-            </UncontrolledTooltip>
+            </UncontrolledTooltip>*/}
           </>
         );
-      case statusCases.NOT_SENT:
+      case statusCases.NOT_FILLED:
         return (
           <>
             <Button
+              className='button-icon'
               onClick={() =>
                 onActionClick[CRUDActionTypes.COMPILE](idQuestionario)
               }
@@ -90,9 +101,10 @@ const DetailsRow: React.FC<DetailsRowI> = ({
                 icon={ItPlusCircle}
                 color='primary'
                 size='sm'
-                aria-label={`Compila questionario di ${nome}`}
+                aria-label={`Compila questionario di ${id}`}
               />
             </Button>
+            {/*
             <Button
               onClick={() =>
                 onActionClick[CRUDActionTypes.SEND]({
@@ -117,13 +129,14 @@ const DetailsRow: React.FC<DetailsRowI> = ({
             </UncontrolledTooltip>
             <UncontrolledTooltip placement='top' target={`button-2-send-${id}`}>
               Invia questionario
-            </UncontrolledTooltip>
+            </UncontrolledTooltip>*/}
           </>
         );
       case statusCases.FILLED_OUT:
         return (
           <>
             <Button
+              className='button-icon'
               onClick={() =>
                 onActionClick[CRUDActionTypes.VIEW](idQuestionario)
               }
@@ -134,7 +147,7 @@ const DetailsRow: React.FC<DetailsRowI> = ({
                 className='icons__icon-visible-password'
                 color='primary'
                 size='sm'
-                aria-label={`Visualizza questionario compilato di ${nome}`}
+                aria-label={`Visualizza questionario compilato di ${id}`}
               />
             </Button>
             <UncontrolledTooltip placement='top' target={`button-view-${id}`}>
@@ -148,63 +161,32 @@ const DetailsRow: React.FC<DetailsRowI> = ({
   };
 
   return (
-    <div className='details-row neutral-1-color-a8'>
-      <div className='details-row__left-section'>
-        {onActionClick[CRUDActionTypes.EDIT] && (
-          <>
-            <Button
-              onClick={() => onActionClick[CRUDActionTypes.EDIT](id)}
-              className='mr-2 p-0 details-row__name'
-              id={`button-edit-citizen-${id}`}
-            >
-              <Icon
-                icon={ItPencil}
-                color='primary'
-                size='sm'
-                aria-label={`Modifica anagrafica del cittadino ${nome}`}
-              />
-            </Button>
-            <UncontrolledTooltip
-              placement='top'
-              target={`button-edit-citizen-${id}`}
-            >
-              Modifica cittadino
-            </UncontrolledTooltip>
-          </>
-        )}
-        <div className='details-row__name'>
-          <h2 className='h5 font-weight-semibold'>{nome}</h2>
+    <div className='details-row-table neutral-1-color-a8'>
+      <div className='details-row__info'>
+        <div>
+          <span className='text-uppercase font-weight-bold primary-color-a12 text-nowrap'>
+            ID Cittadino:
+          </span>
+          <span className='text-uppercase'>{id}</span>
         </div>
       </div>
       <div className='details-row__info'>
-        {innerInfo?.['Codice Fiscale'] &&
-          innerInfo?.['Codice Fiscale'] !== '-' && (
-            <div>
-              <span className='font-weight-normal primary-color-a12'>
-                Codice Fiscale:
-              </span>
-              <span className='text-uppercase'>
-                {innerInfo['Codice Fiscale']}
-              </span>
-            </div>
-          )}
-        {innerInfo?.['Numero Documento'] &&
-          innerInfo?.['Codice Fiscale'] === '-' && (
-            <div>
-              <span className='font-weight-normal primary-color-a12'>
-                Numero Documento:
-              </span>
-              <span className='text-uppercase'>
-                {innerInfo['Numero Documento']}
-              </span>
-            </div>
-          )}
-      </div>
-      <div className='details-row__right-section primary-color-b1'>
-        <span className='text-uppercase'>{rowInfoType}</span>
         <div>
-          <StatusChip status={stato} />
-          {loadIcons()}
+          <span className='text-uppercase font-weight-bold primary-color-a12 text-nowrap'>
+            Data ultimo aggiornamento:
+          </span>
+          <span className='text-uppercase'>
+            {innerInfo['DataUltimoAggiornamento']}
+          </span>
+        </div>
+      </div>
+      <div className='left-primary-row primary-color-b1'>
+        <span className='text-uppercase'>{rowInfoType}</span>
+      </div>
+      <div className='details-row__right-section '>
+        <StatusChip status={stato} />
+        <div className='icon-button-relative'>
+          <div className='icon-container'>{loadIcons()}</div>
         </div>
       </div>
     </div>

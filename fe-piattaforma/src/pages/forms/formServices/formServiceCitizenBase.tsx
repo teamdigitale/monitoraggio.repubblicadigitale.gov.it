@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Form, Input, PrefixPhone } from '../../../components';
+import { Form, Input, Select } from '../../../components';
 import { TableRowI } from '../../../components/Table/table';
 import withFormHandler, {
   withFormHandlerProps,
@@ -8,20 +8,16 @@ import {
   CittadinoInfoI,
   selectCitizenSearchResponse,
 } from '../../../redux/features/citizensArea/citizensAreaSlice';
-// import { selectDevice } from '../../../redux/features/app/appSlice';
 import { useAppSelector } from '../../../redux/hooks';
-import {
-  CommonFields,
-  formFieldI,
-  newForm,
-  newFormField,
-} from '../../../utils/formHelper';
-import { RegexpType } from '../../../utils/validator';
+import { formFieldI, newForm, newFormField } from '../../../utils/formHelper';
 import { FormCitizenI } from '../formCitizen';
+import ExistingCitizenInfo from './ExistingCitizenInfo';
+import { citizenFormDropdownOptions } from '../constantsFormCitizen';
 
 interface FormServiceCitizenBaseI {
   selectedCitizen?: CittadinoInfoI | TableRowI | string;
 }
+
 interface FormEnteGestoreProgettoFullInterface
   extends withFormHandlerProps,
     FormServiceCitizenBaseI,
@@ -79,111 +75,163 @@ const FormServiceCitizenBase: React.FC<FormEnteGestoreProgettoFullInterface> = (
 
   useEffect(() => {
     setIsFormValid(isValidForm);
-  }, [form]);
+  }, [form, isValidForm, setIsFormValid]);
 
   return (
-    <Form
-      legend={legend}
-      id='form-citizen'
-      className='mt-5'
-      formDisabled={formDisabled}
-    >
-      <Form.Row>
-        <Input
-          {...form?.nome}
-          col='col-12 col-lg-6'
-          placeholder={`${form?.nome?.label}`}
-          onInputChange={onInputDataChange}
-          required
-        />
-        <Input
-          {...form?.cognome}
-          col='col-12 col-lg-6'
-          placeholder={`${form?.cognome?.label}`}
-          onInputChange={onInputDataChange}
-          required
-        />
-        <Input
-          {...form?.codiceFiscale}
-          col='col-12 col-lg-6'
-          label='Codice fiscale'
-          placeholder='Codice fiscale'
-          onInputChange={onInputDataChange}
-          required
-        />
-        <Input
-          {...form?.email}
-          col='col-12 col-lg-6'
-          placeholder={`${form?.email?.label}`}
-          onInputChange={onInputDataChange}
-          required
-        />
-        <PrefixPhone
-          {...form?.prefisso}
-          placeholder={`${form?.prefisso?.label}`}
-          onInputChange={onInputDataChange}
-        />
-        <Input
-          {...form?.cellulare}
-          col='col-8 col-lg-4'
-          placeholder={`${form?.cellulare?.label}`}
-          onInputChange={onInputDataChange}
-        />
-      </Form.Row>
-    </Form>
+    <>
+      <ExistingCitizenInfo />
+      <Form
+        legend={legend}
+        id='form-citizen'
+        className='mt-5'
+        formDisabled={formDisabled}
+      >
+        <Form.Row>
+          <Input
+            {...form?.idCittadino}
+            col='col-12 col-lg-6'
+            placeholder='ID'
+            onInputChange={onInputDataChange}
+          />
+          <Input
+            {...form?.codiceFiscale}
+            col='col-12 col-lg-6'
+            placeholder='Codice fiscale'
+            value={`${
+              form?.codiceFiscale.value
+                ? 'Codice fiscale disponibile ma non visualizzabile'
+                : 'Codice fiscale non presente'
+            }  `}
+            onInputChange={onInputDataChange}
+          />
+          <Input
+            {...form?.tipoDocumento}
+            placeholder='Tipo documento'
+            onInputChange={onInputDataChange}
+            col='col-12 col-lg-6'
+            wrapperClassName='mb-5 pr-lg-3'
+          />
+          <Input
+            {...form?.numeroDocumento}
+            col='col-12 col-lg-6'
+            placeholder='Numero documento'
+            value={`${
+              form?.numeroDocumento.value
+                ? 'Numero Documento disponibile ma non visualizzabile'
+                : 'Numero Documento non presente'
+            }  `}
+            onInputChange={onInputDataChange}
+          />
+          <Input
+            {...form?.genere}
+            placeholder='Genere'
+            onInputChange={onInputDataChange}
+            col='col-12 col-lg-6'
+            wrapperClassName='mb-5 pr-lg-3'
+          />
+          <Select
+            {...form?.fasciaDiEta}
+            placeholder='Fascia di età'
+            onInputChange={onInputDataChange}
+            col='col-12 col-lg-6'
+            options={citizenFormDropdownOptions['fasciaDiEtaId']}
+            isDisabled={formDisabled}
+            wrapperClassName='mb-5 pr-lg-3'
+          />
+          <Input
+            {...form?.titoloStudio}
+            placeholder='Titolo di studio (livello più alto raggiunto)'
+            onInputChange={onInputDataChange}
+            col='col-12 col-lg-6'
+            wrapperClassName='mb-5 pr-lg-3'
+          />
+          <Input
+            {...form?.statoOccupazionale}
+            placeholder='Stato occupazionale'
+            onInputChange={onInputDataChange}
+            col='col-12 col-lg-6'
+            wrapperClassName='mb-5 pr-lg-3'
+          />
+          <Input
+            {...form?.provinciaDiDomicilio}
+            placeholder='Provincia di domicilio'
+            col='col-12 col-lg-6'
+            onInputChange={onInputDataChange}
+            wrapperClassName='mb-5 pr-lg-3'
+          />
+          <Input
+            {...form?.cittadinanza}
+            placeholder='Cittadinanza'
+            onInputChange={onInputDataChange}
+            col='col-12 col-lg-6'
+            wrapperClassName='mb-5 pr-lg-3'
+          />
+        </Form.Row>
+      </Form>
+    </>
   );
 };
 
 const form = newForm([
   newFormField({
-    ...CommonFields.NOME,
-    field: 'nome',
-    label: 'Nome',
-    id: 'name',
-    regex: RegexpType.NAME_SURNAME,
+    field: 'idCittadino',
+    id: 'idCittadino',
+    type: 'text',
+    label: 'ID Cittadino',
   }),
   newFormField({
-    ...CommonFields.COGNOME,
-    field: 'cognome',
-    label: 'Cognome',
-    id: 'surname',
-    regex: RegexpType.NAME_SURNAME,
-  }),
-  newFormField({
-    ...CommonFields.CODICE_FISCALE,
     field: 'codiceFiscale',
     id: 'codiceFiscale',
+    type: 'text',
     label: 'Codice fiscale',
   }),
   newFormField({
-    ...CommonFields.EMAIL,
-    field: 'email',
-    id: 'email',
-    label: 'Email',
-    required: true,
+    field: 'tipoDocumento',
+    type: 'text',
+    id: 'tipoDocumento',
+    label: 'Tipo documento',
   }),
   newFormField({
-    field: 'prefisso',
-    id: 'prefisso',
-    regex: RegexpType.MOBILE_PHONE_PREFIX,
-    label: 'Prefisso',
+    field: 'numeroDocumento',
+    id: 'numeroDocumento',
     type: 'text',
-    //required: true,
+    label: 'Numero documento',
   }),
   newFormField({
-    ...CommonFields.NUMERO_TELEFONICO,
-    field: 'cellulare',
-    id: 'numeroCellulare',
-    label: 'Cellulare',
+    field: 'genere',
+    id: 'genere',
     type: 'text',
-    //required: true,
+    label: 'Genere',
   }),
   newFormField({
-    ...CommonFields.NUMERO_TELEFONICO,
-    field: 'telefono',
-    id: 'telefono',
-    label: 'Cellulare',
+    field: 'fasciaDiEta',
+    id: 'fasciaDiEta',
+    type: 'select',
+    label: 'Fascia di età',
+  }),
+  newFormField({
+    id: 'titoloStudio',
+    field: 'titoloStudio',
     type: 'text',
+    label: 'Titolo di studio (livello più alto raggiunto)',
+  }),
+  newFormField({
+    field: 'statoOccupazionale',
+    id: 'statoOccupazionale',
+    type: 'text',
+    label: 'Stato occupazionale',
+  }),
+  newFormField({
+    field: 'provinciaDiDomicilio',
+    id: 'provinciaDiDomicilio',
+    type: 'text',
+    label: 'Provincia di domicilio',
+  }),
+  newFormField({
+    field: 'cittadinanza',
+    id: 'cittadinanza',
+    type: 'text',
+    label: 'Cittadinanza',
   }),
 ]);
 

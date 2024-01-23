@@ -26,6 +26,7 @@
     font-weight: 600;
     margin-bottom: rem(14px);
   }
+
   .first-access-subtitle {
     font-weight: 400;
     font-size: rem(18px);
@@ -34,5 +35,15 @@
 
   div {
     min-width: 25%;
+  }
+}
+
+.try-again-search {
+  width: 100%;
+  margin-bottom: 30px;
+
+  &__error-label {
+    text-align: center;
+    color: red;
   }
 }

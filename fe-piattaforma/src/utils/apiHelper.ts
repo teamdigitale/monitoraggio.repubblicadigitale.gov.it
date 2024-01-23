@@ -8,7 +8,7 @@ const API = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 10000,
+  timeout: 550000,
 });
 
 API.interceptors.request.use((req) => {
@@ -22,9 +22,6 @@ API.interceptors.request.use((req) => {
   if (JSON.parse(getSessionValues('auth'))?.id_token) {
     newHeaders.authToken = JSON.parse(getSessionValues('auth'))?.id_token;
   }
-  /*if (JSON.parse(getSessionValues('profile'))?.codiceRuolo) {
-    newHeaders.userRole = JSON.parse(getSessionValues('profile'))?.codiceRuolo;
-  }*/
   return {
     ...req,
     headers: newHeaders,

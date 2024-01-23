@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Form,
   Input,
@@ -10,7 +10,6 @@ import { formFieldI, FormI } from '../../../../../../utils/formHelper';
 import CheckboxGroup from '../../../../../../components/Form/checkboxGroup';
 import clsx from 'clsx';
 import '../compileSurvey/compileSurvey.scss';
-import { useEffect } from 'react';
 import { setCompilingSurveyForm } from '../../../../../../redux/features/administrativeArea/surveys/surveysSlice';
 import { useDispatch } from 'react-redux';
 import { Label } from 'design-react-kit';
@@ -204,9 +203,7 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
             // @ts-ignore
             <CheckboxGroup
               {...formField}
-              className={
-                formField?.field === '4' ? 'col-12 col-lg-6' : 'col-12'
-              }
+              className={'col-12 col-lg-6'}
               onInputChange={onInputChange}
               label={`${formField?.label}`}
               styleLabelForm
@@ -255,11 +252,12 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
       marginShowMandatory={false}
       customMargin={
         currentStep === 0
-          ? 'ml-2 mb-3 pb-3'
+          ? 'ml-2 mb-3 pb-3d'
           : currentStep === 3
           ? 'ml-2 mb-3'
           : ''
       }
+      customMandatoryText='Rispondere ad almeno una delle seguenti domande'
     >
       <div
         className={clsx('d-inline-flex flex-wrap w-100', viewMode && 'pt-5')}

@@ -2,24 +2,36 @@
   .th-auto {
     width: auto;
   }
+
   .th-small {
     width: 10%;
   }
+
   .th-medium {
     width: 25%;
   }
+
   .th-large {
     width: 33%;
   }
+
   .th-actions {
     width: 5%;
   }
+
   .th-actions-roles {
     width: 1%;
   }
+
   &__intestazione {
     padding: 0px 16px !important;
   }
+
+  &.center-text th,
+  &.center-text td {
+    text-align: center;
+  }
+
   &__status-label {
     border-radius: 6px;
     padding: 0 8px;
@@ -29,8 +41,10 @@
       padding: 4px 12px;
     }
   }
+
   &__toggle-button {
     margin: 0;
+
     label {
       input[type='checkbox'] + .lever {
         margin: 5px 0 0;
@@ -38,14 +52,17 @@
       }
     }
   }
+
   &__width-radio {
     max-width: 50px;
   }
+
   .bg-and-text-color {
     background-color: #e8f2fc;
     color: #6d6d74;
   }
 }
+
 .total-counter-text-color {
   color: #74767B;
 }

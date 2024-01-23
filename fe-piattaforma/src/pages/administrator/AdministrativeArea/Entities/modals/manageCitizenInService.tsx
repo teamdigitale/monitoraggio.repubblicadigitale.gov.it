@@ -67,7 +67,6 @@ const ManageCitizenInService: React.FC<ManageCitizenInServiceI> = ({
 
   const handleCitizenInService = async () => {
     let body: { [key: string]: formFieldI['value'] } = {};
-
     const sezioneQ1Template = generateForm(JSON.parse(Q1));
     Object.keys(sezioneQ1Template).map((key: string) => {
       if (sezioneQ1Template[key]?.keyBE && newFormValues) {
@@ -91,7 +90,6 @@ const ManageCitizenInService: React.FC<ManageCitizenInServiceI> = ({
     const sezioneQ1Questionario = `{"id":"${idQ1}","title":"${titleQ1}","properties":${createStringOfCompiledSurveySection(
       newFormValues
     ).replaceAll('"', "'")}}`;
-
     body = {
       ...body,
       questionarioQ1: sezioneQ1Questionario,

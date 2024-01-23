@@ -27,13 +27,23 @@ export const proxyCall = async (
   filePayload: any = {}
 ) => {
   const { idProgramma, idProgetto, idEnte } = getUserHeaders();
-  return await API.post('/drupal/forward', {
-    url: `/api${url}`,
-    metodoHttp: httpMethod,
-    body: body ? JSON.stringify(body) : null,
-    profilo: { idProgramma, idProgetto, idEnte },
-    ...filePayload,
-  });
+  const codiceFiscale = JSON.parse(getSessionValues('user')).codiceFiscale;
+  const codiceRuolo = JSON.parse(getSessionValues('profile')).codiceRuolo;
+  body = {
+    cfUtenteLoggato: codiceFiscale,
+    codiceRuoloUtenteLoggato: codiceRuolo,
+  };
+  const pass = false;
+  if (body && body.cfUtenteLoggato && pass) {
+    return await API.post(`${process?.env?.NOTIFICHE}drupal/forward`, {
+      url: `/api${url}`,
+      metodoHttp: httpMethod,
+      cfUtenteLoggato: codiceFiscale,
+      codiceRuoloUtenteLoggato: codiceRuolo,
+      profilo: { idProgramma, idProgetto, idEnte },
+      ...filePayload,
+    });
+  }
 };
 
 const GetNewsFiltersAction = {
@@ -219,10 +229,7 @@ export const GetTopicsFilters =
         ),
       };
       const queryParameters = transformFiltersToQueryParams(body);
-      const res = await proxyCall(
-        `/community/filters${queryParameters}`,
-        'GET'
-      );
+      const res = await proxyCall(`/community/filters${queryParameters}`, 'GET');
       if (res?.data?.data) {
         dispatch(
           setForumFilterOptions(
@@ -277,10 +284,7 @@ export const GetTopicsList =
         ...forcedFilters,
       }).replace('sort', 'sort_by');
       //.replace('categories', 'category')
-      const res = await proxyCall(
-        `/community/items${queryParamFilters}`,
-        'GET'
-      );
+      const res = await proxyCall(`/community/items${queryParamFilters}`, 'GET');
       if (updateStore) {
         if (res?.data?.data) {
           dispatch(setTopicsList(res.data.data.items || []));
@@ -463,7 +467,7 @@ const GetItemsListAction = {
   type: 'forum/GetItemsList',
 };
 export const GetItemsList =
-  (entity: 'board' | 'community' | 'document') =>
+  (entity: 'board' | 'forum' | 'document') =>
   async (dispatch: Dispatch, select: Selector) => {
     try {
       dispatch(showLoader());
@@ -493,7 +497,7 @@ export const GetItemsList =
           case 'board':
             dispatch(setNewsList(res.data.data.items));
             break;
-          case 'community':
+          case 'forum':
             dispatch(setTopicsList(res.data.data.items));
             break;
           case 'document':
@@ -600,8 +604,7 @@ export const GetItemsByUser = () => async (dispatch: Dispatch) => {
       dispatch(
         setTopicsList(
           (res[1]?.data.data.items || []).filter(
-            ({ item_type }: { item_type: string }) =>
-              item_type === 'community_item'
+            ({ item_type }: { item_type: string }) => item_type === 'community_item'
           )
         )
       );
@@ -626,11 +629,7 @@ const GetItemDetailsAction = {
 };
 
 export const GetItemDetail =
-  (
-    itemId: string,
-    userId: string,
-    entity: 'board' | 'community' | 'document'
-  ) =>
+  (itemId: string, userId: string, entity: 'board' | 'forum' | 'document') =>
   async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
@@ -645,7 +644,7 @@ export const GetItemDetail =
           case 'board':
             dispatch(setNewsDetail(res.data.data.items[0]));
             break;
-          case 'community':
+          case 'forum':
             dispatch(setTopicDetail(res.data.data.items[0]));
             break;
           case 'document':
@@ -735,7 +734,7 @@ const CreateItemAction = {
 };
 
 export const CreateItem =
-  (payload: any, entity: 'board' | 'community' | 'document') =>
+  (payload: any, entity: 'board' | 'forum' | 'document') =>
   async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
@@ -781,7 +780,7 @@ const UpdateItemAction = {
 };
 
 export const UpdateItem =
-  (itemId: string, payload: any, entity: 'board' | 'community' | 'document') =>
+  (itemId: string, payload: any, entity: 'board' | 'forum' | 'document') =>
   async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
@@ -948,6 +947,7 @@ export const DocumentRate =
 const ActionTrackerAction = {
   type: 'forum/ActionTracker',
 };
+
 interface ActionTrackerI {
   target: 'chat' | 'wd' | 'tnd';
   action_type?:
@@ -964,6 +964,7 @@ interface ActionTrackerI {
   codiceRuolo?: string;
   idProgramma?: string;
 }
+
 const newActionTracker = ({
   action_type,
   event_type,

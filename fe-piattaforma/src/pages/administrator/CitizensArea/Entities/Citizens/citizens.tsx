@@ -30,6 +30,8 @@ import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
 import { formFieldI } from '../../../../../utils/formHelper';
 import PageTitle from '../../../../../components/PageTitle/pageTitle';
 import IconNote from '/public/assets/img/it-note-primary.png';
+import moment from 'moment';
+import clsx from 'clsx';
 
 const entity = 'citizensArea';
 const siteDropdownLabel = 'idsSedi';
@@ -104,7 +106,7 @@ const Citizens = () => {
     autocomplete: false,
     onHandleSearch: handleOnSearch,
     placeholder:
-      'Inserisci il cognome e/o il nome, oppure l’ID o il codice fiscale dell’utente',
+      'Inserisci il codice fiscale o il numero documento del cittadino',
     isClearable: true,
     title: 'Cerca cittadino',
   };
@@ -136,9 +138,11 @@ const Citizens = () => {
       TableHeading,
       (citizensList || []).map((td) => ({
         id: td.id,
-        name: td.cognome + ' ' + td.nome,
         numeroServizi: td.numeroServizi,
         numeroQuestionariCompilati: td.numeroQuestionariCompilati,
+        dataUltimoAggiornamento: moment(td.dataUltimoAggiornamento).format(
+          'DD-MM-YYYY HH:mm'
+        ),
       }))
     );
     return table;
@@ -200,11 +204,14 @@ const Citizens = () => {
             <Table
               {...tableValues}
               id='table'
+              className={clsx('table-container center-text')}
               onCellClick={(field, row) => console.log(field, row)}
               //onRowClick={row => console.log(row)}
               withActions
               onActionClick={onActionClick}
               totalCounter={pagination?.totalElements}
+              pageNumber={pagination?.pageNumber}
+              pageSize={pagination?.pageSize}
             />
             {pagination?.pageNumber ? (
               <Paginator

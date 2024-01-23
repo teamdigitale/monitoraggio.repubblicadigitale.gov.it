@@ -10,8 +10,6 @@ import {
   DeleteService,
   GetCitizenListServiceDetail,
   GetServicesDetail,
-  GetServicesDetailFilters,
-  SendSurveyToAll,
 } from '../../../../../redux/features/administrativeArea/services/servicesThunk';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import DetailLayout from '../../../../../components/DetailLayout/detailLayout';
@@ -250,43 +248,43 @@ const ServicesDetails = () => {
       iconColor: 'primary',
       onClick: () =>
         window.open(
-          `/area-amministrativa/servizi/${serviceId}/stampa-questionario/${idQuestionarioTemplate}`,
+          `${process?.env?.QUESTIONARIO_CITTADINO}/area-amministrativa/servizi/${serviceId}/stampa-questionario/${idQuestionarioTemplate}`,
           '_blank'
         ),
     },
-    {
-      size: 'xs',
-      color: 'primary',
-      text: 'Invia questionario a tutti',
-      onClick: async () => {
-        const res = await dispatch(SendSurveyToAll(serviceId));
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        if (res === 'error') {
-          dispatch(
-            openModal({
-              id: 'confirmSentSurveyModal',
-              payload: {
-                text: 'Questionari non inviati correttamente!',
-                error: true,
-              },
-            })
-          );
-        } else {
-          dispatch(
-            openModal({
-              id: 'confirmSentSurveyModal',
-              payload: {
-                text: 'Questionari inviati correttamente!',
-                error: false,
-              },
-            })
-          );
-        }
-        dispatch(GetCitizenListServiceDetail(serviceId));
-        dispatch(GetServicesDetailFilters(serviceId));
-      },
-    },
+    /*{
+                  size: 'xs',
+                  color: 'primary',
+                  text: 'Invia questionario a tutti',
+                  onClick: async () => {
+                    const res = await dispatch(SendSurveyToAll(serviceId));
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    if (res === 'error') {
+                      dispatch(
+                        openModal({
+                          id: 'confirmSentSurveyModal',
+                          payload: {
+                            text: 'Questionari non inviati correttamente!',
+                            error: true,
+                          },
+                        })
+                      );
+                    } else {
+                      dispatch(
+                        openModal({
+                          id: 'confirmSentSurveyModal',
+                          payload: {
+                            text: 'Questionari inviati correttamente!',
+                            error: false,
+                          },
+                        })
+                      );
+                    }
+                    dispatch(GetCitizenListServiceDetail(serviceId));
+                    dispatch(GetServicesDetailFilters(serviceId));
+                  },
+                },*/
   ];
 
   const onConfirmDelete = async () => {
@@ -350,7 +348,7 @@ const ServicesDetails = () => {
           goBackTitle='Elenco servizi'
           goBackPath='/area-amministrativa/servizi'
           /* citizenList
-          citizenDeleteChange */
+                                        citizenDeleteChange */
         >
           <div className='mx-auto'>{content}</div>
         </DetailLayout>

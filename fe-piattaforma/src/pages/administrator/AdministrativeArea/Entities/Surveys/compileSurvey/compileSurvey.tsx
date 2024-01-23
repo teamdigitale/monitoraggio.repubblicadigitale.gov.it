@@ -41,7 +41,6 @@ import { RegexpType } from '../../../../../../utils/validator';
 
 const separator = '§';
 const saltoCondizionaleAttivo = false;
-
 const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
   const {
     onInputChange = () => ({}),
@@ -53,6 +52,8 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
   const { serviceId, idQuestionarioCompilato } = useParams();
   const [sections, setSections] = useState<SurveySectionPayloadI[]>([]);
   const [activeSection, setActiveSection] = useState(0);
+  const [codiceFiscale, setCodiceFiscale] = useState('');
+  const [numeroDocumento, setNumeroDocumento] = useState('');
   const surveyStore: string | SurveySectionPayloadI[] = useAppSelector(
     selectQuestionarioTemplateSnapshot
   )?.sezioniQuestionarioTemplate;
@@ -61,8 +62,6 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
   );
   const surveyAnswersToSave = useAppSelector(selectCompilingSurveyForms);
   const serviceDetails = useAppSelector(selectServices)?.detail;
-
-  const [originalCF, setOriginalCF] = useState<string>('');
 
   useEffect(() => {
     // For breadcrumb
@@ -74,7 +73,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
         })
       );
     }
-  }, [serviceId, serviceDetails]);
+  }, [serviceId, serviceDetails, dispatch]);
 
   useEffect(() => {
     if (surveyStore?.length && typeof surveyStore !== 'string')
@@ -84,7 +83,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
   useEffect(() => {
     // se refresh get service detail per recuperare surveyStore
     dispatch(GetServicesDetail(serviceId));
-  }, []);
+  }, [dispatch, serviceId]);
 
   const jsonParseValues = (value: string) => {
     try {
@@ -101,6 +100,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
   }) => {
     let values = {};
     const valuesInArray = section?.properties || section;
+
     (valuesInArray || []).map((value: string | { [key: string]: string[] }) => {
       if (typeof value === 'object') {
         Object.keys(value).map((id: string) => {
@@ -113,9 +113,8 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
                   : value[id][0],
             },
           };
-          if (id.toString() === '3') setOriginalCF(value[id][0]);
         });
-      } else if (typeof value === 'string') {
+      } else {
         const val = jsonParseValues(decodeURI(value).replaceAll("'", '"'));
         Object.keys(val).map((id: string) => {
           values = {
@@ -129,7 +128,6 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
                   : val[id][0],
             },
           };
-          if (id.toString() === '3') setOriginalCF(val[id][0]);
         });
       }
     });
@@ -143,6 +141,14 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
   }, [idQuestionarioCompilato]);
 
   useEffect(() => {
+    if (compiledSurveyCitizen && compiledSurveyCitizen.length > 0) {
+      setActiveSection(3);
+    } else {
+      setActiveSection(0);
+    }
+  }, [compiledSurveyCitizen]);
+
+  useEffect(() => {
     if (surveyAnswersToSave?.length && surveyAnswersToSave[activeSection]) {
       // upload answers when step back
       updateForm(
@@ -154,15 +160,13 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
     } else {
       // create form and prefill the sections
       if (sections?.length) {
-        const newForm = generateForm(
+        const newForm: FormI = generateForm(
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           JSON.parse(sections[activeSection].schema?.json),
           true
         );
-
         if (
-          activeSection < 3 &&
           compiledSurveyCitizen?.length &&
           compiledSurveyCitizen?.[activeSection]?.domandaRisposta?.json
         ) {
@@ -179,9 +183,29 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
             Object.keys(newForm).map((key: string) => {
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
-              newForm[key].value = values[key]
-                ?.toString()
-                .replaceAll(separator, ',');
+              if (key === '1') {
+                const cf: string = values[key];
+                setCodiceFiscale(cf);
+                newForm[key].value = cf
+                  ? 'Codice fiscale disponibile ma non visualizzabile'
+                  : 'Codice fiscale non disponibile';
+              }
+              if (key === '4') {
+                const docNumber: string = values[key];
+                setNumeroDocumento(docNumber);
+                newForm[key].value = docNumber
+                  ? 'Numero documento disponibile ma non visualizzabile'
+                  : 'Numero documento non disponibile';
+              }
+              if (key !== '1' && key !== '4') {
+                newForm[key].value = values[key]
+                  ?.toString()
+                  .replaceAll(separator, ',');
+              }
+              if (activeSection === 0) {
+                newForm[key].disabled = true;
+                newForm[key].required = false;
+              }
               if (activeSection === 1 || activeSection === 2) {
                 newForm[key].disabled = true;
               }
@@ -195,9 +219,6 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
               ) {
                 if (newForm[key].value === 'true')
                   newForm[key].value = 'Codice fiscale non disponibile';
-                newForm['3'].required = false;
-                newForm['5'].required = true;
-                newForm['6'].required = true;
               }
               if (key === '18') {
                 newForm[key].options = newForm[key]?.options?.map(
@@ -230,7 +251,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
                 } else {
                   newForm[key].value =
                     moment(values[key]?.toString(), 'DD-MM-YYYY').format(
-                      'YYYY-MM-DD'
+                      'DD-MM-YYYY'
                     ) || '';
                   newForm[key].disabled = true;
                 }
@@ -243,6 +264,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
                 );
               } else if (Array.isArray(values[key])) {
                 newForm[key].value = (values[key] || [''])
+
                   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                   // @ts-ignore
                   .map((e: string) => e.replaceAll(separator, ','))
@@ -251,6 +273,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
             });
           }
         }
+        console.log(newForm, 'newForm');
         updateForm(
           {
             ...newForm,
@@ -287,13 +310,11 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
         if (shouldBeRequired) {
           tmpForm[key] = {
             ...tmpForm[key],
-            required: shouldBeRequired,
             disabled: !shouldBeRequired,
           };
         } else {
           tmpForm[key] = {
             ...tmpForm[key],
-            required: shouldBeRequired,
             disabled: !shouldBeRequired,
             value: '',
             valid: true,
@@ -303,7 +324,6 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
         // field 5-6
         tmpForm[key] = {
           ...tmpForm[key],
-          required: !shouldBeRequired,
         };
       }
     });
@@ -323,7 +343,6 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
       if (key === '32') {
         tmpForm[key] = {
           ...tmpForm[key],
-          required: !shouldBeSkipped,
           disabled: shouldBeSkipped,
         };
       }
@@ -353,18 +372,19 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
     ) {
       updateSkippedQuestion();
     }
-  }, [form['31']?.value]);
+  }, [activeSection, form, updateSkippedQuestion]);
 
   const generateFormCompleted = async (surveyStore: FormI[]) => {
     const body = surveyStore.map((section) =>
       FormHelper.getFormValues(section)
     );
-    if (!body[0][19]) {
-      // caso $dataConferimentoConsenso
-      body[0][19] = moment().format('DD-MM-YYYY');
-    }
     const res = await dispatch(
-      PostFormCompletedByCitizen(idQuestionarioCompilato, body, originalCF)
+      PostFormCompletedByCitizen(
+        idQuestionarioCompilato,
+        body,
+        codiceFiscale,
+        numeroDocumento
+      )
     );
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -401,7 +421,7 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
       color: 'primary',
       className: 'mr-4',
       text: 'Invia questionario',
-      disabled: !FormHelper.isValidForm(form),
+      disabled: !FormHelper.validateAnswer(form),
       onClick: () => {
         generateFormCompleted(surveyAnswersToSave);
       },
@@ -568,4 +588,4 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
 
 const form = newForm();
 
-export default withFormHandler({ form }, CompileSurvey);
+export default withFormHandler({form}, CompileSurvey);

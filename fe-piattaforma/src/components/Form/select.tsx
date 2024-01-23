@@ -81,14 +81,14 @@ const Select: React.FC<SelectI> = (props) => {
   }, [value, options]);
 
   /*
-  useEffect(() => {
-    if (options?.length === 1) {
-      // if only one option, prefill select
-      if (options[0].value !== selectedOption?.value)
-        setSelectedOption(options[0]);
-    }
-  }, [options]);
-  */
+      useEffect(() => {
+        if (options?.length === 1) {
+          // if only one option, prefill select
+          if (options[0].value !== selectedOption?.value)
+            setSelectedOption(options[0]);
+        }
+      }, [options]);
+      */
 
   const handleChange = (option: OptionType) => {
     setSelectedOption(option);
@@ -130,7 +130,10 @@ const Select: React.FC<SelectI> = (props) => {
         value={selectedOption}
         menuPlacement={position}
         color='primary'
-        className={clsx(value && !isDisabled && 'border-select-value')}
+        className={clsx(
+          (value && !isDisabled ? 'border-select-value' : '') ||
+            (isDisabled ? 'deleteArrowInSelect' : '')
+        )}
         classNamePrefix={clsx(
           shortDropdownMenu ? 'bootstrap-select-short' : 'bootstrap-select'
         )}

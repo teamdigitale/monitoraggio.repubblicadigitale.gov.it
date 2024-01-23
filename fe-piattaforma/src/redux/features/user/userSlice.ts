@@ -106,12 +106,12 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setUserContext: (state, action: PayloadAction<any>) => {
+      const {payload} = action;
       state.user = {
-        ...action.payload,
-        ruoli: undefined,
+        ...payload
       };
-      state.ruoli = action.payload.ruoli;
-      // setSessionValues('user', state.user);
+      state.ruoli = payload.ruoli;
+      setSessionValues('user', state.user);
     },
     setUserProfile: (state, action: PayloadAction<any>) => {
       const payload = { ...action.payload, saveSession: undefined };
@@ -152,7 +152,6 @@ export const userSlice = createSlice({
       if (isActiveProvisionalLogin) {
         setSessionValues('auth', 'fguhbjinokj8765d578t9yvghugyftr646tg');
       }
-
       state.isLogged = true;
     },
     logout: (state) => {
