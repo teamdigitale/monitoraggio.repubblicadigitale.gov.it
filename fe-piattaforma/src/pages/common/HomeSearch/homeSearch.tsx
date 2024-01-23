@@ -1,13 +1,8 @@
 import clsx from 'clsx';
 import { Container } from 'design-react-kit';
-import React, { /* useEffect, */ useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import {
-  Accordion,
-  CardCommunity,
-  EmptySection,
-  SearchBar,
-} from '../../../components';
+import { Accordion, CardCommunity, EmptySection, SearchBar } from '../../../components';
 import CardDocument from '../../../components/CardDocument/cardDocument';
 import CardShowcase from '../../../components/CardShowcase/cardShowcase';
 import PageTitle from '../../../components/PageTitle/pageTitle';
@@ -22,7 +17,7 @@ import { useAppSelector } from '../../../redux/hooks';
 import './homeSearch.scss';
 
 const PageTitleMock = {
-  title: 'Cerca su bacheca, community e documenti',
+  title: 'Cerca su bacheca, forum e documenti',
 };
 /* const PageTitleMobileMock = {
   title: 'Cerca',
@@ -97,18 +92,18 @@ const HomeSearch = () => {
                     </div>
                   ))
                 ) : (
-                  <EmptySection title='Non ci sono news' />
+                  <EmptySection title='Non ci sono annunci' />
                 )}
               </div>
             </Accordion>
             <Accordion
-              title='Community'
+              title='Forum'
               totElem={topicsList.length}
               iconLeft={false}
             >
               <div className='row'>
                 {topicsList.length ? (
-                  topicsList.map((communityElement, i) => (
+                  topicsList.map((forumElement, i) => (
                     <div
                       key={i}
                       className={clsx(
@@ -119,11 +114,11 @@ const HomeSearch = () => {
                         'align-cards'
                       )}
                     >
-                      <CardCommunity {...communityElement} />
+                      <CardCommunity {...forumElement} />
                     </div>
                   ))
                 ) : (
-                  <EmptySection title='Non ci sono topic' />
+                  <EmptySection title='Non ci sono argomenti' />
                 )}
               </div>
             </Accordion>

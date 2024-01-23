@@ -28,6 +28,7 @@ import {
 import useGuard from '../../hooks/guard';
 import './ForumLayout.scss';
 import { ForumCardsI } from '../CardShowcase/cardShowcase';
+import { usePathContent } from '../../utils/functionHelper';
 
 export interface ForumLayoutI {
   dropdowns?: DropdownFilterI[];
@@ -38,10 +39,11 @@ export interface ForumLayoutI {
   iconCtaToolCollaboration?: string;
   isSubtitle?: boolean;
   sectionTitle?: string;
+  subtitle?: string;
   sortFilter?: boolean;
   isDocument?: boolean;
   isNews?: boolean;
-  isCommunity?: boolean;
+  isForum?: boolean;
   title?: string;
   cta?: (() => void) | undefined;
   ctaToolCollaboration?: (() => void) | undefined;
@@ -63,8 +65,9 @@ const ForumLayout: React.FC<ForumLayoutI> = (props) => {
     sortFilter = false,
     isDocument = false,
     isNews = false,
-    isCommunity = false,
+    isForum = false,
     title,
+    subtitle,
     cta,
     ctaHref,
     textCta,
@@ -83,7 +86,7 @@ const ForumLayout: React.FC<ForumLayoutI> = (props) => {
   const device = useAppSelector(selectDevice);
   const dispatch = useDispatch();
   const { hasUserPermission } = useGuard();
-
+  const pathName = location.pathname;
   const [showChips, setShowChips] = useState<boolean>(false);
 
   useEffect(() => {
@@ -91,6 +94,8 @@ const ForumLayout: React.FC<ForumLayoutI> = (props) => {
       !!dropdowns?.length || !!Object.keys(filtersList || []).length
     );
   }, [dropdowns, filtersList]);
+
+  const { description } = usePathContent(pathName);
 
   const getFilterLabel = (key: string) => {
     // TODO update keys when API integration is done
@@ -215,8 +220,12 @@ const ForumLayout: React.FC<ForumLayoutI> = (props) => {
     <>
       <div className='lightgrey-bg-b4 py-4'>
         {/* TITOLO */}
-        <PageTitle title={title} sectionInfo={sectionInfo} />
-        {/* SottoTitolo con cta e ctaTool */}
+        <PageTitle
+          title={title}
+          sectionInfo={sectionInfo}
+          subtitle={subtitle}
+        />
+
         <div
           className={clsx(
             'd-flex',
@@ -274,7 +283,7 @@ const ForumLayout: React.FC<ForumLayoutI> = (props) => {
                 onClick={cta}
                 data-testid='create-new-entity'
                 aria-label={`Crea ${
-                  isCommunity ? 'topic' : isDocument ? 'documento' : 'news'
+                  isForum ? 'topic' : isDocument ? 'documento' : 'news'
                 }`}
               >
                 {iconCta ? (
@@ -323,7 +332,7 @@ const ForumLayout: React.FC<ForumLayoutI> = (props) => {
                         id={e.id}
                         isDocument={isDocument}
                         isNews={isNews}
-                        isCommunity={isCommunity}
+                        isForum={isForum}
                         category_label={e.category_label}
                         date={e.date}
                         title={e.title}
@@ -349,6 +358,10 @@ const ForumLayout: React.FC<ForumLayoutI> = (props) => {
         )}
       >
         <div className='d-flex flex-column'>
+          <SectionTitle
+            title={description}
+            className='justify-content-start , pt-2'
+          />
           {dropdowns?.length ? (
             <div
               className={clsx(
@@ -386,7 +399,6 @@ const ForumLayout: React.FC<ForumLayoutI> = (props) => {
               <ButtonsBar buttons={buttonsList} />
             </div>
           )}
-
           <div
             className={clsx(
               showChips &&

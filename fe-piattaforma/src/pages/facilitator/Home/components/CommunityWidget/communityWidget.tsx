@@ -58,7 +58,7 @@ const CommunityWidget = () => {
   return (
     <div className='py-5'>
       <div className='container'>
-        <h2 className='h3 text-primary mb-3'>Community</h2>
+        <h2 className='h3 text-primary mb-3'>Forum</h2>
         {device.mediaIsPhone && <div className='title-border-box my-3' />}
         <div
           className={clsx(
@@ -77,7 +77,7 @@ const CommunityWidget = () => {
           </p>
           {!device.mediaIsPhone && (
             <Link className='btn btn-primary' role='button' to='/community'>
-              Vai ai topic
+              Vai agli argomenti
             </Link>
           )}
         </div>
@@ -129,7 +129,7 @@ const CommunityWidget = () => {
             </Slider>
           )
         ) : (
-          <EmptySection title='Non ci sono topic' />
+          <EmptySection title='Non ci sono argomenti' />
         )}
       </div>
       {device.mediaIsPhone && (

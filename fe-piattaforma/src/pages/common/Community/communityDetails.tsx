@@ -41,7 +41,7 @@ const CommunityDetails = () => {
 
   const getItemDetails = async () => {
     if (id && userId) {
-      const res = await dispatch(GetItemDetail(id, userId, 'community'));
+      const res = await dispatch(GetItemDetail(id, userId, 'forum'));
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       if (res) {
@@ -88,15 +88,15 @@ const CommunityDetails = () => {
     <Button
       onClick={() => navigate('/community', { replace: true })}
       className='px-0'
-      aria-label='vai alla community'
+      aria-label='vai al forum'
     >
       <Icon
         icon='it-chevron-left'
         color='primary'
-        aria-label='vai alla community'
+        aria-label='vai al forum'
         aria-hidden
       />
-      <span className='primary-color ml-1'>Vai alla community</span>
+      <span className='primary-color ml-1'>Vai al forum</span>
     </Button>
   );
 
@@ -104,7 +104,7 @@ const CommunityDetails = () => {
     await dispatch(DeleteComment(commentId, reason));
     if (id && userId) {
       dispatch(GetCommentsList(id, userId));
-      dispatch(GetItemDetail(id, userId, 'community'));
+      dispatch(GetItemDetail(id, userId, 'forum'));
     }
   };
 
@@ -120,7 +120,7 @@ const CommunityDetails = () => {
       {backButton}
       <SectionDetail
         {...topicDetails}
-        section='community'
+        section='forum'
         onDeleteClick={() =>
           dispatch(
             openModal({
@@ -128,7 +128,7 @@ const CommunityDetails = () => {
               payload: {
                 text: 'Confermi di voler eliminare questo contenuto?',
                 id: id,
-                entity: 'community',
+                entity: 'forum',
                 author: topicDetails.author,
                 textLabel: "Inserisci il motivo dell'eliminazione",
               },
@@ -147,13 +147,13 @@ const CommunityDetails = () => {
             openModal({
               id: 'report-modal',
               payload: {
-                entity: 'community',
+                entity: 'forum',
               },
             })
           )
         }
       />
-      {commentsList.length ? <CommentSection section='community' /> : null}
+      {commentsList.length ? <CommentSection section='forum' /> : null}
       {/* <div className='border-bottom-box-comments mt-5'></div>
       <div
         className={clsx(
@@ -175,7 +175,7 @@ const CommunityDetails = () => {
         onClose={() => dispatch(closeModal())}
         onConfirm={(payload: any) => {
           switch (payload.entity) {
-            case 'community':
+            case 'forum':
               onEntityDelete(payload.id, payload.reason);
               break;
             case 'comment':

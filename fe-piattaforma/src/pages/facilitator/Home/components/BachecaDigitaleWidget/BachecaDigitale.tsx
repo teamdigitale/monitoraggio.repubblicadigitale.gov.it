@@ -36,7 +36,7 @@ import { formFieldI } from '../../../../../utils/formHelper';
 import useGuard from '../../../../../hooks/guard';
 
 const BachecaCta = {
-  textCta: 'Crea news',
+  textCta: 'Crea annuncio',
   iconCta: 'it-plus',
 };
 
@@ -220,7 +220,8 @@ const BachecaDigitale = () => {
       <div>
         <ForumLayout
           title='Bacheca'
-          sectionTitle='Le news più popolari'
+          subtitle='Scopri gli annunci da non perdere rivolti alla community dei facilitatori.'
+          sectionTitle='Gli annunci più popolari'
           dropdowns={dropdowns}
           filtersList={filtersList}
           {...BachecaCta}
@@ -261,7 +262,7 @@ const BachecaDigitale = () => {
                   </div>
                 ))
               ) : (
-                <EmptySection title='Non ci sono news' />
+                <EmptySection title='Non ci sono annunci' />
               )}
             </div>
           </Container>

@@ -1,18 +1,18 @@
-import { Dispatch, Selector } from '@reduxjs/toolkit';
-import { hideLoader, showLoader } from '../../app/appSlice';
-import { RootState } from '../../../store';
+import {Dispatch, Selector} from '@reduxjs/toolkit';
+import {hideLoader, showLoader} from '../../app/appSlice';
+import {RootState} from '../../../store';
 import isEmpty from 'lodash.isempty';
 import API from '../../../../utils/apiHelper';
 import {
-  // setAuthorityGeneralInfo,
-  setAuthoritiesList,
-  setEntityFilterOptions,
-  setAuthorityDetails,
   resetAuthorityDetails,
+  setAuthoritiesList,
+  setAuthorityDetails,
+  setEntityFilterOptions,
   setHeadquarterDetails,
 } from '../administrativeAreaSlice';
-import { mapOptions } from '../../../../utils/common';
-import { getUserHeaders } from '../../user/userThunk';
+import {mapOptions} from '../../../../utils/common';
+import {getUserHeaders} from '../../user/userThunk';
+
 // import { formTypes } from '../../../../pages/administrator/AdministrativeArea/Entities/utils';
 
 export interface AuthoritiesLightI {
@@ -115,7 +115,7 @@ export const GetFilterValuesEnti =
         idProgramma,
         idEnte,
       };
-      const entityFilterEndpoint = `/ente/${dropdownType}/dropdown`;
+      const entityFilterEndpoint = `${process?.env?.ENTE}/ente/${dropdownType}/dropdown`;
       const res = await API.post(entityFilterEndpoint, body);
       if (res?.data) {
         dispatch(
@@ -169,9 +169,9 @@ export const GetAuthorityDetail =
 
       let res;
       if (light) {
-        res = await API.get(`/ente/light/${authorityId}`);
+        res = await API.get(`${process?.env?.ENTE}/ente/light/${authorityId}`);
       } else {
-        res = await API.post(`/ente/${authorityId}`, {
+        res = await API.post(`${process?.env?.ENTE}/ente/${authorityId}`, {
           idProgramma,
           idProgetto,
           idEnte,
@@ -204,8 +204,8 @@ export const GetAuthorityManagerDetail =
       const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
         getUserHeaders();
       const body = {
-        cfUtente: codiceFiscale,
-        codiceRuolo,
+        cfUtenteLoggato: codiceFiscale,
+        codiceRuoloUtenteLoggato: codiceRuolo,
         idProgramma,
         idProgetto,
         idEnte,
@@ -214,9 +214,15 @@ export const GetAuthorityManagerDetail =
       let res;
 
       if (entity === 'programma') {
-        res = await API.post(`/ente/gestoreProgramma/${entityId}`, body);
+        res = await API.post(
+          `${process?.env?.ENTE}ente/gestoreProgramma/${entityId}`,
+          body
+        );
       } else {
-        res = await API.post(`/ente/gestoreProgetto/${entityId}`, body);
+        res = await API.post(
+          `${process?.env?.ENTE}ente/gestoreProgetto/${entityId}`,
+          body
+        );
       }
 
       if (res.data) {
@@ -258,7 +264,7 @@ export const GetAuthoritiesBySearch =
       dispatch(showLoader());
       dispatch({ ...GetAuthoritiesBySearchAction });
 
-      const res = await API.get(`/ente/cerca?criterioRicerca=${search}`);
+      const res = await API.get(`${process?.env?.ENTE}/ente/cerca?criterioRicerca=${search}`);
 
       if (search && res.data) {
         dispatch(setAuthoritiesList(res.data));
@@ -288,7 +294,7 @@ export const CreateManagerAuthority =
       );
 
       if (body) {
-        const res = await API.post(`/ente`, {
+        const res = await API.post(`${process?.env?.ENTE}/ente`, {
           ...body,
         });
         if (res) {
@@ -334,7 +340,7 @@ export const UpdateManagerAuthority =
         let res;
         if (enteGestoreId) {
           res = await API.put(
-            `/ente/${enteGestoreId}/${
+            `${process?.env?.ENTE}/ente/${enteGestoreId}/${
               entity === 'programma' ? 'gestoreProgramma' : 'gestoreProgetto'
             }/${entityId}`,
             {
@@ -348,7 +354,7 @@ export const UpdateManagerAuthority =
           return res;
         } else {
           res = await API.put(
-            `/ente/${authorityDetail.id}/${
+            `${process?.env?.ENTE}/ente/${authorityDetail.id}/${
               entity === 'programma' ? 'gestoreProgramma' : 'gestoreProgetto'
             }/${entityId}`,
             {
@@ -394,7 +400,7 @@ export const RemoveManagerAuthority =
       if (authorityId && entityId) {
         const { idProgramma, idProgetto, idEnte } = getUserHeaders();
         await API.delete(
-          `/ente/${authorityId}/cancellagestore${entity}/${entityId}`,
+          `${process?.env?.ENTE}/ente/${authorityId}/cancellagestore${entity}/${entityId}`,
           {
             data: { idProgramma, idProgetto, idEnte },
           }
@@ -422,7 +428,7 @@ export const GetPartnerAuthorityDetail =
         idEnte,
       };
       const res = await API.post(
-        `/ente/partner/${projectId}/${authorityId}`,
+        `${process?.env?.ENTE}/ente/partner/${projectId}/${authorityId}`,
         body
       );
 
@@ -464,7 +470,7 @@ export const CreatePartnerAuthority =
         if (res) {
           const { idProgramma, idProgetto, idEnte } = getUserHeaders();
           res = await API.put(
-            `/ente/partner/associa/${res.data.id}/progetto/${entityId}`,
+            `${process?.env?.ENTE}/ente/partner/associa/${res.data.id}/progetto/${entityId}`,
             { idProgramma, idProgetto, idEnte }
           );
         }
@@ -483,14 +489,14 @@ export const UpdatePartnerAuthority =
       dispatch({ ...UpdateAuthorityAction });
       if (authorityDetail) {
         const { idProgramma, idProgetto, idEnte } = getUserHeaders();
-        await API.put(`/ente/${authorityDetail.id}`, {
+        await API.put(`${process?.env?.ENTE}/ente/${authorityDetail.id}`, {
           ...authorityDetail,
           idProgramma,
           idProgetto,
           idEnte,
         });
         await API.put(
-          `/ente/partner/associa/${authorityDetail.id}/progetto/${entityId}`,
+          `${process?.env?.ENTE}/ente/partner/associa/${authorityDetail.id}/progetto/${entityId}`,
           { idProgramma, idProgetto, idEnte }
         );
       }
@@ -510,7 +516,7 @@ export const RemovePartnerAuthority =
       if (authorityId && entityId) {
         const { idProgramma, idProgetto, idEnte } = getUserHeaders();
         await API.delete(
-          `/ente/${authorityId}/cancellaentepartner/${entityId}`,
+          `${process?.env?.ENTE}/ente/${authorityId}/cancellaentepartner/${entityId}`,
           {
             data: { idProgramma, idProgetto, idEnte },
           }
@@ -531,7 +537,7 @@ export const TerminatePartnerAuthority =
 
       if (authorityId && entityId) {
         const { idProgramma, idProgetto, idEnte } = getUserHeaders();
-        await API.put(`/ente/${authorityId}/terminaentepartner/${entityId}`, {
+        await API.put(`${process?.env?.ENTE}/ente/${authorityId}/terminaentepartner/${entityId}`, {
           idProgramma,
           idProgetto,
           idEnte,
@@ -567,9 +573,9 @@ export const AssignManagerAuthorityReferentDelegate =
       const { idProgramma, idProgetto, idEnte } = getUserHeaders();
       const endpoint =
         entity === 'programma'
-          ? '/ente/associa/referenteDelegato/gestoreProgramma'
+          ? `${process?.env?.ENTE}ente/associa/referenteDelegato/gestoreProgramma`
           : entity === 'progetto'
-          ? '/ente/associa/referenteDelegato/gestoreProgetto'
+          ? `${process?.env?.ENTE}ente/associa/referenteDelegato/gestoreProgetto`
           : '';
       let body: { [key: string]: string | undefined } = {
         idProgramma,
@@ -647,7 +653,7 @@ export const AssignPartnerAuthorityReferentDelegate =
       dispatch(showLoader());
       dispatch({ ...AssignReferentDelegateAction });
       const { idProgramma, idProgetto, idEnte } = getUserHeaders();
-      const endpoint = '/ente/associa/referenteDelegato/partner';
+      const endpoint = '${process?.env?.ENTE}/ente/associa/referenteDelegato/partner';
       if (userDetail?.id) {
         userDetail.codiceFiscale &&
           needToUpdate &&
@@ -725,7 +731,7 @@ export const RemoveReferentDelegate =
         case 'DEPP':
         case 'REPP':
           await API.post(
-            '/ente/cancellaOTerminaAssociazione/referenteDelegato/partner',
+            `${process?.env?.ENTE}/ente/cancellaOTerminaAssociazione/referenteDelegato/partner`,
             {
               idProgramma,
               idProgetto,
@@ -741,7 +747,7 @@ export const RemoveReferentDelegate =
         case 'DEG':
         case 'REG':
           await API.post(
-            '/ente/cancellaOTerminaAssociazione/referenteDelegato/gestoreProgramma',
+            `${process?.env?.ENTE}/ente/cancellaOTerminaAssociazione/referenteDelegato/gestoreProgramma`,
             {
               idProgramma,
               idProgetto,
@@ -757,7 +763,7 @@ export const RemoveReferentDelegate =
         case 'DEGP':
         case 'REGP':
           await API.post(
-            '/ente/cancellaOTerminaAssociazione/referenteDelegato/gestoreProgetto',
+            `${process?.env?.ENTE}/ente/cancellaOTerminaAssociazione/referenteDelegato/gestoreProgetto`,
             {
               idProgramma,
               idProgetto,
@@ -791,7 +797,7 @@ export const UpdateAuthorityDetails =
       dispatch(showLoader());
       dispatch({ ...UpdateAuthorityDetailsAction });
       const { idProgramma, idProgetto, idEnte } = getUserHeaders();
-      await API.put(`/ente/${authorityId}`, {
+      await API.put(`${process?.env?.ENTE}/ente/${authorityId}`, {
         ...payload,
         idProgramma,
         idProgetto,

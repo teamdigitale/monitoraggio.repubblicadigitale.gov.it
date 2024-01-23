@@ -238,6 +238,7 @@ const Documents = () => {
       <div>
         <ForumLayout
           title='Documenti'
+          subtitle='Consulta le risorse utili per gestire i servizi a cui partecipi e collabora in linea per creare nuovi documenti.'
           sectionTitle='I documenti più scaricati'
           sectionInfo
           dropdowns={dropdowns}

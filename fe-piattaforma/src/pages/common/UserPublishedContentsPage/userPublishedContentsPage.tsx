@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { Container } from 'design-react-kit';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Accordion, CardCommunity, EmptySection } from '../../../components';
+import { Accordion, EmptySection, CardCommunity } from '../../../components';
 import CardDocument from '../../../components/CardDocument/cardDocument';
 import CardShowcase from '../../../components/CardShowcase/cardShowcase';
 import PageTitle from '../../../components/PageTitle/pageTitle';
@@ -17,7 +17,7 @@ import { useAppSelector } from '../../../redux/hooks';
 import '../HomeSearch/homeSearch.scss';
 
 const PageTitleMock = {
-  title: 'I miei contenuti pubblicati',
+  title: 'I miei contenuti',
 };
 
 const UserPublishedContentsPage = () => {
@@ -29,12 +29,15 @@ const UserPublishedContentsPage = () => {
 
   useEffect(() => {
     dispatch(GetItemsByUser());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div>
       <div className={clsx(device.mediaIsPhone && 'pl-4')}>
-        <PageTitle {...PageTitleMock} />
+        <PageTitle
+          subtitle='Gestisci gli annunci, gli argomenti e i documenti che hai pubblicato.'
+          {...PageTitleMock}
+        />
       </div>
       <Container className='mb-5'>
         <Accordion
@@ -50,24 +53,24 @@ const UserPublishedContentsPage = () => {
                 </div>
               ))
             ) : (
-              <EmptySection title='Non ci sono news' />
+              <EmptySection title='Non ci sono annunci' />
             )}
           </div>
         </Accordion>
         <Accordion
-          title='Community'
+          title='Forum'
           totElem={topicsList.length}
           userPublishedContent
         >
           <div className='row'>
             {topicsList.length ? (
-              topicsList.map((communityElement, i) => (
+              topicsList.map((forumElement, i) => (
                 <div key={i} className={clsx('my-2', 'mx-2', 'align-cards')}>
-                  <CardCommunity {...communityElement} />
+                  <CardCommunity {...forumElement} />
                 </div>
               ))
             ) : (
-              <EmptySection title='Non ci sono topic' />
+              <EmptySection title='Non ci sono argomenti' />
             )}
           </div>
         </Accordion>
