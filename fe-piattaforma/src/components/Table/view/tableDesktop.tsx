@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import {
-  Icon,
-  Table as TableKit,
   Button,
   FormGroup,
+  Icon,
   Label,
+  Table as TableKit,
   UncontrolledTooltip,
 } from 'design-react-kit';
 import clsx from 'clsx';
@@ -13,6 +13,7 @@ import { CRUDActionTypes } from '../../../utils/common';
 import Form from '../../Form/form';
 import Input from '../../Form/input';
 import EmptySection from '../../EmptySection/emptySection';
+import { calculatePaginationBounds } from '../../../utils/pagination.utils';
 
 const TableDesktop: React.FC<TableI> = (props) => {
   const {
@@ -27,10 +28,17 @@ const TableDesktop: React.FC<TableI> = (props) => {
     rolesTable = false,
     onActionRadio,
     totalCounter,
+    pageNumber,
     citizenTable,
+    pageSize,
     succesCSV,
   } = props;
   const [rowChecked, setRowChecked] = useState<string>('');
+  const { displayItem } = calculatePaginationBounds(
+    pageNumber,
+    pageSize,
+    totalCounter
+  );
 
   return values?.length ? (
     <>
@@ -280,10 +288,10 @@ const TableDesktop: React.FC<TableI> = (props) => {
           ))}
         </tbody>
       </TableKit>
-      {totalCounter ? (
-        <div
-          className={clsx('text-right', 'total-counter-text-color')}
-        >{`${values.length} di ${totalCounter}`}</div>
+      {totalCounter && pageNumber ? (
+        <div className={clsx('text-right', 'total-counter-text-color')}>
+          {displayItem}
+        </div>
       ) : null}
     </>
   ) : (

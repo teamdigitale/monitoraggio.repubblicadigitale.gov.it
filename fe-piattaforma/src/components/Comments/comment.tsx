@@ -44,7 +44,7 @@ export interface CommentI {
   isAnswer?: boolean;
   thread?: boolean;
   noBorder?: boolean;
-  section: 'board' | 'community' | 'documents';
+  section: 'board' | 'forum' | 'documents';
   onDeleteComment?: () => void;
   onEditComment?: () => void;
   reported: 0 | 1;
@@ -134,7 +134,7 @@ const Comment: React.FC<CommentI> = (props) => {
       hasUserPermission([
         section === 'board'
           ? 'del.news'
-          : section === 'community'
+          : section === 'forum'
           ? 'del.topic'
           : section === 'documents'
           ? 'del.doc'
@@ -148,7 +148,7 @@ const Comment: React.FC<CommentI> = (props) => {
       hasUserPermission([
         section === 'board'
           ? 'upd.news'
-          : section === 'community'
+          : section === 'forum'
           ? 'upd.topic'
           : section === 'documents'
           ? 'upd.doc'
@@ -162,7 +162,7 @@ const Comment: React.FC<CommentI> = (props) => {
       hasUserPermission([
         section === 'board'
           ? 'rprt.news'
-          : section === 'community'
+          : section === 'forum'
           ? 'rprt.topic'
           : section === 'documents'
           ? 'rprt.doc'
@@ -327,20 +327,20 @@ const Comment: React.FC<CommentI> = (props) => {
           replies={
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
-            section === 'community' && replies !== '[]'
+            section === 'forum' && replies !== '[]'
               ? replies?.length
               : undefined
           }
-          views={section === 'community' ? views : undefined}
+          views={section === 'forum' ? views : undefined}
           onShowReplies={
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
-            section === 'community' && replies !== '[]' && replies?.length
+            section === 'forum' && replies !== '[]' && replies?.length
               ? () => setShowReplies((prev) => !prev)
               : undefined
           }
           isReply={isReply}
-          showReplies={section === 'community' ? showReplies : undefined}
+          showReplies={section === 'forum' ? showReplies : undefined}
           likes={likes}
           user_like={user_like}
           onLike={async () => {
@@ -355,7 +355,7 @@ const Comment: React.FC<CommentI> = (props) => {
             }
           }}
           onComment={
-            section === 'community'
+            section === 'forum'
               ? () =>
                   dispatch(
                     openModal({

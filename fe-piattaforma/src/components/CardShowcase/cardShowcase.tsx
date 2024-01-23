@@ -23,7 +23,7 @@ export interface CommentI {
 export interface ForumCardsI extends CardProps {
   id?: string | undefined;
   title?: string | undefined;
-  community?: string | undefined;
+  forum?: string | undefined;
   description?: string | undefined;
   entity?: string | undefined;
   colorLeft?: string | undefined;
@@ -41,7 +41,7 @@ export interface ForumCardsI extends CardProps {
   downloads?: number | undefined;
   isDocument?: boolean | undefined;
   isNews?: boolean | undefined;
-  isCommunity?: boolean | undefined;
+  isForum?: boolean | undefined;
 }
 
 const CardShowcase: React.FC<ForumCardsI> = (props) => {

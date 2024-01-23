@@ -1,10 +1,10 @@
 import {
   Button,
-  Icon,
-  DropdownMenu,
-  LinkList,
   Dropdown,
+  DropdownMenu,
   DropdownToggle,
+  Icon,
+  LinkList,
 } from 'design-react-kit';
 import React, { memo, useEffect, useState } from 'react';
 import './notification.scss';
@@ -108,7 +108,7 @@ const Notification: React.FC<NotificationI> = (props) => {
     if (
       [
         'board_report',
-        'community_report',
+        'forum_report',
         'document_report',
         'comment_report',
       ].includes(action)
@@ -119,7 +119,7 @@ const Notification: React.FC<NotificationI> = (props) => {
         case 'board_item':
           navigate(`/bacheca/${node_id}`);
           break;
-        case 'community_item':
+        case 'forum_item':
           navigate(`/community/${node_id}`);
           break;
         case 'document_item':

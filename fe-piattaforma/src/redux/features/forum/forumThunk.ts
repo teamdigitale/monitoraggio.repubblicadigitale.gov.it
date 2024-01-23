@@ -550,7 +550,7 @@ export const GetItemsBySearch =
           setTopicsList(
             (res[1]?.data?.data?.items || []).filter(
               ({ item_type }: { item_type: string }) =>
-                item_type === 'community_item'
+                item_type === 'forum_item'
             )
           )
         );
@@ -585,7 +585,7 @@ export const GetItemsByUser = () => async (dispatch: Dispatch) => {
         'GET'
       ),
       proxyCall(
-        `/user/${idUtente}/items?item_type=community_item&page=0&items_per_page=24`,
+        `/user/${idUtente}/items?item_type=forum_item&page=0&items_per_page=24`,
         'GET'
       ),
       proxyCall(
@@ -604,7 +604,7 @@ export const GetItemsByUser = () => async (dispatch: Dispatch) => {
       dispatch(
         setTopicsList(
           (res[1]?.data.data.items || []).filter(
-            ({ item_type }: { item_type: string }) => item_type === 'community_item'
+            ({ item_type }: { item_type: string }) => item_type === 'forum_item'
           )
         )
       );

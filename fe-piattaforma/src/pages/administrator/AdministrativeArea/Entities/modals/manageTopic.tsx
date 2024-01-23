@@ -26,12 +26,14 @@ import {
 } from '../../../../../redux/features/forum/forumSlice';
 
 const modalId = 'topicModal';
+
 interface ManageTopicFormI {
   formDisabled?: boolean;
   creation?: boolean;
 }
 
 interface ManageTopicI extends withFormHandlerProps, ManageTopicFormI {}
+
 const ManageTopic: React.FC<ManageTopicI> = ({
   formDisabled,
   creation = false,
@@ -93,13 +95,13 @@ const ManageTopic: React.FC<ManageTopicI> = ({
                 // @ts-ignore
                 !newFormValues?.attachment?.data,
             },
-            'community'
+            'forum'
           )
         );
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         if (res) {
-          userId && dispatch(GetItemDetail(id, userId, 'community'));
+          userId && dispatch(GetItemDetail(id, userId, 'forum'));
           setNewFormValues({});
           setStep('confirm');
         }
@@ -118,7 +120,7 @@ const ManageTopic: React.FC<ManageTopicI> = ({
                 ? 'Ente gestore di programma'
                 : '-',
             },
-            'community'
+            'forum'
           )
         );
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment

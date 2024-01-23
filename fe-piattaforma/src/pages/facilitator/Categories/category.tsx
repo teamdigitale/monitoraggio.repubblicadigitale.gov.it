@@ -61,16 +61,13 @@ const Category = () => {
   ]);
 
   const getCategoryLabel = (
-    category:
-      | 'document_categories'
-      | 'board_categories'
-      | 'community_categories'
+    category: 'document_categories' | 'board_categories' | 'forum_categories'
   ) => {
     switch (category) {
       case 'board_categories':
         return 'Bacheca';
-      case 'community_categories':
-        return 'Community';
+      case 'forum_categories':
+        return 'Forum';
       case 'document_categories':
         return 'Documenti';
     }
@@ -169,8 +166,8 @@ const Category = () => {
           value: 'board_categories',
         },
         {
-          label: 'Community',
-          value: 'community_categories',
+          label: 'Forum',
+          value: 'forum_categories',
         },
         {
           label: 'Documenti',

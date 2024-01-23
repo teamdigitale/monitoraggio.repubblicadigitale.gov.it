@@ -19,11 +19,11 @@ const CardSlider: React.FC<ForumCardsI> = (props) => {
     views = '0',
     isDocument = false,
     isNews = false,
-    isCommunity = false,
+    isForum = false,
     /*  rightArrow,
-    leftArrow,
-    increment,
-    decrement, */
+            leftArrow,
+            increment,
+            decrement, */
   } = props;
   const navigate = useNavigate();
 
@@ -31,7 +31,7 @@ const CardSlider: React.FC<ForumCardsI> = (props) => {
     if (id) {
       if (isNews) {
         navigate(`/bacheca/${id}`);
-      } else if (isCommunity) {
+      } else if (isForum) {
         navigate(`/community/${id}`);
       } else if (isDocument) {
         navigate(`/documenti/${id}`);
