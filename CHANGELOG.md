@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.21.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.20.0...1.21.0) (2024-01-24)
+
+
+### Features
+
+* **fe-piattaforma:** updates 20240124 fix-drupal ([310c489](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/310c489378716f3289437cec767a5f10c6182405))
+
 ## [1.20.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.19.0...1.20.0) (2024-01-24)
 
 
