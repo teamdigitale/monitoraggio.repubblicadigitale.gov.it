@@ -1,5 +1,19 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.20.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.19.0...1.20.0) (2024-01-24)
+
+
+### Features
+
+* **be:** updates 20240124 primo-rilascio-be ([95a0634](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/95a0634fff29255eb6f6aa818ac34911a51402f6))
+* **fe:** updates 20240123 fe-fix ([46574c6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/46574c6cbbbdf969a5f2815503d9b674dde55c3b))
+* **fe:** updates 20240123 secondo-rilascio-fe ([0b604dd](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0b604dd17ab693ce7fa4f7d4687ddd6d02645f77))
+* **fe:** updates 20240123 primo-rilascio-fe ([89be642](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/89be6427cdce6510082338aa7b97c5400610dcf4))
+* **fe-piattaforma:** fe updates 20230125 ([b19e31e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b19e31e0e62abb0f7d3ebcb28c4982a3eb6023f4))
+* **fe-piattaforma:** fe updates 20230125 ([e12ad43](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e12ad439d0b4cd0a29745192631c335224f403aa))
+* **fe-piattaforma:** fe updates 20230118 ([deb089d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/deb089db91190b745aa46d9357545a682fe36d2a))
+* **fe-piattaforma:** fe updates 20230118 ([b0d050b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b0d050bcf29116b9ae4a0ac0ea14802bcbae2207))
+
 ## [1.19.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.18.0...1.19.0) (2023-01-18)
 
 
