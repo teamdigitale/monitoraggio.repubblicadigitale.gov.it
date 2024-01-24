@@ -14,6 +14,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
@@ -34,19 +37,21 @@ public class TipologiaServizioEntity implements Serializable {
 
 	@Column(name = "TITOLO", nullable = true)
 	private String titolo;
-	
+
 	@JsonIgnore
 	@ManyToOne(targetEntity = ServizioEntity.class)
 	@JoinColumn(name = "SERVIZIO_ID", referencedColumnName = "ID")
 	private ServizioEntity servizio;
-	
+
 	@JsonIgnore
 	@Temporal(value = TemporalType.TIMESTAMP)
+	@CreatedDate
 	@Column(name = "DATA_ORA_CREAZIONE")
 	private Date dataOraCreazione;
 
 	@JsonIgnore
 	@Temporal(value = TemporalType.TIMESTAMP)
+	@LastModifiedDate
 	@Column(name = "DATA_ORA_AGGIORNAMENTO")
 	private Date dataOraAggiornamento;
 }

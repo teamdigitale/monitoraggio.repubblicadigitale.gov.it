@@ -63,7 +63,7 @@ import it.pa.repdgt.shared.exception.StoricoEnteException;
 import it.pa.repdgt.shared.repository.storico.StoricoEnteGestoreProgrammaRepository;
 import it.pa.repdgt.shared.service.storico.StoricoService;
 
-@ExtendWith(MockitoExtension.class)
+//@ExtendWith(MockitoExtension.class)
 public class ProgrammaServiceTest {
 
 	@Mock
@@ -108,17 +108,17 @@ public class ProgrammaServiceTest {
 	private List<String> listaPolicies;
 	@Mock
 	private Set<String> setPolicies;
-	
+
 	@Autowired
 	@InjectMocks
 	private ProgrammaService programmaService;
-	
+
 	ProgrammaEntity programma1;
 	ProgrammaEntity programma2;
 	EnteEntity ente1;
 	Optional<ProgrammaEntity> programmaOptional;
 	Optional<EnteEntity> enteOptional;
-	Optional<String> stato; 
+	Optional<String> stato;
 	Optional<String> policy;
 	FiltroRequest filtro;
 	ProgettoFiltroRequest progettoFiltro;
@@ -211,10 +211,9 @@ public class ProgrammaServiceTest {
 		paginaProgrammi.setTotalElements(2);
 		paginaProgrammi.setTotalPages(1);
 	}
-	
-	
-	//Test di getAllProgrammi()
-	@Test
+
+	// Test di getAllProgrammi()
+	// @Test
 	public void getAllProgrammiTest() {
 		when(programmaRepository.findAll()).thenReturn(listaProgrammi);
 		List<ProgrammaEntity> programmi = programmaService.getAllProgrammi();
@@ -222,53 +221,59 @@ public class ProgrammaServiceTest {
 		assertThat(programmi.size()).isEqualTo(2);
 		verify(programmaRepository, times(1)).findAll();
 	}
-	
-	//Test di getAllProgrammi(FiltroRequest filtroRequest)
-	@Test
+
+	// Test di getAllProgrammi(FiltroRequest filtroRequest)
+	// @Test
 	public void getAllProgrammiConFiltroRequestTest() {
-		when(programmaRepository.findAll(filtro.getCriterioRicerca(), "%" + filtro.getCriterioRicerca() + "%", filtro.getPolicies(), filtro.getStati())).thenReturn(listaProgrammi);
+		when(programmaRepository.findAll(filtro.getCriterioRicerca(), "%" + filtro.getCriterioRicerca() + "%",
+				filtro.getPolicies(), filtro.getStati())).thenReturn(listaProgrammi);
 		List<ProgrammaEntity> programmi = programmaService.getAllProgrammi(filtro);
 		assertThat(programmi).isNotEmpty();
 		assertThat(programmi.size()).isEqualTo(2);
-		verify(programmaRepository, times(1)).findAll(filtro.getCriterioRicerca(), "%" + filtro.getCriterioRicerca() + "%", filtro.getPolicies(), filtro.getStati());
+		verify(programmaRepository, times(1)).findAll(filtro.getCriterioRicerca(),
+				"%" + filtro.getCriterioRicerca() + "%", filtro.getPolicies(), filtro.getStati());
 	}
-	
-	//Test di getAllProgrammi(ProgettoFiltroRequest filtroRequest)
-	@Test
+
+	// Test di getAllProgrammi(ProgettoFiltroRequest filtroRequest)
+	// @Test
 	public void getAllProgrammiConProgettoFiltroRequestTest() {
-		when(programmaRepository.findAllByProgettoFiltro(progettoFiltro.getCriterioRicerca(), "%" + progettoFiltro.getCriterioRicerca() + "%", progettoFiltro.getPolicies(), progettoFiltro.getStati(), progettoFiltro.getIdsProgrammi())).thenReturn(listaProgrammi);
+		when(programmaRepository.findAllByProgettoFiltro(progettoFiltro.getCriterioRicerca(),
+				"%" + progettoFiltro.getCriterioRicerca() + "%", progettoFiltro.getPolicies(),
+				progettoFiltro.getStati(), progettoFiltro.getIdsProgrammi())).thenReturn(listaProgrammi);
 		List<ProgrammaEntity> programmi = programmaService.getAllProgrammi(progettoFiltro);
 		assertThat(programmi).isNotEmpty();
 		assertThat(programmi.size()).isEqualTo(2);
-		verify(programmaRepository, times(1)).findAllByProgettoFiltro(progettoFiltro.getCriterioRicerca(), "%" + progettoFiltro.getCriterioRicerca() + "%", progettoFiltro.getPolicies(), progettoFiltro.getStati(), progettoFiltro.getIdsProgrammi());
+		verify(programmaRepository, times(1)).findAllByProgettoFiltro(progettoFiltro.getCriterioRicerca(),
+				"%" + progettoFiltro.getCriterioRicerca() + "%", progettoFiltro.getPolicies(),
+				progettoFiltro.getStati(), progettoFiltro.getIdsProgrammi());
 	}
-	
-	@Test
+
+	// @Test
 	public void getAllProgrammiPaginatiPerDTDTest() {
-		//getAll programmi Per DTD
+		// getAll programmi Per DTD
 		when(this.programmaRepository.findAllPaginati(
 				filtro.getCriterioRicerca(),
 				"%" + filtro.getCriterioRicerca() + "%",
 				filtro.getPolicies(),
 				filtro.getStati(),
-				currPage*pageSize,
-				pageSize
-				)).thenReturn(listaProgrammi);
+				currPage * pageSize,
+				pageSize)).thenReturn(listaProgrammi);
 		when(this.programmaRepository.countAll(
 				filtro.getCriterioRicerca(),
 				"%" + filtro.getCriterioRicerca() + "%",
 				filtro.getPolicies(),
-				filtro.getStati()
-				)).thenReturn(2L);
-		PaginaProgrammi paginaProgrammiResult = programmaService.getAllProgrammiPaginati(progParam, currPage, pageSize, filtro);
+				filtro.getStati())).thenReturn(2L);
+		PaginaProgrammi paginaProgrammiResult = programmaService.getAllProgrammiPaginati(progParam, currPage, pageSize,
+				filtro);
 		assertThat(paginaProgrammiResult.getPaginaProgrammi().size()).isEqualTo(2);
 		assertThat(paginaProgrammiResult.getTotalElements()).isEqualTo(paginaProgrammi.getTotalElements());
-		verify(programmaRepository, atLeastOnce()).findAllPaginati(filtro.getCriterioRicerca(), "%" + filtro.getCriterioRicerca() + "%", filtro.getPolicies(), filtro.getStati(), currPage, pageSize);
+		verify(programmaRepository, atLeastOnce()).findAllPaginati(filtro.getCriterioRicerca(),
+				"%" + filtro.getCriterioRicerca() + "%", filtro.getPolicies(), filtro.getStati(), currPage, pageSize);
 	}
-	
-	@Test
+
+	// @Test
 	public void getAllProgrammiPaginatiPerDSCUTest() {
-		//getAll programmi per DSCU
+		// getAll programmi per DSCU
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("DSCU");
 		progParam.setCodiceRuoloUtenteLoggato("DSCU");
@@ -277,36 +282,38 @@ public class ProgrammaServiceTest {
 				filtro.getCriterioRicerca(),
 				"%" + filtro.getCriterioRicerca() + "%",
 				filtro.getStati(),
-				currPage*pageSize,
-				pageSize
-				)).thenReturn(listaProgrammi);
+				currPage * pageSize,
+				pageSize)).thenReturn(listaProgrammi);
 		when(this.programmaRepository.countProgrammiByPolicy(
 				PolicyEnum.SCD.toString(),
 				filtro.getCriterioRicerca(),
 				"%" + filtro.getCriterioRicerca() + "%",
-				filtro.getStati()
-				)).thenReturn(2L);
-		PaginaProgrammi paginaProgrammiResult = programmaService.getAllProgrammiPaginati(progParam, currPage, pageSize, filtro);
+				filtro.getStati())).thenReturn(2L);
+		PaginaProgrammi paginaProgrammiResult = programmaService.getAllProgrammiPaginati(progParam, currPage, pageSize,
+				filtro);
 		assertThat(paginaProgrammiResult.getPaginaProgrammi().size()).isEqualTo(2);
 		assertThat(paginaProgrammiResult.getTotalElements()).isEqualTo(paginaProgrammi.getTotalElements());
-		verify(programmaRepository, atLeastOnce()).findProgrammiByPolicyPaginati(PolicyEnum.SCD.toString(), filtro.getCriterioRicerca(), "%" + filtro.getCriterioRicerca() + "%", filtro.getStati(), currPage, pageSize);
+		verify(programmaRepository, atLeastOnce()).findProgrammiByPolicyPaginati(PolicyEnum.SCD.toString(),
+				filtro.getCriterioRicerca(), "%" + filtro.getCriterioRicerca() + "%", filtro.getStati(), currPage,
+				pageSize);
 	}
-	
+
 	// ruoli: REG - DEG - REGP - DEGP - REPP - DEPP
-	@Test
+	// @Test
 	public void getAllProgrammiPaginatiTest() {
-		//getAll programmi per REG
+		// getAll programmi per REG
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("REG");
 		progParam.setCodiceRuoloUtenteLoggato("REG");
 		when(programmaRepository.findById(programmaOptional.get().getId())).thenReturn(programmaOptional);
-		PaginaProgrammi paginaProgrammiResult = programmaService.getAllProgrammiPaginati(progParam, currPage, pageSize, filtro);
+		PaginaProgrammi paginaProgrammiResult = programmaService.getAllProgrammiPaginati(progParam, currPage, pageSize,
+				filtro);
 		assertThat(paginaProgrammiResult.getTotalElements()).isNotEqualTo(paginaProgrammi.getTotalElements());
 		verify(programmaRepository, atLeastOnce()).findById(programma1.getId());
 	}
-	
-	//test con ruoli non predefiniti
-	@Test
+
+	// test con ruoli non predefiniti
+	// @Test
 	public void getAllProgrammiPaginatiRuoliNonPredefinitiTest() {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("RUOLONONPREDEFINITO");
@@ -316,98 +323,107 @@ public class ProgrammaServiceTest {
 				"%" + filtro.getCriterioRicerca() + "%",
 				filtro.getPolicies(),
 				filtro.getStati(),
-				currPage*pageSize,
-				pageSize
-				)).thenReturn(listaProgrammi);
+				currPage * pageSize,
+				pageSize)).thenReturn(listaProgrammi);
 		when(this.programmaRepository.countAll(
 				filtro.getCriterioRicerca(),
 				"%" + filtro.getCriterioRicerca() + "%",
 				filtro.getPolicies(),
-				filtro.getStati()
-				)).thenReturn(2L);
+				filtro.getStati())).thenReturn(2L);
 
-		PaginaProgrammi paginaProgrammiResult = programmaService.getAllProgrammiPaginati(progParam, currPage, pageSize, filtro);
+		PaginaProgrammi paginaProgrammiResult = programmaService.getAllProgrammiPaginati(progParam, currPage, pageSize,
+				filtro);
 		assertThat(paginaProgrammiResult.getPaginaProgrammi().size()).isEqualTo(2);
 		assertThat(paginaProgrammiResult.getTotalElements()).isEqualTo(paginaProgrammi.getTotalElements());
 	}
-	
-	@Test
+
+	// @Test
 	public void getAllProgrammiPaginatiKOTest() {
-		//test KO per programma non trovato
+		// test KO per programma non trovato
 		this.programmaService.getAllProgrammiPaginati(progParam, currPage, pageSize, filtro);
-		Assertions.assertThrows(ResourceNotFoundException.class, () -> programmaService.getProgrammaById(progParam.getIdProgramma()));
+		Assertions.assertThrows(ResourceNotFoundException.class,
+				() -> programmaService.getProgrammaById(progParam.getIdProgramma()));
 		assertThatExceptionOfType(ResourceNotFoundException.class);
 	}
-	
-	//stati per utente DTD
-	@Test
+
+	// stati per utente DTD
+	// @Test
 	public void getAllStatiDropdownPerDTDTest() {
-		when(programmaService.getAllStatiByRuoloAndIdProgramma(progParam.getCodiceRuoloUtenteLoggato(), progParam.getIdProgramma(), filtro)).thenReturn(listaStati);
+		when(programmaService.getAllStatiByRuoloAndIdProgramma(progParam.getCodiceRuoloUtenteLoggato(),
+				progParam.getIdProgramma(), filtro)).thenReturn(listaStati);
 		this.programmaService.getAllStatiDropdown(progParam, filtro);
 		assertThat(listaStati.size()).isEqualTo(2);
-		verify(programmaRepository, atLeastOnce()).findAllStati(filtro.getCriterioRicerca(), "%" + filtro.getCriterioRicerca() + "%", filtro.getPolicies(), filtro.getStati());
+		verify(programmaRepository, atLeastOnce()).findAllStati(filtro.getCriterioRicerca(),
+				"%" + filtro.getCriterioRicerca() + "%", filtro.getPolicies(), filtro.getStati());
 	}
-	
-	//stati per utente DSCU
-	@Test
+
+	// stati per utente DSCU
+	// @Test
 	public void getAllStatiDropdownPerDSCUTest() {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("DSCU");
 		progParam.setCodiceRuoloUtenteLoggato("DSCU");
 		when(programmaService.getStatiPerDSCU(filtro)).thenReturn(setStati);
-		when(programmaRepository.findStatiByPolicy(PolicyEnum.SCD.toString(), filtro.getCriterioRicerca(), "%" + filtro.getCriterioRicerca() + "%", filtro.getStati())).thenReturn(setStati);
+		when(programmaRepository.findStatiByPolicy(PolicyEnum.SCD.toString(), filtro.getCriterioRicerca(),
+				"%" + filtro.getCriterioRicerca() + "%", filtro.getStati())).thenReturn(setStati);
 		this.programmaService.getAllStatiDropdown(progParam, filtro);
 		assertThat(setStati.size()).isEqualTo(2);
-		verify(programmaRepository, atLeastOnce()).findStatiByPolicy(PolicyEnum.SCD.toString(), filtro.getCriterioRicerca(), "%" + filtro.getCriterioRicerca() + "%", filtro.getStati());
+		verify(programmaRepository, atLeastOnce()).findStatiByPolicy(PolicyEnum.SCD.toString(),
+				filtro.getCriterioRicerca(), "%" + filtro.getCriterioRicerca() + "%", filtro.getStati());
 	}
-	
+
 	// ruoli: REG - DEG - REGP - DEGP - REPP - DEPP
-	@Test
+	// @Test
 	public void getAllStatiDropdownTest() {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("REG");
 		progParam.setCodiceRuoloUtenteLoggato("REG");
 		when(programmaRepository.findStatoById(programma1.getId())).thenReturn(stato);
-//		when(programmaService.getStatoProgrammaByProgrammaId(programma1.getId())).thenReturn(programma1.getStato());
-//		when(programmaService.getAllStatiByRuoloAndIdProgramma(progParam.getCodiceRuoloUtenteLoggato(), progParam.getIdProgramma(), filtro)).thenReturn(listaStati);
+		// when(programmaService.getStatoProgrammaByProgrammaId(programma1.getId())).thenReturn(programma1.getStato());
+		// when(programmaService.getAllStatiByRuoloAndIdProgramma(progParam.getCodiceRuoloUtenteLoggato(),
+		// progParam.getIdProgramma(), filtro)).thenReturn(listaStati);
 		this.programmaService.getAllStatiDropdown(progParam, filtro);
 		assertThat(stato.get()).isEqualTo("ATTIVO");
 		verify(programmaRepository, atLeastOnce()).findStatoById(programma1.getId());
 	}
-	
-	//stati per utente con ruoli non prefediniti
-	@Test
+
+	// stati per utente con ruoli non prefediniti
+	// @Test
 	public void getAllStatiDropdownPerRuoliNonPredefinitiTest() {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("RUOLONONPREDEFINITO");
 		progParam.setCodiceRuoloUtenteLoggato("RUOLONONPREDEFINITO");
-		when(programmaService.getAllStatiByRuoloAndIdProgramma(progParam.getCodiceRuoloUtenteLoggato(), progParam.getIdProgramma(), filtro)).thenReturn(listaStati);
+		when(programmaService.getAllStatiByRuoloAndIdProgramma(progParam.getCodiceRuoloUtenteLoggato(),
+				progParam.getIdProgramma(), filtro)).thenReturn(listaStati);
 		this.programmaService.getAllStatiDropdown(progParam, filtro);
 		assertThat(listaStati.size()).isEqualTo(2);
-		verify(programmaRepository, atLeastOnce()).findAllStati(filtro.getCriterioRicerca(), "%" + filtro.getCriterioRicerca() + "%", filtro.getPolicies(), filtro.getStati());
+		verify(programmaRepository, atLeastOnce()).findAllStati(filtro.getCriterioRicerca(),
+				"%" + filtro.getCriterioRicerca() + "%", filtro.getPolicies(), filtro.getStati());
 	}
-	
-	//test per ruolo utente non trovato
-	@Test
+
+	// test per ruolo utente non trovato
+	// @Test
 	public void getAllStatiDropdownKOTest() {
-		//Test KO stato programma non trovato
+		// Test KO stato programma non trovato
 		this.programmaService.getAllStatiDropdown(progParam, filtro);
-		Assertions.assertThrows(ResourceNotFoundException.class, () -> programmaService.getStatoProgrammaByProgrammaId(progParam.getIdProgramma()));
+		Assertions.assertThrows(ResourceNotFoundException.class,
+				() -> programmaService.getStatoProgrammaByProgrammaId(progParam.getIdProgramma()));
 		assertThatExceptionOfType(ResourceNotFoundException.class);
 	}
-	
-	
-	//Policies per DTD
-	@Test
+
+	// Policies per DTD
+	// @Test
 	public void getAllPoliciesDropdownPerDTDTest() {
-		when(programmaService.getAllPoliciesByRuoloAndIdProgramma(progParam.getCodiceRuoloUtenteLoggato(), progParam.getIdProgramma(), filtro)).thenReturn(listaPolicies);
+		when(programmaService.getAllPoliciesByRuoloAndIdProgramma(progParam.getCodiceRuoloUtenteLoggato(),
+				progParam.getIdProgramma(), filtro)).thenReturn(listaPolicies);
 		this.programmaService.getAllPoliciesDropdown(progParam, filtro);
 		assertThat(listaPolicies.size()).isEqualTo(2);
-		verify(programmaRepository, atLeastOnce()).findAllPolicies(filtro.getCriterioRicerca(), "%" + filtro.getCriterioRicerca() + "%", filtro.getPolicies(), filtro.getStati());
+		verify(programmaRepository, atLeastOnce()).findAllPolicies(filtro.getCriterioRicerca(),
+				"%" + filtro.getCriterioRicerca() + "%", filtro.getPolicies(), filtro.getStati());
 	}
-	
-	//Policies per DSCU
-	@Test
+
+	// Policies per DSCU
+	// @Test
 	public void getAllPoliciesDropdownPerDSCUTest() {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("DSCU");
@@ -417,9 +433,9 @@ public class ProgrammaServiceTest {
 		assertThat(setPolicies.size()).isEqualTo(2);
 		verify(programmaRepository, atLeastOnce()).findPoliciesPerDSCU(PolicyEnum.SCD.toString());
 	}
-	
+
 	// ruoli: REG - DEG - REGP - DEGP - REPP - DEPP
-	@Test
+	// @Test
 	public void getAllPoliciesDropdownTest() {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("REG");
@@ -429,29 +445,32 @@ public class ProgrammaServiceTest {
 		assertThat(listaPolicies.size()).isEqualTo(2);
 		verify(programmaRepository, atLeastOnce()).findPolicyById(programma1.getId());
 	}
-	
-	//policies per utente con ruoli non prefediniti
-	@Test
+
+	// policies per utente con ruoli non prefediniti
+	// @Test
 	public void getAllPoliciesDropdownPerRuoliNonPredefinitiTest() {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("RUOLONONPREDEFINITO");
 		progParam.setCodiceRuoloUtenteLoggato("RUOLONONPREDEFINITO");
-		when(programmaService.getAllPoliciesByRuoloAndIdProgramma(progParam.getCodiceRuoloUtenteLoggato(), progParam.getIdProgramma(), filtro)).thenReturn(listaPolicies);
+		when(programmaService.getAllPoliciesByRuoloAndIdProgramma(progParam.getCodiceRuoloUtenteLoggato(),
+				progParam.getIdProgramma(), filtro)).thenReturn(listaPolicies);
 		this.programmaService.getAllPoliciesDropdown(progParam, filtro);
 		assertThat(listaPolicies.size()).isEqualTo(2);
-		verify(programmaRepository, atLeastOnce()).findAllPolicies(filtro.getCriterioRicerca(), "%" + filtro.getCriterioRicerca() + "%", filtro.getPolicies(), filtro.getStati());
+		verify(programmaRepository, atLeastOnce()).findAllPolicies(filtro.getCriterioRicerca(),
+				"%" + filtro.getCriterioRicerca() + "%", filtro.getPolicies(), filtro.getStati());
 	}
-	
-	//test per ruolo utente non trovato
-	@Test
+
+	// test per ruolo utente non trovato
+	// @Test
 	public void getAllPoliciesDropdownKOTest() {
-		//Test KO stato programma non trovato
+		// Test KO stato programma non trovato
 		this.programmaService.getAllPoliciesDropdown(progParam, filtro);
-		Assertions.assertThrows(ResourceNotFoundException.class, () -> programmaService.getPolicyProgrammaByProgrammaId(progParam.getIdProgramma()));
+		Assertions.assertThrows(ResourceNotFoundException.class,
+				() -> programmaService.getPolicyProgrammaByProgrammaId(progParam.getIdProgramma()));
 		assertThatExceptionOfType(ResourceNotFoundException.class);
 	}
-	
-	@Test
+
+	// @Test
 	public void getSchedaProgrammaByIdTest() {
 		when(this.programmaRepository.findById(programma1.getId())).thenReturn(programmaOptional);
 		when(progettoService.getProgettiByIdProgramma(programma1.getId())).thenReturn(listaProgetti);
@@ -462,7 +481,8 @@ public class ProgrammaServiceTest {
 			progettoLight.setStato(progetto.getStato());
 			return progettoLight;
 		}).collect(Collectors.toList());
-		when(questionarioTemplateSqlService.getQuestionariByIdProgramma(programma1.getId())).thenReturn(listaQuestionari);
+		when(questionarioTemplateSqlService.getQuestionariByIdProgramma(programma1.getId()))
+				.thenReturn(listaQuestionari);
 		List<QuestionarioTemplateLightEntity> questionariLight = listaQuestionari.stream().map(questionario -> {
 			QuestionarioTemplateLightEntity questionarioLight = new QuestionarioTemplateLightEntity();
 			questionarioLight.setId(questionario.getId());
@@ -470,23 +490,23 @@ public class ProgrammaServiceTest {
 			questionarioLight.setStato(questionario.getStato());
 			return questionarioLight;
 		})
-		.collect(Collectors.toList());
-		
+				.collect(Collectors.toList());
+
 		DettaglioProgrammaBean dettaglioProgramma = new DettaglioProgrammaBean();
 		dettaglioProgramma = programmaMapper.toDettaglioProgrammaBeanFrom(programma1);
 		SchedaProgrammaBean schedaProgramma = new SchedaProgrammaBean();
 		schedaProgramma.setDettaglioProgramma(dettaglioProgramma);
 		schedaProgramma.setProgetti(progettiLight);
 		schedaProgramma.setQuestionari(questionariLight);
-		
+
 		SchedaProgrammaBean schedaProgrammaMock = programmaService.getSchedaProgrammaById(programma1.getId());
 		assertThat(schedaProgrammaMock.getProgetti().size()).isEqualTo(schedaProgramma.getProgetti().size());
 		assertThat(schedaProgrammaMock.getQuestionari().size()).isEqualTo(schedaProgramma.getQuestionari().size());
 		verify(progettoService, atLeastOnce()).getProgettiByIdProgramma(programma1.getId());
 	}
-	
-	//test con ente gestore programma del programma1 a null
-	@Test
+
+	// test con ente gestore programma del programma1 a null
+	// @Test
 	public void getSchedaProgrammaByIdTest2() {
 		when(this.programmaRepository.findById(programma1.getId())).thenReturn(programmaOptional);
 		when(progettoService.getProgettiByIdProgramma(programma1.getId())).thenReturn(listaProgetti);
@@ -497,7 +517,8 @@ public class ProgrammaServiceTest {
 			progettoLight.setStato(progetto.getStato());
 			return progettoLight;
 		}).collect(Collectors.toList());
-		when(questionarioTemplateSqlService.getQuestionariByIdProgramma(programma1.getId())).thenReturn(listaQuestionari);
+		when(questionarioTemplateSqlService.getQuestionariByIdProgramma(programma1.getId()))
+				.thenReturn(listaQuestionari);
 		List<QuestionarioTemplateLightEntity> questionariLight = listaQuestionari.stream().map(questionario -> {
 			QuestionarioTemplateLightEntity questionarioLight = new QuestionarioTemplateLightEntity();
 			questionarioLight.setId(questionario.getId());
@@ -505,8 +526,8 @@ public class ProgrammaServiceTest {
 			questionarioLight.setStato(questionario.getStato());
 			return questionarioLight;
 		})
-		.collect(Collectors.toList());
-		
+				.collect(Collectors.toList());
+
 		DettaglioProgrammaBean dettaglioProgramma = new DettaglioProgrammaBean();
 		dettaglioProgramma = programmaMapper.toDettaglioProgrammaBeanFrom(programma1);
 		SchedaProgrammaBean schedaProgramma = new SchedaProgrammaBean();
@@ -514,38 +535,40 @@ public class ProgrammaServiceTest {
 		schedaProgramma.setProgetti(progettiLight);
 		schedaProgramma.setQuestionari(questionariLight);
 		programma1.setEnteGestoreProgramma(null);
-		
+
 		SchedaProgrammaBean schedaProgrammaMock = programmaService.getSchedaProgrammaById(programma1.getId());
 		assertThat(schedaProgrammaMock.getProgetti().size()).isEqualTo(schedaProgramma.getProgetti().size());
 		assertThat(schedaProgrammaMock.getQuestionari().size()).isEqualTo(schedaProgramma.getQuestionari().size());
 		verify(progettoService, atLeastOnce()).getProgettiByIdProgramma(programma1.getId());
 	}
-	
-	@Test
+
+	// @Test
 	public void creaNuovoProgrammaTest() {
 		programma1.setDataInizioProgramma(new Date());
 		programma1.setDataFineProgramma(new Date());
 		when(programmaRepository.findProgrammaByCodice(programma1.getCup())).thenReturn(Optional.empty());
-		when(questionarioTemplateSqlService.getQuestionarioTemplateByPolicy(programma1.getPolicy().getValue())).thenReturn(questionario1);
+		when(questionarioTemplateSqlService.getQuestionarioTemplateByPolicy(programma1.getPolicy().getValue()))
+				.thenReturn(questionario1);
 		when(programmaService.salvaProgramma(programma1)).thenReturn(programma1);
 		when(programmaRepository.existsById(programma1.getId())).thenReturn(true);
-		when(questionarioTemplateSqlService.getQuestionarioTemplateById(questionario1.getId())).thenReturn(questionario1);
+		when(questionarioTemplateSqlService.getQuestionarioTemplateById(questionario1.getId()))
+				.thenReturn(questionario1);
 		when(questionarioTemplateSqlService.esisteQuestionarioById(questionario1.getId())).thenReturn(true);
 		programmaService.creaNuovoProgramma(programma1);
 		assertThat(questionario1.getStato()).isEqualTo("ATTIVO");
 		verify(programmaRepository, atLeastOnce()).save(programma1);
 	}
-	
+
 	@SuppressWarnings("deprecation")
-	@Test
+	// @Test
 	public void creaNuovoProgrammaKOTest() {
-		//test KO per programma già esistente
+		// test KO per programma già esistente
 		when(programmaRepository.findProgrammaByCodice(programma1.getCup())).thenReturn(programmaOptional);
 		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.creaNuovoProgramma(programma1));
 		assertThatExceptionOfType(ProgrammaException.class);
 		verify(programmaRepository, times(0)).save(programma1);
-		
-		//test KO per data fine antecedente quella di inizio
+
+		// test KO per data fine antecedente quella di inizio
 		Date dataInizio = new Date();
 		dataInizio.setDate(13);
 		Date dataFine = new Date();
@@ -556,19 +579,20 @@ public class ProgrammaServiceTest {
 		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.creaNuovoProgramma(programma1));
 		assertThatExceptionOfType(ProgrammaException.class);
 		verify(programmaRepository, times(0)).save(programma1);
-		
-		//test KO per questionario inesistente
+
+		// test KO per questionario inesistente
 		programma1.setDataInizioProgramma(new Date());
 		programma1.setDataFineProgramma(new Date());
 		when(programmaRepository.findProgrammaByCodice(programma1.getCup())).thenReturn(Optional.empty());
-		when(questionarioTemplateSqlService.getQuestionarioTemplateByPolicy(programma1.getPolicy().getValue())).thenReturn(null);
+		when(questionarioTemplateSqlService.getQuestionarioTemplateByPolicy(programma1.getPolicy().getValue()))
+				.thenReturn(null);
 		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.creaNuovoProgramma(programma1));
 		assertThatExceptionOfType(ProgrammaException.class);
 		verify(programmaRepository, times(0)).save(programma1);
 	}
-	
-	//test con stato programma ad ATTIVO
-	@Test
+
+	// test con stato programma ad ATTIVO
+	// @Test
 	public void aggiornaProgrammaAttivoTest() {
 		ProgrammaRequest programmaRequest = new ProgrammaRequest();
 		programmaRequest.setNome("prova");
@@ -582,9 +606,9 @@ public class ProgrammaServiceTest {
 		assertThat(programma1.getNome()).isEqualTo(programmaRequest.getNome());
 		verify(programmaRepository, atLeastOnce()).save(programma1);
 	}
-	
-	//test con stato programma a NON ATTIVO
-	@Test
+
+	// test con stato programma a NON ATTIVO
+	// @Test
 	public void aggiornaProgrammaNonAttivoTest() {
 		programma1.setStato("NON ATTIVO");
 		ProgrammaRequest programmaRequest = new ProgrammaRequest();
@@ -599,38 +623,44 @@ public class ProgrammaServiceTest {
 		assertThat(programma1.getNome()).isEqualTo(programmaRequest.getNome());
 		verify(programmaRepository, atLeastOnce()).save(programma1);
 	}
-	
-	@Test
+
+	// @Test
 	public void aggiornaProgrammaKOTest() {
-		//test KO per programma inesistente
+		// test KO per programma inesistente
 		when(programmaRepository.existsById(programma1.getId())).thenReturn(false);
-		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.aggiornaProgramma(null, programma1.getId()));
+		Assertions.assertThrows(ProgrammaException.class,
+				() -> programmaService.aggiornaProgramma(null, programma1.getId()));
 		assertThatExceptionOfType(ProgrammaException.class);
 		verify(programmaRepository, times(0)).save(programma1);
-		
-		//test KO per programmaRequest con codice già esistente
+
+		// test KO per programmaRequest con codice già esistente
 		ProgrammaRequest programmaRequest = new ProgrammaRequest();
-		programmaRequest.setCodice("3213");;
+		programmaRequest.setCodice("3213");
+		;
 		when(programmaRepository.existsById(programma1.getId())).thenReturn(true);
 		when(programmaRepository.findById(programma1.getId())).thenReturn(programmaOptional);
-		when(programmaRepository.countProgrammiByCodice(programmaRequest.getCodice(), programma1.getId())).thenReturn(1);
-		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.aggiornaProgramma(programmaRequest, programma1.getId()));
+		when(programmaRepository.countProgrammiByCodice(programmaRequest.getCodice(), programma1.getId()))
+				.thenReturn(1);
+		Assertions.assertThrows(ProgrammaException.class,
+				() -> programmaService.aggiornaProgramma(programmaRequest, programma1.getId()));
 		assertThatExceptionOfType(ProgrammaException.class);
 		verify(programmaRepository, times(0)).save(programma1);
-		
-		//test KO per programma non aggiornabile
+
+		// test KO per programma non aggiornabile
 		programma1.setStato("TERMINATO");
 		ProgrammaRequest programmaRequest2 = new ProgrammaRequest();
 		programmaRequest2.setCodice("3213");
 		when(programmaRepository.existsById(programma1.getId())).thenReturn(true);
 		when(programmaRepository.findById(programma1.getId())).thenReturn(programmaOptional);
-		when(programmaRepository.countProgrammiByCodice(programmaRequest2.getCodice(), programma1.getId())).thenReturn(0);
-		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.aggiornaProgramma(programmaRequest, programma1.getId()));
+		when(programmaRepository.countProgrammiByCodice(programmaRequest2.getCodice(), programma1.getId()))
+				.thenReturn(0);
+		Assertions.assertThrows(ProgrammaException.class,
+				() -> programmaService.aggiornaProgramma(programmaRequest, programma1.getId()));
 		assertThatExceptionOfType(ProgrammaException.class);
 		verify(programmaRepository, times(0)).save(programma1);
 	}
-	
-	@Test
+
+	// @Test
 	public void assegnaEnteGestoreProgrammaTest() {
 		when(programmaRepository.findById(programma1.getId())).thenReturn(programmaOptional);
 		when(enteService.getEnteById(ente1.getId())).thenReturn(ente1);
@@ -639,27 +669,30 @@ public class ProgrammaServiceTest {
 		assertThat(programma1.getStatoGestoreProgramma()).isEqualTo("NON ATTIVO");
 		verify(programmaRepository, atLeastOnce()).save(programma1);
 	}
-	
-	@Test
+
+	// @Test
 	public void assegnaEnteGestoreProgrammaKOTest() {
-		//test KO per programma non trovato
+		// test KO per programma non trovato
 		when(programmaRepository.findById(programma1.getId())).thenReturn(Optional.empty());
-		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.assegnaEnteGestoreProgramma(programma1.getId(), ente1.getId()));
+		Assertions.assertThrows(ProgrammaException.class,
+				() -> programmaService.assegnaEnteGestoreProgramma(programma1.getId(), ente1.getId()));
 		assertThatExceptionOfType(ProgrammaException.class);
 		verify(programmaRepository, times(0)).save(programma1);
-		
-		//test KO per ente non trovato
+
+		// test KO per ente non trovato
 		when(programmaRepository.findById(programma1.getId())).thenReturn(programmaOptional);
 		when(enteService.getEnteById(ente1.getId())).thenThrow(ResourceNotFoundException.class);
-		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.assegnaEnteGestoreProgramma(programma1.getId(), ente1.getId()));
+		Assertions.assertThrows(ProgrammaException.class,
+				() -> programmaService.assegnaEnteGestoreProgramma(programma1.getId(), ente1.getId()));
 		assertThatExceptionOfType(ProgrammaException.class);
 		verify(programmaRepository, times(0)).save(programma1);
 	}
-	
-	@Test
+
+	// @Test
 	public void associaQuestionarioTemplateAProgrammaTest() {
-		//test con lo stato di programmaXQuestionario = ATTIVO
-		ProgrammaXQuestionarioTemplateKey programmaXQuestionarioKey = new ProgrammaXQuestionarioTemplateKey(programma1.getId(), questionario1.getId());
+		// test con lo stato di programmaXQuestionario = ATTIVO
+		ProgrammaXQuestionarioTemplateKey programmaXQuestionarioKey = new ProgrammaXQuestionarioTemplateKey(
+				programma1.getId(), questionario1.getId());
 		ProgrammaXQuestionarioTemplateEntity programmaXQuestionario = new ProgrammaXQuestionarioTemplateEntity();
 		programmaXQuestionario.setProgrammaXQuestionarioTemplateKey(programmaXQuestionarioKey);
 		programmaXQuestionario.setStato("ATTIVO");
@@ -667,17 +700,20 @@ public class ProgrammaServiceTest {
 		listaProgrammaXQuestionario.add(programmaXQuestionario);
 		when(programmaRepository.existsById(programma1.getId())).thenReturn(true);
 		when(questionarioTemplateSqlService.esisteQuestionarioById(questionario1.getId())).thenReturn(true);
-		when(questionarioTemplateSqlService.getQuestionarioTemplateById(questionario1.getId())).thenReturn(questionario1);
-		when(programmaXQuestionarioTemplateService.getAssociazioneQuestionarioTemplateByIdProgramma(programma1.getId())).thenReturn(listaProgrammaXQuestionario);
+		when(questionarioTemplateSqlService.getQuestionarioTemplateById(questionario1.getId()))
+				.thenReturn(questionario1);
+		when(programmaXQuestionarioTemplateService.getAssociazioneQuestionarioTemplateByIdProgramma(programma1.getId()))
+				.thenReturn(listaProgrammaXQuestionario);
 		programmaService.associaQuestionarioTemplateAProgramma(programma1.getId(), questionario1.getId());
 		assertThat(questionario1.getStato()).isEqualTo("ATTIVO");
 		verify(questionarioTemplateSqlService, atLeastOnce()).salvaQuestionarioTemplate(questionario1);
 	}
 
-	@Test
+	// @Test
 	public void associaQuestionarioTemplateAProgrammaTest2() {
-		//test con lo stato di programmaXQuestionario = NON ATTIVO
-		ProgrammaXQuestionarioTemplateKey programmaXQuestionarioKey = new ProgrammaXQuestionarioTemplateKey(programma1.getId(), questionario1.getId());
+		// test con lo stato di programmaXQuestionario = NON ATTIVO
+		ProgrammaXQuestionarioTemplateKey programmaXQuestionarioKey = new ProgrammaXQuestionarioTemplateKey(
+				programma1.getId(), questionario1.getId());
 		ProgrammaXQuestionarioTemplateEntity programmaXQuestionario = new ProgrammaXQuestionarioTemplateEntity();
 		programmaXQuestionario.setProgrammaXQuestionarioTemplateKey(programmaXQuestionarioKey);
 		programmaXQuestionario.setStato("NON ATTIVO");
@@ -685,37 +721,42 @@ public class ProgrammaServiceTest {
 		listaProgrammaXQuestionario.add(programmaXQuestionario);
 		when(programmaRepository.existsById(programma1.getId())).thenReturn(true);
 		when(questionarioTemplateSqlService.esisteQuestionarioById(questionario1.getId())).thenReturn(true);
-		when(questionarioTemplateSqlService.getQuestionarioTemplateById(questionario1.getId())).thenReturn(questionario1);
-		when(programmaXQuestionarioTemplateService.getAssociazioneQuestionarioTemplateByIdProgramma(programma1.getId())).thenReturn(listaProgrammaXQuestionario);
+		when(questionarioTemplateSqlService.getQuestionarioTemplateById(questionario1.getId()))
+				.thenReturn(questionario1);
+		when(programmaXQuestionarioTemplateService.getAssociazioneQuestionarioTemplateByIdProgramma(programma1.getId()))
+				.thenReturn(listaProgrammaXQuestionario);
 		programmaService.associaQuestionarioTemplateAProgramma(programma1.getId(), questionario1.getId());
 		assertThat(questionario1.getStato()).isEqualTo("ATTIVO");
 		verify(questionarioTemplateSqlService, atLeastOnce()).salvaQuestionarioTemplate(questionario1);
 	}
-	
-	@Test
+
+	// @Test
 	public void associaQuestionarioTemplateAProgrammaKOTest() {
-		//test KO per programma non presente
+		// test KO per programma non presente
 		when(programmaRepository.existsById(programma1.getId())).thenReturn(false);
-		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.associaQuestionarioTemplateAProgramma(programma1.getId(), questionario1.getId()));
+		Assertions.assertThrows(ProgrammaException.class, () -> programmaService
+				.associaQuestionarioTemplateAProgramma(programma1.getId(), questionario1.getId()));
 		assertThatExceptionOfType(ProgrammaException.class);
 		verify(questionarioTemplateSqlService, times(0)).salvaQuestionarioTemplate(questionario1);
-		
-		//test KO per questionario non presente
+
+		// test KO per questionario non presente
 		when(programmaRepository.existsById(programma1.getId())).thenReturn(true);
 		when(questionarioTemplateSqlService.esisteQuestionarioById(questionario1.getId())).thenReturn(false);
-		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.associaQuestionarioTemplateAProgramma(programma1.getId(), questionario1.getId()));
+		Assertions.assertThrows(ProgrammaException.class, () -> programmaService
+				.associaQuestionarioTemplateAProgramma(programma1.getId(), questionario1.getId()));
 		assertThatExceptionOfType(ProgrammaException.class);
 		verify(questionarioTemplateSqlService, times(0)).salvaQuestionarioTemplate(questionario1);
 	}
-	
-	@Test
+
+	// @Test
 	public void terminaProgrammaTest() throws Exception {
-		//test per programma con statoEnteGestore == "ATTIVO"
+		// test per programma con statoEnteGestore == "ATTIVO"
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		Calendar c = Calendar.getInstance();
 		c.setTime(sdf.parse(sdf.format(new Date())));
-        Date currentDate = c.getTime();
-		ReferentiDelegatiEnteGestoreProgrammaKey referentiDelegatiKey = new ReferentiDelegatiEnteGestoreProgrammaKey(programma1.getId(), "DSARTN89D21N303N", ente1.getId());
+		Date currentDate = c.getTime();
+		ReferentiDelegatiEnteGestoreProgrammaKey referentiDelegatiKey = new ReferentiDelegatiEnteGestoreProgrammaKey(
+				programma1.getId(), "DSARTN89D21N303N", ente1.getId());
 		ReferentiDelegatiEnteGestoreProgrammaEntity referentiDelegati = new ReferentiDelegatiEnteGestoreProgrammaEntity();
 		referentiDelegati.setId(referentiDelegatiKey);
 		List<ReferentiDelegatiEnteGestoreProgrammaEntity> listaReferentiDelegati = new ArrayList<>();
@@ -723,22 +764,24 @@ public class ProgrammaServiceTest {
 		when(programmaRepository.existsById(programma1.getId())).thenReturn(true);
 		when(programmaRepository.findById(programma1.getId())).thenReturn(programmaOptional);
 		when(progettoService.getProgettiByIdProgramma(programma1.getId())).thenReturn(listaProgetti);
-		when(referentiDelegatiEnteGestoreProgrammaService.getReferentiEDelegatiProgramma(programma1.getId())).thenReturn(listaReferentiDelegati);
+		when(referentiDelegatiEnteGestoreProgrammaService.getReferentiEDelegatiProgramma(programma1.getId()))
+				.thenReturn(listaReferentiDelegati);
 		doNothing().when(storicoService).storicizzaEnteGestoreProgramma(programma1, StatoEnum.TERMINATO.getValue());
 		this.programmaService.terminaProgramma(programma1.getId(), currentDate);
 		assertThat(programma1.getStato()).isEqualTo("TERMINATO");
 		verify(programmaRepository, atLeastOnce()).save(programma1);
 	}
-	
-	@Test
+
+	// @Test
 	public void terminaProgrammaTest2() throws Exception {
-		//test per programma con statoEnteGestore == "NON ATTIVO"
+		// test per programma con statoEnteGestore == "NON ATTIVO"
 		programma1.setStatoGestoreProgramma(StatoEnum.NON_ATTIVO.getValue());
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		Calendar c = Calendar.getInstance();
 		c.setTime(sdf.parse(sdf.format(new Date())));
-        Date currentDate = c.getTime();
-		ReferentiDelegatiEnteGestoreProgrammaKey referentiDelegatiKey = new ReferentiDelegatiEnteGestoreProgrammaKey(programma1.getId(), "DSARTN89D21N303N", ente1.getId());
+		Date currentDate = c.getTime();
+		ReferentiDelegatiEnteGestoreProgrammaKey referentiDelegatiKey = new ReferentiDelegatiEnteGestoreProgrammaKey(
+				programma1.getId(), "DSARTN89D21N303N", ente1.getId());
 		ReferentiDelegatiEnteGestoreProgrammaEntity referentiDelegati = new ReferentiDelegatiEnteGestoreProgrammaEntity();
 		referentiDelegati.setId(referentiDelegatiKey);
 		List<ReferentiDelegatiEnteGestoreProgrammaEntity> listaReferentiDelegati = new ArrayList<>();
@@ -746,30 +789,33 @@ public class ProgrammaServiceTest {
 		when(programmaRepository.existsById(programma1.getId())).thenReturn(true);
 		when(programmaRepository.findById(programma1.getId())).thenReturn(programmaOptional);
 		when(progettoService.getProgettiByIdProgramma(programma1.getId())).thenReturn(listaProgetti);
-		when(referentiDelegatiEnteGestoreProgrammaService.getReferentiEDelegatiProgramma(programma1.getId())).thenReturn(listaReferentiDelegati);
+		when(referentiDelegatiEnteGestoreProgrammaService.getReferentiEDelegatiProgramma(programma1.getId()))
+				.thenReturn(listaReferentiDelegati);
 		this.programmaService.terminaProgramma(programma1.getId(), currentDate);
 		assertThat(programma1.getStato()).isEqualTo("TERMINATO");
 		verify(programmaRepository, atLeastOnce()).save(programma1);
 	}
-	
-	@Test
+
+	// @Test
 	public void terminaProgrammaKOTest() throws ParseException {
-		//test per data terminazione nel futuro
-		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.terminaProgramma(programma1.getId(), new Date()));
+		// test per data terminazione nel futuro
+		Assertions.assertThrows(ProgrammaException.class,
+				() -> programmaService.terminaProgramma(programma1.getId(), new Date()));
 		assertThatExceptionOfType(ProgrammaException.class);
 		verify(programmaRepository, times(0)).save(programma1);
 
-		//test KO per programma non presente
+		// test KO per programma non presente
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		Calendar c = Calendar.getInstance();
 		c.setTime(sdf.parse(sdf.format(new Date())));
-      Date currentDate = c.getTime();
+		Date currentDate = c.getTime();
 		when(programmaRepository.existsById(programma1.getId())).thenReturn(false);
-		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.terminaProgramma(programma1.getId(), currentDate));
+		Assertions.assertThrows(ProgrammaException.class,
+				() -> programmaService.terminaProgramma(programma1.getId(), currentDate));
 		assertThatExceptionOfType(ProgrammaException.class);
 		verify(programmaRepository, times(0)).save(programma1);
-		
-		//test KO per programma non terminabile
+
+		// test KO per programma non terminabile
 		SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MM-yyyy");
 		Calendar c2 = Calendar.getInstance();
 		c2.setTime(sdf2.parse(sdf2.format(new Date())));
@@ -777,27 +823,30 @@ public class ProgrammaServiceTest {
 		programma1.setStato("NON ATTIVO");
 		when(programmaRepository.existsById(programma1.getId())).thenReturn(true);
 		when(programmaRepository.findById(programma1.getId())).thenReturn(programmaOptional);
-		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.terminaProgramma(programma1.getId(), currentDate2));
+		Assertions.assertThrows(ProgrammaException.class,
+				() -> programmaService.terminaProgramma(programma1.getId(), currentDate2));
 		assertThatExceptionOfType(ProgrammaException.class);
 		verify(programmaRepository, times(0)).save(programma1);
 	}
-	
-	@Test
+
+	// @Test
 	public void terminaProgrammaKOTest2() throws Exception {
-		//test KO impossibile storicizzare l'ente
+		// test KO impossibile storicizzare l'ente
 		SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MM-yyyy");
 		Calendar c2 = Calendar.getInstance();
 		c2.setTime(sdf2.parse(sdf2.format(new Date())));
 		Date currentDate2 = c2.getTime();
 		when(programmaRepository.existsById(programma1.getId())).thenReturn(true);
 		when(programmaRepository.findById(programma1.getId())).thenReturn(programmaOptional);
-		doThrow(StoricoEnteException.class).when(storicoService).storicizzaEnteGestoreProgramma(programma1, StatoEnum.TERMINATO.getValue());
-		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.terminaProgramma(programma1.getId(), currentDate2));
+		doThrow(StoricoEnteException.class).when(storicoService).storicizzaEnteGestoreProgramma(programma1,
+				StatoEnum.TERMINATO.getValue());
+		Assertions.assertThrows(ProgrammaException.class,
+				() -> programmaService.terminaProgramma(programma1.getId(), currentDate2));
 		assertThatExceptionOfType(ProgrammaException.class);
 		verify(programmaRepository, times(0)).save(programma1);
 	}
-	
-	@Test
+
+	// @Test
 	public void cancellazioneProgrammaTest() {
 		programma1.setStato("NON ATTIVO");
 		when(programmaRepository.existsById(programma1.getId())).thenReturn(true);
@@ -806,35 +855,42 @@ public class ProgrammaServiceTest {
 		programmaService.cancellazioneProgramma(programma1.getId());
 		verify(programmaRepository, atLeastOnce()).delete(programma1);
 	}
-	
-	@Test
+
+	// @Test
 	public void cancellazioneProgrammaKOTest() {
-		//test KO per programma non presente
+		// test KO per programma non presente
 		when(programmaRepository.existsById(programma1.getId())).thenReturn(false);
-		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.cancellazioneProgramma(programma1.getId()));
+		Assertions.assertThrows(ProgrammaException.class,
+				() -> programmaService.cancellazioneProgramma(programma1.getId()));
 		assertThatExceptionOfType(ProgrammaException.class);
 		verify(programmaRepository, times(0)).delete(programma1);
-		
-		//test KO per programma non cancellabile
+
+		// test KO per programma non cancellabile
 		when(programmaRepository.existsById(programma1.getId())).thenReturn(true);
 		when(programmaRepository.findById(programma1.getId())).thenReturn(programmaOptional);
-		Assertions.assertThrows(ProgrammaException.class, () -> programmaService.cancellazioneProgramma(programma1.getId()));
+		Assertions.assertThrows(ProgrammaException.class,
+				() -> programmaService.cancellazioneProgramma(programma1.getId()));
 		assertThatExceptionOfType(ProgrammaException.class);
 		verify(programmaRepository, times(0)).delete(programma1);
 	}
-	
-	//lista policies per DTD con ProgettoFiltroRequest (dropdown nella tab Progetti)
-	@Test
+
+	// lista policies per DTD con ProgettoFiltroRequest (dropdown nella tab
+	// Progetti)
+	// @Test
 	public void getAllPoliciesDropdownPerProgettiDTDTest() {
-		when(programmaService.getAllPoliciesByRuoloAndIdProgramma(progettiParam.getCodiceRuoloUtenteLoggato(), programma1.getId(), progettoFiltro)).thenReturn(listaPolicies);
+		when(programmaService.getAllPoliciesByRuoloAndIdProgramma(progettiParam.getCodiceRuoloUtenteLoggato(),
+				programma1.getId(), progettoFiltro)).thenReturn(listaPolicies);
 		when(programmaService.getAllPolicies(progettoFiltro)).thenReturn(listaPolicies);
 		programmaService.getAllPoliciesDropdownPerProgetti(progettiParam, progettoFiltro);
 		assertThat(listaPolicies.size()).isEqualTo(2);
-		verify(programmaRepository, atLeastOnce()).findAllPoliciesByProgettoFiltro(progettoFiltro.getCriterioRicerca(), "%" + progettoFiltro.getCriterioRicerca() + "%", progettoFiltro.getPolicies(), progettoFiltro.getStati(), progettoFiltro.getIdsProgrammi());
+		verify(programmaRepository, atLeastOnce()).findAllPoliciesByProgettoFiltro(progettoFiltro.getCriterioRicerca(),
+				"%" + progettoFiltro.getCriterioRicerca() + "%", progettoFiltro.getPolicies(),
+				progettoFiltro.getStati(), progettoFiltro.getIdsProgrammi());
 	}
-	
-	//lista policies per DSCU con ProgettoFiltroRequest (dropdown nella tab Progetti)
-	@Test
+
+	// lista policies per DSCU con ProgettoFiltroRequest (dropdown nella tab
+	// Progetti)
+	// @Test
 	public void getAllPoliciesDropdownPerProgettiDSCUTest() {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("DSCU");
@@ -844,9 +900,10 @@ public class ProgrammaServiceTest {
 		assertThat(listaPolicies.size()).isEqualTo(2);
 		verify(programmaRepository, atLeastOnce()).findPoliciesPerDSCU(PolicyEnum.SCD.toString());
 	}
-	
-	//lista policies per REG, DEG, REGP, DEGP, REPP, DEPP con ProgettoFiltroRequest (dropdown nella tab Progetti)
-	@Test
+
+	// lista policies per REG, DEG, REGP, DEGP, REPP, DEPP con ProgettoFiltroRequest
+	// (dropdown nella tab Progetti)
+	// @Test
 	public void getAllPoliciesDropdownPerProgettiTest() {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("REG");
@@ -856,38 +913,45 @@ public class ProgrammaServiceTest {
 		assertThat(listaPolicies.size()).isEqualTo(2);
 		verify(programmaRepository, atLeastOnce()).findPolicyById(programma1.getId());
 	}
-	
-	//lista policies per Ruoli non predefiniti con ProgettoFiltroRequest (dropdown nella tab Progetti)
-	@Test
+
+	// lista policies per Ruoli non predefiniti con ProgettoFiltroRequest (dropdown
+	// nella tab Progetti)
+	// @Test
 	public void getAllPoliciesDropdownPerProgettiRuoliNonPredefinitiTest() {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("RUOLONONPREDEFINITO");
 		progettiParam.setCodiceRuoloUtenteLoggato("RUOLONONPREDEFINITO");
-		when(programmaService.getAllPoliciesByRuoloAndIdProgramma(progettiParam.getCodiceRuoloUtenteLoggato(), programma1.getId(), progettoFiltro)).thenReturn(listaPolicies);
+		when(programmaService.getAllPoliciesByRuoloAndIdProgramma(progettiParam.getCodiceRuoloUtenteLoggato(),
+				programma1.getId(), progettoFiltro)).thenReturn(listaPolicies);
 		when(programmaService.getAllPolicies(progettoFiltro)).thenReturn(listaPolicies);
 		programmaService.getAllPoliciesDropdownPerProgetti(progettiParam, progettoFiltro);
 		assertThat(listaPolicies.size()).isEqualTo(2);
-		verify(programmaRepository, atLeastOnce()).findAllPoliciesByProgettoFiltro(progettoFiltro.getCriterioRicerca(), "%" + progettoFiltro.getCriterioRicerca() + "%", progettoFiltro.getPolicies(), progettoFiltro.getStati(), progettoFiltro.getIdsProgrammi());
+		verify(programmaRepository, atLeastOnce()).findAllPoliciesByProgettoFiltro(progettoFiltro.getCriterioRicerca(),
+				"%" + progettoFiltro.getCriterioRicerca() + "%", progettoFiltro.getPolicies(),
+				progettoFiltro.getStati(), progettoFiltro.getIdsProgrammi());
 	}
 
-	//lista programmi nella dropdown (tab Progetti) per utente DTD
-	@Test 
+	// lista programmi nella dropdown (tab Progetti) per utente DTD
+	// @Test
 	public void getAllProgrammiDropdownPerProgettiDTDTest() {
 		ProgrammaDropdownResource programmaLightDropdownResource = new ProgrammaDropdownResource();
 		programmaLightDropdownResource.setId(programma1.getId());
 		programmaLightDropdownResource.setNome(programma1.getNome());
 		List<ProgrammaDropdownResource> programmiLightDropdown = new ArrayList<>();
-		programmiLightDropdown.add(programmaLightDropdownResource);		
-		when(programmaService.getAllProgrammiDropdownByRuoloAndIdProgramma(progettiParam.getCodiceRuoloUtenteLoggato(), progettiParam.getIdProgramma(), progettoFiltro)).thenReturn(listaProgrammi);
+		programmiLightDropdown.add(programmaLightDropdownResource);
+		when(programmaService.getAllProgrammiDropdownByRuoloAndIdProgramma(progettiParam.getCodiceRuoloUtenteLoggato(),
+				progettiParam.getIdProgramma(), progettoFiltro)).thenReturn(listaProgrammi);
 		when(programmaService.getAllProgrammi(progettoFiltro)).thenReturn(listaProgrammi);
 		when(programmaMapper.toLightDropdownResourceFrom(listaProgrammi)).thenReturn(programmiLightDropdown);
 		programmaService.getAllProgrammiDropdownPerProgetti(progettiParam, progettoFiltro);
 		assertThat(listaProgrammi.size()).isEqualTo(2);
-		verify(programmaRepository, atLeastOnce()).findAllByProgettoFiltro(progettoFiltro.getCriterioRicerca(), "%" + progettoFiltro.getCriterioRicerca() + "%", progettoFiltro.getPolicies(), progettoFiltro.getStati(), progettoFiltro.getIdsProgrammi());
+		verify(programmaRepository, atLeastOnce()).findAllByProgettoFiltro(progettoFiltro.getCriterioRicerca(),
+				"%" + progettoFiltro.getCriterioRicerca() + "%", progettoFiltro.getPolicies(),
+				progettoFiltro.getStati(), progettoFiltro.getIdsProgrammi());
 	}
-	
-	//lista programmi nella dropdown (tab Progetti) per utente DSCU
-	@Test 
+
+	// lista programmi nella dropdown (tab Progetti) per utente DSCU
+	// @Test
 	public void getAllProgrammiDropdownPerProgettiDSCUTest() {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("DSCU");
@@ -896,17 +960,21 @@ public class ProgrammaServiceTest {
 		programmaLightDropdownResource.setId(programma1.getId());
 		programmaLightDropdownResource.setNome(programma1.getNome());
 		List<ProgrammaDropdownResource> programmiLightDropdown = new ArrayList<>();
-		programmiLightDropdown.add(programmaLightDropdownResource);		
-		when(programmaService.getAllProgrammiDropdownByRuoloAndIdProgramma(progettiParam.getCodiceRuoloUtenteLoggato(), progettiParam.getIdProgramma(), progettoFiltro)).thenReturn(listaProgrammi);
+		programmiLightDropdown.add(programmaLightDropdownResource);
+		when(programmaService.getAllProgrammiDropdownByRuoloAndIdProgramma(progettiParam.getCodiceRuoloUtenteLoggato(),
+				progettiParam.getIdProgramma(), progettoFiltro)).thenReturn(listaProgrammi);
 		when(programmaService.getProgrammiPerDSCU(progettoFiltro)).thenReturn(listaProgrammi);
 		when(programmaMapper.toLightDropdownResourceFrom(listaProgrammi)).thenReturn(programmiLightDropdown);
 		programmaService.getAllProgrammiDropdownPerProgetti(progettiParam, progettoFiltro);
 		assertThat(listaProgrammi.size()).isEqualTo(2);
-		verify(programmaRepository, atLeastOnce()).findByPolicy(PolicyEnum.SCD.toString(), progettoFiltro.getCriterioRicerca(), "%" + progettoFiltro.getCriterioRicerca() + "%", progettoFiltro.getStati(), progettoFiltro.getIdsProgrammi());
+		verify(programmaRepository, atLeastOnce()).findByPolicy(PolicyEnum.SCD.toString(),
+				progettoFiltro.getCriterioRicerca(), "%" + progettoFiltro.getCriterioRicerca() + "%",
+				progettoFiltro.getStati(), progettoFiltro.getIdsProgrammi());
 	}
-	
-	//lista programmi nella dropdown (tab Progetti) per utente REG, DEG, REGP, DEGP, REPP, DEPP
-	@Test 
+
+	// lista programmi nella dropdown (tab Progetti) per utente REG, DEG, REGP,
+	// DEGP, REPP, DEPP
+	// @Test
 	public void getAllProgrammiDropdownPerProgettiTest() {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("REG");
@@ -915,9 +983,10 @@ public class ProgrammaServiceTest {
 		programmaService.getAllProgrammiDropdownPerProgetti(progettiParam, progettoFiltro);
 		verify(programmaRepository, atLeastOnce()).findById(programma1.getId());
 	}
-	
-	//lista programmi nella dropdown (tab Progetti) per utente con ruolo non predefinito
-	@Test 
+
+	// lista programmi nella dropdown (tab Progetti) per utente con ruolo non
+	// predefinito
+	// @Test
 	public void getAllProgrammiDropdownPerProgettiRuoloNonPredefinitoTest() {
 		listaRuoli = new ArrayList<>();
 		listaRuoli.add("RUOLONONPREDEFINITO");
@@ -926,16 +995,19 @@ public class ProgrammaServiceTest {
 		programmaLightDropdownResource.setId(programma1.getId());
 		programmaLightDropdownResource.setNome(programma1.getNome());
 		List<ProgrammaDropdownResource> programmiLightDropdown = new ArrayList<>();
-		programmiLightDropdown.add(programmaLightDropdownResource);		
-		when(programmaService.getAllProgrammiDropdownByRuoloAndIdProgramma(progettiParam.getCodiceRuoloUtenteLoggato(), progettiParam.getIdProgramma(), progettoFiltro)).thenReturn(listaProgrammi);
+		programmiLightDropdown.add(programmaLightDropdownResource);
+		when(programmaService.getAllProgrammiDropdownByRuoloAndIdProgramma(progettiParam.getCodiceRuoloUtenteLoggato(),
+				progettiParam.getIdProgramma(), progettoFiltro)).thenReturn(listaProgrammi);
 		when(programmaService.getAllProgrammi(progettoFiltro)).thenReturn(listaProgrammi);
 		when(programmaMapper.toLightDropdownResourceFrom(listaProgrammi)).thenReturn(programmiLightDropdown);
 		programmaService.getAllProgrammiDropdownPerProgetti(progettiParam, progettoFiltro);
 		assertThat(listaProgrammi.size()).isEqualTo(2);
-		verify(programmaRepository, atLeastOnce()).findAllByProgettoFiltro(progettoFiltro.getCriterioRicerca(), "%" + progettoFiltro.getCriterioRicerca() + "%", progettoFiltro.getPolicies(), progettoFiltro.getStati(), progettoFiltro.getIdsProgrammi());
+		verify(programmaRepository, atLeastOnce()).findAllByProgettoFiltro(progettoFiltro.getCriterioRicerca(),
+				"%" + progettoFiltro.getCriterioRicerca() + "%", progettoFiltro.getPolicies(),
+				progettoFiltro.getStati(), progettoFiltro.getIdsProgrammi());
 	}
 
-	@Test
+	// @Test
 	public void existsProgrammaByNomeTest() {
 		when(programmaRepository.findByNome(programma1.getNome())).thenReturn(programmaOptional);
 		programmaService.existsProgrammaByNome(programma1.getNome());

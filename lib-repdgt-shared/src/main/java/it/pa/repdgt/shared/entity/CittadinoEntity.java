@@ -2,93 +2,69 @@ package it.pa.repdgt.shared.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.Email;
+import javax.persistence.*;
 
+import it.pa.repdgt.shared.entity.tipologica.FasciaDiEtaEntity;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 @Entity
 @Table(name = "cittadino")
 @Setter
 @Getter
-public class CittadinoEntity implements Serializable { 
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+public class CittadinoEntity implements Serializable {
 	private static final long serialVersionUID = -3997184755252624867L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
+	@EqualsAndHashCode.Include
 	private Long id;
-	
+
 	@Column(name = "CODICE_FISCALE")
 	private String codiceFiscale;
-	
-	@Column(name = "NOME", nullable = false)
-	private String nome;
-	
-	@Column(name = "COGNOME", nullable = false)
-	private String cognome;
-	
+
 	@Column(name = "TIPO_DOCUMENTO")
 	private String tipoDocumento;
 
 	@Column(name = "NUM_DOCUMENTO", unique = true)
 	private String numeroDocumento;
 
-	@Column(name = "GENERE", nullable = true)
+	@Column(name = "GENERE")
 	private String genere;
-	
-	@Column(name = "ANNO_DI_NASCITA", nullable = true)
-	private Integer annoDiNascita;
-	
-	@Column(name = "TITOLO_DI_STUDIO", nullable = true)
+
+	@OneToOne
+	private FasciaDiEtaEntity fasciaDiEta;
+
+	@Column(name = "TITOLO_DI_STUDIO")
 	private String titoloDiStudio;
-	
-	@Column(name = "OCCUPAZIONE", nullable = true)
+
+	@Column(name = "OCCUPAZIONE")
 	private String occupazione;
-	
-	@Column(name = "CITTADINANZA", nullable = true)
+
+	@Column(name = "CITTADINANZA")
 	private String cittadinanza;
-	
-	@Column(name = "COMUNE_DI_DOMICILIO", nullable = true)
-	private String comuneDiDomicilio;
-	
-	@Column(name = "CATEGORIA_FRAGILI", nullable = true)
-	private String categoriaFragili;
-	
-	@Column(name = "EMAIL", nullable = false, unique = true)
-	@Email
-	private String email;
-	
-	@Column(name = "PREFISSO", nullable = true)
-	private String prefissoTelefono;
-	
-	@Column(name = "NUMERO_DI_CELLULARE", nullable = true)
-	private String numeroDiCellulare;
-	
-	@Column(name = "TELEFONO", nullable = true)
-	private String telefono;
-	
-	@Column(name = "TIPO_CONFERIMENTO_CONSENSO", nullable = true)
-	private String tipoConferimentoConsenso;
-	
-	@Column(name = "DATA_CONFERIMENTO_CONSENSO", nullable = true)
-	@Temporal(TemporalType.DATE)
-	private Date dataConferimentoConsenso;
-	
+
 	@Temporal(value = TemporalType.TIMESTAMP)
+	@CreatedDate
 	@Column(name = "DATA_ORA_CREAZIONE")
 	private Date dataOraCreazione;
 
 	@Temporal(value = TemporalType.TIMESTAMP)
+	@LastModifiedDate
 	@Column(name = "DATA_ORA_AGGIORNAMENTO")
 	private Date dataOraAggiornamento;
+
+	@OneToMany(mappedBy = "cittadino", cascade = CascadeType.ALL)
+	private List<QuestionarioCompilatoEntity> questionarioCompilato;
+
+	@Column(name = "PROVINCIA_DI_DOMICILIO")
+	private String provinciaDiDomicilio;
 }

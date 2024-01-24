@@ -11,8 +11,8 @@ import it.pa.repdgt.shared.entity.SedeEntity;
 import it.pa.repdgt.surveymgmt.projection.SedeProjection;
 
 @Repository
-public interface SedeRepository extends JpaRepository<SedeEntity, Long> { 
-	
+public interface SedeRepository extends JpaRepository<SedeEntity, Long> {
+
 	@Query(value = "SELECT DISTINCT "
 			+ "           s.id as id "
 			+ "         , s.nome as nome "
@@ -21,8 +21,6 @@ public interface SedeRepository extends JpaRepository<SedeEntity, Long> {
 			+ "                                        qc.sede_id "
 			+ "                                      , qc.progetto_id "
 			+ "                                      , qc.id_cittadino "
-			+ "                                      , c.nome "
-			+ "                                      , c.cognome "
 			+ "                                      , c.codice_fiscale "
 			+ "                                      , c.num_documento "
 			+ "                               FROM "
@@ -46,14 +44,10 @@ public interface SedeRepository extends JpaRepository<SedeEntity, Long> {
 			+ "			  ON	prgt.id_programma = prgm.id"
 			+ "                               WHERE 1=1"
 			+ " 		                      AND (     :criterioRicerca IS NULL  "
-	        + "			                      OR CONVERT( qc_cittadino.ID_CITTADINO, CHAR ) = :criterioRicerca "
-	        + "	    	                      OR UPPER( qc_cittadino.NOME ) LIKE UPPER( :criterioRicercaLike ) "
-            + "		  	                      OR UPPER( qc_cittadino.COGNOME ) LIKE UPPER( :criterioRicercaLike ) "
-            + "		  	                      OR UPPER( qc_cittadino.CODICE_FISCALE ) LIKE UPPER( :criterioRicercaLike ) "
-            + "		  	                      OR UPPER( qc_cittadino.NUM_DOCUMENTO ) LIKE UPPER( :criterioRicercaLike )) ",
-			nativeQuery = true)
+			+ "			                      OR CONVERT( qc_cittadino.ID_CITTADINO, CHAR ) = :criterioRicerca "
+			+ "		  	                      OR UPPER( qc_cittadino.CODICE_FISCALE ) = UPPER( :criterioRicerca ) "
+			+ "		  	                      OR UPPER( qc_cittadino.NUM_DOCUMENTO ) = UPPER( :criterioRicerca )) ", nativeQuery = true)
 	List<SedeProjection> findAllSediFiltrate(
-			@Param("criterioRicerca") 		String criterioRicerca, 
-			@Param("criterioRicercaLike") 	String criterioRicercaLike, 
-			@Param("idsSedi") 				List<String> idsSedi);
+			@Param("criterioRicerca") String criterioRicerca,
+			@Param("idsSedi") List<String> idsSedi);
 }

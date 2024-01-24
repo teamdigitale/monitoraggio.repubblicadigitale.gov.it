@@ -17,22 +17,22 @@ public class GetCittadinoServizioMapper {
 
 	public List<GetCittadinoResource> toResourceFrom(@NotNull final List<GetCittadinoProjection> getCittadini) {
 		return getCittadini.stream()
-				  .map(this::toResourceFrom)
-				  .collect(Collectors.toList());
+				.map(this::toResourceFrom)
+				.collect(Collectors.toList());
 	}
 
 	public GetCittadinoResource toResourceFrom(
 			@NotNull final GetCittadinoProjection getCittadino) {
 		final GetCittadinoResource getCittadinoResource = new GetCittadinoResource();
 		getCittadinoResource.setIdCittadino(getCittadino.getId());
-		getCittadinoResource.setNome(getCittadino.getNome());
-		getCittadinoResource.setCognome(getCittadino.getCognome());
 		getCittadinoResource.setCodiceFiscale(getCittadino.getCodiceFiscale());
 		getCittadinoResource.setNumeroDocumento(getCittadino.getNumeroDocumento());
-		getCittadinoResource.setEmail(getCittadino.getEmail());
-		getCittadinoResource.setTelefono(getCittadino.getTelefono());
-		getCittadinoResource.setPrefisso(getCittadino.getPrefisso());
-		getCittadinoResource.setCellulare(getCittadino.getCellulare());
+		getCittadinoResource.setCittadinanza(getCittadino.getCittadinanza());
+		getCittadinoResource.setGenere(getCittadino.getGenere());
+		getCittadinoResource.setTitoloStudio(getCittadino.getTitoloStudio());
+		getCittadinoResource.setFasciaDiEta(getCittadino.getFasciaDiEta());
+		getCittadinoResource.setStatoOccupazionale(getCittadino.getStatoOccupazionale());
+		getCittadinoResource.setProvinciaDiDomicilio(getCittadino.getProvinciaDiDomicilio());
 		return getCittadinoResource;
 	}
 }

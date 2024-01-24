@@ -8,7 +8,7 @@ spec:
   selector:
     matchLabels:
         app.kubernetes.io/name: ms-questionario-cittadino
-  replicas: 3
+  replicas: 2
   strategy:
     type: RollingUpdate
   template:
@@ -21,10 +21,6 @@ spec:
           image: ${ECR_REPOSITORY}:${IMAGE_TAG}
           ports:
             - containerPort: 8080
-          resources:
-            requests:
-              cpu: "1"
-              memory: "3072Mi"
           imagePullPolicy: Always
           env:
             - name: urlDB
@@ -87,6 +83,11 @@ spec:
                 configMapKeyRef:
                   name: env-${K8S_NAMESPACE}-options
                   key: awsEmailMittente
+            - name: CF_ST_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: CF_ST_KEY
 ---
 apiVersion: v1
 kind: Service
@@ -97,7 +98,7 @@ metadata:
     service.beta.kubernetes.io/aws-load-balancer-type: external
     service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
     service.beta.kubernetes.io/aws-load-balancer-scheme: internal
-    external-dns.alpha.kubernetes.io/hostname: questionariocittadino.api.repubblicadigitale.gov.it
+    external-dns.alpha.kubernetes.io/hostname: questionariocittadino.backend-${K8S_NAMESPACE}.mitd.technology
     service.beta.kubernetes.io/aws-load-balancer-name: nlb-ms-quest-cittadino-${K8S_NAMESPACE}
 spec:
   type: LoadBalancer
