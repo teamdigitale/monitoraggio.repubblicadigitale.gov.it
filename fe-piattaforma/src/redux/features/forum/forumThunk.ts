@@ -33,7 +33,8 @@ export const proxyCall = async (
     cfUtenteLoggato: codiceFiscale,
     codiceRuoloUtenteLoggato: codiceRuolo,
   };
-  if (body && body.cfUtenteLoggato) {
+  const pass = false;
+  if (body && body.cfUtenteLoggato && pass) {
     return await API.post(`${process?.env?.NOTIFICHE}drupal/forward`, {
       url: `/api${url}`,
       metodoHttp: httpMethod,
