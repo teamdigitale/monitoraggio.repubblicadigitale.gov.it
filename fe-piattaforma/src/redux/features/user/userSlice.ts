@@ -151,7 +151,9 @@ export const userSlice = createSlice({
       });
     },
     login: (state) => {
-      state.user['cfUtenteLoggato'] = state?.user?.codiceFiscale;
+      if(state){
+        state.user['cfUtenteLoggato'] = state?.user?.codiceFiscale;
+      }
       setSessionValues('user', state.user);
       setSessionValues('profile', state.profilo);
       if (isActiveProvisionalLogin) {
