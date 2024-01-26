@@ -41,6 +41,7 @@ export const proxyCall = async (
       codiceRuoloUtenteLoggato: codiceRuolo,
       profilo: { idProgramma, idProgetto, idEnte },
       ...filePayload,
+      body: body ? JSON.stringify(body) : null,
     });
   }
 };
@@ -960,7 +961,7 @@ interface ActionTrackerI {
   event_type?: 'TOPIC' | 'NEWS' | 'DOCUMENTI';
   event_value?: 'Y' | 'N' | undefined;
   category?: string | undefined;
-  codiceRuolo?: string;
+  codiceRuoloUtenteLoggato?: string;
   idProgramma?: string;
 }
 
@@ -970,7 +971,7 @@ const newActionTracker = ({
   event_value,
   target,
   category,
-  codiceRuolo,
+  codiceRuoloUtenteLoggato,
   idProgramma,
 }: ActionTrackerI) => ({
   event: (target === 'chat' || target === 'wd'
@@ -979,7 +980,7 @@ const newActionTracker = ({
   )?.toLowerCase(),
   event_type: (target === 'tnd' ? event_type : null)?.toLowerCase(),
   event_value: event_value || null,
-  role_code: codiceRuolo || null,
+  role_code: codiceRuoloUtenteLoggato || null,
   category: category?.toString() || null,
   program_id: idProgramma?.toString() || null,
 });
@@ -1001,7 +1002,7 @@ export const ActionTracker =
         } = select((state: RootState) => state);
         const body = newActionTracker({
           ...payload,
-          codiceRuolo,
+          codiceRuoloUtenteLoggato: codiceRuolo,
           idProgramma,
         });
         let BE_url = process?.env?.REACT_APP_BE_BASE_URL;
