@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.21.2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.21.1...1.21.2) (2024-01-26)
+
+
+### Bug Fixes
+
+* **questionario:** updates 20240126 debugg ([fda096e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fda096efc1a6fad4ce69791eda2ed4abc272821b))
+
 ## [1.21.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.21.0...1.21.1) (2024-01-25)
 
 
