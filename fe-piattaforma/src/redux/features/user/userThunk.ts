@@ -33,6 +33,8 @@ export const getUserHeaders = () => {
       ? codiceFiscale?.toUpperCase()
       : undefined,
     codiceRuolo: isActiveProvisionalLogin ? codiceRuolo : undefined,
+    cfUtenteLoggato: codiceFiscale?.toUpperCase(),
+    codiceRuoloUtenteLoggato : codiceRuolo,
     idProgramma,
     idProgetto,
     idUtente,
