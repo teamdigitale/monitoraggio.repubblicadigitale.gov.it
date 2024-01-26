@@ -250,7 +250,10 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 						nuovoCittadinoRequest.getCodiceFiscaleNonDisponibile(),
 						nuovoCittadinoRequest.getCodiceFiscale(),
 						nuovoCittadinoRequest.getNumeroDocumento());
-
+		log.info("Il cittadino in richiesta e' : {} ", nuovoCittadinoRequest);
+		log.debug("Il cittadino in richiesta e' : {} ", nuovoCittadinoRequest);
+		log.info("Il cittadino recuperato e' : {} ", optionalCittadinoDBFetch.orElse(null));
+		log.debug("Il cittadino recuperato e' : {} ", optionalCittadinoDBFetch.orElse(null));
 		if (nuovoCittadinoRequest.getNuovoCittadino() && optionalCittadinoDBFetch.isPresent()) {
 			final String messaggioErrore = String.format(
 					"Cittadino già esistente",
