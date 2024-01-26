@@ -228,8 +228,6 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 	public CittadinoEntity creaNuovoCittadino(
 			@NotNull final Long idServizio,
 			@NotNull final NuovoCittadinoServizioRequest nuovoCittadinoRequest) throws ParseException {
-		System.out.println("Il cittadino in richiesta e' : " + nuovoCittadinoRequest);
-		System.err.println("Il cittadino in richiesta e' : " + nuovoCittadinoRequest);
 		String codiceFiscaleDecrypted;
 		if (nuovoCittadinoRequest.getCodiceFiscale() != null && !nuovoCittadinoRequest.getCodiceFiscale().isEmpty()) {
 			codiceFiscaleDecrypted = decryptFromBase64(nuovoCittadinoRequest.getCodiceFiscale());
@@ -252,10 +250,6 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 						nuovoCittadinoRequest.getCodiceFiscaleNonDisponibile(),
 						nuovoCittadinoRequest.getCodiceFiscale(),
 						nuovoCittadinoRequest.getNumeroDocumento());
-		System.out.println("Il cittadino in richiesta e' : " + nuovoCittadinoRequest);
-		System.err.println("Il cittadino in richiesta e' : " + nuovoCittadinoRequest);
-		System.out.println("Il cittadino recuperato e' : " + optionalCittadinoDBFetch.orElse(null));
-		System.err.println("Il cittadino recuperato e' : " + optionalCittadinoDBFetch.orElse(null));
 		if (nuovoCittadinoRequest.getNuovoCittadino() && optionalCittadinoDBFetch.isPresent()) {
 			final String messaggioErrore = String.format(
 					"Cittadino già esistente",
