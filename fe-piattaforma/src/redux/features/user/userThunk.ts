@@ -115,23 +115,16 @@ export const SelectUserRole =
       if (codiceFiscale && profile?.codiceRuolo) {
         const { codiceRuolo, idProgramma, idProgetto, idEnte } = profile;
         setSessionValues('profile', profile);
-        if(isActiveProvisionalLogin) {
-          request = {
+            request = {
+              cfUtente: codiceFiscale,
               cfUtenteLoggato: codiceFiscale,
+              codiceRuolo: codiceRuolo,
               codiceRuoloUtenteLoggato: codiceRuolo,
               idProgramma,
               idProgetto,
               idEnte,
             }
-          } else {
-            request = {
-              cfUtente: codiceFiscale,
-              codiceRuolo: codiceRuolo,
-              idProgramma,
-              idProgetto,
-              idEnte,
-            }
-          } 
+  
         }
         const res = await API.post(`${process?.env?.GESTIONE_UTENTE}contesto/sceltaProfilo`, request);
         if (res) {
