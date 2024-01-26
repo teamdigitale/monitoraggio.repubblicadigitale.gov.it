@@ -121,7 +121,7 @@ export const GetUserDetails =
         cfUtente: codiceFiscale,
         cfUtenteLoggato: codiceFiscale,
         codiceRuolo,
-        codiceRuoloUtenteLoggato: codiceRuolo
+        codiceRuoloUtenteLoggato: codiceRuolo,
         idProgramma,
         idProgetto,
         idEnte,
