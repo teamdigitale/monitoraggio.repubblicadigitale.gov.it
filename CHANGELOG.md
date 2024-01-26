@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.21.6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.21.5...1.21.6) (2024-01-26)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** updates 20240126 request SelectUserRole ([1db8c79](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1db8c7963b9251c0b33a05c74b50820fdedd410f))
+* **debug:** updates 20240126 tolti log inutili ([8204e8f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8204e8fb0c262e4c0e023d0a47e9441a029b8a67))
+
 ## [1.21.5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.21.4...1.21.5) (2024-01-26)
 
 
