@@ -14,7 +14,7 @@
 
 	<groupId>it.pa.repdgt</groupId>
 	<artifactId>ms-utente</artifactId>
-	<version>1.21.5</version>
+	<version>1.21.6</version>
 	<packaging>jar</packaging>
 
 	<properties>
