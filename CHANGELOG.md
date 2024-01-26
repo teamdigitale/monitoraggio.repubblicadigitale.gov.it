@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.21.3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.21.2...1.21.3) (2024-01-26)
+
+
+### Bug Fixes
+
+* **questionario:** updates 20240126 logaggiornati ([a14ceba](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a14ceba916ea6856bdc088b02f8a3a0589604294))
+* **fe-piattaforma:** updates 20240126 drupal fix ([4fda9ca](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4fda9ca8270074f953b448de41c217a4485b8f3f))
+
 ## [1.21.2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.21.1...1.21.2) (2024-01-26)
 
 
