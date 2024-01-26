@@ -66,6 +66,7 @@ const initialStateLogged: UserStateI = {
     cognome: 'Rossi',
     role: 'DTD',
     codiceFiscale: 'UTENTE1',
+    cfUtenteLoggato: 'UTENTE1',
     email: 'mario.rossi@mail.com',
     integrazione: true,
     profiliUtente: [],
