@@ -23,8 +23,8 @@ import { transformFiltersToQueryParams } from '../../../utils/common';
 import { setEntityPagination } from '../administrativeArea/administrativeAreaSlice';
 
 export const getUserHeaders = () => {
-  const { codiceFiscale, id: idUtente } = JSON.parse(getSessionValues('user'));
-  const { codiceRuolo, idProgramma, idProgetto, idEnte } = JSON.parse(
+  const { codiceFiscale, id: idUtente, cfUtenteLoggato } = JSON.parse(getSessionValues('user'));
+  const { codiceRuolo, idProgramma, idProgetto, idEnte, codiceRuoloUtenteLoggato } = JSON.parse(
     getSessionValues('profile')
   );
 
@@ -33,8 +33,8 @@ export const getUserHeaders = () => {
       ? codiceFiscale?.toUpperCase()
       : undefined,
     codiceRuolo: isActiveProvisionalLogin ? codiceRuolo : undefined,
-    cfUtenteLoggato: codiceFiscale?.toUpperCase(),
-    codiceRuoloUtenteLoggato : codiceRuolo,
+    cfUtenteLoggato,
+    codiceRuoloUtenteLoggato,
     idProgramma,
     idProgetto,
     idUtente,

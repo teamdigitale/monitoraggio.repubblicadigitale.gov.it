@@ -118,6 +118,7 @@ export const userSlice = createSlice({
     },
     setUserProfile: (state, action: PayloadAction<any>) => {
       const payload = { ...action.payload, saveSession: undefined };
+      payload['codiceRuoloUtenteLoggato'] = payload.codiceRuolo;
       state.idProgramma = action.payload.idProgramma;
       state.idProgetto = [action.payload.idProgetto];
       state.idEnte = action.payload.idEnte;
@@ -150,6 +151,7 @@ export const userSlice = createSlice({
       });
     },
     login: (state) => {
+      state.user['cfUtenteLoggato'] = state.user.codiceFiscale;
       setSessionValues('user', state.user);
       setSessionValues('profile', state.profilo);
       if (isActiveProvisionalLogin) {
