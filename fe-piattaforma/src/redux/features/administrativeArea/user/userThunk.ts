@@ -83,7 +83,9 @@ export const GetFilterValuesUtenti =
         getUserHeaders();
       const body = {
         cfUtente: codiceFiscale,
+        cfUtenteLoggato: codiceFiscale,
         codiceRuolo: codiceRuolo,
+        codiceRuoloUtenteLoggato: codiceRuolo,
         filtroRequest: { ...filters },
         idProgramma,
         idEnte,
@@ -117,7 +119,9 @@ export const GetUserDetails =
         getUserHeaders();
       const body = {
         cfUtente: codiceFiscale,
+        cfUtenteLoggato: codiceFiscale,
         codiceRuolo,
+        codiceRuoloUtenteLoggato: codiceRuolo
         idProgramma,
         idProgetto,
         idEnte,

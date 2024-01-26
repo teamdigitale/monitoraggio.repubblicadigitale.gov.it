@@ -388,15 +388,15 @@ export const AssociateCitizenToService =
       dispatch(showLoader());
       const { idProgramma, idProgetto, idEnte, codiceFiscale, codiceRuolo } =
         getUserHeaders();
+      payload.body['cfUtenteLoggato'] = codiceFiscale;
+      payload.body['codiceRuoloUtenteLoggato'] = codiceRuolo;
       const res = await API.post(
         `${process?.env?.QUESTIONARIO_CITTADINO}servizio/cittadino/${payload.idServizio}`,
         {
           ...payload.body,
           idProgramma,
           idProgetto,
-          idEnte,
-          cfUtenteLoggato: codiceFiscale,
-          codiceRuoloUtenteLoggato: codiceRuolo,
+          idEnte
         }
       );
       if (res) {

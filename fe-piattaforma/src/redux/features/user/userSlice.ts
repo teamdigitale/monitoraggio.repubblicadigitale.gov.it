@@ -19,6 +19,7 @@ export interface UserStateI {
         email?: string;
         role?: string;
         codiceFiscale: string;
+        cfUtenteLoggato: string;
         profiliUtente: UserProfileI[];
         integrazione: boolean;
         mostraBio: boolean;
@@ -38,6 +39,7 @@ export interface UserStateI {
   profilo?: UserProfileI | null;
   ruoli: {
     codiceRuolo: string;
+    codiceRuoloUtenteLoggato: string;
     permessi: [];
   }[];
 }
