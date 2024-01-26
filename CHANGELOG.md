@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.21.4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.21.3...1.21.4) (2024-01-26)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** updates 20240126 drupal body fix ([1cc21a0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1cc21a0b6db0291559251eafb118b21490c7bcbb))
+
 ## [1.21.3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.21.2...1.21.3) (2024-01-26)
 
 
