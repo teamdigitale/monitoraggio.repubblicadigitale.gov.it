@@ -41,7 +41,7 @@ const CommunityDetails = () => {
 
   const getItemDetails = async () => {
     if (id && userId) {
-      const res = await dispatch(GetItemDetail(id, userId, 'forum'));
+      const res = await dispatch(GetItemDetail(id, userId, 'community'));
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       if (res) {
@@ -104,7 +104,7 @@ const CommunityDetails = () => {
     await dispatch(DeleteComment(commentId, reason));
     if (id && userId) {
       dispatch(GetCommentsList(id, userId));
-      dispatch(GetItemDetail(id, userId, 'forum'));
+      dispatch(GetItemDetail(id, userId, 'community'));
     }
   };
 
@@ -120,7 +120,7 @@ const CommunityDetails = () => {
       {backButton}
       <SectionDetail
         {...topicDetails}
-        section='forum'
+        section='community'
         onDeleteClick={() =>
           dispatch(
             openModal({
@@ -128,7 +128,7 @@ const CommunityDetails = () => {
               payload: {
                 text: 'Confermi di voler eliminare questo contenuto?',
                 id: id,
-                entity: 'forum',
+                entity: 'community',
                 author: topicDetails.author,
                 textLabel: "Inserisci il motivo dell'eliminazione",
               },
@@ -147,13 +147,13 @@ const CommunityDetails = () => {
             openModal({
               id: 'report-modal',
               payload: {
-                entity: 'forum',
+                entity: 'community',
               },
             })
           )
         }
       />
-      {commentsList.length ? <CommentSection section='forum' /> : null}
+      {commentsList.length ? <CommentSection section='community' /> : null}
       {/* <div className='border-bottom-box-comments mt-5'></div>
       <div
         className={clsx(
@@ -175,7 +175,7 @@ const CommunityDetails = () => {
         onClose={() => dispatch(closeModal())}
         onConfirm={(payload: any) => {
           switch (payload.entity) {
-            case 'forum':
+            case 'community':
               onEntityDelete(payload.id, payload.reason);
               break;
             case 'comment':

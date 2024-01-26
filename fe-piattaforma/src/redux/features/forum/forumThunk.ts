@@ -466,7 +466,7 @@ const GetItemsListAction = {
   type: 'forum/GetItemsList',
 };
 export const GetItemsList =
-  (entity: 'board' | 'forum' | 'document') =>
+  (entity: 'board' | 'community' | 'document') =>
   async (dispatch: Dispatch, select: Selector) => {
     try {
       dispatch(showLoader());
@@ -496,7 +496,7 @@ export const GetItemsList =
           case 'board':
             dispatch(setNewsList(res.data.data.items));
             break;
-          case 'forum':
+          case 'community':
             dispatch(setTopicsList(res.data.data.items));
             break;
           case 'document':
@@ -549,7 +549,7 @@ export const GetItemsBySearch =
           setTopicsList(
             (res[1]?.data?.data?.items || []).filter(
               ({ item_type }: { item_type: string }) =>
-                item_type === 'forum_item'
+                item_type === 'community_item'
             )
           )
         );
@@ -584,7 +584,7 @@ export const GetItemsByUser = () => async (dispatch: Dispatch) => {
         'GET'
       ),
       proxyCall(
-        `/user/${idUtente}/items?item_type=forum_item&page=0&items_per_page=24`,
+        `/user/${idUtente}/items?item_type=community_item&page=0&items_per_page=24`,
         'GET'
       ),
       proxyCall(
@@ -603,7 +603,7 @@ export const GetItemsByUser = () => async (dispatch: Dispatch) => {
       dispatch(
         setTopicsList(
           (res[1]?.data.data.items || []).filter(
-            ({ item_type }: { item_type: string }) => item_type === 'forum_item'
+            ({ item_type }: { item_type: string }) => item_type === 'community_item'
           )
         )
       );
@@ -628,7 +628,7 @@ const GetItemDetailsAction = {
 };
 
 export const GetItemDetail =
-  (itemId: string, userId: string, entity: 'board' | 'forum' | 'document') =>
+  (itemId: string, userId: string, entity: 'board' | 'community' | 'document') =>
   async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
@@ -643,7 +643,7 @@ export const GetItemDetail =
           case 'board':
             dispatch(setNewsDetail(res.data.data.items[0]));
             break;
-          case 'forum':
+          case 'community':
             dispatch(setTopicDetail(res.data.data.items[0]));
             break;
           case 'document':
@@ -733,7 +733,7 @@ const CreateItemAction = {
 };
 
 export const CreateItem =
-  (payload: any, entity: 'board' | 'forum' | 'document') =>
+  (payload: any, entity: 'board' | 'community' | 'document') =>
   async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
@@ -779,7 +779,7 @@ const UpdateItemAction = {
 };
 
 export const UpdateItem =
-  (itemId: string, payload: any, entity: 'board' | 'forum' | 'document') =>
+  (itemId: string, payload: any, entity: 'board' | 'community' | 'document') =>
   async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());

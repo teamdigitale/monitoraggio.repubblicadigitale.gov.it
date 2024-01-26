@@ -32,7 +32,7 @@ const CardSlider: React.FC<ForumCardsI> = (props) => {
       if (isNews) {
         navigate(`/bacheca/${id}`);
       } else if (isForum) {
-        navigate(`/community/${id}`);
+        navigate(`/forum/${id}`);
       } else if (isDocument) {
         navigate(`/documenti/${id}`);
       }

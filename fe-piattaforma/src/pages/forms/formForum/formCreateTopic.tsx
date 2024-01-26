@@ -66,7 +66,7 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
     useAppSelector(selectTopicDetail);
 
   useEffect(() => {
-    dispatch(GetCategoriesList({ type: 'forum_categories' }));
+    dispatch(GetCategoriesList({ type: 'community_categories' }));
     dispatch(GetTagsList());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
