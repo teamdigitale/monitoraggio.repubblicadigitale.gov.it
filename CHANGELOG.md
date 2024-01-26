@@ -1,5 +1,14 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.21.8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.21.7...1.21.8) (2024-01-26)
+
+
+### Bug Fixes
+
+* **fe:** updates 20240126 fix-virgola ([fad1ff4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fad1ff461ad81839bdea9690ba44cd7394951452))
+* **fe:** updates 20240126 fix-userslice ([71ab2e2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/71ab2e205cd73db1137ddcc66233de7abc23936f))
+* **fe:** updates 20240126 tardi-fe ([eb3b49a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/eb3b49adb9a927cd85cbbe07832dabf12cbacd4f))
+
 ## [1.21.7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.21.6...1.21.7) (2024-01-26)
 
 
