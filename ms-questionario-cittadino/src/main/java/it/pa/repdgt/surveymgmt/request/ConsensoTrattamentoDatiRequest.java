@@ -2,6 +2,10 @@ package it.pa.repdgt.surveymgmt.request;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+import it.pa.repdgt.shared.entityenum.ConsensoTrattamentoDatiEnum;
 import lombok.Getter;
 import lombok.Setter;
 
