@@ -27,6 +27,11 @@
     "skipDefaultLibCheck": true,
     "skipLibCheck": true
   },
-  "exclude": ["node_modules", "cypress"],
+  "exclude": [
+    "node_modules",
+    "cypress",
+    "marketto",
+    "@marketto"
+  ],
   "include": ["src/**/*"]
 }
