@@ -8,6 +8,7 @@ import withFormHandler, {
 import { selectQuestionarioTemplateSnapshot } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { selectEntityDetail } from '../../../redux/features/citizensArea/citizensAreaSlice';
 import { useAppSelector } from '../../../redux/hooks';
+import { Parser } from '@marketto/codice-fiscale-utils';
 import {
   formFieldI,
   FormHelper,
@@ -19,8 +20,8 @@ import { generateForm } from '../../../utils/jsonFormHelper';
 import { RegexpType } from '../../../utils/validator';
 import { FormCitizenI } from '../formCitizen';
 import { citizenFormDropdownOptions } from '../constantsFormCitizen';
-import { mappaMesi } from '../../../consts/monthsMapForFiscalCode';
 import { OptionType } from '../../../components/Form/select';
+import moment from 'moment';
 
 interface FormEnteGestoreProgettoFullInterface
   extends withFormHandlerProps,
@@ -92,8 +93,7 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
   }, [formData]);
 
   const decodeGenderFromFiscalCode = useCallback((cf: string) => {
-    const mese = parseInt(cf.substring(9, 11), 10);
-    return mese <= 31 ? 'M' : 'F';
+    return Parser.cfToGender(cf) as string;
   }, []);
 
   const determineAgeGroup = useCallback((age: number): string => {
@@ -110,25 +110,7 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
 
   const decodeAgeFromFiscalCode = useCallback(
     (cf: string) => {
-      const today = new Date();
-      const rangeCentury = parseInt(
-        today.getFullYear().toString().substring(2)
-      );
-      const isFemale = cf.charAt(9) >= '4';
-      const dayOfBirth = parseInt(cf.substring(9, 11)) - (isFemale ? 40 : 0);
-      const century = parseInt(cf.substring(6, 8));
-      const yearOfBirth =
-        century <= rangeCentury ? 2000 + century : 1900 + century;
-      const month = mappaMesi.get(cf.charAt(8).toUpperCase()) as number;
-      const dateOfBirth = new Date(yearOfBirth, month, dayOfBirth);
-      const age = today.getFullYear() - dateOfBirth.getFullYear();
-      if (
-        today.getMonth() < dateOfBirth.getMonth() ||
-        (today.getMonth() === dateOfBirth.getMonth() &&
-          today.getDate() < dateOfBirth.getDate())
-      ) {
-        return determineAgeGroup(age - 1);
-      }
+      const age = moment().diff(Parser.cfToBirthDate(cf), 'years', false);
       return determineAgeGroup(age);
     },
     [determineAgeGroup]
