@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.21.14](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.21.13...1.21.14) (2024-01-29)
+
+
+### Bug Fixes
+
+* **k8s:** updates 20240129 ([01b5c0c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/01b5c0c13e31706ec73cdc7efb9dc919a8861407))
+
 ## [1.21.13](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.21.12...1.21.13) (2024-01-29)
 
 
