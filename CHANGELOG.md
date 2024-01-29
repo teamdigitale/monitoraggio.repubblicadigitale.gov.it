@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.21.11](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.21.10...1.21.11) (2024-01-29)
+
+
+### Bug Fixes
+
+* **fe-fd-td:** updates 20240129 ([3bb02c0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3bb02c06bc959bad2c60d5f27d21386609080d72))
+* **fd-questionario:** updates 20240129 ([eca8658](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/eca865864fb62ee192926f6ad42ae59a39a55135))
+
 ## [1.21.10](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.21.9...1.21.10) (2024-01-26)
 
 
