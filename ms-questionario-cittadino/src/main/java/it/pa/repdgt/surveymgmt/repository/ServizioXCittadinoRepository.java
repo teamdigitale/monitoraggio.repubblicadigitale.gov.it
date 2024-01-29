@@ -11,17 +11,15 @@ import it.pa.repdgt.shared.entity.ServizioXCittadinoEntity;
 public interface ServizioXCittadinoRepository extends JpaRepository<ServizioXCittadinoEntity, String> {
 
 	@Query(value = " "
-				 + " SELECT "
-				 + "	COUNT(*)"
-				 + " FROM "
-				 + "	servizio_x_cittadino sxc "
-				 + " WHERE 1=1 "
-				 + "	AND sxc.ID_SERVIZIO  = :idServizio  "
-				 + " 	AND sxc.ID_CITTADINO = :idCittadino "
-				 + " ",
-		   nativeQuery = true)
+			+ " SELECT "
+			+ "	COUNT(*)"
+			+ " FROM "
+			+ "	servizio_x_cittadino sxc "
+			+ " WHERE 1=1 "
+			+ "	AND sxc.ID_SERVIZIO  = :idServizio  "
+			+ " 	AND sxc.ID_CITTADINO = :idCittadino "
+			+ " ", nativeQuery = true)
 	int findCittadinoByIdServizioAndIdCittadino(
-		@Param(value = "idServizio")  Long idServizio,
-		@Param(value = "idCittadino") Long idCittadino
-	);
+			@Param(value = "idServizio") Long idServizio,
+			@Param(value = "idCittadino") Long idCittadino);
 }

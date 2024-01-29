@@ -6,7 +6,6 @@ import it.pa.repdgt.shared.awsintegration.service.EmailService;
 import it.pa.repdgt.shared.constants.DomandeStrutturaQ1AndQ2Constants;
 import it.pa.repdgt.shared.entity.*;
 import it.pa.repdgt.shared.entity.key.ServizioCittadinoKey;
-import it.pa.repdgt.shared.entity.tipologica.FasciaDiEtaEntity;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.entityenum.StatoQuestionarioEnum;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
@@ -229,6 +228,8 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 	public CittadinoEntity creaNuovoCittadino(
 			@NotNull final Long idServizio,
 			@NotNull final NuovoCittadinoServizioRequest nuovoCittadinoRequest) throws ParseException {
+		System.out.println("Il cittadino in richiesta e' : " + nuovoCittadinoRequest);
+		System.err.println("Il cittadino in richiesta e' : " + nuovoCittadinoRequest);
 		String codiceFiscaleDecrypted;
 		if (nuovoCittadinoRequest.getCodiceFiscale() != null && !nuovoCittadinoRequest.getCodiceFiscale().isEmpty()) {
 			codiceFiscaleDecrypted = decryptFromBase64(nuovoCittadinoRequest.getCodiceFiscale());
@@ -251,6 +252,10 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 						nuovoCittadinoRequest.getCodiceFiscaleNonDisponibile(),
 						nuovoCittadinoRequest.getCodiceFiscale(),
 						nuovoCittadinoRequest.getNumeroDocumento());
+		System.out.println("Il cittadino in richiesta e' : " + nuovoCittadinoRequest);
+		System.err.println("Il cittadino in richiesta e' : " + nuovoCittadinoRequest);
+		System.out.println("Il cittadino recuperato e' : " + optionalCittadinoDBFetch.orElse(null));
+		System.err.println("Il cittadino recuperato e' : " + optionalCittadinoDBFetch.orElse(null));
 		if (nuovoCittadinoRequest.getNuovoCittadino() && optionalCittadinoDBFetch.isPresent()) {
 			final String messaggioErrore = String.format(
 					"Cittadino già esistente",
@@ -299,9 +304,8 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 			cittadino.setTipoDocumento(nuovoCittadinoRequest.getTipoDocumento());
 			cittadino.setNumeroDocumento(nuovoCittadinoRequest.getNumeroDocumento());
 		}
-		Optional<FasciaDiEtaEntity> otpFasciaDiEta = fasciaDiEtaRepository
-				.findById(nuovoCittadinoRequest.getFasciaDiEtaId());
-		cittadino.setFasciaDiEta(otpFasciaDiEta.orElse(null));
+		System.err.println("Il nuovo cittadino request contiene : " + nuovoCittadinoRequest);
+		cittadino.setFasciaDiEta(fasciaDiEtaRepository.getReferenceById(nuovoCittadinoRequest.getFasciaDiEtaId()));
 		cittadino.setCittadinanza(nuovoCittadinoRequest.getCittadinanza());
 		cittadino.setGenere(nuovoCittadinoRequest.getGenere());
 		cittadino.setDataOraCreazione(new Date());
