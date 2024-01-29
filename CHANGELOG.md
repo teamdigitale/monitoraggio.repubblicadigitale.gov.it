@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.21.13](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.21.12...1.21.13) (2024-01-29)
+
+
+### Bug Fixes
+
+* **fd-quest-mix:** updates 20240129 ([a410323](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a410323879ebe0354b202cd925ede61135b4de27))
+
 ## [1.21.12](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.21.11...1.21.12) (2024-01-29)
 
 
