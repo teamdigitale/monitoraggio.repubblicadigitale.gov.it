@@ -29,15 +29,18 @@ export const proxyCall = async (
   const { idProgramma, idProgetto, idEnte } = getUserHeaders();
   const codiceFiscale = JSON.parse(getSessionValues('user')).codiceFiscale;
   const codiceRuolo = JSON.parse(getSessionValues('profile')).codiceRuolo;
-  return await API.post(`${process?.env?.NOTIFICHE}drupal/forward`, {
-    url: `/api${url}`,
-    metodoHttp: httpMethod,
-    cfUtenteLoggato: codiceFiscale,
-    codiceRuoloUtenteLoggato: codiceRuolo,
-    profilo: { idProgramma, idProgetto, idEnte },
-    ...filePayload,
-    body: body ? JSON.stringify(body) : null,
-  });
+  const pass = false;
+  if (body && body.cfUtenteLoggato && pass) {
+    return await API.post(`${process?.env?.NOTIFICHE}drupal/forward`, {
+      url: `/api${url}`,
+      metodoHttp: httpMethod,
+      cfUtenteLoggato: codiceFiscale,
+      codiceRuoloUtenteLoggato: codiceRuolo,
+      profilo: { idProgramma, idProgetto, idEnte },
+      ...filePayload,
+      body: body ? JSON.stringify(body) : null,
+    });
+  }
 };
 
 const GetNewsFiltersAction = {
