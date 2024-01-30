@@ -78,6 +78,7 @@ jobs:
       with:
         languages: 'javascript'
         # queries: security-extended,security-and-quality
+        paths-ignore: 'src/node_modules'
 
     - name: fe-piattaforma Build
       run: |
