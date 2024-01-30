@@ -11,7 +11,10 @@
   "rules": {
     "@typescript-eslint/no-unused-vars": [
       "error",
-      { "argsIgnorePattern": "^_", "varsIgnorePattern": "_" }
+      { "argsIgnorePattern": "^_", "varsIgnorePattern": "_" },
+      { "argsIgnorePattern": "validator.class.ts", "varsIgnorePattern": "**" },
+      { "argsIgnorePattern": "parser.class.ts", "varsIgnorePattern": "**" },
+      { "argsIgnorePattern": "generator-wrapper.interface.ts", "varsIgnorePattern": "**" }
     ],
     "react/jsx-no-useless-fragment": "error"
   }
