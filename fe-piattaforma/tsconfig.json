@@ -31,7 +31,8 @@
     "node_modules",
     "cypress",
     "marketto",
-    "@marketto"
+    "@marketto",
+    "node***modules/@marketto"
   ],
   "include": ["src/**/*"]
 }
