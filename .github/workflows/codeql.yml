@@ -76,7 +76,7 @@ jobs:
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v2
       with:
-        languages: 'javascript'
+        languages: 'javascript-typescript'
         # queries: security-extended,security-and-quality
         paths-ignore: 'src/node_modules'
 
