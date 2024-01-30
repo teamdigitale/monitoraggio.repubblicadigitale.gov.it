@@ -1,5 +1,31 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.22.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.21.14...1.22.0) (2024-01-30)
+
+
+### Features
+
+* **evolutive:** updates 20240129 ([f01c884](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f01c884f647fe7aa091cdce8266dbd855cf57c9b))
+
+
+### Bug Fixes
+
+* **deploy:** updates 20240130 ([9f485fe](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9f485feb056cbb4f0c784b3035c5dfeb2109ccb3))
+* **codeQL:** updates 20240130 ([fe7b87a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fe7b87a29efc3c89c762802d34e10630cf863a5e))
+* **feat:** updates 20240130 ([3fe2fb4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3fe2fb4b746d90cd9c9e961fc597a819374de0fc))
+* **ripristino:** udpates 20240130 ([59b2ee8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/59b2ee880f6bf4818288d6f367e613a87c75a8bf))
+* **tsconfiglint:** updates 20240130 ([ac9aca7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ac9aca75983c27fa9348f709dd53649c165b84e9))
+* **try-lintignore:** updates 20240130 ([20e743c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/20e743cf8b11c193d383439a8c4e0a5462e5c419))
+* **refactor:** updates 20240130 ([ddce0a3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ddce0a3c785aac641d518857f1f19c103ba43b45))
+* **aggiunte-regole-eslintrc:** updates 20240130 ([838d6ce](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/838d6cec5765fb17a735a7c9e905f3962f088b9f))
+* **update-lint-error:** updates 20240130 ([d3d2504](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d3d25047b08638b2474ec1f44a0c8fcabf97615c))
+* **try-lint:** updates 20240130 ([619642d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/619642d5aeac292331a02e8218564ff3d67ef49c))
+* **pulizialint:** updates 20240130 ([dc15c4f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/dc15c4fbce1304d74f9a40e7313ef6cba733f2c7))
+* **update tslint:** updates 20240130 ([9396044](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9396044839644980a56704de12f0515e4e1b45b0))
+* **test:** updates 20240130 ([161564a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/161564a040254bfc3d540ff68387f3e41a214cf2))
+* **update eslint:** updates 20240130 ([de684e9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/de684e93c4eea6a94571675b0ea4e5019e7ce3a6))
+* **exclude:** updates 20240129 ([c94d873](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c94d873b1f5302399ae97c650d2d7b587dab5458))
+
 ## [1.21.14](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.21.13...1.21.14) (2024-01-29)
 
 
