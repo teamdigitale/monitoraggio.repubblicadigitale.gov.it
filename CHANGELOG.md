@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.405](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.404...1.0.0-develop.405) (2024-01-30)
+
+
+### Bug Fixes
+
+* **fix-feat:** updates 20240130 ([94a0b9d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/94a0b9db22bffb75cd55f3758d3793cbbcc23b07))
+
 ## [1.0.0-develop.404](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.403...1.0.0-develop.404) (2024-01-30)
 
 
