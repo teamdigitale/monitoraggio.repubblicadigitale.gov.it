@@ -49,6 +49,7 @@
     "typeface-titillium-web": "^1.1.13"
   },
   "devDependencies": {
+    "@marketto/codice-fiscale-utils": "^2.1.2",
     "@babel/core": "^7.20.2",
     "@commitlint/cli": "^17.0.2",
     "@commitlint/config-conventional": "^17.0.2",

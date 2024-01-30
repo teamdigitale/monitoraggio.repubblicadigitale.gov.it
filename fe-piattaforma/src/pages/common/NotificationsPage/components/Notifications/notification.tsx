@@ -108,7 +108,7 @@ const Notification: React.FC<NotificationI> = (props) => {
     if (
       [
         'board_report',
-        'forum_report',
+        'community_report',
         'document_report',
         'comment_report',
       ].includes(action)
@@ -119,7 +119,7 @@ const Notification: React.FC<NotificationI> = (props) => {
         case 'board_item':
           navigate(`/bacheca/${node_id}`);
           break;
-        case 'forum_item':
+        case 'community_item':
           navigate(`/forum/${node_id}`);
           break;
         case 'document_item':

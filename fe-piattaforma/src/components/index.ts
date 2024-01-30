@@ -1,5 +1,6 @@
 import Accordion from './Accordion/accordion';
 import Card from './Card/card';
+import CardCommunity from './CardCommunity/cardCommunity';
 import CardCounter from './CardCounter/cardCounter';
 import CardProfile from './CardProfile/cardProfile';
 import CardStatusAction from './CardStatusAction/cardStatusAction';
@@ -47,6 +48,7 @@ export {
   Breadcrumb,
   ButtonsBar,
   Card,
+  CardCommunity,
   CardCounter,
   CardProfile,
   CardStatusAction,

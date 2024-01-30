@@ -70,7 +70,7 @@ public class QuestionarioCompilatoService {
 				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore, CodiceErroreEnum.C01));
 	}
 
-	public void invioEmail(){
+	public void invioEmail() {
 		String[] argomenti = new String[0];
 		emailService.inviaEmail("indirizzo@email.com", EmailTemplateEnum.CONSENSO, argomenti);
 	}
@@ -156,9 +156,10 @@ public class QuestionarioCompilatoService {
 	@LogMethod
 	@LogExecutionTime
 	public void valorizzaIPrimiTreQuestionari(String idQuestionario,
-											   QuestionarioCompilatoRequest questionarioCompilatoRequest) {
+			QuestionarioCompilatoRequest questionarioCompilatoRequest) {
 		QuestionarioCompilatoCollection questionarioCompilatoCollection = getQuestionarioCompilatoById(idQuestionario);
-		QuestionarioCompilatoCollection.DatiIstanza dato = questionarioCompilatoCollection.getSezioniQuestionarioTemplateIstanze().get(0);
+		QuestionarioCompilatoCollection.DatiIstanza dato = questionarioCompilatoCollection
+				.getSezioniQuestionarioTemplateIstanze().get(0);
 		questionarioCompilatoRequest.setSezioneQ1Questionario(dato.getDomandaRisposta().toString());
 		dato = questionarioCompilatoCollection.getSezioniQuestionarioTemplateIstanze().get(1);
 		questionarioCompilatoRequest.setSezioneQ2Questionario(dato.getDomandaRisposta().toString());

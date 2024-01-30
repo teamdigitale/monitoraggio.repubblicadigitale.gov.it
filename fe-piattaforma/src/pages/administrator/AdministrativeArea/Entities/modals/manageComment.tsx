@@ -60,7 +60,7 @@ const ManageComment: React.FC<ManageCommentI> = ({
           // @ts-ignore
           if (res) {
             userId &&
-              dispatch(GetItemDetail(id, userId, payload.entity || 'forum'));
+              dispatch(GetItemDetail(id, userId, payload.entity || 'community'));
             dispatch(
               ActionTracker({
                 target: 'tnd',
@@ -68,7 +68,7 @@ const ManageComment: React.FC<ManageCommentI> = ({
                 event_type:
                   payload.entity === 'board'
                     ? 'NEWS'
-                    : payload.entity === 'forum'
+                    : payload.entity === 'community'
                     ? 'TOPIC'
                     : 'DOCUMENTI',
                 category: payload.category_label || payload.category,

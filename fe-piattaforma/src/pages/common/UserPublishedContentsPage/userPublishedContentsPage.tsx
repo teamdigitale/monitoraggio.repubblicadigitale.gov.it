@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { Container } from 'design-react-kit';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Accordion, EmptySection } from '../../../components';
+import { Accordion, EmptySection, CardCommunity } from '../../../components';
 import CardDocument from '../../../components/CardDocument/cardDocument';
 import CardShowcase from '../../../components/CardShowcase/cardShowcase';
 import PageTitle from '../../../components/PageTitle/pageTitle';
@@ -15,7 +15,6 @@ import {
 import { GetItemsByUser } from '../../../redux/features/forum/forumThunk';
 import { useAppSelector } from '../../../redux/hooks';
 import '../HomeSearch/homeSearch.scss';
-import CardForum from '../../../components/CardForum/cardForum';
 
 const PageTitleMock = {
   title: 'I miei contenuti',
@@ -67,7 +66,7 @@ const UserPublishedContentsPage = () => {
             {topicsList.length ? (
               topicsList.map((forumElement, i) => (
                 <div key={i} className={clsx('my-2', 'mx-2', 'align-cards')}>
-                  <CardForum {...forumElement} />
+                  <CardCommunity {...forumElement} />
                 </div>
               ))
             ) : (

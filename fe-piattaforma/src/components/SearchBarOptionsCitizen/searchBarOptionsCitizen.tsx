@@ -10,8 +10,9 @@ import Input from '../Form/input';
 import { setCitizenSearchResults } from '../../redux/features/citizensArea/citizensAreaSlice';
 import { SearchValue } from '../../pages/forms/models/searchValue.model';
 import { Buffer } from 'buffer';
-import { mappaMesi } from '../../consts/monthsMapForFiscalCode';
 import { emitNotify } from '../../redux/features/notification/notificationSlice';
+import moment from 'moment';
+import { Parser, Validator } from '@marketto/codice-fiscale-utils';
 
 interface SearchBarOptionsI {
   setCurrentStep: (value: string) => void;
@@ -45,20 +46,7 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
   const [mustValidateCf, setMustValidateCf] = useState<boolean>(true);
 
   const isMaggiorenne = useCallback((cf: string): boolean => {
-    const today: Date = new Date();
-    const rangeCentury: number = parseInt(
-      today.getFullYear().toString().substring(2)
-    );
-    const isFemale: boolean = cf.charAt(9) >= '4';
-    const dayOfBirth: number =
-      parseInt(cf.substring(9, 11)) - (isFemale ? 40 : 0);
-    const century: number = parseInt(cf.substring(6, 8));
-    const yearOfBirth: number =
-      century <= rangeCentury ? 2000 + century : 1900 + century;
-    const month: number = mappaMesi.get(cf.charAt(8).toUpperCase()) as number;
-    const dateOfBirth: Date = new Date(yearOfBirth, month, dayOfBirth);
-    const age: number = today.getFullYear() - dateOfBirth.getFullYear();
-    return age > 18;
+    return moment().diff(Parser.cfToBirthDate(cf), 'years', false) >= 18;
   }, []);
 
   const dispatchNotify = useCallback(
@@ -72,9 +60,20 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
 
   const isValidFiscalCode = useCallback(
     (query: string) => {
-      const isValid: boolean =
-        /^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$/i.test(query);
-      if (isValid) {
+      const fiscalCodeValid = Validator.codiceFiscale(query).valid;
+      const fiscalCodeLengthCorrect = query.length === 16;
+
+      if (!fiscalCodeValid && fiscalCodeLengthCorrect) {
+        dispatchNotify(
+          1,
+          'ERRORE',
+          'error',
+          'Il codice fiscale inserito non è valido',
+          'medium'
+        );
+        return false;
+      }
+      if (fiscalCodeValid) {
         const isAdult = isMaggiorenne(query);
         if (!isAdult) {
           dispatchNotify(
@@ -87,9 +86,10 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
         }
         return isAdult;
       }
-      return isValid;
+
+      return false;
     },
-    [dispatch, isMaggiorenne]
+    [dispatchNotify, isMaggiorenne]
   );
 
   const onRadioChange = useCallback(

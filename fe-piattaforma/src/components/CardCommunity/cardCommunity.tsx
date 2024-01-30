@@ -2,13 +2,13 @@ import clsx from 'clsx';
 import { CardText, CardTitle, Col, Icon } from 'design-react-kit';
 import React, { memo } from 'react';
 import Heart from '/public/assets/img/hollow-grey-heart.png';
-import './cardForum.scss';
+import './cardCommunity.scss';
 import { useNavigate } from 'react-router-dom';
 import PublishingAuthority from '../CardDocument/PublishingAuthority';
 import { formatDate } from '../../utils/datesHelper';
 import { ForumCardsI } from '../CardShowcase/cardShowcase';
 
-const CardForum: React.FC<ForumCardsI> = (props) => {
+const CardCommunity: React.FC<ForumCardsI> = (props) => {
   const {
     id,
     title,
@@ -23,14 +23,14 @@ const CardForum: React.FC<ForumCardsI> = (props) => {
   const navigate = useNavigate();
 
   const navigateTo = () => {
-    navigate(`/forum/${id}`);
+    navigate(`/community/${id}`);
   };
 
   return (
     <div
       role='button'
       className={clsx(
-        'card-forum',
+        'card-community',
         'bg-white',
         'px-4',
         'pb-3',
@@ -56,7 +56,7 @@ const CardForum: React.FC<ForumCardsI> = (props) => {
     >
       <Col className='text-left'>
         {category_label ? (
-          <div className='mb-2 card-forum__pre-title'>
+          <div className='mb-2 card-community__pre-title'>
             <span className='font-weight-bold'>
               {category_label}
               {/* &nbsp;—&nbsp; */}
@@ -66,13 +66,13 @@ const CardForum: React.FC<ForumCardsI> = (props) => {
         {title ? (
           <CardTitle
             tag='p'
-            className='card-forum__title font-weight-bold mb-3'
+            className='card-community__title font-weight-bold mb-3'
           >
             {title}
           </CardTitle>
         ) : null}
         {description ? (
-          <CardText className='card-forum__text mb-3 text-serif'>
+          <CardText className='card-community__text mb-3 text-serif'>
             {description}
           </CardText>
         ) : null}
@@ -87,7 +87,7 @@ const CardForum: React.FC<ForumCardsI> = (props) => {
           'align-items-center'
         )}
       >
-        <span className='card-forum__date'>
+        <span className='card-community__date'>
           {date && formatDate(date, 'shortDate')}
         </span>
         <div className='d-flex'>
@@ -106,7 +106,7 @@ const CardForum: React.FC<ForumCardsI> = (props) => {
               aria-label='Likes'
               aria-hidden
             />
-            <span className='card-forum__span-icons pl-1'>{likes}</span>
+            <span className='card-community__span-icons pl-1'>{likes}</span>
           </div>
           <div
             className={clsx(
@@ -123,7 +123,9 @@ const CardForum: React.FC<ForumCardsI> = (props) => {
               aria-label='Comments'
               aria-hidden
             />
-            <span className='card-forum__span-icons pl-1'>{comment_count}</span>
+            <span className='card-community__span-icons pl-1'>
+              {comment_count}
+            </span>
           </div>
           <div className={clsx('d-flex', 'align-items-center', 'category-top')}>
             <Icon
@@ -133,7 +135,7 @@ const CardForum: React.FC<ForumCardsI> = (props) => {
               aria-label='Views'
               aria-hidden
             />
-            <span className='card-forum__span-icons pl-1'>{views}</span>
+            <span className='card-community__span-icons pl-1'>{views}</span>
           </div>
         </div>
       </div>
@@ -141,4 +143,4 @@ const CardForum: React.FC<ForumCardsI> = (props) => {
   );
 };
 
-export default memo(CardForum);
+export default memo(CardCommunity);

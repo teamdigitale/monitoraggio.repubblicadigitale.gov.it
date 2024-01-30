@@ -68,9 +68,11 @@ const SurveyOnline = lazy(
 
 // WAVE 3
 const Reports = lazy(() => import('../pages/common/Reports/reports'));
-const Forum = lazy(() => import('../pages/common/Forum/forum'));
+const Community = lazy(() => import('../pages/common/Community/community'));
 const Category = lazy(() => import('../pages/facilitator/Categories/category'));
-const ForumDetails = lazy(() => import('../pages/common/Forum/forumDetails'));
+const CommunityDetails = lazy(
+  () => import('../pages/common/Community/communityDetails')
+);
 
 /**
  The "routes.tsx" file is now useless, lazy loading is implemented for every
@@ -142,18 +144,18 @@ const AppRoutes: React.FC = () => {
             />
             <Route path='/' element={<FullLayout isFull />}>
               <Route
-                path='/forum/:id'
+                path='/community/:id'
                 element={
                   <ProtectedComponent visibleTo={['view.card.topic']}>
-                    <ForumDetails />
+                    <CommunityDetails />
                   </ProtectedComponent>
                 }
               />
               <Route
-                path='/forum'
+                path='/community'
                 element={
                   <ProtectedComponent visibleTo={['tab.comm', 'list.topic']}>
-                    <Forum />
+                    <Community />
                   </ProtectedComponent>
                 }
               />

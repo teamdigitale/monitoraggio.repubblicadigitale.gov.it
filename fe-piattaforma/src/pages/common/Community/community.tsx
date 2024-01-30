@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import {Container} from 'design-react-kit';
 import React, {useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
-import {EmptySection, Paginator} from '../../../components';
+import {EmptySection, Paginator, CardCommunity} from '../../../components';
 import {DropdownFilterI, FilterI,} from '../../../components/DropdownFilter/dropdownFilter';
 import ForumLayout from '../../../components/ForumLayout/ForumLayout';
 import {setPublishedContent} from '../../../redux/features/app/appSlice';
@@ -20,14 +20,13 @@ import {openModal} from '../../../redux/features/modal/modalSlice';
 import {useAppSelector} from '../../../redux/hooks';
 import ManageTopic from '../../administrator/AdministrativeArea/Entities/modals/manageTopic';
 /* import { ForumPropsMock } from '../../facilitator/Home/components/ForumWidget/forumWidget'; */
-import './forum.scss';
+import './community.scss';
 import {
   selectEntityPagination,
   setEntityPagination,
 } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import {formFieldI} from '../../../utils/formHelper';
 import useGuard from '../../../hooks/guard';
-import CardForum from '../../../components/CardForum/cardForum';
 
 // for dropdown filters, don't change
 const categoryDropdownLabel = 'categories';
@@ -37,7 +36,7 @@ const TopicCta = {
   iconCta: 'it-plus',
 };
 
-const Forum = () => {
+const Community = () => {
   const topicsList = useAppSelector(selectTopicsList);
   const filtersList = useAppSelector(selectFilters);
   const dropdownFilterOptions = useAppSelector(selectFilterOptions);
@@ -190,7 +189,7 @@ community.'
                       'align-cards'
                     )}
                   >
-                    <CardForum {...forumElement} role='button' />
+                    <CardCommunity {...forumElement} role='button' />
                   </div>
                 ))
               ) : (
@@ -217,4 +216,4 @@ community.'
   );
 };
 
-export default Forum;
+export default Community;

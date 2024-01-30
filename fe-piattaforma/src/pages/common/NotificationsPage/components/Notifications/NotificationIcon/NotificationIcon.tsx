@@ -16,26 +16,26 @@ const NotificationIcon = ({ action, status }: NotificationIconI) => {
   const getIconByAction = (action: string, status: boolean) => {
     switch (action) {
       case 'board_update':
-      case 'forum_update':
+      case 'community_update':
       case 'document_update':
       case 'comment_update':
       case 'board_delete':
-      case 'forum_delete':
+      case 'community_delete':
       case 'document_delete':
       case 'comment_delete':
         return status ? BellIconRead : BellIconUnreaad;
       case 'board_like':
-      case 'forum_like':
+      case 'community_like':
       case 'document_like':
       case 'comment_like':
         return status ? HeartIconRead : HeartIconUnread;
       case 'board_comment':
-      case 'forum_comment':
+      case 'community_comment':
       case 'document_comment':
       case 'comment_reply':
         return status ? CommentIconRead : CommentIconUnread;
       case 'board_report':
-      case 'forum_report':
+      case 'community_report':
       case 'document_report':
       case 'comment_report':
         return ReporIcon;

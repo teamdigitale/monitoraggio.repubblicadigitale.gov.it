@@ -19,6 +19,7 @@ export interface UserStateI {
         email?: string;
         role?: string;
         codiceFiscale: string;
+        cfUtenteLoggato: string;
         profiliUtente: UserProfileI[];
         integrazione: boolean;
         mostraBio: boolean;
@@ -38,6 +39,7 @@ export interface UserStateI {
   profilo?: UserProfileI | null;
   ruoli: {
     codiceRuolo: string;
+    codiceRuoloUtenteLoggato: string;
     permessi: [];
   }[];
 }
@@ -64,6 +66,7 @@ const initialStateLogged: UserStateI = {
     cognome: 'Rossi',
     role: 'DTD',
     codiceFiscale: 'UTENTE1',
+    cfUtenteLoggato: 'UTENTE1',
     email: 'mario.rossi@mail.com',
     integrazione: true,
     profiliUtente: [],
@@ -115,6 +118,7 @@ export const userSlice = createSlice({
     },
     setUserProfile: (state, action: PayloadAction<any>) => {
       const payload = { ...action.payload, saveSession: undefined };
+      payload['codiceRuoloUtenteLoggato'] = payload.codiceRuolo;
       state.idProgramma = action.payload.idProgramma;
       state.idProgetto = [action.payload.idProgetto];
       state.idEnte = action.payload.idEnte;
@@ -147,6 +151,9 @@ export const userSlice = createSlice({
       });
     },
     login: (state) => {
+      if(state.user){
+        state.user['cfUtenteLoggato'] = state?.user?.codiceFiscale;
+      }
       setSessionValues('user', state.user);
       setSessionValues('profile', state.profilo);
       if (isActiveProvisionalLogin) {
