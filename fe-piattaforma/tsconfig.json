@@ -31,5 +31,11 @@
     "node_modules",
     "cypress",
   ],
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "linterOptions": {
+    "exclude": [
+      "node_modules",
+      "./**/node_modules/*"
+    ]
+  }
 }
