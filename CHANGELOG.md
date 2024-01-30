@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.170](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.169...1.0.0-test.170) (2024-01-30)
+
+
+### Bug Fixes
+
+* **fix pass:** updates 20240130 ([c1bf5bc](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c1bf5bcee7c2d78c6c213eea37a4b0cf4155410a))
+
 ## [1.0.0-test.169](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.168...1.0.0-test.169) (2024-01-30)
 
 
