@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { Container } from 'design-react-kit';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Accordion, EmptySection, SearchBar } from '../../../components';
+import { Accordion, CardCommunity, EmptySection, SearchBar } from '../../../components';
 import CardDocument from '../../../components/CardDocument/cardDocument';
 import CardShowcase from '../../../components/CardShowcase/cardShowcase';
 import PageTitle from '../../../components/PageTitle/pageTitle';
@@ -15,7 +15,6 @@ import {
 import { GetItemsBySearch } from '../../../redux/features/forum/forumThunk';
 import { useAppSelector } from '../../../redux/hooks';
 import './homeSearch.scss';
-import CardForum from '../../../components/CardForum/cardForum';
 
 const PageTitleMock = {
   title: 'Cerca su bacheca, forum e documenti',
@@ -115,7 +114,7 @@ const HomeSearch = () => {
                         'align-cards'
                       )}
                     >
-                      <CardForum {...forumElement} />
+                      <CardCommunity {...forumElement} />
                     </div>
                   ))
                 ) : (

@@ -17,7 +17,7 @@ export const GetCategoriesList =
     type?:
       | 'all'
       | 'board_categories'
-      | 'forum_categories'
+      | 'community_categories'
       | 'document_categories';
     keys?: string | undefined;
   }) =>

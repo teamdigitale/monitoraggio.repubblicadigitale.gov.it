@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { EmptySection } from '../../../../../components';
+import { CardCommunity, EmptySection } from '../../../../../components';
 import { selectDevice } from '../../../../../redux/features/app/appSlice';
 import { useAppSelector } from '../../../../../redux/hooks';
 import '../../../../../pages/facilitator/Home/components/BachecaDigitaleWidget/bachecaDigitaleWidget.scss';
@@ -11,9 +11,8 @@ import Slider, {
 import { getMediaQueryDevice } from '../../../../../utils/common';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
-import CardForum from '../../../../../components/CardForum/cardForum';
 
-const forumPagination = {
+const communityPagination = {
   desktop: 6,
   mobile: 8,
   tablet: 3,
@@ -25,13 +24,14 @@ const carouselPagination = {
   tablet: 3,
 };
 
-const ForumWidget = () => {
+const CommunityWidget = () => {
   const dispatch = useDispatch();
   const device = useAppSelector(selectDevice);
   const [topicsList, setTopicsList] = useState([]);
 
   const topicWidgetSet = async () => {
-    const itemPerPage = forumPagination[getMediaQueryDevice(device)].toString();
+    const itemPerPage =
+      communityPagination[getMediaQueryDevice(device)].toString();
     const res = await dispatch(
       GetTopicsList(
         {
@@ -52,7 +52,7 @@ const ForumWidget = () => {
   }, [device]);
 
   const cardArray: any[] = [
-    topicsList.slice(0, forumPagination[getMediaQueryDevice(device)]),
+    topicsList.slice(0, communityPagination[getMediaQueryDevice(device)]),
   ];
 
   return (
@@ -76,7 +76,7 @@ const ForumWidget = () => {
             facilitatori e formatori digitali.
           </p>
           {!device.mediaIsPhone && (
-            <Link className='btn btn-primary' role='button' to='/forum'>
+            <Link className='btn btn-primary' role='button' to='/community'>
               Vai agli argomenti
             </Link>
           )}
@@ -98,7 +98,7 @@ const ForumWidget = () => {
                       'align-cards'
                     )}
                   >
-                    <CardForum {...e} />
+                    <CardCommunity {...e} />
                   </div>
                 ))}
               </div>
@@ -108,7 +108,7 @@ const ForumWidget = () => {
               {formatSlides(
                 topicsList.slice(
                   0,
-                  forumPagination[getMediaQueryDevice(device)]
+                  communityPagination[getMediaQueryDevice(device)]
                 ),
                 carouselPagination[getMediaQueryDevice(device)]
               ).map((el, i) => (
@@ -121,7 +121,7 @@ const ForumWidget = () => {
                       key={`card-${i}-${index}`}
                       className='flex-grow-0 my-2'
                     >
-                      <CardForum {...e} />
+                      <CardCommunity {...e} />
                     </div>
                   ))}
                 </div>
@@ -134,7 +134,7 @@ const ForumWidget = () => {
       </div>
       {device.mediaIsPhone && (
         <div className='d-flex justify-content-center mt-5'>
-          <a role='button' className='btn btn-primary' href='/forum'>
+          <a role='button' className='btn btn-primary' href='/community'>
             Esplora tutti i topic
           </a>
         </div>
@@ -143,4 +143,4 @@ const ForumWidget = () => {
   );
 };
 
-export default ForumWidget;
+export default CommunityWidget;

@@ -325,7 +325,7 @@ const form = newForm([
     type: 'text',
     id: 'short-name',
     required: true,
-    maximum: 25,
+    //maximum: 25,
     //minimum: 6,
   }),
   newFormField({

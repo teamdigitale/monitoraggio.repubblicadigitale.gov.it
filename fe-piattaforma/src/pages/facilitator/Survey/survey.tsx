@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { Col, Container } from 'design-react-kit';
 import PageTitle from '../../../components/PageTitle/pageTitle';
 import FiltersAside from '../../../components/FiltersAside/filtersAside';
-// import CardForum from '../../../components/CardForum/cardForum';
+// import CardCommunity from '../../../components/CardCommunity/cardCommunity';
 import { CardStatusAction, SearchBar } from '../../../components';
 import API from '../../../utils/apiHelper';
 
@@ -43,7 +43,7 @@ const arrayBreadcrumb = [
   },
 ];
 
-// const ForumPropsMock = {
+// const CommunityPropsMock = {
 //   title: 'SPID',
 //   community: 'Servizi online',
 //   text: 'Ciao e benvenuti nella sezione di SPID!',
@@ -103,7 +103,7 @@ const Survey = () => {
             <CardStatusAction {...SurveyCardMock} />
           </Col>
         </div>
-        {/* <CardForum {...ForumPropsMock} /> */}
+        {/* <CardCommunity {...CommunityPropsMock} /> */}
       </Container>
     </div>
   );

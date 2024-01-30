@@ -1,7 +1,7 @@
 import React from 'react';
 import HeroHome from './components/HeroHome/HeroHome';
 import BachecaDigitaleWidget from './components/BachecaDigitaleWidget/bachecaDigitaleWidget';
-import ForumWidget from './components/ForumWidget/forumWidget';
+import CommunityWidget from './components/CommunityWidget/communityWidget';
 import { Container } from 'design-react-kit';
 import DocumentsWidget from './components/DocumentiWidget/documentiWidget';
 import useGuard from '../../../hooks/guard';
@@ -23,7 +23,7 @@ const Home: React.FC = () => {
       {hasUserPermission(['list.topic']) ? (
         <section aria-label='Forum' className='lightgrey-bg-b4'>
           <Container>
-            <ForumWidget />
+            <CommunityWidget />
           </Container>
         </section>
       ) : null}

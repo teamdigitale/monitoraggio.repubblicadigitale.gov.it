@@ -29,21 +29,15 @@ export const proxyCall = async (
   const { idProgramma, idProgetto, idEnte } = getUserHeaders();
   const codiceFiscale = JSON.parse(getSessionValues('user')).codiceFiscale;
   const codiceRuolo = JSON.parse(getSessionValues('profile')).codiceRuolo;
-  body = {
+  return await API.post(`${process?.env?.NOTIFICHE}drupal/forward`, {
+    url: `/api${url}`,
+    metodoHttp: httpMethod,
     cfUtenteLoggato: codiceFiscale,
     codiceRuoloUtenteLoggato: codiceRuolo,
-  };
-  const pass = false;
-  if (body && body.cfUtenteLoggato && pass) {
-    return await API.post(`${process?.env?.NOTIFICHE}drupal/forward`, {
-      url: `/api${url}`,
-      metodoHttp: httpMethod,
-      cfUtenteLoggato: codiceFiscale,
-      codiceRuoloUtenteLoggato: codiceRuolo,
-      profilo: { idProgramma, idProgetto, idEnte },
-      ...filePayload,
-    });
-  }
+    profilo: { idProgramma, idProgetto, idEnte },
+    ...filePayload,
+    body: body ? JSON.stringify(body) : null,
+  });
 };
 
 const GetNewsFiltersAction = {
@@ -229,7 +223,7 @@ export const GetTopicsFilters =
         ),
       };
       const queryParameters = transformFiltersToQueryParams(body);
-      const res = await proxyCall(`/forum/filters${queryParameters}`, 'GET');
+      const res = await proxyCall(`/community/filters${queryParameters}`, 'GET');
       if (res?.data?.data) {
         dispatch(
           setForumFilterOptions(
@@ -284,7 +278,7 @@ export const GetTopicsList =
         ...forcedFilters,
       }).replace('sort', 'sort_by');
       //.replace('categories', 'category')
-      const res = await proxyCall(`/forum/items${queryParamFilters}`, 'GET');
+      const res = await proxyCall(`/community/items${queryParamFilters}`, 'GET');
       if (updateStore) {
         if (res?.data?.data) {
           dispatch(setTopicsList(res.data.data.items || []));
@@ -467,7 +461,7 @@ const GetItemsListAction = {
   type: 'forum/GetItemsList',
 };
 export const GetItemsList =
-  (entity: 'board' | 'forum' | 'document') =>
+  (entity: 'board' | 'community' | 'document') =>
   async (dispatch: Dispatch, select: Selector) => {
     try {
       dispatch(showLoader());
@@ -497,7 +491,7 @@ export const GetItemsList =
           case 'board':
             dispatch(setNewsList(res.data.data.items));
             break;
-          case 'forum':
+          case 'community':
             dispatch(setTopicsList(res.data.data.items));
             break;
           case 'document':
@@ -529,7 +523,7 @@ export const GetItemsBySearch =
           'GET'
         ),
         proxyCall(
-          `/search/forum/items?keys=${search}&page=0&items_per_page=24`,
+          `/search/community/items?keys=${search}&page=0&items_per_page=24`,
           'GET'
         ),
         proxyCall(
@@ -550,7 +544,7 @@ export const GetItemsBySearch =
           setTopicsList(
             (res[1]?.data?.data?.items || []).filter(
               ({ item_type }: { item_type: string }) =>
-                item_type === 'forum_item'
+                item_type === 'community_item'
             )
           )
         );
@@ -585,7 +579,7 @@ export const GetItemsByUser = () => async (dispatch: Dispatch) => {
         'GET'
       ),
       proxyCall(
-        `/user/${idUtente}/items?item_type=forum_item&page=0&items_per_page=24`,
+        `/user/${idUtente}/items?item_type=community_item&page=0&items_per_page=24`,
         'GET'
       ),
       proxyCall(
@@ -604,7 +598,7 @@ export const GetItemsByUser = () => async (dispatch: Dispatch) => {
       dispatch(
         setTopicsList(
           (res[1]?.data.data.items || []).filter(
-            ({ item_type }: { item_type: string }) => item_type === 'forum_item'
+            ({ item_type }: { item_type: string }) => item_type === 'community_item'
           )
         )
       );
@@ -629,7 +623,7 @@ const GetItemDetailsAction = {
 };
 
 export const GetItemDetail =
-  (itemId: string, userId: string, entity: 'board' | 'forum' | 'document') =>
+  (itemId: string, userId: string, entity: 'board' | 'community' | 'document') =>
   async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
@@ -644,7 +638,7 @@ export const GetItemDetail =
           case 'board':
             dispatch(setNewsDetail(res.data.data.items[0]));
             break;
-          case 'forum':
+          case 'community':
             dispatch(setTopicDetail(res.data.data.items[0]));
             break;
           case 'document':
@@ -734,7 +728,7 @@ const CreateItemAction = {
 };
 
 export const CreateItem =
-  (payload: any, entity: 'board' | 'forum' | 'document') =>
+  (payload: any, entity: 'board' | 'community' | 'document') =>
   async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
@@ -780,7 +774,7 @@ const UpdateItemAction = {
 };
 
 export const UpdateItem =
-  (itemId: string, payload: any, entity: 'board' | 'forum' | 'document') =>
+  (itemId: string, payload: any, entity: 'board' | 'community' | 'document') =>
   async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
@@ -961,7 +955,7 @@ interface ActionTrackerI {
   event_type?: 'TOPIC' | 'NEWS' | 'DOCUMENTI';
   event_value?: 'Y' | 'N' | undefined;
   category?: string | undefined;
-  codiceRuolo?: string;
+  codiceRuoloUtenteLoggato?: string;
   idProgramma?: string;
 }
 
@@ -971,7 +965,7 @@ const newActionTracker = ({
   event_value,
   target,
   category,
-  codiceRuolo,
+  codiceRuoloUtenteLoggato,
   idProgramma,
 }: ActionTrackerI) => ({
   event: (target === 'chat' || target === 'wd'
@@ -980,7 +974,7 @@ const newActionTracker = ({
   )?.toLowerCase(),
   event_type: (target === 'tnd' ? event_type : null)?.toLowerCase(),
   event_value: event_value || null,
-  role_code: codiceRuolo || null,
+  role_code: codiceRuoloUtenteLoggato || null,
   category: category?.toString() || null,
   program_id: idProgramma?.toString() || null,
 });
@@ -1002,7 +996,7 @@ export const ActionTracker =
         } = select((state: RootState) => state);
         const body = newActionTracker({
           ...payload,
-          codiceRuolo,
+          codiceRuoloUtenteLoggato: codiceRuolo,
           idProgramma,
         });
         let BE_url = process?.env?.REACT_APP_BE_BASE_URL;
