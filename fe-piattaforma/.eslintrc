@@ -14,5 +14,10 @@
       { "argsIgnorePattern": "^_", "varsIgnorePattern": "_" }
     ],
     "react/jsx-no-useless-fragment": "error"
-  }
+  },
+  "ignorePatterns": [
+    "node_modules/",
+    "**/node_modules/",
+    "/**/node_modules/*"
+  ]
 }
