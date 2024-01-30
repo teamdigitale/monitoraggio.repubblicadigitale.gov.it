@@ -30,9 +30,7 @@
   "exclude": [
     "node_modules",
     "cypress",
-    "marketto",
     "@marketto",
-    "node***modules/@marketto"
   ],
   "include": ["src/**/*"]
 }

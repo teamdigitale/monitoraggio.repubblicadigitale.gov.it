@@ -18,7 +18,6 @@
     "formatter": "@commitlint/format"
   },
   "dependencies": {
-    "@marketto/codice-fiscale-utils": "^2.1.2",
     "@reduxjs/toolkit": "^1.8.0",
     "axios": "^0.26.1",
     "bootstrap-italia": "^1.6.3",
@@ -49,6 +48,7 @@
     "typeface-titillium-web": "^1.1.13"
   },
   "devDependencies": {
+    "@marketto/codice-fiscale-utils": "^2.1.2",
     "@babel/core": "^7.18.2",
     "@commitlint/cli": "^17.0.2",
     "@commitlint/config-conventional": "^17.0.2",
