@@ -4,3 +4,7 @@ webpack/*.js
 config/*.js
 babel.config.js
 cypress
+node_modules/@marketto
+node_modules/marketto
+node_modules/@marketto/codice-fiscale-utils
+node_modules/marketto/codice-fiscale-utils
