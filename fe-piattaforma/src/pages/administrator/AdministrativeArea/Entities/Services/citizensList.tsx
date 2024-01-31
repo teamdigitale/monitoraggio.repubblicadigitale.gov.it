@@ -298,7 +298,7 @@ const CitizensList: React.FC = () => {
           tooltip
           tooltiptext='Cerca cittadino per codice fiscale o numero documento'
         >
-          <div className='details-table-container'>
+          <table className='details-table-container'>
             {(citizens?.cittadini || []).map((citizen: CitizenI, i: number) => (
               <DetailsRow
                 key={i}
@@ -315,7 +315,7 @@ const CitizensList: React.FC = () => {
                 idQuestionario={citizen?.idQuestionario || ''}
               />
             ))}
-          </div>
+          </table>
           {citizens?.cittadini?.length === 0 && alreadySearched && (
             <EmptySection title='Cittadino non associato al servizio' />
           )}

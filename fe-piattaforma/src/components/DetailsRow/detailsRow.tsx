@@ -1,9 +1,9 @@
 import React from 'react';
 import { Button, Icon, UncontrolledTooltip } from 'design-react-kit';
 import { CRUDActionsI, CRUDActionTypes } from '../../utils/common';
-import StatusChip from '../StatusChip/statusChip';
 import PasswordVisible from '/public/assets/img/it-password-visible.png';
 import ItPlusCircle from '/public/assets/img/it-plus-circle-primary.png';
+import StatusChip from '../StatusChip/statusChip';
 
 interface DetailsRowI {
   id: string;
@@ -161,17 +161,17 @@ const DetailsRow: React.FC<DetailsRowI> = ({
   };
 
   return (
-    <div className='details-row-table neutral-1-color-a8'>
-      <div className='details-row__info'>
-        <div>
+    <tr className='details-row-table'>
+      <td className='details-row__info'>
+        <div className='content-info'>
           <span className='text-uppercase font-weight-bold primary-color-a12 text-nowrap'>
             ID Cittadino:
           </span>
           <span className='text-uppercase'>{id}</span>
         </div>
-      </div>
-      <div className='details-row__info'>
-        <div>
+      </td>
+      <td className='details-row__info'>
+        <div className='content-info'>
           <span className='text-uppercase font-weight-bold primary-color-a12 text-nowrap'>
             Data ultimo aggiornamento:
           </span>
@@ -179,17 +179,26 @@ const DetailsRow: React.FC<DetailsRowI> = ({
             {innerInfo['DataUltimoAggiornamento']}
           </span>
         </div>
-      </div>
-      <div className='left-primary-row primary-color-b1'>
-        <span className='text-uppercase'>{rowInfoType}</span>
-      </div>
-      <div className='details-row__right-section '>
-        <StatusChip status={stato} />
-        <div className='icon-button-relative'>
-          <div className='icon-container'>{loadIcons()}</div>
+      </td>
+      <td className='details-row__info'>
+        <div className='details-row__right'>
+          <div className='primary-color-b1'>
+            <span className='text-uppercase'>{rowInfoType}</span>
+          </div>
+          <div>
+            <StatusChip status={stato} />
+          </div>
         </div>
-      </div>
-    </div>
+      </td>
+      <td className='details-row__info'>
+        <div className='content-info'>
+          <div className='hidden'>azioni</div>
+          <div className='details-row-icon'>
+            <span>{loadIcons()}</span>
+          </div>
+        </div>
+      </td>
+    </tr>
   );
 };
 
