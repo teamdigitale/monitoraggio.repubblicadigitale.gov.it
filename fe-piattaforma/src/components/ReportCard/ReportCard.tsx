@@ -265,7 +265,7 @@ const ReportCard: React.FC<ReportCardI> = ({
                 navigate(`/bacheca/${item_id}`);
                 break;
               case 'community_item':
-                navigate(`/community/${item_id}`);
+                navigate(`/forum/${item_id}`);
                 break;
               case 'document_item':
                 navigate(`/documenti/${item_id}`);

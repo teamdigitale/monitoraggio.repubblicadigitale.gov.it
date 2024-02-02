@@ -43,7 +43,7 @@ const ManageReport: React.FC<ManageReportI> = ({
     if (newReport.trim() !== '' && payload) {
       switch (payload.entity) {
         case 'board':
-        case 'community':
+        case 'forum':
         case 'document':
           if (id && userId) {
             await dispatch(CreateItemReport(id, newReport));

@@ -20,8 +20,7 @@ const HeroHome = () => {
           {'ti diamo il benvenuto su Facilita'.toUpperCase()}
         </HeroTitle>
         <p className='d-lg-block mt-5'>
-          La piattaforma dedicata alle attività di facilitazione digitale:
-          <strong>gestisci</strong> i servizi, <strong>monitora</strong> i
+          La piattaforma dedicata alle attività di facilitazione digitale: <strong>gestisci</strong> i servizi, <strong>monitora</strong> i
           risultati e <strong>interagisci</strong> con la community dei
           facilitatori.
         </p>

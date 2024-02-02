@@ -23,7 +23,7 @@ const CardCommunity: React.FC<ForumCardsI> = (props) => {
   const navigate = useNavigate();
 
   const navigateTo = () => {
-    navigate(`/community/${id}`);
+    navigate(`/forum/${id}`);
   };
 
   return (

@@ -155,8 +155,7 @@ const Community = () => {
       <div>
         <ForumLayout
           title='Forum'
-          subtitle='Partecipa alla discussione sugli argomenti di interesse con gli altri facilitatori della
-community.'
+          subtitle='Partecipa alla discussione sugli argomenti di interesse con gli altri facilitatori della community.'
           sectionTitle='Gli argomenti più popolari'
           dropdowns={dropdowns}
           filtersList={{}}
