@@ -326,7 +326,7 @@ const AppRoutes: React.FC = () => {
                 }
               />
               <Route
-                path='/privacy-disclaimer/*'
+                path='/informativa-privacy-e-cookie/*'
                 element={
                   <ProtectedComponent visibleTo={[]}>
                     <PrivacyDisclaimer />
