@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.25.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.25.0...1.25.1) (2024-02-02)
+
+
+### Bug Fixes
+
+* **informativa-pr:** updates 20240202 ([3990f36](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3990f369371b87e0ad0c17a6541bc1ca0fa61d70))
+
 ## [1.25.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.24.0...1.25.0) (2024-02-02)
 
 
