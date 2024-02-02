@@ -137,8 +137,8 @@ const Footer: React.FC = () => {
         <div className='container'>
           <div className='row row_style'>
             <div className='col-12'>
-              <a href='/privacy-disclaimer' className='link_common link_style'>
-                Informativa privacy
+              <a href='/informativa-privacy-e-cookie' className='link_common link_style'>
+                Informativa privacy e cookie
               </a>
               <a
                 href='javascript:'
