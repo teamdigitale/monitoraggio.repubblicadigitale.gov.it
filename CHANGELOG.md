@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.25.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.24.0...1.25.0) (2024-02-02)
+
+
+### Features
+
+* **cr-privacy:** updates 20240202 ([af27093](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/af27093441417e08ebf142375b2291e0d637e150))
+* **cr-user:** updates 20240202 ([89344a1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/89344a1d28c31ea064c89015abd48e9a84c8ac3e))
+
 ## [1.24.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.23.0...1.24.0) (2024-02-02)
 
 
