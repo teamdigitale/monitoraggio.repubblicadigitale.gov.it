@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.409](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.408...1.0.0-develop.409) (2024-02-02)
+
+
+### Features
+
+* **cr-privacy:** updates 20240202 ([fbd35e3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fbd35e37366dfd423422536f5036e4ab1ca452d0))
+
 ## [1.0.0-develop.408](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.407...1.0.0-develop.408) (2024-02-02)
 
 
