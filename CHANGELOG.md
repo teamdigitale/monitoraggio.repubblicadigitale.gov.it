@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.172](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.171...1.0.0-test.172) (2024-02-02)
+
+
+### Features
+
+* **fix-drupal-e-cr:** updates 20240202 ([0af7ec6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0af7ec693ff8929b66bf7a9721166cc8ef993106))
+
 ## [1.0.0-test.171](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.170...1.0.0-test.171) (2024-01-31)
 
 
