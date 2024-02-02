@@ -238,7 +238,7 @@ export const MenuRoutes = [
   }),
   newMenuItem({
     label: 'Forum',
-    path: '/community',
+    path: '/forum',
     id: 'tab-forum',
     visible: ['tab.comm'],
   }),

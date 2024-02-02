@@ -76,7 +76,7 @@ const CommunityWidget = () => {
             facilitatori e formatori digitali.
           </p>
           {!device.mediaIsPhone && (
-            <Link className='btn btn-primary' role='button' to='/community'>
+            <Link className='btn btn-primary' role='button' to='/forum'>
               Vai agli argomenti
             </Link>
           )}
@@ -134,7 +134,7 @@ const CommunityWidget = () => {
       </div>
       {device.mediaIsPhone && (
         <div className='d-flex justify-content-center mt-5'>
-          <a role='button' className='btn btn-primary' href='/community'>
+          <a role='button' className='btn btn-primary' href='/forum'>
             Esplora tutti i topic
           </a>
         </div>

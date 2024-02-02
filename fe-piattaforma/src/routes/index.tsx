@@ -144,7 +144,7 @@ const AppRoutes: React.FC = () => {
             />
             <Route path='/' element={<FullLayout isFull />}>
               <Route
-                path='/community/:id'
+                path='/forum/:id'
                 element={
                   <ProtectedComponent visibleTo={['view.card.topic']}>
                     <CommunityDetails />
@@ -152,7 +152,7 @@ const AppRoutes: React.FC = () => {
                 }
               />
               <Route
-                path='/community'
+                path='/forum'
                 element={
                   <ProtectedComponent visibleTo={['tab.comm', 'list.topic']}>
                     <Community />
