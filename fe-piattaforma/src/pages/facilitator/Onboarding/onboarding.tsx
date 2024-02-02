@@ -143,7 +143,7 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
           )}
         >
           <a href='/'>
-            Leggi l&nbsp;informativa sul trattamento dei dati personali
+            Leggi l'informativa sul trattamento dei dati personali
           </a>
           <Button
             disabled={!isValidForm}
