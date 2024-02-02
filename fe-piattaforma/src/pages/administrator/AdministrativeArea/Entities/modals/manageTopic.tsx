@@ -95,13 +95,13 @@ const ManageTopic: React.FC<ManageTopicI> = ({
                 // @ts-ignore
                 !newFormValues?.attachment?.data,
             },
-            'community'
+            'forum'
           )
         );
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         if (res) {
-          userId && dispatch(GetItemDetail(id, userId, 'community'));
+          userId && dispatch(GetItemDetail(id, userId, 'forum'));
           setNewFormValues({});
           setStep('confirm');
         }
@@ -120,7 +120,7 @@ const ManageTopic: React.FC<ManageTopicI> = ({
                 ? 'Ente gestore di programma'
                 : '-',
             },
-            'community'
+            'forum'
           )
         );
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -170,7 +170,7 @@ const ManageTopic: React.FC<ManageTopicI> = ({
         onClick: () => {
           resetModal();
           dispatch(closeModal());
-          newNodeId && navigate(`/community/${newNodeId}`);
+          newNodeId && navigate(`/forum/${newNodeId}`);
         },
       },
       secondaryCTA: null,
