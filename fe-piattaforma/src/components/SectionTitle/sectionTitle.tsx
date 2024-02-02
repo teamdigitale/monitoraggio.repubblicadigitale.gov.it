@@ -98,55 +98,6 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
           device.mediaIsPhone && !isForumLayout && 'flex-column'
         )}
       >
-        {iconAvatar ? (
-          <div className={clsx('position-relative')}>
-            <UserAvatar
-              avatarImage={profilePicture || immagineProfilo}
-              user={{ uSurname: surname, uName: name }}
-              size={AvatarSizes.Big}
-              font={AvatarTextSizes.Big}
-              lightColor={device.mediaIsPhone}
-              isUserProfile={isUserProfile}
-            />
-
-            {isUserProfile && (
-              <Button
-                onClick={() =>
-                  dispatch(
-                    openModal({
-                      id: 'update-profile-pic-modal',
-                      payload: { title: 'Aggiorna immagine profilo' },
-                    })
-                  )
-                }
-                className={clsx(
-                  'camera-icon',
-                  'primary-bg',
-                  'position-absolute',
-                  'rounded-circle',
-                  'section-title__icon-container',
-                  'profile-picture-btn'
-                )}
-                style={{
-                  bottom: '-10px',
-                  left: '-10px',
-                }}
-              >
-                <Icon
-                  size='xs'
-                  icon='it-camera'
-                  color='white'
-                  aria-label='Foto'
-                  className='position-absolute'
-                  style={{
-                    top: '7px',
-                    left: '7px',
-                  }}
-                />
-              </Button>
-            )}
-          </div>
-        ) : null}
         <div
           style={{
             //minWidth: '150px',
