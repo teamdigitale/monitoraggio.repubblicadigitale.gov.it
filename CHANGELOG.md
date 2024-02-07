@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.412](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.411...1.0.0-develop.412) (2024-02-07)
+
+
+### Bug Fixes
+
+* **drupal:** updates 20240207 ([83ba418](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/83ba4189916f1953257953acf5ab969cc2e2dfe6))
+
 ## [1.0.0-develop.411](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.410...1.0.0-develop.411) (2024-02-07)
 
 
