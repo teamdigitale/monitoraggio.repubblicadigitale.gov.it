@@ -101,7 +101,7 @@ const ManageTopic: React.FC<ManageTopicI> = ({
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         if (res) {
-          userId && dispatch(GetItemDetail(id, userId, 'forum'));
+          userId && dispatch(GetItemDetail(id, userId, 'community'));
           setNewFormValues({});
           setStep('confirm');
         }
