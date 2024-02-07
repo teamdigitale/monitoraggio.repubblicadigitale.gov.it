@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.413](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.412...1.0.0-develop.413) (2024-02-07)
+
+
+### Features
+
+* **cr-pipeline:** updates 20240207 ([81f3fa3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/81f3fa3fc67a9255a105fb9c2fcfe8007fcf7709))
+
 ## [1.0.0-develop.412](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.411...1.0.0-develop.412) (2024-02-07)
 
 
