@@ -422,7 +422,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
                       })
                     );
                   }
-                  userId && dispatch(GetItemDetail(id, userId, 'forum'));
+                  userId && dispatch(GetItemDetail(id, userId, 'community'));
                 }
               }
             : undefined
