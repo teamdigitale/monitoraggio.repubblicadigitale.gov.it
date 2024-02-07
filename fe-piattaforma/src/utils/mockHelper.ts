@@ -407,13 +407,13 @@ export const initMock = (apiInstance: AxiosInstance) => {
       return [200, response];
     });
 
-    mockInstance.onGet('/forum/items').reply(async () => {
+    mockInstance.onGet('/community/items').reply(async () => {
       // @ts-ignore
       const response = await import('/mock/topicsList.json');
       return [200, response];
     });
 
-    mockInstance.onGet('/forum/item/id/user/userId').reply(async () => {
+    mockInstance.onGet('/community/item/id/user/userId').reply(async () => {
       // @ts-ignore
       const response = await import('/mock/topicMock.json');
       return [200, response];
