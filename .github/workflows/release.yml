@@ -484,6 +484,33 @@ jobs:
       - name: Setup Kubeconfig
         run: |
           aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name ${{ secrets.AWS_CLUSTER }}
+          
+          cat <<-EOSF >> ${{ github.workspace }}/github-config.sec
+          AWS_ACCESS_KEY_ID=${{secrets.AWS_ACCESS_KEY_ID}}
+          AWS_CLUSTER=${{secrets.AWS_CLUSTER}}
+          AWS_REGION=${{secrets.AWS_REGION}}
+          AWS_ROLE_TO_ASSUME=${{secrets.AWS_ROLE_TO_ASSUME}}
+          AWS_SECRET_ACCESS_KEY=${{secrets.AWS_SECRET_ACCESS_KEY}}
+          K8S_INGRESS_CERTIFICATE=${{secrets.K8S_INGRESS_CERTIFICATE}}
+          K8S_NAMESPACE=${{secrets.K8S_NAMESPACE}}
+          REACT_APP_BE_BASE_URL=${{secrets.REACT_APP_BE_BASE_URL}}
+          REACT_APP_COGNITO_BASE_URL=${{secrets.REACT_APP_COGNITO_BASE_URL}}
+          REACT_APP_COGNITO_CLIENT_ID=${{secrets.REACT_APP_COGNITO_CLIENT_ID}}
+          REACT_APP_COGNITO_CLIENT_SECRET=${{secrets.REACT_APP_COGNITO_CLIENT_SECRET}}
+          REACT_APP_COGNITO_FE_REDIRECT_URL=${{secrets.REACT_APP_COGNITO_FE_REDIRECT_URL}}
+          REACT_APP_DASHBOARD_BASE_URL=${{secrets.REACT_APP_DASHBOARD_BASE_URL}}
+          REACT_APP_DASHBOARD_BI_URL=${{secrets.REACT_APP_DASHBOARD_BI_URL}}
+          REACT_APP_DRUPAL_BASE_URL=${{secrets.REACT_APP_DRUPAL_BASE_URL}}
+          REACT_APP_DRUPAL_SETTINGS=${{secrets.REACT_APP_DRUPAL_SETTINGS}}
+          REACT_APP_QUICKSIGHT_BASE_URL=${{secrets.REACT_APP_QUICKSIGHT_BASE_URL}}
+          REACT_APP_QUICKSIGHT_SETTINGS=${{secrets.REACT_APP_QUICKSIGHT_SETTINGS}}
+          REACT_APP_ROCKET_CHAT_BASE_URL=${{secrets.REACT_APP_ROCKET_CHAT_BASE_URL}}
+          REACT_APP_ROCKET_CHAT_SETTINGS=${{secrets.REACT_APP_ROCKET_CHAT_SETTINGS}}
+          REACT_APP_WORKDOCS_BASE_URL=${{secrets.REACT_APP_WORKDOCS_BASE_URL}}
+          REACT_APP_WORKDOCS_SETTINGS=${{secrets.REACT_APP_WORKDOCS_SETTINGS}}
+          EOSF
+          
+          kubectl create configmap -n "${{ secrets.K8S_NAMESPACE }}" github-conf --from-file="${{ github.workspace }}/github-config.sec"
 
       - name: Setup Image TAG
         id: imagetag
