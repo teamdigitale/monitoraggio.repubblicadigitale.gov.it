@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.179](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.178...1.0.0-test.179) (2024-02-07)
+
+
+### Features
+
+* **cr-pipeline:** updates 20240207 ([bead424](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/bead424d4321173bed417a54da2b60f9efbb778c))
+
 ## [1.0.0-test.178](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.177...1.0.0-test.178) (2024-02-07)
 
 
