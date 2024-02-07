@@ -326,13 +326,14 @@ input > span {
 
 @media screen and (min-width: 992px) {
   .collapse-body {
+    padding-top: 50px !important;
     padding-bottom: 0px !important;
 
     .form-row {
       margin-bottom: 0px !important;
 
-      .form-group {
-        margin-bottom: 30px !important;
+      .first-input-target {
+        margin-bottom: 3rem !important;
       }
 
       label.active {
