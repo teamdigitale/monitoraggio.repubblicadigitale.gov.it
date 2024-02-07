@@ -61,7 +61,9 @@ const Footer: React.FC = () => {
               >
                 <h6 className='title_link_footer'>Assistenza</h6>
                 <p>
-                  Per richiedere supporto tecnico, contattaci all'indirizzo email:<br />
+                  Per richiedere supporto tecnico, contattaci all'indirizzo
+                  email:
+                  <br />
                   <a
                     href='mailto:supporto-facilita@repubblicadigitale.gov.it'
                     className='link_common_assistance link_style_assistance'
@@ -137,7 +139,10 @@ const Footer: React.FC = () => {
         <div className='container'>
           <div className='row row_style'>
             <div className='col-12'>
-              <a href='/informativa-privacy-e-cookie' className='link_common link_style'>
+              <a
+                href='/informativa-privacy-e-cookie'
+                className='link_common link_style'
+              >
                 Informativa privacy e cookie
               </a>
               <a
