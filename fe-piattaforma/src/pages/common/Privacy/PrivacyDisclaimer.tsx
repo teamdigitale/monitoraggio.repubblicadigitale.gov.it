@@ -39,7 +39,7 @@ export const PrivacyDisclaimer = () => {
           Pietro di Brazzà 86, 00187 Roma (il <strong>“Dipartimento”</strong>),
           contattabile ai seguenti recapiti:
         </p>
-        <ul className='mt-2 mb-2'>
+        <ul className='mt-2 mb-2 ml-5'>
           <li>
             <strong>E-mail: </strong>
             <a href='mailto:segreteria.trasformazionedigitale@governo.it'>
@@ -58,7 +58,7 @@ export const PrivacyDisclaimer = () => {
           Il Responsabile per la protezione dei dati - Data Protection Officer è
           contattabile ai seguenti recapiti:
         </p>
-        <ul className='mt-2 mb-2'>
+        <ul className='mt-2 mb-2 ml-5'>
           <li>
             <strong>E-mail: </strong>
             <a href='mailto:responsabileprotezionedatipcm@governo.it'>
@@ -141,7 +141,7 @@ export const PrivacyDisclaimer = () => {
           Quali sono i diritti dell’Interessato
         </h4>
         <p>L’Interessato potrà esercitare i seguenti diritti:</p>
-        <ul className='mt-2 mb-2'>
+        <ul className='mt-2 mb-2 ml-5'>
           <li>
             <strong>Diritto di accedere ai dati:</strong> ✔️ Si ha diritto ad
             ottenere conferma e informazioni sul trattamento.
@@ -235,7 +235,7 @@ export const PrivacyDisclaimer = () => {
           fornitori ai link di seguito indicati. Nel caso in cui si disabilitino
           tutti i cookie, la Piattaforma potrebbe non funzionare correttamente.
         </p>
-        <ul className='mt-2 mb-5'>
+        <ul className='mt-2 mb-5 ml-5'>
           <li>
             <a
               href='https://support.google.com/chrome/answer/95647'

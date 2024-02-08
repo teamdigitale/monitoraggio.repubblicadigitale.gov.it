@@ -39,7 +39,7 @@ const PreviewCard = ({ disabled = false, onClick }: PreviewCardI) => {
             Guarda l&apos;anteprima
           </h1>
           <p className='text-muted preview-card-container__description'>
-            Visualizza l&apos; anteprima della news prima di pubblicarla
+            Visualizza l&apos; anteprima dell'annuncio prima di pubblicarlo
           </p>
         </div>
       </div>

@@ -81,7 +81,7 @@ const BachecaDigitaleWidget = () => {
       </div>
       <div className='container'>
         <span className='sr-only'>
-          {'La bacheca presenta ' + (newsList?.length || 0) + ' news'}
+          {'La bacheca presenta ' + (newsList?.length || 0) + ' annunci'}
         </span>
         {newsList?.length ? (
           <Slider isItemsHome={!device.mediaIsPhone} widgetType='news'>
@@ -111,7 +111,7 @@ const BachecaDigitaleWidget = () => {
       {device.mediaIsPhone && (
         <div className='d-flex justify-content-center mt-5'>
           <a className='btn btn-primary' role='button' href='/bacheca'>
-            Leggi tutte le news
+            Leggi tutti gli annunci
           </a>
         </div>
       )}
