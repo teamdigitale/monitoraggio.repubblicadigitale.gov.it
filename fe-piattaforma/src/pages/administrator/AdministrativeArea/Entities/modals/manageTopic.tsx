@@ -198,7 +198,7 @@ const ManageTopic: React.FC<ManageTopicI> = ({
     case 'confirm':
       content = (
         <ConfirmItemCreation
-          description={`Topic ${
+          description={`Argomento ${
             creation ? 'creato' : 'modificato'
           } correttamente!`}
         />
