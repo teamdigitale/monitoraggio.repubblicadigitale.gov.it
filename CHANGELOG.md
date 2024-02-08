@@ -1,5 +1,17 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.414](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.413...1.0.0-develop.414) (2024-02-08)
+
+
+### Features
+
+* **cr-drupal:** updates 20240208 ([838868b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/838868b23d223b3825bba7362aef92ee12e84f97))
+
+
+### Bug Fixes
+
+* **kubeconfig:** updates 20240208 ([3586af4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3586af4274680978a0680b4813b2abbd46bb08ab))
+
 ## [1.0.0-develop.413](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.412...1.0.0-develop.413) (2024-02-07)
 
 
