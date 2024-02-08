@@ -14,7 +14,7 @@ export const PrivacyDisclaimer = () => {
         </h4>
         <p>
           La presente informativa descrive le modalità di trattamento dei dati
-          personali dei legali rappresentanti e dei delegati dei Soggetti
+          personali dei referenti e dei delegati dei Soggetti
           attuatori/Sub-attuatori (gli <strong>“Interessati”</strong>)
           all’interno della piattaforma di monitoraggio “Facilita” messa a
           disposizione dal Dipartimento per la trasformazione digitale della
