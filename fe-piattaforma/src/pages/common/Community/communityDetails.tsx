@@ -41,7 +41,7 @@ const CommunityDetails = () => {
 
   const getItemDetails = async () => {
     if (id && userId) {
-      const res = await dispatch(GetItemDetail(id, userId, 'forum'));
+      const res = await dispatch(GetItemDetail(id, userId, 'community'));
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       if (res) {
@@ -104,7 +104,7 @@ const CommunityDetails = () => {
     await dispatch(DeleteComment(commentId, reason));
     if (id && userId) {
       dispatch(GetCommentsList(id, userId));
-      dispatch(GetItemDetail(id, userId, 'forum'));
+      dispatch(GetItemDetail(id, userId, 'community'));
     }
   };
 
