@@ -556,7 +556,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
             <Toggle
               checked={highlighted}
               onChange={() => setHighlighted((prev) => !prev)}
-              label='News in evidenza'
+              label='Annunci in evidenza'
             />
           </FormGroup>
         </div>

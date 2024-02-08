@@ -247,10 +247,7 @@ const ServicesDetails = () => {
       iconForButton: 'it-print',
       iconColor: 'primary',
       onClick: () =>
-        window.open(
-          `${process?.env?.QUESTIONARIO_CITTADINO}/area-amministrativa/servizi/${serviceId}/stampa-questionario/${idQuestionarioTemplate}`,
-          '_blank'
-        ),
+        window.open(`stampa-questionario/${idQuestionarioTemplate}`, '_blank'),
     },
     /*{
                   size: 'xs',

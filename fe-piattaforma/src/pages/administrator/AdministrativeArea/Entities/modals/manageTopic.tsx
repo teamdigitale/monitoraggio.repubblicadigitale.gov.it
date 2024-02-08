@@ -95,13 +95,13 @@ const ManageTopic: React.FC<ManageTopicI> = ({
                 // @ts-ignore
                 !newFormValues?.attachment?.data,
             },
-            'forum'
+            'community'
           )
         );
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         if (res) {
-          userId && dispatch(GetItemDetail(id, userId, 'forum'));
+          userId && dispatch(GetItemDetail(id, userId, 'community'));
           setNewFormValues({});
           setStep('confirm');
         }
@@ -120,7 +120,7 @@ const ManageTopic: React.FC<ManageTopicI> = ({
                 ? 'Ente gestore di programma'
                 : '-',
             },
-            'forum'
+            'community'
           )
         );
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -148,7 +148,7 @@ const ManageTopic: React.FC<ManageTopicI> = ({
 
   const stepsCTA = {
     form: {
-      title: `${creation ? 'Crea' : 'Modifica'} topic`,
+      title: `${creation ? 'Crea' : 'Modifica'} argomento`,
       primaryCTA: {
         disabled: !isFormValid,
         label: creation ? 'Conferma' : 'Salva',
@@ -198,7 +198,7 @@ const ManageTopic: React.FC<ManageTopicI> = ({
     case 'confirm':
       content = (
         <ConfirmItemCreation
-          description={`Topic ${
+          description={`Argomento ${
             creation ? 'creato' : 'modificato'
           } correttamente!`}
         />

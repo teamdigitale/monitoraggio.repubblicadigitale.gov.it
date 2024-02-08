@@ -64,7 +64,7 @@ const ManageNews: React.FC<ManageNewsI> = ({
 
   const stepsCTA = {
     form: {
-      title: `${creation ? 'Pubblica nuova' : 'Modifica'} news`,
+      title: `${creation ? 'Pubblica nuovo' : 'Modifica'} annuncio`,
       primaryCTA: {
         disabled: !isFormValid,
         label: creation ? 'Conferma' : 'Salva',
@@ -81,7 +81,7 @@ const ManageNews: React.FC<ManageNewsI> = ({
       tertiaryCTA: null,
     },
     preview: {
-      title: 'Anteprima news',
+      title: 'Anteprima annuncio',
       primaryCTA: {
         label: creation ? 'Conferma' : 'Salva',
         onClick: () => handleSaveNews(),
@@ -281,8 +281,8 @@ const ManageNews: React.FC<ManageNewsI> = ({
     case 'confirm':
       content = (
         <ConfirmItemCreation
-          description={`News ${
-            creation ? 'creata' : 'modificata'
+        description={`Annuncio ${
+          creation ? 'creato' : 'modificato'
           } correttamente!`}
         />
       );

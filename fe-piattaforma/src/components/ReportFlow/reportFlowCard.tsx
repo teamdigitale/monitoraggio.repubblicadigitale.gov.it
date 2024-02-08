@@ -25,7 +25,7 @@ const ReportFlowCard: React.FC<ReportFlowI> = (props) => {
     setCurrentStep(currentStep - 1);
   };
 
-  const sections = '(NEWS, TOPIC, DOCUMENTI)';
+  const sections = '(ANNUNCIO, TOPIC, DOCUMENTI)';
 
   const possibleActions = (
     <div className='d-flex flex-row justify-content-row align-items-center'>

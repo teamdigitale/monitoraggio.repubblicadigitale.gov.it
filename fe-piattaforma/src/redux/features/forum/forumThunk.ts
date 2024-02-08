@@ -623,7 +623,7 @@ const GetItemDetailsAction = {
 };
 
 export const GetItemDetail =
-  (itemId: string, userId: string, entity: 'board' | 'forum' | 'document') =>
+  (itemId: string, userId: string, entity: 'board' | 'community' | 'document') =>
   async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
@@ -638,7 +638,7 @@ export const GetItemDetail =
           case 'board':
             dispatch(setNewsDetail(res.data.data.items[0]));
             break;
-          case 'forum':
+          case 'community':
             dispatch(setTopicDetail(res.data.data.items[0]));
             break;
           case 'document':
@@ -728,7 +728,7 @@ const CreateItemAction = {
 };
 
 export const CreateItem =
-  (payload: any, entity: 'board' | 'forum' | 'document') =>
+  (payload: any, entity: 'board' | 'community' | 'document') =>
   async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
@@ -774,7 +774,7 @@ const UpdateItemAction = {
 };
 
 export const UpdateItem =
-  (itemId: string, payload: any, entity: 'board' | 'forum' | 'document') =>
+  (itemId: string, payload: any, entity: 'board' | 'community' | 'document') =>
   async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());

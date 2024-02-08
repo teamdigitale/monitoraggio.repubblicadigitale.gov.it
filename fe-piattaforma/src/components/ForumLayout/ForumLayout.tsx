@@ -283,7 +283,7 @@ const ForumLayout: React.FC<ForumLayoutI> = (props) => {
                 onClick={cta}
                 data-testid='create-new-entity'
                 aria-label={`Crea ${
-                  isForum ? 'topic' : isDocument ? 'documento' : 'news'
+                  isForum ? 'Argomento' : isDocument ? 'documento' : 'annuncio'
                 }`}
               >
                 {iconCta ? (

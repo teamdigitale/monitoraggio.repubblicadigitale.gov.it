@@ -470,12 +470,18 @@ export const GetSurveyInfo =
     try {
       dispatch(showLoader());
       dispatch({ ...GetSurveyInfoAction, questionarioId });
-      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
-      const res = await API.post(`questionarioTemplate/${questionarioId}`, {
-        idProgramma,
-        idProgetto,
-        idEnte,
-      });
+      const { idProgramma, idProgetto, idEnte, codiceFiscale, codiceRuolo } =
+        getUserHeaders();
+      const res = await API.post(
+        `${process?.env?.QUESTIONARIO_CITTADINO}questionarioTemplate/${questionarioId}`,
+        {
+          idProgramma,
+          idProgetto,
+          idEnte,
+          cfUtenteLoggato: codiceFiscale,
+          codiceRuoloUtenteLoggato: codiceRuolo,
+        }
+      );
       if (res?.data) {
         dispatch(setSurveyInfoForm(res.data));
         if (isPrintPage) {
