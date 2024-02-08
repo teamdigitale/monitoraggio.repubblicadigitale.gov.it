@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.27.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.27.0...1.27.1) (2024-02-08)
+
+
+### Bug Fixes
+
+* **tolti-kube:** updates 20240208 ([b0ecdea](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b0ecdea124bc91e5277197b43820180cbeaf78d8))
+* **privacy-discl:** updates 20240208 ([5b4310d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5b4310d7aef0fabaf92be73971559c65b22e590c))
+
 ## [1.27.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.26.0...1.27.0) (2024-02-08)
 
 
