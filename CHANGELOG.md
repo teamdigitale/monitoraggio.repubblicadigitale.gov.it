@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.183](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.182...1.0.0-test.183) (2024-02-08)
+
+
+### Bug Fixes
+
+* **drop-file:** updates 20240208 ([b785af7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b785af7325eefbbd2937455723a718d9f4184bab))
+
 ## [1.0.0-test.182](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.181...1.0.0-test.182) (2024-02-08)
 
 
