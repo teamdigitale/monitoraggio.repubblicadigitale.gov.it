@@ -774,7 +774,7 @@ const UpdateItemAction = {
 };
 
 export const UpdateItem =
-  (itemId: string, payload: any, entity: 'board' | 'forum' | 'document') =>
+  (itemId: string, payload: any, entity: 'board' | 'community' | 'document') =>
   async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
