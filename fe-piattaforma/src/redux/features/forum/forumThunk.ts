@@ -728,7 +728,7 @@ const CreateItemAction = {
 };
 
 export const CreateItem =
-  (payload: any, entity: 'board' | 'forum' | 'document') =>
+  (payload: any, entity: 'board' | 'community' | 'document') =>
   async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
