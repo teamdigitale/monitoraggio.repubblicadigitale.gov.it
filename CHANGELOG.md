@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.27.2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.27.1...1.27.2) (2024-02-09)
+
+
+### Bug Fixes
+
+* **drop-testi:** updates 20240209 ([7919145](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/791914543e3a255c3e221cb02a706c643c6bd4e3))
+
 ## [1.27.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.27.0...1.27.1) (2024-02-08)
 
 
