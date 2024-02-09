@@ -90,9 +90,9 @@ const ReportCard: React.FC<ReportCardI> = ({
   const getItemType = (short = false) => {
     switch (item_type) {
       case 'board_item':
-        return short ? 'news' : 'la news';
+        return short ? 'annuncio' : 'l\'annuncio';
       case 'community_item':
-        return short ? 'topic' : 'il topic';
+        return short ? 'argomento' : 'l\'argomento';
       case 'document_item':
         return short ? 'documento' : 'il documento';
       default:

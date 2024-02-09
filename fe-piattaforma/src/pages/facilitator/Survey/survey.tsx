@@ -92,7 +92,7 @@ const Survey = () => {
           onInputChange={(newValue) => console.log('survey newValue', newValue)}
           placeholder='Cerca nel sito'
           isClearable
-          title='Cerca fra i topic'
+          title='Cerca fra gli argomenti'
           id='search-survey'
         />
         <div className='d-flex flex-row'>
