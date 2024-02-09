@@ -54,7 +54,7 @@ const CardSlider: React.FC<ForumCardsI> = (props) => {
       aria-label={`Categoria: ${category_label}. Data: ${
         date && formatDate(date, 'shortDate')
       }. Titolo ${
-        isDocument ? 'documento' : isNews ? 'annuncio' : 'topic'
+        isDocument ? 'documento' : isNews ? 'annuncio' : 'argomento'
       }: ${title}. ${likes} like. ${comment_count} ${
         Number(comment_count) === 1 ? 'commento' : 'commenti'
       }. ${downloads} download. ${views} ${
