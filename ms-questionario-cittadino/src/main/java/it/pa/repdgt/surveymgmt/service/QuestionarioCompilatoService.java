@@ -13,9 +13,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import it.pa.repdgt.shared.entityenum.EmailTemplateEnum;
 import it.pa.repdgt.shared.repository.tipologica.FasciaDiEtaRepository;
-import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import org.bson.json.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,11 +68,6 @@ public class QuestionarioCompilatoService {
 				.orElseThrow(() -> new ResourceNotFoundException(messaggioErrore, CodiceErroreEnum.C01));
 	}
 
-	public void invioEmail() {
-		String[] argomenti = new String[0];
-		emailService.inviaEmail("indirizzo@email.com", EmailTemplateEnum.CONSENSO, argomenti);
-	}
-
 	@LogMethod
 	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
@@ -99,7 +92,7 @@ public class QuestionarioCompilatoService {
 			throw new QuestionarioCompilatoException(messaggioErrore, CodiceErroreEnum.QC02);
 		}
 
-		if (questionarioCompilatoEntity.get().getStato().equals(StatoQuestionarioEnum.COMPILATO.getValue()))
+		if (questionarioCompilatoEntity.get().getStato().equals(StatoQuestionarioEnum.COMPILATA.getValue()))
 			throw new ServizioException("Il questionario risulta già compilato", CodiceErroreEnum.Q02);
 
 		if (!cittadinoService.getCittadinoPerCfOrNumDoc(questionarioCompilatoRequest.getCodiceFiscaleDaAggiornare(),
@@ -128,6 +121,7 @@ public class QuestionarioCompilatoService {
 		// Recupero il cittadino e lo aggiorno i nuovi dati provenienti dalla request
 		Optional<CittadinoEntity> optionalCittadinoDBFetch = this.cittadinoService
 				.getByCodiceFiscaleOrNumeroDocumento(codiceFiscaleCittadino, numeroDocumentoCittadino);
+
 		optionalCittadinoDBFetch.ifPresent(cittadino -> {
 			cittadino.setDataOraAggiornamento(new Date());
 			this.cittadinoService.salvaCittadino(cittadino);
@@ -135,7 +129,7 @@ public class QuestionarioCompilatoService {
 
 		// Aggiorno questionarioCompilato MySQl
 		final QuestionarioCompilatoEntity questionarioCompilatoDBMySqlFetch = questionarioCompilatoEntity.get();
-		questionarioCompilatoDBMySqlFetch.setStato(StatoQuestionarioEnum.COMPILATO.getValue());
+		questionarioCompilatoDBMySqlFetch.setStato(StatoQuestionarioEnum.COMPILATA.getValue());
 		questionarioCompilatoDBMySqlFetch.setDataOraAggiornamento(new Date());
 		this.questionarioCompilatoSQLRepository.save(questionarioCompilatoDBMySqlFetch);
 
@@ -193,7 +187,7 @@ public class QuestionarioCompilatoService {
 				questionarioInviato.getNumDocumento(), q1);
 		// Aggiorno questionarioCompilato MySQl
 		final QuestionarioCompilatoEntity questionarioCompilatoDBMySqlFetch = questionarioCompilatoEntity;
-		questionarioCompilatoDBMySqlFetch.setStato(StatoQuestionarioEnum.COMPILATO.getValue());
+		questionarioCompilatoDBMySqlFetch.setStato(StatoQuestionarioEnum.COMPILATA.getValue());
 		questionarioCompilatoDBMySqlFetch.setDataOraAggiornamento(new Date());
 		this.questionarioCompilatoSQLRepository.save(questionarioCompilatoDBMySqlFetch);
 
@@ -301,7 +295,7 @@ public class QuestionarioCompilatoService {
 
 		QuestionarioCompilatoEntity questionarioCompilato = questionarioCompilatoEntity.get();
 
-		if (questionarioCompilato.getStato().equals(StatoQuestionarioEnum.COMPILATO.getValue()))
+		if (questionarioCompilato.getStato().equals(StatoQuestionarioEnum.COMPILATA.getValue()))
 			throw new ServizioException("Il questionario risulta già compilato", CodiceErroreEnum.Q02);
 
 		verificaTokenQuestionario(idQuestionarioCompilato, token);
@@ -323,7 +317,7 @@ public class QuestionarioCompilatoService {
 
 		QuestionarioCompilatoEntity questionarioCompilato = questionarioCompilatoOptional.get();
 
-		if (questionarioCompilato.getStato().equals(StatoQuestionarioEnum.COMPILATO.getValue()))
+		if (questionarioCompilato.getStato().equals(StatoQuestionarioEnum.COMPILATA.getValue()))
 			throw new ServizioException("Il questionario risulta già compilato", CodiceErroreEnum.Q02);
 
 		verificaTokenQuestionario(idQuestionarioCompilato, token);

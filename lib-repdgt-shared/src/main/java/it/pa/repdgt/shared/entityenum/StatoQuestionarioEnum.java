@@ -4,9 +4,9 @@ import lombok.Getter;
 
 @Getter
 public enum StatoQuestionarioEnum {
-	NON_COMPILATO("NON COMPILATO"),
+	NON_COMPILATA("NON_COMPILATA"),
 	INVIATO("INVIATO"),
-	COMPILATO("COMPILATO");
+	COMPILATA("COMPILATA");
 
 	private String value;
 
