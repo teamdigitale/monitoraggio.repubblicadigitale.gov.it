@@ -33,6 +33,8 @@ import { formTypes } from '../utils';
 import { headings } from './manageReferal';
 import '../../../../../components/SearchBar/searchBar.scss';
 import clsx from 'clsx';
+import { selectedSteps } from '../../../CitizensArea/Entities/SearchCitizenModal/searchCitizenModal';
+import { useFiscalCodeValidation } from '../../../../../hooks/useFiscalCodeValidation';
 
 const id = formTypes.DELEGATO;
 
@@ -62,6 +64,7 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
   const authority = useAppSelector(selectAuthorities).detail.dettagliInfoEnte;
   const open = useAppSelector(selectModalState);
   const [isUserSelected, setIsUserSelected] = useState(false);
+  const { canSubmit, onQueryChange, setCanSubmit } = useFiscalCodeValidation();
 
   const resetModal = (toClose = true) => {
     clearForm();
@@ -97,7 +100,7 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
               newFormValues,
               'DEPP',
               userId,
-              !isUserSelected,
+              !isUserSelected
             )
           );
           await dispatch(
@@ -113,7 +116,7 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
               'progetto',
               'DEGP',
               userId,
-              !isUserSelected,
+              !isUserSelected
             )
           );
 
@@ -129,7 +132,7 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
             'programma',
             'DEG',
             userId,
-            !isUserSelected,
+            !isUserSelected
           )
         );
         await dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
@@ -218,11 +221,15 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
               'search-bar-borders',
               'search-bar-bg'
             )}
+            searchType={selectedSteps.FISCAL_CODE}
+            onQueryChange={onQueryChange}
+            disableSubmit={!canSubmit}
             placeholder='Inserisci il codice fiscale dell’utente'
             onSubmit={handleSearchUser}
             onReset={() => {
               resetModal(false);
               dispatch(resetUserDetails());
+              setCanSubmit(false);
             }}
             title='Cerca'
             search

@@ -35,6 +35,8 @@ import { formFieldI } from '../../../../../utils/formHelper';
 import FormUser from '../../../../forms/formUser';
 import { formTypes } from '../utils';
 import '../../../../../components/SearchBar/searchBar.scss';
+import { selectedSteps } from '../../../CitizensArea/Entities/SearchCitizenModal/searchCitizenModal';
+import { useFiscalCodeValidation } from '../../../../../hooks/useFiscalCodeValidation';
 
 const id = formTypes.REFERENTE;
 
@@ -82,6 +84,7 @@ const ManageReferal: React.FC<ManageReferalI> = ({
   const authority = useAppSelector(selectAuthorities).detail.dettagliInfoEnte;
   const open = useAppSelector(selectModalState);
   const [isUserSelected, setIsUserSelected] = useState(false);
+  const { canSubmit, onQueryChange, setCanSubmit } = useFiscalCodeValidation();
 
   const resetModal = (toClose = true) => {
     clearForm();
@@ -118,7 +121,7 @@ const ManageReferal: React.FC<ManageReferalI> = ({
               newFormValues,
               'REPP',
               userId,
-              !isUserSelected,
+              !isUserSelected
             )
           );
           await dispatch(GetPartnerAuthorityDetail(projectId, authorityId));
@@ -132,7 +135,7 @@ const ManageReferal: React.FC<ManageReferalI> = ({
               'progetto',
               'REGP',
               userId,
-              !isUserSelected,
+              !isUserSelected
             )
           );
           await dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
@@ -147,7 +150,7 @@ const ManageReferal: React.FC<ManageReferalI> = ({
             'programma',
             'REG',
             userId,
-            !isUserSelected,
+            !isUserSelected
           )
         );
         await dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
@@ -236,11 +239,15 @@ const ManageReferal: React.FC<ManageReferalI> = ({
               'search-bar-borders',
               'search-bar-bg'
             )}
+            searchType={selectedSteps.FISCAL_CODE}
+            onQueryChange={onQueryChange}
+            disableSubmit={!canSubmit}
             placeholder='Inserisci il codice fiscale dell’utente'
             onSubmit={handleSearchUser}
             onReset={() => {
               resetModal(false);
               dispatch(resetUserDetails());
+              setCanSubmit(false);
             }}
             title='Cerca'
             search
