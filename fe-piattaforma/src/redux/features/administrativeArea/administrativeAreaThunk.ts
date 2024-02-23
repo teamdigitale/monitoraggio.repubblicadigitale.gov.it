@@ -1,5 +1,5 @@
 import { Dispatch, Selector } from '@reduxjs/toolkit';
-import API from '../../../utils/apiHelper';
+import API, { createPath } from '../../../utils/apiHelper';
 import { hideLoader, showLoader } from '../app/appSlice';
 import {
   setEntityDetail,
@@ -35,7 +35,8 @@ export const GetEntityValues =
         // @ts-ignore
         administrativeArea: { filters, pagination },
       } = select((state: RootState) => state);
-      const entityEndpoint = `/${payload.entity}/all`;
+      const path: string | undefined = createPath(payload.entity);
+      const entityEndpoint = `${path}${payload.entity}/all`;
       const filtroRequest: {
         [key: string]: string[] | undefined;
       } = {};
@@ -59,8 +60,8 @@ export const GetEntityValues =
         idProgramma,
         idProgetto,
         idEnte,
-        cfUtente: codiceFiscale,
-        codiceRuolo,
+        cfUtenteLoggato: codiceFiscale,
+        codiceRuoloUtenteLoggato: codiceRuolo,
       };
 
       const res = await API.post(entityEndpoint, body, {
@@ -125,11 +126,13 @@ export const GetEntityFilterValues =
         idProgramma,
         idProgetto,
         idEnte,
-        cfUtente: codiceFiscale,
-        codiceRuolo,
+        cfUtenteLoggato: codiceFiscale,
+        codiceRuoloUtenteLoggato: codiceRuolo,
       };
-
-      const entityFilterEndpoint = `/${payload.entity}/${payload.dropdownType}${
+      const path: string | undefined = createPath(payload.entity);
+      const entityFilterEndpoint = `${path}${payload.entity}/${
+        payload.dropdownType
+      }${
         payload.entity === 'progetto' && payload.dropdownType === 'policies'
           ? '/programmi'
           : ''
@@ -192,9 +195,11 @@ export const GetEntityFilterQueryParamsValues =
         idProgramma,
         idEnte,
       };
-      const entityFilterEndpoint = `${process?.env?.QUESTIONARIO_CITTADINO}${payload.entity}/${
-        payload.dropdownType
-      }/dropdown${payload?.noFilters ? '' : queryParamFilters}`;
+      const entityFilterEndpoint = `${process?.env?.QUESTIONARIO_CITTADINO}${
+        payload.entity
+      }/${payload.dropdownType}/dropdown${
+        payload?.noFilters ? '' : queryParamFilters
+      }`;
       const res = await API.post(entityFilterEndpoint, body);
       if (res?.data) {
         const filterResponse = {
