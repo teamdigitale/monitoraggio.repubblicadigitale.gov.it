@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.191](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.190...1.0.0-test.191) (2024-02-23)
+
+
+### Bug Fixes
+
+* **fe-piatta:** updates 20240223 ([df60393](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/df6039329fd2ddc1cf13027785638526838e4c8f))
+
 ## [1.0.0-test.190](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.189...1.0.0-test.190) (2024-02-23)
 
 
