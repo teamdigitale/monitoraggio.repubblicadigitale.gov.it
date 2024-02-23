@@ -35,8 +35,9 @@ export const GetEntityValues =
         // @ts-ignore
         administrativeArea: { filters, pagination },
       } = select((state: RootState) => state);
-      const path: string | undefined = createPath(payload.entity);
-      const entityEndpoint = `${path}${payload.entity}/all`;
+      const entityEndpoint = `/${payload.entity}/all`;
+      //const path: string | undefined = createPath(payload.entity);
+      //const entityEndpoint = `${path}${payload.entity}/all`;
       const filtroRequest: {
         [key: string]: string[] | undefined;
       } = {};
@@ -60,8 +61,8 @@ export const GetEntityValues =
         idProgramma,
         idProgetto,
         idEnte,
-        cfUtenteLoggato: codiceFiscale,
-        codiceRuoloUtenteLoggato: codiceRuolo,
+        cfUtente: codiceFiscale,
+        codiceRuolo,
       };
 
       const res = await API.post(entityEndpoint, body, {
@@ -126,13 +127,14 @@ export const GetEntityFilterValues =
         idProgramma,
         idProgetto,
         idEnte,
-        cfUtenteLoggato: codiceFiscale,
-        codiceRuoloUtenteLoggato: codiceRuolo,
+        cfUtente: codiceFiscale,
+        codiceRuolo,
       };
-      const path: string | undefined = createPath(payload.entity);
-      const entityFilterEndpoint = `${path}${payload.entity}/${
-        payload.dropdownType
-      }${
+      const entityFilterEndpoint = `/${payload.entity}/${payload.dropdownType}${
+      //const path: string | undefined = createPath(payload.entity);
+      //const entityFilterEndpoint = `${path}${payload.entity}/${
+        //payload.dropdownType
+      //}${
         payload.entity === 'progetto' && payload.dropdownType === 'policies'
           ? '/programmi'
           : ''
@@ -195,11 +197,9 @@ export const GetEntityFilterQueryParamsValues =
         idProgramma,
         idEnte,
       };
-      const entityFilterEndpoint = `${process?.env?.QUESTIONARIO_CITTADINO}${
-        payload.entity
-      }/${payload.dropdownType}/dropdown${
-        payload?.noFilters ? '' : queryParamFilters
-      }`;
+      const entityFilterEndpoint = `${process?.env?.QUESTIONARIO_CITTADINO}${payload.entity}/${
+        payload.dropdownType
+      }/dropdown${payload?.noFilters ? '' : queryParamFilters}`;
       const res = await API.post(entityFilterEndpoint, body);
       if (res?.data) {
         const filterResponse = {
