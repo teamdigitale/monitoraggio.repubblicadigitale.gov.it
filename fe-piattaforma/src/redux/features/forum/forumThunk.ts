@@ -461,7 +461,7 @@ const GetItemsListAction = {
   type: 'forum/GetItemsList',
 };
 export const GetItemsList =
-  (entity: 'board' | 'community' | 'document') =>
+  (entity: 'board' | 'forum' | 'document') =>
   async (dispatch: Dispatch, select: Selector) => {
     try {
       dispatch(showLoader());
@@ -491,7 +491,7 @@ export const GetItemsList =
           case 'board':
             dispatch(setNewsList(res.data.data.items));
             break;
-          case 'community':
+          case 'forum':
             dispatch(setTopicsList(res.data.data.items));
             break;
           case 'document':
