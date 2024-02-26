@@ -5,7 +5,7 @@ export const PrivacyDisclaimer = () => {
   return (
     <div className='container'>
       <div className='d-flx flex-column align-items-start'>
-        <PageTitle title='Informativa privacy' />
+        <PageTitle title='Informativa privacy e cookie' />
         <h4 className='mt-4 mb-3 primary-color-a9'>
           Informativa sul trattamento dei dati personali dei Referenti e dei
           Delegati dei Soggetti attuatori/Sub-attuatori nell’ambito della
