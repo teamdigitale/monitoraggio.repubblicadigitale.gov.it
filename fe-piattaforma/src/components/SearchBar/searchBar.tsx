@@ -100,8 +100,6 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
           Validator.codiceFiscale(formattedFiscalCode).valid &&
           formattedFiscalCode.length === 16;
         setIsFiscalCodeValid(isValidFiscalCode);
-      } else if (searchType === selectedSteps.DOC_NUMBER) {
-        setSearchValue('');
       }
 
       if (props.onQueryChange) {
@@ -112,11 +110,14 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
   );
 
   useEffect(() => {
-    if (searchType === selectedSteps.DOC_NUMBER) {
+    if (
+      searchType === selectedSteps.DOC_NUMBER ||
+      searchType === selectedSteps.FISCAL_CODE
+    ) {
+      setSearchValue('');
       setIsFiscalCodeValid(null);
     }
-    onInputQueryChange(searchValue);
-  }, [searchType, onInputQueryChange, searchValue]);
+  }, [searchType]);
 
   useEffect(() => {
     if (onInputChange && selectedOption) onInputChange(selectedOption, field);
