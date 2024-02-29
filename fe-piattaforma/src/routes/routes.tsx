@@ -16,7 +16,7 @@ import {
 import CitizensArea from '../pages/administrator/CitizensArea/citizensArea';
 import RoleManagement from '../pages/common/RoleManagement/roleManagement';
 import RoleManagementDetails from '../pages/common/RoleManagement/RoleManagementDetails/roleManagementDetails';
-import Onboarding from '../pages/facilitator/Onboarding/formOnboarding';
+import Onboarding from '../pages/facilitator/Onboarding/formRegistrazione';
 import { RolePermissionI } from '../redux/features/roles/rolesSlice';
 import PrintSurvey from '../pages/administrator/AdministrativeArea/Entities/Surveys/printSurvey/printSurvey';
 import Programs from '../pages/administrator/AdministrativeArea/Entities/Programs/programs';

@@ -7,7 +7,7 @@ import {
   EditUser,
 } from '../../../../../redux/features/user/userThunk';
 import { formFieldI, FormHelper, FormI } from '../../../../../utils/formHelper';
-import FormOnboarding from '../../../../facilitator/Onboarding/formOnboarding';
+import FormOnboarding from '../../../../facilitator/Onboarding/formRegistrazione';
 import { formTypes } from '../utils';
 
 const id = formTypes.PROFILE;

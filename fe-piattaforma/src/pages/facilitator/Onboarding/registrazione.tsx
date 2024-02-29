@@ -30,7 +30,7 @@ import {
   SelectUserRole,
 } from '../../../redux/features/user/userThunk';
 import { openModal } from '../../../redux/features/modal/modalSlice';
-import FormOnboarding from './formOnboarding';
+import FormOnboarding from './formRegistrazione';
 import { defaultRedirectUrl } from '../../../routes';
 import '../../../../src/pages/facilitator/Onboarding/onboarding.scss';
 

@@ -55,7 +55,7 @@ import { closeModal, openModal } from '../redux/features/modal/modalSlice';
 import GenericModal from '../components/Modals/GenericModal/genericModal';
 import { getAnagraphicID } from '../redux/features/anagraphic/anagraphicSlice';
 import ManageProfilePic from '../pages/administrator/AdministrativeArea/Entities/modals/manageProfilePic';
-import Onboarding from './facilitator/Onboarding/onboarding';
+import Onboarding from './facilitator/Onboarding/registrazione';
 
 const Playground: React.FC<withFormHandlerProps> = (props) => {
   const { t } = useTranslation();

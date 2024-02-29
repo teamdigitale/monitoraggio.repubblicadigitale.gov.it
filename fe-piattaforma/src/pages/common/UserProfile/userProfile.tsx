@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import DetailLayout from '../../../components/DetailLayout/detailLayout';
-import FormOnboarding from '../../facilitator/Onboarding/formOnboarding';
+import FormOnboarding from '../../facilitator/Onboarding/formRegistrazione';
 import { ButtonInButtonsBar } from '../../../components/ButtonsBar/buttonsBar';
 import { openModal } from '../../../redux/features/modal/modalSlice';
 import {

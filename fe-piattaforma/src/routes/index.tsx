@@ -41,7 +41,7 @@ const RoleManagementDetails = lazy(
     )
 );
 const Onboarding = lazy(
-  () => import('../pages/facilitator/Onboarding/onboarding')
+  () => import('../pages/facilitator/Onboarding/registrazione')
 );
 const PrintSurvey = lazy(
   () =>
