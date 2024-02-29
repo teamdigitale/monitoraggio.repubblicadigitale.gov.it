@@ -109,9 +109,9 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setUserContext: (state, action: PayloadAction<any>) => {
-      const {payload} = action;
+      const { payload } = action;
       state.user = {
-        ...payload
+        ...payload,
       };
       state.ruoli = payload.ruoli;
       setSessionValues('user', state.user);
@@ -151,7 +151,7 @@ export const userSlice = createSlice({
       });
     },
     login: (state) => {
-      if(state.user){
+      if (state.user) {
         state.user['cfUtenteLoggato'] = state?.user?.codiceFiscale;
       }
       setSessionValues('user', state.user);

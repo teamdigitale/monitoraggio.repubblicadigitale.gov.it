@@ -223,7 +223,10 @@ export const GetTopicsFilters =
         ),
       };
       const queryParameters = transformFiltersToQueryParams(body);
-      const res = await proxyCall(`/community/filters${queryParameters}`, 'GET');
+      const res = await proxyCall(
+        `/community/filters${queryParameters}`,
+        'GET'
+      );
       if (res?.data?.data) {
         dispatch(
           setForumFilterOptions(
@@ -278,7 +281,10 @@ export const GetTopicsList =
         ...forcedFilters,
       }).replace('sort', 'sort_by');
       //.replace('categories', 'category')
-      const res = await proxyCall(`/community/items${queryParamFilters}`, 'GET');
+      const res = await proxyCall(
+        `/community/items${queryParamFilters}`,
+        'GET'
+      );
       if (updateStore) {
         if (res?.data?.data) {
           dispatch(setTopicsList(res.data.data.items || []));
@@ -598,7 +604,8 @@ export const GetItemsByUser = () => async (dispatch: Dispatch) => {
       dispatch(
         setTopicsList(
           (res[1]?.data.data.items || []).filter(
-            ({ item_type }: { item_type: string }) => item_type === 'community_item'
+            ({ item_type }: { item_type: string }) =>
+              item_type === 'community_item'
           )
         )
       );
@@ -623,12 +630,15 @@ const GetItemDetailsAction = {
 };
 
 export const GetItemDetail =
-  (itemId: string, userId: string, entity: 'board' | 'community' | 'document') =>
+  (
+    itemId: string,
+    userId: string,
+    entity: 'board' | 'community' | 'document'
+  ) =>
   async (dispatch: Dispatch) => {
     try {
       dispatch(showLoader());
       dispatch({ ...GetItemDetailsAction });
-
       const res = await proxyCall(
         `/${entity}/item/${itemId}/user/${userId}`,
         'GET'
