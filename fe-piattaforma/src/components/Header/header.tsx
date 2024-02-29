@@ -2,12 +2,12 @@ import React, { memo, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../redux/hooks';
 import {
-  selectUserNotificationToRead,
-  selectUser,
-  UserStateI,
   selectProfile,
-  UserProfileI,
+  selectUser,
   selectUserChatToRead,
+  selectUserNotificationToRead,
+  UserProfileI,
+  UserStateI,
 } from '../../redux/features/user/userSlice';
 import { selectDevice } from '../../redux/features/app/appSlice';
 import HeaderMobile from './view/headerMobile';
@@ -150,7 +150,7 @@ const Header: React.FC<HeaderProp> = (props) => {
       ) : (
         <HeaderMobile {...componentProps} />
       )}
-      <SwitchProfileModal isOnboarding={!isLogged} />
+      <SwitchProfileModal isRegistrazione={!isLogged} />
       {hasUserPermission(['btn.chat']) ? <RocketChatModal /> : null}
     </>
   );

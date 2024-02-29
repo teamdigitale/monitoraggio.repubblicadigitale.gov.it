@@ -141,6 +141,7 @@ const Footer: React.FC = () => {
             <div className='col-12'>
               <a
                 href='/informativa-privacy-e-cookie'
+                target='_blank'
                 className='link_common link_style'
               >
                 Informativa privacy e cookie

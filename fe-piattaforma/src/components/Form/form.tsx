@@ -12,6 +12,7 @@ interface FormI {
   showMandatory?: boolean;
   marginShowMandatory?: boolean;
   customMargin?: string;
+  showCampoObbligatorio?: boolean;
 }
 
 const Form = (props: FormI) => {
@@ -26,6 +27,7 @@ const Form = (props: FormI) => {
     showMandatory = true,
     marginShowMandatory = true,
     customMargin = '',
+    showCampoObbligatorio,
   } = props;
 
   return (
@@ -45,7 +47,9 @@ const Form = (props: FormI) => {
               customMargin ? customMargin : 'mb-5'
             )}
           >
-            {customMandatoryText || '*Campo obbligatorio'}
+            {customMandatoryText || showCampoObbligatorio
+              ? '*Campo obbligatorio'
+              : ''}
           </div>
         )}
         {React.Children.map(children, (child) => {
