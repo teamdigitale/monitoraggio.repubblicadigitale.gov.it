@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { Icon } from 'design-react-kit';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
@@ -39,15 +39,30 @@ const ManageReport: React.FC<ManageReportI> = ({
   const { id } = useParams();
   const userId = useAppSelector(selectUser)?.id;
 
+  const saveReportBoardCommunityDocument = useCallback(
+    async (
+      id: string,
+      userId: string,
+      entity: 'board' | 'community' | 'document' | 'forum'
+    ) => {
+      if (entity === 'forum') {
+        entity = 'community';
+      }
+      await dispatch(CreateItemReport(id, newReport));
+      dispatch(GetItemDetail(id, userId, entity));
+    },
+    [dispatch, newReport]
+  );
+
   const handleSaveReport = async () => {
     if (newReport.trim() !== '' && payload) {
       switch (payload.entity) {
         case 'board':
-        case 'forum':
+        case 'community':
         case 'document':
+        case 'forum':
           if (id && userId) {
-            await dispatch(CreateItemReport(id, newReport));
-            dispatch(GetItemDetail(id, userId, payload.entity));
+            await saveReportBoardCommunityDocument(id, userId, payload.entity);
           }
           break;
         case 'comment':

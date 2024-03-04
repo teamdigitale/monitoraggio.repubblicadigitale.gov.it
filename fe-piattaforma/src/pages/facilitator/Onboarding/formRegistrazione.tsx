@@ -16,7 +16,7 @@ import { Form, Input } from '../../../components';
 import { selectUser } from '../../../redux/features/user/userSlice';
 import { contractTypes } from '../../administrator/AdministrativeArea/Entities/utils';
 
-export interface FormOnboardingI {
+export interface FormRegistrazioneI {
   onInputChange?: withFormHandlerProps['onInputChange'];
   onSubmitForm?: () => void;
   optionsSelect?: OptionType[];
@@ -27,8 +27,9 @@ export interface FormOnboardingI {
   isProfile?: boolean;
 }
 
-interface FormProfileI extends withFormHandlerProps, FormOnboardingI {}
-const FormOnboarding: React.FC<FormProfileI> = (props) => {
+interface FormProfileI extends withFormHandlerProps, FormRegistrazioneI {}
+
+const FormRegistrazione: React.FC<FormProfileI> = (props) => {
   const {
     setFormValues = () => ({}),
     updateFormField = () => ({}),
@@ -101,28 +102,26 @@ const FormOnboarding: React.FC<FormProfileI> = (props) => {
       );
   }, [showTipoContratto]);
 
-  /* const bootClass = 'justify-content-between px-0 px-lg-5 mx-2'; */
-
   return (
     <div className={clsx(device.mediaIsPhone ? 'mx-4 mt-5' : 'mt-5 container')}>
       <Form
-        id='form-onboarding'
+        id='form-registrazione'
         className={clsx(
           formDisabled ? 'mt-3 pt-3' : '',
           'mb-5',
-          'onboarding__form-container'
+          'registrazione__form-container'
         )}
         formDisabled={formDisabled}
+        showCampoObbligatorio={false}
         marginShowMandatory={false}
         customMargin='mb-3 pb-3'
       >
-        <Form.Row /* className={bootClass} */>
+        <Form.Row>
           <Input
             {...form?.nome}
             disabled
             label='Nome'
             required
-            //placeholder='Inserisci nome'
             col='col-12 col-md-6'
             onInputChange={onInputChange}
           />
@@ -159,7 +158,6 @@ const FormOnboarding: React.FC<FormProfileI> = (props) => {
             {...form?.email}
             required
             label='Email'
-            //placeholder='Inserisci email'
             col='col-12 col-md-6'
             onInputChange={onInputChange}
           />
@@ -167,7 +165,6 @@ const FormOnboarding: React.FC<FormProfileI> = (props) => {
             {...form?.telefono}
             required
             label='Telefono'
-            //placeholder='Inserisci telefono'
             col='col-12 col-md-6'
             onInputChange={onInputChange}
           />
@@ -176,7 +173,6 @@ const FormOnboarding: React.FC<FormProfileI> = (props) => {
               {...form?.bio}
               required
               label='Posizione Lavorativa'
-              //placeholder='Posizione Lavorativa'
               col='col-12 col-md-6'
               onInputChange={onInputChange}
             />
@@ -189,7 +185,6 @@ const FormOnboarding: React.FC<FormProfileI> = (props) => {
                 {...form?.tipoContratto}
                 label='Tipo di Contratto'
                 col='col-12 col-lg-6'
-                // placeholder='Tipologia di contratto'
                 onInputChange={onInputChange}
               />
             ) : (
@@ -210,6 +205,14 @@ const FormOnboarding: React.FC<FormProfileI> = (props) => {
             <span />
           )}
         </Form.Row>
+        <div
+          className={clsx(
+            'mandatory-fields',
+            'form-row justify-content-between px-0 mx-2'
+          )}
+        >
+          *Campo obbligatorio
+        </div>
       </Form>
     </div>
   );
@@ -258,4 +261,4 @@ const form: FormI = newForm([
   }),
 ]);
 
-export default withFormHandler({ form }, FormOnboarding);
+export default withFormHandler({ form }, FormRegistrazione);

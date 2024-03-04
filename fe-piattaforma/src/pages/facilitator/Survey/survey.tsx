@@ -34,8 +34,8 @@ const arrayBreadcrumb = [
     url: '/',
   },
   {
-    label: 'Onboarding',
-    url: '/onboarding',
+    label: 'Registrazione',
+    url: '/registrazione',
   },
   {
     label: 'Survey',

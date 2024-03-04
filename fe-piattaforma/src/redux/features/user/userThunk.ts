@@ -324,8 +324,8 @@ export const GetNotificationsByUser =
             data: {
               items: [],
               pager: {
-                total_items: 1,
-                total_pages: 1
+                total_items: 0,
+                total_pages: 0
               }
             }
           }

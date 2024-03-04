@@ -5,16 +5,16 @@ import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { dispatchNotify } from '../utils/notifictionHelper';
 import {
+  DropdownFilter,
+  Footer,
   Form,
   InfoPanel,
   Input,
-  Rating,
-  Stepper,
-  DropdownFilter,
-  ProgressBar,
   PrefixPhone,
+  ProgressBar,
+  Rating,
   StatusChip,
-  Footer,
+  Stepper,
 } from '../components';
 import CheckboxGroup from '../components/Form/checkboxGroup';
 import withFormHandler, { withFormHandlerProps } from '../hoc/withFormHandler';
@@ -39,6 +39,13 @@ import PillDropDown from '../components/PillDropDown/pillDropDown';
 // import SectionDetail from '../components/DocumentDetail/sectionDetail';
 import Slider from '../components/General/Slider/Slider';
 import TextEditor from '../components/General/TextEditor/TextEditor';
+// const DocumentDetailMock = [DocumentCardDetailMock];
+import UserAvatar from '../components/Avatar/UserAvatar/UserAvatar';
+import { closeModal, openModal } from '../redux/features/modal/modalSlice';
+import GenericModal from '../components/Modals/GenericModal/genericModal';
+import { getAnagraphicID } from '../redux/features/anagraphic/anagraphicSlice';
+import ManageProfilePic from '../pages/administrator/AdministrativeArea/Entities/modals/manageProfilePic';
+import Registrazione from './facilitator/Registrazione/registrazione';
 
 export const DocumentCardDetailMock = {
   typology: 'TIPOLOGIA — ',
@@ -48,14 +55,6 @@ export const DocumentCardDetailMock = {
   description:
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nibh nibh, tincidunt non ultricies viverra, malesuada et massa. Mauris quis tortor magna. In suscipit nulla vitae ex efficitur, a cursus mi aliquam. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nibh nibh, tincidunt non ultricies viverra, malesuada et massa.',
 };
-
-// const DocumentDetailMock = [DocumentCardDetailMock];
-import UserAvatar from '../components/Avatar/UserAvatar/UserAvatar';
-import { closeModal, openModal } from '../redux/features/modal/modalSlice';
-import GenericModal from '../components/Modals/GenericModal/genericModal';
-import { getAnagraphicID } from '../redux/features/anagraphic/anagraphicSlice';
-import ManageProfilePic from '../pages/administrator/AdministrativeArea/Entities/modals/manageProfilePic';
-import Onboarding from './facilitator/Onboarding/onboarding';
 
 const Playground: React.FC<withFormHandlerProps> = (props) => {
   const { t } = useTranslation();
@@ -464,7 +463,7 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
         </section>
 
         <section>
-          <Onboarding />
+          <Registrazione />
         </section>
 
         <section>
@@ -492,7 +491,7 @@ const Playground: React.FC<withFormHandlerProps> = (props) => {
           </Row>
         </section>
         <section>
-          <Onboarding />
+          <Registrazione />
         </section>
         <section>
           <Slider>
