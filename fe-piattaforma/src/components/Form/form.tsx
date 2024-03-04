@@ -30,6 +30,11 @@ const Form = (props: FormI) => {
     showCampoObbligatorio,
   } = props;
 
+  
+  function recoverMandatory(customMandatoryText: string | undefined): import("react-i18next").ReactI18NextChild | Iterable<import("react-i18next").ReactI18NextChild> {
+    return (customMandatoryText !== undefined && customMandatoryText !== '') ? customMandatoryText : '*Campo obbligatorio';
+  }
+
   return (
     <form
       className={clsx('form ', className)}
@@ -48,7 +53,7 @@ const Form = (props: FormI) => {
             )}
           >
             {customMandatoryText || showCampoObbligatorio
-              ? '*Campo obbligatorio'
+              ? recoverMandatory(customMandatoryText)
               : ''}
           </div>
         )}
