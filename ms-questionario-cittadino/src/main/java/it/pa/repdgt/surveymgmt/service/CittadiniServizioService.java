@@ -136,7 +136,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
         bean.setNumCittadini(listaCittadiniServizio.size());
         bean.setNumQuestionariCompilati(
                 listaCittadiniServizio.stream()
-                        .filter(c -> StatoQuestionarioEnum.COMPILATO.toString()
+                        .filter(c -> StatoQuestionarioEnum.COMPILATA.toString()
                                 .equalsIgnoreCase(c.getStatoQuestionario()))
                         .count());
         return bean;
@@ -493,7 +493,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
         questCompilatoMySql.setIdProgetto(servizio.getIdEnteSedeProgettoFacilitatore().getIdProgetto());
         questCompilatoMySql.setIdSede(servizio.getIdEnteSedeProgettoFacilitatore().getIdSede());
         questCompilatoMySql.setIdServizio(servizio.getId());
-        questCompilatoMySql.setStato(StatoQuestionarioEnum.NON_COMPILATO.toString());
+        questCompilatoMySql.setStato(StatoQuestionarioEnum.NON_COMPILATA.toString());
         questCompilatoMySql.setIdQuestionarioTemplate(servizio.getIdQuestionarioTemplateSnapshot());
 
         this.questionarioCompilatoSqlRepository.save(questCompilatoMySql);

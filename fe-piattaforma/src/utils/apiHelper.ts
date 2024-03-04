@@ -48,3 +48,20 @@ API.interceptors.response.use(
 initMock(API);
 
 export default API;
+
+export const createPath = (payloadEntity: string): string | undefined => {
+  switch (payloadEntity) {
+    case 'programma':
+    case 'progetto':
+      return `${process?.env?.PROGRAMMA_PROGETTO}`;
+    case 'ente':
+      return `${process?.env?.ENTE}`;
+    case 'servizio':
+    case 'questionarioTemplate':
+      return `${process?.env?.QUESTIONARIO_CITTADINO}`;
+    case 'utente':
+      return `${process?.env?.GESTIONE_UTENTE}`;
+    default:
+      return undefined;
+  }
+};

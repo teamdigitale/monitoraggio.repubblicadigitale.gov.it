@@ -60,7 +60,9 @@ const ManageComment: React.FC<ManageCommentI> = ({
           // @ts-ignore
           if (res) {
             userId &&
-              dispatch(GetItemDetail(id, userId, payload.entity || 'community'));
+              dispatch(
+                GetItemDetail(id, userId, payload.entity || 'community')
+              );
             dispatch(
               ActionTracker({
                 target: 'tnd',

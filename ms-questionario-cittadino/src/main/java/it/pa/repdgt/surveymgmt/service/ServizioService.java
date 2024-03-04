@@ -349,6 +349,9 @@ public class ServizioService {
 		final SchedaDettaglioServizioBean schedaDettaglioServizioBean = new SchedaDettaglioServizioBean();
 		final DettaglioServizioBean dettaglioServizioBean = new DettaglioServizioBean();
 		dettaglioServizioBean.setNomeServizio(servizioEntity.getNome());
+		dettaglioServizioBean.setDataServizio(servizioEntity.getDataServizio());
+		dettaglioServizioBean.setDataOraCreazione(servizioEntity.getDataOraCreazione());
+		dettaglioServizioBean.setDataOraAggiornamento(servizioEntity.getDataOraAggiornamento());
 		dettaglioServizioBean.setNomeEnte(enteEntity.getNome());
 		dettaglioServizioBean.setNomeSede(sedeEntity.getNome());
 		dettaglioServizioBean.setListaTipologiaServizio(servizioEntity.getListaTipologiaServizi());

@@ -1,5 +1,5 @@
 import { Dispatch, Selector } from '@reduxjs/toolkit';
-import API from '../../../utils/apiHelper';
+import API, { createPath } from '../../../utils/apiHelper';
 import { hideLoader, showLoader } from '../app/appSlice';
 import {
   setEntityDetail,
@@ -36,6 +36,8 @@ export const GetEntityValues =
         administrativeArea: { filters, pagination },
       } = select((state: RootState) => state);
       const entityEndpoint = `/${payload.entity}/all`;
+      //const path: string | undefined = createPath(payload.entity);
+      //const entityEndpoint = `${path}${payload.entity}/all`;
       const filtroRequest: {
         [key: string]: string[] | undefined;
       } = {};
@@ -128,8 +130,11 @@ export const GetEntityFilterValues =
         cfUtente: codiceFiscale,
         codiceRuolo,
       };
-
       const entityFilterEndpoint = `/${payload.entity}/${payload.dropdownType}${
+      //const path: string | undefined = createPath(payload.entity);
+      //const entityFilterEndpoint = `${path}${payload.entity}/${
+        //payload.dropdownType
+      //}${
         payload.entity === 'progetto' && payload.dropdownType === 'policies'
           ? '/programmi'
           : ''

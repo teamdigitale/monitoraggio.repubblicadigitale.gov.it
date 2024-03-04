@@ -4,6 +4,7 @@ import React, { memo } from 'react';
 import { selectDevice } from '../../redux/features/app/appSlice';
 import { useAppSelector } from '../../redux/hooks';
 import './statusChip.scss';
+
 interface StatusChipI {
   status?: string | undefined;
   noTooltip?: boolean;
@@ -19,8 +20,8 @@ const statusTypes = {
   ACTIVE: 'ATTIVO',
   NOT_SENT: 'NON INVIATO',
   SENT: 'INVIATO',
-  FILLED_OUT: 'COMPILATO',
-  NOT_FILLED_OUT: 'NON COMPILATO',
+  FILLED_OUT: 'COMPILATA',
+  NOT_FILLED_OUT: 'NON COMPILATA',
   TERMINATED: 'TERMINATO',
   ACTIVABLE: 'ATTIVABILE',
 };

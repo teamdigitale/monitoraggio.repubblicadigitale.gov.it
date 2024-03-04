@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import {
@@ -41,11 +41,24 @@ const PrintSurvey: React.FC = () => {
   const sections = useAppSelector(selectPrintSurveySections);
   const serviceDetails = useAppSelector(selectServices)?.detail;
   const classQuestion = 'd-inline-block mr-3 mb-3 question';
-
+  const [dataServizioFormattata, setDataServizioFormattata] = useState('');
   useEffect(() => {
     if (serviceId) dispatch(GetServicesDetail(serviceId));
     if (idQuestionario) dispatch(GetSurveyInfo(idQuestionario, true));
-  }, [serviceId, idQuestionario]);
+  }, [serviceId, idQuestionario, dispatch]);
+
+  useEffect(() => {
+    if (serviceDetails?.dettaglioServizio?.dataServizio) {
+      const timestampDataServizio =
+        serviceDetails?.dettaglioServizio?.dataServizio;
+      const dataServizio = new Date(timestampDataServizio);
+      const dataServizioFormattata =
+        timestampDataServizio && !isNaN(dataServizio.getTime())
+          ? dataServizio.toLocaleDateString('it-IT')
+          : 'Data non disponibile';
+      setDataServizioFormattata(dataServizioFormattata);
+    }
+  }, [serviceDetails]);
 
   const getAnswerType = (
     question: PrintSurveyQuestionI,
@@ -60,8 +73,8 @@ const PrintSurvey: React.FC = () => {
             <PrintSelectField
               info={question}
               className={clsx(classQuestion, question.flag && 'align-bottom')}
-              noLabel={question.flag ? true : false}
-              halfWidth={question.flag ? true : false}
+              noLabel={!!question.flag}
+              halfWidth={!!question.flag}
               multipleChoice={question.id !== '18'}
             />
           );
@@ -92,7 +105,9 @@ const PrintSurvey: React.FC = () => {
         }
       case 'multiple':
       case 'string':
-        if (question?.enum?.length) {
+        if (question.enum && question.id === '9') {
+          return <PrintTextField info={question} className={classQuestion} />;
+        } else if (question.enum) {
           return <PrintSelectField info={question} className={classQuestion} />;
         } else {
           return <PrintTextField info={question} className={classQuestion} />;
@@ -104,7 +119,6 @@ const PrintSurvey: React.FC = () => {
         return <PrintTextField info={question} className={classQuestion} />;
     }
   };
-
   return (
     <div className='container my-3 pt-3 print-survey'>
       <div className='d-flex justify-content-between'>
@@ -127,7 +141,7 @@ const PrintSurvey: React.FC = () => {
               serviceDetails?.progettiAssociatiAlServizio?.[0]?.nomeBreve ||
               'Progetto',
           },
-          // subTitle:
+          subTitle: dataServizioFormattata,
           //   'Facilitatore: ' +
           //   serviceDetails?.dettaglioServizio?.nominativoFacilitatore,
         }}
@@ -135,19 +149,22 @@ const PrintSurvey: React.FC = () => {
         noTitleEllipsis
       />
       <div className='mt-5'>
-        {(sections || []).map((section: SurveySectionI, i: number) => (
-          <div key={i} className='mb-3'>
-            <h1 className='h2 primary-color-a6 mb-3'>
-              {section?.sectionTitle}
-            </h1>
-            {section?.questions &&
-              Object.keys(section?.questions).map((key) => (
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                <>{getAnswerType(section?.questions?.[key], section)}</>
-              ))}
-          </div>
-        ))}
+        {(sections || []).map(
+          (section: SurveySectionI, i: number) =>
+            (i === 0 || i === 3) && (
+              <div key={section.id} className='mb-3'>
+                <h1 className='h2 primary-color-a6 mb-3'>
+                  {section?.sectionTitle}
+                </h1>
+                {section?.questions &&
+                  Object.keys(section?.questions).map((key) => (
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    <>{getAnswerType(section?.questions?.[key], section)}</>
+                  ))}
+              </div>
+            )
+        )}
       </div>
     </div>
   );

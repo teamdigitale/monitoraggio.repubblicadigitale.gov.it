@@ -28,12 +28,14 @@ import {
 import { selectEntityFiltersOptions } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 
 const modalId = 'newsModal';
+
 interface ManageNewsFormI {
   formDisabled?: boolean;
   creation?: boolean;
 }
 
 interface ManageNewsI extends withFormHandlerProps, ManageNewsFormI {}
+
 const ManageNews: React.FC<ManageNewsI> = ({
   formDisabled,
   creation = false,
@@ -64,7 +66,7 @@ const ManageNews: React.FC<ManageNewsI> = ({
 
   const stepsCTA = {
     form: {
-      title: `${creation ? 'Pubblica nuovo' : 'Modifica'} annuncio`,
+      title: `${creation ? 'Crea' : 'Modifica'} annuncio`,
       primaryCTA: {
         disabled: !isFormValid,
         label: creation ? 'Conferma' : 'Salva',
@@ -281,8 +283,8 @@ const ManageNews: React.FC<ManageNewsI> = ({
     case 'confirm':
       content = (
         <ConfirmItemCreation
-        description={`Annuncio ${
-          creation ? 'creato' : 'modificato'
+          description={`Annuncio ${
+            creation ? 'creato' : 'modificato'
           } correttamente!`}
         />
       );

@@ -16,8 +16,8 @@ interface DetailsRowI {
 
 const statusCases = {
   SENT: 'INVIATO',
-  NOT_FILLED: 'NON COMPILATO',
-  FILLED_OUT: 'COMPILATO',
+  NOT_FILLED: 'NON COMPILATA',
+  FILLED_OUT: 'COMPILATA',
   NOT_SENT: 'NON INVIATO',
 };
 

@@ -311,7 +311,7 @@ const CitizensList: React.FC = () => {
                     citizen?.dataUltimoAggiornamento
                   ).format('DD-MM-YYYY HH:mm'),
                 }}
-                rowInfoType='questionario'
+                rowInfoType='Rilevazione esperienza'
                 idQuestionario={citizen?.idQuestionario || ''}
               />
             ))}

@@ -47,7 +47,7 @@ const CitizenServices: React.FC<{
               status={td.statoQuestionario}
               rowTableId={td.idServizio}
             />
-            {td.statoQuestionario === 'COMPILATO' && td.associatoAUtente && (
+            {td.statoQuestionario === 'COMPILATA' && td.associatoAUtente && (
               <>
                 <Button
                   onClick={() =>

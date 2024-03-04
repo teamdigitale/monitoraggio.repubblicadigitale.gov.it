@@ -19,7 +19,7 @@ public interface QuestionarioCompilatoRepository extends JpaRepository<Questiona
 			+ "	questionario_compilato qc "
 			+ " WHERE 1=1"
 			+ "	AND qc.ID_CITTADINO = :idCittadino "
-			+ "    AND qc.STATO <> 'COMPILATO'        ", nativeQuery = true)
+			+ "    AND qc.STATO <> 'COMPILATA'        ", nativeQuery = true)
 	List<QuestionarioCompilatoEntity> findQuestionariCompilatiByCittadinoAndStatoNonCompilato(
 			@Param(value = "idCittadino") Long idCittadino);
 }

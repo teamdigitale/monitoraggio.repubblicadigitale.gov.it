@@ -1,18 +1,19 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import clsx from 'clsx';
-import { Button, Icon } from 'design-react-kit';
+import {Button, Icon} from 'design-react-kit';
 import AsyncSelect from 'react-select/async';
-import { MultiValue, SingleValue } from 'react-select';
-import { OptionType, SelectI } from '../Form/select';
-import { Input } from '../index';
-import { components, ControlProps } from 'react-select';
-import { focusId } from '../../utils/common';
-import { useAppSelector } from '../../redux/hooks';
-import { selectDevice } from '../../redux/features/app/appSlice';
-import { useDispatch } from 'react-redux';
-import { deleteFiltroCriterioRicerca } from '../../redux/features/administrativeArea/administrativeAreaSlice';
-import { deleteFiltroCriterioRicercaCitizen } from '../../redux/features/citizensArea/citizensAreaSlice';
+import {components, ControlProps, MultiValue, SingleValue,} from 'react-select';
+import {OptionType, SelectI} from '../Form/select';
+import {Input} from '../index';
+import {focusId} from '../../utils/common';
+import {useAppSelector} from '../../redux/hooks';
+import {selectDevice} from '../../redux/features/app/appSlice';
+import {useDispatch} from 'react-redux';
+import {deleteFiltroCriterioRicerca} from '../../redux/features/administrativeArea/administrativeAreaSlice';
+import {deleteFiltroCriterioRicercaCitizen} from '../../redux/features/citizensArea/citizensAreaSlice';
+import {Validator} from '@marketto/codice-fiscale-utils';
+import {selectedSteps} from '../../pages/administrator/CitizensArea/Entities/SearchCitizenModal/searchCitizenModal';
 
 interface SearchBarI extends Omit<SelectI, 'onInputChange'> {
   autocomplete?: boolean;
@@ -40,6 +41,7 @@ interface SearchBarI extends Omit<SelectI, 'onInputChange'> {
   infoText?: string;
   onQueryChange?: (query: string) => void;
   disableSubmit?: boolean;
+  searchType?: string;
 }
 
 const SearchBar: React.FC<SearchBarI> = (props) => {
@@ -60,11 +62,16 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
     // tooltip = false,
     // tooltipText = '',
     infoText = '',
+    searchType,
   } = props;
   const dispatch = useDispatch();
   const [selectedOption, setSelectedOption] = useState<
     SingleValue<OptionType | undefined> | MultiValue<OptionType | undefined>
   >();
+  const [isFiscalCodeValid, setIsFiscalCodeValid] = useState<boolean | null>(
+    null
+  );
+
   const [searchValue, setSearchValue] = useState<string>('');
   const [hasSearchValue, setHasSearchValue] = useState<boolean>(false);
 
@@ -76,6 +83,41 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
     }
     return inputValue;
   };
+
+  const onInputQueryChange = useCallback(
+    (search) => {
+      if (!search) {
+        setSearchValue('');
+        setIsFiscalCodeValid(null);
+        return;
+      }
+
+      const formattedFiscalCode = search.toUpperCase();
+      setSearchValue(formattedFiscalCode);
+
+      if (searchType === selectedSteps.FISCAL_CODE) {
+        const isValidFiscalCode =
+          Validator.codiceFiscale(formattedFiscalCode).valid &&
+          formattedFiscalCode.length === 16;
+        setIsFiscalCodeValid(isValidFiscalCode);
+      }
+
+      if (props.onQueryChange) {
+        props.onQueryChange(formattedFiscalCode);
+      }
+    },
+    [searchType, props]
+  );
+
+  useEffect(() => {
+    if (
+      searchType === selectedSteps.DOC_NUMBER ||
+      searchType === selectedSteps.FISCAL_CODE
+    ) {
+      setSearchValue('');
+      setIsFiscalCodeValid(null);
+    }
+  }, [searchType]);
 
   useEffect(() => {
     if (onInputChange && selectedOption) onInputChange(selectedOption, field);
@@ -104,6 +146,9 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
     setHasSearchValue(false);
     dispatch(deleteFiltroCriterioRicerca());
     dispatch(deleteFiltroCriterioRicercaCitizen());
+    setSearchValue('');
+    setSearchValue('');
+    setIsFiscalCodeValid(null);
     if (onReset) onReset();
   };
 
@@ -161,11 +206,6 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
 
   const device = useAppSelector(selectDevice);
 
-  const onInputQueryChange = useCallback((search) => {
-    setSearchValue((search ?? '').toString());
-    if (props.onQueryChange) props.onQueryChange(search ? search.toString(): '');
-  }, [props.onQueryChange]);
-  
   return (
     <div className={clsx(className, 'search-bar-custom')}>
       {!device.mediaIsPhone && search ? (
@@ -206,12 +246,19 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
                   'position-relative',
                   'bg-transparent',
                   'mr-5',
+                  {
+                    'is-valid': isFiscalCodeValid,
+                    'is-invalid': isFiscalCodeValid === false,
+                  },
                   device.mediaIsPhone && 'pl-0'
                 )}
                 field={id}
                 onInputChange={onInputQueryChange}
                 placeholder={device.mediaIsPhone ? '' : placeholder}
                 value={searchValue}
+                maximum={
+                  searchType === selectedSteps.FISCAL_CODE ? 16 : undefined
+                }
                 withLabel={false}
                 // aria-label='Input per la ricerca'
                 onKeyPress={(e) => {
@@ -222,6 +269,17 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
                 tabIndex={0}
                 minimum={minLength}
               />
+              {searchValue &&
+                searchType === selectedSteps.FISCAL_CODE &&
+                (isFiscalCodeValid ? (
+                  <div className='valid-feedback'>
+                    <i className='it-check-circle'></i>
+                  </div>
+                ) : (
+                  <div className='invalid-feedback'>
+                    <i className='it-close-circle'></i>
+                  </div>
+                ))}
 
               {!hasSearchValue && device.mediaIsPhone && (
                 <span id='placeholder-icon' className='d-flex flex-row'>
