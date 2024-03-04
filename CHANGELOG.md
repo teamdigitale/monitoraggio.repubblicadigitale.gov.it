@@ -1,5 +1,17 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-develop.418](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.417...1.0.0-develop.418) (2024-03-04)
+
+
+### Features
+
+* **fix-import:** updates 20240229 ([da42bb3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/da42bb392647fa9c4a8d3f50fe448b8ca7c8a31e))
+
+
+### Bug Fixes
+
+* **fe-allineamento:** updates 20240304 ([1a6c6f2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1a6c6f295e440cfb6e75f0d973a99e399e220b92))
+
 ## [1.0.0-develop.417](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.416...1.0.0-develop.417) (2024-02-12)
 
 
