@@ -1,5 +1,14 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.28.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.28.0...1.28.1) (2024-03-04)
+
+
+### Bug Fixes
+
+* **deploy:** updates 20240304 ([b1b657d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b1b657d762341de072fcef6a1149a0c35e5fba85))
+* **mandatory-fe:** updates 20240304 ([be03298](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/be032985c986498f4550c9ec45d0930e3d4693da))
+* **deploy:** updates 20240304 ([fb9efb4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fb9efb449be4aeaca2c089c0469690204268844c))
+
 ## [1.28.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.27.2...1.28.0) (2024-03-04)
 
 
