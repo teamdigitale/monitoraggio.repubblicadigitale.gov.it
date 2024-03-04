@@ -12,6 +12,7 @@ const API = axios.create({
 });
 
 API.interceptors.request.use((req) => {
+  //const codiceRuolo = JSON.parse(getSessionValues('profile'))?.codiceRuolo;
   const newHeaders: {
     authToken?: string;
     userRole?: string;
@@ -21,6 +22,17 @@ API.interceptors.request.use((req) => {
   };
   if (JSON.parse(getSessionValues('auth'))?.id_token) {
     newHeaders.authToken = JSON.parse(getSessionValues('auth'))?.id_token;
+  /*const authSession =
+    getSessionValues('auth') !== 'fguhbjinokj8765d578t9yvghugyftr646tg'
+      ? JSON.parse(getSessionValues('auth'))
+      : getSessionValues('auth');
+  if (authSession.idToken) {
+    newHeaders.authToken = authSession.idToken;
+  } else if (authSession) {
+    newHeaders.authToken = authSession;
+  }
+  if (codiceRuolo) {
+    newHeaders.userRole = codiceRuolo;*/
   }
   return {
     ...req,
@@ -48,3 +60,20 @@ API.interceptors.response.use(
 initMock(API);
 
 export default API;
+
+export const createPath = (payloadEntity: string): string | undefined => {
+  switch (payloadEntity) {
+    case 'programma':
+    case 'progetto':
+      return `${process?.env?.PROGRAMMA_PROGETTO}`;
+    case 'ente':
+      return `${process?.env?.ENTE}`;
+    case 'servizio':
+    case 'questionarioTemplate':
+      return `${process?.env?.QUESTIONARIO_CITTADINO}`;
+    case 'utente':
+      return `${process?.env?.GESTIONE_UTENTE}`;
+    default:
+      return undefined;
+  }
+};

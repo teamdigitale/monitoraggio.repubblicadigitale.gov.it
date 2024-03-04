@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import DetailLayout from '../../../components/DetailLayout/detailLayout';
-import FormOnboarding from '../../facilitator/Onboarding/formRegistrazione';
 import { ButtonInButtonsBar } from '../../../components/ButtonsBar/buttonsBar';
 import { openModal } from '../../../redux/features/modal/modalSlice';
 import {
@@ -20,6 +19,7 @@ import { CardStatusAction } from '../../../components';
 import { getSessionValues } from '../../../utils/sessionHelper';
 import { GetUserDetails } from '../../../redux/features/administrativeArea/user/userThunk';
 import { selectUsers } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
+import FormRegistrazione from '../../facilitator/Registrazione/formRegistrazione';
 
 interface RoleI {
   id: string;
@@ -109,7 +109,7 @@ const UserProfile = () => {
         formButtons={correctButtons}
         profilePicture={user?.immagineProfilo}
       >
-        <FormOnboarding isProfile formDisabled />
+        <FormRegistrazione isProfile formDisabled />
       </DetailLayout>
       {userRoleList?.length ? (
         <div className='my-5 container'>

@@ -248,15 +248,9 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
   return (
     <Form
       id='compile-survey-form'
-      showMandatory={currentStep === 0 || currentStep === 3}
+      showMandatory={currentStep === 3}
       marginShowMandatory={false}
-      customMargin={
-        currentStep === 0
-          ? 'ml-2 mb-3 pb-3d'
-          : currentStep === 3
-          ? 'ml-2 mb-3'
-          : ''
-      }
+      customMargin={currentStep === 3 ? 'ml-2 mb-3': ''}
       customMandatoryText='Rispondere ad almeno una delle seguenti domande'
     >
       <div

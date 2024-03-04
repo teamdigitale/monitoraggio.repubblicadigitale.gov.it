@@ -7,7 +7,6 @@ import {
   hideBreadCrumb,
   selectDevice,
 } from '../../../redux/features/app/appSlice';
-import Profile from '/public/assets/img/change-profile.png';
 import {
   CommonFields,
   FormI,
@@ -30,31 +29,28 @@ import {
   SelectUserRole,
 } from '../../../redux/features/user/userThunk';
 import { openModal } from '../../../redux/features/modal/modalSlice';
-import FormOnboarding from './formRegistrazione';
 import { defaultRedirectUrl } from '../../../routes';
-import '../../../../src/pages/facilitator/Onboarding/onboarding.scss';
+import './registrazione.scss';
+import FormRegistrazione from './formRegistrazione';
 
 interface ProfilePicI {
   image?: boolean;
 }
 
-interface OnboardingI extends ProfilePicI, withFormHandlerProps {}
+interface RegistrazioneI extends ProfilePicI, withFormHandlerProps {}
 
-const Onboarding: React.FC<OnboardingI> = (props) => {
+const Registrazione: React.FC<RegistrazioneI> = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const device = useAppSelector(selectDevice);
   const user = useAppSelector(selectUser);
-  const image = user?.immagineProfilo || Profile;
   const [isValidForm, setIsValidForm] = useState<boolean>(false);
-  const {
-    form,
-    getFormValues = () => ({}),
-    onInputChange = () => ({}),
-    updateForm = () => ({}),
-  } = props;
+  const { getFormValues = () => ({}), updateForm = () => ({}) } = props;
+  const [ruolo, setRuolo] = useState<string>('');
 
   useEffect(() => {
+    const userRuolo: any = user;
+    setRuolo(userRuolo.ruoli[0].nomeRuolo.toLowerCase() as string);
     if (user?.integrazione) {
       selectUserRole();
       dispatch(hideBreadCrumb());
@@ -127,10 +123,10 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
       </h1>
       <div className='col-12  mt-4'>
         <p className='h6 complementary-1-color-b8 font-weight-normal'>
-          Per completare il tuo profilo da facilitatore abbiamo bisogno di
-          alcuni tuoi dati. <br /> Completa i campi obbligatori per procedere.
+          Per completare il tuo profilo da {ruolo} abbiamo bisogno di alcuni
+          tuoi dati. <br /> Completa i campi obbligatori per procedere.
         </p>
-        <FormOnboarding
+        <FormRegistrazione
           sendNewForm={updateForm}
           setIsFormValid={(isValid: boolean) => setIsValidForm(isValid)}
         />
@@ -142,7 +138,8 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
             device.mediaIsPhone && 'flex-column align-items-center '
           )}
         >
-          <a href='/'>
+          {/* eslint-disable-next-line react/no-unescaped-entities */}
+          <a href='/informativa-privacy-e-cookie' target='_blank'>
             Leggi l'informativa sul trattamento dei dati personali
           </a>
           <Button
@@ -157,30 +154,6 @@ const Onboarding: React.FC<OnboardingI> = (props) => {
             Completa Registrazione
           </Button>
         </div>
-        {/* <Form
-          id='form-onboarding'
-          className={clsx('mt-5', 'mb-5', 'onboarding__form-container')}
-          showMandatory={false}
-        >
-          <div>
-            <a href='/'>Leggi l&nbsp;informativa sul trattamento dei dati personali</a>
-            <Button
-              disabled={!isValidForm}
-              color='primary'
-              onClick={onSubmitForm}
-              className={clsx(
-                'd-flex mb-3 mt-5',
-                device.mediaIsPhone && 'justify-content-center',
-                'justify-content-end'
-              )}
-            >
-              Completa Registrazione
-            </Button>
-          </div>
-          {/* <p className={clsx('primary-color-a12', 'mt-5', 'mb-1', 'pb-2')}>
-            *Campo obbligatorio
-          </p> */}
-        {/*</Form>*/}
       </div>
     </div>
   );
@@ -229,4 +202,4 @@ const form: FormI = newForm([
   }),
 ]);
 
-export default withFormHandler({ form }, Onboarding);
+export default withFormHandler({ form }, Registrazione);

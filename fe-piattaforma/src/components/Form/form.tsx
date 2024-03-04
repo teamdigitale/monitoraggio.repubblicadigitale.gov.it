@@ -12,6 +12,7 @@ interface FormI {
   showMandatory?: boolean;
   marginShowMandatory?: boolean;
   customMargin?: string;
+  showCampoObbligatorio?: boolean;
 }
 
 const Form = (props: FormI) => {
@@ -26,7 +27,13 @@ const Form = (props: FormI) => {
     showMandatory = true,
     marginShowMandatory = true,
     customMargin = '',
+    showCampoObbligatorio,
   } = props;
+
+  
+  function recoverMandatory(customMandatoryText: string | undefined): import("react-i18next").ReactI18NextChild | Iterable<import("react-i18next").ReactI18NextChild> {
+    return (customMandatoryText !== undefined && customMandatoryText !== '') ? customMandatoryText : '*Campo obbligatorio';
+  }
 
   return (
     <form
@@ -45,7 +52,9 @@ const Form = (props: FormI) => {
               customMargin ? customMargin : 'mb-5'
             )}
           >
-            {customMandatoryText || '*Campo obbligatorio'}
+            {customMandatoryText || showCampoObbligatorio
+              ? recoverMandatory(customMandatoryText)
+              : ''}
           </div>
         )}
         {React.Children.map(children, (child) => {

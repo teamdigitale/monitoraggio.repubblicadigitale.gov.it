@@ -21,12 +21,12 @@ const id = 'switchProfileModal';
 
 interface SwitchProfileModalI {
   isRoleManaging?: boolean;
-  isOnboarding?: boolean;
+  isRegistrazione?: boolean;
   profilePicture?: string;
 }
 
 const SwitchProfileModal: React.FC<SwitchProfileModalI> = ({
-  isOnboarding = false,
+  isRegistrazione = false,
   profilePicture = '',
 }) => {
   const dispatch = useDispatch();
@@ -120,7 +120,7 @@ const SwitchProfileModal: React.FC<SwitchProfileModalI> = ({
         disabled: !Object.keys(profileSelected)?.length,
       }}
       secondaryCTA={
-        isOnboarding
+        isRegistrazione
           ? undefined
           : {
               label: 'Annulla',
@@ -131,7 +131,7 @@ const SwitchProfileModal: React.FC<SwitchProfileModalI> = ({
       noSpaceAfterTitle
       centerButtons
       isRoleManaging
-      closableKey={isOnboarding ? 'unclosable' : undefined}
+      closableKey={isRegistrazione ? 'unclosable' : undefined}
     >
       <div
         className={clsx(

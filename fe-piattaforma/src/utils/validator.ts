@@ -1,6 +1,9 @@
 import isEmpty from 'lodash.isempty';
-import { AddressInfoI } from '../components/AdministrativeArea/Entities/Headquarters/AccordionAddressList/AccordionAddress/AccordionAddress';
-import { formFieldI } from './formHelper';
+import {
+  AddressInfoI
+} from '../components/AdministrativeArea/Entities/Headquarters/AccordionAddressList/AccordionAddress/AccordionAddress';
+import {formFieldI} from './formHelper';
+import {Validator} from '@marketto/codice-fiscale-utils';
 
 /* eslint-disable */
 export const RegexpType = {
@@ -27,7 +30,9 @@ export const RegexpType = {
   DOCUMENT_NUMBER: 'document-number',
   URL: 'url',
 };
-
+const isValidFiscalCode = (fiscalCode: string): boolean => {
+  return Validator.codiceFiscale(fiscalCode).valid;
+};
 const RegexpRule = {
   [RegexpType.EMAIL]:
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/gi,
@@ -39,8 +44,7 @@ const RegexpRule = {
   [RegexpType.ALPHA_NUMERIC]: /^[a-z A-Z 0-9_.-]*$/gi,
   [RegexpType.ALPHA_NUMERIC_INPUT]: /^[a-z A-Z 0-9 àèìòù \'\S _.-{}:,"()]*$/gi,
   [RegexpType.REGISTRY]: /^[a-z A-Z àèìòù \']{2,30}/gi,
-  [RegexpType.FISCAL_CODE]:
-    /^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$/i,
+  [RegexpType.FISCAL_CODE]: isValidFiscalCode,
   [RegexpType.POSTAL_CODE]: /^[0-9]{5}$/gm,
   [RegexpType.PASSWORD]:
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,64}$/,
@@ -56,7 +60,8 @@ const RegexpRule = {
   [RegexpType.PIVA]: /^[0-9]{11}$/gm,
   [RegexpType.NAME_SURNAME]: /^[^!#§ç@°]*^[A-Z a-z À-Ö Ø-ö ø-ÿ '-]{1,30}$/,
   [RegexpType.DOCUMENT_NUMBER]: /^[a-z A-Z 0-9_.-]{5,10}$/gi,
-  [RegexpType.URL]: /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,30}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/g,
+  [RegexpType.URL]:
+    /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,30}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/g,
 };
 
 export const validator = (
@@ -107,7 +112,11 @@ export const validator = (
         return false;
       }
     }
-    return new RegExp(RegexpRule[regex]).test(data.toString());
+    const regexRule = RegexpRule[regex];
+
+    return typeof regexRule === 'function'
+      ? regexRule(data.toString())
+      : new RegExp(regexRule).test(data.toString());
   } else {
     if (isRequired && touched) {
       return false;
@@ -131,17 +140,28 @@ export const validateAddressList = (addressList: AddressInfoI[]) => {
         ([key, value]) =>
           ['via', 'provincia', 'comune', 'cap'].includes(key) ? value : true
       );
-      isValid = Object.entries(addressInfo.fasceOrarieAperturaIndirizzoSede).every(([key, value]) => key.includes('1') && value !== null ? value !== '' : true) && isValid;
-      isValid = Object.entries(addressInfo.fasceOrarieAperturaIndirizzoSede).every(([key, value]) => {
-        if (key.includes('2')) {
-          if (key.includes('Apertura') && value) {
-            return addressInfo.fasceOrarieAperturaIndirizzoSede[key.split('Apertura').join('Chiusura')]
-          } else if (key.includes('Chiusura') && value) {
-            return addressInfo.fasceOrarieAperturaIndirizzoSede[key.split('Chiusura').join('Apertura')]
+      isValid =
+        Object.entries(addressInfo.fasceOrarieAperturaIndirizzoSede).every(
+          ([key, value]) =>
+            key.includes('1') && value !== null ? value !== '' : true
+        ) && isValid;
+      isValid =
+        Object.entries(addressInfo.fasceOrarieAperturaIndirizzoSede).every(
+          ([key, value]) => {
+            if (key.includes('2')) {
+              if (key.includes('Apertura') && value) {
+                return addressInfo.fasceOrarieAperturaIndirizzoSede[
+                  key.split('Apertura').join('Chiusura')
+                ];
+              } else if (key.includes('Chiusura') && value) {
+                return addressInfo.fasceOrarieAperturaIndirizzoSede[
+                  key.split('Chiusura').join('Apertura')
+                ];
+              }
+            }
+            return true;
           }
-        }
-        return true
-      }) && isValid;
+        ) && isValid;
       return isValid;
     });
 };

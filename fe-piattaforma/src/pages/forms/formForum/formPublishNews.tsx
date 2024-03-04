@@ -394,7 +394,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
         <TextEditor
           text={editorText}
           onChange={(t: string) => setEditorText(t)}
-          maxLength={1501}
+          maxLength={1500}
         />
       </Form.Row>
       <Form.Row className={bootClass}>
@@ -413,8 +413,9 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
             <br />
             - Formati supportati: .jpg, .jpeg, .png
             <br />- Peso: max 10 MB
-            <br />- Nome: non deve contenere altri punti &quot;&nbsp;.&nbsp;&quot; oltre a quello che
-            precede l&apos;estensione
+            <br />- Nome: non deve contenere altri punti
+            &quot;&nbsp;.&nbsp;&quot; oltre a quello che precede
+            l&apos;estensione
           </UncontrolledTooltip>
         </div>
       </Form.Row>
@@ -483,8 +484,9 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
             .ppt, .pptx, .pdf, .jpg, .png, .gif, .xls, .xlsx, .csv, .mpg, .wmv,
             .pdf
             <br />- Peso: max 10 MB
-            <br />- Nome: non deve contenere altri punti &quot;&nbsp;.&nbsp;&quot; oltre a quello che
-            precede l&apos;estensione
+            <br />- Nome: non deve contenere altri punti
+            &quot;&nbsp;.&nbsp;&quot; oltre a quello che precede
+            l&apos;estensione
           </UncontrolledTooltip>
         </div>
       </Form.Row>

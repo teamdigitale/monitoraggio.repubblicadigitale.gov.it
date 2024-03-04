@@ -18,7 +18,7 @@ interface TextEditorI {
   maxLength?: number;
 }
 
-const TextEditor = ({ text, onChange, maxLength = 1501 }: TextEditorI) => {
+const TextEditor = ({ text, onChange, maxLength = 1500 }: TextEditorI) => {
   const [hasFocus, setHasFocus] = useState(false);
   const [editorState, setEditorState] = useState(
     EditorState.createWithContent(
@@ -53,8 +53,7 @@ const TextEditor = ({ text, onChange, maxLength = 1501 }: TextEditorI) => {
         editorState={editorState}
         onEditorStateChange={(editorState) => {
           if (
-            draftToHtml(convertToRaw(editorState.getCurrentContent())).length <=
-            maxLength
+            editorState.getCurrentContent().getPlainText().length <= maxLength
           ) {
             setEditorState(editorState);
             onChange(
@@ -74,6 +73,7 @@ const TextEditor = ({ text, onChange, maxLength = 1501 }: TextEditorI) => {
         wrapperClassName='wrapper'
         editorClassName='editor'
         toolbarClassName='toolbar'
+        handlePastedText={() => false}
         onBlur={() => {
           setHasFocus(false);
           onChange(draftToHtml(convertToRaw(editorState.getCurrentContent())));

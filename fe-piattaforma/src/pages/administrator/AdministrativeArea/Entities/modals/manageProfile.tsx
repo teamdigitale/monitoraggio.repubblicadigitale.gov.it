@@ -7,7 +7,7 @@ import {
   EditUser,
 } from '../../../../../redux/features/user/userThunk';
 import { formFieldI, FormHelper, FormI } from '../../../../../utils/formHelper';
-import FormOnboarding from '../../../../facilitator/Onboarding/formRegistrazione';
+import FormRegistrazione from '../../../../facilitator/Registrazione/formRegistrazione';
 import { formTypes } from '../utils';
 
 const id = formTypes.PROFILE;
@@ -46,7 +46,7 @@ const ManageProfile: React.FC = () => {
         onClick: () => dispatch(closeModal()),
       }}
     >
-      <FormOnboarding
+      <FormRegistrazione
         sendNewForm={(newForm: FormI) =>
           setNewFormValues(FormHelper.getFormValues(newForm))
         }

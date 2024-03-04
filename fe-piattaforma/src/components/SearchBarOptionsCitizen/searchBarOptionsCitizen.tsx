@@ -36,10 +36,10 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const handleSearchReset = () => {
+  const handleSearchReset = useCallback(() => {
     dispatch(setCitizenSearchResults([]));
     if (resetModal) resetModal();
-  };
+  }, [dispatch, resetModal]);
 
   const [canSubmit, setCanSubmit] = useState<boolean>(false);
   const [query, setQuery] = useState<string>('');
@@ -61,18 +61,7 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
   const isValidFiscalCode = useCallback(
     (query: string) => {
       const fiscalCodeValid = Validator.codiceFiscale(query).valid;
-      const fiscalCodeLengthCorrect = query.length === 16;
 
-      if (!fiscalCodeValid && fiscalCodeLengthCorrect) {
-        dispatchNotify(
-          1,
-          'ERRORE',
-          'error',
-          'Il codice fiscale inserito non è valido',
-          'medium'
-        );
-        return false;
-      }
       if (fiscalCodeValid) {
         const isAdult = isMaggiorenne(query);
         if (!isAdult) {
@@ -100,7 +89,13 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
       setMustValidateCf(value === 'codiceFiscale');
       setCanSubmit(value !== 'codiceFiscale' || isValidFiscalCode(query));
     },
-    [setCurrentStep, setRadioFilter, isValidFiscalCode, query]
+    [
+      handleSearchReset,
+      setCurrentStep,
+      setRadioFilter,
+      isValidFiscalCode,
+      query,
+    ]
   );
 
   const onQueryChange = useCallback(
@@ -149,6 +144,7 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
       </div>
       <SearchBar
         placeholder='Inserisci i dati del tipo di documento selezionato'
+        searchType={currentStep ?? ''}
         onSubmit={(data) => {
           if (resetModal) resetModal();
           if (data) {

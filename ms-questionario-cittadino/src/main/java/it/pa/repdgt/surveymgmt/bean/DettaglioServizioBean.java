@@ -1,6 +1,7 @@
 package it.pa.repdgt.surveymgmt.bean;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import it.pa.repdgt.shared.entity.TipologiaServizioEntity;
@@ -22,4 +23,7 @@ public class DettaglioServizioBean implements Serializable {
 	private List<TipologiaServizioEntity> listaTipologiaServizio;
 	private SezioneQ3Collection sezioneQ3compilato;
 	private QuestionarioTemplateCollection questionarioTemplateSnapshot;
+	private Date dataServizio;
+	private Date dataOraCreazione;
+	private Date dataOraAggiornamento;
 }

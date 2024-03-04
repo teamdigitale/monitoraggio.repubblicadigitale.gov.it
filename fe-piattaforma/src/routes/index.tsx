@@ -40,8 +40,8 @@ const RoleManagementDetails = lazy(
       '../pages/common/RoleManagement/RoleManagementDetails/roleManagementDetails'
     )
 );
-const Onboarding = lazy(
-  () => import('../pages/facilitator/Onboarding/registrazione')
+const Registrazione = lazy(
+  () => import('../pages/facilitator/Registrazione/registrazione')
 );
 const PrintSurvey = lazy(
   () =>
@@ -342,8 +342,12 @@ const AppRoutes: React.FC = () => {
             <Route path='/report-dati' element={<Dashboard />} />
             <Route path='/' element={<FullLayout />}>
               {/* Public Paths */}
-              <Route path='/onboarding' element={<Onboarding />} />
+              <Route path='/registrazione' element={<Registrazione />} />
               <Route path='/' element={<AuthRedirect />} />
+              <Route
+                path='/informativa-privacy-e-cookie'
+                element={<PrivacyDisclaimer />}
+              />
             </Route>
             <Route path='/' element={<FullLayout withBreadcrumb={false} />}>
               <Route path='/legal' element={<Accessibility />} />

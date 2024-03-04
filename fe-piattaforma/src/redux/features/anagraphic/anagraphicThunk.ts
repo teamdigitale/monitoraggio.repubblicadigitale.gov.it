@@ -19,7 +19,7 @@ export const GetUsersAnagrapic =
       } = select((state: RootState) => state);
       if (idsToGet?.length) {
         const res = await API.post(
-          `/utente/listaUtenti?richiediImmagine=${richiediImmagine}`,
+          `${process?.env?.GESTIONE_UTENTE}utente/listaUtenti?richiediImmagine=${richiediImmagine}`,
           {
             idsUtenti: idsToGet,
           }

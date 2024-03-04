@@ -91,7 +91,7 @@ public class CittadinoService {
 					cittadinoDto.setNumeroQuestionariCompilati(cittadino.getNumeroQuestionariCompilati() == null ? 0L
 							: cittadino.getNumeroQuestionariCompilati());
 					return cittadinoDto;
-				}).sorted(Comparator.comparing(CittadinoDto::getCodiceFiscale)).collect(Collectors.toList());
+				}).collect(Collectors.toList());
 	}
 
 	public List<CittadinoProjection> getAllCittadiniFacilitatoreByFiltro(

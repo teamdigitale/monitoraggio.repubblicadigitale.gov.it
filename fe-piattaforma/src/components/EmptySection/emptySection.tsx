@@ -32,7 +32,7 @@ const EmptySection: React.FC<EmptySectionI> = ({
     <div
       className={clsx(
         'd-flex',
-        !noMargin && 'my-5',
+        !noMargin && 'mb-5',
         horizontal
           ? 'flex-row justify-content-center align-items-center'
           : 'justify-content-center align-items-center flex-column',
@@ -55,7 +55,9 @@ const EmptySection: React.FC<EmptySectionI> = ({
         {subtitle && <h2 className='h6'>{subtitle}</h2>}
         {subtitle2 && <div>{subtitle2}</div>}
       </div>
-      {buttons && <ButtonsBar buttons={buttons} />}
+      <div className={clsx('mb-4', 'mt-5')}>
+        {buttons && <ButtonsBar buttons={buttons} />}
+      </div>
     </div>
   );
 };

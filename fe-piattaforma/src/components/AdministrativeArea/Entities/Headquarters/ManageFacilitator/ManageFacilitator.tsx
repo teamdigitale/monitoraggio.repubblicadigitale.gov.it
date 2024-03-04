@@ -32,6 +32,8 @@ import EmptySection from '../../../../EmptySection/emptySection';
 import SearchBar from '../../../../SearchBar/searchBar';
 import Table, { TableRowI } from '../../../../Table/table';
 import FormFacilitator from '../FormFacilitator/FormFacilitator';
+import { selectedSteps } from '../../../../../pages/administrator/CitizensArea/Entities/SearchCitizenModal/searchCitizenModal';
+import { useFiscalCodeValidation } from '../../../../../hooks/useFiscalCodeValidation';
 
 const id = formTypes.FACILITATORE;
 
@@ -63,6 +65,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
     useAppSelector(selectHeadquarters).detail?.programmaPolicy;
   const open = useAppSelector(selectModalState);
   const [isUserSelected, setIsUserSelected] = useState(false);
+  const { canSubmit, onQueryChange, setCanSubmit } = useFiscalCodeValidation();
 
   useEffect(() => {
     dispatch(setUsersList(null));
@@ -200,11 +203,15 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
               'search-bar-borders',
               'search-bar-bg'
             )}
+            searchType={selectedSteps.FISCAL_CODE}
+            onQueryChange={onQueryChange}
+            disableSubmit={!canSubmit}
             placeholder='Inserisci il codice fiscale dell’utente'
             onSubmit={handleSearchUser}
             onReset={() => {
               dispatch(setUsersList(null));
               dispatch(resetUserDetails());
+              setCanSubmit(false);
             }}
             title='Cerca'
             search

@@ -7,16 +7,15 @@ import React from 'react';
 import { BreadcrumbI } from '../components/Breadcrumb/breadCrumb';
 import {
   AdministrativeArea,
+  Auth,
   Documents,
   HomeFacilitator,
   Playground,
   Survey,
-  Auth,
 } from '../pages';
 import CitizensArea from '../pages/administrator/CitizensArea/citizensArea';
 import RoleManagement from '../pages/common/RoleManagement/roleManagement';
 import RoleManagementDetails from '../pages/common/RoleManagement/RoleManagementDetails/roleManagementDetails';
-import Onboarding from '../pages/facilitator/Onboarding/formRegistrazione';
 import { RolePermissionI } from '../redux/features/roles/rolesSlice';
 import PrintSurvey from '../pages/administrator/AdministrativeArea/Entities/Surveys/printSurvey/printSurvey';
 import Programs from '../pages/administrator/AdministrativeArea/Entities/Programs/programs';
@@ -37,6 +36,7 @@ import Citizens from '../pages/administrator/CitizensArea/Entities/Citizens/citi
 import CitizensDetail from '../pages/administrator/CitizensArea/Entities/Citizens/citizensDetail';
 import Notifications from '../pages/common/NotificationsPage/notifications';
 import UserProfile from '../pages/common/UserProfile/userProfile';
+import Registrazione from '../pages/facilitator/Registrazione/registrazione';
 
 export enum layoutEnum {
   fullLayout = 'FULL_LAYOUT',
@@ -172,9 +172,9 @@ const routes = [
   }),
   newRoute({
     scope: 'app',
-    path: '/onboarding',
-    title: `Onboarding`,
-    element: <Onboarding />,
+    path: '/registrazione',
+    title: `Registrazione`,
+    element: <Registrazione />,
     visibleTo: [],
     layout: layoutEnum.mainLayout,
     isHeaderFull: false,
