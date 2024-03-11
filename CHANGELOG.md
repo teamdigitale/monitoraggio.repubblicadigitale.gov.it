@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.28.2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.28.1...1.28.2) (2024-03-11)
+
+
+### Bug Fixes
+
+* **prod:** updates 20240311 ([c9e7e0c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c9e7e0c2e624264b65af59a4c04ed82c7ac6f714))
+
 ## [1.28.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.28.0...1.28.1) (2024-03-04)
 
 
