@@ -315,11 +315,11 @@ export const GetNotificationsByUser =
           'sort',
           'sort_by'
         );
-        /*const res = await proxyCall(
+        const res = await proxyCall(
           `/user/${id}/notifications${queryParam}`,
           'GET'
-        )*/
-        const res = {
+        )
+        /*const res = {
           data: {
             data: {
               items: [],
@@ -329,7 +329,7 @@ export const GetNotificationsByUser =
               }
             }
           }
-        }
+        }*/
         if (res) {
           if (updateCount) {
             dispatch(
