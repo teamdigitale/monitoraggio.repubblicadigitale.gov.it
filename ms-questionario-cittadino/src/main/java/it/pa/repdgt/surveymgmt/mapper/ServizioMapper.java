@@ -29,11 +29,11 @@ public class ServizioMapper {
 	private UtenteService utenteService;
 	@Autowired
 	private SedeService sedeService;
-
+	
 	/**
 	 * Mappa ServizioRequest in SezioneQ3Collection
 	 * 
-	 */
+	 * */
 	public SezioneQ3Collection toCollectionFrom(@NotNull final ServizioRequest servizioRequest) {
 		final SezioneQ3Collection sezioneQ3Collection = new SezioneQ3Collection();
 		sezioneQ3Collection.setSezioneQ3Compilato(new JsonObject(servizioRequest.getSezioneQuestionarioCompilatoQ3()));
@@ -43,26 +43,25 @@ public class ServizioMapper {
 	/**
 	 * Mappa List<ServizioEntity> in List<ServizioResource>
 	 * 
-	 */
+	 * */
 	public List<ServizioResource> toResourceFrom(@NotNull final List<ServizioEntity> serviziEntity) {
 		return serviziEntity.stream()
-				.map(this::toResourceFrom)
-				.collect(Collectors.toList());
+				  .map(this::toResourceFrom)
+				  .collect(Collectors.toList());
 	}
-
+	
 	/**
 	 * Mappa ServizioEntity in ServizioResource
 	 * 
-	 */
+	 * */
 	public ServizioResource toResourceFrom(
 			@NotNull final ServizioEntity servizioEntity) {
 		final ServizioResource servizioResource = new ServizioResource();
 		servizioResource.setId(String.valueOf(servizioEntity.getId()));
 		servizioResource.setNomeServizio(servizioEntity.getNome());
-		servizioResource.setListaTipologiaServizi(servizioEntity.getListaTipologiaServizi().stream()
-				.map(tipologiaServizio -> tipologiaServizio.getTitolo()).collect(Collectors.toList()));
-		if (servizioEntity.getDataServizio() != null) {
-			servizioResource.setDataServizio(simpleDateFormat.format(servizioEntity.getDataServizio()));
+		servizioResource.setListaTipologiaServizi(servizioEntity.getListaTipologiaServizi().stream().map(tipologiaServizio -> tipologiaServizio.getTitolo()).collect(Collectors.toList()));
+		if(servizioEntity.getDataOraAggiornamento() != null ) {
+			servizioResource.setDataOraAggiornamento(simpleDateFormat.format(servizioEntity.getDataOraAggiornamento()));
 		}
 		final String codiceFiscaleFacilitatore = servizioEntity.getIdEnteSedeProgettoFacilitatore().getIdFacilitatore();
 		final UtenteEntity facilitatore = this.utenteService.getUtenteByCodiceFiscale(codiceFiscaleFacilitatore);
@@ -70,9 +69,8 @@ public class ServizioMapper {
 		servizioResource.setNominativoFacilitatore(nominativoFacilitatore);
 		servizioResource.setDurataServizio(servizioEntity.getDurataServizio());
 		servizioResource.setStato(servizioEntity.getStato());
-		servizioResource.setNomeSede(
-				sedeService.getById(servizioEntity.getIdEnteSedeProgettoFacilitatore().getIdSede()).getNome());
+		servizioResource.setNomeSede(sedeService.getById(servizioEntity.getIdEnteSedeProgettoFacilitatore().getIdSede()).getNome());
 		return servizioResource;
 	}
-
+	
 }
