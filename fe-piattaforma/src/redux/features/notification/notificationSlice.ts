@@ -13,7 +13,7 @@ export interface NotifyI {
   date?: string;
   icon?: string;
   hours?: string;
-  iconColor?: string;
+  iconColor?: string; 
   iconPadding?: boolean;
   iconClass?: string;
   unread?: boolean;
@@ -28,7 +28,7 @@ export const defaultNotify: NotifyI = {
 };
 
 interface NotificationStateI {
-  list: NotifyI[];
+  list: NotifyI[]; 
 }
 
 const initialState: NotificationStateI = {
@@ -40,7 +40,7 @@ export const notificationSlice = createSlice({
   initialState,
   reducers: {
     emitNotify: (state, action: PayloadAction<NotifyI>) => {
-      if (action.payload.id) {
+      if (action.payload.id) { 
         state.list.push(action.payload);
       }
     },
@@ -61,8 +61,8 @@ export const notificationSlice = createSlice({
 });
 
 export const { emitNotify, removeNotify, setNotificationsList } =
-  notificationSlice.actions;
+  notificationSlice.actions; 
 
-export const selectNotification = (state: RootState) => state.notification.list;
+export const selectNotification = (state: RootState) => state.notification.list; 
 
 export default notificationSlice.reducer;

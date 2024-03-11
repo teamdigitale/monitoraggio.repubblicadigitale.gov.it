@@ -103,7 +103,7 @@ const Survey = () => {
             <CardStatusAction {...SurveyCardMock} />
           </Col>
         </div>
-        {/* <CardCommunity {...CommunityPropsMock} /> */}
+        {/* <CardCommunity {...CommunityPropsMock} /> */} 
       </Container>
     </div>
   );

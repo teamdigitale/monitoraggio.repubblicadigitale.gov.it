@@ -46,7 +46,7 @@ const Registrazione: React.FC<RegistrazioneI> = (props) => {
   const user = useAppSelector(selectUser);
   const [isValidForm, setIsValidForm] = useState<boolean>(false);
   const { getFormValues = () => ({}), updateForm = () => ({}) } = props;
-  const [ruolo, setRuolo] = useState<string>('');
+  const [ruolo, setRuolo] = useState<string>(''); 
 
   useEffect(() => {
     const userRuolo: any = user;

@@ -14,7 +14,7 @@ const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
 const getDelayByDuration = (duration: NotifyI['duration'] = 'medium') => {
   switch (duration) {
     case 'slow':
-      return 40000;
+      return 40000; 
     case 'medium':
       return 25000;
     case 'fast':
@@ -26,7 +26,7 @@ const getDelayByDuration = (duration: NotifyI['duration'] = 'medium') => {
 
 export const NewNotify = (payload?: NotifyI) => async (dispatch: Dispatch) => {
   const notify = {
-    ...defaultNotify,
+    ...defaultNotify, 
     id: new Date().getTime(),
     ...payload,
   };
@@ -35,11 +35,11 @@ export const NewNotify = (payload?: NotifyI) => async (dispatch: Dispatch) => {
     //if (!notify.closable) {
     await delay(getDelayByDuration(notify.duration));
     dispatch(removeNotify({ id: notify.id }));
-    //}
+    //} 
   }
 };
 
-const GetNotificationsListAction = {
+const GetNotificationsListAction = { 
   type: 'notification/GetNotificationsList',
 };
 export const GetNotificationsList = () => async (dispatch: Dispatch) => {
@@ -47,22 +47,22 @@ export const GetNotificationsList = () => async (dispatch: Dispatch) => {
     dispatch(showLoader());
     dispatch({ ...GetNotificationsListAction });
 
-    const entityEndpoint = `/Notifications/all`;
+    const entityEndpoint = `/Notifications/all`; 
 
-    const body = {
+    const body = { 
       idProgramma: 0, //MOCK
       cfUtente: 'UTENTE1', //MOCK
-      codiceRuolo: 'DTD', //MOCK DA MANTENERE SOLO NELL'HEADER
+      codiceRuolo: 'DTD', //MOCK DA MANTENERE SOLO NELL'HEADER 
     };
 
-    const res = await API.post(entityEndpoint, body);
+    const res = await API.post(entityEndpoint, body); 
 
-    if (res?.data) {
+    if (res?.data) { 
       dispatch(setNotificationsList(res.data));
     }
-  } catch (error) {
-    console.log('GetNotificationsList error', error);
-  } finally {
-    dispatch(hideLoader());
+  } catch (error) { 
+    console.log('GetNotificationsList error', error); 
+  } finally { 
+    dispatch(hideLoader()); 
   }
 };
