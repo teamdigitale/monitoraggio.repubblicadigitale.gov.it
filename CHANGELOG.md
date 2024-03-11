@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.29.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.28.2...1.29.0) (2024-03-11)
+
+
+### Features
+
+* **prod:** updates 20240311 ([fcbab4b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fcbab4b77d434042633c4e8611d3a0415c1f4651))
+
 ## [1.28.2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.28.1...1.28.2) (2024-03-11)
 
 
