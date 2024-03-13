@@ -72,6 +72,11 @@
 			<version>${commons-csv.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>com.github.mervick</groupId>
+			<artifactId>aes-everywhere-java</artifactId>
+			<version>1.2.7</version>
+		</dependency>
+		<dependency>
 		  	<groupId>org.apache.poi</groupId>
 		 	<artifactId>poi</artifactId>
 		  	<version>5.2.2</version>
