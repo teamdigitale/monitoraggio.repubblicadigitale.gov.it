@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.202](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.201...1.0.0-test.202) (2024-03-13)
+
+
+### Bug Fixes
+
+* **update_docker:** updates 20240313 ([3e481f2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3e481f226d970fc33bd6220655921d6640fe7262))
+
 ## [1.0.0-test.201](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.200...1.0.0-test.201) (2024-03-13)
 
 
