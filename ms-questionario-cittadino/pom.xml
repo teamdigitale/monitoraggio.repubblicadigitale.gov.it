@@ -62,6 +62,11 @@
 			<artifactId>gson</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>com.github.mervick</groupId>
+			<artifactId>aes-everywhere-java</artifactId>
+			<version>1.2.7</version>
+		</dependency>
+		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
 			<version>20220320</version>

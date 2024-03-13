@@ -12,6 +12,7 @@ ENV MONGODB_PORT=""
 ENV DB_MONGO_USERNAME=""
 ENV DB_MONGO_PASSWORD=""
 ENV awsEmailMittente=""
+ENV CF_ST_KEY=""
 
 ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} app.jar

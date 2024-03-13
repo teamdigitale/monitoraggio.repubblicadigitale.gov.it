@@ -29,10 +29,12 @@ import NoResultsFoundCitizen from '../../../../../components/NoResultsFoundCitiz
 import clsx from 'clsx';
 import { SearchValue } from '../../../../forms/models/searchValue.model';
 import { NewUserValuesFormCitizen } from '../../../../forms/models/newUserValuesFormCitizen.model';
-import { Buffer } from 'buffer';
 import { citizenFormDropdownOptions } from '../../../../forms/constantsFormCitizen';
 
 const id = 'search-citizen-modal';
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const AES256 = require('aes-everywhere');
 
 export const selectedSteps = {
   FISCAL_CODE: 'codiceFiscale',
@@ -220,15 +222,17 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
             searchValue?.type === 'codiceFiscale' &&
             key === 'codiceFiscale'
           ) {
-            body[key] = Buffer.from(searchValue.value.toUpperCase()).toString(
-              'base64'
+            body[key] = AES256.encrypt(
+              searchValue.value.toUpperCase(),
+              process?.env?.AES256_KEY
             );
           } else if (
             searchValue?.type === 'numeroDoc' &&
             key === 'numeroDocumento'
           ) {
-            body[key] = Buffer.from(searchValue?.value.toUpperCase()).toString(
-              'base64'
+            body[key] = AES256.encrypt(
+              searchValue.value.toUpperCase(),
+              process?.env?.AES256_KEY
             );
           } else if (key === 'fasciaDiEtaId') {
             if (searchValue?.type !== 'codiceFiscale') {
@@ -269,7 +273,7 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
             numeroDocumento: selectedCitizen?.numeroDocumento,
             codiceFiscaleNonDisponibile: true,
             nuovoCittadino: false,
-             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             fasciaDiEtaId: selectedCitizen?.fasciaDiEta,
           };
