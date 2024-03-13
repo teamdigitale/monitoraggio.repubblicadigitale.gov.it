@@ -120,6 +120,7 @@ public class CittadinoService {
 			Integer pageSize) {
 		FiltroListaCittadiniParam filtro = cittadiniPaginatiParam.getFiltro();
 		String criterioRicerca = filtro.getCriterioRicerca();
+
 		if (criterioRicerca != null) {
 			criterioRicerca = EncodeUtils.encrypt(EncodeUtils.decrypt(criterioRicerca));
 		}
