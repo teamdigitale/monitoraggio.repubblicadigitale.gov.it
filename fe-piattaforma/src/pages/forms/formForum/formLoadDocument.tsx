@@ -285,7 +285,7 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
           }))}
           isDisabled={formDisabled}
           placeholder='Seleziona'
-          maxMenuHeight={100}
+          maxMenuHeight={250}
         />
       </Form.Row>
       <Form.Row className={bootClass}>

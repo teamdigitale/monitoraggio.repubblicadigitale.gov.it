@@ -16,6 +16,7 @@ interface BreadcrumbI {
 }
 export interface PageTitleI {
   breadcrumb?: BreadcrumbI[];
+  className?: string;
   title?: string | undefined;
   subtitle?: string | undefined;
   hasBackground?: boolean;

@@ -135,6 +135,7 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
                   onInputChange={() => {
                     onRadioChange(steps[item]);
                   }}
+                  disabled={steps[item] === 'numeroDoc'}
                 />
                 <Label check htmlFor={`current-step-${index}`}>
                   {t(steps[item])}

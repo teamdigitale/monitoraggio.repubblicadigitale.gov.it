@@ -106,6 +106,7 @@ input > span {
 .bootstrap-select {
   &__menu {
     margin-top: 0 !important;
+    z-index: 1050 !important;
   }
 
   &-value {

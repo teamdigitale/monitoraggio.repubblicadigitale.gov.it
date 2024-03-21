@@ -28,7 +28,7 @@
     color: #222222;
   }
   &__description {
-    word-break: break-all;
+    word-wrap: break-word;
   }
   &__news-dropdown {
     button {

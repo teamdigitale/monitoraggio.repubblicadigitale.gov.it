@@ -378,7 +378,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
           }))}
           isDisabled={formDisabled}
           placeholder='Seleziona'
-          maxMenuHeight={100}
+          maxMenuHeight={250}
         />
       </Form.Row>
       <Form.Row className={clsx(bootClass, 'align-items-center')}>

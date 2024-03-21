@@ -28,6 +28,7 @@ export interface SelectI
   isDisabled?: boolean;
   position?: 'top' | 'bottom' | 'auto';
   shortDropdownMenu?: boolean;
+  responsive?:boolean;
 }
 
 const Select: React.FC<SelectI> = (props) => {

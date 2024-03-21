@@ -192,6 +192,7 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
           }))}
           isDisabled={formDisabled}
           placeholder='Seleziona'
+          maxMenuHeight={250}
         />
       </Form.Row>
       <Form.Row className={bootClass}>
