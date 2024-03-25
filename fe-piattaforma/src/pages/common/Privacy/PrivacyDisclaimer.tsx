@@ -44,7 +44,7 @@ export const PrivacyDisclaimer = () => {
                         Pietro di Brazzà 86, 00187 Roma (il <strong>“Dipartimento”</strong>),
                         contattabile ai seguenti recapiti:
                     </p>
-                    <ul className='mt-2 mb-2 ml-2'>
+                    <ul className='mt-2 mb-2 ml-5'>
                         <li>
                             <strong>E-mail: </strong>
                             <a href='mailto:segreteria.trasformazionedigitale@governo.it'>
@@ -63,7 +63,7 @@ export const PrivacyDisclaimer = () => {
                         Il Responsabile per la protezione dei dati - Data Protection Officer è
                         contattabile ai seguenti recapiti:
                     </p>
-                    <ul className='mt-2 mb-2 ml-2'>
+                    <ul className='mt-2 mb-2 ml-5'>
                         <li>
                             <strong>E-mail: </strong>
                             <a href='mailto:responsabileprotezionedatipcm@governo.it'>
@@ -352,7 +352,7 @@ export const PrivacyDisclaimer = () => {
                         Pietro di Brazzà 86, 00187 Roma (il <strong>“Dipartimento”</strong>),
                         contattabile ai seguenti recapiti:
                     </p>
-                    <ul className='mt-2 mb-2 ml-2'>
+                    <ul className='mt-2 mb-2 ml-5'>
                         <li>
                             <strong>E-mail: </strong>
                             <a href='mailto:segreteria.trasformazionedigitale@governo.it'>
@@ -371,7 +371,7 @@ export const PrivacyDisclaimer = () => {
                         Il Responsabile per la protezione dei dati - Data Protection Officer è
                         contattabile ai seguenti recapiti:
                     </p>
-                    <ul className='mt-2 mb-2 ml-2'>
+                    <ul className='mt-2 mb-2 ml-5'>
                         <li>
                             <strong>E-mail: </strong>
                             <a href='mailto:responsabileprotezionedatipcm@governo.it'>
