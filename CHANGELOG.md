@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.31.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.30.0...1.31.0) (2024-03-25)
+
+
+### Features
+
+* **privacy:** updates 20240325 ([ae269ab](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ae269abbe48675e6afe52d39a493ac080d745e1b))
+
 ## [1.30.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.29.1...1.30.0) (2024-03-22)
 
 
