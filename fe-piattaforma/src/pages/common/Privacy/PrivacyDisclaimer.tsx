@@ -60,8 +60,7 @@ export const PrivacyDisclaimer = () => {
                     </ul>
 
                     <p>
-                        Il Responsabile per la protezione dei dati - Data Protection Officer è
-                        contattabile ai seguenti recapiti:
+                        Il Responsabile per la protezione dei dati della Presidenza del Consiglio dei ministri è contattabile ai seguenti recapiti: 
                     </p>
                     <ul className='mt-2 mb-2 ml-5'>
                         <li>
@@ -332,7 +331,7 @@ export const PrivacyDisclaimer = () => {
                         a
                         disposizione dal Dipartimento per la trasformazione digitale della
                         Presidenza del Consiglio dei ministri (la{' '}
-                        <strong>“Piattaforma”</strong>), per lo svolgimento degli interventi
+                        <strong>“Piattaforma”</strong>) per lo svolgimento degli interventi
                         di facilitazione digitale condotti nell’ambito della Missione 1 -
                         Componente 1 - Asse 1 - Misura 1.7.2 “Rete di servizi di facilitazione
                         digitale” del Piano Nazionale di Ripresa e Resilienza.
@@ -368,8 +367,7 @@ export const PrivacyDisclaimer = () => {
                     </ul>
 
                     <p>
-                        Il Responsabile per la protezione dei dati - Data Protection Officer è
-                        contattabile ai seguenti recapiti:
+                        Il Responsabile per la protezione dei dati della Presidenza del Consiglio dei ministri è contattabile ai seguenti recapiti: 
                     </p>
                     <ul className='mt-2 mb-2 ml-5'>
                         <li>
