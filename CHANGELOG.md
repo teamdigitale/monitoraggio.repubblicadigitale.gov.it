@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.207](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.206...1.0.0-test.207) (2024-03-26)
+
+
+### Bug Fixes
+
+* **pagina-privacy:** updates 20240326 ([ec2ee0e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ec2ee0e40d4c948f43372c88c3c2c20c136e88f3))
+
 ## [1.0.0-test.206](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.205...1.0.0-test.206) (2024-03-25)
 
 
