@@ -25,6 +25,7 @@ import { useAppSelector } from '../../../redux/hooks';
 import { formFieldI, newForm, newFormField } from '../../../utils/formHelper';
 import { uploadFile } from '../../../utils/common';
 import TagsSelect from '../../../components/General/TagsSelect/TagsSelect';
+import { useInfiniteScrollCategories } from '../../../hooks/useInfiniteScrollCategories';
 
 interface createTopicI extends withFormHandlerProps {
   formDisabled?: boolean;
@@ -64,12 +65,13 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
   const categoriesList = useAppSelector(selectCategoriesList);
   const topicDetail: { [key: string]: string | boolean } | undefined =
     useAppSelector(selectTopicDetail);
-
+  const {handleScrollToBottom} = useInfiniteScrollCategories('community_categories')
   useEffect(() => {
     dispatch(GetCategoriesList({ type: 'community_categories' }));
     dispatch(GetTagsList());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -186,6 +188,7 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
           {...form?.category}
           wrapperClassName='col-12 col-lg-6'
           onInputChange={onInputChange}
+          onMenuScrollToBottom={handleScrollToBottom}
           options={categoriesList?.map((opt) => ({
             label: opt.name,
             value: opt.id,

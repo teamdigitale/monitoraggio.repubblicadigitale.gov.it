@@ -47,8 +47,10 @@ const Select: React.FC<SelectI> = (props) => {
     position = 'auto',
     shortDropdownMenu = false,
     placeholder = 'Seleziona',
+    onMenuScrollToBottom
   } = props;
   const [selectedOption, setSelectedOption] = useState<OptionType>();
+
 
   useEffect(() => {
     if (
@@ -62,6 +64,7 @@ const Select: React.FC<SelectI> = (props) => {
   }, [selectedOption]);
 
   useEffect(() => {
+
     if (options.length) {
       const newSelectedOption = options.find(
         (opt) =>
@@ -130,6 +133,7 @@ const Select: React.FC<SelectI> = (props) => {
         options={options}
         value={selectedOption}
         menuPlacement={position}
+        onMenuScrollToBottom={onMenuScrollToBottom}
         color='primary'
         className={clsx(
           (value && !isDisabled ? 'border-select-value' : '') ||

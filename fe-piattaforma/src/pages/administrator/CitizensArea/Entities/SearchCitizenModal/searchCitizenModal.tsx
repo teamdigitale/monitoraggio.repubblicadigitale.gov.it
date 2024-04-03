@@ -30,6 +30,10 @@ import clsx from 'clsx';
 import { SearchValue } from '../../../../forms/models/searchValue.model';
 import { NewUserValuesFormCitizen } from '../../../../forms/models/newUserValuesFormCitizen.model';
 import { citizenFormDropdownOptions } from '../../../../forms/constantsFormCitizen';
+import { Icon } from 'design-react-kit';
+import {
+  DescriptionForAddingCitizen
+} from '../../../../../components/CitizenRegistration/DescriptionForAddingCitizen';
 
 const id = 'search-citizen-modal';
 
@@ -89,6 +93,7 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
     selectQuestionarioTemplateSnapshot
   )?.sezioniQuestionarioTemplate?.[0];
   //const [stringQ1, setStringQ1] = useState<string>('');
+
 
   useEffect(() => {
     if (typeof surveyTemplateQ1 !== 'string') {
@@ -298,6 +303,7 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
     <GenericModal
       id={id}
       title='Aggiungi cittadino'
+      subtitle={<DescriptionForAddingCitizen/>}
       noPaddingPrimary
       primaryCTA={{
         label: 'Aggiungi',
@@ -332,6 +338,15 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
               setCurrentStep(radioFilter);
             }}
           />
+          <div className={clsx('d-flex', 'align-items-center', 'px-5','py-3')}>
+            <Icon
+              icon="it-info-circle"
+              size="sm"
+              color="primary"
+              aria-label="Informazione"
+            />
+            <p className={clsx('ml-2' ,'text-500')}>Non è al momento possibile inserire il numero di documento</p>
+          </div>
           <div
             className={clsx(
               'd-block px-5',
@@ -344,6 +359,7 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
               : loadSecondStep()}
           </div>
         </div>
+
       </div>
     </GenericModal>
   );

@@ -1,4 +1,4 @@
-import React, { ReactChild } from 'react';
+import React, { ReactChild, ReactNode } from 'react';
 import { Button, Icon, ModalBody, ModalFooter } from 'design-react-kit';
 import Modal from '../modals';
 import withModalState from '../../../hoc/withModalState';
@@ -48,6 +48,7 @@ export interface GenericModalI {
   isUserRole?: boolean;
   darkTitle?: boolean;
   isRocketChatModal?: boolean;
+  subtitle?:ReactNode;
 }
 
 const GenericModal: React.FC<GenericModalI> = (props) => {
@@ -78,6 +79,7 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
     isUserRole = false,
     //darkTitle = false,
     isRocketChatModal = false,
+    subtitle,
   } = props;
 
   const handleAction = (action: 'primary' | 'secondary' | 'tertiary') => {
@@ -188,22 +190,27 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
         ) : (
           <button className='hidden-btn' aria-label='header della modale' />
         )}
+        {subtitle && (
+          <div className={clsx('text-center', 'text-primary', 'mb-4')}>
+            {subtitle}
+          </div>
+        )}
       </>
       {hasSearch || description || payload?.description || children ? (
         <ModalBody
-          className='p-0'
+          className="p-0"
           style={{ maxHeight: isRocketChatModal ? '70vh' : '' }}
         >
           {hasSearch ? (
             //
-            <div className='row mx-5'>
-              <div className='col-12'>
+            <div className="row mx-5">
+              <div className="col-12">
                 <SearchBar
                   autocomplete={false}
                   onSubmit={() => console.log('ricerca modale')}
                   placeholder={searchPlaceholder}
                   isClearable
-                  id='search-generic-modal'
+                  id="search-generic-modal"
                 />
               </div>
             </div>
@@ -221,7 +228,7 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
           {children}
         </ModalBody>
       ) : (
-        <button className='hidden-btn' aria-label='contenuto della modale' />
+        <button className="hidden-btn" aria-label="contenuto della modale" />
       )}
 
       {footer || primaryCTA || secondaryCTA ? (

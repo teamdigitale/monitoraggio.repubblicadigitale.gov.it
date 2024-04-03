@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {  useEffect, useRef, useState } from 'react';
 import withFormHandler, {
   withFormHandlerProps,
 } from '../../../hoc/withFormHandler';
@@ -17,7 +17,7 @@ import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../../redux/hooks';
 import {
   selectCategoriesList,
-  selectDocDetail,
+  selectDocDetail
 } from '../../../redux/features/forum/forumSlice';
 import {
   selectEntityFiltersOptions,
@@ -28,6 +28,7 @@ import { GetCategoriesList } from '../../../redux/features/forum/categories/cate
 import { uploadFile } from '../../../utils/common';
 import { selectDevice } from '../../../redux/features/app/appSlice';
 import { RegexpType } from '../../../utils/validator';
+import { useInfiniteScrollCategories } from '../../../hooks/useInfiniteScrollCategories';
 
 interface uploadDocumentI extends withFormHandlerProps {
   formDisabled?: boolean;
@@ -74,7 +75,7 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
   const docDetail: { [key: string]: string | boolean } | undefined =
     useAppSelector(selectDocDetail);
   const device = useAppSelector(selectDevice);
-
+  const {handleScrollToBottom} = useInfiniteScrollCategories('document_categories');
   const getInterventionsList = () => {
     dispatch(GetEntityFilterValues({ entity, dropdownType: 'policies' }));
   };
@@ -279,6 +280,7 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
           {...form?.category}
           wrapperClassName='col-12 col-lg-6'
           onInputChange={onInputChange}
+          onMenuScrollToBottom={handleScrollToBottom}
           options={categoriesList?.map((opt) => ({
             label: opt.name,
             value: opt.id,

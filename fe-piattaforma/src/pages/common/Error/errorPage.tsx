@@ -116,9 +116,9 @@ const ErrorPage = () => {
                 )}>
                   {errorTitle}
                 </div>
-                <h1
+                <h5
                   className={clsx(
-                    'h3',
+                    'h5',
                     'font-weight-semibold',
                     'text-secondary',
                     (device.mediaIsPhone || device.mediaIsTablet) &&
@@ -126,7 +126,7 @@ const ErrorPage = () => {
                   )}
                 >
                   {errorMessage}
-                </h1>
+                </h5>
               </Card>
             </div>
           </div>
