@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.208](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.207...1.0.0-test.208) (2024-04-03)
+
+
+### Bug Fixes
+
+* **release-test:** updates 20240403 ([2a25606](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2a25606f372bf4db9c456cc82999c0d86ab4fd86))
+
 ## [1.0.0-test.207](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.206...1.0.0-test.207) (2024-03-26)
 
 
