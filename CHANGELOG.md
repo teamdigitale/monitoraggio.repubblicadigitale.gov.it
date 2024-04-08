@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.211](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.210...1.0.0-test.211) (2024-04-08)
+
+
+### Bug Fixes
+
+* **errore-cittadino:** updates 20240408 ([0191818](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0191818472d3de43ecfe31bf2bc367862b439f74))
+
 ## [1.0.0-test.210](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.209...1.0.0-test.210) (2024-04-08)
 
 
