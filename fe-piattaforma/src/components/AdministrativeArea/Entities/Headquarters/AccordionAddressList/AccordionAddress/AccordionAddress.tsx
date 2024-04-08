@@ -142,7 +142,7 @@ const AccordionAddress: React.FC<AccordionAddressI> = ({
             detailAccordion && 'accordion-container__header-acc',
             'mr-auto'
           )}
-        >{`Indirizzo ${index}`}</span>
+        >{`Indirizzo ${index} *`}</span>
         {canBeDeleted && !isReadOnly && (
           <Button
             onClick={(e) => {

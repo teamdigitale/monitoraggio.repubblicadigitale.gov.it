@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Form from '../../Form/form';
 import Input from '../../Form/input';
 import axios from 'axios';
@@ -51,74 +51,79 @@ const AddressForm: React.FC<AddressFormI> = ({
   const [cities, setCities] = useState<City[]>([]);
   const [CAPS, setCAPS] = useState<string[]>([]);
 
+  const initValues = useCallback(() => {
+    axios('/assets/indirizzi/province.json')
+    .then((response) => {
+      const provs = [...response.data];
+      setProvinces(
+        provs.map((province) => ({
+          name: province.nome,
+          state: province.regione,
+        }))
+      );
+      if (province && state) {
+        axios(`/assets/indirizzi/comuni/${state.toLowerCase()}.json`)
+          .then((response) => {
+            const cits = [...response.data];
+            const filteredCities = cits.filter(
+              (city) =>
+                city.provincia.nome.toLowerCase() === province.toLowerCase()
+            );
+            setCities(
+              filteredCities.map((city) => ({
+                name: city.nome,
+                province: city.provincia.nome,
+                cap: city.cap,
+              }))
+            );
+            const currentCity = filteredCities.find((c) => c.nome === city);
+            if (currentCity) {
+              setCAPS([...currentCity.cap]);
+            }
+          })
+          .catch((error) => {
+            console.error('Failed to fetch cities', error);
+          });
+      }
+    })
+    .catch((error) => {
+      console.error('Failed to fetch provinces', error);
+    });
+  }, [city, province, state]);
+
   useEffect(() => {
     initValues();
-  }, [province, city]);
+  }, [province, city, initValues]);
 
-  const initValues = async () => {
-    const provs = [...(await axios('/assets/indirizzi/province.json')).data];
-    if (province && state) {
-      const cits = [
-        ...(await axios(`/assets/indirizzi/comuni/${state.toLowerCase()}.json`))
-          .data,
-      ];
+  const onSelectProvince = (value: string) => {
+    const [selectedProvince, selectedRegion] = value.split('/');
+    const selectedState = selectedRegion.replace(/\s+/g, '-').toLowerCase();
+    onAddressChange(address, selectedProvince, selectedState, city, CAP);
 
-      setCities(
-        cits
-          .filter(
-            (city: any) =>
-              city.provincia.nome.toLowerCase() === province.toLowerCase()
-          )
-          .map((city: any) => ({
-            name: city.nome,
-            province: city.provincia.nome,
-            cap: city.cap,
-          }))
+    axios(`/assets/indirizzi/comuni/${selectedState}.json`)
+    .then((response) => {
+      const citiesData = response.data.filter(
+        (city: any) =>
+          city.provincia.nome.toLowerCase() === selectedProvince.toLowerCase()
       );
-
-      if (city) {
-        setCAPS([...cits.find((c) => c.nome === city).cap]);
-      }
-    }
-
-    setProvinces(
-      provs.map((province: any) => ({
-        name: province.nome,
-        state: province.regione,
-      }))
-    );
-  };
-
-  const onSelectProvince = async (value: string) => {
-    onAddressChange(
-      address,
-      value.split('/')[0],
-      value.split('/')[1],
-      city,
-      CAP
-    );
-    const res = await axios(
-      `/assets/indirizzi/comuni/${value.split('/')[1]}.json`
-    );
-    setCities(
-      res.data
-        .filter(
-          (city: any) =>
-            city.provincia.nome.toLowerCase() ===
-            value.split('/')[0].toLowerCase()
-        )
-        .map((city: any) => ({
+      setCities(
+        citiesData.map((city: any) => ({
           name: city.nome,
           province: city.provincia.nome,
           cap: city.cap,
         }))
-    );
+      );
+    })
+    .catch((error) => {
+      console.error('Failed to fetch cities for selected province', error);
+    });
   };
 
   const onSelectCity = (value: string) => {
     const selected = cities.find(
       (c) => c.name.toLowerCase() === value.toLowerCase()
     );
+
 
     if (selected) {
       onAddressChange(
@@ -128,7 +133,6 @@ const AddressForm: React.FC<AddressFormI> = ({
         selected.name,
         selected.cap.length === 1 ? selected.cap[0] : ''
       );
-
       setCAPS([...selected.cap]);
     }
   };

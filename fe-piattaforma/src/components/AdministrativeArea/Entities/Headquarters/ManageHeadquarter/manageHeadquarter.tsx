@@ -108,6 +108,8 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
   const dispatch = useDispatch();
   // const modalId = useAppSelector(selectModalId);
   const open = useAppSelector(selectModalState);
+  const MIN_ADDRESSES_REQUIRED =
+    'Per creare una sede itinerante, compila le informazioni relative ad almeno due indirizzi.';
 
   useEffect(() => {
     if (creation && open) {
@@ -286,6 +288,11 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
               checked={movingHeadquarter}
               onChange={(e) => setMovingHeadquarter(e.target.checked)}
             />
+          </div>
+          <div>
+            {movingHeadquarter && (
+              <span className='d-block no-wrap'>{MIN_ADDRESSES_REQUIRED}</span>
+            )}
           </div>
         </Form.Row>
       </Form>
