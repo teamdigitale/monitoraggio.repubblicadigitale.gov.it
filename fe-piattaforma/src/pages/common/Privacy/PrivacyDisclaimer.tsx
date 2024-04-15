@@ -35,9 +35,9 @@ export const PrivacyDisclaimer = () => {
                         2016/679 (il <strong>“Regolamento”</strong>).
                     </p>
 
-                    <h4 className='mt-4 mb-3 primary-color-a9'>
+                    <h5 className='mt-4 mb-3 primary-color-a9'>
                         Titolare del trattamento e Responsabile per la protezione dei dati
-                    </h4>
+                    </h5>
                     <p>
                         Il Titolare del trattamento è la Presidenza del Consiglio dei ministri
                         - Dipartimento per la trasformazione digitale, con sede in Largo
@@ -60,7 +60,8 @@ export const PrivacyDisclaimer = () => {
                     </ul>
 
                     <p>
-                        Il Responsabile per la protezione dei dati della Presidenza del Consiglio dei ministri è contattabile ai seguenti recapiti: 
+                        Il Responsabile per la protezione dei dati - Data Protection Officer è
+                        contattabile ai seguenti recapiti:
                     </p>
                     <ul className='mt-2 mb-2 ml-5'>
                         <li>
@@ -235,7 +236,7 @@ export const PrivacyDisclaimer = () => {
                         sensi dell’art. 77 del Regolamento.
                     </p>
 
-                    <h4 className='mt-4 mb-3 primary-color-a9'>Cookie Policy</h4>
+                    <h5 className='mt-4 mb-3 primary-color-a9'>Cookie Policy</h5>
                     <p>
                         Questa sezione fornisce informazioni dettagliate sull’uso dei cookie,
                         su come sono utilizzati dalla Piattaforma e su come gestirli, in
@@ -257,9 +258,9 @@ export const PrivacyDisclaimer = () => {
                         visitatori.
                     </p>
 
-                    <h5 className='mt-4 mb-3 primary-color-a9'>
+                    <h6 className='mt-4 mb-3 primary-color-a9'>
                         Come disabilitare i cookie (opt-out) sul proprio dispositivo
-                    </h5>
+                    </h6>
                     <p>
                         La maggior parte dei browser accetta i cookie automaticamente, ma è
                         possibile rifiutarli. Se non si desidera ricevere o memorizzare i
@@ -331,7 +332,7 @@ export const PrivacyDisclaimer = () => {
                         a
                         disposizione dal Dipartimento per la trasformazione digitale della
                         Presidenza del Consiglio dei ministri (la{' '}
-                        <strong>“Piattaforma”</strong>) per lo svolgimento degli interventi
+                        <strong>“Piattaforma”</strong>), per lo svolgimento degli interventi
                         di facilitazione digitale condotti nell’ambito della Missione 1 -
                         Componente 1 - Asse 1 - Misura 1.7.2 “Rete di servizi di facilitazione
                         digitale” del Piano Nazionale di Ripresa e Resilienza.
@@ -342,9 +343,9 @@ export const PrivacyDisclaimer = () => {
                         2016/679 (il <strong>“Regolamento”</strong>).
                     </p>
 
-                    <h4 className='mt-4 mb-3 primary-color-a9'>
+                    <h5 className='mt-4 mb-3 primary-color-a9'>
                         Titolare del trattamento e Responsabile per la protezione dei dati
-                    </h4>
+                    </h5>
                     <p>
                         Il Titolare del trattamento è la Presidenza del Consiglio dei ministri
                         - Dipartimento per la trasformazione digitale, con sede in Largo
@@ -367,7 +368,8 @@ export const PrivacyDisclaimer = () => {
                     </ul>
 
                     <p>
-                        Il Responsabile per la protezione dei dati della Presidenza del Consiglio dei ministri è contattabile ai seguenti recapiti: 
+                        Il Responsabile per la protezione dei dati - Data Protection Officer è
+                        contattabile ai seguenti recapiti:
                     </p>
                     <ul className='mt-2 mb-2 ml-5'>
                         <li>
@@ -550,7 +552,7 @@ export const PrivacyDisclaimer = () => {
                         sensi dell’art. 77 del Regolamento.
                     </p>
 
-                    <h4 className='mt-4 mb-3 primary-color-a9'>Cookie Policy</h4>
+                    <h5 className='mt-4 mb-3 primary-color-a9'>Cookie Policy</h5>
                     <p>
                         Questa sezione fornisce informazioni dettagliate sull’uso dei cookie,
                         su come sono utilizzati dalla Piattaforma e su come gestirli, in
@@ -572,9 +574,9 @@ export const PrivacyDisclaimer = () => {
                         visitatori.
                     </p>
 
-                    <h5 className='mt-4 mb-3 primary-color-a9'>
+                    <h6 className='mt-4 mb-3 primary-color-a9'>
                         Come disabilitare i cookie (opt-out) sul proprio dispositivo
-                    </h5>
+                    </h6>
                     <p>
                         La maggior parte dei browser accetta i cookie automaticamente, ma è
                         possibile rifiutarli. Se non si desidera ricevere o memorizzare i

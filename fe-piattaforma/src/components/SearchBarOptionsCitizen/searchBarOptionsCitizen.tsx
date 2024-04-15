@@ -137,7 +137,8 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
                   }}
                   disabled={steps[item] === 'numeroDoc'}
                 />
-                <Label check htmlFor={`current-step-${index}`}>
+                <Label check htmlFor={`current-step-${index}`}
+                       className={clsx({'label-disabled': steps[item] === 'numeroDoc'})}>
                   {t(steps[item])}
                 </Label>
               </div>
@@ -146,7 +147,7 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
         </Form>
       </div>
       <SearchBar
-        placeholder='Inserisci i dati del tipo di documento selezionato'
+        placeholder='Inserisci il codice fiscale'
         searchType={currentStep ?? ''}
         onSubmit={(data) => {
           if (resetModal) resetModal();
@@ -170,6 +171,7 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
         onQueryChange={onQueryChange}
         disableSubmit={!canSubmit}
       />
+
     </div>
   );
 };

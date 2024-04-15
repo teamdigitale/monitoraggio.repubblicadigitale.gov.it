@@ -15,6 +15,11 @@
     "regione": "Marche"
   },
   {
+    "nome": "Aosta",
+    "sigla": "AO",
+    "regione": "Aosta"
+  },
+  {
     "nome": "Arezzo",
     "sigla": "AR",
     "regione": "Toscana"
@@ -98,11 +103,6 @@
     "nome": "Campobasso",
     "sigla": "CB",
     "regione": "Molise"
-  },
-  {
-    "nome": "Carbonia-Iglesias",
-    "sigla": "CI",
-    "regione": "Sardegna"
   },
   {
     "nome": "Caserta",
@@ -270,11 +270,6 @@
     "regione": "Basilicata"
   },
   {
-    "nome": "Medio Campidano",
-    "sigla": "VS",
-    "regione": "Sardegna"
-  },
-  {
     "nome": "Messina",
     "sigla": "ME",
     "regione": "Sicilia"
@@ -307,16 +302,6 @@
   {
     "nome": "Nuoro",
     "sigla": "NU",
-    "regione": "Sardegna"
-  },
-  {
-    "nome": "Ogliastra",
-    "sigla": "OG",
-    "regione": "Sardegna"
-  },
-  {
-    "nome": "Olbia-Tempio",
-    "sigla": "OT",
     "regione": "Sardegna"
   },
   {
@@ -460,6 +445,11 @@
     "regione": "Lombardia"
   },
   {
+    "nome": "Sud Sardegna",
+    "sigla": "SU",
+    "regione": "Sardegna"
+  },
+  {
     "nome": "Taranto",
     "sigla": "TA",
     "regione": "Puglia"
@@ -503,11 +493,6 @@
     "nome": "Udine",
     "sigla": "UD",
     "regione": "Friuli-Venezia Giulia"
-  },
-  {
-    "nome": "Valle d'Aosta/Vallée d'Aoste",
-    "sigla": "AO",
-    "regione": "Valle d'Aosta/Vallée d'Aoste"
   },
   {
     "nome": "Varese",

@@ -1,7 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
 import { PaginationI } from '../administrativeArea/administrativeAreaSlice';
-
+export  interface Category {
+  id: number;
+  name: string;
+}
 export interface ForumStateI {
   filters: {
     [key: string]:
@@ -102,6 +105,9 @@ export const forumSlice = createSlice({
     setCategoriesList: (state, action: PayloadAction<any>) => {
       state.categories = [...action.payload];
     },
+    addMoreCategoriesList: (state, action: PayloadAction<Category[]>) => {
+      state.categories = [...state.categories, ...action.payload];
+    },
     setCommentsList: (state, action: PayloadAction<any>) => {
       state.comments = [...action.payload];
     },
@@ -156,6 +162,7 @@ export const {
   setNotificationsList,
   resetForumRecords,
   cleanForumFilters,
+  addMoreCategoriesList
 } = forumSlice.actions;
 
 export const selectNewsList = (state: RootState) => state.forum.news.list;

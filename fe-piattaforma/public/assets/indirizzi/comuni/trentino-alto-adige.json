@@ -16,7 +16,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "A116",
-    "cap": ["38061"],
+    "cap": [
+      "38061"
+    ],
     "popolazione": 8887
   },
   {
@@ -36,7 +38,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "A158",
-    "cap": ["38041"],
+    "cap": [
+      "38041"
+    ],
     "popolazione": 1508
   },
   {
@@ -56,7 +60,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "A178",
-    "cap": ["38060"],
+    "cap": [
+      "38060"
+    ],
     "popolazione": 3036
   },
   {
@@ -72,11 +78,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "A179",
-    "cap": ["39040"],
+    "cap": [
+      "39040"
+    ],
     "popolazione": 1651
   },
   {
@@ -96,7 +104,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "M349",
-    "cap": ["38092"],
+    "cap": [
+      "38092"
+    ],
     "popolazione": 1640
   },
   {
@@ -116,7 +126,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "M350",
-    "cap": ["38049"],
+    "cap": [
+      "38049"
+    ],
     "popolazione": 4802
   },
   {
@@ -136,7 +148,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "M351",
-    "cap": ["38011"],
+    "cap": [
+      "38011"
+    ],
     "popolazione": 478
   },
   {
@@ -156,7 +170,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "A274",
-    "cap": ["38010"],
+    "cap": [
+      "38010"
+    ],
     "popolazione": 1026
   },
   {
@@ -172,11 +188,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "A286",
-    "cap": ["39010"],
+    "cap": [
+      "39010"
+    ],
     "popolazione": 1035
   },
   {
@@ -192,11 +210,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "A306",
-    "cap": ["39040"],
+    "cap": [
+      "39040"
+    ],
     "popolazione": 383
   },
   {
@@ -212,11 +232,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "A332",
-    "cap": ["39057"],
+    "cap": [
+      "39057"
+    ],
     "popolazione": 13988
   },
   {
@@ -236,7 +258,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "A372",
-    "cap": ["38062"],
+    "cap": [
+      "38062"
+    ],
     "popolazione": 16871
   },
   {
@@ -252,11 +276,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "A507",
-    "cap": ["39010"],
+    "cap": [
+      "39010"
+    ],
     "popolazione": 739
   },
   {
@@ -276,7 +302,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "A520",
-    "cap": ["38063"],
+    "cap": [
+      "38063"
+    ],
     "popolazione": 4115
   },
   {
@@ -292,11 +320,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "A537",
-    "cap": ["39036"],
+    "cap": [
+      "39036"
+    ],
     "popolazione": 3360
   },
   {
@@ -312,11 +342,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "A635",
-    "cap": ["39040"],
+    "cap": [
+      "39040"
+    ],
     "popolazione": 1596
   },
   {
@@ -336,7 +368,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "A694",
-    "cap": ["38042"],
+    "cap": [
+      "38042"
+    ],
     "popolazione": 4928
   },
   {
@@ -356,7 +390,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "A730",
-    "cap": ["38043"],
+    "cap": [
+      "38043"
+    ],
     "popolazione": 1479
   },
   {
@@ -376,7 +412,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "A821",
-    "cap": ["38060"],
+    "cap": [
+      "38060"
+    ],
     "popolazione": 2511
   },
   {
@@ -396,7 +434,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "A863",
-    "cap": ["38050"],
+    "cap": [
+      "38050"
+    ],
     "popolazione": 430
   },
   {
@@ -416,7 +456,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "A902",
-    "cap": ["38071"],
+    "cap": [
+      "38071"
+    ],
     "popolazione": 1600
   },
   {
@@ -436,7 +478,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "A916",
-    "cap": ["38080"],
+    "cap": [
+      "38080"
+    ],
     "popolazione": 407
   },
   {
@@ -452,11 +496,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "A952",
-    "cap": ["39100"],
+    "cap": [
+      "39100"
+    ],
     "popolazione": 102575
   },
   {
@@ -476,7 +522,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "A968",
-    "cap": ["38080"],
+    "cap": [
+      "38080"
+    ],
     "popolazione": 668
   },
   {
@@ -496,7 +544,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "M352",
-    "cap": ["38083"],
+    "cap": [
+      "38083"
+    ],
     "popolazione": 2083
   },
   {
@@ -516,7 +566,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "M353",
-    "cap": ["38079"],
+    "cap": [
+      "38079"
+    ],
     "popolazione": 707
   },
   {
@@ -536,7 +588,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "B006",
-    "cap": ["38051"],
+    "cap": [
+      "38051"
+    ],
     "popolazione": 6826
   },
   {
@@ -556,7 +610,10 @@
     },
     "sigla": "TN",
     "codiceCatastale": "M429",
-    "cap": ["38013", "38020"],
+    "cap": [
+      "38013",
+      "38020"
+    ],
     "popolazione": 2512
   },
   {
@@ -572,11 +629,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "B116",
-    "cap": ["39030"],
+    "cap": [
+      "39030"
+    ],
     "popolazione": 672
   },
   {
@@ -592,11 +651,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "B145",
-    "cap": ["39041"],
+    "cap": [
+      "39041"
+    ],
     "popolazione": 2087
   },
   {
@@ -616,7 +677,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "B153",
-    "cap": ["38060"],
+    "cap": [
+      "38060"
+    ],
     "popolazione": 3882
   },
   {
@@ -636,7 +699,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "B158",
-    "cap": ["38020"],
+    "cap": [
+      "38020"
+    ],
     "popolazione": 254
   },
   {
@@ -652,11 +717,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "B160",
-    "cap": ["39042"],
+    "cap": [
+      "39042"
+    ],
     "popolazione": 20677
   },
   {
@@ -672,11 +739,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "B203",
-    "cap": ["39051"],
+    "cap": [
+      "39051"
+    ],
     "popolazione": 2628
   },
   {
@@ -692,11 +761,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "B220",
-    "cap": ["39031"],
+    "cap": [
+      "39031"
+    ],
     "popolazione": 15397
   },
   {
@@ -716,7 +787,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "B335",
-    "cap": ["38080"],
+    "cap": [
+      "38080"
+    ],
     "popolazione": 669
   },
   {
@@ -732,11 +805,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "B364",
-    "cap": ["39010"],
+    "cap": [
+      "39010"
+    ],
     "popolazione": 413
   },
   {
@@ -756,7 +831,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "B389",
-    "cap": ["38050"],
+    "cap": [
+      "38050"
+    ],
     "popolazione": 1305
   },
   {
@@ -772,11 +849,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "B397",
-    "cap": ["39052"],
+    "cap": [
+      "39052"
+    ],
     "popolazione": 7660
   },
   {
@@ -796,7 +875,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "B400",
-    "cap": ["38022"],
+    "cap": [
+      "38022"
+    ],
     "popolazione": 1090
   },
   {
@@ -816,7 +897,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "B404",
-    "cap": ["38052"],
+    "cap": [
+      "38052"
+    ],
     "popolazione": 3340
   },
   {
@@ -836,7 +919,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "B419",
-    "cap": ["38060"],
+    "cap": [
+      "38060"
+    ],
     "popolazione": 1611
   },
   {
@@ -856,7 +941,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "B514",
-    "cap": ["38031"],
+    "cap": [
+      "38031"
+    ],
     "popolazione": 737
   },
   {
@@ -872,11 +959,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "B570",
-    "cap": ["39032"],
+    "cap": [
+      "39032"
+    ],
     "popolazione": 5272
   },
   {
@@ -892,11 +981,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "B529",
-    "cap": ["39040"],
+    "cap": [
+      "39040"
+    ],
     "popolazione": 2671
   },
   {
@@ -916,7 +1007,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "B525",
-    "cap": ["38010"],
+    "cap": [
+      "38010"
+    ],
     "popolazione": 1498
   },
   {
@@ -936,7 +1029,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "B577",
-    "cap": ["38050"],
+    "cap": [
+      "38050"
+    ],
     "popolazione": 1592
   },
   {
@@ -956,7 +1051,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "B579",
-    "cap": ["38032"],
+    "cap": [
+      "38032"
+    ],
     "popolazione": 1907
   },
   {
@@ -976,7 +1073,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "B697",
-    "cap": ["38030"],
+    "cap": [
+      "38030"
+    ],
     "popolazione": 605
   },
   {
@@ -996,7 +1095,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "B783",
-    "cap": ["38080"],
+    "cap": [
+      "38080"
+    ],
     "popolazione": 984
   },
   {
@@ -1016,7 +1117,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "B856",
-    "cap": ["38050"],
+    "cap": [
+      "38050"
+    ],
     "popolazione": 505
   },
   {
@@ -1036,7 +1139,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "C183",
-    "cap": ["38082"],
+    "cap": [
+      "38082"
+    ],
     "popolazione": 238
   },
   {
@@ -1056,7 +1161,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "M354",
-    "cap": ["38059"],
+    "cap": [
+      "38059"
+    ],
     "popolazione": 3381
   },
   {
@@ -1072,11 +1179,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "C062",
-    "cap": ["39020"],
+    "cap": [
+      "39020"
+    ],
     "popolazione": 2378
   },
   {
@@ -1096,7 +1205,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "C194",
-    "cap": ["38053"],
+    "cap": [
+      "38053"
+    ],
     "popolazione": 1315
   },
   {
@@ -1116,7 +1227,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "C189",
-    "cap": ["38030"],
+    "cap": [
+      "38030"
+    ],
     "popolazione": 2267
   },
   {
@@ -1136,7 +1249,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "C216",
-    "cap": ["38050"],
+    "cap": [
+      "38050"
+    ],
     "popolazione": 1035
   },
   {
@@ -1152,11 +1267,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "C254",
-    "cap": ["39040"],
+    "cap": [
+      "39040"
+    ],
     "popolazione": 6459
   },
   {
@@ -1176,7 +1293,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "C372",
-    "cap": ["38033"],
+    "cap": [
+      "38033"
+    ],
     "popolazione": 3953
   },
   {
@@ -1196,7 +1315,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "C380",
-    "cap": ["38011"],
+    "cap": [
+      "38011"
+    ],
     "popolazione": 1037
   },
   {
@@ -1216,7 +1337,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "C392",
-    "cap": ["38010"],
+    "cap": [
+      "38010"
+    ],
     "popolazione": 530
   },
   {
@@ -1236,7 +1359,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "C393",
-    "cap": ["38073"],
+    "cap": [
+      "38073"
+    ],
     "popolazione": 2916
   },
   {
@@ -1256,7 +1381,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "C400",
-    "cap": ["38022"],
+    "cap": [
+      "38022"
+    ],
     "popolazione": 259
   },
   {
@@ -1276,7 +1403,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "M355",
-    "cap": ["38034"],
+    "cap": [
+      "38034"
+    ],
     "popolazione": 2332
   },
   {
@@ -1292,11 +1421,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "A022",
-    "cap": ["39010"],
+    "cap": [
+      "39010"
+    ],
     "popolazione": 1411
   },
   {
@@ -1312,11 +1443,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "C625",
-    "cap": ["39030"],
+    "cap": [
+      "39030"
+    ],
     "popolazione": 2695
   },
   {
@@ -1332,11 +1465,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "C652",
-    "cap": ["39043"],
+    "cap": [
+      "39043"
+    ],
     "popolazione": 5144
   },
   {
@@ -1356,7 +1491,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "C700",
-    "cap": ["38060"],
+    "cap": [
+      "38060"
+    ],
     "popolazione": 685
   },
   {
@@ -1376,7 +1513,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "C712",
-    "cap": ["38050"],
+    "cap": [
+      "38050"
+    ],
     "popolazione": 372
   },
   {
@@ -1396,7 +1535,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "C727",
-    "cap": ["38020"],
+    "cap": [
+      "38020"
+    ],
     "popolazione": 309
   },
   {
@@ -1416,7 +1557,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "C756",
-    "cap": ["38045"],
+    "cap": [
+      "38045"
+    ],
     "popolazione": 3904
   },
   {
@@ -1436,7 +1579,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "C794",
-    "cap": ["38023"],
+    "cap": [
+      "38023"
+    ],
     "popolazione": 6769
   },
   {
@@ -1456,7 +1601,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "M314",
-    "cap": ["38077"],
+    "cap": [
+      "38077"
+    ],
     "popolazione": 2913
   },
   {
@@ -1476,7 +1623,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "C931",
-    "cap": ["38020"],
+    "cap": [
+      "38020"
+    ],
     "popolazione": 993
   },
   {
@@ -1496,7 +1645,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "M356",
-    "cap": ["38093"],
+    "cap": [
+      "38093"
+    ],
     "popolazione": 1383
   },
   {
@@ -1512,11 +1663,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "B799",
-    "cap": ["39053"],
+    "cap": [
+      "39053"
+    ],
     "popolazione": 3312
   },
   {
@@ -1532,11 +1685,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "D048",
-    "cap": ["39040"],
+    "cap": [
+      "39040"
+    ],
     "popolazione": 2228
   },
   {
@@ -1552,11 +1707,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "D075",
-    "cap": ["39040"],
+    "cap": [
+      "39040"
+    ],
     "popolazione": 656
   },
   {
@@ -1572,11 +1729,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "D079",
-    "cap": ["39033"],
+    "cap": [
+      "39033"
+    ],
     "popolazione": 1320
   },
   {
@@ -1596,7 +1755,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "D188",
-    "cap": ["38027"],
+    "cap": [
+      "38027"
+    ],
     "popolazione": 693
   },
   {
@@ -1612,11 +1773,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "D222",
-    "cap": ["39027"],
+    "cap": [
+      "39027"
+    ],
     "popolazione": 2423
   },
   {
@@ -1636,7 +1799,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "D246",
-    "cap": ["38010"],
+    "cap": [
+      "38010"
+    ],
     "popolazione": 435
   },
   {
@@ -1656,7 +1821,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "D273",
-    "cap": ["38010"],
+    "cap": [
+      "38010"
+    ],
     "popolazione": 1252
   },
   {
@@ -1676,7 +1843,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "M366",
-    "cap": ["38025"],
+    "cap": [
+      "38025"
+    ],
     "popolazione": 2132
   },
   {
@@ -1692,11 +1861,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "D311",
-    "cap": ["39034"],
+    "cap": [
+      "39034"
+    ],
     "popolazione": 3314
   },
   {
@@ -1716,7 +1887,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "D365",
-    "cap": ["38074"],
+    "cap": [
+      "38074"
+    ],
     "popolazione": 551
   },
   {
@@ -1736,7 +1909,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "D371",
-    "cap": ["38074"],
+    "cap": [
+      "38074"
+    ],
     "popolazione": 4566
   },
   {
@@ -1752,11 +1927,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "D392",
-    "cap": ["39044"],
+    "cap": [
+      "39044"
+    ],
     "popolazione": 4992
   },
   {
@@ -1776,7 +1953,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "D468",
-    "cap": ["38010"],
+    "cap": [
+      "38010"
+    ],
     "popolazione": 898
   },
   {
@@ -1792,11 +1971,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "D484",
-    "cap": ["39030"],
+    "cap": [
+      "39030"
+    ],
     "popolazione": 2668
   },
   {
@@ -1816,7 +1997,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "D565",
-    "cap": ["38075"],
+    "cap": [
+      "38075"
+    ],
     "popolazione": 1098
   },
   {
@@ -1836,7 +2019,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "D573",
-    "cap": ["38050"],
+    "cap": [
+      "38050"
+    ],
     "popolazione": 481
   },
   {
@@ -1852,11 +2037,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "D571",
-    "cap": ["39050"],
+    "cap": [
+      "39050"
+    ],
     "popolazione": 3451
   },
   {
@@ -1876,7 +2063,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "D651",
-    "cap": ["38064"],
+    "cap": [
+      "38064"
+    ],
     "popolazione": 3130
   },
   {
@@ -1896,7 +2085,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "D714",
-    "cap": ["38040"],
+    "cap": [
+      "38040"
+    ],
     "popolazione": 1321
   },
   {
@@ -1912,11 +2103,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "D731",
-    "cap": ["39045"],
+    "cap": [
+      "39045"
+    ],
     "popolazione": 970
   },
   {
@@ -1936,7 +2129,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "D775",
-    "cap": ["38050"],
+    "cap": [
+      "38050"
+    ],
     "popolazione": 321
   },
   {
@@ -1952,11 +2147,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "D821",
-    "cap": ["39040"],
+    "cap": [
+      "39040"
+    ],
     "popolazione": 2571
   },
   {
@@ -1972,11 +2169,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "D860",
-    "cap": ["39030"],
+    "cap": [
+      "39030"
+    ],
     "popolazione": 3167
   },
   {
@@ -1992,11 +2191,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "D923",
-    "cap": ["39010"],
+    "cap": [
+      "39010"
+    ],
     "popolazione": 1665
   },
   {
@@ -2016,7 +2217,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "D928",
-    "cap": ["38060"],
+    "cap": [
+      "38060"
+    ],
     "popolazione": 381
   },
   {
@@ -2036,7 +2239,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "E048",
-    "cap": ["38030"],
+    "cap": [
+      "38030"
+    ],
     "popolazione": 2465
   },
   {
@@ -2056,7 +2261,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "E065",
-    "cap": ["38086"],
+    "cap": [
+      "38086"
+    ],
     "popolazione": 743
   },
   {
@@ -2072,11 +2279,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "E069",
-    "cap": ["39020"],
+    "cap": [
+      "39020"
+    ],
     "popolazione": 889
   },
   {
@@ -2096,7 +2305,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "E178",
-    "cap": ["38055"],
+    "cap": [
+      "38055"
+    ],
     "popolazione": 2271
   },
   {
@@ -2116,7 +2327,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "E288",
-    "cap": ["38050"],
+    "cap": [
+      "38050"
+    ],
     "popolazione": 1183
   },
   {
@@ -2136,7 +2349,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "E334",
-    "cap": ["38060"],
+    "cap": [
+      "38060"
+    ],
     "popolazione": 2625
   },
   {
@@ -2152,11 +2367,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "E491",
-    "cap": ["39030"],
+    "cap": [
+      "39030"
+    ],
     "popolazione": 1299
   },
   {
@@ -2172,11 +2389,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "E398",
-    "cap": ["39021"],
+    "cap": [
+      "39021"
+    ],
     "popolazione": 5126
   },
   {
@@ -2192,11 +2411,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "E412",
-    "cap": ["39022"],
+    "cap": [
+      "39022"
+    ],
     "popolazione": 4873
   },
   {
@@ -2212,11 +2433,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "E420",
-    "cap": ["39040"],
+    "cap": [
+      "39040"
+    ],
     "popolazione": 2619
   },
   {
@@ -2232,11 +2455,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "E421",
-    "cap": ["39055"],
+    "cap": [
+      "39055"
+    ],
     "popolazione": 16909
   },
   {
@@ -2252,11 +2477,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "E434",
-    "cap": ["39011"],
+    "cap": [
+      "39011"
+    ],
     "popolazione": 11251
   },
   {
@@ -2272,11 +2499,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "E457",
-    "cap": ["39023"],
+    "cap": [
+      "39023"
+    ],
     "popolazione": 3932
   },
   {
@@ -2292,11 +2521,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "E481",
-    "cap": ["39040"],
+    "cap": [
+      "39040"
+    ],
     "popolazione": 344
   },
   {
@@ -2316,7 +2547,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "E492",
-    "cap": ["38046"],
+    "cap": [
+      "38046"
+    ],
     "popolazione": 1087
   },
   {
@@ -2336,7 +2569,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "E500",
-    "cap": ["38015"],
+    "cap": [
+      "38015"
+    ],
     "popolazione": 8636
   },
   {
@@ -2356,7 +2591,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "M313",
-    "cap": ["38067"],
+    "cap": [
+      "38067"
+    ],
     "popolazione": 5448
   },
   {
@@ -2376,7 +2613,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "E565",
-    "cap": ["38056"],
+    "cap": [
+      "38056"
+    ],
     "popolazione": 7516
   },
   {
@@ -2396,7 +2635,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "E624",
-    "cap": ["38020"],
+    "cap": [
+      "38020"
+    ],
     "popolazione": 887
   },
   {
@@ -2416,7 +2657,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "E664",
-    "cap": ["38040"],
+    "cap": [
+      "38040"
+    ],
     "popolazione": 876
   },
   {
@@ -2436,7 +2679,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "E757",
-    "cap": ["38040"],
+    "cap": [
+      "38040"
+    ],
     "popolazione": 279
   },
   {
@@ -2452,11 +2697,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "E764",
-    "cap": ["39040"],
+    "cap": [
+      "39040"
+    ],
     "popolazione": 1527
   },
   {
@@ -2476,7 +2723,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "M357",
-    "cap": ["38076"],
+    "cap": [
+      "38076"
+    ],
     "popolazione": 2783
   },
   {
@@ -2492,11 +2741,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "E829",
-    "cap": ["39040"],
+    "cap": [
+      "39040"
+    ],
     "popolazione": 1281
   },
   {
@@ -2512,11 +2763,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "E862",
-    "cap": ["39024"],
+    "cap": [
+      "39024"
+    ],
     "popolazione": 5086
   },
   {
@@ -2536,7 +2789,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "E850",
-    "cap": ["38027"],
+    "cap": [
+      "38027"
+    ],
     "popolazione": 2135
   },
   {
@@ -2552,11 +2807,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "E938",
-    "cap": ["39030"],
+    "cap": [
+      "39030"
+    ],
     "popolazione": 2907
   },
   {
@@ -2572,11 +2829,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "E959",
-    "cap": ["39020"],
+    "cap": [
+      "39020"
+    ],
     "popolazione": 2533
   },
   {
@@ -2592,11 +2851,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "E981",
-    "cap": ["39020"],
+    "cap": [
+      "39020"
+    ],
     "popolazione": 879
   },
   {
@@ -2616,7 +2877,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "F045",
-    "cap": ["38086"],
+    "cap": [
+      "38086"
+    ],
     "popolazione": 124
   },
   {
@@ -2636,7 +2899,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "F068",
-    "cap": ["38030"],
+    "cap": [
+      "38030"
+    ],
     "popolazione": 494
   },
   {
@@ -2652,11 +2917,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "F118",
-    "cap": ["39010"],
+    "cap": [
+      "39010"
+    ],
     "popolazione": 1648
   },
   {
@@ -2672,11 +2939,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "F132",
-    "cap": ["39012"],
+    "cap": [
+      "39012"
+    ],
     "popolazione": 37368
   },
   {
@@ -2696,7 +2965,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "F168",
-    "cap": ["38020"],
+    "cap": [
+      "38020"
+    ],
     "popolazione": 884
   },
   {
@@ -2716,7 +2987,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "F176",
-    "cap": ["38050"],
+    "cap": [
+      "38050"
+    ],
     "popolazione": 1615
   },
   {
@@ -2736,7 +3009,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "F183",
-    "cap": ["38016"],
+    "cap": [
+      "38016"
+    ],
     "popolazione": 5161
   },
   {
@@ -2756,7 +3031,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "F187",
-    "cap": ["38017"],
+    "cap": [
+      "38017"
+    ],
     "popolazione": 6817
   },
   {
@@ -2776,7 +3053,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "F263",
-    "cap": ["38035"],
+    "cap": [
+      "38035"
+    ],
     "popolazione": 2690
   },
   {
@@ -2796,7 +3075,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "F307",
-    "cap": ["38018"],
+    "cap": [
+      "38018"
+    ],
     "popolazione": 1110
   },
   {
@@ -2812,11 +3093,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "F371",
-    "cap": ["39035"],
+    "cap": [
+      "39035"
+    ],
     "popolazione": 2797
   },
   {
@@ -2832,11 +3115,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "F392",
-    "cap": ["39040"],
+    "cap": [
+      "39040"
+    ],
     "popolazione": 1627
   },
   {
@@ -2856,7 +3141,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "F728",
-    "cap": ["38065"],
+    "cap": [
+      "38065"
+    ],
     "popolazione": 9456
   },
   {
@@ -2872,11 +3159,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "F766",
-    "cap": ["39013"],
+    "cap": [
+      "39013"
+    ],
     "popolazione": 2171
   },
   {
@@ -2896,7 +3185,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "F835",
-    "cap": ["38069"],
+    "cap": [
+      "38069"
+    ],
     "popolazione": 2728
   },
   {
@@ -2912,11 +3203,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "F836",
-    "cap": ["39010"],
+    "cap": [
+      "39010"
+    ],
     "popolazione": 1831
   },
   {
@@ -2932,11 +3225,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "F849",
-    "cap": ["39025"],
+    "cap": [
+      "39025"
+    ],
     "popolazione": 5554
   },
   {
@@ -2952,11 +3247,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "F856",
-    "cap": ["39040"],
+    "cap": [
+      "39040"
+    ],
     "popolazione": 2886
   },
   {
@@ -2976,7 +3273,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "F920",
-    "cap": ["38060"],
+    "cap": [
+      "38060"
+    ],
     "popolazione": 1917
   },
   {
@@ -2996,7 +3295,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "F929",
-    "cap": ["38060"],
+    "cap": [
+      "38060"
+    ],
     "popolazione": 1403
   },
   {
@@ -3012,11 +3313,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "F949",
-    "cap": ["39056"],
+    "cap": [
+      "39056"
+    ],
     "popolazione": 1903
   },
   {
@@ -3032,11 +3335,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "F950",
-    "cap": ["39050"],
+    "cap": [
+      "39050"
+    ],
     "popolazione": 3898
   },
   {
@@ -3056,7 +3361,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "F947",
-    "cap": ["38050"],
+    "cap": [
+      "38050"
+    ],
     "popolazione": 1018
   },
   {
@@ -3076,7 +3383,11 @@
     },
     "sigla": "TN",
     "codiceCatastale": "M430",
-    "cap": ["38021", "38028", "38020"],
+    "cap": [
+      "38021",
+      "38028",
+      "38020"
+    ],
     "popolazione": 3664
   },
   {
@@ -3092,11 +3403,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "G083",
-    "cap": ["39040"],
+    "cap": [
+      "39040"
+    ],
     "popolazione": 3554
   },
   {
@@ -3112,11 +3425,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "G140",
-    "cap": ["39046"],
+    "cap": [
+      "39046"
+    ],
     "popolazione": 4653
   },
   {
@@ -3136,7 +3451,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "G168",
-    "cap": ["38050"],
+    "cap": [
+      "38050"
+    ],
     "popolazione": 820
   },
   {
@@ -3156,7 +3473,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "G173",
-    "cap": ["38026"],
+    "cap": [
+      "38026"
+    ],
     "popolazione": 844
   },
   {
@@ -3176,7 +3495,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "G296",
-    "cap": ["38050"],
+    "cap": [
+      "38050"
+    ],
     "popolazione": 169
   },
   {
@@ -3196,7 +3517,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "G305",
-    "cap": ["38030"],
+    "cap": [
+      "38030"
+    ],
     "popolazione": 771
   },
   {
@@ -3212,11 +3535,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "G328",
-    "cap": ["39020"],
+    "cap": [
+      "39020"
+    ],
     "popolazione": 3536
   },
   {
@@ -3236,7 +3561,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "G419",
-    "cap": ["38024"],
+    "cap": [
+      "38024"
+    ],
     "popolazione": 1891
   },
   {
@@ -3256,7 +3583,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "G428",
-    "cap": ["38020"],
+    "cap": [
+      "38020"
+    ],
     "popolazione": 811
   },
   {
@@ -3276,7 +3605,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "G429",
-    "cap": ["38079"],
+    "cap": [
+      "38079"
+    ],
     "popolazione": 379
   },
   {
@@ -3292,11 +3623,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "G443",
-    "cap": ["39030"],
+    "cap": [
+      "39030"
+    ],
     "popolazione": 1460
   },
   {
@@ -3316,7 +3649,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "G452",
-    "cap": ["38057"],
+    "cap": [
+      "38057"
+    ],
     "popolazione": 20446
   },
   {
@@ -3336,7 +3671,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "G656",
-    "cap": ["38050"],
+    "cap": [
+      "38050"
+    ],
     "popolazione": 681
   },
   {
@@ -3356,7 +3693,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "M365",
-    "cap": ["38085"],
+    "cap": [
+      "38085"
+    ],
     "popolazione": 1541
   },
   {
@@ -3376,7 +3715,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "G681",
-    "cap": ["38086"],
+    "cap": [
+      "38086"
+    ],
     "popolazione": 3117
   },
   {
@@ -3392,11 +3733,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "G299",
-    "cap": ["39025"],
+    "cap": [
+      "39025"
+    ],
     "popolazione": 692
   },
   {
@@ -3416,7 +3759,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "G808",
-    "cap": ["38060"],
+    "cap": [
+      "38060"
+    ],
     "popolazione": 2355
   },
   {
@@ -3432,11 +3777,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "G830",
-    "cap": ["39040"],
+    "cap": [
+      "39040"
+    ],
     "popolazione": 195
   },
   {
@@ -3456,7 +3803,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "M358",
-    "cap": ["38094"],
+    "cap": [
+      "38094"
+    ],
     "popolazione": 1757
   },
   {
@@ -3472,11 +3821,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "G936",
-    "cap": ["39014"],
+    "cap": [
+      "39014"
+    ],
     "popolazione": 1763
   },
   {
@@ -3492,11 +3843,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "H004",
-    "cap": ["39026"],
+    "cap": [
+      "39026"
+    ],
     "popolazione": 3356
   },
   {
@@ -3516,7 +3869,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "M344",
-    "cap": ["38012"],
+    "cap": [
+      "38012"
+    ],
     "popolazione": 6522
   },
   {
@@ -3536,7 +3891,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "H018",
-    "cap": ["38037"],
+    "cap": [
+      "38037"
+    ],
     "popolazione": 4531
   },
   {
@@ -3552,11 +3909,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "H019",
-    "cap": ["39030"],
+    "cap": [
+      "39030"
+    ],
     "popolazione": 604
   },
   {
@@ -3576,7 +3935,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "M359",
-    "cap": ["38054"],
+    "cap": [
+      "38054"
+    ],
     "popolazione": 5406
   },
   {
@@ -3592,11 +3953,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "H081",
-    "cap": ["39040"],
+    "cap": [
+      "39040"
+    ],
     "popolazione": 267
   },
   {
@@ -3616,7 +3979,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "H146",
-    "cap": ["38020"],
+    "cap": [
+      "38020"
+    ],
     "popolazione": 1400
   },
   {
@@ -3632,11 +3997,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "H152",
-    "cap": ["39040"],
+    "cap": [
+      "39040"
+    ],
     "popolazione": 4389
   },
   {
@@ -3652,11 +4019,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "H189",
-    "cap": ["39030"],
+    "cap": [
+      "39030"
+    ],
     "popolazione": 2869
   },
   {
@@ -3672,11 +4041,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "H236",
-    "cap": ["39054"],
+    "cap": [
+      "39054"
+    ],
     "popolazione": 7642
   },
   {
@@ -3692,11 +4063,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "H284",
-    "cap": ["39010"],
+    "cap": [
+      "39010"
+    ],
     "popolazione": 1333
   },
   {
@@ -3712,11 +4085,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "H299",
-    "cap": ["39037"],
+    "cap": [
+      "39037"
+    ],
     "popolazione": 2912
   },
   {
@@ -3736,7 +4111,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "H330",
-    "cap": ["38066"],
+    "cap": [
+      "38066"
+    ],
     "popolazione": 15838
   },
   {
@@ -3752,11 +4129,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "H475",
-    "cap": ["39037"],
+    "cap": [
+      "39037"
+    ],
     "popolazione": 1195
   },
   {
@@ -3776,7 +4155,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "H517",
-    "cap": ["38010"],
+    "cap": [
+      "38010"
+    ],
     "popolazione": 1374
   },
   {
@@ -3796,7 +4177,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "H528",
-    "cap": ["38050"],
+    "cap": [
+      "38050"
+    ],
     "popolazione": 2814
   },
   {
@@ -3816,7 +4199,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "H532",
-    "cap": ["38050"],
+    "cap": [
+      "38050"
+    ],
     "popolazione": 421
   },
   {
@@ -3836,7 +4221,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "M303",
-    "cap": ["38060"],
+    "cap": [
+      "38060"
+    ],
     "popolazione": 1001
   },
   {
@@ -3856,7 +4243,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "H552",
-    "cap": ["38010"],
+    "cap": [
+      "38010"
+    ],
     "popolazione": 391
   },
   {
@@ -3876,7 +4265,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "H612",
-    "cap": ["38068"],
+    "cap": [
+      "38068"
+    ],
     "popolazione": 37754
   },
   {
@@ -3896,7 +4287,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "H607",
-    "cap": ["38030"],
+    "cap": [
+      "38030"
+    ],
     "popolazione": 1573
   },
   {
@@ -3916,7 +4309,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "H634",
-    "cap": ["38010"],
+    "cap": [
+      "38010"
+    ],
     "popolazione": 416
   },
   {
@@ -3936,7 +4331,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "H639",
-    "cap": ["38020"],
+    "cap": [
+      "38020"
+    ],
     "popolazione": 822
   },
   {
@@ -3956,7 +4353,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "H666",
-    "cap": ["38050"],
+    "cap": [
+      "38050"
+    ],
     "popolazione": 183
   },
   {
@@ -3972,11 +4371,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "H719",
-    "cap": ["39040"],
+    "cap": [
+      "39040"
+    ],
     "popolazione": 3533
   },
   {
@@ -3996,7 +4397,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "H754",
-    "cap": ["38059"],
+    "cap": [
+      "38059"
+    ],
     "popolazione": 544
   },
   {
@@ -4012,11 +4415,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "H786",
-    "cap": ["39038"],
+    "cap": [
+      "39038"
+    ],
     "popolazione": 3204
   },
   {
@@ -4032,11 +4437,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "H858",
-    "cap": ["39050"],
+    "cap": [
+      "39050"
+    ],
     "popolazione": 2937
   },
   {
@@ -4056,7 +4463,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "M390",
-    "cap": ["38036"],
+    "cap": [
+      "38036"
+    ],
     "popolazione": 3345
   },
   {
@@ -4072,11 +4481,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "H952",
-    "cap": ["39015"],
+    "cap": [
+      "39015"
+    ],
     "popolazione": 3508
   },
   {
@@ -4096,7 +4507,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "M345",
-    "cap": ["38078"],
+    "cap": [
+      "38078"
+    ],
     "popolazione": 1607
   },
   {
@@ -4112,11 +4525,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "H956",
-    "cap": ["39030"],
+    "cap": [
+      "39030"
+    ],
     "popolazione": 3767
   },
   {
@@ -4132,11 +4547,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "H988",
-    "cap": ["39030"],
+    "cap": [
+      "39030"
+    ],
     "popolazione": 1729
   },
   {
@@ -4152,11 +4569,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "H989",
-    "cap": ["39010"],
+    "cap": [
+      "39010"
+    ],
     "popolazione": 3136
   },
   {
@@ -4176,7 +4595,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "I042",
-    "cap": ["38010"],
+    "cap": [
+      "38010"
+    ],
     "popolazione": 3521
   },
   {
@@ -4192,11 +4613,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "I065",
-    "cap": ["39010"],
+    "cap": [
+      "39010"
+    ],
     "popolazione": 1584
   },
   {
@@ -4216,7 +4639,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "I354",
-    "cap": ["38050"],
+    "cap": [
+      "38050"
+    ],
     "popolazione": 1073
   },
   {
@@ -4232,11 +4657,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "I173",
-    "cap": ["39047"],
+    "cap": [
+      "39047"
+    ],
     "popolazione": 1871
   },
   {
@@ -4256,7 +4683,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "I411",
-    "cap": ["38010"],
+    "cap": [
+      "38010"
+    ],
     "popolazione": 928
   },
   {
@@ -4272,11 +4701,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "I431",
-    "cap": ["39058"],
+    "cap": [
+      "39058"
+    ],
     "popolazione": 6890
   },
   {
@@ -4296,7 +4727,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "I439",
-    "cap": ["38011"],
+    "cap": [
+      "38011"
+    ],
     "popolazione": 749
   },
   {
@@ -4312,11 +4745,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "I519",
-    "cap": ["39017"],
+    "cap": [
+      "39017"
+    ],
     "popolazione": 2838
   },
   {
@@ -4336,7 +4771,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "I554",
-    "cap": ["38050"],
+    "cap": [
+      "38050"
+    ],
     "popolazione": 1401
   },
   {
@@ -4356,7 +4793,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "I576",
-    "cap": ["38047"],
+    "cap": [
+      "38047"
+    ],
     "popolazione": 1531
   },
   {
@@ -4376,7 +4815,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "M360",
-    "cap": ["38087"],
+    "cap": [
+      "38087"
+    ],
     "popolazione": 2918
   },
   {
@@ -4392,11 +4833,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "I593",
-    "cap": ["39030"],
+    "cap": [
+      "39030"
+    ],
     "popolazione": 1473
   },
   {
@@ -4412,11 +4855,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "I591",
-    "cap": ["39048"],
+    "cap": [
+      "39048"
+    ],
     "popolazione": 2660
   },
   {
@@ -4432,11 +4877,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "I603",
-    "cap": ["39010"],
+    "cap": [
+      "39010"
+    ],
     "popolazione": 782
   },
   {
@@ -4452,11 +4899,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "I604",
-    "cap": ["39020"],
+    "cap": [
+      "39020"
+    ],
     "popolazione": 1314
   },
   {
@@ -4472,11 +4921,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "I687",
-    "cap": ["39030"],
+    "cap": [
+      "39030"
+    ],
     "popolazione": 1937
   },
   {
@@ -4496,7 +4947,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "I714",
-    "cap": ["38010"],
+    "cap": [
+      "38010"
+    ],
     "popolazione": 323
   },
   {
@@ -4512,11 +4965,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "I729",
-    "cap": ["39028"],
+    "cap": [
+      "39028"
+    ],
     "popolazione": 5947
   },
   {
@@ -4532,11 +4987,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "I771",
-    "cap": ["39020"],
+    "cap": [
+      "39020"
+    ],
     "popolazione": 1832
   },
   {
@@ -4556,7 +5013,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "I839",
-    "cap": ["38030"],
+    "cap": [
+      "38030"
+    ],
     "popolazione": 736
   },
   {
@@ -4576,7 +5035,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "I871",
-    "cap": ["38048"],
+    "cap": [
+      "38048"
+    ],
     "popolazione": 882
   },
   {
@@ -4596,7 +5057,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "I899",
-    "cap": ["38088"],
+    "cap": [
+      "38088"
+    ],
     "popolazione": 1315
   },
   {
@@ -4616,7 +5079,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "I924",
-    "cap": ["38010"],
+    "cap": [
+      "38010"
+    ],
     "popolazione": 1259
   },
   {
@@ -4636,7 +5101,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "I925",
-    "cap": ["38010"],
+    "cap": [
+      "38010"
+    ],
     "popolazione": 714
   },
   {
@@ -4652,11 +5119,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "I948",
-    "cap": ["39029"],
+    "cap": [
+      "39029"
+    ],
     "popolazione": 1190
   },
   {
@@ -4676,7 +5145,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "I949",
-    "cap": ["38070"],
+    "cap": [
+      "38070"
+    ],
     "popolazione": 1137
   },
   {
@@ -4696,7 +5167,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "I964",
-    "cap": ["38089"],
+    "cap": [
+      "38089"
+    ],
     "popolazione": 4655
   },
   {
@@ -4716,7 +5189,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "I975",
-    "cap": ["38080"],
+    "cap": [
+      "38080"
+    ],
     "popolazione": 531
   },
   {
@@ -4736,7 +5211,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "L089",
-    "cap": ["38050"],
+    "cap": [
+      "38050"
+    ],
     "popolazione": 1995
   },
   {
@@ -4756,7 +5233,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "L090",
-    "cap": ["38050"],
+    "cap": [
+      "38050"
+    ],
     "popolazione": 617
   },
   {
@@ -4776,7 +5255,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "L096",
-    "cap": ["38050"],
+    "cap": [
+      "38050"
+    ],
     "popolazione": 955
   },
   {
@@ -4796,7 +5277,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "L097",
-    "cap": ["38060"],
+    "cap": [
+      "38060"
+    ],
     "popolazione": 1967
   },
   {
@@ -4812,11 +5295,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "L106",
-    "cap": ["39030"],
+    "cap": [
+      "39030"
+    ],
     "popolazione": 1733
   },
   {
@@ -4832,11 +5317,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "L108",
-    "cap": ["39018"],
+    "cap": [
+      "39018"
+    ],
     "popolazione": 4139
   },
   {
@@ -4852,11 +5339,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "L111",
-    "cap": ["39040"],
+    "cap": [
+      "39040"
+    ],
     "popolazione": 3305
   },
   {
@@ -4876,7 +5365,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "L121",
-    "cap": ["38060"],
+    "cap": [
+      "38060"
+    ],
     "popolazione": 755
   },
   {
@@ -4896,7 +5387,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "M407",
-    "cap": ["38097"],
+    "cap": [
+      "38097"
+    ],
     "popolazione": 3011
   },
   {
@@ -4916,7 +5409,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "L145",
-    "cap": ["38027"],
+    "cap": [
+      "38027"
+    ],
     "popolazione": 606
   },
   {
@@ -4936,7 +5431,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "L147",
-    "cap": ["38038"],
+    "cap": [
+      "38038"
+    ],
     "popolazione": 2868
   },
   {
@@ -4952,11 +5449,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "L149",
-    "cap": ["39010"],
+    "cap": [
+      "39010"
+    ],
     "popolazione": 1854
   },
   {
@@ -4976,7 +5475,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "L174",
-    "cap": ["38079"],
+    "cap": [
+      "38079"
+    ],
     "popolazione": 3608
   },
   {
@@ -4992,11 +5493,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "L176",
-    "cap": ["39050"],
+    "cap": [
+      "39050"
+    ],
     "popolazione": 967
   },
   {
@@ -5012,11 +5515,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "L178",
-    "cap": ["39019"],
+    "cap": [
+      "39019"
+    ],
     "popolazione": 2450
   },
   {
@@ -5036,7 +5541,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "L200",
-    "cap": ["38010"],
+    "cap": [
+      "38010"
+    ],
     "popolazione": 1319
   },
   {
@@ -5056,7 +5563,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "L211",
-    "cap": ["38050"],
+    "cap": [
+      "38050"
+    ],
     "popolazione": 697
   },
   {
@@ -5076,7 +5585,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "L322",
-    "cap": ["38068"],
+    "cap": [
+      "38068"
+    ],
     "popolazione": 1355
   },
   {
@@ -5096,7 +5607,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "M361",
-    "cap": ["38095"],
+    "cap": [
+      "38095"
+    ],
     "popolazione": 1396
   },
   {
@@ -5116,7 +5629,11 @@
     },
     "sigla": "TN",
     "codiceCatastale": "L378",
-    "cap": ["38121", "38122", "38123"],
+    "cap": [
+      "38121",
+      "38122",
+      "38123"
+    ],
     "popolazione": 114198
   },
   {
@@ -5132,11 +5649,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "L444",
-    "cap": ["39040"],
+    "cap": [
+      "39040"
+    ],
     "popolazione": 1021
   },
   {
@@ -5152,11 +5671,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "L455",
-    "cap": ["39020"],
+    "cap": [
+      "39020"
+    ],
     "popolazione": 965
   },
   {
@@ -5172,11 +5693,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "L490",
-    "cap": ["39016"],
+    "cap": [
+      "39016"
+    ],
     "popolazione": 2920
   },
   {
@@ -5192,11 +5715,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "L527",
-    "cap": ["39051"],
+    "cap": [
+      "39051"
+    ],
     "popolazione": 1016
   },
   {
@@ -5212,11 +5737,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "L564",
-    "cap": ["39049"],
+    "cap": [
+      "39049"
+    ],
     "popolazione": 2736
   },
   {
@@ -5236,7 +5763,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "M343",
-    "cap": ["38091"],
+    "cap": [
+      "38091"
+    ],
     "popolazione": 1220
   },
   {
@@ -5252,11 +5781,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "L552",
-    "cap": ["39030"],
+    "cap": [
+      "39030"
+    ],
     "popolazione": 3110
   },
   {
@@ -5276,7 +5807,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "L575",
-    "cap": ["38040"],
+    "cap": [
+      "38040"
+    ],
     "popolazione": 530
   },
   {
@@ -5296,7 +5829,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "L588",
-    "cap": ["38060"],
+    "cap": [
+      "38060"
+    ],
     "popolazione": 1343
   },
   {
@@ -5312,11 +5847,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "L595",
-    "cap": ["39030"],
+    "cap": [
+      "39030"
+    ],
     "popolazione": 5910
   },
   {
@@ -5332,11 +5869,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "L601",
-    "cap": ["39030"],
+    "cap": [
+      "39030"
+    ],
     "popolazione": 2262
   },
   {
@@ -5356,7 +5895,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "M362",
-    "cap": ["38096"],
+    "cap": [
+      "38096"
+    ],
     "popolazione": 4798
   },
   {
@@ -5372,11 +5913,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "L660",
-    "cap": ["39030"],
+    "cap": [
+      "39030"
+    ],
     "popolazione": 3251
   },
   {
@@ -5392,11 +5935,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "L687",
-    "cap": ["39040"],
+    "cap": [
+      "39040"
+    ],
     "popolazione": 4253
   },
   {
@@ -5412,11 +5957,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "L724",
-    "cap": ["39040"],
+    "cap": [
+      "39040"
+    ],
     "popolazione": 2742
   },
   {
@@ -5432,11 +5979,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "L745",
-    "cap": ["39010"],
+    "cap": [
+      "39010"
+    ],
     "popolazione": 929
   },
   {
@@ -5456,7 +6005,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "L769",
-    "cap": ["38029"],
+    "cap": [
+      "38029"
+    ],
     "popolazione": 1869
   },
   {
@@ -5476,7 +6027,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "L886",
-    "cap": ["38057"],
+    "cap": [
+      "38057"
+    ],
     "popolazione": 162
   },
   {
@@ -5496,7 +6049,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "L957",
-    "cap": ["38060"],
+    "cap": [
+      "38060"
+    ],
     "popolazione": 3692
   },
   {
@@ -5512,11 +6067,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "L915",
-    "cap": ["39039"],
+    "cap": [
+      "39039"
+    ],
     "popolazione": 1479
   },
   {
@@ -5532,11 +6089,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "L971",
-    "cap": ["39040"],
+    "cap": [
+      "39040"
+    ],
     "popolazione": 1893
   },
   {
@@ -5556,7 +6115,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "M363",
-    "cap": ["38019"],
+    "cap": [
+      "38019"
+    ],
     "popolazione": 4902
   },
   {
@@ -5576,7 +6137,10 @@
     },
     "sigla": "TN",
     "codiceCatastale": "M431",
-    "cap": ["38033", "38030"],
+    "cap": [
+      "38033",
+      "38030"
+    ],
     "popolazione": 2610
   },
   {
@@ -5592,11 +6156,13 @@
     },
     "provincia": {
       "codice": "021",
-      "nome": "Bolzano/Bozen"
+      "nome": "Bolzano"
     },
     "sigla": "BZ",
     "codiceCatastale": "M067",
-    "cap": ["39049"],
+    "cap": [
+      "39049"
+    ],
     "popolazione": 6390
   },
   {
@@ -5616,7 +6182,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "M113",
-    "cap": ["38060"],
+    "cap": [
+      "38060"
+    ],
     "popolazione": 3125
   },
   {
@@ -5636,7 +6204,9 @@
     },
     "sigla": "TN",
     "codiceCatastale": "M173",
-    "cap": ["38030"],
+    "cap": [
+      "38030"
+    ],
     "popolazione": 1679
   }
 ]

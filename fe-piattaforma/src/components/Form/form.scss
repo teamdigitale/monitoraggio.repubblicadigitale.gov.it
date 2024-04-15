@@ -106,6 +106,7 @@ input > span {
 .bootstrap-select {
   &__menu {
     margin-top: 0 !important;
+    z-index: 1050 !important;
   }
 
   &-value {
@@ -243,6 +244,10 @@ input > span {
   background-color: color('progress-bar-line');
 }
 
+.form-check [type="radio"]:disabled:not(:checked) + label::before{
+  border-color: #BFC2C9;
+}
+
 .form-check [type='radio']:disabled:checked + label::after {
   border-color: #d1d6db;
   background-color: #d1d6db;
@@ -250,6 +255,10 @@ input > span {
 
 .form-check [type=checkbox]:disabled:not(:checked) + label::after {
   background-color: #e6e9f2;
+}
+
+.form-check [type=checkbox]:disabled:checked + label::after {
+  background-color: #b7b8bb;
 }
 
 .toggles label input[type='checkbox']:checked + .lever:after {
