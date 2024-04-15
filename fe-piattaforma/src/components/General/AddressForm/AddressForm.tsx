@@ -53,42 +53,42 @@ const AddressForm: React.FC<AddressFormI> = ({
 
   const initValues = useCallback(() => {
     axios('/assets/indirizzi/province.json')
-    .then((response) => {
-      const provs = [...response.data];
-      setProvinces(
-        provs.map((province) => ({
-          name: province.nome,
-          state: province.regione,
-        }))
-      );
-      if (province && state) {
-        axios(`/assets/indirizzi/comuni/${state.toLowerCase()}.json`)
-          .then((response) => {
-            const cits = [...response.data];
-            const filteredCities = cits.filter(
-              (city) =>
-                city.provincia.nome.toLowerCase() === province.toLowerCase()
-            );
-            setCities(
-              filteredCities.map((city) => ({
-                name: city.nome,
-                province: city.provincia.nome,
-                cap: city.cap,
-              }))
-            );
-            const currentCity = filteredCities.find((c) => c.nome === city);
-            if (currentCity) {
-              setCAPS([...currentCity.cap]);
-            }
-          })
-          .catch((error) => {
-            console.error('Failed to fetch cities', error);
-          });
-      }
-    })
-    .catch((error) => {
-      console.error('Failed to fetch provinces', error);
-    });
+      .then((response) => {
+        const provs = [...response.data];
+        setProvinces(
+          provs.map((province) => ({
+            name: province.nome,
+            state: province.regione,
+          }))
+        );
+        if (province && state) {
+          axios(`/assets/indirizzi/comuni/${state.toLowerCase()}.json`)
+            .then((response) => {
+              const cits = [...response.data];
+              const filteredCities = cits.filter(
+                (city) =>
+                  city.provincia.nome.toLowerCase() === province.toLowerCase()
+              );
+              setCities(
+                filteredCities.map((city) => ({
+                  name: city.nome,
+                  province: city.provincia.nome,
+                  cap: city.cap,
+                }))
+              );
+              const currentCity = filteredCities.find((c) => c.nome === city);
+              if (currentCity) {
+                setCAPS([...currentCity.cap]);
+              }
+            })
+            .catch((error) => {
+              console.error('Failed to fetch cities', error);
+            });
+        }
+      })
+      .catch((error) => {
+        console.error('Failed to fetch provinces', error);
+      });
   }, [city, province, state]);
 
   useEffect(() => {
@@ -96,34 +96,42 @@ const AddressForm: React.FC<AddressFormI> = ({
   }, [province, city, initValues]);
 
   const onSelectProvince = (value: string) => {
+    console.log(value, 'il value di select');
+    value = setProvinceAndRegion(value);
     const [selectedProvince, selectedRegion] = value.split('/');
     const selectedState = selectedRegion.replace(/\s+/g, '-').toLowerCase();
     onAddressChange(address, selectedProvince, selectedState, city, CAP);
 
     axios(`/assets/indirizzi/comuni/${selectedState}.json`)
-    .then((response) => {
-      const citiesData = response.data.filter(
-        (city: any) =>
-          city.provincia.nome.toLowerCase() === selectedProvince.toLowerCase()
-      );
-      setCities(
-        citiesData.map((city: any) => ({
-          name: city.nome,
-          province: city.provincia.nome,
-          cap: city.cap,
-        }))
-      );
-    })
-    .catch((error) => {
-      console.error('Failed to fetch cities for selected province', error);
-    });
+      .then((response) => {
+        const citiesData = response.data.filter(
+          (city: any) =>
+            city.provincia.nome.toLowerCase() === selectedProvince.toLowerCase()
+        );
+        setCities(
+          citiesData.map((city: any) => ({
+            name: city.nome,
+            province: city.provincia.nome,
+            cap: city.cap,
+          }))
+        );
+      })
+      .catch((error) => {
+        console.error('Failed to fetch cities for selected province', error);
+      });
   };
+
+  const setProvinceAndRegion = useCallback((value: string): string => {
+    if (value.includes('Bolzano')) {
+      return 'Bolzano/Trentino-Alto Adige';
+    }
+    return value;
+  }, []);
 
   const onSelectCity = (value: string) => {
     const selected = cities.find(
       (c) => c.name.toLowerCase() === value.toLowerCase()
     );
-
 
     if (selected) {
       onAddressChange(
