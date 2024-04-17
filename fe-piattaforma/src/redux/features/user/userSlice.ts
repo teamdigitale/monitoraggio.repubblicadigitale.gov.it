@@ -167,7 +167,6 @@ export const userSlice = createSlice({
     },
   },
 });
-
 export const {
   login,
   logout,

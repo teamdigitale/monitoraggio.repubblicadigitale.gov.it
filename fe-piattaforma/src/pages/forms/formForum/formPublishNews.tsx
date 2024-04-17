@@ -7,7 +7,7 @@ import {
   UncontrolledTooltip,
 } from 'design-react-kit';
 import _ from 'lodash';
-import React, { useEffect, useRef, useState } from 'react';
+import React, {  useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Form, Input, Select } from '../../../components';
 import TextEditor from '../../../components/General/TextEditor/TextEditor';
@@ -23,11 +23,12 @@ import { GetEntityFilterValues } from '../../../redux/features/administrativeAre
 import { GetCategoriesList } from '../../../redux/features/forum/categories/categoriesThunk';
 import {
   selectCategoriesList,
-  selectNewsDetail,
+  selectNewsDetail
 } from '../../../redux/features/forum/forumSlice';
 import { useAppSelector } from '../../../redux/hooks';
 import { formFieldI, newForm, newFormField } from '../../../utils/formHelper';
 import { uploadFile } from '../../../utils/common';
+import { useInfiniteScrollCategories } from '../../../hooks/useInfiniteScrollCategories';
 
 interface publishNewsI extends withFormHandlerProps {
   formDisabled?: boolean;
@@ -89,7 +90,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
   );
   const [interventionsDropdownOptions, setInterventionsDropdownOptions] =
     useState(programsList || []);
-
+  const {handleScrollToBottom} = useInfiniteScrollCategories('board_categories')
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -372,13 +373,14 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
           label='Categoria'
           wrapperClassName='col-12 col-lg-6'
           onInputChange={onInputChange}
+          onMenuScrollToBottom={handleScrollToBottom}
           options={categoriesList?.map((opt) => ({
             label: opt.name,
             value: opt.id,
           }))}
           isDisabled={formDisabled}
           placeholder='Seleziona'
-          maxMenuHeight={100}
+          maxMenuHeight={250}
         />
       </Form.Row>
       <Form.Row className={clsx(bootClass, 'align-items-center')}>

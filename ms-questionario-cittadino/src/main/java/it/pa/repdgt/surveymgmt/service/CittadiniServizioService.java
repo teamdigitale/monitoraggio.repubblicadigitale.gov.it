@@ -27,6 +27,7 @@ import it.pa.repdgt.surveymgmt.projection.GetCittadinoProjection;
 import it.pa.repdgt.surveymgmt.repository.*;
 import it.pa.repdgt.surveymgmt.request.NuovoCittadinoServizioRequest;
 import it.pa.repdgt.surveymgmt.util.CSVServizioUtil;
+import it.pa.repdgt.surveymgmt.util.EncodeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.json.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -150,10 +151,10 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
         String criterioRicercaCittadinoServizioLike = null;
         String criterioRicercaCittadinoServizio = null;
         if (filtroListaCittadiniServizio.getCriterioRicerca() != null) {
-            criterioRicercaCittadinoServizio = filtroListaCittadiniServizio.getCriterioRicerca();
+            criterioRicercaCittadinoServizio = EncodeUtils
+                    .encrypt(EncodeUtils.decrypt(filtroListaCittadiniServizio.getCriterioRicerca()));
             criterioRicercaCittadinoServizioLike = "%".concat(criterioRicercaCittadinoServizio).concat("%");
         }
-
         return cittadinoServizioRepository.findAllCittadiniServizioPaginatiByFiltro(
                 idServizio,
                 criterioRicercaCittadinoServizio,
@@ -168,7 +169,8 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
         String criterioRicercaCittadinoServizioLike = null;
         String criterioRicercaCittadinoServizio = null;
         if (filtroListaCittadiniServizio.getCriterioRicerca() != null) {
-            criterioRicercaCittadinoServizio = filtroListaCittadiniServizio.getCriterioRicerca();
+            criterioRicercaCittadinoServizio = EncodeUtils
+                    .encrypt(EncodeUtils.decrypt(filtroListaCittadiniServizio.getCriterioRicerca()));
             criterioRicercaCittadinoServizioLike = "%".concat(criterioRicercaCittadinoServizio).concat("%");
         }
         return cittadinoServizioRepository.findAllCittadiniServizioByFiltro(
@@ -219,6 +221,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
     @LogExecutionTime
     public List<GetCittadinoProjection> getAllCittadiniByCodFiscOrNumDoc(String tipoDocumento,
             @NotNull String criterioRicerca) {
+        criterioRicerca = EncodeUtils.encrypt(EncodeUtils.decrypt(criterioRicerca));
         return cittadinoServizioRepository.getAllCittadiniByCodFiscOrNumDoc(tipoDocumento, criterioRicerca);
     }
 
@@ -229,14 +232,6 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
             @NotNull final Long idServizio,
             @NotNull final NuovoCittadinoServizioRequest nuovoCittadinoRequest) {
         String codiceFiscaleDecrypted;
-        if (nuovoCittadinoRequest.getCodiceFiscale() != null && !nuovoCittadinoRequest.getCodiceFiscale().isEmpty()) {
-            codiceFiscaleDecrypted = decryptFromBase64(nuovoCittadinoRequest.getCodiceFiscale());
-            if (codiceFiscaleDecrypted.length() != 16)
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                        "Il codice fiscale deve essere composto da 16 caratteri");
-            if (!isCittadinoMaggiorenne(codiceFiscaleDecrypted))
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Il cittadino non è maggiorenne");
-        }
         // Verifico se il facilitatore è il creatore di quel servizio
         if (!this.servizioSqlRepository
                 .findByFacilitatoreAndIdServizio(nuovoCittadinoRequest.getCfUtenteLoggato(), idServizio).isPresent()) {
@@ -261,6 +256,21 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
             }
             cittadino = optionalCittadinoDBFetch.get();
         } else {
+            if (nuovoCittadinoRequest.getCodiceFiscale() != null
+                    && !nuovoCittadinoRequest.getCodiceFiscale().isEmpty()) {
+                codiceFiscaleDecrypted = EncodeUtils.decrypt(nuovoCittadinoRequest.getCodiceFiscale());
+                if (codiceFiscaleDecrypted.length() != 16)
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                            "Il codice fiscale deve essere composto da 16 caratteri");
+                if (!isCittadinoMaggiorenne(codiceFiscaleDecrypted))
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Il cittadino non è maggiorenne");
+                nuovoCittadinoRequest.setCodiceFiscale(EncodeUtils.encrypt(codiceFiscaleDecrypted));
+            }
+            if (nuovoCittadinoRequest.getNumeroDocumento() != null
+                    && !nuovoCittadinoRequest.getNumeroDocumento().equals("")) {
+                nuovoCittadinoRequest.setNumeroDocumento(
+                        EncodeUtils.encrypt(EncodeUtils.decrypt(nuovoCittadinoRequest.getNumeroDocumento())));
+            }
             mapNuovoCittadinoRequestToCittadino(cittadino, nuovoCittadinoRequest);
         }
         // verifico se già esiste il cittadino per quel determinato servizio
@@ -292,8 +302,9 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 
     private CittadinoEntity mapNuovoCittadinoRequestToCittadino(CittadinoEntity cittadino,
             NuovoCittadinoServizioRequest nuovoCittadinoRequest) {
-        if (nuovoCittadinoRequest.getCodiceFiscale() != null)
+        if (nuovoCittadinoRequest.getCodiceFiscale() != null) {
             cittadino.setCodiceFiscale(nuovoCittadinoRequest.getCodiceFiscale());
+        }
         if (nuovoCittadinoRequest.getNumeroDocumento() != null) {
             cittadino.setTipoDocumento(nuovoCittadinoRequest.getTipoDocumento());
             cittadino.setNumeroDocumento(nuovoCittadinoRequest.getNumeroDocumento());
@@ -316,14 +327,6 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
             return isMaggiorenne(dataDiNascita);
         } catch (ParseException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Errore nella data di nascita");
-        }
-    }
-
-    private String decryptFromBase64(String encryptedData) {
-        try {
-            return new String(Base64.getDecoder().decode(encryptedData));
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Il codice fiscale inviato non è corretto");
         }
     }
 

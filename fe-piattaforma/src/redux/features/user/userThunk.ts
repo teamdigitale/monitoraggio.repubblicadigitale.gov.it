@@ -172,7 +172,7 @@ export const EditUser =
     }
   };
 
-const UploadUserPicAction = { type: 'user/UploadUserPic' };
+const UploadUserPicAction = {type: 'user/UploadUserPic'};
 export const UploadUserPic =
   (multipartifile: any, userId?: string) => async (dispatch: Dispatch) => {
     try {
@@ -315,11 +315,11 @@ export const GetNotificationsByUser =
           'sort',
           'sort_by'
         );
-        /*const res = await proxyCall(
+        const res = await proxyCall(
           `/user/${id}/notifications${queryParam}`,
           'GET'
-        )*/
-        const res = {
+        )
+        /*const res = {
           data: {
             data: {
               items: [],
@@ -329,12 +329,10 @@ export const GetNotificationsByUser =
               }
             }
           }
-        }
+        }*/
         if (res) {
           if (updateCount) {
-            dispatch(
-              setUserNotificationsToRead(res.data.data.pager?.total_items || 0)
-            );
+            dispatch(setUserNotificationsToRead(res.data.data.pager?.total_items || 0));
             dispatch(setUserNotificationsPreview(res.data.data.items || []));
           } else {
             dispatch(setUserNotifications(res.data.data.items || []));

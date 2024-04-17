@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import it.pa.repdgt.surveymgmt.util.EncodeUtils;
 import org.bson.json.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -119,6 +120,10 @@ public class CittadinoService {
 			Integer pageSize) {
 		FiltroListaCittadiniParam filtro = cittadiniPaginatiParam.getFiltro();
 		String criterioRicerca = filtro.getCriterioRicerca();
+
+		if (criterioRicerca != null) {
+			criterioRicerca = EncodeUtils.encrypt(EncodeUtils.decrypt(criterioRicerca));
+		}
 		List<String> idsSedi;
 		if (filtro.getIdsSedi() == null) {
 			idsSedi = this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgettoAndIdEnte(

@@ -29,10 +29,16 @@ import NoResultsFoundCitizen from '../../../../../components/NoResultsFoundCitiz
 import clsx from 'clsx';
 import { SearchValue } from '../../../../forms/models/searchValue.model';
 import { NewUserValuesFormCitizen } from '../../../../forms/models/newUserValuesFormCitizen.model';
-import { Buffer } from 'buffer';
 import { citizenFormDropdownOptions } from '../../../../forms/constantsFormCitizen';
+import { Icon } from 'design-react-kit';
+import {
+  DescriptionForAddingCitizen
+} from '../../../../../components/CitizenRegistration/DescriptionForAddingCitizen';
 
 const id = 'search-citizen-modal';
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const AES256 = require('aes-everywhere');
 
 export const selectedSteps = {
   FISCAL_CODE: 'codiceFiscale',
@@ -87,6 +93,7 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
     selectQuestionarioTemplateSnapshot
   )?.sezioniQuestionarioTemplate?.[0];
   //const [stringQ1, setStringQ1] = useState<string>('');
+
 
   useEffect(() => {
     if (typeof surveyTemplateQ1 !== 'string') {
@@ -220,15 +227,17 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
             searchValue?.type === 'codiceFiscale' &&
             key === 'codiceFiscale'
           ) {
-            body[key] = Buffer.from(searchValue.value.toUpperCase()).toString(
-              'base64'
+            body[key] = AES256.encrypt(
+              searchValue.value.toUpperCase(),
+              process?.env?.AES256_KEY
             );
           } else if (
             searchValue?.type === 'numeroDoc' &&
             key === 'numeroDocumento'
           ) {
-            body[key] = Buffer.from(searchValue?.value.toUpperCase()).toString(
-              'base64'
+            body[key] = AES256.encrypt(
+              searchValue.value.toUpperCase(),
+              process?.env?.AES256_KEY
             );
           } else if (key === 'fasciaDiEtaId') {
             if (searchValue?.type !== 'codiceFiscale') {
@@ -269,7 +278,7 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
             numeroDocumento: selectedCitizen?.numeroDocumento,
             codiceFiscaleNonDisponibile: true,
             nuovoCittadino: false,
-             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             fasciaDiEtaId: selectedCitizen?.fasciaDiEta,
           };
@@ -294,6 +303,7 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
     <GenericModal
       id={id}
       title='Aggiungi cittadino'
+      subtitle={<DescriptionForAddingCitizen/>}
       noPaddingPrimary
       primaryCTA={{
         label: 'Aggiungi',
@@ -328,6 +338,15 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
               setCurrentStep(radioFilter);
             }}
           />
+          <div className={clsx('d-flex', 'align-items-center', 'px-5','py-3')}>
+            <Icon
+              icon="it-info-circle"
+              size="sm"
+              color="primary"
+              aria-label="Informazione"
+            />
+            <p className={clsx('ml-2' ,'text-500')}>Non è al momento possibile inserire il numero di documento</p>
+          </div>
           <div
             className={clsx(
               'd-block px-5',
@@ -340,6 +359,7 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
               : loadSecondStep()}
           </div>
         </div>
+
       </div>
     </GenericModal>
   );

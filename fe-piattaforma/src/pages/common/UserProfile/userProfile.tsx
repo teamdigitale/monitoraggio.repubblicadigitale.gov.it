@@ -126,7 +126,7 @@ const UserProfile = () => {
                   ? () =>
                       navigate(
                         `/area-amministrativa/${
-                          role?.codiceRuolo === userRoles.VOL ||
+                          role?.codiceRuolo === userRoles.VOL || 
                           role?.codiceRuolo === userRoles.FAC ||
                           role?.codiceRuolo === userRoles.REGP ||
                           role?.codiceRuolo === userRoles.DEGP ||

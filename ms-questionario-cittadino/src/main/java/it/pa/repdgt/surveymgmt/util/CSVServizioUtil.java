@@ -87,7 +87,7 @@ public class CSVServizioUtil {
 		return Arrays.asList(
 				servizioResource.getNomeServizio(),
 				servizioResource.getNominativoFacilitatore(),
-				servizioResource.getDataServizio(),
+				servizioResource.getDataOraAggiornamento(),
 				servizioResource.getStato(),
 				servizioResource.getDurataServizio());
 	}

@@ -15,6 +15,7 @@ import { LogoutRedirect } from '../../../redux/features/user/userThunk';
 
 const ErrorPage = () => {
   const [errorMessage, setErrorMessage] = useState(defaultErrorMessage);
+  const [errorTitle, setErrorTitle] = useState<string>();
   const device = useAppSelector(selectDevice);
   const dispatch = useDispatch();
   const { errorCode = 'empty' } = useParams();
@@ -29,6 +30,7 @@ const ErrorPage = () => {
   const handleGetErrorMessage = async () => {
     const error = await getErrorMessage({ errorCode });
     if (error?.message) setErrorMessage(error.message);
+    if(error?.title) setErrorTitle(error.title);
   };
 
   useEffect(() => {
@@ -106,9 +108,17 @@ const ErrorPage = () => {
                     aria-label='Autenticazione'
                   />
                 </div>
-                <h1
+                <div className= {clsx(
+                    'h2',
+                    'font-weight-semibold',
+                    'text-primary',
+                    'text-center text-wrap'
+                )}>
+                  {errorTitle}
+                </div>
+                <h5
                   className={clsx(
-                    'h3',
+                    'h5',
                     'font-weight-semibold',
                     'text-secondary',
                     (device.mediaIsPhone || device.mediaIsTablet) &&
@@ -116,7 +126,7 @@ const ErrorPage = () => {
                   )}
                 >
                   {errorMessage}
-                </h1>
+                </h5>
               </Card>
             </div>
           </div>

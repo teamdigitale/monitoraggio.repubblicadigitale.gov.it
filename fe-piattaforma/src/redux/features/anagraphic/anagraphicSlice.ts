@@ -11,9 +11,7 @@ export interface UserAnagraphicStateI {
 
 export interface AnagraphicStateI {
   idsToGet: string[];
-  anagraphics: {
-    [key: string]: UserAnagraphicStateI;
-  };
+  anagraphics: { [key: string]: UserAnagraphicStateI; };
 }
 
 const initialState: AnagraphicStateI = {

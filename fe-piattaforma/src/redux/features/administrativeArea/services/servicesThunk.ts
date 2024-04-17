@@ -15,8 +15,9 @@ import {
 } from '../administrativeAreaSlice';
 import { transformFiltersToQueryParams } from '../../../../utils/common';
 import { getUserHeaders } from '../../user/userThunk';
-import { Buffer } from 'buffer';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const AES256 = require('aes-everywhere');
 export interface ServicesI {
   id: string;
   nome: string;
@@ -137,9 +138,10 @@ export const GetCitizenListServiceDetail =
         filters.criterioRicerca !== ''
       ) {
         newFilters = {
-          criterioRicerca: Buffer.from(
-            filters.criterioRicerca.toUpperCase()
-          ).toString('base64'),
+          criterioRicerca: AES256.encrypt(
+            filters.criterioRicerca.toUpperCase(),
+            process?.env?.AES256_KEY
+          ),
         };
       }
       let queryParamFilters = transformFiltersToQueryParams(
@@ -198,8 +200,9 @@ export const GetServicesDetailFilters =
         filters.criterioRicerca !== ''
       ) {
         newFilters = {
-          criterioRicerca: Buffer.from(filters.criterioRicerca).toString(
-            'base64'
+          criterioRicerca: AES256.encrypt(
+            filters.criterioRicerca.toUpperCase(),
+            process?.env?.AES256_KEY
           ),
         };
       }

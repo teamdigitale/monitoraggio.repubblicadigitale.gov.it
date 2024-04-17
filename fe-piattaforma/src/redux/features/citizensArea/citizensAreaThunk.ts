@@ -9,13 +9,13 @@ import {
   setEntityValues,
 } from './citizensAreaSlice';
 import { RootState } from '../../store';
-// import { mapOptions } from '../../../utils/common';
 import { OptionType } from '../../../components/Form/select';
 import { downloadCSV, mapOptionsCitizens } from '../../../utils/common';
 import { getUserHeaders } from '../user/userThunk';
-import { Buffer } from 'buffer';
 
 const GetValuesAction = { type: 'citizensArea/GetEntityValues' };
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const AES256 = require('aes-everywhere');
 
 export const GetEntityValues =
   (payload?: any) => async (dispatch: Dispatch, select: Selector) => {
@@ -44,9 +44,10 @@ export const GetEntityValues =
       const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
         getUserHeaders();
       if (filtroRequest.criterioRicerca) {
-        filtroRequest.criterioRicerca = Buffer.from(
-          filtroRequest.criterioRicerca.toUpperCase()
-        ).toString('base64');
+        filtroRequest.criterioRicerca = AES256.encrypt(
+          filtroRequest.criterioRicerca.toUpperCase(),
+          process?.env?.AES256_KEY
+        );
       }
       const body = {
         filtro: filtroRequest,

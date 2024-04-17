@@ -33,6 +33,7 @@ export const GetCategoriesList =
         // @ts-ignore
         forum: { filters },
       } = select((state: RootState) => state);
+      const itemPerPage = 30;
       const keys =
         (filters.searchValue || [])
           .map(({ value }: { value: string }) => value)
@@ -54,7 +55,7 @@ export const GetCategoriesList =
           { label: 'page', value: Math.max(0, pagination.pageNumber - 1) },
         ],
         items_per_page: [
-          { label: 'items_per_page', value: pagination.pageSize },
+          { label: 'items_per_page', value: itemPerPage },
         ],
       };
       const queryParamFilters = transformFiltersToQueryParams(body).replace(

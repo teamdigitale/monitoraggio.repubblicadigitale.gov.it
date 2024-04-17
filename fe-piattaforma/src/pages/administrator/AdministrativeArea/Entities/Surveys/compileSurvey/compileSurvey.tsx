@@ -273,7 +273,6 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
             });
           }
         }
-        console.log(newForm, 'newForm');
         updateForm(
           {
             ...newForm,
@@ -588,4 +587,4 @@ const CompileSurvey: React.FC<withFormHandlerProps> = (props) => {
 
 const form = newForm();
 
-export default withFormHandler({form}, CompileSurvey);
+export default withFormHandler({ form }, CompileSurvey);

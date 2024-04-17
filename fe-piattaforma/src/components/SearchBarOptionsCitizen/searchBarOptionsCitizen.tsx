@@ -9,7 +9,6 @@ import { GetEntitySearchResult } from '../../redux/features/citizensArea/citizen
 import Input from '../Form/input';
 import { setCitizenSearchResults } from '../../redux/features/citizensArea/citizensAreaSlice';
 import { SearchValue } from '../../pages/forms/models/searchValue.model';
-import { Buffer } from 'buffer';
 import { emitNotify } from '../../redux/features/notification/notificationSlice';
 import moment from 'moment';
 import { Parser, Validator } from '@marketto/codice-fiscale-utils';
@@ -107,6 +106,9 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
     [isValidFiscalCode, mustValidateCf]
   );
 
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const AES256 = require('aes-everywhere');
+
   return (
     <div
       className={clsx(
@@ -133,8 +135,10 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
                   onInputChange={() => {
                     onRadioChange(steps[item]);
                   }}
+                  disabled={steps[item] === 'numeroDoc'}
                 />
-                <Label check htmlFor={`current-step-${index}`}>
+                <Label check htmlFor={`current-step-${index}`}
+                       className={clsx({'label-disabled': steps[item] === 'numeroDoc'})}>
                   {t(steps[item])}
                 </Label>
               </div>
@@ -143,19 +147,22 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
         </Form>
       </div>
       <SearchBar
-        placeholder='Inserisci i dati del tipo di documento selezionato'
+        placeholder='Inserisci il codice fiscale'
         searchType={currentStep ?? ''}
         onSubmit={(data) => {
           if (resetModal) resetModal();
           if (data) {
-            const crypted = Buffer.from(data.toUpperCase()).toString('base64');
+            const encrypted = AES256.encrypt(
+              data.toUpperCase(),
+              process?.env?.AES256_KEY
+            );
             const searchValue: SearchValue = {
               type: currentStep as string,
               value: data,
             };
             setSearchValue(searchValue);
             dispatch(
-              GetEntitySearchResult(crypted, currentStep ? currentStep : '')
+              GetEntitySearchResult(encrypted, currentStep ? currentStep : '')
             );
             if (alreadySearched) alreadySearched(true);
           }
@@ -164,6 +171,7 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
         onQueryChange={onQueryChange}
         disableSubmit={!canSubmit}
       />
+
     </div>
   );
 };

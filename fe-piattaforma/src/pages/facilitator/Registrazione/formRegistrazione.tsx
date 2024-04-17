@@ -55,7 +55,7 @@ const FormRegistrazione: React.FC<FormProfileI> = (props) => {
       setFormValues(user);
       setShowBio(
         user.mostraBio
-        /*&& !!user?.profiliUtente?.filter(
+        /*&& !!user?.profiliUtente?.filter( 
           ({ codiceRuolo }) =>
             codiceRuolo === userRoles.REG ||
             codiceRuolo === userRoles.REGP ||
