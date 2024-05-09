@@ -1,5 +1,24 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.213](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.212...1.0.0-test.213) (2024-05-09)
+
+
+### Features
+
+* **fe-function:** updates 20240509 ([10d6d0d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/10d6d0d42c27d96de8c26e32cd94c71f8e7ed77c))
+* **fe-be:** updates 20240509 ([8c4132a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8c4132adac98bacf0de23e37cef35c915aa567a9))
+
+
+### Bug Fixes
+
+* **release-version:** updates 20240509 ([8e55781](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8e557819b143a6a53fac7a8938087f4dd5634467))
+* **fe:** datiaggiornati ([01ade6b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/01ade6b704a2c553d2f0056c1a3279ff5dee95f8))
+* **csvProcessor:** updates 20240509 ([970f748](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/970f74873cfff12f97b50681613818940746abc6))
+* **messe al suo posto le commitlint:** updates 20240509 ([4db370b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4db370b6fc1c92ca217cd725a75b06bb5446589a))
+* **try-config:** updates 20240509 ([0fdfb3f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0fdfb3fea6d1bd828927d4779c63311596030026))
+* **try:** updates 20240509 ([b6043cf](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b6043cf925673531e9b450161d95738e6eb975d4))
+* **import:** updates 20240509 ([346240a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/346240af8afcf89808088760899a1933161ffadc))
+
 ## [1.0.0-test.212](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.211...1.0.0-test.212) (2024-04-15)
 
 
