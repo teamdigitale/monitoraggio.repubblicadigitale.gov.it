@@ -16,5 +16,5 @@ export const useFiscalCodeValidation = () => {
     [isValidFiscalCode]
   );
 
-  return { canSubmit, onQueryChange, setCanSubmit };
+  return { canSubmit, onQueryChange, setCanSubmit,isValidFiscalCode };
 };

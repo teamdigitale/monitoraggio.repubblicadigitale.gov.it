@@ -19,6 +19,7 @@ export interface CallToAction {
   disabled?: boolean;
   label: string;
   onClick?: () => void;
+  buttonsClass?: string;
 }
 
 export interface GenericModalI {
@@ -48,7 +49,7 @@ export interface GenericModalI {
   isUserRole?: boolean;
   darkTitle?: boolean;
   isRocketChatModal?: boolean;
-  subtitle?:ReactNode;
+  subtitle?: ReactNode;
 }
 
 const GenericModal: React.FC<GenericModalI> = (props) => {
@@ -180,7 +181,7 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
                 isRoleManaging
                   ? 'primary-color-a10 h3 pb-4'
                   : 'primary-color h4',
-                'my-auto',
+                'my-auto'
                 //darkTitle && 'primary-color-a10'
               )}
             >
@@ -198,19 +199,19 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
       </>
       {hasSearch || description || payload?.description || children ? (
         <ModalBody
-          className="p-0"
+          className='p-0'
           style={{ maxHeight: isRocketChatModal ? '70vh' : '' }}
         >
           {hasSearch ? (
             //
-            <div className="row mx-5">
-              <div className="col-12">
+            <div className='row mx-5'>
+              <div className='col-12'>
                 <SearchBar
                   autocomplete={false}
                   onSubmit={() => console.log('ricerca modale')}
                   placeholder={searchPlaceholder}
                   isClearable
-                  id="search-generic-modal"
+                  id='search-generic-modal'
                 />
               </div>
             </div>
@@ -228,7 +229,7 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
           {children}
         </ModalBody>
       ) : (
-        <button className="hidden-btn" aria-label="contenuto della modale" />
+        <button className='hidden-btn' aria-label='contenuto della modale' />
       )}
 
       {footer || primaryCTA || secondaryCTA ? (
@@ -295,12 +296,13 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
                 <Button
                   {...primaryCTA}
                   className={clsx(
-                    device.mediaIsPhone ? 'cta-button' : 'cta-button',
-                    device.mediaIsPhone && noPaddingPrimary && 'pt-0'
+                    primaryCTA.buttonsClass ?? 'cta-button',
+                    device.mediaIsPhone && noPaddingPrimary && 'pt-0',
+                    'm-2'
                   )}
                   color='primary'
                   onClick={() => handleAction('primary')}
-                  size='xs'
+                  size={!device.mediaIsPhone ? 'xs' : 'sm'}
                   aria-label={primaryCTA.label}
                 >
                   {primaryCTA.label}

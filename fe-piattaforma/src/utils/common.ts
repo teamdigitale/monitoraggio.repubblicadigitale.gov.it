@@ -606,3 +606,33 @@ export const isSafariBrowser = () => {
   }
   return false;
 };
+
+export function convertBase64ToFile(
+  fileContent: string,
+  fileName: string,
+  fileType: string
+) {
+  const byteCharacter = window.atob(fileContent);
+  const buffer = new ArrayBuffer(byteCharacter.length);
+  const content = new Uint8Array(buffer);
+
+  for (let i = 0; i < byteCharacter.length; i++) {
+    content[i] = byteCharacter.charCodeAt(i);
+  }
+
+  const blob = new Blob([buffer]);
+  return new File([blob], fileName, { type: fileType });
+}
+
+export function downloadGeneratedFile(file: File) {
+  const url = window.URL.createObjectURL(file);
+  const link = document.createElement('a');
+
+  link.href = url;
+  link.download = file.name;
+  document.body.appendChild(link);
+  link.click();
+
+  document.body.removeChild(link);
+  window.URL.revokeObjectURL(url);
+}
