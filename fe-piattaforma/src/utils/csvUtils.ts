@@ -87,7 +87,7 @@ export const validateFields = (
   let mandatoryStartFields = [...mandatoryFields];
   if (record.AN5 && record.AN6) {
     mandatoryStartFields = mandatoryStartFields.filter((val) => val !== 'AN3');
-  }
+  } 
 
   const missingFields = mandatoryStartFields.filter(
     (field) =>
