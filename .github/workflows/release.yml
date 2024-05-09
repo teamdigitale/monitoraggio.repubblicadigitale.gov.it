@@ -131,6 +131,7 @@ jobs:
                 @semantic-release/git \
                 @semantic-release/release-notes-generator \
                 @semantic-release/exec \
+                conventional-changelog-conventionalcommits
 
       - name: Create .VERSION file
         run: echo "There are no relevant changes, so no new version is released" > .VERSION
@@ -703,6 +704,7 @@ jobs:
                 @semantic-release/git \
                 @semantic-release/release-notes-generator \
                 @semantic-release/exec \
+                conventional-changelog-conventionalcommits
 
       - name: Create .VERSION file
         run: echo "There are no relevant changes, so no new version is released" > .VERSION
