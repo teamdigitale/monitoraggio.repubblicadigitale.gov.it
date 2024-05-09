@@ -14,7 +14,7 @@
 
 	<groupId>it.pa.repdgt</groupId>
 	<artifactId>ms-programma-progetto</artifactId>
-	<version>1.0.0-test.212</version>
+	<version>1.0.0-test.213</version>
 	<packaging>jar</packaging>
 
 	<properties>
