@@ -19,3 +19,4 @@ export const usePathContent = (pathName: string) => {
   const defaultContent = { title: 'CONTENUTI PUBBLICATI', description: '' };
   return pathMap[pathName] || defaultContent;
 };
+

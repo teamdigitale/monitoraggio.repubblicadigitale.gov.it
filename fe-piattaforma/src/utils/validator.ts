@@ -14,7 +14,7 @@ export const RegexpType = {
   REGISTRY: 'registry',
   ALPHA_NUMERIC: 'alphaNumeric',
   ALPHA_NUMERIC_INPUT: 'alphaNumericInput',
-  FISCAL_CODE: 'fiscalCode',
+  FISCAL_CODE: 'fiscalCode', 
   POSTAL_CODE: 'postalCode',
   PASSWORD: 'password',
   PASSWORD_TOOL: 'password_tool',

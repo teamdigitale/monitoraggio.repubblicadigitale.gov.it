@@ -13,6 +13,7 @@ const API = axios.create({
 
 API.interceptors.request.use((req) => {
   //const codiceRuolo = JSON.parse(getSessionValues('profile'))?.codiceRuolo;
+  //COnsole.log(argomento)
   const newHeaders: {
     authToken?: string;
     userRole?: string;
