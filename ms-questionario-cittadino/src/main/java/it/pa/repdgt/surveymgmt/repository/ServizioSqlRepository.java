@@ -1,5 +1,6 @@
 package it.pa.repdgt.surveymgmt.repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,6 +11,9 @@ import org.springframework.data.repository.query.Param;
 import it.pa.repdgt.shared.entity.ServizioEntity;
 
 public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Long> {
+
+	Optional<List<ServizioEntity>> findAllByDataServizioAndDurataServizioAndTipologiaServizio(Date dataServizio,
+			String durataServizio, String tipologiaServizio);
 
 	@Query(value = ""
 			+ " SELECT "

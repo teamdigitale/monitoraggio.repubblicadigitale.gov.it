@@ -102,31 +102,31 @@ public class QuestionarioCompilatoService {
 					"Impossibile aggiornare il cittadino. Cittadino con codice fiscale o numero documento già esistente");
 			throw new CittadinoException(errorMessage, CodiceErroreEnum.U07);
 		}
+		if (questionarioCompilatoRequest.getConsensoTrattamentoDatiRequest() != null) {
+			// Recupero dalla request:
+			// - dati consenso trattamento dati
+			// - codice fiscale del cittadino che sta compilando il questionario
+			// - numero documento del cittadino che sta compilando il questionario
+			String codiceFiscaleCittadino = questionarioCompilatoRequest.getConsensoTrattamentoDatiRequest()
+					.getCodiceFiscaleCittadino();
+			String numeroDocumentoCittadino = questionarioCompilatoRequest.getConsensoTrattamentoDatiRequest()
+					.getNumeroDocumentoCittadino();
 
-		// Recupero dalla request:
-		// - dati consenso trattamento dati
-		// - codice fiscale del cittadino che sta compilando il questionario
-		// - numero documento del cittadino che sta compilando il questionario
-		String codiceFiscaleCittadino = questionarioCompilatoRequest.getConsensoTrattamentoDatiRequest()
-				.getCodiceFiscaleCittadino();
-		String numeroDocumentoCittadino = questionarioCompilatoRequest.getConsensoTrattamentoDatiRequest()
-				.getNumeroDocumentoCittadino();
+			// Verifico il consenso trattamento dati per il cittadino e in caso non lo abbia
+			// già dato,
+			// lo registro per la prima volta. Ovvero salvo l'informazione sulla tabella
+			// Cittadino
+			this.verificaEseguiESalvaConsensoTrattamentoDati(codiceFiscaleCittadino, numeroDocumentoCittadino);
 
-		// Verifico il consenso trattamento dati per il cittadino e in caso non lo abbia
-		// già dato,
-		// lo registro per la prima volta. Ovvero salvo l'informazione sulla tabella
-		// Cittadino
-		this.verificaEseguiESalvaConsensoTrattamentoDati(codiceFiscaleCittadino, numeroDocumentoCittadino);
+			// Recupero il cittadino e lo aggiorno i nuovi dati provenienti dalla request
+			Optional<CittadinoEntity> optionalCittadinoDBFetch = this.cittadinoService
+					.getByCodiceFiscaleOrNumeroDocumento(codiceFiscaleCittadino, numeroDocumentoCittadino);
 
-		// Recupero il cittadino e lo aggiorno i nuovi dati provenienti dalla request
-		Optional<CittadinoEntity> optionalCittadinoDBFetch = this.cittadinoService
-				.getByCodiceFiscaleOrNumeroDocumento(codiceFiscaleCittadino, numeroDocumentoCittadino);
-
-		optionalCittadinoDBFetch.ifPresent(cittadino -> {
-			cittadino.setDataOraAggiornamento(new Date());
-			this.cittadinoService.salvaCittadino(cittadino);
-		});
-
+			optionalCittadinoDBFetch.ifPresent(cittadino -> {
+				cittadino.setDataOraAggiornamento(new Date());
+				this.cittadinoService.salvaCittadino(cittadino);
+			});
+		}
 		// Aggiorno questionarioCompilato MySQl
 		final QuestionarioCompilatoEntity questionarioCompilatoDBMySqlFetch = questionarioCompilatoEntity.get();
 		questionarioCompilatoDBMySqlFetch.setStato(StatoQuestionarioEnum.COMPILATA.getValue());
