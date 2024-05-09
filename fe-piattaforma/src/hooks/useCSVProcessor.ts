@@ -1,17 +1,19 @@
 import Papa from 'papaparse';
 import { useCallback, useState } from 'react';
-import { ServiziElaboratiDto } from '../models/ServiziElaboratiDto.model';
+import { ServiziElaboratiDto } from '../models/ServiziElaboratiDto.Model';
 import { ElaboratoCsvRequest } from '../models/ElaboratoCsvRequest.model';
 import { useFiscalCodeValidation } from './useFiscalCodeValidation';
 import { getUserHeaders } from '../redux/features/user/userThunk';
 import moment from 'moment';
 import { CSVRecord } from '../models/RecordCSV.model';
 import {
-  ageCategoryMap, encryptDocumentAndDetermineType, encryptFiscalCode,
+  ageCategoryMap,
+  encryptDocumentAndDetermineType,
+  encryptFiscalCode,
   generateExperienceSection,
   generateServiceName,
   generateServiceSection,
-  validateFields
+  validateFields,
 } from '../utils/csvUtils';
 const {
   idProgetto,
@@ -95,20 +97,33 @@ export function useCSVProcessor(file: File | undefined) {
                     AN17: _AN17,
                     ...filteredRecord
                   } = record;
+                  const { rejectedTypes } = generateServiceName(
+                    filteredRecord.SE3
+                  );
                   const errors = validateFields(
                     filteredRecord,
                     isValidFiscalCode
                   );
+                  if (
+                    rejectedTypes.length > 0 &&
+                    filteredRecord.SE3 &&
+                    filteredRecord.SE3.trim() !== ''
+                  ) {
+                    errors.push(
+                      `Servizio non riconosciuto nel campo SE3: ${rejectedTypes.join(
+                        ', '
+                      )}. Assicurati che i tipi di servizio inseriti siano corretti`
+                    );
+                  }
                   const isValidFields = errors.length === 0;
                   const servizioElaborato: ServiziElaboratiDto =
                     mappingDatiElaborati(filteredRecord, errors);
-                  if (isValidFields) {
+                  if (isValidFields && rejectedTypes.length === 0) {
                     serviziValidati.push(servizioElaborato);
                   } else {
                     serviziScartati.push(servizioElaborato);
                   }
                 });
-
                 const serviziElaborati: ElaboratoCsvRequest = {
                   serviziValidati: serviziValidati,
                   serviziScartati: serviziScartati,
@@ -141,17 +156,23 @@ export function useCSVProcessor(file: File | undefined) {
     isProcessing,
   };
 
-  function mappingDatiElaborati(filteredRecord: CSVRecord,errors: string[]): ServiziElaboratiDto {
+  function mappingDatiElaborati(
+    filteredRecord: CSVRecord,
+    errors: string[]
+  ): ServiziElaboratiDto {
     const sezioneQuestionarioCompilatoQ3 =
       generateServiceSection(filteredRecord);
-    const sezioneQ4Questionario =
-      generateExperienceSection(filteredRecord);
-    const encryptedFiscalCode = encryptFiscalCode(filteredRecord)
-    const documentDetails = encryptDocumentAndDetermineType(filteredRecord, encryptedFiscalCode);
+    const sezioneQ4Questionario = generateExperienceSection(filteredRecord);
+    const encryptedFiscalCode = encryptFiscalCode(filteredRecord);
+    const documentDetails = encryptDocumentAndDetermineType(
+      filteredRecord,
+      encryptedFiscalCode
+    );
+    const { serviceName } = generateServiceName(filteredRecord.SE3);
     const errorNotes = errors.length > 0 ? errors.join(', ') : '';
     return {
       servizioRequest: {
-        nomeServizio: generateServiceName(filteredRecord.SE3),
+        nomeServizio: serviceName,
         data: moment(filteredRecord.SE1).format('YYYY-MM-DD'),
         durataServizio: filteredRecord.SE2,
         idEnteServizio: idEnte,
@@ -168,15 +189,15 @@ export function useCSVProcessor(file: File | undefined) {
       },
       nuovoCittadinoServizioRequest: {
         cfUtenteLoggato: cfUtenteLoggato,
-        codiceFiscale: encryptedFiscalCode ,
+        codiceFiscale: encryptedFiscalCode,
         codiceFiscaleNonDisponibile: filteredRecord.AN4 === 'SI',
-        numeroDocumento:documentDetails.encryptedDocNumber,
+        numeroDocumento: documentDetails.encryptedDocNumber,
         tipoDocumento: documentDetails.tipoDocumento,
         idEnte: idEnte,
         idProgetto: idProgetto,
         idProgramma: idProgramma,
         genere: filteredRecord.AN7,
-        fasciaDiEtaId: ageCategoryMap[filteredRecord.AN8] ?? "",
+        fasciaDiEtaId: ageCategoryMap[filteredRecord.AN8] ?? '',
         titoloStudio: filteredRecord.AN9,
         statoOccupazionale: filteredRecord.AN10,
         provinciaDiDomicilio: filteredRecord.AN12,
@@ -184,12 +205,12 @@ export function useCSVProcessor(file: File | undefined) {
         nuovoCittadino: false,
       },
       questionarioCompilatoRequest: {
-        cfUtenteLoggato:cfUtenteLoggato,
-        codiceRuoloUtenteLoggato:codiceRuoloUtenteLoggato,
+        cfUtenteLoggato: cfUtenteLoggato,
+        codiceRuoloUtenteLoggato: codiceRuoloUtenteLoggato,
         sezioneQ4Questionario: JSON.stringify(sezioneQ4Questionario),
       },
       campiAggiuntiviCSV: {
-        note:errorNotes,
+        note: errorNotes,
         idFacilitatore: filteredRecord.IDFacilitatore,
         nominativoFacilitatore: filteredRecord.NominativoFacilitatore,
         nominativoSede: filteredRecord.NominativoSede,
