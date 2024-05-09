@@ -1,6 +1,6 @@
 import Papa from 'papaparse';
 import { useCallback, useState } from 'react';
-import { ServiziElaboratiDto } from '../models/ServiziElaboratiDto.Model';
+import { ServiziElaboratiDto } from '../models/ServiziElaboratiDto.model';
 import { ElaboratoCsvRequest } from '../models/ElaboratoCsvRequest.model';
 import { useFiscalCodeValidation } from './useFiscalCodeValidation';
 import { getUserHeaders } from '../redux/features/user/userThunk';
