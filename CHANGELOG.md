@@ -1,5 +1,14 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.32.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.32.0...1.32.1) (2024-05-15)
+
+
+### Bug Fixes
+
+* **revert-fe:** updates 20240515 ([e9f18c1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e9f18c1874f4986e108c7b67b92ca43c1738ae29))
+* **release:** updates 20240515 ([60c4a1d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/60c4a1d4e934ae45755e0f97cf631598e6908f4c))
+* **fe:** updates 20240515 ([f155f8a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f155f8a9082bc6d4da41d4593816fac8d43856a5))
+
 ## [1.32.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.31.1...1.32.0) (2024-04-15)
 
 
