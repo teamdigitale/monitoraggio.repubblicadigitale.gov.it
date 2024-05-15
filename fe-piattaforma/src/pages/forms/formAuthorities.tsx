@@ -1,7 +1,7 @@
 import clsx from 'clsx';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { EmptySection, Form, Input, Select } from '../../components';
 import { ButtonInButtonsBar } from '../../components/ButtonsBar/buttonsBar';
 import withFormHandler, {
@@ -25,6 +25,7 @@ import {
   newFormField,
 } from '../../utils/formHelper';
 import { formTypes } from '../administrator/AdministrativeArea/Entities/utils';
+import { Button } from 'design-react-kit';
 
 const TipologiaEnteOptions = [
   { label: 'Ente pubblico', value: 'Ente pubblico' },
@@ -76,6 +77,7 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
   const formData: { [key: string]: formFieldI['value'] } | undefined =
     useAppSelector(selectAuthorities).detail?.dettagliInfoEnte;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // useEffect(() => {
   //   if (
@@ -221,9 +223,15 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form]);
 
+  const handleNavigateToCaricamentoDati = useCallback(() => {
+    navigate('./caricamento-dati');
+  }, []);
+
   const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
 
+
   return (
+      <>
     <Form
       id='form-authorities'
       className={clsx(formDisabled ? 'mt-5' : 'mt-3', 'mb-0')}
@@ -348,6 +356,12 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
         </Form.Row>
       )}
     </Form>
+        <div className={bootClass}>
+          <Button onClick={handleNavigateToCaricamentoDati} type={'button'} className="btn btn-primary mb-4">
+              Caricamento Dati
+          </Button>
+        </div>
+      </>
   );
 };
 

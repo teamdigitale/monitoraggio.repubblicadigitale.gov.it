@@ -67,6 +67,7 @@ import UploadCSVModal from '../../../../../components/AdministrativeArea/Entitie
 import { selectProfile } from '../../../../../redux/features/user/userSlice';
 import IconWarning from '/public/assets/img/it-warning-circle-primary.png';
 import IconNote from '/public/assets/img/it-note-primary.png';
+import { ProjectContext } from '../../../../../contexts/ProjectContext';
 
 const EntiPartnerTemplate =
   '/assets/entity_templates/template_ente-partner.csv';
@@ -120,6 +121,7 @@ const ProjectsDetails = () => {
   const [correctButtons, setCorrectButtons] = useState<ButtonInButtonsBar[]>(
     []
   );
+
   const [projInfoButtons, setProjInfoButtons] = useState<boolean>(false);
   const [buttonsPosition, setButtonsPosition] = useState<'TOP' | 'BOTTOM'>(
     'TOP'
@@ -382,6 +384,13 @@ const ProjectsDetails = () => {
           })
         ),
     },
+    {
+      size: 'xs',
+      color: 'primary',
+      text: ' Caricamento Dati',
+      onClick: () =>
+          navigate('./caricamento-dati'),
+    },
   ];
 
   const EmptySectionButtons: ButtonInButtonsBar[] = [
@@ -569,7 +578,6 @@ const ProjectsDetails = () => {
       );
     }
   };
-
   const PartnerAuthoritySection = () => {
     setCorrectModal(<ManagePartnerAuthority creation />);
     if (
@@ -1243,167 +1251,173 @@ const ProjectsDetails = () => {
   // };
 
   return (
-    <div
-      className={clsx(
-        mediaIsPhone && 'mt-5',
-        'd-flex',
-        'flex-row',
-        'container'
-      )}
-    >
-      <div className='d-flex flex-column w-100 container'>
-        <div>
-          <DetailLayout
-            nav={nav}
-            titleInfo={{
-              title: projectDetails?.nomeBreve || projectDetails?.nome,
-              status: projectDetails?.stato,
-              upperTitle: { icon: 'it-file', text: 'Progetto' },
-              subTitle: programDetails?.nomeBreve,
-            }}
-            currentTab={activeTab}
-            infoProjBtn={projInfoButtons}
-            formButtons={correctButtons}
-            // itemsAccordionList={itemAccordionList}
-            itemsList={itemList}
-            buttonsPosition={buttonsPosition}
-            goBackPath='/area-amministrativa/progetti'
-            goBackTitle={
-              location.pathname.includes(
-                `/area-amministrativa/progetti/${projectId}`
-              )
-                ? 'Elenco progetti'
-                : 'Torna indietro'
-            }
-            showGoBack={
-              userRole !== userRoles.REGP &&
-              userRole !== userRoles.DEGP &&
-              userRole !== userRoles.REPP &&
-              userRole !== userRoles.DEPP &&
-              userRole !== userRoles.FAC &&
-              userRole !== userRoles.VOL
-            }
-          >
-            <>
-              {currentForm}
-              {emptySection}
-            </>
-          </DetailLayout>
-          {itemAccordionList?.length
-            ? itemAccordionList?.map((item, index) => (
-                <Accordion
-                  key={index}
-                  title={item.title || ''}
-                  totElem={item.items.length}
-                  cta={getAccordionCTA(item.title).cta}
-                  onClickCta={getAccordionCTA(item.title)?.ctaAction}
-                  lastBottom={index === itemAccordionList.length - 1}
-                  detailAccordion
-                >
-                  {item.items?.length ? (
-                    item.items.map((cardItem) => (
-                      <CardStatusAction
-                        key={cardItem.id}
-                        title={`${cardItem.cognome ? cardItem.cognome : ''} ${
-                          cardItem.nome
-                        }`.trim()}
-                        status={cardItem.stato}
-                        id={cardItem.id}
-                        fullInfo={cardItem.fullInfo}
-                        cf={cardItem.codiceFiscale}
-                        onActionClick={cardItem.actions}
-                      />
-                    ))
-                  ) : (
-                    <EmptySection
-                      title={`Non sono presenti ${item.title?.toLowerCase()} ${
-                        item.title?.toLowerCase() === 'sedi'
-                          ? `associate.`
-                          : `associati.`
-                      }`}
-                      icon={IconNote}
-                      withIcon
-                      noMargin
-                    />
-                  )}
-                </Accordion>
-              ))
-            : null}
-          {activeTab === tabs.INFO && !entityId && programDetails?.id ? (
-            <div className={clsx('my-5')}>
-              <h5 className={clsx('mb-4')} style={{ color: '#5C6F82' }}>
-                Programma associato
-              </h5>
-              <CardStatusAction
-                id={programDetails?.id}
-                status={programDetails?.stato}
-                title={programDetails?.nomeBreve}
-                onActionClick={{
-                  [CRUDActionTypes.VIEW]: () =>
-                    navigate(
-                      `/area-amministrativa/programmi/${programDetails?.id}/info`,
-                      { replace: true }
-                    ),
-                }}
-              />
-            </div>
-          ) : null}
-          {currentModal ? currentModal : null}
-          <TerminateEntityModal
-            minDate={projectDetails?.dataInizio?.toString()}
-            onConfirm={(_entity: string, terminationDate: string) =>
-              terminationDate &&
-              projectId &&
-              terminateProject(projectId, terminationDate)
-            }
-          />
-          <DeleteEntityModal
-            onClose={() => dispatch(closeModal())}
-            onConfirm={async (payload) => {
-              if (payload?.entity === 'referent-delegate')
-                removeReferentDelegate(payload?.cf, payload?.role);
-              if (payload?.entity === 'headquarter')
-                removeHeadquarter(payload?.headquarterId);
-              if (payload?.entity === 'partner-authority')
-                projectId &&
-                  terminateAuthorityPartner(payload?.authorityId, projectId);
-              if (payload?.entity === 'authority')
-                projectId &&
-                  managerAuthority &&
-                  managerAuthority?.id &&
-                  removeManagerAuthority(managerAuthority.id, projectId);
-              if (payload?.entity === 'project' && projectId) {
-                const res = await dispatch(DeleteEntity('progetto', projectId));
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                if (res) {
-                  navigate('/area-amministrativa/progetti', { replace: true });
-                }
+    <ProjectContext.Provider value={projectDetails}>
+      <div
+        className={clsx(
+          mediaIsPhone && 'mt-5',
+          'd-flex',
+          'flex-row',
+          'container'
+        )}
+      >
+        <div className='d-flex flex-column w-100 container'>
+          <div>
+            <DetailLayout
+              nav={nav}
+              titleInfo={{
+                title: projectDetails?.nomeBreve || projectDetails?.nome,
+                status: projectDetails?.stato,
+                upperTitle: { icon: 'it-file', text: 'Progetto' },
+                subTitle: programDetails?.nomeBreve,
+              }}
+              currentTab={activeTab}
+              infoProjBtn={projInfoButtons}
+              formButtons={correctButtons}
+              // itemsAccordionList={itemAccordionList}
+              itemsList={itemList}
+              buttonsPosition={buttonsPosition}
+              goBackPath='/area-amministrativa/progetti'
+              goBackTitle={
+                location.pathname.includes(
+                  `/area-amministrativa/progetti/${projectId}`
+                )
+                  ? 'Elenco progetti'
+                  : 'Torna indietro'
               }
-            }}
-          />
-          <UploadCSVModal
-            accept='.csv'
-            onClose={() => {
-              if (projectId) dispatch(GetProjectDetail(projectId));
-            }}
-            onEsito={handleEnteUploadEsito}
-            template={EntiPartnerTemplate}
-            templateName='enti_partner-template.csv'
-          >
-            <Table
-              {...entePartnerTable}
-              withActions
-              succesCSV
-              id='table-ente-partner'
+              showGoBack={
+                userRole !== userRoles.REGP &&
+                userRole !== userRoles.DEGP &&
+                userRole !== userRoles.REPP &&
+                userRole !== userRoles.DEPP &&
+                userRole !== userRoles.FAC &&
+                userRole !== userRoles.VOL
+              }
+            >
+              <>
+                {currentForm}
+                {emptySection}
+              </>
+            </DetailLayout>
+            {itemAccordionList?.length
+              ? itemAccordionList?.map((item, index) => (
+                  <Accordion
+                    key={index}
+                    title={item.title || ''}
+                    totElem={item.items.length}
+                    cta={getAccordionCTA(item.title).cta}
+                    onClickCta={getAccordionCTA(item.title)?.ctaAction}
+                    lastBottom={index === itemAccordionList.length - 1}
+                    detailAccordion
+                  >
+                    {item.items?.length ? (
+                      item.items.map((cardItem) => (
+                        <CardStatusAction
+                          key={cardItem.id}
+                          title={`${cardItem.cognome ? cardItem.cognome : ''} ${
+                            cardItem.nome
+                          }`.trim()}
+                          status={cardItem.stato}
+                          id={cardItem.id}
+                          fullInfo={cardItem.fullInfo}
+                          cf={cardItem.codiceFiscale}
+                          onActionClick={cardItem.actions}
+                        />
+                      ))
+                    ) : (
+                      <EmptySection
+                        title={`Non sono presenti ${item.title?.toLowerCase()} ${
+                          item.title?.toLowerCase() === 'sedi'
+                            ? `associate.`
+                            : `associati.`
+                        }`}
+                        icon={IconNote}
+                        withIcon
+                        noMargin
+                      />
+                    )}
+                  </Accordion>
+                ))
+              : null}
+            {activeTab === tabs.INFO && !entityId && programDetails?.id ? (
+              <div className={clsx('my-5')}>
+                <h5 className={clsx('mb-4')} style={{ color: '#5C6F82' }}>
+                  Programma associato
+                </h5>
+                <CardStatusAction
+                  id={programDetails?.id}
+                  status={programDetails?.stato}
+                  title={programDetails?.nomeBreve}
+                  onActionClick={{
+                    [CRUDActionTypes.VIEW]: () =>
+                      navigate(
+                        `/area-amministrativa/programmi/${programDetails?.id}/info`,
+                        { replace: true }
+                      ),
+                  }}
+                />
+              </div>
+            ) : null}
+            {currentModal ? currentModal : null}
+            <TerminateEntityModal
+              minDate={projectDetails?.dataInizio?.toString()}
+              onConfirm={(_entity: string, terminationDate: string) =>
+                terminationDate &&
+                projectId &&
+                terminateProject(projectId, terminationDate)
+              }
             />
-          </UploadCSVModal>
-          <ManageDelegate creation />
-          <ManageReferal creation />
-          <ManageHeadquarter creation />
+            <DeleteEntityModal
+              onClose={() => dispatch(closeModal())}
+              onConfirm={async (payload) => {
+                if (payload?.entity === 'referent-delegate')
+                  removeReferentDelegate(payload?.cf, payload?.role);
+                if (payload?.entity === 'headquarter')
+                  removeHeadquarter(payload?.headquarterId);
+                if (payload?.entity === 'partner-authority')
+                  projectId &&
+                    terminateAuthorityPartner(payload?.authorityId, projectId);
+                if (payload?.entity === 'authority')
+                  projectId &&
+                    managerAuthority &&
+                    managerAuthority?.id &&
+                    removeManagerAuthority(managerAuthority.id, projectId);
+                if (payload?.entity === 'project' && projectId) {
+                  const res = await dispatch(
+                    DeleteEntity('progetto', projectId)
+                  );
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
+                  if (res) {
+                    navigate('/area-amministrativa/progetti', {
+                      replace: true,
+                    });
+                  }
+                }
+              }}
+            />
+            <UploadCSVModal
+              accept='.csv'
+              onClose={() => {
+                if (projectId) dispatch(GetProjectDetail(projectId));
+              }}
+              onEsito={handleEnteUploadEsito}
+              template={EntiPartnerTemplate}
+              templateName='enti_partner-template.csv'
+            >
+              <Table
+                {...entePartnerTable}
+                withActions
+                succesCSV
+                id='table-ente-partner'
+              />
+            </UploadCSVModal>
+            <ManageDelegate creation />
+            <ManageReferal creation />
+            <ManageHeadquarter creation />
+          </div>
         </div>
       </div>
-    </div>
+    </ProjectContext.Provider>
   );
 };
 

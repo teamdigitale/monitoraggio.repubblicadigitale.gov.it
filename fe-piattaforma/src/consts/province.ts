@@ -321,8 +321,8 @@ export const province =
             value: "Ravenna"
         },
         {
-            label: "Reggio di Calabria",
-            value: "Reggio di Calabria"
+            label: "Reggio Calabria",
+            value: "Reggio Calabria"
         },
         {
             label: "Reggio nell'Emilia",
