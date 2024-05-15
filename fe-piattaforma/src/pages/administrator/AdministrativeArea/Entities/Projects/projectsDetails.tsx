@@ -67,7 +67,6 @@ import UploadCSVModal from '../../../../../components/AdministrativeArea/Entitie
 import { selectProfile } from '../../../../../redux/features/user/userSlice';
 import IconWarning from '/public/assets/img/it-warning-circle-primary.png';
 import IconNote from '/public/assets/img/it-note-primary.png';
-import DataUploadPage from '../../../../../components/FileHandling/DataUploadPage';
 import { ProjectContext } from '../../../../../contexts/ProjectContext';
 
 const EntiPartnerTemplate =
@@ -77,7 +76,6 @@ const tabs = {
   INFO: 'info',
   ENTE_GESTORE: 'ente-gestore-progetto',
   ENTI_PARTNER: 'enti-partner',
-  CARICAMENTO_DATI: 'caricamento-dati',
   SEDI: 'sedi',
 };
 
@@ -137,7 +135,6 @@ const ProjectsDetails = () => {
 
   const gestoreRef = useRef<HTMLLIElement>(null);
   const partnerRef = useRef<HTMLLIElement>(null);
-  const caricamentoDatiRef = useRef<HTMLLIElement>(null);
   const sediRef = useRef<HTMLLIElement>(null);
   const infoRef = useRef<HTMLLIElement>(null);
   const {
@@ -309,12 +306,6 @@ const ProjectsDetails = () => {
           inline: 'center',
         });
         break;
-      case tabs.CARICAMENTO_DATI:
-        caricamentoDatiRef.current?.scrollIntoView({
-          block: 'center',
-          inline: 'center',
-        });
-        break;
       case tabs.SEDI:
         sediRef.current?.scrollIntoView({ block: 'center', inline: 'center' });
         break;
@@ -336,9 +327,6 @@ const ProjectsDetails = () => {
           break;
         case tabs.ENTI_PARTNER:
           setActiveTab(tabs.ENTI_PARTNER);
-          break;
-        case tabs.CARICAMENTO_DATI:
-          setActiveTab(tabs.CARICAMENTO_DATI);
           break;
         case tabs.SEDI:
           setActiveTab(tabs.SEDI);
@@ -395,6 +383,13 @@ const ProjectsDetails = () => {
             payload: { title: 'Aggiungi ente partner' },
           })
         ),
+    },
+    {
+      size: 'xs',
+      color: 'primary',
+      text: ' Caricamento Dati',
+      onClick: () =>
+          navigate('./caricamento-dati'),
     },
   ];
 
@@ -789,17 +784,6 @@ const ProjectsDetails = () => {
           </div>
         </NavLink>
       </li>
-      {projectDetails?.stato === 'ATTIVO' && (
-        <li ref={caricamentoDatiRef} role='none'>
-          <NavLink
-            to={replaceLastUrlSection(tabs.CARICAMENTO_DATI)}
-            active={activeTab === tabs.CARICAMENTO_DATI}
-            role='menuitem'
-          >
-            Caricamento dati
-          </NavLink>
-        </li>
-      )}
       <li ref={partnerRef} role='none'>
         <NavLink
           to={replaceLastUrlSection(tabs.ENTI_PARTNER)}
@@ -1120,14 +1104,6 @@ const ProjectsDetails = () => {
         break;
       case tabs.ENTI_PARTNER:
         PartnerAuthoritySection();
-        break;
-      case tabs.CARICAMENTO_DATI:
-        setCurrentForm(<DataUploadPage />);
-        setEmptySection(undefined);
-        setCorrectButtons([]);
-        setProjInfoButtons(false);
-        setItemAccordionList([]);
-        setItemList(null);
         break;
       case tabs.SEDI:
         HeadquartersSection();
