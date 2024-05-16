@@ -11,28 +11,28 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "ente_sede_progetto_facilitatore")
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class EnteSedeProgettoFacilitatoreEntity implements Serializable {
 	private static final long serialVersionUID = -4733831100623543478L;
 
 	@EmbeddedId
 	private EnteSedeProgettoFacilitatoreKey id;
-	
+
 	// FACILITATORE O VOLONTARIO
 	@Column(name = "RUOLO_UTENTE")
 	private String ruoloUtente;
-	
+
 	@Column(name = "STATO_UTENTE")
 	private String statoUtente;
-	
+
 	@Temporal(value = TemporalType.TIMESTAMP)
 	@Column(name = "DATA_ORA_CREAZIONE")
 	private Date dataOraCreazione;
@@ -40,11 +40,11 @@ public class EnteSedeProgettoFacilitatoreEntity implements Serializable {
 	@Temporal(value = TemporalType.TIMESTAMP)
 	@Column(name = "DATA_ORA_AGGIORNAMENTO")
 	private Date dataOraAggiornamento;
-	
+
 	@Temporal(value = TemporalType.TIMESTAMP)
 	@Column(name = "DATA_ORA_ATTIVAZIONE")
 	private Date dataOraAttivazione;
-	
+
 	@Temporal(value = TemporalType.TIMESTAMP)
 	@Column(name = "DATA_ORA_TERMINAZIONE")
 	private Date dataOraTerminazione;
