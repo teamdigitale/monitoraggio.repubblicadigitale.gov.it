@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import it.pa.repdgt.ente.request.NuovaSedeRequest.IndirizzoSedeRequest;
 import it.pa.repdgt.shared.entity.IndirizzoSedeEntity;
+import org.springframework.util.StringUtils;
 
 @Component
 public class IndirizzoSedeMapper {
@@ -16,7 +17,7 @@ public class IndirizzoSedeMapper {
 		indirizzoSedeEntity.setCivico(indirizzoSedeRequest.getCivico());
 		indirizzoSedeEntity.setComune(indirizzoSedeRequest.getComune());
 		indirizzoSedeEntity.setProvincia(indirizzoSedeRequest.getProvincia());
-		indirizzoSedeEntity.setRegione(indirizzoSedeRequest.getRegione());
+		indirizzoSedeEntity.setRegione(StringUtils.capitalize(indirizzoSedeRequest.getRegione()));
 		indirizzoSedeEntity.setCap(indirizzoSedeRequest.getCap());
 		indirizzoSedeEntity.setNazione(indirizzoSedeRequest.getNazione());
 		return indirizzoSedeEntity;
