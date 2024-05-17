@@ -15,6 +15,7 @@ import it.pa.repdgt.ente.request.NuovaSedeRequest.IndirizzoSedeRequest;
 import it.pa.repdgt.ente.resource.SedeResource;
 import it.pa.repdgt.shared.entity.ProgettoEntity;
 import it.pa.repdgt.shared.entity.SedeEntity;
+import org.springframework.util.StringUtils;
 
 @Component
 public class SedeMapper {
@@ -24,18 +25,19 @@ public class SedeMapper {
 		sedeEntity.setNome(nuovaSedeRequest.getNome());
 		sedeEntity.setServiziErogati(nuovaSedeRequest.getServiziErogati());
 		sedeEntity.setItinere(nuovaSedeRequest.getIsItinere());
-		
-		if(nuovaSedeRequest.getIndirizziSedeFasceOrarie() == null || nuovaSedeRequest.getIndirizziSedeFasceOrarie().isEmpty() ) {
+
+		if (nuovaSedeRequest.getIndirizziSedeFasceOrarie() == null
+				|| nuovaSedeRequest.getIndirizziSedeFasceOrarie().isEmpty()) {
 			return sedeEntity;
 		}
-		
+
 		final IndirizzoSedeRequest primoIndirizzoSede = nuovaSedeRequest.getIndirizziSedeFasceOrarie().get(0);
 		sedeEntity.setVia(primoIndirizzoSede.getVia());
 		sedeEntity.setCivico(primoIndirizzoSede.getCivico());
 		sedeEntity.setComune(primoIndirizzoSede.getComune());
 		sedeEntity.setProvincia(primoIndirizzoSede.getProvincia());
 		sedeEntity.setCap(primoIndirizzoSede.getCap());
-		sedeEntity.setRegione(primoIndirizzoSede.getRegione());
+		sedeEntity.setRegione(StringUtils.capitalize(primoIndirizzoSede.getRegione()));
 		sedeEntity.setNazione(primoIndirizzoSede.getNazione());
 		return sedeEntity;
 	}
@@ -48,9 +50,9 @@ public class SedeMapper {
 		dettaglioSede.setItinere(sedeFetch.getItinere());
 		return dettaglioSede;
 	}
-	
+
 	public SedeResource toResourceFrom(SedeEntity sedeEntity) {
-		if(sedeEntity == null) {
+		if (sedeEntity == null) {
 			return null;
 		}
 		SedeResource sedeResource = new SedeResource();
@@ -59,16 +61,16 @@ public class SedeMapper {
 		// TODO aggiungere eventuali altri campi ....
 		return sedeResource;
 	}
-	
+
 	public List<SedeResource> toResourceFrom(final List<SedeEntity> sediEntity) {
-		if(sediEntity == null ) {
+		if (sediEntity == null) {
 			return null;
 		}
-		
+
 		return sediEntity
-					.stream()
-					.map(this::toResourceFrom)
-					.collect(Collectors.toList());
+				.stream()
+				.map(this::toResourceFrom)
+				.collect(Collectors.toList());
 	}
 
 	public DettaglioProgettoLightBean toDettaglioProgettoLightBeanFrom(ProgettoEntity progettoFetchDB) {
@@ -82,12 +84,12 @@ public class SedeMapper {
 		sedeFetchDB.setNome(nuovaSedeRequest.getNome());
 		sedeFetchDB.setServiziErogati(nuovaSedeRequest.getServiziErogati());
 		sedeFetchDB.setItinere(nuovaSedeRequest.getIsItinere());
-		
-		 Optional<IndirizzoSedeRequest> indirizzoSedeFiltrata = nuovaSedeRequest.getIndirizziSedeFasceOrarie()
-			.stream()
-			.filter(indirizzoSede -> indirizzoSede.getId() == sedeFetchDB.getId() ).findFirst();
-		
-		if(indirizzoSedeFiltrata.isPresent()) {
+
+		Optional<IndirizzoSedeRequest> indirizzoSedeFiltrata = nuovaSedeRequest.getIndirizziSedeFasceOrarie()
+				.stream()
+				.filter(indirizzoSede -> indirizzoSede.getId() == sedeFetchDB.getId()).findFirst();
+
+		if (indirizzoSedeFiltrata.isPresent()) {
 			sedeFetchDB.setVia(indirizzoSedeFiltrata.get().getVia());
 			sedeFetchDB.setCivico(indirizzoSedeFiltrata.get().getCivico());
 			sedeFetchDB.setComune(indirizzoSedeFiltrata.get().getComune());
@@ -95,7 +97,7 @@ public class SedeMapper {
 			sedeFetchDB.setProvincia(indirizzoSedeFiltrata.get().getProvincia());
 			sedeFetchDB.setNazione(indirizzoSedeFiltrata.get().getNazione());
 		}
-		
+
 		return sedeFetchDB;
 	}
 }
