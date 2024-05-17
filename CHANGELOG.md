@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.215](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.214...1.0.0-test.215) (2024-05-17)
+
+
+### Bug Fixes
+
+* **sede:** updates 20240517 ([cef56cc](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/cef56cc1963765a501eb03449f6ce5a90b9d81c2))
+* **sedi-capitalize:** updates 20240517 ([7c1caa1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7c1caa161f3d34c35c0c4b2fede5b5543a660230))
+
 ## [1.0.0-test.214](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.213...1.0.0-test.214) (2024-05-15)
 
 
