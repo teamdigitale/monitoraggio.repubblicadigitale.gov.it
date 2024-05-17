@@ -36,8 +36,8 @@ public class SedeMapper {
 		sedeEntity.setCivico(primoIndirizzoSede.getCivico());
 		sedeEntity.setComune(primoIndirizzoSede.getComune());
 		sedeEntity.setProvincia(primoIndirizzoSede.getProvincia());
-		sedeEntity.setCap(primoIndirizzoSede.getCap());
 		sedeEntity.setRegione(StringUtils.capitalize(primoIndirizzoSede.getRegione()));
+		sedeEntity.setCap(primoIndirizzoSede.getCap());
 		sedeEntity.setNazione(primoIndirizzoSede.getNazione());
 		return sedeEntity;
 	}
