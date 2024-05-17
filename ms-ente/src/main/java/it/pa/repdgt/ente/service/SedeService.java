@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.util.StringUtils;
 
 import it.pa.repdgt.ente.bean.DettaglioProgettoLightBean;
 import it.pa.repdgt.ente.bean.DettaglioSedeBean;
@@ -90,7 +89,6 @@ public class SedeService {
 	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public SedeEntity creaNuovaSede(@NotNull final NuovaSedeRequest nuovaSedeRequest) {
-		nuovaSedeRequest.setNome(StringUtils.capitalize(nuovaSedeRequest.getNome()));
 		final String nomeSede = nuovaSedeRequest.getNome();
 		if (this.esisteSedeByNome(nomeSede)) {
 			final String messaggioErrore = String.format("Errore Creazione Sede. Sede con nome='%s' già presente",
