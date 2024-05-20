@@ -223,145 +223,135 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form]);
 
-  const handleNavigateToCaricamentoDati = useCallback(() => {
-    navigate('./caricamento-dati');
-  }, []);
-
   const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
 
-
   return (
-      <>
-    <Form
-      id='form-authorities'
-      className={clsx(formDisabled ? 'mt-5' : 'mt-3', 'mb-0')}
-      formDisabled={formDisabled}
-      legend={legend}
-      customMargin='mb-3 pb-3 ml-3'
-    >
-      {creation || noIdField ? (
-        <Form.Row className={bootClass}>
-          <Input
-            {...form?.nome}
-            label='Nome Ente'
-            col='col-12 col-lg-6'
-            onInputChange={onInputChange}
-          />
-          <Input
-            {...form?.nomeBreve}
-            col='col-12 col-lg-6'
-            label='Nome breve'
-            onInputChange={onInputChange}
-          />
-          {formDisabled ? (
+    <>
+      <Form
+        id='form-authorities'
+        className={clsx(formDisabled ? 'mt-5' : 'mt-3', 'mb-0')}
+        formDisabled={formDisabled}
+        legend={legend}
+        customMargin='mb-3 pb-3 ml-3'
+      >
+        {creation || noIdField ? (
+          <Form.Row className={bootClass}>
             <Input
-              {...form?.tipologia}
-              label='Tipologia'
+              {...form?.nome}
+              label='Nome Ente'
               col='col-12 col-lg-6'
               onInputChange={onInputChange}
             />
-          ) : (
-            <Select
-              {...form?.tipologia}
-              value={form?.tipologia.value as string}
-              col='col-12 col-lg-6'
-              label='Tipologia'
-              placeholder='Seleziona la tipologia'
-              options={TipologiaEnteOptions}
-              onInputChange={onInputChange}
-              wrapperClassName='mb-5 pr-lg-3'
-              aria-label='tipologia'
-            />
-          )}
-          <Input
-            {...form?.piva}
-            label='Codice Fiscale'
-            col='col-12 col-lg-6'
-            onInputChange={onInputChange}
-          />
-          <Input
-            col='col-12 col-lg-6'
-            {...form?.sedeLegale}
-            label='Sede legale'
-            onInputChange={onInputChange}
-          />
-          <Input
-            {...form?.indirizzoPec}
-            label='PEC'
-            col='col-12 col-lg-6'
-            onInputChange={onInputChange}
-          />
-        </Form.Row>
-      ) : (
-        <Form.Row className={bootClass}>
-          <Input {...form?.id} col='col-12 col-lg-6' label='ID' />
-          <Input
-            {...form?.nome}
-            label='Nome Ente'
-            col='col-12 col-lg-6'
-            onInputChange={onInputChange}
-          />
-          <Input
-            {...form?.nomeBreve}
-            col='col-12 col-lg-6'
-            label='Nome breve'
-            onInputChange={onInputChange}
-          />
-          {formDisabled ? (
             <Input
-              {...form?.tipologia}
-              label='Tipologia'
+              {...form?.nomeBreve}
+              col='col-12 col-lg-6'
+              label='Nome breve'
+              onInputChange={onInputChange}
+            />
+            {formDisabled ? (
+              <Input
+                {...form?.tipologia}
+                label='Tipologia'
+                col='col-12 col-lg-6'
+                onInputChange={onInputChange}
+              />
+            ) : (
+              <Select
+                {...form?.tipologia}
+                value={form?.tipologia.value as string}
+                col='col-12 col-lg-6'
+                label='Tipologia'
+                placeholder='Seleziona la tipologia'
+                options={TipologiaEnteOptions}
+                onInputChange={onInputChange}
+                wrapperClassName='mb-5 pr-lg-3'
+                aria-label='tipologia'
+              />
+            )}
+            <Input
+              {...form?.piva}
+              label='Codice Fiscale'
               col='col-12 col-lg-6'
               onInputChange={onInputChange}
             />
-          ) : (
-            <Select
-              {...form?.tipologia}
-              value={form?.tipologia.value as string}
+            <Input
               col='col-12 col-lg-6'
-              label='Tipologia'
-              placeholder='Seleziona la tipologia'
-              options={TipologiaEnteOptions}
+              {...form?.sedeLegale}
+              label='Sede legale'
               onInputChange={onInputChange}
-              wrapperClassName='mb-5 pr-lg-3'
-              aria-label='tipologia'
             />
-          )}
-          <Input
-            {...form?.piva}
-            label='Codice Fiscale'
-            col='col-12 col-lg-6'
-            onInputChange={onInputChange}
-          />
-          <Input
-            {...form?.sedeLegale}
-            col='col-12 col-lg-6'
-            label='Sede legale'
-            onInputChange={onInputChange}
-          />
-          <Input
-            {...form?.indirizzoPec}
-            label='PEC'
-            col='col-12 col-lg-6'
-            onInputChange={onInputChange}
-          />
-          {form?.profilo &&
-          (enteType === formTypes.ENTE_GESTORE_PROGRAMMA ||
-            enteType === formTypes.ENTE_GESTORE_PROGETTO ||
-            enteType === formTypes.ENTE_PARTNER) ? (
-            <Input {...form?.profilo} label='Profilo' col='col-12 col-lg-6' />
-          ) : (
-            <span />
-          )}
-        </Form.Row>
-      )}
-    </Form>
-        <div className={bootClass}>
-          <Button onClick={handleNavigateToCaricamentoDati} type={'button'} className="btn btn-primary mb-4">
-              Caricamento Dati
-          </Button>
-        </div>
-      </>
+            <Input
+              {...form?.indirizzoPec}
+              label='PEC'
+              col='col-12 col-lg-6'
+              onInputChange={onInputChange}
+            />
+          </Form.Row>
+        ) : (
+          <Form.Row className={bootClass}>
+            <Input {...form?.id} col='col-12 col-lg-6' label='ID' />
+            <Input
+              {...form?.nome}
+              label='Nome Ente'
+              col='col-12 col-lg-6'
+              onInputChange={onInputChange}
+            />
+            <Input
+              {...form?.nomeBreve}
+              col='col-12 col-lg-6'
+              label='Nome breve'
+              onInputChange={onInputChange}
+            />
+            {formDisabled ? (
+              <Input
+                {...form?.tipologia}
+                label='Tipologia'
+                col='col-12 col-lg-6'
+                onInputChange={onInputChange}
+              />
+            ) : (
+              <Select
+                {...form?.tipologia}
+                value={form?.tipologia.value as string}
+                col='col-12 col-lg-6'
+                label='Tipologia'
+                placeholder='Seleziona la tipologia'
+                options={TipologiaEnteOptions}
+                onInputChange={onInputChange}
+                wrapperClassName='mb-5 pr-lg-3'
+                aria-label='tipologia'
+              />
+            )}
+            <Input
+              {...form?.piva}
+              label='Codice Fiscale'
+              col='col-12 col-lg-6'
+              onInputChange={onInputChange}
+            />
+            <Input
+              {...form?.sedeLegale}
+              col='col-12 col-lg-6'
+              label='Sede legale'
+              onInputChange={onInputChange}
+            />
+            <Input
+              {...form?.indirizzoPec}
+              label='PEC'
+              col='col-12 col-lg-6'
+              onInputChange={onInputChange}
+            />
+            {form?.profilo &&
+            (enteType === formTypes.ENTE_GESTORE_PROGRAMMA ||
+              enteType === formTypes.ENTE_GESTORE_PROGETTO ||
+              enteType === formTypes.ENTE_PARTNER) ? (
+              <Input {...form?.profilo} label='Profilo' col='col-12 col-lg-6' />
+            ) : (
+              <span />
+            )}
+          </Form.Row>
+        )}
+      </Form>
+    </>
   );
 };
 

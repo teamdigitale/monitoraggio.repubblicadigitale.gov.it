@@ -352,9 +352,9 @@ const AreaAmministrativaRoutes = [
     element={<ProjectsDetails />}
   />,
   <Route
-      key='progetti-dettaglio-ente-gestore-caricamento-dati'
-      path='progetti/:projectId/ente-gestore-progetto/caricamento-dati'
-      element={<DataUploadPage />}
+    key='progetti-dettaglio-ente-gestore-caricamento-dati'
+    path='progetti/:projectId/ente-gestore-progetto/caricamento-dati'
+    element={<ProjectsDetails />}
   />,
   <Route
     key='progetti-dettaglio-ente-gestore'
@@ -367,9 +367,9 @@ const AreaAmministrativaRoutes = [
     element={<ProjectsDetails />}
   />,
   <Route
-      key='progetti-dettaglio-enti-partner-caricamento-dati'
-      path='progetti/:projectId/enti-partner/caricamento-dati'
-      element={<DataUploadPage />}
+    key='progetti-dettaglio-enti-partner-caricamento-dati'
+    path='progetti/:projectId/enti-partner/caricamento-dati'
+    element={<ProjectsDetails />}
   />,
   <Route
     key='progetti-dettaglio-enti'
