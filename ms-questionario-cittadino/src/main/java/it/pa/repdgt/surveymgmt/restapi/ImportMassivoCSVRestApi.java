@@ -16,7 +16,7 @@ import java.io.IOException;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "/import-csv")
+@RequestMapping(path = "/importCsv")
 public class ImportMassivoCSVRestApi {
 
     private final ImportMassivoCSVService importMassivoCSVService;

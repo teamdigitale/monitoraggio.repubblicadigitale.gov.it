@@ -13,7 +13,7 @@ export function searchActivityReport(
   const { cfUtenteLoggato, codiceRuoloUtenteLoggato, idEnte } =
     getUserHeaders();
   return API.post<Page<RegistroAttivita>>(
-    `${process.env.QUESTIONARIO_CITTADINO}registro-attivita/search`,
+    `${process.env.QUESTIONARIO_CITTADINO}registroAttivita/search`,
     {
       cfUtenteLoggato,
       codiceRuoloUtenteLoggato,
@@ -28,7 +28,7 @@ export function saveActivityReport(
   report: RegistroAttivita
 ): Promise<AxiosResponse<RegistroAttivita>> {
   return API.post<RegistroAttivita>(
-    `${process.env.QUESTIONARIO_CITTADINO}registro-attivita`,
+    `${process.env.QUESTIONARIO_CITTADINO}registroAttivita`,
     report
   );
 }
@@ -37,7 +37,7 @@ export function elaborateCsv(
   elaborato: ElaboratoCsvRequest
 ): Promise<AxiosResponse<ElaboratoCsvResponse>> {
   return API.post<ElaboratoCsvResponse>(
-    `${process.env.QUESTIONARIO_CITTADINO}import-csv`,
+    `${process.env.QUESTIONARIO_CITTADINO}importCsv`,
     elaborato
   );
 }

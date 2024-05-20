@@ -13,7 +13,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "/registro-attivita")
+@RequestMapping(path = "/registroAttivita")
 public class RegistroAttivitaRestApi {
 
     private final RegistroAttivitaService registroAttivitaService;
