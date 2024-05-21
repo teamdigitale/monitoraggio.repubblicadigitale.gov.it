@@ -57,84 +57,103 @@ public class RequestFilter implements Filter {
 		}
 
 		final String codiceFiscaleUtenteLoggato = wrappedRequest.getCodiceFiscale();
-		final String codiceRuoloUtenteLoggato   = wrappedRequest.getCodiceRuolo();
-		final String bodyRequest   = wrappedRequest.getBody();
-
+		final String codiceRuoloUtenteLoggato = wrappedRequest.getCodiceRuolo();
+		final String bodyRequest = wrappedRequest.getBody();
+		log.debug("codiceFiscaleUtenteLoggato estratto : {}", codiceFiscaleUtenteLoggato);
+		log.debug("codiceRuoloUtenteLoggato estratto : {}", codiceRuoloUtenteLoggato);
 		String metodoHttp = ((HttpServletRequest) request).getMethod();
 		String endpoint = ((HttpServletRequest) request).getServletPath();
 		/*
 		 * aggiunta per le chiamate in arrivo da Drupal
 		 * 
 		 */
-		if(FilterUtil.DRUPAL_USER.equals(codiceFiscaleUtenteLoggato)) { 
-			if(FilterUtil.isEndpointDrupal(endpoint) )
+		if (FilterUtil.DRUPAL_USER.equals(codiceFiscaleUtenteLoggato)) {
+			if (FilterUtil.isEndpointDrupal(endpoint))
 				chain.doFilter(wrappedRequest, response);
 			else
-				responseHttp.sendError(HttpServletResponse.SC_UNAUTHORIZED, String.format("Utente Non Autorizzato per endpoint: %s %s", metodoHttp, endpoint));
-		}else {
+				responseHttp.sendError(HttpServletResponse.SC_UNAUTHORIZED,
+						String.format("Utente Non Autorizzato per endpoint: %s %s", metodoHttp, endpoint));
+		} else {
 			/*
 			 * chiamate ad API che non hanno bisogno del controllo dei permessi
 			 */
-			if(FilterUtil.isEndpointNotChecked(endpoint) 
-					/* per risolvere il problema di mysql "Error Code: 3699. Timeout exceeded in regular expression match."
-					 * per gli endpoint /servizio/cittadino/questionarioCompilato/.../anonimo che non hanno CF per login
+			if (FilterUtil.isEndpointNotChecked(endpoint)
+					/*
+					 * per risolvere il problema di mysql
+					 * "Error Code: 3699. Timeout exceeded in regular expression match."
+					 * per gli endpoint /servizio/cittadino/questionarioCompilato/.../anonimo che
+					 * non hanno CF per login
 					 */
 					|| FilterUtil.isEndpointQuestionarioCompilatoAnonimo(endpoint)
 					|| FilterUtil.isEndpointSwagger(endpoint)) {
 				chain.doFilter(wrappedRequest, response);
 			} else {
 				// verifico se l'utente loggato possiede il ruolo con cui si è profilato
-				boolean hasRuoloUtente = this.ruoloService
-						.getRuoliByCodiceFiscaleUtente(codiceFiscaleUtenteLoggato)
+				List<String> ruoliUtente = this.ruoloService
+						.getRuoliByCodiceFiscaleUtente(codiceFiscaleUtenteLoggato);
+				log.debug("Ruoli utente : {}", ruoliUtente);
+				boolean hasRuoloUtente = ruoliUtente
 						.stream()
 						.anyMatch(codiceRuolo -> codiceRuolo.equalsIgnoreCase(codiceRuoloUtenteLoggato));
-
-				if(!hasRuoloUtente) {
+				log.debug("Ruolo utente hasRuoloUtente: {}", hasRuoloUtente);
+				if (!hasRuoloUtente) {
 					responseHttp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Utente Non Autorizzato");
 				} else {
 					/*
-					 * controllo per vedere se idProgramma/idProgetto/idEnte sono coerenti con utente e ruolo che chiama API
+					 * controllo per vedere se idProgramma/idProgetto/idEnte sono coerenti con
+					 * utente e ruolo che chiama API
 					 * api drupal/rocketchat/workdocs sono esenti da tale controllo
 					 */
-					if(bodyRequest != null 
+					log.debug("Sono nel hasRuoloUtente a true");
+					if (bodyRequest != null
 							&& !"".equals(bodyRequest.trim())
-							&& !filterUtil.verificaSceltaProfilo(codiceFiscaleUtenteLoggato, codiceRuoloUtenteLoggato, bodyRequest )
+							&& !filterUtil.verificaSceltaProfilo(codiceFiscaleUtenteLoggato, codiceRuoloUtenteLoggato,
+									bodyRequest)
 							&& !endpoint.contains("/rocket-chat/")
-							&& !endpoint.contains("/integrazione/workdocs")
-							) {
+							&& !endpoint.contains("/integrazione/workdocs")) {
 						responseHttp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Utente Non Autorizzato");
-					}else {
+					} else {
 						/*
 						 * le seguenti api non hanno bisogno del controllo dei codici permesso
 						 */
-						if(endpoint.contains(FilterUtil.VERIFICA_PROFILO_BASE_URI) || endpoint.contains("/drupal/forward") || endpoint.contains("/utente/listaUtenti")) {
+						if (endpoint.contains(FilterUtil.VERIFICA_PROFILO_BASE_URI)
+								|| endpoint.contains("/drupal/forward") || endpoint.contains("/utente/listaUtenti")) {
 							chain.doFilter(wrappedRequest, response);
 						} else {
 							/*
-							 * verifica se il profilo dell'utente loggato è abilitato (codici permesso) a poter chiamare quella particolare api
+							 * verifica se il profilo dell'utente loggato è abilitato (codici permesso) a
+							 * poter chiamare quella particolare api
 							 */
 							List<String> codiciPermessoPerApi;
-							if(FilterUtil.isEndpointQuestionarioCompilato(endpoint)) {
-								/* per risolvere il problema di mysql "Error Code: 3699. Timeout exceeded in regular expression match."
-								 * per l'endpoint /servizio/cittadino/questionarioCompilato/{idQuestionario}/compila
+							if (FilterUtil.isEndpointQuestionarioCompilato(endpoint)) {
+								/*
+								 * per risolvere il problema di mysql
+								 * "Error Code: 3699. Timeout exceeded in regular expression match."
+								 * per l'endpoint
+								 * /servizio/cittadino/questionarioCompilato/{idQuestionario}/compila
 								 */
-								codiciPermessoPerApi = Arrays.asList("wrt.quest.citt.serv");	
-							}else {
-								codiciPermessoPerApi = this.permessiApiService.getCodiciPermessiApiByMetodoHttpAndPath(metodoHttp, endpoint);						
+								codiciPermessoPerApi = Arrays.asList("wrt.quest.citt.serv");
+							} else {
+								codiciPermessoPerApi = this.permessiApiService
+										.getCodiciPermessiApiByMetodoHttpAndPath(metodoHttp, endpoint);
+								log.debug("Codici permesso per API {}", codiciPermessoPerApi);
 							}
-							List<String> codiciPermessoUtenteLoggato = this.permessoService.getCodiciPermessoByUtenteLoggato(codiceFiscaleUtenteLoggato, codiceRuoloUtenteLoggato);
-
+							List<String> codiciPermessoUtenteLoggato = this.permessoService
+									.getCodiciPermessoByUtenteLoggato(codiceFiscaleUtenteLoggato,
+											codiceRuoloUtenteLoggato);
+							log.debug("Codici permesso utente loggato : {} ", codiciPermessoUtenteLoggato);
 							boolean isUtenteAbilitatoPerApi = false;
-							for(String codiciPermesso: codiciPermessoPerApi) {
-								if(codiciPermessoUtenteLoggato.contains(codiciPermesso)) {
+							for (String codiciPermesso : codiciPermessoPerApi) {
+								if (codiciPermessoUtenteLoggato.contains(codiciPermesso)) {
 									isUtenteAbilitatoPerApi = true;
 									break;
 								}
 							}
-
-							if(!isUtenteAbilitatoPerApi) {
-								responseHttp.sendError(HttpServletResponse.SC_UNAUTHORIZED, String.format("Utente Non Autorizzato per endpoint: %s %s", metodoHttp, endpoint));
-							}else {
+							log.debug("utente abilitato : {}", isUtenteAbilitatoPerApi);
+							if (!isUtenteAbilitatoPerApi) {
+								responseHttp.sendError(HttpServletResponse.SC_UNAUTHORIZED, String
+										.format("Utente Non Autorizzato per endpoint: %s %s", metodoHttp, endpoint));
+							} else {
 								chain.doFilter(wrappedRequest, response);
 							}
 						}
