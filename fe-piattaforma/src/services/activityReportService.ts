@@ -10,7 +10,7 @@ export function searchActivityReport(
   page: number,
   idProgetto: number
 ): Promise<AxiosResponse<Page<RegistroAttivita>>> {
-  const { cfUtenteLoggato, codiceRuoloUtenteLoggato, idEnte } =
+  const { cfUtenteLoggato, codiceRuoloUtenteLoggato, idEnte, idProgramma } =
     getUserHeaders();
   return API.post<Page<RegistroAttivita>>(
     `${process.env.QUESTIONARIO_CITTADINO}registroAttivita/search`,
@@ -19,6 +19,7 @@ export function searchActivityReport(
       codiceRuoloUtenteLoggato,
       idEnte,
       idProgetto,
+      idProgramma,
     },
     { params: { page } }
   );
