@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.32.4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.32.3...1.32.4) (2024-05-21)
+
+
+### Bug Fixes
+
+* **sede-mapper-regione:** updates 20240521 ([44c2242](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/44c22424060c26f68894a43020ba71509e7b775e))
+
 ## [1.32.3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.32.2...1.32.3) (2024-05-17)
 
 
