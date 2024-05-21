@@ -1,10 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Button, Icon, Nav, Tooltip } from 'design-react-kit';
-import {
-  useLocation,
-  useNavigate,
-  useParams,
-} from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { entityStatus, formTypes, userRoles } from '../utils';
 import {
   CRUDActionsI,
@@ -1424,11 +1420,13 @@ const ProjectsDetails = () => {
               <ManageDelegate creation />
               <ManageReferal creation />
               <ManageHeadquarter creation />
-              {projectId && parseInt(projectId) &&
-              (activeTab === tabs.ENTE_GESTORE &&
+              {(projectId &&
+                parseInt(projectId) &&
+                activeTab === tabs.ENTE_GESTORE &&
                 userHeaders.codiceRuoloUtenteLoggato === 'REGP') ||
               (activeTab === tabs.ENTI_PARTNER &&
-                userHeaders.codiceRuoloUtenteLoggato === 'REPP') ? (
+                userHeaders.codiceRuoloUtenteLoggato === 'REPP') ||
+              userHeaders.codiceRuoloUtenteLoggato === 'DTD' ? (
                 <Button
                   onClick={handleNavigateToCaricamentoDati}
                   type='button'

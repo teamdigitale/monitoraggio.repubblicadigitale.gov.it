@@ -71,7 +71,7 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
           codiceRuoloUtenteLoggato,
         };
 
-        saveActivityReport(report)
+        saveActivityReport(report, parseInt(projectContext.id))
           .then(() => {
             if (dataUploadContext) dataUploadContext.search();
           })
@@ -85,10 +85,10 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
   );
 
   const handleSubmit = useCallback(() => {
-    if (dataUploadContext && dataUploadContext.parsedData) {
+    if (dataUploadContext && dataUploadContext.parsedData && projectContext) {
       const parsedData = dataUploadContext.parsedData;
       setIsSubmitting(true);
-      elaborateCsv(dataUploadContext.parsedData)
+      elaborateCsv(dataUploadContext.parsedData, parseInt(projectContext.id))
         .then((res) => {
           const convertedFile = convertBase64ToFile(
             res.data.fileContent,
@@ -103,7 +103,7 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
         })
         .finally(() => setIsSubmitting(false));
     }
-  }, [dataUploadContext?.parsedData]);
+  }, [dataUploadContext?.parsedData, projectContext]);
 
   return (
     <div className='row'>

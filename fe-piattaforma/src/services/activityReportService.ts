@@ -26,19 +26,39 @@ export function searchActivityReport(
 }
 
 export function saveActivityReport(
-  report: RegistroAttivita
+  report: RegistroAttivita,
+  idProgetto: number
 ): Promise<AxiosResponse<RegistroAttivita>> {
+  const { cfUtenteLoggato, codiceRuoloUtenteLoggato, idEnte, idProgramma } =
+    getUserHeaders();
   return API.post<RegistroAttivita>(
     `${process.env.QUESTIONARIO_CITTADINO}registroAttivita`,
-    report
+    {
+      ...report,
+      cfUtenteLoggato,
+      codiceRuoloUtenteLoggato,
+      idEnte,
+      idProgetto,
+      idProgramma,
+    }
   );
 }
 
 export function elaborateCsv(
-  elaborato: ElaboratoCsvRequest
+  elaborato: ElaboratoCsvRequest,
+  idProgetto: number
 ): Promise<AxiosResponse<ElaboratoCsvResponse>> {
+  const { cfUtenteLoggato, codiceRuoloUtenteLoggato, idEnte, idProgramma } =
+    getUserHeaders();
   return API.post<ElaboratoCsvResponse>(
     `${process.env.QUESTIONARIO_CITTADINO}importCsv`,
-    elaborato
+    {
+      ...elaborato,
+      cfUtenteLoggato,
+      codiceRuoloUtenteLoggato,
+      idEnte,
+      idProgetto,
+      idProgramma,
+    }
   );
 }
