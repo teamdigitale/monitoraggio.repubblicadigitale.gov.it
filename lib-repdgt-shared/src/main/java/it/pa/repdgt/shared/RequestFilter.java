@@ -105,6 +105,8 @@ public class RequestFilter implements Filter {
 					 * api drupal/rocketchat/workdocs sono esenti da tale controllo
 					 */
 					log.debug("Sono nel hasRuoloUtente a true");
+					log.debug("BodyRequest : {} ", bodyRequest);
+					log.debug("Endpoint chiamato : {}", endpoint);
 					if (bodyRequest != null
 							&& !"".equals(bodyRequest.trim())
 							&& !filterUtil.verificaSceltaProfilo(codiceFiscaleUtenteLoggato, codiceRuoloUtenteLoggato,
