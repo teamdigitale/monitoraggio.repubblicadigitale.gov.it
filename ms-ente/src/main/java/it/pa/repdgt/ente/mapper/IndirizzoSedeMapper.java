@@ -2,6 +2,7 @@ package it.pa.repdgt.ente.mapper;
 
 import javax.validation.constraints.NotNull;
 
+import it.pa.repdgt.ente.util.RegioneUtil;
 import org.springframework.stereotype.Component;
 
 import it.pa.repdgt.ente.request.NuovaSedeRequest.IndirizzoSedeRequest;
@@ -17,7 +18,7 @@ public class IndirizzoSedeMapper {
 		indirizzoSedeEntity.setCivico(indirizzoSedeRequest.getCivico());
 		indirizzoSedeEntity.setComune(indirizzoSedeRequest.getComune());
 		indirizzoSedeEntity.setProvincia(indirizzoSedeRequest.getProvincia());
-		indirizzoSedeEntity.setRegione(StringUtils.capitalize(indirizzoSedeRequest.getRegione()));
+		indirizzoSedeEntity.setRegione(RegioneUtil.getIndirizzoSede(indirizzoSedeRequest.getRegione()));
 		indirizzoSedeEntity.setCap(indirizzoSedeRequest.getCap());
 		indirizzoSedeEntity.setNazione(indirizzoSedeRequest.getNazione());
 		return indirizzoSedeEntity;

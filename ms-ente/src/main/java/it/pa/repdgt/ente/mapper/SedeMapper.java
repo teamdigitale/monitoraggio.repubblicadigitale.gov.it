@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import it.pa.repdgt.ente.util.RegioneUtil;
 import org.springframework.stereotype.Component;
 
 import it.pa.repdgt.ente.bean.DettaglioProgettoLightBean;
@@ -36,8 +37,8 @@ public class SedeMapper {
 		sedeEntity.setCivico(primoIndirizzoSede.getCivico());
 		sedeEntity.setComune(primoIndirizzoSede.getComune());
 		sedeEntity.setProvincia(primoIndirizzoSede.getProvincia());
-		sedeEntity.setRegione(StringUtils.capitalize(primoIndirizzoSede.getRegione()));
 		sedeEntity.setCap(primoIndirizzoSede.getCap());
+		sedeEntity.setRegione(RegioneUtil.getIndirizzoSede(primoIndirizzoSede.getRegione()));
 		sedeEntity.setNazione(primoIndirizzoSede.getNazione());
 		return sedeEntity;
 	}
