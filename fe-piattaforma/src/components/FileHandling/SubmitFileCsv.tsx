@@ -52,11 +52,11 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
       elaboratoRequest: ElaboratoCsvRequest
     ) => {
       dispatch(showLoader());
-      const { codiceFiscale, idEnte, codiceRuoloUtenteLoggato } =
+      const { cfUtenteLoggato, codiceFiscale, idEnte, codiceRuoloUtenteLoggato } =
         getUserHeaders();
       if (projectContext) {
         const report: RegistroAttivita = {
-          operatore: codiceFiscale,
+          operatore: codiceFiscale || cfUtenteLoggato,
           dataInserimento: moment(new Date()).format('DD/MM/YYYY'),
           totaleRigheFile:
             elaboratoRequest.serviziScartati.length +
