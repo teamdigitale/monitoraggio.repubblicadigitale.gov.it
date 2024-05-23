@@ -1,5 +1,22 @@
 import moment from 'moment';
 import { CSVRecord } from '../models/RecordCSV.model';
+import {
+  ageGroupMap,
+  bookingReasonMap,
+  citizenshipMap,
+  digitalProblemSolvingMap,
+  discoveryMethodServiceMap,
+  documentTypeMap,
+  educationLevelMap,
+  firstLevelCompetenceMap,
+  genderMap,
+  occupationalStatusMap,
+  publicServiceDomainMap,
+  repeatExperienceMap,
+  secondLevelCompetenceMap,
+  serviceBookingTypeMap,
+  serviceNameMap,
+} from './ResponseCodeMappings';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const AES256 = require('aes-everywhere');
 
@@ -7,10 +24,10 @@ export const generateServiceName = (
   serviceTypeString: string
 ): { serviceName: string; rejectedTypes: string[] } => {
   const serviceAbbreviations: { [key: string]: string } = {
-    'Facilitazione individuale': 'facind',
-    'Facilitazione di gruppo': 'facgru',
-    'Formazione in presenza': 'forminp',
-    'Formazione individuale': 'formind',
+    A: 'facind',
+    B: 'facgru',
+    C: 'forminp',
+    D: 'formind',
     Altro: 'Altro',
   };
 
@@ -71,7 +88,10 @@ export function encryptDocumentAndDetermineType(
     encryptedDocNumber = filteredRecord.AN6
       ? AES256.encrypt(filteredRecord.AN6, process?.env?.AES256_KEY)
       : '';
-    tipoDocumento = filteredRecord.AN5 || '';
+
+    if (filteredRecord.AN5) {
+      tipoDocumento = documentTypeMap[filteredRecord.AN5];
+    }
   }
   return {
     encryptedDocNumber,
@@ -85,24 +105,32 @@ export const validateFields = (
 ): string[] => {
   const errors: string[] = [];
   let mandatoryStartFields = [...mandatoryFields];
-  if (record.AN5 && record.AN6) {
+  if (
+    record.AN4 === 'SI' &&
+    (!record.AN5 ||
+      record.AN5.trim() === '' ||
+      !record.AN6 ||
+      record.AN6.trim() === '')
+  ) {
     mandatoryStartFields = mandatoryStartFields.filter((val) => val !== 'AN3');
-  } 
+  }
+
+  if (record.AN4 === 'SI') {
+    if (!mandatoryStartFields.includes('AN5')) {
+      mandatoryStartFields.push('AN5');
+    }
+    if (!mandatoryStartFields.includes('AN6')) {
+      mandatoryStartFields.push('AN6');
+    }
+  } else if (record.AN4 === 'NO' && !mandatoryStartFields.includes('AN3')) {
+    mandatoryStartFields.push('AN3');
+  }
 
   const missingFields = mandatoryStartFields.filter(
     (field) =>
       !record[field as keyof CSVRecord] ||
       record[field as keyof CSVRecord] === ''
   );
-
-  if (record.AN4 === 'SI') {
-    if (!record.AN5 || record.AN5.trim() === '') {
-      missingFields.push('AN5');
-    }
-    if (!record.AN6 || record.AN6.trim() === '') {
-      missingFields.push('AN6');
-    }
-  }
 
   if (missingFields.length > 0) {
     const isMultipleMissing = missingFields.length > 1;
@@ -119,8 +147,42 @@ export const validateFields = (
   if (record.AN4 !== 'SI' && record.AN3 && !validateFiscalCode(record.AN3)) {
     errors.push('Il Codice Fiscale inserito è invalido.');
   }
+
   return errors;
 };
+export function checkMapValues(record: CSVRecord, errors: string[]) {
+  const mapFields = [
+    { key: 'AN5', map: documentTypeMap },
+    { key: 'AN7', map: genderMap },
+    { key: 'AN8', map: ageGroupMap },
+    { key: 'AN9', map: educationLevelMap },
+    { key: 'AN10', map: occupationalStatusMap },
+    { key: 'AN11', map: citizenshipMap },
+    { key: 'SE3', map: serviceNameMap },
+    { key: 'SE4', map: firstLevelCompetenceMap },
+    { key: 'SE5', map: secondLevelCompetenceMap },
+    { key: 'SE6', map: publicServiceDomainMap },
+    { key: 'PR2', map: serviceBookingTypeMap },
+    { key: 'ES1', map: discoveryMethodServiceMap },
+    { key: 'ES2', map: bookingReasonMap },
+    { key: 'ES3', map: repeatExperienceMap },
+    { key: 'ES5', map: digitalProblemSolvingMap },
+  ];
+
+  mapFields.forEach(({ key, map }) => {
+    if (record[key] && !map[record[key]]) {
+      errors.push(
+        `Il valore "${record[key]}" per il campo "${key}" non risulta una risposta valida.`
+      );
+    }
+  });
+}
+export function getDescriptionForValue(
+  value: string | undefined,
+  map: { [key: string]: string }
+): string {
+  return value !== undefined ? map[value] || '' : '';
+}
 
 export const generateServiceSection = (record: CSVRecord) => ({
   id: 'anagraphic-service-section',
@@ -128,10 +190,10 @@ export const generateServiceSection = (record: CSVRecord) => ({
   properties: [
     { '22': [moment(record.SE1).format('YYYY-MM-DD')] },
     { '23': [record.SE2] },
-    { '24': [record.SE3] },
-    { '25': [record.SE4] },
-    { '26': [record.SE5] },
-    { '27': [record.SE6] },
+    { '24': [serviceNameMap[record.SE3]] },
+    { '25': [firstLevelCompetenceMap[record.SE4]] },
+    { '26': [secondLevelCompetenceMap[parseInt(record.SE5)]] },
+    { '27': [getDescriptionForValue(record.SE6, publicServiceDomainMap)] },
     { '28': [record.SE7] },
   ],
 });
@@ -140,18 +202,16 @@ export const generateExperienceSection = (record: CSVRecord) => ({
   id: 'content-service-section',
   title: 'Informazioni sull’esperienza',
   properties: [
-    { '29': [record.ES1] },
-    { '30': [record.ES2] },
-    { '31': [record.ES3] },
+    { '29': [getDescriptionForValue(record.ES1, discoveryMethodServiceMap)] },
+    { '30': [getDescriptionForValue(record.ES2, bookingReasonMap)] },
+    { '31': [getDescriptionForValue(record.ES3, repeatExperienceMap)] },
     { '32': [record.ES4] },
-    { '33': [record.ES5] },
+    { '33': [getDescriptionForValue(record.ES5, digitalProblemSolvingMap)] },
     { '34': [record.ES6] },
   ],
 });
 
-export const ageCategoryMap: { [key: string]: number } = {
-  'da 18 a 29': 1,
-  'da 30 a 54': 2,
-  'da 55 a 74': 3,
-  '75 e oltre': 4,
+export const mapKeysToServiceNames = (keysString: string): string[] => {
+  const keys = keysString.split(';');
+  return keys.map((key) => serviceNameMap[key.trim()] ?? '');
 };

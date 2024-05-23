@@ -13,7 +13,7 @@ export interface Cittadino {
   nuovoCittadino?: boolean;
 }
 
-export interface CittadinoCSV extends Omit<Cittadino, "occupazione" | "fasciaDiEta" | "titoloDiStudio"> {
+export interface CittadinoCSV extends Omit<Cittadino, 'occupazione' | 'fasciaDiEta' | 'titoloDiStudio'> {
   fasciaDiEtaId: number;
   statoOccupazionale: string;
   titoloStudio: string;

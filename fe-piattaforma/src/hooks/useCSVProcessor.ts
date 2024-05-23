@@ -7,14 +7,30 @@ import { getUserHeaders } from '../redux/features/user/userThunk';
 import moment from 'moment';
 import { CSVRecord } from '../models/RecordCSV.model';
 import {
-  ageCategoryMap,
+  checkMapValues,
   encryptDocumentAndDetermineType,
   encryptFiscalCode,
   generateExperienceSection,
   generateServiceName,
   generateServiceSection,
+  getDescriptionForValue,
+  mapKeysToServiceNames,
   validateFields,
 } from '../utils/csvUtils';
+import {
+  ageGroupMap,
+  bookingReasonMap,
+  citizenshipMap,
+  discoveryMethodServiceMap,
+  educationLevelMap,
+  firstLevelCompetenceMap,
+  genderMap,
+  occupationalStatusMap,
+  repeatExperienceMap,
+  secondLevelCompetenceMap,
+  serviceBookingTypeMap,
+  serviceNameMap,
+} from '../utils/ResponseCodeMappings';
 const {
   idProgetto,
   idEnte,
@@ -104,6 +120,7 @@ export function useCSVProcessor(file: File | undefined) {
                     filteredRecord,
                     isValidFiscalCode
                   );
+                  checkMapValues(record, errors);
                   if (
                     rejectedTypes.length > 0 &&
                     filteredRecord.SE3 &&
@@ -137,7 +154,7 @@ export function useCSVProcessor(file: File | undefined) {
               }
             }
           },
-          error: (error) => {
+          error: (error:any) => {
             setIsProcessing(false);
             reject(error);
           },
@@ -170,6 +187,9 @@ export function useCSVProcessor(file: File | undefined) {
     );
     const { serviceName } = generateServiceName(filteredRecord.SE3);
     const errorNotes = errors.length > 0 ? errors.join(', ') : '';
+    const tipoDiServizioPrenotato: string[] = mapKeysToServiceNames(
+      filteredRecord.SE3
+    );
     return {
       servizioRequest: {
         nomeServizio: serviceName,
@@ -182,7 +202,7 @@ export function useCSVProcessor(file: File | undefined) {
         cfUtenteLoggato: cfUtenteLoggato,
         codiceRuoloUtenteLoggato: codiceRuoloUtenteLoggato,
         idSedeServizio: Number(filteredRecord.IDSede),
-        tipoDiServizioPrenotato: filteredRecord.SE3.split(';'),
+        tipoDiServizioPrenotato: tipoDiServizioPrenotato,
         sezioneQuestionarioCompilatoQ3: JSON.stringify(
           sezioneQuestionarioCompilatoQ3
         ),
@@ -196,12 +216,12 @@ export function useCSVProcessor(file: File | undefined) {
         idEnte: idEnte,
         idProgetto: idProgetto,
         idProgramma: idProgramma,
-        genere: filteredRecord.AN7,
-        fasciaDiEtaId: ageCategoryMap[filteredRecord.AN8] ?? '',
-        titoloStudio: filteredRecord.AN9,
-        statoOccupazionale: filteredRecord.AN10,
+        genere: genderMap[filteredRecord.AN7] ?? '',
+        fasciaDiEtaId: ageGroupMap[filteredRecord.AN8] ?? '',
+        titoloStudio: educationLevelMap[filteredRecord.AN9],
+        statoOccupazionale: occupationalStatusMap[filteredRecord.AN10],
         provinciaDiDomicilio: filteredRecord.AN12,
-        cittadinanza: filteredRecord.AN11,
+        cittadinanza: citizenshipMap[filteredRecord.AN11],
         nuovoCittadino: false,
       },
       questionarioCompilatoRequest: {
@@ -214,14 +234,28 @@ export function useCSVProcessor(file: File | undefined) {
         idFacilitatore: filteredRecord.IDFacilitatore,
         nominativoFacilitatore: filteredRecord.NominativoFacilitatore,
         nominativoSede: filteredRecord.NominativoSede,
-        tipologiaServiziPrenotato: filteredRecord.SE3,
-        competenzeTrattatePrimoLivello: filteredRecord.SE4,
-        competenzeTrattateSecondoLivello: filteredRecord.SE5,
-        modalitaConoscenzaServizioPrenotato: filteredRecord.ES1 || '',
-        motivoPrenotazione: filteredRecord.ES2 || '',
+        tipologiaServiziPrenotato: serviceNameMap[filteredRecord.SE3],
+        competenzeTrattatePrimoLivello:
+          firstLevelCompetenceMap[filteredRecord.SE4],
+        competenzeTrattateSecondoLivello:
+          secondLevelCompetenceMap[parseInt(filteredRecord.SE5)],
+        modalitaConoscenzaServizioPrenotato: getDescriptionForValue(
+          filteredRecord.ES1,
+          discoveryMethodServiceMap
+        ),
+        motivoPrenotazione: getDescriptionForValue(
+          filteredRecord.ES2,
+          bookingReasonMap
+        ),
         primoUtilizzoServizioFacilitazione: filteredRecord.PR1 || '',
-        serviziPassatiFacilitazione: filteredRecord.PR2 || '',
-        valutazioneRipetizioneEsperienza: filteredRecord.ES3 || '',
+        serviziPassatiFacilitazione: getDescriptionForValue(
+          filteredRecord.PR2,
+          serviceBookingTypeMap
+        ),
+        valutazioneRipetizioneEsperienza: getDescriptionForValue(
+          filteredRecord.ES3,
+          repeatExperienceMap
+        ),
         ambitoFacilitazioneFormazioneInteressato: filteredRecord.ES4 || '',
       },
     };
