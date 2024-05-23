@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.225](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.224...1.0.0-test.225) (2024-05-23)
+
+
+### Bug Fixes
+
+* **fe-wave2:** updates 20240523 ([b3b06b8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b3b06b8fb5552862a7a00b6aea2e1246c82c524c))
+
 ## [1.0.0-test.224](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.223...1.0.0-test.224) (2024-05-22)
 
 
