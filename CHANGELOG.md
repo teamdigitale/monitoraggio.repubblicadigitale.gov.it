@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.227](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.226...1.0.0-test.227) (2024-05-24)
+
+
+### Bug Fixes
+
+* **fix-ignore-case:** updates 20240524 ([1cddc9d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1cddc9dc361cd0b3bad51d5d2c97b22ed99a3b30))
+
 ## [1.0.0-test.226](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.225...1.0.0-test.226) (2024-05-24)
 
 
