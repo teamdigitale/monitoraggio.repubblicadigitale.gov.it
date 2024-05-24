@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.226](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.225...1.0.0-test.226) (2024-05-24)
+
+
+### Bug Fixes
+
+* **ms-questionario-controlli:** updates 20240524 ([4c2852d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4c2852d71481f9313731018e429c79e9b6ce2004))
+
 ## [1.0.0-test.225](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.224...1.0.0-test.225) (2024-05-23)
 
 
