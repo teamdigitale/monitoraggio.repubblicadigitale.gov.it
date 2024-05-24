@@ -82,12 +82,10 @@ public class ImportMassivoCSVService {
                 ServizioRequest servizioRequest = servizioElaborato.getServizioRequest();
                 servizioRequest.setCfUtenteLoggato(utenteRecuperato.getCodiceFiscale());
                 servizioRequest.setIdSedeServizio(sedeRecuperata.getId());
-                if (enteSedeProgettoFacilitatoreRepository.existsById(EnteSedeProgettoFacilitatoreKey.builder()
-                        .idFacilitatore(servizioRequest.getCfUtenteLoggato())
-                        .idEnte(servizioRequest.getIdEnteServizio())
-                        .idProgetto(servizioRequest.getIdProgetto())
-                        .idSede(servizioRequest.getIdSedeServizio())
-                        .build())) {
+                if (enteSedeProgettoFacilitatoreRepository.existsByChiave(servizioRequest.getCfUtenteLoggato(),
+                        servizioRequest.getIdEnteServizio(),
+                        servizioRequest.getIdProgetto(),
+                        servizioRequest.getIdSedeServizio())) {
                     throw new ResourceNotFoundException(NoteCSV.NOTE_UTENTE_SEDE_NON_ASSOCIATI_AL_PROGETTO,
                             CodiceErroreEnum.C01);
                 }
