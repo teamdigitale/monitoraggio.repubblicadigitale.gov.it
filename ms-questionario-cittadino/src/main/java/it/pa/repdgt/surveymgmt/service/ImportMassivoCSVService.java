@@ -100,7 +100,7 @@ public class ImportMassivoCSVService {
                 continue;
             } catch (RuntimeException e) {
                 serviziAggiunti--;
-                servizioElaborato.getCampiAggiuntiviCSV().setNote(NoteCSV.NOTE_SERVIZIO);
+                servizioElaborato.getCampiAggiuntiviCSV().setNote(e.getMessage());
                 serviziScartati.add(servizioElaborato);
                 continue;
             }
