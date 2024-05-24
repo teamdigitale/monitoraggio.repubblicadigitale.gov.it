@@ -12,4 +12,5 @@ public class NoteCSV {
     public static final String NOTE_SEDE_NON_PRESENTE = "La sede non è presente a database";
     public static final String NOTE_UTENTE_NON_ASSOCIATO_AL_PROGETTO = "L'utente non è associato al progetto";
     public static final String NOTE_UTENTE_SEDE_NON_ASSOCIATI_AL_PROGETTO = "Il facilitatore o la sede non sono associati al progetto";
+    public static final String NOTE_PROGETTO_NON_PRESENTE = "Progetto non presente a database";
 }
