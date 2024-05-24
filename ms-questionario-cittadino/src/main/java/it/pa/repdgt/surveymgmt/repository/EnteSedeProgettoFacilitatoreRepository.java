@@ -73,14 +73,14 @@ public interface EnteSedeProgettoFacilitatoreRepository
 			@Param("idProgetto") Long idProgetto);
 
 	@Query(value = ""
-			+ " SELECT count(*) > 0 "
+			+ " SELECT * "
 			+ " FROM ente_sede_progetto_facilitatore espf "
 			+ " WHERE 1=1 "
 			+ " 	AND espf.id_facilitatore = :cfUtenteLoggato "
 			+ " 	AND espf.id_ente = :idEnteServizio "
 			+ " 	AND espf.id_progetto = :idProgetto "
 			+ "     AND espf.id_sede = :idSedeServizio ", nativeQuery = true)
-	boolean existsByChiave(
+	EnteSedeProgettoFacilitatoreEntity existsByChiave(
 			@Param("cfUtenteLoggato") String cfUtenteLoggato,
 			@Param("idEnteServizio") Long idEnteServizio,
 			@Param("idProgetto") Long idProgetto,

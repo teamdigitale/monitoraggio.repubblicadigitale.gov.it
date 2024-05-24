@@ -1,10 +1,10 @@
 package it.pa.repdgt.surveymgmt.service;
 
 import it.pa.repdgt.shared.entity.CittadinoEntity;
+import it.pa.repdgt.shared.entity.EnteSedeProgettoFacilitatoreEntity;
 import it.pa.repdgt.shared.entity.SedeEntity;
 import it.pa.repdgt.shared.entity.ServizioEntity;
 import it.pa.repdgt.shared.entity.UtenteEntity;
-import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.surveymgmt.components.ServiziElaboratiCsvWriter;
 import it.pa.repdgt.surveymgmt.constants.NoteCSV;
@@ -82,14 +82,16 @@ public class ImportMassivoCSVService {
                 ServizioRequest servizioRequest = servizioElaborato.getServizioRequest();
                 servizioRequest.setCfUtenteLoggato(utenteRecuperato.getCodiceFiscale());
                 servizioRequest.setIdSedeServizio(sedeRecuperata.getId());
-                if (enteSedeProgettoFacilitatoreRepository.existsByChiave(servizioRequest.getCfUtenteLoggato(),
-                        servizioRequest.getIdEnteServizio(),
-                        servizioRequest.getIdProgetto(),
-                        servizioRequest.getIdSedeServizio())) {
+                EnteSedeProgettoFacilitatoreEntity enteSedeProgettoFacilitatore = enteSedeProgettoFacilitatoreRepository
+                        .existsByChiave(servizioRequest.getCfUtenteLoggato(),
+                                servizioRequest.getIdEnteServizio(),
+                                servizioRequest.getIdProgetto(),
+                                servizioRequest.getIdSedeServizio());
+                if (enteSedeProgettoFacilitatore == null) {
                     throw new ResourceNotFoundException(NoteCSV.NOTE_UTENTE_SEDE_NON_ASSOCIATI_AL_PROGETTO,
                             CodiceErroreEnum.C01);
                 }
-                servizioRequest.setCodiceRuoloUtenteLoggato("FAC");
+                servizioRequest.setCodiceRuoloUtenteLoggato(enteSedeProgettoFacilitatore.getRuoloUtente());
                 servizioElaborato.setServizioRequest(servizioRequest);
                 ServizioEntity servizioEntity = salvaServizio(servizioOpt, servizioElaborato.getServizioRequest());
                 idServizio = servizioEntity.getId();
