@@ -52,5 +52,5 @@ public interface SedeRepository extends JpaRepository<SedeEntity, Long> {
 			@Param("criterioRicerca") String criterioRicerca,
 			@Param("idsSedi") List<String> idsSedi);
 
-	Optional<SedeEntity> findByIdOrNome(Long idSedeServizio, String nominativoSede);
+	Optional<SedeEntity> findByIdIgnoreCaseOrNomeIgnoreCase(Long idSedeServizio, String nominativoSede);
 }

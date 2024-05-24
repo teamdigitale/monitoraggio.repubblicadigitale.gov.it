@@ -27,10 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Base64;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -94,6 +92,7 @@ public class ImportMassivoCSVService {
                             CodiceErroreEnum.C01);
                 }
                 servizioRequest.setCodiceRuoloUtenteLoggato("FAC");
+                servizioElaborato.setServizioRequest(servizioRequest);
                 ServizioEntity servizioEntity = salvaServizio(servizioOpt, servizioElaborato.getServizioRequest());
                 idServizio = servizioEntity.getId();
             } catch (ResourceNotFoundException ex) {
@@ -151,14 +150,15 @@ public class ImportMassivoCSVService {
     }
 
     private Optional<SedeEntity> recuperaSedeDaRichiesta(Long idSedeServizio, String nominativoSede) {
-        return sedeRepository.findByIdOrNome(idSedeServizio, nominativoSede);
+        return sedeRepository.findByIdIgnoreCaseOrNomeIgnoreCase(idSedeServizio, nominativoSede);
     }
 
     private Optional<UtenteEntity> recuperaUtenteFacilitatoreDaRichiesta(String idFacilitatore,
             String nominativoFacilitatore) {
         String cognome = nominativoFacilitatore.split(" ")[0];
         String nome = nominativoFacilitatore.split(" ")[1];
-        return utenteRepository.findByCodiceFiscaleOrNomeAndCognome(idFacilitatore, nome, cognome);
+        return utenteRepository.findByCodiceFiscaleIgnoreCaseOrNomeIgnoreCaseAndCognomeIgnoreCase(idFacilitatore, nome,
+                cognome);
     }
 
     private ServiziElaboratiDTOResponse buildResponseData(List<ServiziElaboratiDTO> serviziScartati,

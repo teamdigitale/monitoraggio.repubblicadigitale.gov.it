@@ -10,5 +10,6 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, String> {
 
 	Optional<UtenteEntity> findByCodiceFiscale(String idUtente);
 
-	Optional<UtenteEntity> findByCodiceFiscaleOrNomeAndCognome(String idFacilitatore, String nome, String cognome);
+	Optional<UtenteEntity> findByCodiceFiscaleIgnoreCaseOrNomeIgnoreCaseAndCognomeIgnoreCase(String idFacilitatore,
+			String nome, String cognome);
 }
