@@ -150,7 +150,7 @@ public class ImportMassivoCSVService {
     }
 
     private Optional<SedeEntity> recuperaSedeDaRichiesta(Long idSedeServizio, String nominativoSede) {
-        return sedeRepository.findByIdIgnoreCaseOrNomeIgnoreCase(idSedeServizio, nominativoSede);
+        return sedeRepository.findByIdOrNomeIgnoreCase(idSedeServizio, nominativoSede);
     }
 
     private Optional<UtenteEntity> recuperaUtenteFacilitatoreDaRichiesta(String idFacilitatore,
