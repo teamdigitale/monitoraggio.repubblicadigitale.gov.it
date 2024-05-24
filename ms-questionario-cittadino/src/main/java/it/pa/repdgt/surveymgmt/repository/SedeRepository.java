@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import java.util.Optional;
 
 import it.pa.repdgt.shared.entity.SedeEntity;
 import it.pa.repdgt.surveymgmt.projection.SedeProjection;
@@ -50,4 +51,6 @@ public interface SedeRepository extends JpaRepository<SedeEntity, Long> {
 	List<SedeProjection> findAllSediFiltrate(
 			@Param("criterioRicerca") String criterioRicerca,
 			@Param("idsSedi") List<String> idsSedi);
+
+	Optional<SedeEntity> findByIdOrNome(Long idSedeServizio, String nominativoSede);
 }

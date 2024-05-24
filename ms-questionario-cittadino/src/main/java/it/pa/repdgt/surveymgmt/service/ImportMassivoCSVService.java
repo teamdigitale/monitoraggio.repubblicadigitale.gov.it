@@ -1,17 +1,25 @@
 package it.pa.repdgt.surveymgmt.service;
 
 import it.pa.repdgt.shared.entity.CittadinoEntity;
+import it.pa.repdgt.shared.entity.SedeEntity;
 import it.pa.repdgt.shared.entity.ServizioEntity;
+import it.pa.repdgt.shared.entity.UtenteEntity;
+import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.surveymgmt.components.ServiziElaboratiCsvWriter;
 import it.pa.repdgt.surveymgmt.constants.NoteCSV;
 import it.pa.repdgt.surveymgmt.dto.ServiziElaboratiDTO;
 import it.pa.repdgt.surveymgmt.dto.ServiziElaboratiDTOResponse;
 import it.pa.repdgt.surveymgmt.exception.CittadinoException;
 import it.pa.repdgt.surveymgmt.exception.QuestionarioCompilatoException;
+import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
 import it.pa.repdgt.surveymgmt.exception.ServizioException;
 import it.pa.repdgt.surveymgmt.model.ElaboratoCSVRequest;
 import it.pa.repdgt.surveymgmt.model.ElaboratoCSVResponse;
+import it.pa.repdgt.surveymgmt.repository.EnteSedeProgettoFacilitatoreRepository;
+import it.pa.repdgt.surveymgmt.repository.SedeRepository;
 import it.pa.repdgt.surveymgmt.repository.ServizioSqlRepository;
+import it.pa.repdgt.surveymgmt.repository.UtenteRepository;
 import it.pa.repdgt.surveymgmt.request.ServizioRequest;
 import it.pa.repdgt.surveymgmt.restapi.ServizioCittadinoRestApi;
 import lombok.RequiredArgsConstructor;
@@ -30,11 +38,14 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class ImportMassivoCSVService {
+    private final SedeRepository sedeRepository;
+    private final UtenteRepository utenteRepository;
     private final ServiziElaboratiCsvWriter serviziElaboratiCsvWriter;
     private final ServizioService servizioService;
     private final CittadiniServizioService cittadiniServizioService;
     private final ServizioCittadinoRestApi servizioCittadinoRestApi;
     private final ServizioSqlRepository servizioSqlRepository;
+    private final EnteSedeProgettoFacilitatoreRepository enteSedeProgettoFacilitatoreRepository;
     private static final String FILE_NAME = "righe_scartate_%s.csv";
 
     public ElaboratoCSVResponse process(ElaboratoCSVRequest csvRequest) {
@@ -56,8 +67,40 @@ public class ImportMassivoCSVService {
                 if (!servizioOpt.isPresent()) {
                     serviziAggiunti++;
                 }
+                Optional<UtenteEntity> utenteFacilitatoreDellaRichiesta = recuperaUtenteFacilitatoreDaRichiesta(
+                        servizioElaborato.getCampiAggiuntiviCSV().getIdFacilitatore(),
+                        servizioElaborato.getCampiAggiuntiviCSV().getNominativoFacilitatore());
+                if (!utenteFacilitatoreDellaRichiesta.isPresent()) {
+                    throw new ResourceNotFoundException(NoteCSV.NOTE_FACILITATORE_NON_PRESENTE, CodiceErroreEnum.C01);
+                }
+                Optional<SedeEntity> optSedeRecuperata = recuperaSedeDaRichiesta(
+                        servizioElaborato.getServizioRequest().getIdSedeServizio(),
+                        servizioElaborato.getCampiAggiuntiviCSV().getNominativoSede());
+                if (!optSedeRecuperata.isPresent()) {
+                    throw new ResourceNotFoundException(NoteCSV.NOTE_SEDE_NON_PRESENTE, CodiceErroreEnum.C01);
+                }
+                SedeEntity sedeRecuperata = optSedeRecuperata.get();
+                UtenteEntity utenteRecuperato = utenteFacilitatoreDellaRichiesta.get();
+                ServizioRequest servizioRequest = servizioElaborato.getServizioRequest();
+                servizioRequest.setCfUtenteLoggato(utenteRecuperato.getCodiceFiscale());
+                servizioRequest.setIdSedeServizio(sedeRecuperata.getId());
+                if (enteSedeProgettoFacilitatoreRepository.existsById(EnteSedeProgettoFacilitatoreKey.builder()
+                        .idFacilitatore(servizioRequest.getCfUtenteLoggato())
+                        .idEnte(servizioRequest.getIdEnteServizio())
+                        .idProgetto(servizioRequest.getIdProgetto())
+                        .idSede(servizioRequest.getIdSedeServizio())
+                        .build())) {
+                    throw new ResourceNotFoundException(NoteCSV.NOTE_UTENTE_SEDE_NON_ASSOCIATI_AL_PROGETTO,
+                            CodiceErroreEnum.C01);
+                }
+                servizioRequest.setCodiceRuoloUtenteLoggato("FAC");
                 ServizioEntity servizioEntity = salvaServizio(servizioOpt, servizioElaborato.getServizioRequest());
                 idServizio = servizioEntity.getId();
+            } catch (ResourceNotFoundException ex) {
+                serviziAggiunti--;
+                servizioElaborato.getCampiAggiuntiviCSV().setNote(ex.getMessage());
+                serviziScartati.add(servizioElaborato);
+                continue;
             } catch (RuntimeException e) {
                 serviziAggiunti--;
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(NoteCSV.NOTE_SERVIZIO);
@@ -105,6 +148,17 @@ public class ImportMassivoCSVService {
                 .response(buildResponseData(serviziScartati, serviziAggiunti, cittadiniAggiunti, questionariAggiunti))
                 .fileName(String.format(FILE_NAME, LocalDate.now()))
                 .build();
+    }
+
+    private Optional<SedeEntity> recuperaSedeDaRichiesta(Long idSedeServizio, String nominativoSede) {
+        return sedeRepository.findByIdOrNome(idSedeServizio, nominativoSede);
+    }
+
+    private Optional<UtenteEntity> recuperaUtenteFacilitatoreDaRichiesta(String idFacilitatore,
+            String nominativoFacilitatore) {
+        String cognome = nominativoFacilitatore.split(" ")[0];
+        String nome = nominativoFacilitatore.split(" ")[1];
+        return utenteRepository.findByCodiceFiscaleOrNomeAndCognome(idFacilitatore, nome, cognome);
     }
 
     private ServiziElaboratiDTOResponse buildResponseData(List<ServiziElaboratiDTO> serviziScartati,
