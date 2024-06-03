@@ -42,7 +42,7 @@ public class ImportMassivoCSVService {
     private final EnteSedeProgettoFacilitatoreRepository enteSedeProgettoFacilitatoreRepository;
     private static final String FILE_NAME = "%s_righe_scartate_%s_%s.csv";
 
-    private String uuid = UUID.randomUUID().toString().replaceAll("-","");
+    private String uuid = UUID.randomUUID().toString().replaceAll("-", "");
 
     private LocalTime now = LocalTime.now();
 
@@ -90,7 +90,7 @@ public class ImportMassivoCSVService {
                         servizioRequest.getIdEnteServizio(),
                         servizioRequest.getIdProgetto(),
                         servizioRequest.getIdSedeServizio());
-                if (enteSedeProgettoFacilitatore == null){
+                if (enteSedeProgettoFacilitatore == null) {
                     throw new ResourceNotFoundException(NoteCSV.NOTE_UTENTE_SEDE_NON_ASSOCIATI_AL_PROGETTO, CodiceErroreEnum.C01);
                 }
                 servizioRequest.setCodiceRuoloUtenteLoggato(enteSedeProgettoFacilitatore.getRuoloUtente());
@@ -103,7 +103,7 @@ public class ImportMassivoCSVService {
                 questionarioCompilatoRequest.setIdEnte(servizioRequest.getIdEnteServizio());
                 questionarioCompilatoRequest.setIdProgetto(servizioRequest.getIdProgetto());
                 Optional<ProgettoEntity> progettoEntity = progettoRepository.findById(servizioRequest.getIdProgetto());
-                if(progettoEntity.isPresent()){
+                if (progettoEntity.isPresent()) {
                     questionarioCompilatoRequest.setIdProgramma(progettoEntity.get().getProgramma().getId());
                 } else {
                     throw new ResourceNotFoundException(NoteCSV.NOTE_PROGETTO_NON_PRESENTE, CodiceErroreEnum.C01);
@@ -111,13 +111,15 @@ public class ImportMassivoCSVService {
                 servizioElaborato.setQuestionarioCompilatoRequest(questionarioCompilatoRequest);
                 ServizioEntity servizioEntity = salvaServizio(servizioOpt, servizioElaborato.getServizioRequest());
                 idServizio = servizioEntity.getId();
-            } catch (ResourceNotFoundException ex){
-                serviziAggiunti--;
+            } catch (ResourceNotFoundException ex) {
+                if (serviziAggiunti > 0)
+                    serviziAggiunti--;
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(ex.getMessage());
                 serviziScartati.add(servizioElaborato);
                 continue;
             } catch (RuntimeException e) {
-                serviziAggiunti--;
+                if (serviziAggiunti > 0)
+                    serviziAggiunti--;
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(e.getMessage());
                 serviziScartati.add(servizioElaborato);
                 continue;
@@ -127,17 +129,20 @@ public class ImportMassivoCSVService {
                 CittadinoEntity cittadinoEntity = cittadiniServizioService.creaNuovoCittadinoImportCsv(idServizio, servizioElaborato.getNuovoCittadinoServizioRequest());
                 idQuestionario = cittadinoEntity.getQuestionarioCompilato().get(0).getId();
             } catch (CittadinoException | ServizioException e) {
-                cittadiniAggiunti--;
+                if (cittadiniAggiunti > 0)
+                    cittadiniAggiunti--;
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(e.getCodiceErroreEnum().getDescrizioneErrore());
                 serviziScartati.add(servizioElaborato);
                 continue;
             } catch (IncorrectResultSizeDataAccessException incorrectException) {
-                cittadiniAggiunti--;
+                if (cittadiniAggiunti > 0)
+                    cittadiniAggiunti--;
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(NoteCSV.NOTE_CITTADINO_PRESENTE);
                 serviziScartati.add(servizioElaborato);
                 continue;
             } catch (RuntimeException e) {
-                cittadiniAggiunti--;
+                if (cittadiniAggiunti > 0)
+                    cittadiniAggiunti--;
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(NoteCSV.NOTE_CITTADINO);
                 serviziScartati.add(servizioElaborato);
                 continue;
@@ -146,11 +151,13 @@ public class ImportMassivoCSVService {
                 questionariAggiunti++;
                 servizioCittadinoRestApi.compilaQuestionario(idQuestionario, servizioElaborato.getQuestionarioCompilatoRequest());
             } catch (CittadinoException | ServizioException | QuestionarioCompilatoException e) {
-                questionariAggiunti--;
+                if (questionariAggiunti > 0)
+                    questionariAggiunti--;
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(e.getCodiceErroreEnum().getDescrizioneErrore());
                 serviziScartati.add(servizioElaborato);
             } catch (RuntimeException e) {
-                questionariAggiunti--;
+                if (questionariAggiunti > 0)
+                    questionariAggiunti--;
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(NoteCSV.NOTE_QUESTIONARIO);
                 serviziScartati.add(servizioElaborato);
             }
@@ -171,11 +178,11 @@ public class ImportMassivoCSVService {
         String cognome = nomeCognome[0];
         String nome = nomeCognome[1];
         Optional<UtenteEntity> optutenteEntity = utenteRepository.findByCodiceFiscale(idFacilitatore);
-        if (optutenteEntity.isPresent()){
+        if (optutenteEntity.isPresent()) {
             return optutenteEntity;
         }
         List<UtenteEntity> utenteEntities = utenteRepository.findByNomeAndCognome(nome, cognome);
-        if (!utenteEntities.isEmpty()){
+        if (!utenteEntities.isEmpty()) {
             return Optional.of(utenteEntities.get(0));
         }
         return Optional.ofNullable(null);
