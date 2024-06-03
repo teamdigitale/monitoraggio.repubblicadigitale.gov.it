@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.235](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.234...1.0.0-test.235) (2024-06-03)
+
+
+### Bug Fixes
+
+* **fe-auth-cr:** updates 20240603 ([2d5e784](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2d5e7844d262b3854360bf10145061642abadf29))
+
 ## [1.0.0-test.234](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.233...1.0.0-test.234) (2024-06-03)
 
 
