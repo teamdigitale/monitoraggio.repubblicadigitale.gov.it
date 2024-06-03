@@ -574,13 +574,15 @@ const AuthoritiesDetails = () => {
               ))}
             </div>
           ) : null}
-          {projectId && userHeaders.codiceRuoloUtenteLoggato === 'REPP' && (
-            <div>
-              <CSVUploadBanner
-                onPrimaryButtonClick={handleNavigateToCaricamentoDati}
-              />
-            </div>
-          )}
+          {projectId &&
+            (userHeaders.codiceRuoloUtenteLoggato === 'REPP' ||
+              userHeaders.codiceRuoloUtenteLoggato === 'DTD') && (
+              <div>
+                <CSVUploadBanner
+                  onPrimaryButtonClick={handleNavigateToCaricamentoDati}
+                />
+              </div>
+            )}
           <ManageGenericAuthority legend="form modifica ente, i campi con l'asterisco sono obbligatori" />
           <ManagePartnerAuthority legend="form modifica ente partner, i campi con l'asterisco sono obbligatori" />
           <ManageDelegate
