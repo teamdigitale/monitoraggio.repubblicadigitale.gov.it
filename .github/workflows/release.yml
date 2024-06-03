@@ -126,11 +126,11 @@ jobs:
         run: |
               npm install --save-dev \
                 semantic-release@23.1.1 \
-                @semantic-release@23.1.1/commit-analyzer \
-                @semantic-release@23.1.1/changelog \
-                @semantic-release@23.1.1/git \
-                @semantic-release@23.1.1/release-notes-generator \
-                @semantic-release@23.1.1/exec \
+                @semantic-release/commit-analyzer \
+                @semantic-release/changelog \
+                @semantic-release/git \
+                @semantic-release/release-notes-generator \
+                @semantic-release/exec \
                 conventional-changelog-conventionalcommits@7.0.2
 
       - name: Create .VERSION file
@@ -699,11 +699,11 @@ jobs:
         run: |
               npm install --save-dev \
                 semantic-release@23.1.1 \
-                @semantic-release@23.1.1/commit-analyzer \
-                @semantic-release@23.1.1/changelog \
-                @semantic-release@23.1.1/git \
-                @semantic-release@23.1.1/release-notes-generator \
-                @semantic-release@23.1.1/exec \
+                @semantic-release/commit-analyzer \
+                @semantic-release/changelog \
+                @semantic-release/git \
+                @semantic-release/release-notes-generator \
+                @semantic-release/exec \
                 conventional-changelog-conventionalcommits@7.0.2
 
       - name: Create .VERSION file
