@@ -68,6 +68,9 @@ const TableMobile: React.FC<MobileTableI> = ({
           clickDeleteAction: onActionClick?.[CRUDActionTypes.DELETE]
             ? () => onActionClick?.[CRUDActionTypes.DELETE](item)
             : undefined,
+          clickDownloadAction: onActionClick?.[CRUDActionTypes.DOWNLOAD]
+            ? () => onActionClick?.[CRUDActionTypes.DOWNLOAD](item)
+            : undefined,
           innerInfo: isEmpty(rest) ? undefined : { id, ...rest },
         };
       });

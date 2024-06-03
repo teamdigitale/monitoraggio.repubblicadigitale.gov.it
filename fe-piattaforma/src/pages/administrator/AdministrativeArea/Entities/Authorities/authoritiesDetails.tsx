@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { entityStatus, formTypes, userRoles } from '../utils';
 import {
@@ -50,6 +50,8 @@ import useGuard from '../../../../../hooks/guard';
 import { GetProjectDetail } from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
 import { GetProgramDetail } from '../../../../../redux/features/administrativeArea/programs/programsThunk';
 import IconNote from '/public/assets/img/it-note-primary.png';
+import { getUserHeaders } from '../../../../../redux/features/user/userThunk';
+import CSVUploadBanner from '../../../../../components/CSVUploadBunner/CSVUploadBanner';
 
 const AuthoritiesDetails = () => {
   const authorityDetails = useAppSelector(selectAuthorities)?.detail;
@@ -66,6 +68,7 @@ const AuthoritiesDetails = () => {
   const { nome: projectName, stato: projectState } = projectDetail || {};
   const programDetails =
     useAppSelector(selectPrograms).detail?.dettagliInfoProgramma || {};
+  const userHeaders = getUserHeaders();
 
   useEffect(() => {
     dispatch(setHeadquarterDetails(null));
@@ -448,6 +451,10 @@ const AuthoritiesDetails = () => {
     }
   };
 
+  const handleNavigateToCaricamentoDati = useCallback(() => {
+    navigate('./../caricamento-dati');
+  }, []);
+
   return (
     <div
       className={clsx(
@@ -567,6 +574,13 @@ const AuthoritiesDetails = () => {
               ))}
             </div>
           ) : null}
+          {projectId && userHeaders.codiceRuoloUtenteLoggato === 'REPP' && (
+            <div>
+              <CSVUploadBanner
+                onPrimaryButtonClick={handleNavigateToCaricamentoDati}
+              />
+            </div>
+          )}
           <ManageGenericAuthority legend="form modifica ente, i campi con l'asterisco sono obbligatori" />
           <ManagePartnerAuthority legend="form modifica ente partner, i campi con l'asterisco sono obbligatori" />
           <ManageDelegate

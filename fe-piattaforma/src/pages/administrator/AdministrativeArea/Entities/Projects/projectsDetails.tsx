@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Button, Icon, Nav, Tooltip } from 'design-react-kit';
+import { Icon, Nav, Tooltip } from 'design-react-kit';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { entityStatus, formTypes, userRoles } from '../utils';
 import {
@@ -70,6 +70,7 @@ import IconNote from '/public/assets/img/it-note-primary.png';
 import { ProjectContext } from '../../../../../contexts/ProjectContext';
 import { getUserHeaders } from '../../../../../redux/features/user/userThunk';
 import DataUploadPage from '../../../../../components/FileHandling/DataUploadPage';
+import CSVUploadBanner from '../../../../../components/CSVUploadBunner/CSVUploadBanner';
 
 const EntiPartnerTemplate =
   '/assets/entity_templates/template_ente-partner.csv';
@@ -1420,20 +1421,15 @@ const ProjectsDetails = () => {
               <ManageDelegate creation />
               <ManageReferal creation />
               <ManageHeadquarter creation />
-              {(projectId &&
-                parseInt(projectId) &&
-                activeTab === tabs.ENTE_GESTORE &&
-                userHeaders.codiceRuoloUtenteLoggato === 'REGP') ||
-              (activeTab === tabs.ENTI_PARTNER &&
-                userHeaders.codiceRuoloUtenteLoggato === 'REPP') ||
-              userHeaders.codiceRuoloUtenteLoggato === 'DTD' ? (
-                <Button
-                  onClick={handleNavigateToCaricamentoDati}
-                  type='button'
-                  className='btn btn-primary my-4'
-                >
-                  Caricamento Dati
-                </Button>
+
+              {projectId &&
+              parseInt(projectId) &&
+              activeTab === tabs.ENTE_GESTORE &&
+              (userHeaders.codiceRuoloUtenteLoggato === 'REGP' ||
+                userHeaders.codiceRuoloUtenteLoggato === 'DTD') ? (
+                <CSVUploadBanner
+                  onPrimaryButtonClick={handleNavigateToCaricamentoDati}
+                ></CSVUploadBanner>
               ) : null}
             </div>
           </div>

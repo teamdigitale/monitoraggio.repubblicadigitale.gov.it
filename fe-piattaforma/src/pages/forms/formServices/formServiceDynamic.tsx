@@ -148,21 +148,31 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
       case 'date':
       case 'text': {
         return (
-          <Input
-            {...field}
-            id={`input-${field.field}`}
-            col={
-              field.label && field.label?.length > 20
-                ? 'col-12'
-                : 'col-12 col-lg-6'
-            }
-            label={field.label}
-            type={field.type}
-            required
-            onInputChange={onInputDataChange}
-            disabled={formDisabled}
-            className='pl-0 duration-input'
-          />
+          <>
+            <Input
+              {...field}
+              id={`input-${field.field}`}
+              col={
+                field.label && field.label?.length > 20
+                  ? 'col-12'
+                  : 'col-12 col-lg-6'
+              }
+              label={field.label}
+              type={field.type}
+              required
+              onInputChange={onInputDataChange}
+              disabled={formDisabled}
+              className='pl-0 duration-input'
+              maximum={field.field === '28' ? 600 : undefined}
+            />
+            {field.field === '28' && (
+              <div className='input-with-message'>
+                <div className='input-message text-muted'>
+                  Il limite massimo di caratteri é di 600
+                </div>
+              </div>
+            )}
+          </>
         );
       }
       case 'select': {
@@ -272,7 +282,11 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
   };
 
   return (
-    <Form id='form-service-dynamic' formDisabled={formDisabled} showMandatory={false}>
+    <Form
+      id='form-service-dynamic'
+      formDisabled={formDisabled}
+      showMandatory={false}
+    >
       <div className='d-inline-flex flex-wrap w-100'>
         {form &&
           Object.keys(form).map((key) => (

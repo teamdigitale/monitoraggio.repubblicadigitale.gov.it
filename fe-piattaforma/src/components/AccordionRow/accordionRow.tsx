@@ -20,6 +20,7 @@ export interface AccordionRowI {
   clickViewAction?: () => void;
   clickEditAction?: () => void;
   clickDeleteAction?: () => void;
+  clickDownloadAction?: () => void;
   innerInfo?:
     | {
         [key: string]: string;
@@ -37,6 +38,7 @@ const AccordionRow: React.FC<AccordionRowI> = ({
   clickViewAction,
   clickEditAction,
   clickDeleteAction,
+  clickDownloadAction,
   innerInfo,
   status,
   StatusElement,
@@ -88,7 +90,7 @@ const AccordionRow: React.FC<AccordionRowI> = ({
               ) : null}
             </>
           ) : null}
-          <span className='font-weight-semibold ' >{title}</span>
+          <span className='font-weight-semibold '>{title}</span>
         </div>
         <div className={clsx(device.mediaIsPhone && 'd-flex flex-row')}>
           {clickEditAction ? (
@@ -132,6 +134,21 @@ const AccordionRow: React.FC<AccordionRowI> = ({
                 icon='it-chevron-right'
                 onClick={clickViewAction}
                 aria-label={`Vai al dettaglio di ${title}`}
+              />
+            </Button>
+          ) : null}
+          {clickDownloadAction ? (
+            <Button
+              className={clsx(
+                'd-flex justify-content-start',
+                device.mediaIsPhone && 'px-2'
+              )}
+            >
+              <Icon
+                icon='it-download'
+                onClick={clickViewAction}
+                aria-label='Download'
+                color='primary'
               />
             </Button>
           ) : null}

@@ -123,6 +123,7 @@ export const CRUDActionTypes = {
   COMPILE: 'compile',
   SELECT: 'select',
   PREVIEW: 'preview',
+  DOWNLOAD: 'download',
 };
 
 export interface CRUDActionsI {

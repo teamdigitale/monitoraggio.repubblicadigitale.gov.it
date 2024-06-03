@@ -26,13 +26,13 @@ export default function CSVFileHandler() {
   }, [dataUploadContext]);
 
   return (
-    <div>
+    <div className='csv-uploader-container container'>
       <CSVUploader file={file} saveFile={saveFile} removeFile={removeFile} />
       {file && (
-        <>
+        <div className='my-2'>
           <ProcessFileCsv file={file} />
           <SubmitFileCsv clearFile={removeFile} />
-        </>
+        </div>
       )}
     </div>
   );

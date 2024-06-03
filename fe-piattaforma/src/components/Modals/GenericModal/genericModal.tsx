@@ -278,7 +278,9 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
                   color='secondary'
                   className={clsx(
                     device.mediaIsPhone ? 'cta-button mb-2' : 'mr-2 cta-button',
-                    device.mediaIsPhone && noPaddingSecondary && 'pt-0'
+                    device.mediaIsPhone && noPaddingSecondary && 'pt-0',
+                    secondaryCTA.buttonsClass ?? 'cta-button',
+                    'm-2'
                   )}
                   onClick={() => handleAction('secondary')}
                   size='xs'

@@ -8,8 +8,10 @@ export default function WarningModal(props: {
   onClose: () => void;
   children: ReactNode;
   confirmLabel?: string;
+  secondaryLabel?: string;
 }) {
   const confirmLabel = props.confirmLabel ?? 'Capisco e desidero proseguire';
+  const secondaryLabel = props.secondaryLabel ?? 'Annulla';
 
   return (
     <GenericModal
@@ -17,6 +19,10 @@ export default function WarningModal(props: {
       primaryCTA={{
         label: confirmLabel,
         onClick: props.onConfirm,
+        buttonsClass: 'btn-modal-info',
+      }}
+      secondaryCTA={{
+        label: secondaryLabel,
         buttonsClass: 'btn-modal-info',
       }}
       onClose={props.onClose}

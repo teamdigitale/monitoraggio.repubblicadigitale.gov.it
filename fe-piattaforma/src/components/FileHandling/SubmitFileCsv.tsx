@@ -5,7 +5,6 @@ import { ElaboratoCsvRequest } from '../../models/ElaboratoCsvRequest.model';
 import { hideLoader, showLoader } from '../../redux/features/app/appSlice';
 import { getUserHeaders } from '../../redux/features/user/userThunk';
 import { RegistroAttivita } from '../../models/RegistroAttivita.model';
-import moment from 'moment/moment';
 import {
   elaborateCsv,
   saveActivityReport,
@@ -52,12 +51,15 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
       elaboratoRequest: ElaboratoCsvRequest
     ) => {
       dispatch(showLoader());
-      const { cfUtenteLoggato, codiceFiscale, idEnte, codiceRuoloUtenteLoggato } =
-        getUserHeaders();
+      const {
+        cfUtenteLoggato,
+        codiceFiscale,
+        idEnte,
+        codiceRuoloUtenteLoggato,
+      } = getUserHeaders();
       if (projectContext) {
         const report: RegistroAttivita = {
           operatore: codiceFiscale || cfUtenteLoggato,
-          dataInserimento: moment(new Date()).format('DD/MM/YYYY'),
           totaleRigheFile:
             elaboratoRequest.serviziScartati.length +
             elaboratoRequest.serviziValidati.length,
@@ -116,7 +118,11 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
           Invia file
         </button>
       </div>
-      <div className='col-auto'>{isSubmitting && <Spinner active />}</div>
+      {isSubmitting && (
+        <div className='col-auto'>
+          <Spinner active />
+        </div>
+      )}
     </div>
   );
 }

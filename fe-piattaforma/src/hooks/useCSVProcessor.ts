@@ -13,9 +13,11 @@ import {
   generateExperienceSection,
   generateServiceName,
   generateServiceSection,
-  getDescriptionForValue,
+  generateDescriptionFromMappedValues,
   mapKeysToServiceNames,
   validateFields,
+  getAgeGroupCodeByYear,
+  getSE4ValueFromSE5Value,
 } from '../utils/csvUtils';
 import {
   ageGroupMap,
@@ -23,14 +25,12 @@ import {
   citizenshipMap,
   discoveryMethodServiceMap,
   educationLevelMap,
-  firstLevelCompetenceMap,
-  genderMap,
   occupationalStatusMap,
   repeatExperienceMap,
   secondLevelCompetenceMap,
-  serviceBookingTypeMap,
   serviceNameMap,
 } from '../utils/ResponseCodeMappings';
+import * as CodiceFiscaleUtils from '@marketto/codice-fiscale-utils';
 const {
   idProgetto,
   idEnte,
@@ -91,12 +91,7 @@ export function useCSVProcessor(file: File | undefined) {
           header: true,
           skipEmptyLines: true,
           complete: (results: Papa.ParseResult<CSVRecord>) => {
-            if (
-              !headersCSV.every(
-                (header) =>
-                  results.data[0][header] || results.data[0][header] === ''
-              )
-            ) {
+            if (!headersCSV.every((header) => header in results.data[0])) {
               rejectWithMessage(
                 'Il file inserito non é conforme ai criteri di elaborazione, assicurati che tutte le colonne siano presenti.'
               );
@@ -107,8 +102,6 @@ export function useCSVProcessor(file: File | undefined) {
               if (data.length > 0) {
                 data.forEach((record) => {
                   const {
-                    AN1: _AN1,
-                    AN2: _AN2,
                     AN14: _AN14,
                     AN17: _AN17,
                     ...filteredRecord
@@ -154,7 +147,7 @@ export function useCSVProcessor(file: File | undefined) {
               }
             }
           },
-          error: (error:any) => {
+          error: (error: Error) => {
             setIsProcessing(false);
             reject(error);
           },
@@ -190,6 +183,9 @@ export function useCSVProcessor(file: File | undefined) {
     const tipoDiServizioPrenotato: string[] = mapKeysToServiceNames(
       filteredRecord.SE3
     );
+    const cfData = CodiceFiscaleUtils.Parser.cfDecode(filteredRecord.AN3);
+    const ageGroup = getAgeGroupCodeByYear(cfData.date);
+
     return {
       servizioRequest: {
         nomeServizio: serviceName,
@@ -216,8 +212,8 @@ export function useCSVProcessor(file: File | undefined) {
         idEnte: idEnte,
         idProgetto: idProgetto,
         idProgramma: idProgramma,
-        genere: genderMap[filteredRecord.AN7] ?? '',
-        fasciaDiEtaId: ageGroupMap[filteredRecord.AN8] ?? '',
+        genere: cfData.gender ?? '',
+        fasciaDiEtaId: ageGroupMap[ageGroup ?? -1],
         titoloStudio: educationLevelMap[filteredRecord.AN9],
         statoOccupazionale: occupationalStatusMap[filteredRecord.AN10],
         provinciaDiDomicilio: filteredRecord.AN12,
@@ -234,25 +230,29 @@ export function useCSVProcessor(file: File | undefined) {
         idFacilitatore: filteredRecord.IDFacilitatore,
         nominativoFacilitatore: filteredRecord.NominativoFacilitatore,
         nominativoSede: filteredRecord.NominativoSede,
-        tipologiaServiziPrenotato: serviceNameMap[filteredRecord.SE3],
-        competenzeTrattatePrimoLivello:
-          firstLevelCompetenceMap[filteredRecord.SE4],
-        competenzeTrattateSecondoLivello:
-          secondLevelCompetenceMap[parseInt(filteredRecord.SE5)],
-        modalitaConoscenzaServizioPrenotato: getDescriptionForValue(
-          filteredRecord.ES1,
-          discoveryMethodServiceMap
+        tipologiaServiziPrenotato: generateDescriptionFromMappedValues(
+          filteredRecord.SE3,
+          serviceNameMap
         ),
-        motivoPrenotazione: getDescriptionForValue(
+        competenzeTrattatePrimoLivello: getSE4ValueFromSE5Value(
+          filteredRecord.SE5
+        ),
+        competenzeTrattateSecondoLivello: generateDescriptionFromMappedValues(
+          filteredRecord.SE5,
+          secondLevelCompetenceMap
+        ),
+        modalitaConoscenzaServizioPrenotato:
+          generateDescriptionFromMappedValues(
+            filteredRecord.ES1,
+            discoveryMethodServiceMap
+          ),
+        motivoPrenotazione: generateDescriptionFromMappedValues(
           filteredRecord.ES2,
           bookingReasonMap
         ),
-        primoUtilizzoServizioFacilitazione: filteredRecord.PR1 || '',
-        serviziPassatiFacilitazione: getDescriptionForValue(
-          filteredRecord.PR2,
-          serviceBookingTypeMap
-        ),
-        valutazioneRipetizioneEsperienza: getDescriptionForValue(
+        primoUtilizzoServizioFacilitazione: '',
+        serviziPassatiFacilitazione: '',
+        valutazioneRipetizioneEsperienza: generateDescriptionFromMappedValues(
           filteredRecord.ES3,
           repeatExperienceMap
         ),

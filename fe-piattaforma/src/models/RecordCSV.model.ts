@@ -1,13 +1,13 @@
 export interface CSVRecord {
-  [key: string]: any;
+  [key: string]: string;
   IDFacilitatore: string;
   NominativoFacilitatore: string;
-  IDSede: number;
+  IDSede: string;
   NominativoSede: string;
   AN1?: string;
   AN2?: string;
   AN3: string;
-  AN4: string;
+  AN4?: string;
   AN5?: string;
   AN6?: string;
   AN7: string;

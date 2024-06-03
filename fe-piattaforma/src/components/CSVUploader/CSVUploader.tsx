@@ -47,8 +47,11 @@ const acceptedFileTypes = [
   'text/x-comma-separated-values',
 ];
 
-export default function CSVUploader({ file, saveFile, removeFile }: CSVUploaderProps) {
-
+export default function CSVUploader({
+  file,
+  saveFile,
+  removeFile,
+}: CSVUploaderProps) {
   const handleFileInput = useCallback(
     (filesToUpload: File[]) => {
       if (
@@ -57,9 +60,11 @@ export default function CSVUploader({ file, saveFile, removeFile }: CSVUploaderP
         filesToUpload[0].size <= maxSizeCSV &&
         acceptedFileTypes.some((fileType) => fileType === filesToUpload[0].type)
       ) {
-          saveFile(filesToUpload[0]).then(()=>{
+        saveFile(filesToUpload[0])
+          .then(() => {
             showSuccess();
-          }).catch(() => {
+          })
+          .catch(() => {
             showError();
           });
       } else {
@@ -85,11 +90,10 @@ export default function CSVUploader({ file, saveFile, removeFile }: CSVUploaderP
     [handleFileInput]
   );
 
-
   return (
     <div className='flex-column min-width-50'>
       <div
-        className={`upload-dragdrop ${file ? 'success' : ''}`}
+        className={`upload-dragdrop ${file ? 'success' : ''} py-4`}
         data-bs-upload-dragdrop
         onDragOver={(e) => e.preventDefault()}
         onDrop={handleDrop}
@@ -113,7 +117,7 @@ export default function CSVUploader({ file, saveFile, removeFile }: CSVUploaderP
         <div className='upload-dragdrop-text'>
           {file ? (
             <>
-              <h5>{file?.name}</h5>
+              <p>{file?.name}</p>
               <div className='mx-auto d-flex align-items-center'>
                 <button className='btn btn-secondary' onClick={removeFile}>
                   Rimuovi il file
@@ -122,7 +126,7 @@ export default function CSVUploader({ file, saveFile, removeFile }: CSVUploaderP
             </>
           ) : (
             <>
-              <h5>Trascina il file per caricarlo</h5>
+              <h5>Trascina il file CSV per caricarlo</h5>
               <p>
                 oppure{' '}
                 <input
@@ -136,11 +140,12 @@ export default function CSVUploader({ file, saveFile, removeFile }: CSVUploaderP
                 />
                 <label htmlFor='upload7'>selezionalo dal dispositivo</label>
               </p>
+              <hr />
+              <p>massimo 30 Mb</p>
             </>
           )}
         </div>
       </div>
-
     </div>
   );
 }

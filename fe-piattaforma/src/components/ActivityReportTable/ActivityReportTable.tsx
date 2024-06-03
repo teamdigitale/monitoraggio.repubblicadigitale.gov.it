@@ -16,15 +16,22 @@ import { searchActivityReport } from '../../services/activityReportService';
 import { hideLoader, showLoader } from '../../redux/features/app/appSlice';
 import { ProjectInfo } from '../../models/ProjectInfo.model';
 import { ProjectContext } from '../../contexts/ProjectContext';
+import { CRUDActionsI, CRUDActionTypes } from '../../utils/common';
 
 const tableHeading: TableHeadingI[] = [
+  {
+    label: 'ID Caricamento',
+    field: 'id',
+    size: 'medium',
+    classNames: 'text-primary',
+  },
   {
     label: 'Operatore',
     field: 'operatore',
     size: 'medium',
   },
   {
-    label: 'Data',
+    label: 'Data e ora',
     field: 'dataInserimento',
     size: 'medium',
   },
@@ -54,6 +61,10 @@ const tableHeading: TableHeadingI[] = [
     size: 'medium',
   },
 ];
+
+const onActionClick: CRUDActionsI = {
+  [CRUDActionTypes.DOWNLOAD]: () => null,
+};
 
 const ActivityReportTable = forwardRef(function ActivityReportTable(
   _props,
@@ -96,11 +107,14 @@ const ActivityReportTable = forwardRef(function ActivityReportTable(
 
   return (
     <>
+      <h2 className='h3'>Registro dei caricamenti</h2>
       <Table
         id='table'
         heading={tableHeading}
         values={pagination?.content ?? []}
         totalCounter={pagination?.totalElements ?? -1}
+        withActions
+        onActionClick={onActionClick}
       />
       {pagination && pagination.content.length > 0 && (
         <Paginator

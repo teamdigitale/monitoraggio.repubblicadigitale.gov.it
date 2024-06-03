@@ -18,7 +18,7 @@ function showSuccess() {
   });
 }
 
-function showError(error:Error) {
+function showError(error: Error) {
   dispatchNotify({
     title: 'Elaborazione file',
     status: 'error',
@@ -32,16 +32,17 @@ export default function ProcessFileCsv({ file }: CSVProcessorProps) {
   const { isProcessing, processCSV } = useCSVProcessor(file);
   const dataUploadContext = useContext(DataUploadContext);
   const handleProcessCSV = useCallback(() => {
-    processCSV().then(data => {
-      if (dataUploadContext){
-        dataUploadContext.setParsedData(data);
-      }
-     showSuccess();
-    }).catch(error => {
-      showError(error);
-    });
+    processCSV()
+      .then((data) => {
+        if (dataUploadContext) {
+          dataUploadContext.setParsedData(data);
+        }
+        showSuccess();
+      })
+      .catch((error) => {
+        showError(error);
+      });
   }, [processCSV, dataUploadContext]);
-
 
   return (
     <div className='row mb-2'>
@@ -54,7 +55,11 @@ export default function ProcessFileCsv({ file }: CSVProcessorProps) {
           Elabora file
         </button>
       </div>
-      <div className='col-auto'>{isProcessing && <Spinner active />}</div>
+      {isProcessing && (
+        <div className='col-auto'>
+          <Spinner active />
+        </div>
+      )}
     </div>
   );
 }

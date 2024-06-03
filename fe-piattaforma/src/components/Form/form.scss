@@ -299,7 +299,15 @@ input > span {
     padding-left: 9px !important;
   }
 }
-
+.input-with-message {
+  position: relative;
+}
+.input-message {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  white-space: nowrap;
+}
 .select-multiple-checkbox {
   &__options {
     background-color: rgba($color: #e8f2fc, $alpha: 0.5);

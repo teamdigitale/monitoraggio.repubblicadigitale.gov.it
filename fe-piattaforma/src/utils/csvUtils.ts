@@ -55,8 +55,9 @@ export const mandatoryFields: (keyof CSVRecord)[] = [
   'NominativoFacilitatore',
   'IDSede',
   'NominativoSede',
+  'AN1',
+  'AN2',
   'AN3',
-  'AN4',
   'AN7',
   'AN8',
   'AN9',
@@ -147,9 +148,15 @@ export const validateFields = (
   if (record.AN4 !== 'SI' && record.AN3 && !validateFiscalCode(record.AN3)) {
     errors.push('Il Codice Fiscale inserito è invalido.');
   }
+  if (record.SE7 && record.SE7.length > 600) {
+    errors.push(
+      'Il limite massimo per la descrizione del servizio é di 600 caratteri.'
+    );
+  }
 
   return errors;
 };
+
 export function checkMapValues(record: CSVRecord, errors: string[]) {
   const mapFields = [
     { key: 'AN5', map: documentTypeMap },
@@ -158,30 +165,51 @@ export function checkMapValues(record: CSVRecord, errors: string[]) {
     { key: 'AN9', map: educationLevelMap },
     { key: 'AN10', map: occupationalStatusMap },
     { key: 'AN11', map: citizenshipMap },
-    { key: 'SE3', map: serviceNameMap },
-    { key: 'SE4', map: firstLevelCompetenceMap },
-    { key: 'SE5', map: secondLevelCompetenceMap },
-    { key: 'SE6', map: publicServiceDomainMap },
-    { key: 'PR2', map: serviceBookingTypeMap },
-    { key: 'ES1', map: discoveryMethodServiceMap },
-    { key: 'ES2', map: bookingReasonMap },
-    { key: 'ES3', map: repeatExperienceMap },
-    { key: 'ES5', map: digitalProblemSolvingMap },
+    { key: 'SE3', map: serviceNameMap, multi: true },
+    { key: 'SE4', map: firstLevelCompetenceMap, multi: true },
+    { key: 'SE5', map: secondLevelCompetenceMap, multi: true },
+    { key: 'SE6', map: publicServiceDomainMap, multi: true },
+    { key: 'PR2', map: serviceBookingTypeMap, multi: true },
+    { key: 'ES1', map: discoveryMethodServiceMap, multi: true },
+    { key: 'ES2', map: bookingReasonMap, multi: true },
+    { key: 'ES3', map: repeatExperienceMap, multi: true },
+    { key: 'ES5', map: digitalProblemSolvingMap, multi: true },
   ];
 
-  mapFields.forEach(({ key, map }) => {
-    if (record[key] && !map[record[key]]) {
-      errors.push(
-        `Il valore "${record[key]}" per il campo "${key}" non risulta una risposta valida.`
-      );
+  mapFields.forEach(({ key, map, multi }) => {
+    const fieldValue = record[key];
+    if (fieldValue !== undefined && fieldValue !== null && fieldValue !== '') {
+      const values = multi
+        ? fieldValue
+            .split(';')
+            .map((value: string) => value.trim())
+            .filter((value: string) => value !== '')
+        : [fieldValue.trim()];
+
+      const invalidValues = values.filter((value: string) => !map[value]);
+
+      if (invalidValues.length > 0) {
+        invalidValues.forEach((value: string) => {
+          errors.push(
+            `Il valore "${value}" per il campo "${key}" non risulta una risposta valida.`
+          );
+        });
+      }
     }
   });
 }
-export function getDescriptionForValue(
+
+export function generateDescriptionFromMappedValues(
   value: string | undefined,
   map: { [key: string]: string }
 ): string {
-  return value !== undefined ? map[value] || '' : '';
+  if (!value) return '';
+
+  const values = value.split(';').map((value) => value.trim());
+  return values
+    .map((value) => map[value] || '')
+    .filter((value) => value)
+    .join('; ');
 }
 
 export const generateServiceSection = (record: CSVRecord) => ({
@@ -190,10 +218,28 @@ export const generateServiceSection = (record: CSVRecord) => ({
   properties: [
     { '22': [moment(record.SE1).format('YYYY-MM-DD')] },
     { '23': [record.SE2] },
-    { '24': [serviceNameMap[record.SE3]] },
-    { '25': [firstLevelCompetenceMap[record.SE4]] },
-    { '26': [secondLevelCompetenceMap[parseInt(record.SE5)]] },
-    { '27': [getDescriptionForValue(record.SE6, publicServiceDomainMap)] },
+    { '24': [generateDescriptionFromMappedValues(record.SE3, serviceNameMap)] },
+    {
+      '25': [
+        generateDescriptionFromMappedValues(
+          record.SE4,
+          firstLevelCompetenceMap
+        ),
+      ],
+    },
+    {
+      '26': [
+        generateDescriptionFromMappedValues(
+          record.SE5,
+          secondLevelCompetenceMap
+        ),
+      ],
+    },
+    {
+      '27': [
+        generateDescriptionFromMappedValues(record.SE6, publicServiceDomainMap),
+      ],
+    },
     { '28': [record.SE7] },
   ],
 });
@@ -202,12 +248,32 @@ export const generateExperienceSection = (record: CSVRecord) => ({
   id: 'content-service-section',
   title: 'Informazioni sull’esperienza',
   properties: [
-    { '29': [getDescriptionForValue(record.ES1, discoveryMethodServiceMap)] },
-    { '30': [getDescriptionForValue(record.ES2, bookingReasonMap)] },
-    { '31': [getDescriptionForValue(record.ES3, repeatExperienceMap)] },
+    {
+      '29': [
+        generateDescriptionFromMappedValues(
+          record.ES1,
+          discoveryMethodServiceMap
+        ),
+      ],
+    },
+    {
+      '30': [generateDescriptionFromMappedValues(record.ES2, bookingReasonMap)],
+    },
+    {
+      '31': [
+        generateDescriptionFromMappedValues(record.ES3, repeatExperienceMap),
+      ],
+    },
     { '32': [record.ES4] },
-    { '33': [getDescriptionForValue(record.ES5, digitalProblemSolvingMap)] },
-    { '34': [record.ES6] },
+    {
+      '33': [
+        generateDescriptionFromMappedValues(
+          record.ES5,
+          digitalProblemSolvingMap
+        ),
+      ],
+    },
+    { '1663320201383': [record.ES6] },
   ],
 });
 
@@ -215,3 +281,35 @@ export const mapKeysToServiceNames = (keysString: string): string[] => {
   const keys = keysString.split(';');
   return keys.map((key) => serviceNameMap[key.trim()] ?? '');
 };
+
+export function getAgeGroupCodeByYear(date?: Date): string | void {
+  if (!date) return;
+
+  const age = new Date().getFullYear() - date.getFullYear();
+  if (age >= 18 && age <= 29) return 'A';
+  if (age >= 30 && age <= 54) return 'B';
+  if (age >= 55 && age <= 74) return 'C';
+  if (age >= 75) return 'D';
+}
+
+export function getSE4ValueFromSE5Value(SE5: string): string {
+  const SE5Values = SE5.split(';');
+  const results = new Set<string>();
+  SE5Values.forEach((value) => {
+    const SE5Value = parseInt(value);
+    if (SE5Value > 0 && SE5Value <= 3) {
+      results.add('A');
+    } else if (SE5Value > 3 && SE5Value <= 9) {
+      results.add('B');
+    } else if (SE5Value === 10) {
+      results.add('C');
+    } else if (SE5Value > 10 && SE5Value <= 12) {
+      results.add('D');
+    } else if (SE5Value === 13) {
+      results.add('E');
+    }
+  });
+  return [...results]
+    .map((result: string) => firstLevelCompetenceMap[result])
+    .join('; ');
+}
