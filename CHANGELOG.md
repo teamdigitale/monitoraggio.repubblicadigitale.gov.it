@@ -1,5 +1,21 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.234](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.233...1.0.0-test.234) (2024-06-03)
+
+
+### Features
+
+* **BE-PROGRAMMA-CR:** updates 20240603 ([bd0c3c9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/bd0c3c9eb1583e9b9a2448078666813bc3f309d5))
+* **FE-CR:** updates 20240603 ([7b4be6c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7b4be6c38f47bbae339e7fbc3eadf7c3807d8c87))
+* **BE-CR:** updates 20240603 ([f157fb5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f157fb56ce79d3d76c0a51309aaf20c9487bcf82))
+
+
+### Bug Fixes
+
+* **FE-CR:** updates 20240603 ([5961ac0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5961ac07dfa0a5ce76e1039ae5678fdff254a76a))
+* **re-release:** updates 20240603 ([5ea1ec9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5ea1ec9051bf889a869072f69313783da0105764))
+* **release:** updates 20240603 ([87afc9c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/87afc9c9f1c13b8a77e72b84c9acfc902fa92abd))
+
 ## [1.0.0-test.233](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.232...1.0.0-test.233) (2024-05-24)
 
 
