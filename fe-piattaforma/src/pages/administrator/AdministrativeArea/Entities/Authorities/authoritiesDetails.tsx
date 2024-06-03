@@ -51,7 +51,7 @@ import { GetProjectDetail } from '../../../../../redux/features/administrativeAr
 import { GetProgramDetail } from '../../../../../redux/features/administrativeArea/programs/programsThunk';
 import IconNote from '/public/assets/img/it-note-primary.png';
 import { getUserHeaders } from '../../../../../redux/features/user/userThunk';
-import CSVUploadBanner from '../../../../../components/CSVUploadBunner/CSVUploadBanner';
+import CSVUploadBanner from '../../../../../components/CSVUploadBanner/CSVUploadBanner';
 
 const AuthoritiesDetails = () => {
   const authorityDetails = useAppSelector(selectAuthorities)?.detail;
