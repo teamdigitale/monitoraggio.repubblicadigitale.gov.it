@@ -6,11 +6,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+
 @Repository
 public interface RegistroAttivitaRepository extends JpaRepository<RegistroAttivitaEntity, Long> {
 
     Page<RegistroAttivitaEntity> findAllByIdEnteAndIdProgetto(Pageable pageable, Long idEnte, Long idProgetto);
 
-    Page<RegistroAttivitaEntity> findAllByOperatore(Pageable pageable, String operatore);
-
+    Page<RegistroAttivitaEntity> findAllByCodiceFiscale(Pageable pageable, String cfUtenteLoggato);
 }

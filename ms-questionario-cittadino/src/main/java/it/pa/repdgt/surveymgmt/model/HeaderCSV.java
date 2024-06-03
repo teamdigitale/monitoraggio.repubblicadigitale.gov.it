@@ -1,7 +1,8 @@
 package it.pa.repdgt.surveymgmt.model;
 
 public class HeaderCSV {
-
+    private Integer numeroRiga;
+    private String note;
     private String IDFacilitatore;
     private String NominativoFacilitatore;
     private String IDSede;
@@ -31,5 +32,4 @@ public class HeaderCSV {
     private String ES4;
     private String ES5;
     private String ES6;
-    private String note;
 }

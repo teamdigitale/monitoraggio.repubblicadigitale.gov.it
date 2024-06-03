@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class CampiAggiuntiviCSV {
+    private Integer numeroRiga;
     private String note;
     private String idFacilitatore;
     private String nominativoFacilitatore;
