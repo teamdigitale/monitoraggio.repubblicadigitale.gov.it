@@ -13,6 +13,7 @@ import lombok.Setter;
 public class DettaglioProgettoBean {
 	private Long id;
 	private String nome;
+	private String nomeEnte;
 	private String nomeBreve;
 	private String cup;
 	private Date dataInizio;

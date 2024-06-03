@@ -670,6 +670,7 @@ public class ProgettoService {
 		schedaProgetto.setEntiPartner(listaEntiPartner);
 		schedaProgetto.setSedi(listaDettaglioSedi);
 		schedaProgetto.setIdEnteGestoreProgetto(progettoFetchDB.getEnteGestoreProgetto() != null ? progettoFetchDB.getEnteGestoreProgetto().getId() : null );
+		schedaProgetto.getDettaglioProgetto().setNomeEnte(progettoFetchDB.getEnteGestoreProgetto() != null ? progettoFetchDB.getEnteGestoreProgetto().getNome() : null );
 		return schedaProgetto;
 	}
 
