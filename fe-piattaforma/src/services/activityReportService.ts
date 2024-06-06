@@ -74,7 +74,7 @@ export function generateUploadPUActivityReport(
   fileName: string
 ): Promise<AxiosResponse<string>> {
   return API.put(
-    `${process.env.QUESTIONARIO_CITTADINO}registroAttivita/${activityReportId}/generate-upload-pu`,
+    `${process.env.QUESTIONARIO_CITTADINO}registroAttivita/${activityReportId}/generateUploadPu`,
     {},
     { params: { fileName } }
   );

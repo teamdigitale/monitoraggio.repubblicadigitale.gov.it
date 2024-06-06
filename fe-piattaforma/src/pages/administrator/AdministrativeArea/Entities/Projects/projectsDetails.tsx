@@ -70,7 +70,7 @@ import IconNote from '/public/assets/img/it-note-primary.png';
 import { ProjectContext } from '../../../../../contexts/ProjectContext';
 import { getUserHeaders } from '../../../../../redux/features/user/userThunk';
 import DataUploadPage from '../../../../../components/FileHandling/DataUploadPage';
-import CSVUploadBanner from '../../../../../components/CSVUploadBunner/CSVUploadBanner';
+import CSVUploadBanner from '../../../../../components/CSVUploadBanner/CSVUploadBanner';
 
 const EntiPartnerTemplate =
   '/assets/entity_templates/template_ente-partner.csv';
