@@ -17,6 +17,7 @@ import { hideLoader, showLoader } from '../../redux/features/app/appSlice';
 import { ProjectInfo } from '../../models/ProjectInfo.model';
 import { ProjectContext } from '../../contexts/ProjectContext';
 import { CRUDActionsI, CRUDActionTypes } from '../../utils/common';
+import { useParams } from 'react-router-dom';
 
 const tableHeading: TableHeadingI[] = [
   {
@@ -73,12 +74,17 @@ const ActivityReportTable = forwardRef(function ActivityReportTable(
   const [pagination, setPagination] = useState<Page<RegistroAttivita> | null>();
   const dispatch = useAppDispatch();
   const projectContext = useContext<ProjectInfo | undefined>(ProjectContext);
+  const { projectId, enteId } = useParams();
 
   const searchReports = useCallback(
     (newPage: number) => {
-      if (projectContext) {
+      if (projectId && (enteId || projectContext)) {
         dispatch(showLoader());
-        searchActivityReport(newPage - 1, parseInt(projectContext.id))
+        searchActivityReport(
+          newPage - 1,
+          parseInt(projectId),
+          enteId ? parseInt(enteId) : projectContext!.idEnte
+        )
           .then((res) => setPagination(res.data))
           .catch(() => {
             setPagination(null);
@@ -86,12 +92,12 @@ const ActivityReportTable = forwardRef(function ActivityReportTable(
           .finally(() => dispatch(hideLoader()));
       }
     },
-    [dispatch, projectContext]
+    [dispatch, projectContext, projectId, enteId]
   );
 
   useEffect(() => {
     searchReports(1);
-  }, [projectContext]);
+  }, [projectId]);
 
   useImperativeHandle(
     ref,

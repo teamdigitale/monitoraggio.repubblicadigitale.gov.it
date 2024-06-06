@@ -452,7 +452,7 @@ const AuthoritiesDetails = () => {
   };
 
   const handleNavigateToCaricamentoDati = useCallback(() => {
-    navigate('./../caricamento-dati');
+    navigate('./caricamento-dati');
   }, []);
 
   return (

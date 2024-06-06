@@ -2,20 +2,22 @@ import { Spinner } from 'design-react-kit';
 import React, { useCallback, useContext, useState } from 'react';
 import { ElaboratoCsvResponse } from '../../models/ElaboratoCsvResponse.model';
 import { ElaboratoCsvRequest } from '../../models/ElaboratoCsvRequest.model';
-import { hideLoader, showLoader } from '../../redux/features/app/appSlice';
 import { getUserHeaders } from '../../redux/features/user/userThunk';
-import { RegistroAttivita } from '../../models/RegistroAttivita.model';
+import { RegistroAttivitaWithoutID } from '../../models/RegistroAttivita.model';
 import {
   elaborateCsv,
+  generateUploadPUActivityReport,
   saveActivityReport,
+  updateActivityReportFileUploaded,
+  uploadActivityReportResume,
 } from '../../services/activityReportService';
 import { convertBase64ToFile, downloadGeneratedFile } from '../../utils/common';
-import { useAppDispatch } from '../../redux/hooks';
 import { DataUploadContextModel } from '../../models/DataUploadContext.model';
 import { DataUploadContext } from '../../contexts/DataUploadContext';
 import { dispatchNotify } from '../../utils/notifictionHelper';
 import { ProjectInfo } from '../../models/ProjectInfo.model';
 import { ProjectContext } from '../../contexts/ProjectContext';
+import { useParams } from 'react-router-dom';
 
 function showSuccessImport() {
   dispatchNotify({
@@ -37,28 +39,34 @@ function showErrorImport() {
   });
 }
 
+function showErrorUpload() {
+  dispatchNotify({
+    title: 'Salvataggio file',
+    status: 'error',
+    message: `Il salvataggio non é andato a buon fine.`,
+    closable: true,
+    duration: 'slow',
+  });
+}
+
 export default function SubmitFileCsv(props: { clearFile: () => void }) {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const dispatch = useAppDispatch();
   const dataUploadContext = useContext<DataUploadContextModel | undefined>(
     DataUploadContext
   );
   const projectContext = useContext<ProjectInfo | undefined>(ProjectContext);
+  const { projectId, enteId } = useParams();
 
   const handleSaveReport = useCallback(
     (
       elaboratoResponse: ElaboratoCsvResponse,
-      elaboratoRequest: ElaboratoCsvRequest
+      elaboratoRequest: ElaboratoCsvRequest,
+      fileName: string
     ) => {
-      dispatch(showLoader());
-      const {
-        cfUtenteLoggato,
-        codiceFiscale,
-        idEnte,
-        codiceRuoloUtenteLoggato,
-      } = getUserHeaders();
-      if (projectContext) {
-        const report: RegistroAttivita = {
+      if (projectId && (enteId || projectContext)) {
+        const { cfUtenteLoggato, codiceFiscale, codiceRuoloUtenteLoggato } =
+          getUserHeaders();
+        const report: RegistroAttivitaWithoutID = {
           operatore: codiceFiscale || cfUtenteLoggato,
           totaleRigheFile:
             elaboratoRequest.serviziScartati.length +
@@ -68,31 +76,39 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
           cittadiniAggiunti: elaboratoResponse.response.cittadiniAggiunti,
           rilevazioneDiEsperienzaCompilate:
             elaboratoResponse.response.questionariAggiunti,
-          idProgetto: parseInt(projectContext.id),
-          idEnte,
+          idProgetto: parseInt(projectId),
           codiceRuoloUtenteLoggato,
+          fileName,
         };
 
-        saveActivityReport(report, parseInt(projectContext.id))
-          .then(() => {
-            if (dataUploadContext) dataUploadContext.search();
-          })
-          .finally(() => {
-            dispatch(hideLoader());
-            props.clearFile();
-          });
+        return saveActivityReport(
+          report,
+          parseInt(projectId),
+          enteId ? parseInt(enteId) : projectContext!.idEnte
+        );
       }
     },
-    [dataUploadContext, dispatch, projectContext]
+    [projectContext, projectId, enteId]
   );
 
   const handleSubmit = useCallback(() => {
-    if (dataUploadContext && dataUploadContext.parsedData && projectContext) {
+    if (
+      dataUploadContext &&
+      dataUploadContext.parsedData &&
+      projectId &&
+      (enteId || projectContext)
+    ) {
       const parsedData = dataUploadContext.parsedData;
       setIsSubmitting(true);
-      elaborateCsv(dataUploadContext.parsedData, parseInt(projectContext.id))
+      let convertedFile: File;
+      let activityReportId: number;
+      elaborateCsv(
+        dataUploadContext.parsedData,
+        parseInt(projectId),
+        enteId ? parseInt(enteId) : projectContext!.idEnte
+      )
         .then((res) => {
-          const convertedFile = convertBase64ToFile(
+          convertedFile = convertBase64ToFile(
             res.data.fileContent,
             res.data.fileName,
             'text/csv'
@@ -101,11 +117,45 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
           res.data.response.serviziScartati.length > 0
             ? showErrorImport()
             : showSuccessImport();
-          handleSaveReport(res.data, parsedData);
+          return handleSaveReport(res.data, parsedData, res.data.fileName);
         })
-        .finally(() => setIsSubmitting(false));
+        .then((res) => {
+          if (res) {
+            activityReportId = res.data.id;
+            return generateUploadPUActivityReport(
+              activityReportId,
+              convertedFile.name
+            );
+          }
+        })
+        .then((res) => {
+          if (res) {
+            return uploadActivityReportResume(res.data, convertedFile);
+          }
+        })
+        .then((res) => {
+          if (activityReportId && res) {
+            return updateActivityReportFileUploaded(activityReportId, true);
+          }
+        })
+        .catch(() => {
+          if (activityReportId) {
+            showErrorUpload();
+            return updateActivityReportFileUploaded(activityReportId, false);
+          }
+        })
+        .finally(() => {
+          setIsSubmitting(false);
+          props.clearFile();
+          if (dataUploadContext) dataUploadContext.search();
+        });
     }
-  }, [dataUploadContext?.parsedData, projectContext]);
+  }, [
+    dataUploadContext?.parsedData,
+    projectContext,
+    props.clearFile,
+    handleSaveReport,
+  ]);
 
   return (
     <div className='row'>

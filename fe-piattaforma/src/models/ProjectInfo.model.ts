@@ -8,4 +8,5 @@ export interface ProjectInfo {
   policy: string;
   stato: string;
   nomeEnte: string;
+  idEnte: number;
 }

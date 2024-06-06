@@ -368,8 +368,8 @@ const AreaAmministrativaRoutes = [
   />,
   <Route
     key='progetti-dettaglio-enti-partner-caricamento-dati'
-    path='progetti/:projectId/enti-partner/caricamento-dati'
-    element={<ProjectsDetails />}
+    path='progetti/:projectId/enti-partner/:enteId/caricamento-dati'
+    element={<DataUploadPage />}
   />,
   <Route
     key='progetti-dettaglio-enti'
