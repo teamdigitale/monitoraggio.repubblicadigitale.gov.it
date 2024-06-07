@@ -102,6 +102,16 @@ spec:
                 configMapKeyRef:
                   name: env-${K8S_NAMESPACE}-options
                   key: awsS3ImportCsvScartoBucketName
+            - name: awsS3ImportCsvScartoRegion
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: awsS3ImportCsvScartoRegion
+            - name: awsS3ImportCsvScartoEndpoint
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: awsS3ImportCsvScartoEndpoint
             - name: CF_ST_KEY
               valueFrom:
                 configMapKeyRef:
