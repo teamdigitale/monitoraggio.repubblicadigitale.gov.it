@@ -52,6 +52,10 @@ public class RegistroAttivitaService {
         return utente.getNome() + " " + utente.getCognome();
     }
 
+    private String getNomi() {
+        return "";
+    }
+
     public Page<RegistroAttivitaEntity> getRegistroAttivita(Integer page, Integer size,
             SceltaProfiloParam sceltaProfiloParam) {
         Sort sort = Sort.by(Sort.Direction.DESC, "dataInserimento");

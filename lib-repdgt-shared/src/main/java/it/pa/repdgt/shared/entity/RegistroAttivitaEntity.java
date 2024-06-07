@@ -45,7 +45,7 @@ public class RegistroAttivitaEntity {
     @NotNull
     private Long idEnte;
     @NotNull
-    private Long idProgetto;
+    private Long idProgetto; 
     private String fileName;
     private boolean isFileUpdated;
 }
