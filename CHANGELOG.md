@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.241](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.240...1.0.0-test.241) (2024-06-07)
+
+
+### Features
+
+* **release-deploy:** updates 20240607 ([f8dcd55](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f8dcd551df11d410c6eb93573b89af1d8906b25d))
+
 ## [1.0.0-test.240](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.239...1.0.0-test.240) (2024-06-07)
 
 
