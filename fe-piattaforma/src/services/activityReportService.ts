@@ -94,6 +94,6 @@ export function updateActivityReportFileUploaded(
 ) {
   return API.patch(
     `${process.env.QUESTIONARIO_CITTADINO}registroAttivita/${activityReportId}`,
-    fileUploaded
+    { isFileUpdated: fileUploaded }
   );
 }

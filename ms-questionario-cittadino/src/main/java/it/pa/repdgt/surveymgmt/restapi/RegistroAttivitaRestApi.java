@@ -2,6 +2,7 @@ package it.pa.repdgt.surveymgmt.restapi;
 
 import it.pa.repdgt.shared.entity.RegistroAttivitaEntity;
 import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
+import it.pa.repdgt.surveymgmt.model.FileUpdated;
 import it.pa.repdgt.surveymgmt.model.URIPresigned;
 import it.pa.repdgt.surveymgmt.service.RegistroAttivitaService;
 import lombok.RequiredArgsConstructor;
@@ -62,8 +63,8 @@ public class RegistroAttivitaRestApi {
 
     @PatchMapping("{registroAttivitaId}")
     public ResponseEntity<Void> updateRegistroAttivita(@PathVariable Long registroAttivitaId,
-            @RequestBody boolean isFileUpdated) {
-        registroAttivitaService.update(registroAttivitaId, isFileUpdated);
+            @RequestBody FileUpdated file) {
+        registroAttivitaService.update(registroAttivitaId, file.getIsFileUpdated());
         return ResponseEntity.ok().build();
     }
 }
