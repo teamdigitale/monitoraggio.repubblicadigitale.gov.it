@@ -8,6 +8,7 @@ import API from '../utils/apiHelper';
 import { getUserHeaders } from '../redux/features/user/userThunk';
 import { ElaboratoCsvRequest } from '../models/ElaboratoCsvRequest.model';
 import { ElaboratoCsvResponse } from '../models/ElaboratoCsvResponse.model';
+import { UriPresigned } from '../models/UriPresigned.model';
 
 export function searchActivityReport(
   page: number,
@@ -72,7 +73,7 @@ export function elaborateCsv(
 export function generateUploadPUActivityReport(
   activityReportId: number,
   fileName: string
-): Promise<AxiosResponse<string>> {
+): Promise<AxiosResponse<UriPresigned>> {
   return API.put(
     `${process.env.QUESTIONARIO_CITTADINO}registroAttivita/${activityReportId}/generateUploadPu`,
     {},

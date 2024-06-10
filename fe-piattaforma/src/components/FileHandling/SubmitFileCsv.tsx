@@ -18,6 +18,7 @@ import { dispatchNotify } from '../../utils/notifictionHelper';
 import { ProjectInfo } from '../../models/ProjectInfo.model';
 import { ProjectContext } from '../../contexts/ProjectContext';
 import { useParams } from 'react-router-dom';
+import { UriPresigned } from '../../models/UriPresigned.model';
 
 function showSuccessImport() {
   dispatchNotify({
@@ -130,7 +131,7 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
         })
         .then((res) => {
           if (res) {
-            return uploadActivityReportResume(res.data, convertedFile);
+            return uploadActivityReportResume(res.data.uri, convertedFile);
           }
         })
         .then((res) => {

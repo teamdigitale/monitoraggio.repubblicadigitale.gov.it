@@ -2,6 +2,7 @@ package it.pa.repdgt.surveymgmt.restapi;
 
 import it.pa.repdgt.shared.entity.RegistroAttivitaEntity;
 import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
+import it.pa.repdgt.surveymgmt.model.URIPresigned;
 import it.pa.repdgt.surveymgmt.service.RegistroAttivitaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -42,17 +43,21 @@ public class RegistroAttivitaRestApi {
         }
     }
 
-    @PutMapping(value = "{registroAttivitaId}/generateDownloadPu", produces = "text/plain")
-    public String generateAttachmentDownloadPU(
+    @PutMapping(value = "{registroAttivitaId}/generateDownloadPu")
+    public URIPresigned generateAttachmentDownloadPU(
             @PathVariable Long registroAttivitaId) {
-        return registroAttivitaService.generateDownloadPresignedUrl(registroAttivitaId);
+        return URIPresigned.builder()
+                .uri(registroAttivitaService.generateDownloadPresignedUrl(registroAttivitaId))
+                .build();
     }
 
-    @PutMapping(value = "{registroAttivitaId}/generateUploadPu", produces = "text/plain")
-    public String generateAttachmentUploadPU(
+    @PutMapping(value = "{registroAttivitaId}/generateUploadPu")
+    public URIPresigned generateAttachmentUploadPU(
             @PathVariable Long registroAttivitaId,
             @RequestParam String fileName) {
-        return registroAttivitaService.generateUploadPresignedUrl(registroAttivitaId, fileName);
+        return URIPresigned.builder()
+                .uri(registroAttivitaService.generateUploadPresignedUrl(registroAttivitaId, fileName))
+                .build();
     }
 
     @PatchMapping("{registroAttivitaId}")
