@@ -97,3 +97,17 @@ export function updateActivityReportFileUploaded(
     { isFileUpdated: fileUploaded }
   );
 }
+export function generateDownloadPUActivityReport(
+  activityReportId: number
+): Promise<AxiosResponse<UriPresigned>> {
+  return API.put(
+    `${process.env.QUESTIONARIO_CITTADINO}registroAttivita/${activityReportId}/generateDownloadPu`,
+    {}
+  );
+}
+
+export function downloadActivityReportResume(
+  presignedUrl: string
+): Promise<AxiosResponse<string>> {
+  return axios.get(presignedUrl);
+}

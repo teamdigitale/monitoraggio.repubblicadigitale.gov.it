@@ -1,4 +1,4 @@
-import Table, { TableHeadingI } from '../Table/table';
+import Table, { TableHeadingI, TableRowI } from '../Table/table';
 import React, {
   ForwardedRef,
   forwardRef,
@@ -12,11 +12,19 @@ import Paginator from '../Paginator/paginator';
 import { Page } from '../../models/Page.model';
 import { RegistroAttivita } from '../../models/RegistroAttivita.model';
 import { useAppDispatch } from '../../redux/hooks';
-import { searchActivityReport } from '../../services/activityReportService';
+import {
+  downloadActivityReportResume,
+  generateDownloadPUActivityReport,
+  searchActivityReport,
+} from '../../services/activityReportService';
 import { hideLoader, showLoader } from '../../redux/features/app/appSlice';
 import { ProjectInfo } from '../../models/ProjectInfo.model';
 import { ProjectContext } from '../../contexts/ProjectContext';
-import { CRUDActionsI, CRUDActionTypes } from '../../utils/common';
+import {
+  CRUDActionsI,
+  CRUDActionTypes,
+  downloadGeneratedFile,
+} from '../../utils/common';
 import { useParams } from 'react-router-dom';
 
 const tableHeading: TableHeadingI[] = [
@@ -64,8 +72,19 @@ const tableHeading: TableHeadingI[] = [
 ];
 
 const onActionClick: CRUDActionsI = {
-  [CRUDActionTypes.DOWNLOAD]: () => null,
+  [CRUDActionTypes.DOWNLOAD]: (activityReport: TableRowI | string) => {
+    const report = activityReport as RegistroAttivita;
+    generateDownloadPUActivityReport(report.id as number)
+      .then((presignedUrl) => {
+        return downloadActivityReportResume(presignedUrl.data.uri);
+      })
+      .then((res) => downloadFile(res.data, report.fileName as string));
+  },
 };
+
+function downloadFile(f: string, name: string) {
+  downloadGeneratedFile(new File([new Blob([f])], name));
+}
 
 const ActivityReportTable = forwardRef(function ActivityReportTable(
   _props,
