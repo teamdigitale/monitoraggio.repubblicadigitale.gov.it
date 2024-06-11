@@ -72,6 +72,8 @@ export const mandatoryFields: (keyof CSVRecord)[] = [
   'SE6',
 ];
 
+const maxDate = moment('31/5/2024', 'DD/MM/YYYY');
+
 export function encryptFiscalCode(filteredRecord: CSVRecord) {
   return filteredRecord.AN3
     ? AES256.encrypt(filteredRecord.AN3, process?.env?.AES256_KEY)
@@ -148,6 +150,14 @@ export const validateFields = (
   if (record.AN4 !== 'SI' && record.AN3 && !validateFiscalCode(record.AN3)) {
     errors.push('Il Codice Fiscale inserito è invalido.');
   }
+
+  const parsedDate = moment(record.SE1, 'DD/MM/YYYY');
+  if (!parsedDate.isValid() || parsedDate.isAfter(maxDate)) {
+    errors.push(
+      'La data del servizio é invalida o successiva al 31 Maggio 2024.'
+    );
+  }
+
   if (record.SE7 && record.SE7.length > 600) {
     errors.push(
       'Il limite massimo per la descrizione del servizio é di 600 caratteri.'

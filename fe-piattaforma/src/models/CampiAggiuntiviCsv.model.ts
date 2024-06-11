@@ -16,5 +16,6 @@ export interface CampiAggiuntiviCsv {
     ambitoFacilitazioneFormazioneInteressato: string;
     risoluzioneProblemiDigitali?: string;
     valutazioneInStelle?: string;
+    numeroRiga: number;
   }
   

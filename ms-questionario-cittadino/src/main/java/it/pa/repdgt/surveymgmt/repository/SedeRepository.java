@@ -1,12 +1,12 @@
 package it.pa.repdgt.surveymgmt.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import java.util.Optional;
 
 import it.pa.repdgt.shared.entity.SedeEntity;
 import it.pa.repdgt.surveymgmt.projection.SedeProjection;
@@ -53,4 +53,6 @@ public interface SedeRepository extends JpaRepository<SedeEntity, Long> {
 			@Param("idsSedi") List<String> idsSedi);
 
 	Optional<SedeEntity> findByIdOrNomeIgnoreCase(Long idSedeServizio, String nominativoSede);
+
+	Optional<SedeEntity> findByIdAndNomeIgnoreCase(Long idSedeServizio, String nominativoSede);
 }

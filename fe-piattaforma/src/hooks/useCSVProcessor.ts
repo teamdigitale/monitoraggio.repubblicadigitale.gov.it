@@ -16,8 +16,8 @@ import {
   generateDescriptionFromMappedValues,
   mapKeysToServiceNames,
   validateFields,
-  getAgeGroupCodeByYear,
   getSE4ValueFromSE5Value,
+  getAgeGroupCodeByYear,
 } from '../utils/csvUtils';
 import {
   ageGroupMap,
@@ -31,6 +31,7 @@ import {
   serviceNameMap,
 } from '../utils/ResponseCodeMappings';
 import * as CodiceFiscaleUtils from '@marketto/codice-fiscale-utils';
+import IPersonalInfo from '@marketto/codice-fiscale-utils/src/interfaces/personal-info.interface';
 const {
   idProgetto,
   idEnte,
@@ -100,12 +101,13 @@ export function useCSVProcessor(file: File | undefined) {
               const serviziScartati: ServiziElaboratiDto[] = [];
               const data: CSVRecord[] = results.data;
               if (data.length > 0) {
-                data.forEach((record) => {
+                data.forEach((record: CSVRecord, index: number) => {
                   const {
                     AN14: _AN14,
                     AN17: _AN17,
                     ...filteredRecord
                   } = record;
+                  filteredRecord.AN3 = filteredRecord.AN3.trim();
                   const { rejectedTypes } = generateServiceName(
                     filteredRecord.SE3
                   );
@@ -125,9 +127,22 @@ export function useCSVProcessor(file: File | undefined) {
                       )}. Assicurati che i tipi di servizio inseriti siano corretti`
                     );
                   }
+
+                  const cfData: IPersonalInfo =
+                    CodiceFiscaleUtils.Parser.cfDecode(record.AN3);
+
+                  if (!getAgeGroupCodeByYear(cfData.date)) {
+                    errors.push('Il cittadino deve essere maggiorenne.');
+                  }
+
                   const isValidFields = errors.length === 0;
                   const servizioElaborato: ServiziElaboratiDto =
-                    mappingDatiElaborati(filteredRecord, errors);
+                    mappingDatiElaborati(
+                      filteredRecord,
+                      errors,
+                      index + 1,
+                      cfData
+                    );
                   if (isValidFields && rejectedTypes.length === 0) {
                     serviziValidati.push(servizioElaborato);
                   } else {
@@ -168,7 +183,9 @@ export function useCSVProcessor(file: File | undefined) {
 
   function mappingDatiElaborati(
     filteredRecord: CSVRecord,
-    errors: string[]
+    errors: string[],
+    rowIndex: number,
+    cfData: IPersonalInfo
   ): ServiziElaboratiDto {
     const sezioneQuestionarioCompilatoQ3 =
       generateServiceSection(filteredRecord);
@@ -183,13 +200,12 @@ export function useCSVProcessor(file: File | undefined) {
     const tipoDiServizioPrenotato: string[] = mapKeysToServiceNames(
       filteredRecord.SE3
     );
-    const cfData = CodiceFiscaleUtils.Parser.cfDecode(filteredRecord.AN3);
-    const ageGroup = getAgeGroupCodeByYear(cfData.date);
 
+    const ageGroup = getAgeGroupCodeByYear(cfData.date);
     return {
       servizioRequest: {
         nomeServizio: serviceName,
-        data: moment(filteredRecord.SE1).format('YYYY-MM-DD'),
+        data: moment(filteredRecord.SE1, 'DD/MM/YYYY').format('YYYY-MM-DD'),
         durataServizio: filteredRecord.SE2,
         idEnteServizio: idEnte,
         idProgetto: idProgetto,
@@ -257,6 +273,7 @@ export function useCSVProcessor(file: File | undefined) {
           repeatExperienceMap
         ),
         ambitoFacilitazioneFormazioneInteressato: filteredRecord.ES4 || '',
+        numeroRiga: rowIndex,
       },
     };
   }
