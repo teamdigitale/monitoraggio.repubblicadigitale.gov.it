@@ -129,7 +129,7 @@ export function useCSVProcessor(file: File | undefined) {
                   }
 
                   const cfData: IPersonalInfo =
-                    CodiceFiscaleUtils.Parser.cfDecode(record.AN3);
+                    CodiceFiscaleUtils.Parser.cfDecode(filteredRecord.AN3);
 
                   if (!getAgeGroupCodeByYear(cfData.date)) {
                     errors.push('Il cittadino deve essere maggiorenne.');
