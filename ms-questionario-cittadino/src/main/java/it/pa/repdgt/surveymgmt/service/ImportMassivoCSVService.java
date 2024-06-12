@@ -78,7 +78,6 @@ public class ImportMassivoCSVService {
                     throw new ResourceNotFoundException(NoteCSV.NOTE_FACILITATORE_NON_PRESENTE, CodiceErroreEnum.C01);
                 }
                 Optional<SedeEntity> optSedeRecuperata = recuperaSedeDaRichiesta(
-                        servizioElaborato.getServizioRequest().getIdSedeServizio(),
                         servizioElaborato.getCampiAggiuntiviCSV().getNominativoSede());
                 if (!optSedeRecuperata.isPresent()) {
                     throw new ResourceNotFoundException(NoteCSV.NOTE_SEDE_NON_PRESENTE, CodiceErroreEnum.C01);
@@ -178,12 +177,8 @@ public class ImportMassivoCSVService {
                 .build();
     }
 
-    private Optional<SedeEntity> recuperaSedeDaRichiesta(Long idSedeServizio, String nominativoSede) {
-        if ((idSedeServizio != null && nominativoSede == null) || (idSedeServizio == null && nominativoSede != null)) {
-            return sedeRepository.findByIdOrNomeIgnoreCase(idSedeServizio, nominativoSede);
-        } else {
-            return sedeRepository.findByIdAndNomeIgnoreCase(idSedeServizio, nominativoSede);
-        }
+    private Optional<SedeEntity> recuperaSedeDaRichiesta(String nominativoSede) {
+        return sedeRepository.findByNomeIgnoreCase(nominativoSede);
     }
 
     private Optional<UtenteEntity> recuperaUtenteFacilitatoreDaRichiesta(String idFacilitatore,

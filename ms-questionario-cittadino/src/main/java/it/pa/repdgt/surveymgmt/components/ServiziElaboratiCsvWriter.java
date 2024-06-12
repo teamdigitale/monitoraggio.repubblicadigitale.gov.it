@@ -101,7 +101,7 @@ public class ServiziElaboratiCsvWriter extends GenericImportCsvWriter<ServiziEla
                                                 ? model.getCampiAggiuntiviCSV().getServiziPassatiFacilitazione()
                                                 : "", CSVMapUtil.getPR2Map()))
                                 .append(",");
-                fileContent.append(model.getServizioRequest().getDataServizio().toString() != null
+                fileContent.append(model.getServizioRequest().getDataServizio() != null
                                 ? model.getServizioRequest().getDataServizio().toString()
                                 : "").append(",");
                 fileContent.append(model.getServizioRequest().getDurataServizio() != null

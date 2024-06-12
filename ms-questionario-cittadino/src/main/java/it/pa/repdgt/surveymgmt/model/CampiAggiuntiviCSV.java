@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,6 +17,7 @@ public class CampiAggiuntiviCSV {
     private String note;
     private String idFacilitatore;
     private String nominativoFacilitatore;
+    @NotBlank
     private String nominativoSede;
     private String primoUtilizzoServizioFacilitazione;
     private String serviziPassatiFacilitazione;

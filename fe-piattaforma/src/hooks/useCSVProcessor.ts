@@ -202,10 +202,11 @@ export function useCSVProcessor(file: File | undefined) {
     );
 
     const ageGroup = getAgeGroupCodeByYear(cfData.date);
+    const parsedDate = moment(filteredRecord.SE1, 'DD/MM/YYYY');
     return {
       servizioRequest: {
         nomeServizio: serviceName,
-        data: moment(filteredRecord.SE1, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+        data: parsedDate.isValid() ? parsedDate.format('YYYY-MM-DD') : null,
         durataServizio: filteredRecord.SE2,
         idEnteServizio: idEnte,
         idProgetto: idProgetto,
@@ -223,7 +224,7 @@ export function useCSVProcessor(file: File | undefined) {
         cfUtenteLoggato: cfUtenteLoggato,
         codiceFiscale: encryptedFiscalCode,
         codiceFiscaleNonDisponibile: filteredRecord.AN4 === 'SI',
-        numeroDocumento: documentDetails.encryptedDocNumber,
+        numeroDocumento: '',
         tipoDocumento: documentDetails.tipoDocumento,
         idEnte: idEnte,
         idProgetto: idProgetto,

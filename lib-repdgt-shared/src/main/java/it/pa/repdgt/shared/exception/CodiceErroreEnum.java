@@ -149,6 +149,9 @@ public enum CodiceErroreEnum {
 	,RC03("Errore recupero token utente RocketChat")
 	
 	,A02("Errore tentativo accesso a risorsa non permesso")
+	,A03("Non si dispone dei permessi per compilare il questionario")
+	,A04("Sezionario q4 completamente mancante, almeno una risposta deve essere selezionata")
+	,A05("La sezione q4 e' stata compilata ma nessuna risposta e' stata selezionata")
 	;
 	
 	private String descrizioneErrore;
