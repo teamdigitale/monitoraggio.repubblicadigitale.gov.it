@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.248](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.247...1.0.0-test.248) (2024-06-12)
+
+
+### Bug Fixes
+
+* **cf-fe:** updates 20240612 ([f68feca](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f68feca0ef236a63b6b62ffcbfb37827a0507515))
+
 ## [1.0.0-test.247](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.246...1.0.0-test.247) (2024-06-12)
 
 
