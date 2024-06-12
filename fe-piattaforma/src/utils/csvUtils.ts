@@ -58,6 +58,7 @@ export const mandatoryFields: (keyof CSVRecord)[] = [
   'AN1',
   'AN2',
   'AN3',
+  'AN4',
   'AN7',
   'AN8',
   'AN9',
@@ -107,27 +108,7 @@ export const validateFields = (
   validateFiscalCode: (fiscalCode: string) => boolean
 ): string[] => {
   const errors: string[] = [];
-  let mandatoryStartFields = [...mandatoryFields];
-  if (
-    record.AN4 === 'SI' &&
-    (!record.AN5 ||
-      record.AN5.trim() === '' ||
-      !record.AN6 ||
-      record.AN6.trim() === '')
-  ) {
-    mandatoryStartFields = mandatoryStartFields.filter((val) => val !== 'AN3');
-  }
-
-  if (record.AN4 === 'SI') {
-    if (!mandatoryStartFields.includes('AN5')) {
-      mandatoryStartFields.push('AN5');
-    }
-    if (!mandatoryStartFields.includes('AN6')) {
-      mandatoryStartFields.push('AN6');
-    }
-  } else if (record.AN4 === 'NO' && !mandatoryStartFields.includes('AN3')) {
-    mandatoryStartFields.push('AN3');
-  }
+  const mandatoryStartFields = [...mandatoryFields];
 
   const missingFields = mandatoryStartFields.filter(
     (field) =>
