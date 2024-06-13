@@ -1,4 +1,4 @@
-import React, { ReactChild, ReactNode } from 'react';
+import React, { ReactChild, ReactNode, useCallback } from 'react';
 import { Button, Icon, ModalBody, ModalFooter } from 'design-react-kit';
 import Modal from '../modals';
 import withModalState from '../../../hoc/withModalState';
@@ -50,6 +50,8 @@ export interface GenericModalI {
   darkTitle?: boolean;
   isRocketChatModal?: boolean;
   subtitle?: ReactNode;
+  showCloseBtn?: boolean;
+  onCloseFromHeader?: () => void;
 }
 
 const GenericModal: React.FC<GenericModalI> = (props) => {
@@ -81,6 +83,8 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
     //darkTitle = false,
     isRocketChatModal = false,
     subtitle,
+    showCloseBtn = false,
+    onCloseFromHeader,
   } = props;
 
   const handleAction = (action: 'primary' | 'secondary' | 'tertiary') => {
@@ -107,6 +111,11 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
 
   const device = useAppSelector(selectDevice);
   const dispatch = useDispatch();
+
+  const handleCloseFromHeaderFn = useCallback(() => {
+    if (onCloseFromHeader) onCloseFromHeader();
+    return dispatch(closeModal());
+  }, [onCloseFromHeader]);
 
   return (
     <Modal
@@ -151,21 +160,22 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
         <button className='hidden-btn' aria-label='modale' />
       )}
       <>
-        {isRocketChatModal && (
-          <Button
-            onClick={() => dispatch(closeModal())}
-            className='close-button align-self-end'
-            aria-label='Chiudi modale'
-          >
-            <Icon
-              color='primary'
-              icon='it-close-big'
-              size='sm'
-              aria-label='chiudi modale'
-              aria-hidden
-            />
-          </Button>
-        )}
+        {isRocketChatModal ||
+          (showCloseBtn && (
+            <Button
+              onClick={handleCloseFromHeaderFn}
+              className='close-button align-self-end'
+              aria-label='Chiudi modale'
+            >
+              <Icon
+                color='primary'
+                icon='it-close-big'
+                size='sm'
+                aria-label='chiudi modale'
+                aria-hidden
+              />
+            </Button>
+          ))}
         {title || payload?.title ? (
           <div
             className={clsx(

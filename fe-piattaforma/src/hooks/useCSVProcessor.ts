@@ -1,6 +1,6 @@
 import Papa from 'papaparse';
 import { useCallback, useState } from 'react';
-import { ServiziElaboratiDto } from '../models/ServiziElaboratiDto.Model';
+import { ServiziElaboratiDto } from '../models/ServiziElaboratiDto.model';
 import { ElaboratoCsvRequest } from '../models/ElaboratoCsvRequest.model';
 import { useFiscalCodeValidation } from './useFiscalCodeValidation';
 import { getUserHeaders } from '../redux/features/user/userThunk';
@@ -202,7 +202,7 @@ export function useCSVProcessor(file: File | undefined) {
     );
 
     const ageGroup = getAgeGroupCodeByYear(cfData.date);
-    const parsedDate = moment(filteredRecord.SE1, 'DD/MM/YYYY');
+    const parsedDate = moment(filteredRecord.SE1);
     return {
       servizioRequest: {
         nomeServizio: serviceName,

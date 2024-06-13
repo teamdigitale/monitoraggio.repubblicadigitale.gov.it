@@ -9,6 +9,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
@@ -37,6 +38,7 @@ public class ServizioRequest extends SceltaProfiloParam implements Serializable 
 	@NotNull
 	private Long idSedeServizio;
 
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	@JsonProperty(value = "data")
 	@NotNull
 	private Date dataServizio;

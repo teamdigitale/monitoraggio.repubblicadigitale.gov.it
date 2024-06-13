@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import fileUploadImg from './../../../public/assets/img/file_upload.png';
-import checkImg from './../../../public/assets/img/icon-check-no-circle.png';
 import { dispatchNotify } from '../../utils/notifictionHelper';
+import itDeletePrimary from '../../../public/assets/img/it-delete-primary.png';
 
 function showWarning() {
   dispatchNotify({
@@ -93,36 +93,36 @@ export default function CSVUploader({
   return (
     <div className='flex-column min-width-50'>
       <div
-        className={`upload-dragdrop ${file ? 'success' : ''} py-4`}
+        className={`upload-dragdrop ${file ? 'success' : ''} py-4 pr-4 w-100`}
         data-bs-upload-dragdrop
         onDragOver={(e) => e.preventDefault()}
         onDrop={handleDrop}
       >
-        <div className='upload-dragdrop-image'>
+        <div className='mx-4 xs-d-none d-block'>
           <img
+            className='csv-uploader-img'
             src={fileUploadImg}
             alt='descrizione immagine'
             aria-hidden='true'
           />
-          <div className='upload-dragdrop-success'>
-            <img
-              className='csv-upload-success-img'
-              src={checkImg}
-              alt=''
-              width={16}
-              height={16}
-            />
-          </div>
         </div>
-        <div className='upload-dragdrop-text'>
+        <div className='upload-dragdrop-text w-100'>
           {file ? (
             <>
-              <p>{file?.name}</p>
-              <div className='mx-auto d-flex align-items-center'>
-                <button className='btn btn-secondary' onClick={removeFile}>
-                  Rimuovi il file
+              <p className='font-weight-semibold text-primary file-title-csv'>
+                Il tuo file
+              </p>
+              <div className='d-flex align-items-center justify-content-between'>
+                <p className='font-weight-semibold text-black'>{file?.name}</p>
+                <button className='btn p-0 ml-4' onClick={removeFile}>
+                  <img
+                    className='delete-csv-btn-img'
+                    src={itDeletePrimary}
+                    alt=''
+                  />
                 </button>
               </div>
+              <hr className='mt-1' />
             </>
           ) : (
             <>
@@ -138,7 +138,7 @@ export default function CSVUploader({
                   onChange={handleInput}
                   accept='.csv'
                 />
-                <label htmlFor='upload7'>selezionalo dal dispositivo</label>
+                <label htmlFor='upload7'>selezionalo dal tuo dispositivo</label>
               </p>
               <hr />
               <p>massimo 30 Mb</p>

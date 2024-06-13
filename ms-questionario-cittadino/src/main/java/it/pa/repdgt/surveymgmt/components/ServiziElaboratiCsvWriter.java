@@ -37,13 +37,11 @@ public class ServiziElaboratiCsvWriter extends GenericImportCsvWriter<ServiziEla
                 fileContent.append(model.getCampiAggiuntiviCSV().getNominativoFacilitatore() != null
                                 ? model.getCampiAggiuntiviCSV().getNominativoFacilitatore()
                                 : "").append(",");
-                fileContent.append("").append(",");
+                fileContent.append("").append(","); // ID SEDE
                 fileContent.append(model.getCampiAggiuntiviCSV().getNominativoSede() != null
                                 ? model.getCampiAggiuntiviCSV().getNominativoSede()
                                 : "").append(",");
-                fileContent.append(model.getNuovoCittadinoServizioRequest().getCodiceFiscale() != null
-                                ? model.getNuovoCittadinoServizioRequest().getCodiceFiscale()
-                                : "").append(",");
+                fileContent.append("").append(","); // CODICE FISCALE
                 if (model.getNuovoCittadinoServizioRequest().getCodiceFiscaleNonDisponibile() != null &&
                                 model.getNuovoCittadinoServizioRequest().getCodiceFiscaleNonDisponibile()) {
                         fileContent.append("SI").append(",");
@@ -161,7 +159,7 @@ public class ServiziElaboratiCsvWriter extends GenericImportCsvWriter<ServiziEla
 
         private String appendSplitValues(String value, Map<String, String> map) {
                 if (value != null && !value.isEmpty()) {
-                        String[] values = value.split("; ");
+                        String[] values = value.split(": ");
                         List<String> mappedValues = new ArrayList<>();
                         for (String val : values) {
                                 String mappedValue = map.get(val);
@@ -169,7 +167,7 @@ public class ServiziElaboratiCsvWriter extends GenericImportCsvWriter<ServiziEla
                                         mappedValues.add(mappedValue);
                                 }
                         }
-                        return String.join(";", mappedValues);
+                        return String.join(":", mappedValues);
                 }
                 return "";
         }

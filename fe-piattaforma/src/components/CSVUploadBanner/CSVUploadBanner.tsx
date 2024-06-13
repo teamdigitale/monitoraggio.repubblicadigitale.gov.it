@@ -1,7 +1,7 @@
 import React from 'react';
 import fileUploadImg from './../../../public/assets/img/file_upload.png';
 import { Button } from 'design-react-kit';
-import "./csv-uploader-banner.scss";
+import './csv-uploader-banner.scss';
 
 export default function CSVUploadBanner(props: {
   onPrimaryButtonClick: () => void;
@@ -24,10 +24,20 @@ export default function CSVUploadBanner(props: {
                   <div className='row w-100'>
                     <div className='col-xs-12 col-md-6'>
                       <h4 className='card-title font-bold text-primary mb-0'>
-                        Caricamento Massivo dati
+                        Caricamento massivo dei dati sui cittadini e sui servizi
+                        acquisiti al di fuori di Facilita
                       </h4>
                       <p className='card-text'>
-                        Carica + vedi registro
+                        Puoi caricare in modo massivo i dati relativi ai
+                        cittadini e ai servizi di facilitazione erogati presso
+                        le sedi del tuo ente e{' '}
+                        <strong>
+                          acquisti al di fuori dalla piattaforma prima del 31
+                          maggio 2024
+                        </strong>
+                        . Inoltre, puoi consultare il{' '}
+                        <strong>registro dei caricamenti massivi</strong> gia'
+                        effettuati dal tuo ente.
                       </p>
                     </div>
                     <div className='col-xs-12 col-md-6 d-flex align-items-center justify-content-end'>

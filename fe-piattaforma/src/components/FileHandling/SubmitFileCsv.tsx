@@ -3,7 +3,10 @@ import React, { useCallback, useContext, useState } from 'react';
 import { ElaboratoCsvResponse } from '../../models/ElaboratoCsvResponse.model';
 import { ElaboratoCsvRequest } from '../../models/ElaboratoCsvRequest.model';
 import { getUserHeaders } from '../../redux/features/user/userThunk';
-import { RegistroAttivitaWithoutID } from '../../models/RegistroAttivita.model';
+import {
+  RegistroAttivita,
+  RegistroAttivitaWithoutID,
+} from '../../models/RegistroAttivita.model';
 import {
   elaborateCsv,
   generateUploadPUActivityReport,
@@ -18,7 +21,9 @@ import { dispatchNotify } from '../../utils/notifictionHelper';
 import { ProjectInfo } from '../../models/ProjectInfo.model';
 import { ProjectContext } from '../../contexts/ProjectContext';
 import { useParams } from 'react-router-dom';
-import { UriPresigned } from '../../models/UriPresigned.model';
+import LoadingModal from './LoadingModal';
+import { useAppDispatch } from '../../redux/hooks';
+import { closeModal, openModal } from '../../redux/features/modal/modalSlice';
 
 function showSuccessImport() {
   dispatchNotify({
@@ -57,6 +62,10 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
   );
   const projectContext = useContext<ProjectInfo | undefined>(ProjectContext);
   const { projectId, enteId } = useParams();
+  const dispatch = useAppDispatch();
+  const [lastActivityReport, setLastActivityReport] = useState<
+    RegistroAttivita | undefined
+  >(undefined);
 
   const handleSaveReport = useCallback(
     (
@@ -99,10 +108,19 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
       projectId &&
       (enteId || projectContext)
     ) {
+      dispatch(
+        openModal({
+          id: 'caricamento-csv',
+          payload: {
+            title: ``,
+          },
+        })
+      );
       const parsedData = dataUploadContext.parsedData;
       setIsSubmitting(true);
       let convertedFile: File;
       let activityReportId: number;
+      let savedActivityReport: RegistroAttivita;
       elaborateCsv(
         dataUploadContext.parsedData,
         parseInt(projectId),
@@ -114,7 +132,6 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
             res.data.fileName,
             'text/csv'
           );
-          downloadGeneratedFile(convertedFile);
           res.data.response.serviziScartati.length > 0
             ? showErrorImport()
             : showSuccessImport();
@@ -122,7 +139,8 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
         })
         .then((res) => {
           if (res) {
-            activityReportId = res.data.id;
+            savedActivityReport = res.data;
+            activityReportId = savedActivityReport.id;
             return generateUploadPUActivityReport(
               activityReportId,
               convertedFile.name
@@ -149,6 +167,7 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
           setIsSubmitting(false);
           props.clearFile();
           if (dataUploadContext) dataUploadContext.search();
+          if (savedActivityReport) setLastActivityReport(savedActivityReport);
         });
     }
   }, [
@@ -158,22 +177,30 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
     handleSaveReport,
   ]);
 
+  const handleCloseModal = useCallback(() => {
+    dispatch(closeModal());
+    setLastActivityReport(undefined);
+  }, []);
+
   return (
-    <div className='row'>
-      <div className='col'>
-        <button
-          className='btn btn-primary w-100'
-          onClick={handleSubmit}
-          disabled={!dataUploadContext?.parsedData}
-        >
-          Invia file
-        </button>
+    <>
+      <div className='text-center'>
+        <p className='font-weight-semibold text-primary'>
+          Carica il file controllato
+        </p>
       </div>
-      {isSubmitting && (
-        <div className='col-auto'>
-          <Spinner active />
-        </div>
-      )}
-    </div>
+      <button
+        className='btn btn-primary w-100'
+        onClick={handleSubmit}
+        disabled={!dataUploadContext?.parsedData}
+      >
+        Invia file
+      </button>
+      <LoadingModal
+        activityReport={lastActivityReport}
+        handleCloseModal={handleCloseModal}
+      />
+      {isSubmitting && <Spinner active />}
+    </>
   );
 }

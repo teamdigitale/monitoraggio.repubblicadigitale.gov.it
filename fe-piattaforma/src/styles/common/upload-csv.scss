@@ -1,4 +1,22 @@
 .csv-uploader-container{
-    border: 2px dashed #8ab9e8;
-    background-color: #f2f6fa;
-  }
+  border: 2px dashed #8ab9e8;
+  background-color: #f2f6fa;
+}
+
+.csv-uploader-img {
+  width: 100px;
+  height: 100px;
+}
+
+p.file-title-csv {
+  font-size: 1rem;
+}
+
+.delete-csv-btn-img {
+  width: 32px;
+  height: 32px;
+}
+
+.csv-resume-gap {
+  gap: 40px
+}

@@ -16,6 +16,7 @@ import { closeModal, openModal } from '../../redux/features/modal/modalSlice';
 import WarningModal from './WarningModal';
 import { ProjectContext } from '../../contexts/ProjectContext';
 import { useNavigate } from 'react-router-dom';
+import { mapRule } from '../../utils/csvUtils';
 
 export default function DataUploadPage() {
   const searchRef = useRef<{ search: () => void }>(null);
@@ -75,16 +76,17 @@ export default function DataUploadPage() {
         onClose={handleNavigateOut}
         onConfirm={handleCloseModal}
       >
-        Stai aprendo come Referente del Progetto {projectContext?.nomeBreve}{' '}
-        {projectContext?.nomeEnte
-          ? `e per conto dell'ente ${projectContext?.nomeEnte}`
-          : ''}
-        . Se questo non è il progetto a cui si vuole essere associati, si prega
-        di abbandonare la pagina per non incorrere in errori e problemi.
+        Stai operando in qualità di {userRole ? mapRule.get(userRole) : ''}{' '}
+        dell'ente {projectContext?.nomeEnte} per il progetto{' '}
+        {projectContext?.nomeBreve} Ricorda: puoi caricare{' '}
+        <strong>solo i dati dei servizi effettivamente erogati</strong> presso
+        le sedi del tuo ente e
+        <strong> sei responsabile della loro veridicità.</strong>
+        <br></br>Confermi di voler procedere?
       </WarningModal>
       <div className='row my-4'>
         <div className='col'>
-          <h1>Caricamento massivo dati</h1>
+          <h1>Caricamento massivo dei dati sui servizi</h1>
         </div>
       </div>
       <div className='row'>

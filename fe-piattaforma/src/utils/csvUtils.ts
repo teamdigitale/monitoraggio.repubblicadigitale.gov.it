@@ -17,6 +17,12 @@ import {
   serviceBookingTypeMap,
   serviceNameMap,
 } from './ResponseCodeMappings';
+import {
+  downloadActivityReportResume,
+  generateDownloadPUActivityReport,
+} from '../services/activityReportService';
+import { downloadGeneratedFile } from './common';
+import { RegistroAttivita } from '../models/RegistroAttivita.model';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const AES256 = require('aes-everywhere');
 
@@ -32,7 +38,7 @@ export const generateServiceName = (
   };
 
   const date = moment().format('YYYYMMDD');
-  const serviceTypes = serviceTypeString.split(';').map((type) => type.trim());
+  const serviceTypes = serviceTypeString.split(':').map((type) => type.trim());
   let result = '';
   const rejectedTypes: string[] = [];
 
@@ -73,7 +79,7 @@ export const mandatoryFields: (keyof CSVRecord)[] = [
   'SE6',
 ];
 
-const maxDate = moment('31/5/2024', 'DD/MM/YYYY');
+const maxDate = moment('2024-05-31', 'YYYY-MM-DD');
 
 export function encryptFiscalCode(filteredRecord: CSVRecord) {
   return filteredRecord.AN3
@@ -132,7 +138,7 @@ export const validateFields = (
     errors.push('Il Codice Fiscale inserito è invalido.');
   }
 
-  const parsedDate = moment(record.SE1, 'DD/MM/YYYY');
+  const parsedDate = moment(record.SE1);
   if (!parsedDate.isValid() || parsedDate.isAfter(maxDate)) {
     errors.push(
       'La data del servizio é invalida o successiva al 31 Maggio 2024.'
@@ -172,7 +178,7 @@ export function checkMapValues(record: CSVRecord, errors: string[]) {
     if (fieldValue !== undefined && fieldValue !== null && fieldValue !== '') {
       const values = multi
         ? fieldValue
-            .split(';')
+            .split(':')
             .map((value: string) => value.trim())
             .filter((value: string) => value !== '')
         : [fieldValue.trim()];
@@ -196,11 +202,11 @@ export function generateDescriptionFromMappedValues(
 ): string {
   if (!value) return '';
 
-  const values = value.split(';').map((value) => value.trim());
+  const values = value.split(':').map((value) => value.trim());
   return values
     .map((value) => map[value] || '')
     .filter((value) => value)
-    .join('; ');
+    .join(': ');
 }
 
 export const generateServiceSection = (record: CSVRecord) => ({
@@ -269,7 +275,7 @@ export const generateExperienceSection = (record: CSVRecord) => ({
 });
 
 export const mapKeysToServiceNames = (keysString: string): string[] => {
-  const keys = keysString.split(';');
+  const keys = keysString.split(':');
   return keys.map((key) => serviceNameMap[key.trim()] ?? '');
 };
 
@@ -284,7 +290,7 @@ export function getAgeGroupCodeByYear(date?: Date): string | void {
 }
 
 export function getSE4ValueFromSE5Value(SE5: string): string {
-  const SE5Values = SE5.split(';');
+  const SE5Values = SE5.split(':');
   const results = new Set<string>();
   SE5Values.forEach((value) => {
     const SE5Value = parseInt(value);
@@ -302,5 +308,31 @@ export function getSE4ValueFromSE5Value(SE5: string): string {
   });
   return [...results]
     .map((result: string) => firstLevelCompetenceMap[result])
-    .join('; ');
+    .join(': ');
 }
+
+export function downloadResume(activityReport: RegistroAttivita) {
+  generateDownloadPUActivityReport(activityReport.id)
+    .then((presignedUrl) => {
+      return downloadActivityReportResume(presignedUrl.data.uri);
+    })
+    .then((res) => downloadFile(res.data, activityReport.fileName as string));
+}
+
+function downloadFile(f: string, name: string) {
+  downloadGeneratedFile(new File([new Blob([f])], name));
+}
+
+export const mapRule = new Map<string, string>([
+  ['DEG', 'DELEGATO ENTE GESTORE PROGRAMMA'],
+  ['DEGP', 'DELEGATO ENTE GESTORE PROGETTO'],
+  ['DEPP', 'DELEGATO ENTE PARTNER'],
+  ['DSCU', 'DPGSCU'],
+  ['DTD', 'DTD AMMINISTRATORE'],
+  ['FAC', 'FACILITATORE'],
+  ['MOD', 'MODERATORE'],
+  ['REG', 'REFERENTE ENTE GESTORE PROGRAMMA'],
+  ['REGP', 'REFERENTE ENTE GESTORE PROGETTO'],
+  ['REPP', 'REFERENTE ENTE PARTNER'],
+  ['VOL', 'VOLONTARIO'],
+]);
