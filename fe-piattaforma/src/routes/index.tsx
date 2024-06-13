@@ -18,6 +18,7 @@ import HomeSearch from '../pages/common/HomeSearch/homeSearch';
 import UserPublishedContentsPage from '../pages/common/UserPublishedContentsPage/userPublishedContentsPage';
 import { selectModalState } from '../redux/features/modal/modalSlice';
 import { PrivacyDisclaimer } from '../pages/common/Privacy/PrivacyDisclaimer';
+import Authicon from '/public/assets/img/auth-box-icon.png';
 
 const AuthRedirect = lazy(() => import('../pages/common/Auth/authRedirect'));
 
@@ -130,7 +131,7 @@ const AppRoutes: React.FC = () => {
     <Suspense fallback={<Loader />}>
       <Routes>
         <Route path='/auth-redirect' element={<AuthRedirect />} />
-        <Route path='/errore/:errorCode' element={<ErrorPage />} />
+        <Route path='/errore/:errorCode' element={<ErrorPage showIcon genericIcon={Authicon} />} />
         <Route path='/errore' element={<ErrorPage />} />
         <Route path='/open-data' element={<OpenData />} />
         {process.env.NODE_ENV === 'development' ? (

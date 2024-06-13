@@ -104,8 +104,9 @@ public class ProgettoService {
 	@LogMethod
 	@LogExecutionTime
 	public ProgettoEntity creaNuovoProgetto(ProgettoEntity progettoEntity) {
-		if(progettoEntity.getDataInizioProgetto().after(progettoEntity.getDataFineProgetto())) {
-			String errorMessage = String.format("Impossibile creare il progetto. La data di fine non può essere antecedente alla data di inizio");
+		if (progettoEntity.getDataInizioProgetto().after(progettoEntity.getDataFineProgetto())) {
+			String errorMessage = String.format(
+					"Impossibile creare il progetto. La data di fine non può essere antecedente alla data di inizio");
 			throw new ProgettoException(errorMessage, CodiceErroreEnum.PR01);
 		}
 		progettoEntity.setStato(StatoEnum.NON_ATTIVO.getValue());
@@ -122,18 +123,21 @@ public class ProgettoService {
 
 	/**
 	 * @throws ProgettoException
-	 * */
+	 */
 	@LogMethod
 	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public void cancellazioneProgetto(Long idProgetto) {
-		if(!this.progettoRepository.existsById(idProgetto)) {
-			String errorMessage = String.format("Impossibile cancellare Progetto con id=%s perchè non presente", idProgetto);
+		if (!this.progettoRepository.existsById(idProgetto)) {
+			String errorMessage = String.format("Impossibile cancellare Progetto con id=%s perchè non presente",
+					idProgetto);
 			throw new ProgettoException(errorMessage, CodiceErroreEnum.PR02);
 		}
 		ProgettoEntity progettoFetchDB = this.getProgettoById(idProgetto);
 		if (!isProgettoCancellabileByStatoProgetto(progettoFetchDB.getStato())) {
-			String errorMessage = String.format("Impossibile cancellare Progetto con id=%s perchè il suo stato è diverso da NON_ATTIVO", idProgetto);
+			String errorMessage = String.format(
+					"Impossibile cancellare Progetto con id=%s perchè il suo stato è diverso da NON_ATTIVO",
+					idProgetto);
 			throw new ProgettoException(errorMessage, CodiceErroreEnum.PR02);
 		}
 		this.referentiDelegatiEnteGestoreProgettoService.cancellaReferentiDelegatiProgetto(idProgetto);
@@ -145,7 +149,8 @@ public class ProgettoService {
 	}
 
 	/**
-	 * Verifica se il progetto può essere cancellato a partire dallo stato del progetto.
+	 * Verifica se il progetto può essere cancellato a partire dallo stato del
+	 * progetto.
 	 * Restituisce true se il progetto può essere cancellato e false altrimenti.
 	 * 
 	 **/
@@ -155,7 +160,7 @@ public class ProgettoService {
 
 	/**
 	 * @throws ProgettoException
-	 * */
+	 */
 	@LogMethod
 	@LogExecutionTime
 	public ProgettoEntity assegnaProgrammaAlProgetto(Long idProgetto, Long idProgramma) {
@@ -163,14 +168,16 @@ public class ProgettoService {
 		try {
 			progettoFetchDB = this.getProgettoById(idProgetto);
 		} catch (ResourceNotFoundException ex) {
-			String errorMessage = String.format("Impossibile Assegnare progetto a programma perchè progetto con id=%s non presente", idProgetto);
+			String errorMessage = String.format(
+					"Impossibile Assegnare progetto a programma perchè progetto con id=%s non presente", idProgetto);
 			throw new ProgettoException(errorMessage, CodiceErroreEnum.PR06);
 		}
 		ProgrammaEntity programmaFetchDB = null;
 		try {
 			programmaFetchDB = this.programmaService.getProgrammaById(idProgramma);
 		} catch (ResourceNotFoundException ex) {
-			String errorMessage = String.format("Impossibile Assegnare progetto a programma perchè programma con id=%s non presente", idProgramma);
+			String errorMessage = String.format(
+					"Impossibile Assegnare progetto a programma perchè programma con id=%s non presente", idProgramma);
 			throw new ProgettoException(errorMessage, CodiceErroreEnum.PR06);
 		}
 		progettoFetchDB.setProgramma(programmaFetchDB);
@@ -179,7 +186,7 @@ public class ProgettoService {
 
 	/**
 	 * @throws ProgettoException
-	 * */
+	 */
 	@LogMethod
 	@LogExecutionTime
 	public ProgettoEntity assegnaEnteGestoreProgetto(Long idProgetto, Long idEnteGestore) {
@@ -187,14 +194,17 @@ public class ProgettoService {
 		try {
 			progettoFetchDB = this.getProgettoById(idProgetto);
 		} catch (ResourceNotFoundException ex) {
-			String errorMessage = String.format("Impossibile Assegnare gestore a progetto perchè progetto con id=%s non presente", idProgetto);
+			String errorMessage = String.format(
+					"Impossibile Assegnare gestore a progetto perchè progetto con id=%s non presente", idProgetto);
 			throw new ProgettoException(errorMessage, CodiceErroreEnum.PR05);
 		}
 		EnteEntity enteFetchDB = null;
 		try {
 			enteFetchDB = this.enteService.getEnteById(idEnteGestore);
 		} catch (ResourceNotFoundException ex) {
-			String errorMessage = String.format("Impossibile Assegnare gestore a progetto perchè ente gestore con id=%s non presente", idEnteGestore);
+			String errorMessage = String.format(
+					"Impossibile Assegnare gestore a progetto perchè ente gestore con id=%s non presente",
+					idEnteGestore);
 			throw new ProgettoException(errorMessage, CodiceErroreEnum.PR05);
 		}
 		progettoFetchDB.setEnteGestoreProgetto(enteFetchDB);
@@ -204,18 +214,21 @@ public class ProgettoService {
 
 	/**
 	 * @throws ProgettoException
-	 * */
+	 */
 	@LogMethod
 	@LogExecutionTime
 	public ProgettoEntity aggiornaProgetto(ProgettoRequest progettoRequest, Long idProgetto) {
-		if(!this.progettoRepository.existsById(idProgetto)) {
-			String errorMessage = String.format("Impossibile aggiornare il progetto. Progetto con id=%s non presente", idProgetto);
+		if (!this.progettoRepository.existsById(idProgetto)) {
+			String errorMessage = String.format("Impossibile aggiornare il progetto. Progetto con id=%s non presente",
+					idProgetto);
 			throw new ProgettoException(errorMessage, CodiceErroreEnum.PR04);
 		}
 
 		ProgettoEntity progettoFetch = this.getProgettoById(idProgetto);
 		if (!isProgettoAggiornabileByStatoProgetto(progettoFetch.getStato())) {
-			String errorMessage = String.format("Impossibile aggiornare Progetto con id=%s perchè il suo stato è diverso da NON_ATTIVO, ATTIVABILE o ATTIVO", idProgetto);
+			String errorMessage = String.format(
+					"Impossibile aggiornare Progetto con id=%s perchè il suo stato è diverso da NON_ATTIVO, ATTIVABILE o ATTIVO",
+					idProgetto);
 			throw new ProgettoException(errorMessage, CodiceErroreEnum.PR04);
 		}
 		this.progettoMapper.toEntityFrom(progettoRequest, progettoFetch);
@@ -224,36 +237,40 @@ public class ProgettoService {
 	}
 
 	/**
-	 * Verifica se il progetto può essere aggiornato a partire dallo stato del progetto.
+	 * Verifica se il progetto può essere aggiornato a partire dallo stato del
+	 * progetto.
 	 * Restituisce true se il progetto può essere cancellato e false altrimenti.
 	 * 
 	 **/
 	@LogMethod
 	@LogExecutionTime
 	public boolean isProgettoAggiornabileByStatoProgetto(String statoProgetto) {
-		return (
-				StatoEnum.NON_ATTIVO.getValue().equalsIgnoreCase(statoProgetto)
-				||	StatoEnum.ATTIVABILE.getValue().equalsIgnoreCase(statoProgetto)
-				|| StatoEnum.ATTIVO.getValue().equalsIgnoreCase(statoProgetto)
-				);
+		return (StatoEnum.NON_ATTIVO.getValue().equalsIgnoreCase(statoProgetto)
+				|| StatoEnum.ATTIVABILE.getValue().equalsIgnoreCase(statoProgetto)
+				|| StatoEnum.ATTIVO.getValue().equalsIgnoreCase(statoProgetto));
 	}
 
 	@LogMethod
 	@LogExecutionTime
 	public PaginaProgetti getAllProgettiPaginati(ProgettiParam sceltaContesto,
 			Integer currPage, Integer pageSize, ProgettoFiltroRequest filtroRequest) {
-		return this.getProgettiByRuoloPaginati(sceltaContesto.getCodiceRuoloUtenteLoggato(), sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRequest, currPage, pageSize);
+		return this.getProgettiByRuoloPaginati(sceltaContesto.getCodiceRuoloUtenteLoggato(),
+				sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(),
+				filtroRequest, currPage, pageSize);
 	}
 
 	/**
-	 * Recupera tutti i progetti filtrati in base al filtro passato che sono associati all'utente che ha quel ruolo associato a quel particolare progetto
+	 * Recupera tutti i progetti filtrati in base al filtro passato che sono
+	 * associati all'utente che ha quel ruolo associato a quel particolare progetto
 	 *
 	 * @param codiceRuolo - il ruolo scelto dall'utente in fase di login
-	 * @return List<ProgettoEntity> progetti - la lista dei progetti associati all'utente
+	 * @return List<ProgettoEntity> progetti - la lista dei progetti associati
+	 *         all'utente
 	 */
 	@LogMethod
 	@LogExecutionTime
-	public List<ProgettoEntity> getProgettiByRuolo(String codiceRuolo, String cfUtente, Long idProgramma, Long idProgetto, ProgettoFiltroRequest filtroRequest) {
+	public List<ProgettoEntity> getProgettiByRuolo(String codiceRuolo, String cfUtente, Long idProgramma,
+			Long idProgetto, ProgettoFiltroRequest filtroRequest) {
 		List<ProgettoEntity> progettiUtente = new ArrayList<>();
 		switch (codiceRuolo) {
 			case "DTD":
@@ -277,56 +294,62 @@ public class ProgettoService {
 	}
 
 	/**
-	 * Recupera tutti i progetti filtrati e paginati in base al filtro passato che sono associati all'utente che ha quel ruolo associato a quel particolare progetto
+	 * Recupera tutti i progetti filtrati e paginati in base al filtro passato che
+	 * sono associati all'utente che ha quel ruolo associato a quel particolare
+	 * progetto
 	 *
 	 * @param codiceRuolo - il ruolo scelto dall'utente in fase di login
-	 * @return List<ProgettoEntity> progetti - la lista dei progetti associati all'utente
+	 * @return List<ProgettoEntity> progetti - la lista dei progetti associati
+	 *         all'utente
 	 */
 	@LogMethod
 	@LogExecutionTime
-	public PaginaProgetti getProgettiByRuoloPaginati(String codiceRuolo, String cfUtente, Long idProgramma, Long idProgetto, ProgettoFiltroRequest filtroRequest, Integer currPage, Integer pageSize) {
+	public PaginaProgetti getProgettiByRuoloPaginati(String codiceRuolo, String cfUtente, Long idProgramma,
+			Long idProgetto, ProgettoFiltroRequest filtroRequest, Integer currPage, Integer pageSize) {
 		PaginaProgetti paginaProgetti = new PaginaProgetti();
 		Long numeroElementi = 0L;
 		switch (codiceRuolo) {
-		case "DTD":
-			paginaProgetti.setPaginaProgetti(getAllProgettiPaginati(filtroRequest, currPage, pageSize));
-			numeroElementi = getCountAllProgetti(filtroRequest);
-			break;
-		case "DSCU":
-			paginaProgetti.setPaginaProgetti(this.getProgettiPerDSCUPaginati(filtroRequest, currPage, pageSize));
-			numeroElementi = getCountProgettiPerDSCU(filtroRequest);
-			break;
-		case "REG":
-		case "DEG":
-			paginaProgetti.setPaginaProgetti(this.getProgettiPerReferenteDelegatoGestoreProgrammaPaginati(idProgramma, filtroRequest, currPage, pageSize));
-			numeroElementi = getCountProgettiPerReferenteDelegatoGestoreProgramma(idProgramma, filtroRequest);
-			break;
-		case "REGP":
-		case "DEGP":
-		case "REPP":
-		case "DEPP":
-		case "FAC":
-		case "VOL":
-			paginaProgetti.setPaginaProgetti(Arrays.asList(this.getProgettoById(idProgetto)));
-			numeroElementi = 1L;
-			break;
-		default:
-			paginaProgetti.setPaginaProgetti(getAllProgettiPaginati(filtroRequest, currPage, pageSize));
-			numeroElementi = getCountAllProgetti(filtroRequest);
-			break;
+			case "DTD":
+				paginaProgetti.setPaginaProgetti(getAllProgettiPaginati(filtroRequest, currPage, pageSize));
+				numeroElementi = getCountAllProgetti(filtroRequest);
+				break;
+			case "DSCU":
+				paginaProgetti.setPaginaProgetti(this.getProgettiPerDSCUPaginati(filtroRequest, currPage, pageSize));
+				numeroElementi = getCountProgettiPerDSCU(filtroRequest);
+				break;
+			case "REG":
+			case "DEG":
+				paginaProgetti.setPaginaProgetti(this.getProgettiPerReferenteDelegatoGestoreProgrammaPaginati(
+						idProgramma, filtroRequest, currPage, pageSize));
+				numeroElementi = getCountProgettiPerReferenteDelegatoGestoreProgramma(idProgramma, filtroRequest);
+				break;
+			case "REGP":
+			case "DEGP":
+			case "REPP":
+			case "DEPP":
+			case "FAC":
+			case "VOL":
+				paginaProgetti.setPaginaProgetti(Arrays.asList(this.getProgettoById(idProgetto)));
+				numeroElementi = 1L;
+				break;
+			default:
+				paginaProgetti.setPaginaProgetti(getAllProgettiPaginati(filtroRequest, currPage, pageSize));
+				numeroElementi = getCountAllProgetti(filtroRequest);
+				break;
 		}
 		paginaProgetti.setTotalElements(numeroElementi);
-		Integer pagine = (int) (numeroElementi/pageSize);
-		paginaProgetti.setTotalPages(numeroElementi%pageSize > 0 ? pagine + 1 : pagine);
+		Integer pagine = (int) (numeroElementi / pageSize);
+		paginaProgetti.setTotalPages(numeroElementi % pageSize > 0 ? pagine + 1 : pagine);
 
-		if(paginaProgetti.getTotalElements() > 0 && currPage >= paginaProgetti.getTotalPages()) {
+		if (paginaProgetti.getTotalElements() > 0 && currPage >= paginaProgetti.getTotalPages()) {
 			throw new ProgettoException("Errore Pagina richiesta non esistente", CodiceErroreEnum.G03);
 		}
 
 		return paginaProgetti;
 	}
 
-	private List<ProgettoEntity> getProgettiPerReferenteDelegatoGestoreProgramma(Long idProgramma, ProgettoFiltroRequest filtroRequest) {
+	private List<ProgettoEntity> getProgettiPerReferenteDelegatoGestoreProgramma(Long idProgramma,
+			ProgettoFiltroRequest filtroRequest) {
 		return this.progettoRepository.findProgettiPerReferenteDelegatoGestoreProgramma(
 				idProgramma,
 				filtroRequest.getCriterioRicerca(),
@@ -336,7 +359,8 @@ public class ProgettoService {
 				filtroRequest.getStati());
 	}
 
-	private Long getCountProgettiPerReferenteDelegatoGestoreProgramma(Long idProgramma, ProgettoFiltroRequest filtroRequest) {
+	private Long getCountProgettiPerReferenteDelegatoGestoreProgramma(Long idProgramma,
+			ProgettoFiltroRequest filtroRequest) {
 		return this.progettoRepository.countProgettiPerReferenteDelegatoGestoreProgramma(
 				idProgramma,
 				filtroRequest.getCriterioRicerca(),
@@ -346,7 +370,8 @@ public class ProgettoService {
 				filtroRequest.getStati());
 	}
 
-	private List<ProgettoEntity> getProgettiPerReferenteDelegatoGestoreProgrammaPaginati(Long idProgramma, ProgettoFiltroRequest filtroRequest, Integer currPage, Integer pageSize) {
+	private List<ProgettoEntity> getProgettiPerReferenteDelegatoGestoreProgrammaPaginati(Long idProgramma,
+			ProgettoFiltroRequest filtroRequest, Integer currPage, Integer pageSize) {
 		return this.progettoRepository.findProgettiPerReferenteDelegatoGestoreProgrammaPaginati(
 				idProgramma,
 				filtroRequest.getCriterioRicerca(),
@@ -354,7 +379,7 @@ public class ProgettoService {
 				filtroRequest.getPolicies(),
 				filtroRequest.getIdsProgrammi(),
 				filtroRequest.getStati(),
-				currPage*pageSize,
+				currPage * pageSize,
 				pageSize);
 	}
 
@@ -364,8 +389,7 @@ public class ProgettoService {
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%",
 				filtroRequest.getIdsProgrammi(),
-				filtroRequest.getStati()
-				);
+				filtroRequest.getStati());
 	}
 
 	private Long getCountProgettiPerDSCU(ProgettoFiltroRequest filtroRequest) {
@@ -374,20 +398,19 @@ public class ProgettoService {
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%",
 				filtroRequest.getIdsProgrammi(),
-				filtroRequest.getStati()
-				);
+				filtroRequest.getStati());
 	}
 
-	private List<ProgettoEntity> getProgettiPerDSCUPaginati(ProgettoFiltroRequest filtroRequest, Integer currPage, Integer pageSize) {
+	private List<ProgettoEntity> getProgettiPerDSCUPaginati(ProgettoFiltroRequest filtroRequest, Integer currPage,
+			Integer pageSize) {
 		return this.progettoRepository.findByPolicyPaginati(
 				PolicyEnum.SCD.toString(),
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%",
 				filtroRequest.getIdsProgrammi(),
 				filtroRequest.getStati(),
-				currPage*pageSize,
-				pageSize
-				);
+				currPage * pageSize,
+				pageSize);
 	}
 
 	private List<ProgettoEntity> getAllProgetti(ProgettoFiltroRequest filtroRequest) {
@@ -396,20 +419,19 @@ public class ProgettoService {
 				"%" + filtroRequest.getCriterioRicerca() + "%",
 				filtroRequest.getPolicies(),
 				filtroRequest.getIdsProgrammi(),
-				filtroRequest.getStati()
-				);
+				filtroRequest.getStati());
 	}
 
-	private List<ProgettoEntity> getAllProgettiPaginati(ProgettoFiltroRequest filtroRequest, Integer currPage, Integer pageSize) {
+	private List<ProgettoEntity> getAllProgettiPaginati(ProgettoFiltroRequest filtroRequest, Integer currPage,
+			Integer pageSize) {
 		return this.progettoRepository.findAllPaginati(
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%",
 				filtroRequest.getPolicies(),
 				filtroRequest.getIdsProgrammi(),
 				filtroRequest.getStati(),
-				currPage*pageSize,
-				pageSize
-				);
+				currPage * pageSize,
+				pageSize);
 	}
 
 	private Long getCountAllProgetti(ProgettoFiltroRequest filtroRequest) {
@@ -418,47 +440,50 @@ public class ProgettoService {
 				"%" + filtroRequest.getCriterioRicerca() + "%",
 				filtroRequest.getPolicies(),
 				filtroRequest.getIdsProgrammi(),
-				filtroRequest.getStati()
-				);
+				filtroRequest.getStati());
 	}
 
 	@LogMethod
 	@LogExecutionTime
 	public List<String> getAllStatiDropdown(ProgettiParam sceltaContesto,
 			ProgettoFiltroRequest filtroRequest) {
-		return this.getAllStatiByRuoloAndIdProgramma(sceltaContesto.getCodiceRuoloUtenteLoggato(),sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(), filtroRequest);
+		return this.getAllStatiByRuoloAndIdProgramma(sceltaContesto.getCodiceRuoloUtenteLoggato(),
+				sceltaContesto.getCfUtenteLoggato(), sceltaContesto.getIdProgramma(), sceltaContesto.getIdProgetto(),
+				filtroRequest);
 	}
 
 	@LogMethod
 	@LogExecutionTime
-	public List<String> getAllStatiByRuoloAndIdProgramma(String codiceRuolo, String cfUtente, Long idProgramma, Long idProgetto, ProgettoFiltroRequest filtroRequest) {
+	public List<String> getAllStatiByRuoloAndIdProgramma(String codiceRuolo, String cfUtente, Long idProgramma,
+			Long idProgetto, ProgettoFiltroRequest filtroRequest) {
 		List<String> stati = new ArrayList<>();
 		switch (codiceRuolo) {
-		case "DTD":
-			return this.getAllStati(filtroRequest);
-		case "DSCU":
-			List<String> result = this.getStatiPerDSCU(filtroRequest);
-			stati.addAll(result);
-			return stati;
-		case "REG":
-		case "DEG":
-			return this.getStatiPerReferenteDelegatoGestoreProgramma(idProgramma, filtroRequest);
-		case "REGP":
-		case "DEGP":
-			stati.add(this.getProgettoById(idProgetto).getStato());
-			return stati;
-		case "REPP":
-		case "DEPP":
-			stati.add(this.getProgettoById(idProgetto).getStato());
-			return stati;
-		default:
-			return this.getAllStati(filtroRequest);
+			case "DTD":
+				return this.getAllStati(filtroRequest);
+			case "DSCU":
+				List<String> result = this.getStatiPerDSCU(filtroRequest);
+				stati.addAll(result);
+				return stati;
+			case "REG":
+			case "DEG":
+				return this.getStatiPerReferenteDelegatoGestoreProgramma(idProgramma, filtroRequest);
+			case "REGP":
+			case "DEGP":
+				stati.add(this.getProgettoById(idProgetto).getStato());
+				return stati;
+			case "REPP":
+			case "DEPP":
+				stati.add(this.getProgettoById(idProgetto).getStato());
+				return stati;
+			default:
+				return this.getAllStati(filtroRequest);
 		}
 	}
 
 	@LogMethod
 	@LogExecutionTime
-	public List<String> getStatiPerReferenteDelegatoGestoreProgramma(Long idProgramma, ProgettoFiltroRequest filtroRequest) {
+	public List<String> getStatiPerReferenteDelegatoGestoreProgramma(Long idProgramma,
+			ProgettoFiltroRequest filtroRequest) {
 		return this.progettoRepository.findStatiPerReferenteDelegatoGestoreProgramma(idProgramma,
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%",
@@ -475,8 +500,7 @@ public class ProgettoService {
 				"%" + filtroRequest.getCriterioRicerca() + "%",
 				filtroRequest.getPolicies(),
 				filtroRequest.getIdsProgrammi(),
-				filtroRequest.getStati()
-				);
+				filtroRequest.getStati());
 	}
 
 	private List<String> getStatiPerDSCU(ProgettoFiltroRequest filtroRequest) {
@@ -485,20 +509,21 @@ public class ProgettoService {
 				filtroRequest.getCriterioRicerca(),
 				"%" + filtroRequest.getCriterioRicerca() + "%",
 				filtroRequest.getIdsProgrammi(),
-				filtroRequest.getStati()
-				);
+				filtroRequest.getStati());
 	}
 
 	@LogMethod
 	@LogExecutionTime
 	public List<ProgrammaDropdownResource> getAllProgrammiDropdownPerProgetti(ProgettiParam sceltaContesto) {
-		return this.programmaService.getAllProgrammiDropdownPerProgetti(sceltaContesto, sceltaContesto.getFiltroRequest());
+		return this.programmaService.getAllProgrammiDropdownPerProgetti(sceltaContesto,
+				sceltaContesto.getFiltroRequest());
 	}
 
 	@LogMethod
 	@LogExecutionTime
 	public List<String> getAllPoliciesDropdownPerProgetti(ProgettiParam sceltaContesto) {
-		return this.programmaService.getAllPoliciesDropdownPerProgetti(sceltaContesto, sceltaContesto.getFiltroRequest());
+		return this.programmaService.getAllPoliciesDropdownPerProgetti(sceltaContesto,
+				sceltaContesto.getFiltroRequest());
 	}
 
 	@LogMethod
@@ -507,7 +532,8 @@ public class ProgettoService {
 		ProgettoEntity progettoFetchDB = this.getProgettoById(idProgetto);
 		ProgrammaEntity programmaFetchDB = progettoFetchDB.getProgramma();
 
-		DettaglioProgrammaLightBean dettaglioProgramma = this.progettoMapper.toDettaglioProgrammaLightBeanFrom(programmaFetchDB);
+		DettaglioProgrammaLightBean dettaglioProgramma = this.progettoMapper
+				.toDettaglioProgrammaLightBeanFrom(programmaFetchDB);
 
 		DettaglioProgettoBean dettaglioProgetto = this.progettoMapper.toDettaglioProgettoBeanFrom(progettoFetchDB);
 		dettaglioProgetto.setId(idProgetto);
@@ -520,7 +546,8 @@ public class ProgettoService {
 					DettaglioEntiPartnerBean dettaglioEntePartner = new DettaglioEntiPartnerBean();
 					dettaglioEntePartner.setId(idEnte);
 					dettaglioEntePartner.setNome(enteFetchDB.getNome());
-					dettaglioEntePartner.setReferenti(this.entePartnerService.getReferentiEntePartnerProgetto(idProgetto, idEnte));
+					dettaglioEntePartner
+							.setReferenti(this.entePartnerService.getReferentiEntePartnerProgetto(idProgetto, idEnte));
 					dettaglioEntePartner.setStato(this.entePartnerService.getStatoEntePartner(idProgetto, idEnte));
 					return dettaglioEntePartner;
 				})
@@ -531,39 +558,45 @@ public class ProgettoService {
 		Map<SedeEntity, List<Long>> mappaSediProgettoEnte = new HashMap<>();
 
 		listaSediProgetto.forEach(sedeProgetto -> {
-			mappaSediProgettoEnte.put(sedeProgetto, this.enteService.getIdEnteByIdProgettoAndIdSede(idProgetto, sedeProgetto.getId()));
+			mappaSediProgettoEnte.put(sedeProgetto,
+					this.enteService.getIdEnteByIdProgettoAndIdSede(idProgetto, sedeProgetto.getId()));
 		});
 
 		List<DettaglioSediBean> listaDettaglioSedi = new ArrayList<>();
 		mappaSediProgettoEnte.keySet()
-		.stream()
-		.forEach(sede -> {
-			List<Long> listaIdEnti = mappaSediProgettoEnte.get(sede);
-			List<DettaglioSediBean> listaDettaglioSediParziale = listaIdEnti
-					.stream()
-					.map(idEnte -> {
-						DettaglioSediBean dettaglioSede = new DettaglioSediBean();
-						dettaglioSede.setId(sede.getId());
-						dettaglioSede.setNome(sede.getNome());
-						dettaglioSede.setRuoloEnte(this.enteService.getRuoloEnteByIdProgettoAndIdSedeAndIdEnte(idProgetto, sede.getId(), idEnte));
-						dettaglioSede.setNrFacilitatori(this.utenteService.countFacilitatoriPerSedeProgettoEnte(idProgetto, sede.getId(), idEnte));
-						dettaglioSede.setServiziErogati(sede.getServiziErogati());
-						EnteEntity enteDiRiferimento = this.enteService.getEnteById(idEnte);
-						dettaglioSede.setIdenteDiRiferimento(enteDiRiferimento.getId());
-						dettaglioSede.setEnteDiRiferimento(enteDiRiferimento.getNome());
-						dettaglioSede.setStato(this.sedeService.getStatoSedeByIdProgettoAndIdSedeAndIdEnte(idProgetto, sede.getId(), idEnte));
-						return dettaglioSede;
-					})
-					.collect(Collectors.toList());
-			listaDettaglioSedi.addAll(listaDettaglioSediParziale);
-		});
+				.stream()
+				.forEach(sede -> {
+					List<Long> listaIdEnti = mappaSediProgettoEnte.get(sede);
+					List<DettaglioSediBean> listaDettaglioSediParziale = listaIdEnti
+							.stream()
+							.map(idEnte -> {
+								DettaglioSediBean dettaglioSede = new DettaglioSediBean();
+								dettaglioSede.setId(sede.getId());
+								dettaglioSede.setNome(sede.getNome());
+								dettaglioSede.setRuoloEnte(this.enteService
+										.getRuoloEnteByIdProgettoAndIdSedeAndIdEnte(idProgetto, sede.getId(), idEnte));
+								dettaglioSede.setNrFacilitatori(this.utenteService
+										.countFacilitatoriPerSedeProgettoEnte(idProgetto, sede.getId(), idEnte));
+								dettaglioSede.setServiziErogati(sede.getServiziErogati());
+								EnteEntity enteDiRiferimento = this.enteService.getEnteById(idEnte);
+								dettaglioSede.setIdenteDiRiferimento(enteDiRiferimento.getId());
+								dettaglioSede.setEnteDiRiferimento(enteDiRiferimento.getNome());
+								dettaglioSede.setStato(this.sedeService
+										.getStatoSedeByIdProgettoAndIdSedeAndIdEnte(idProgetto, sede.getId(), idEnte));
+								return dettaglioSede;
+							})
+							.collect(Collectors.toList());
+					listaDettaglioSedi.addAll(listaDettaglioSediParziale);
+				});
 
 		SchedaProgettoBean schedaProgetto = new SchedaProgettoBean();
 		schedaProgetto.setDettaglioProgramma(dettaglioProgramma);
 		schedaProgetto.setDettaglioProgetto(dettaglioProgetto);
 		schedaProgetto.setEntiPartner(listaEntiPartner);
 		schedaProgetto.setSedi(listaDettaglioSedi);
-		schedaProgetto.setIdEnteGestoreProgetto(progettoFetchDB.getEnteGestoreProgetto() != null ? progettoFetchDB.getEnteGestoreProgetto().getId() : null );
+		schedaProgetto.setIdEnteGestoreProgetto(
+				progettoFetchDB.getEnteGestoreProgetto() != null ? progettoFetchDB.getEnteGestoreProgetto().getId()
+						: null);
 		return schedaProgetto;
 	}
 
@@ -573,7 +606,8 @@ public class ProgettoService {
 		ProgettoEntity progettoFetchDB = this.getProgettoById(idProgetto);
 		ProgrammaEntity programmaFetchDB = progettoFetchDB.getProgramma();
 
-		DettaglioProgrammaLightBean dettaglioProgramma = this.progettoMapper.toDettaglioProgrammaLightBeanFrom(programmaFetchDB);
+		DettaglioProgrammaLightBean dettaglioProgramma = this.progettoMapper
+				.toDettaglioProgrammaLightBeanFrom(programmaFetchDB);
 
 		DettaglioProgettoBean dettaglioProgetto = this.progettoMapper.toDettaglioProgettoBeanFrom(progettoFetchDB);
 		dettaglioProgetto.setId(idProgetto);
@@ -581,7 +615,7 @@ public class ProgettoService {
 		String codiceRuoloUtenteLoggato = sceltaProfilo.getCodiceRuoloUtenteLoggato();
 		String cfUtenteLoggato = sceltaProfilo.getCfUtenteLoggato();
 		Long idEnteProfilazione = sceltaProfilo.getIdEnte();
-		
+
 		List<Long> listaIdEntiPartner = this.entePartnerService.getIdEntiPartnerByProgetto(idProgetto);
 		List<DettaglioEntiPartnerBean> listaEntiPartner = listaIdEntiPartner
 				.stream()
@@ -590,21 +624,30 @@ public class ProgettoService {
 					DettaglioEntiPartnerBean dettaglioEntePartner = new DettaglioEntiPartnerBean();
 					dettaglioEntePartner.setId(idEnte);
 					dettaglioEntePartner.setNome(enteFetchDB.getNome());
-					dettaglioEntePartner.setReferenti(this.entePartnerService.getReferentiEntePartnerProgetto(idProgetto, idEnte));
+					dettaglioEntePartner
+							.setReferenti(this.entePartnerService.getReferentiEntePartnerProgetto(idProgetto, idEnte));
 					dettaglioEntePartner.setStato(this.entePartnerService.getStatoEntePartner(idProgetto, idEnte));
-					switch(codiceRuoloUtenteLoggato) {
+					switch (codiceRuoloUtenteLoggato) {
 						case "REPP":
-							List<String> referentiEntePartner = this.entePartnerService.getCodiceFiscaleReferentiODelegatiEntePartnerProgetto(idProgetto, idEnte, RuoloUtenteEnum.REPP.toString());
-							dettaglioEntePartner.setAssociatoAUtente(idEnte.equals(idEnteProfilazione) && referentiEntePartner.contains(cfUtenteLoggato));
+							List<String> referentiEntePartner = this.entePartnerService
+									.getCodiceFiscaleReferentiODelegatiEntePartnerProgetto(idProgetto, idEnte,
+											RuoloUtenteEnum.REPP.toString());
+							dettaglioEntePartner.setAssociatoAUtente(idEnte.equals(idEnteProfilazione)
+									&& referentiEntePartner.contains(cfUtenteLoggato));
 							break;
 						case "DEPP":
-							List<String> delegatiEntePartner = this.entePartnerService.getCodiceFiscaleReferentiODelegatiEntePartnerProgetto(idProgetto, idEnte, RuoloUtenteEnum.DEPP.toString());
-							dettaglioEntePartner.setAssociatoAUtente(idEnte.equals(idEnteProfilazione) && delegatiEntePartner.contains(cfUtenteLoggato));
+							List<String> delegatiEntePartner = this.entePartnerService
+									.getCodiceFiscaleReferentiODelegatiEntePartnerProgetto(idProgetto, idEnte,
+											RuoloUtenteEnum.DEPP.toString());
+							dettaglioEntePartner.setAssociatoAUtente(
+									idEnte.equals(idEnteProfilazione) && delegatiEntePartner.contains(cfUtenteLoggato));
 							break;
 						case "FAC":
 						case "VOL":
-							boolean isEnteAssociatoAFacOVol = this.enteSedeProgettoFacilitatoreService.isEnteAssociatoAFacVol(idEnte, idProgetto, cfUtenteLoggato);
-							dettaglioEntePartner.setAssociatoAUtente(idEnte.equals(idEnteProfilazione) && isEnteAssociatoAFacOVol);
+							boolean isEnteAssociatoAFacOVol = this.enteSedeProgettoFacilitatoreService
+									.isEnteAssociatoAFacVol(idEnte, idProgetto, cfUtenteLoggato);
+							dettaglioEntePartner
+									.setAssociatoAUtente(idEnte.equals(idEnteProfilazione) && isEnteAssociatoAFacOVol);
 							break;
 						default:
 							dettaglioEntePartner.setAssociatoAUtente(true);
@@ -619,57 +662,75 @@ public class ProgettoService {
 		Map<SedeEntity, List<Long>> mappaSediProgettoEnte = new HashMap<>();
 
 		listaSediProgetto.forEach(sedeProgetto -> {
-			mappaSediProgettoEnte.put(sedeProgetto, this.enteService.getIdEnteByIdProgettoAndIdSede(idProgetto, sedeProgetto.getId()));
+			mappaSediProgettoEnte.put(sedeProgetto,
+					this.enteService.getIdEnteByIdProgettoAndIdSede(idProgetto, sedeProgetto.getId()));
 		});
 
 		List<DettaglioSediBean> listaDettaglioSedi = new ArrayList<>();
 		mappaSediProgettoEnte.keySet()
-		.stream()
-		.forEach(sede -> {
-			List<Long> listaIdEnti = mappaSediProgettoEnte.get(sede);
-			List<DettaglioSediBean> listaDettaglioSediParziale = listaIdEnti
-					.stream()
-					.map(idEnte -> {
-						DettaglioSediBean dettaglioSede = new DettaglioSediBean();
-						dettaglioSede.setId(sede.getId());
-						dettaglioSede.setNome(sede.getNome());
-						dettaglioSede.setRuoloEnte(this.enteService.getRuoloEnteByIdProgettoAndIdSedeAndIdEnte(idProgetto, sede.getId(), idEnte));
-						dettaglioSede.setNrFacilitatori(this.utenteService.countFacilitatoriPerSedeProgettoEnte(idProgetto, sede.getId(), idEnte));
-						dettaglioSede.setServiziErogati(sede.getServiziErogati());
-						EnteEntity enteDiRiferimento = this.enteService.getEnteById(idEnte);
-						dettaglioSede.setIdenteDiRiferimento(enteDiRiferimento.getId());
-						dettaglioSede.setEnteDiRiferimento(enteDiRiferimento.getNome());
-						dettaglioSede.setStato(this.sedeService.getStatoSedeByIdProgettoAndIdSedeAndIdEnte(idProgetto, sede.getId(), idEnte));
-						switch(codiceRuoloUtenteLoggato) {
-						case "REPP":
-							List<String> referentiEntePartner = this.entePartnerService.getCodiceFiscaleReferentiODelegatiEntePartnerProgetto(idProgetto, idEnte, RuoloUtenteEnum.REPP.toString());
-							dettaglioSede.setAssociatoAUtente(idEnte.equals(idEnteProfilazione) && referentiEntePartner.contains(cfUtenteLoggato));
-							break;
-						case "DEPP":
-							List<String> delegatiEntePartner = this.entePartnerService.getCodiceFiscaleReferentiODelegatiEntePartnerProgetto(idProgetto, idEnte, RuoloUtenteEnum.DEPP.toString());
-							dettaglioSede.setAssociatoAUtente(idEnte.equals(idEnteProfilazione) && delegatiEntePartner.contains(cfUtenteLoggato));
-							break;
-						case "FAC":
-						case "VOL":
-							boolean isSedeAssociataAFacOVol = this.enteSedeProgettoFacilitatoreService.getById(idEnte, sede.getId(), idProgetto, cfUtenteLoggato).isPresent();
-							dettaglioSede.setAssociatoAUtente(idEnte.equals(idEnteProfilazione) && isSedeAssociataAFacOVol);
-							break;
-						default:
-							dettaglioSede.setAssociatoAUtente(true);
-							break;
-					}
-						return dettaglioSede;
-					})
-					.collect(Collectors.toList());
-			listaDettaglioSedi.addAll(listaDettaglioSediParziale);
-		});
+				.stream()
+				.forEach(sede -> {
+					List<Long> listaIdEnti = mappaSediProgettoEnte.get(sede);
+					List<DettaglioSediBean> listaDettaglioSediParziale = listaIdEnti
+							.stream()
+							.map(idEnte -> {
+								DettaglioSediBean dettaglioSede = new DettaglioSediBean();
+								dettaglioSede.setId(sede.getId());
+								dettaglioSede.setNome(sede.getNome());
+								dettaglioSede.setRuoloEnte(this.enteService
+										.getRuoloEnteByIdProgettoAndIdSedeAndIdEnte(idProgetto, sede.getId(), idEnte));
+								dettaglioSede.setNrFacilitatori(this.utenteService
+										.countFacilitatoriPerSedeProgettoEnte(idProgetto, sede.getId(), idEnte));
+								dettaglioSede.setServiziErogati(sede.getServiziErogati());
+								EnteEntity enteDiRiferimento = this.enteService.getEnteById(idEnte);
+								dettaglioSede.setIdenteDiRiferimento(enteDiRiferimento.getId());
+								dettaglioSede.setEnteDiRiferimento(enteDiRiferimento.getNome());
+								dettaglioSede.setStato(this.sedeService
+										.getStatoSedeByIdProgettoAndIdSedeAndIdEnte(idProgetto, sede.getId(), idEnte));
+								switch (codiceRuoloUtenteLoggato) {
+									case "REPP":
+										List<String> referentiEntePartner = this.entePartnerService
+												.getCodiceFiscaleReferentiODelegatiEntePartnerProgetto(idProgetto,
+														idEnte, RuoloUtenteEnum.REPP.toString());
+										dettaglioSede.setAssociatoAUtente(idEnte.equals(idEnteProfilazione)
+												&& referentiEntePartner.contains(cfUtenteLoggato));
+										break;
+									case "DEPP":
+										List<String> delegatiEntePartner = this.entePartnerService
+												.getCodiceFiscaleReferentiODelegatiEntePartnerProgetto(idProgetto,
+														idEnte, RuoloUtenteEnum.DEPP.toString());
+										dettaglioSede.setAssociatoAUtente(idEnte.equals(idEnteProfilazione)
+												&& delegatiEntePartner.contains(cfUtenteLoggato));
+										break;
+									case "FAC":
+									case "VOL":
+										boolean isSedeAssociataAFacOVol = this.enteSedeProgettoFacilitatoreService
+												.getById(idEnte, sede.getId(), idProgetto, cfUtenteLoggato).isPresent();
+										dettaglioSede.setAssociatoAUtente(
+												idEnte.equals(idEnteProfilazione) && isSedeAssociataAFacOVol);
+										break;
+									default:
+										dettaglioSede.setAssociatoAUtente(true);
+										break;
+								}
+								return dettaglioSede;
+							})
+							.collect(Collectors.toList());
+					listaDettaglioSedi.addAll(listaDettaglioSediParziale);
+				});
 
 		SchedaProgettoBean schedaProgetto = new SchedaProgettoBean();
 		schedaProgetto.setDettaglioProgramma(dettaglioProgramma);
 		schedaProgetto.setDettaglioProgetto(dettaglioProgetto);
 		schedaProgetto.setEntiPartner(listaEntiPartner);
 		schedaProgetto.setSedi(listaDettaglioSedi);
-		schedaProgetto.setIdEnteGestoreProgetto(progettoFetchDB.getEnteGestoreProgetto() != null ? progettoFetchDB.getEnteGestoreProgetto().getId() : null );
+		schedaProgetto.setIdEnteGestoreProgetto(
+				progettoFetchDB.getEnteGestoreProgetto() != null ? progettoFetchDB.getEnteGestoreProgetto().getId()
+						: null);
+		schedaProgetto.getDettaglioProgetto()
+				.setNomeEnte(progettoFetchDB.getEnteGestoreProgetto() != null
+						? progettoFetchDB.getEnteGestoreProgetto().getNome()
+						: null);
 		return schedaProgetto;
 	}
 
@@ -681,28 +742,32 @@ public class ProgettoService {
 		Calendar c = Calendar.getInstance();
 		c.setTime(sdf.parse(sdf.format(new Date())));
 		Date currentDate = c.getTime();
-		if(dataTerminazione.after(currentDate)) {
+		if (dataTerminazione.after(currentDate)) {
 			final String errorMessage = String.format("la data terminazione non può essere nel futuro");
 			throw new ProgettoException(errorMessage, CodiceErroreEnum.PR03);
 		}
 		ProgettoEntity progettoDBFetch = this.getProgettoById(idProgetto);
-		if(!isProgettoTerminabileByStatoProgetto(progettoDBFetch.getStato())) {
-			String errorMessage = String.format("Impossibile terminare il progetto con id=%s perchè stato diverso da 'ATTIVABILE' o 'ATTIVO'", idProgetto);
+		if (!isProgettoTerminabileByStatoProgetto(progettoDBFetch.getStato())) {
+			String errorMessage = String.format(
+					"Impossibile terminare il progetto con id=%s perchè stato diverso da 'ATTIVABILE' o 'ATTIVO'",
+					idProgetto);
 			throw new ProgettoException(errorMessage, CodiceErroreEnum.PR03);
 		}
-		//prendo la lista di referenti e delegati
-		List<ReferentiDelegatiEnteGestoreProgettoEntity> referentiEDelegatiProgetto = this.referentiDelegatiEnteGestoreProgettoService.getReferentiEDelegatiProgetto(idProgetto);
-		//se sono ATTIVI li termino, se sono NON ATTIVI li cancello
-		referentiEDelegatiProgetto.forEach(this.referentiDelegatiEnteGestoreProgettoService::cancellaOTerminaAssociazioneReferenteDelegatoProgetto);
+		// prendo la lista di referenti e delegati
+		List<ReferentiDelegatiEnteGestoreProgettoEntity> referentiEDelegatiProgetto = this.referentiDelegatiEnteGestoreProgettoService
+				.getReferentiEDelegatiProgetto(idProgetto);
+		// se sono ATTIVI li termino, se sono NON ATTIVI li cancello
+		referentiEDelegatiProgetto.forEach(
+				this.referentiDelegatiEnteGestoreProgettoService::cancellaOTerminaAssociazioneReferenteDelegatoProgetto);
 		progettoDBFetch.setStato(StatoEnum.TERMINATO.getValue());
-		if(StatoEnum.ATTIVO.getValue().equals(progettoDBFetch.getStatoGestoreProgetto())) {	
+		if (StatoEnum.ATTIVO.getValue().equals(progettoDBFetch.getStatoGestoreProgetto())) {
 			try {
 				this.storicoService.storicizzaEnteGestoreProgetto(progettoDBFetch, StatoEnum.TERMINATO.getValue());
 				progettoDBFetch.setStatoGestoreProgetto(StatoEnum.TERMINATO.getValue());
 			} catch (Exception e) {
 				throw new ProgettoException("Impossibile Storicizzare Ente", e, CodiceErroreEnum.C02);
 			}
-		} else if(StatoEnum.NON_ATTIVO.getValue().equals(progettoDBFetch.getStatoGestoreProgetto())) {
+		} else if (StatoEnum.NON_ATTIVO.getValue().equals(progettoDBFetch.getStatoGestoreProgetto())) {
 			progettoDBFetch.setEnteGestoreProgetto(null);
 			progettoDBFetch.setStatoGestoreProgetto(null);
 		}
@@ -713,24 +778,24 @@ public class ProgettoService {
 	}
 
 	/**
-	 * Verifica se il progetto può essere terminato a partire dallo stato del progetto.
+	 * Verifica se il progetto può essere terminato a partire dallo stato del
+	 * progetto.
 	 * Restituisce true se il progetto può essere terminato e false altrimenti.
 	 * 
 	 **/
 	private boolean isProgettoTerminabileByStatoProgetto(String statoProgetto) {
-		return (    
-				StatoEnum.ATTIVABILE.getValue().equalsIgnoreCase(statoProgetto)
-				|| StatoEnum.ATTIVO.getValue().equalsIgnoreCase(statoProgetto)
-				);
+		return (StatoEnum.ATTIVABILE.getValue().equalsIgnoreCase(statoProgetto)
+				|| StatoEnum.ATTIVO.getValue().equalsIgnoreCase(statoProgetto));
 	}
 
 	@LogMethod
 	@LogExecutionTime
-	public void cancellaOTerminaProgetto (ProgettoEntity progetto, Date dataTerminazione) throws ParseException {
-		if(StatoEnum.NON_ATTIVO.getValue().equalsIgnoreCase(progetto.getStato())) {
+	public void cancellaOTerminaProgetto(ProgettoEntity progetto, Date dataTerminazione) throws ParseException {
+		if (StatoEnum.NON_ATTIVO.getValue().equalsIgnoreCase(progetto.getStato())) {
 			this.cancellazioneProgetto(progetto.getId());
 		}
-		if(StatoEnum.ATTIVABILE.getValue().equalsIgnoreCase(progetto.getStato()) || StatoEnum.ATTIVO.getValue().equalsIgnoreCase(progetto.getStato())) {
+		if (StatoEnum.ATTIVABILE.getValue().equalsIgnoreCase(progetto.getStato())
+				|| StatoEnum.ATTIVO.getValue().equalsIgnoreCase(progetto.getStato())) {
 			this.terminaProgetto(progetto.getId(), dataTerminazione);
 		}
 	}
@@ -740,8 +805,9 @@ public class ProgettoService {
 	@Transactional(rollbackOn = Exception.class)
 	public void attivaProgetto(Long idProgetto) {
 		ProgettoEntity progetto = this.getProgettoById(idProgetto);
-		if(!StatoEnum.ATTIVABILE.getValue().equalsIgnoreCase(progetto.getStato())) {
-			String errorMessage = String.format("Impossibile attivare il progetto con id %s --> stato progetto = %s", progetto.getId(), progetto.getStato());
+		if (!StatoEnum.ATTIVABILE.getValue().equalsIgnoreCase(progetto.getStato())) {
+			String errorMessage = String.format("Impossibile attivare il progetto con id %s --> stato progetto = %s",
+					progetto.getId(), progetto.getStato());
 			throw new ProgettoException(errorMessage, CodiceErroreEnum.PR07);
 		}
 		progetto.setStato(StatoEnum.ATTIVO.getValue());
@@ -752,26 +818,29 @@ public class ProgettoService {
 		// stacco un thread e invio email ai facilitatori/volontari di quel progetto
 		new Thread(() -> {
 			this.enteSedeProgettoFacilitatoreService
-			.getAllEmailFacilitatoriEVolontariByProgetto(idProgetto)
-			.forEach(utenteFetch -> {
-				try {
-					this.emailService.inviaEmail(utenteFetch.getEmail(),
-							EmailTemplateEnum.GEST_PROGE_PARTNER,
-							new String[] { utenteFetch.getNome(), RuoloUtenteEnum.valueOf(utenteFetch.getCodiceRuolo()).getValue() });
-				} catch (Exception ex) {
-					log.error("Impossibile inviare la mail ai Referente/Delegato dell'ente gestore progetto per progetto con id={}.", idProgetto);
-					log.error("{}", ex);
-				}
-			});
+					.getAllEmailFacilitatoriEVolontariByProgetto(idProgetto)
+					.forEach(utenteFetch -> {
+						try {
+							this.emailService.inviaEmail(utenteFetch.getEmail(),
+									EmailTemplateEnum.GEST_PROGE_PARTNER,
+									new String[] { utenteFetch.getNome(),
+											RuoloUtenteEnum.valueOf(utenteFetch.getCodiceRuolo()).getValue() });
+						} catch (Exception ex) {
+							log.error(
+									"Impossibile inviare la mail ai Referente/Delegato dell'ente gestore progetto per progetto con id={}.",
+									idProgetto);
+							log.error("{}", ex);
+						}
+					});
 		}).start();
 	}
-	
+
 	@LogMethod
 	@LogExecutionTime
 	public List<ProgettoEntity> getProgettoByIdProgramma(Long idProgramma) {
 		return this.brokenAccessControlRepository.findByIdProgramma(idProgramma);
 	}
-	
+
 	public int getCountEnteByIdProgetto(Long idEnte, Long idProgetto) {
 		return brokenAccessControlRepository.getEnteByIdProgetto(idEnte, idProgetto);
 	}

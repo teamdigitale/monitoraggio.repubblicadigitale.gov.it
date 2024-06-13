@@ -1,218 +1,263 @@
 package it.pa.repdgt.surveymgmt.restapi;
 
-import java.io.ByteArrayInputStream;
-import java.util.List;
-
-import javax.validation.Valid;
-
-import org.apache.commons.csv.CSVFormat;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
+import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
+import it.pa.repdgt.surveymgmt.bean.CittadinoServizioBean;
+import it.pa.repdgt.surveymgmt.bean.CittadinoUploadBean;
+import it.pa.repdgt.surveymgmt.bean.QuestionarioCompilatoBean;
+import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection;
+import it.pa.repdgt.surveymgmt.exception.ServizioException;
+import it.pa.repdgt.surveymgmt.mapper.CittadinoServizioMapper;
+import it.pa.repdgt.surveymgmt.mapper.GetCittadinoServizioMapper;
+import it.pa.repdgt.surveymgmt.param.FiltroListaCittadiniServizioParam;
+import it.pa.repdgt.surveymgmt.projection.GetCittadinoProjection;
+import it.pa.repdgt.surveymgmt.request.GetCittadiniRequest;
+import it.pa.repdgt.surveymgmt.request.NuovoCittadinoServizioRequest;
+import it.pa.repdgt.surveymgmt.request.QuestionarioCompilatoAnonimoRequest;
+import it.pa.repdgt.surveymgmt.request.QuestionarioCompilatoRequest;
+import it.pa.repdgt.surveymgmt.resource.CittadiniServizioPaginatiResource;
+import it.pa.repdgt.surveymgmt.resource.CittadinoResource;
+import it.pa.repdgt.surveymgmt.resource.CittadinoServizioResource;
+import it.pa.repdgt.surveymgmt.resource.GetCittadinoResource;
+import it.pa.repdgt.surveymgmt.service.CittadiniServizioService;
+import it.pa.repdgt.surveymgmt.service.QuestionarioCompilatoService;
+import it.pa.repdgt.surveymgmt.util.CSVServizioUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import it.pa.repdgt.shared.entity.ServizioEntity;
-import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
-import it.pa.repdgt.surveymgmt.bean.SchedaDettaglioServizioBean;
-import it.pa.repdgt.surveymgmt.mapper.ServizioMapper;
-import it.pa.repdgt.surveymgmt.param.FiltroListaServiziParam;
-import it.pa.repdgt.surveymgmt.projection.EnteProjection;
-import it.pa.repdgt.surveymgmt.projection.SedeProjection;
-import it.pa.repdgt.surveymgmt.request.ServizioRequest;
-import it.pa.repdgt.surveymgmt.resource.ServiziPaginatiResource;
-import it.pa.repdgt.surveymgmt.resource.ServizioIdResource;
-import it.pa.repdgt.surveymgmt.resource.ServizioResource;
-import it.pa.repdgt.surveymgmt.service.ServizioService;
-import it.pa.repdgt.surveymgmt.service.ServizioSqlService;
-import it.pa.repdgt.surveymgmt.util.CSVServizioUtil;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
+import java.text.ParseException;
+import java.util.Collections;
+import java.util.List;
 
 @RestController
-@RequestMapping(path = "servizio")
-@Validated
-public class ServizioRestApi {
+@RequestMapping(path = "servizio/cittadino")
+public class ServizioCittadinoRestApi {
 	@Autowired
-	private ServizioMapper servizioMapper;
+	private CittadinoServizioMapper cittadinoServizioMapper;
 	@Autowired
-	private ServizioService servizioService;
+	private CittadiniServizioService cittadiniServizioService;
 	@Autowired
-	private ServizioSqlService servizioSqlService;
+	private GetCittadinoServizioMapper getCittadinoServizioMapper;
+	@Autowired
+	private QuestionarioCompilatoService questionarioCompilatoService;
+	@Autowired
+	private ObjectMapper objectMapper;
+
+	private static final String ERROR_MESSAGE_PERMESSO = "Errore tentavo accesso a risorsa non permesso";
+
+	@PostMapping(path = "/all/{idServizio}")
+	@ResponseStatus(value = HttpStatus.OK)
+	public CittadiniServizioPaginatiResource getAllCittadiniServizio(
+			@RequestBody @Valid final SceltaProfiloParam profilazioneParam,
+			@PathVariable(name = "idServizio", required = true) final Long idServizio,
+			@RequestParam(name = "criterioRicerca", required = false) final String criterioRicercaFiltro,
+			@RequestParam(name = "statiQuestionario", required = false) final List<String> statiQuestionarioFiltro,
+			@RequestParam(name = "currPage", defaultValue = "0") @Pattern(regexp = "[0-9]+") final String currPage,
+			@RequestParam(name = "pageSize", defaultValue = "10") @Pattern(regexp = "[0-9]+") final String pageSize) {
+		final FiltroListaCittadiniServizioParam filtroListaCittadiniServizioParam = new FiltroListaCittadiniServizioParam();
+		filtroListaCittadiniServizioParam.setCriterioRicerca(criterioRicercaFiltro);
+		filtroListaCittadiniServizioParam.setStatiQuestionario(statiQuestionarioFiltro);
+
+		CittadinoServizioBean cittadinoServiziBean = this.cittadiniServizioService
+				.getAllCittadiniServizioByProfilazioneAndFiltroPaginati(
+						idServizio,
+						profilazioneParam,
+						filtroListaCittadiniServizioParam,
+						Integer.parseInt(currPage),
+						Integer.parseInt(pageSize));
+
+		final int totaleElementi = this.cittadiniServizioService.countCittadiniServizioByFiltro(idServizio,
+				filtroListaCittadiniServizioParam);
+		final int numeroPagine = (int) (totaleElementi / Integer.parseInt(pageSize));
+
+		final List<CittadinoServizioResource> cittadinoServizioResource = this.cittadinoServizioMapper
+				.toResourceFrom(cittadinoServiziBean.getListaCittadiniServizio());
+		final CittadiniServizioPaginatiResource cittadiniServizioPaginatiResource = new CittadiniServizioPaginatiResource();
+		cittadiniServizioPaginatiResource.setCittadiniServizioResource(cittadinoServizioResource);
+		cittadiniServizioPaginatiResource
+				.setNumeroPagine(totaleElementi % Integer.parseInt(pageSize) > 0 ? numeroPagine + 1 : numeroPagine);
+		cittadiniServizioPaginatiResource.setNumeroCittadini(cittadinoServiziBean.getNumCittadini());
+		cittadiniServizioPaginatiResource
+				.setNumeroQuestionariCompilati(cittadinoServiziBean.getNumQuestionariCompilati());
+		return cittadiniServizioPaginatiResource;
+	}
+
+	@PostMapping(path = "/stati/dropdown/{idServizio}")
+	@ResponseStatus(value = HttpStatus.OK)
+	private List<String> getAllStatiDropdown(
+			@PathVariable(name = "idServizio") final Long idServizio,
+			@RequestParam(name = "criterioRicerca", required = false) final String criterioRicercaFiltro,
+			@RequestParam(name = "statiQuestionario", required = false) final List<String> statiQuestionarioFiltro,
+			@RequestBody @Valid final SceltaProfiloParam profilazioneParam) {
+		final FiltroListaCittadiniServizioParam filtroListaCittadiniServizioParam = new FiltroListaCittadiniServizioParam();
+		filtroListaCittadiniServizioParam.setCriterioRicerca(criterioRicercaFiltro);
+		filtroListaCittadiniServizioParam.setStatiQuestionario(
+				statiQuestionarioFiltro == null ? Collections.emptyList() : statiQuestionarioFiltro);
+		return this.cittadiniServizioService.getAllStatiQuestionarioCittadinoServizioDropdown(
+				idServizio,
+				filtroListaCittadiniServizioParam,
+				profilazioneParam);
+	}
+
+	@PostMapping
+	@ResponseStatus(value = HttpStatus.OK)
+	private List<GetCittadinoResource> getCittadini(
+			@RequestBody @Valid GetCittadiniRequest request) {
+
+		final List<GetCittadinoProjection> cittadini = this.cittadiniServizioService.getAllCittadiniByCodFiscOrNumDoc(
+				request.getTipoDocumento(),
+				request.getCriterioRicerca());
+
+		return this.getCittadinoServizioMapper.toResourceFrom(cittadini);
+	}
+
+	@PostMapping(path = "/{idServizio}")
+	@ResponseStatus(value = HttpStatus.CREATED)
+	private CittadinoResource creaNuovoCittadinoServizio(
+			@PathVariable(name = "idServizio") final Long idServizio,
+			@RequestBody @Valid final NuovoCittadinoServizioRequest nuovoCittadino) throws ParseException {
+		return new CittadinoResource(
+				this.cittadiniServizioService.creaNuovoCittadino(idServizio, nuovoCittadino).getId());
+	}
+
+	@PostMapping(path = "{idServizio}/listaCittadini/upload", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+	@ResponseStatus(value = HttpStatus.OK)
+	public List<CittadinoUploadBean> caricaListaCittadini(
+			@RequestPart MultipartFile file,
+			@PathVariable(value = "idServizio") Long idServizio,
+			@ModelAttribute SceltaProfiloParam sceltaProfilo,
+			HttpServletRequest request) {
+
+		if (file == null || !CSVServizioUtil.hasExcelFormat(file)) {
+			throw new ServizioException("il file non è valido", CodiceErroreEnum.S01);
+		}
+		return this.cittadiniServizioService.caricaCittadiniSuServizio(file, idServizio,
+				request.getAttribute("cfUtenteLoggato").toString());
+	}
+
+	/**
+	 * invio questionario al cittadino per compilazione
+	 *
+	 */
+	/*
+	 * @PostMapping(path = "/questionarioCompilato/invia")
+	 * 
+	 * @ResponseStatus(value = HttpStatus.OK)
+	 * public void inviaQuestionario(
+	 * 
+	 * @RequestParam(value = "idQuestionario") String idQuestionario,
+	 * 
+	 * @RequestParam(value = "idCittadino") Long idCittadino,
+	 * 
+	 * @RequestBody SceltaProfiloParam sceltaProfilo) {
+	 * if(!cittadiniServizioService.checkPermessoIdQuestionarioCompilato(
+	 * sceltaProfilo, idQuestionario)) {
+	 * new ServizioException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
+	 * }
+	 * this.cittadiniServizioService.inviaQuestionario(idQuestionario, idCittadino);
+	 * }
+	 */
+	/**
+	 * invio questionario a tutti i cittadini associati al servizio con quel
+	 * particolare id
+	 * e per cui ancora non è stato inviato il questionario
+	 *
+	 */
+	/*
+	 * @PostMapping(path =
+	 * "servizio/{idServizio}/questionarioCompilato/inviaATutti")
+	 * 
+	 * @ResponseStatus(value = HttpStatus.OK)
+	 * public void
+	 * inviaQuestionarioATuttiCittadiniNonAncoraInviatoByServizio(@PathVariable(
+	 * value = "idServizio") Long idServizio,
+	 * 
+	 * @RequestBody SceltaProfiloParam sceltaProfilo) {
+	 * this.cittadiniServizioService.
+	 * inviaQuestionarioATuttiCittadiniNonAncoraInviatoByServizio(idServizio,
+	 * sceltaProfilo.getCfUtenteLoggato());
+	 * }
+	 */
+
+	/**
+	 * Recupero del questionario compilato per compilazione anonima
+	 *
+	 * @throws ParseException
+	 */
+	@GetMapping(path = "/questionarioCompilato/{idQuestionario}/anonimo")
+	@ResponseStatus(value = HttpStatus.OK)
+	public QuestionarioCompilatoBean getQuestionarioCompilatoAnonimo(
+			@PathVariable(value = "idQuestionario") String idQuestionario,
+			@RequestParam(value = "t") String t) throws ParseException {
+		return this.questionarioCompilatoService.getQuestionarioCompilatoByIdAnonimo(idQuestionario, t);
+	}
+
+	/**
+	 * Compilazione del questionario
+	 */
+	@PostMapping(path = "/questionarioCompilato/{idQuestionario}/compila")
+	@ResponseStatus(value = HttpStatus.OK)
+	public void compilaQuestionario(
+			@PathVariable(value = "idQuestionario") String idQuestionario,
+			@Valid @RequestBody QuestionarioCompilatoRequest questionarioCompilatoRequest) {
+		validaQuestionarioQuattro(questionarioCompilatoRequest);
+		questionarioCompilatoService.valorizzaIPrimiTreQuestionari(idQuestionario, questionarioCompilatoRequest);
+		if (!cittadiniServizioService.checkPermessoIdQuestionarioCompilato(questionarioCompilatoRequest,
+				idQuestionario)) {
+			new ServizioException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A03);
+		}
+		this.questionarioCompilatoService.compilaQuestionario(idQuestionario, questionarioCompilatoRequest);
+	}
+
+	private void validaQuestionarioQuattro(QuestionarioCompilatoRequest questionarioCompilatoRequest) {
+		try {
+			JsonNode jsonNode = objectMapper.readTree(questionarioCompilatoRequest.getSezioneQ4Questionario());
+			if (!jsonNode.has("sezioneQ4Questionario")) {
+				throw new ServizioException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A04);
+			}
+			JsonNode sezioneQ4QuestionarioNode = jsonNode.get("sezioneQ4Questionario");
+			if (sezioneQ4QuestionarioNode.has("properties") && sezioneQ4QuestionarioNode.get("properties").isArray() &&
+					sezioneQ4QuestionarioNode.get("properties").size() < 1) {
+				throw new ServizioException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A05);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * compilazione questionario in forma anonima da parte del cittadino
+	 */
+	@PostMapping(path = "/questionarioCompilato/{idQuestionario}/compila/anonimo")
+	@ResponseStatus(value = HttpStatus.OK)
+	public void compilaQuestionarioAnonimo(
+			@PathVariable(value = "idQuestionario") String idQuestionario,
+			@Valid @RequestBody QuestionarioCompilatoAnonimoRequest questionarioCompilatoAnonimoRequest,
+			@RequestParam(value = "t") String t) throws ParseException {
+		this.questionarioCompilatoService.compilaQuestionarioAnonimo(idQuestionario,
+				questionarioCompilatoAnonimoRequest, t);
+	}
 
 	/***
-	 * Restituisce L'elenco dei Servizi paginati,
-	 * in base ai filtri richiesti e alla profilazione dell'utente loggatosi. 
-	 * 
-	 * */
-	@PostMapping(path = "/all")	
+	 * Restituisce il questionario compilato con specifico id persistito su mongoDB
+	 *
+	 */
+	@PostMapping(path = "questionarioCompilato/compilato/{idQuestionarioCompilato}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.OK)
-	public ServiziPaginatiResource getAllServiziPaginatiByProfilaRzioneUtenteLoggatoAndFiltri(
-			@RequestBody @Valid final SceltaProfiloParam profilazioneParam,
-			@RequestParam(name = "criterioRicerca", required = false) final String criterioRicercaFiltro,
-			@RequestParam(name = "tipologiaServizio", required = false) final List<String> tipologieServiziFiltro,
-			@RequestParam(name = "stato",       required = false)  final List<String> statiFiltro,
-			@RequestParam(name = "currPage", defaultValue = "0")  final String currPage,
-			@RequestParam(name = "pageSize", defaultValue = "10") final String pageSize) {
-		final FiltroListaServiziParam filtroListaServiziParam = new FiltroListaServiziParam(
-				criterioRicercaFiltro,
-				tipologieServiziFiltro, 
-				statiFiltro
-			);
-		final Pageable pagina = PageRequest.of(Integer.parseInt(currPage), Integer.parseInt(pageSize));
-		final Page<ServizioEntity> paginaServizio = this.servizioService.getAllServiziPaginatiByProfilazioneAndFiltri(
-				profilazioneParam, 
-				filtroListaServiziParam, 
-				pagina
-			);
-		final List<ServizioResource> serviziResource = this.servizioMapper.toResourceFrom(paginaServizio.getContent());
-		return new ServiziPaginatiResource(serviziResource, paginaServizio.getTotalPages(), paginaServizio.getTotalElements());
+	public QuestionarioCompilatoCollection getQuestioanarioCompilatoByIdAndSceltaProfilo(
+			@PathVariable(value = "idQuestionarioCompilato") final String questionarioCompilatoId,
+			@RequestBody SceltaProfiloParam sceltaProfilo) {
+		if (!cittadiniServizioService.checkPermessoIdQuestionarioCompilato(sceltaProfilo, questionarioCompilatoId)) {
+			new ServizioException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
+		}
+		return this.questionarioCompilatoService.getQuestionarioCompilatoById(questionarioCompilatoId);
 	}
-	
-	/***
-	 * Recupera i dati da mostrare nella scheda dettaglio servizio a partire dall'id del servizio
-	 * 
-	 * */
-	@PostMapping(path = "{id}/schedaDettaglio")
-	@ResponseStatus(value = HttpStatus.OK)
-	public SchedaDettaglioServizioBean getSchedaDettaglioServizioById(
-			@PathVariable(value = "id") final Long idServizio,
-			@RequestBody @Valid final SceltaProfiloParam profilazioneParam) {
-		return this.servizioService.getSchedaDettaglioServizio(idServizio, profilazioneParam);
-	}
-	
-	/***
-	 * Creazione di un nuovo servizio
-	 * 
-	 * */
-	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseStatus(value = HttpStatus.CREATED)
-	public ServizioIdResource creaServizio(@RequestBody @Valid final ServizioRequest servizioRequest) {
-		return new ServizioIdResource(this.servizioService.creaServizio(servizioRequest).getId());
-	}
-	
-	/***
-	 * Modifica di un servizio a partire dall suo id
-	 * 
-	 * */
-	@PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseStatus(value = HttpStatus.OK)
-	public void aggiornaServizioById(
-			@PathVariable(value = "id") final Long idServizio,
-			@RequestBody @Valid final ServizioRequest servizioDaAggiornareRequest) {
-		this.servizioService.aggiornaServizio(idServizio, servizioDaAggiornareRequest);
-	}
-	
-	/**
-	 * Recupera tutte le 'tipolgie servizio' da mostrare nella dropdown dei filtri per i servizi
-	 * 
-	 * */
-	@PostMapping(path = "/tipologiaServizio/dropdown")
-	@ResponseStatus(value = HttpStatus.OK)
-	public List<String> getAllTipologiaServizioFiltroDropdown(
-		@RequestParam(name = "criterioRicerca", required = false) final String criterioRicercaFiltro,
-		@RequestParam(name = "stato",           required = false) final List<String> statiFiltro,
-		@RequestBody @Valid final SceltaProfiloParam profilazioneParam) {
-		final FiltroListaServiziParam filtroFiltroListaServiziParam = new FiltroListaServiziParam();
-		filtroFiltroListaServiziParam.setCriterioRicerca(criterioRicercaFiltro);
-		filtroFiltroListaServiziParam.setStatiServizio(statiFiltro);
-		return this.servizioService.getAllTipologiaServizioFiltroDropdown(
-				profilazioneParam,
-				filtroFiltroListaServiziParam
-			);
-	}
-	
-	/**
-	 * Recupera gli stati servizio da mostrare nella dropdown dei filtri per i servizi
-	 * 
-	 * */
-	@PostMapping(path = "/stati/dropdown")
-	@ResponseStatus(value = HttpStatus.OK)
-	public List<String> getAllStatiFiltroDropdown(
-		@RequestParam(name = "criterioRicerca",   required = false) final String criterioRicercaFiltro,
-		@RequestParam(name = "tipologiaServizio", required = false) final List<String> tipologieServiziFiltro,
-		@RequestBody @Valid final SceltaProfiloParam profilazioneParam) {
-		final FiltroListaServiziParam filtroFiltroListaServiziParam = new FiltroListaServiziParam();
-		filtroFiltroListaServiziParam.setCriterioRicerca(criterioRicercaFiltro);
-		filtroFiltroListaServiziParam.setTipologieServizi(tipologieServiziFiltro);
-		return this.servizioService.getAllStatiServizioFiltroDropdown(
-				profilazioneParam,
-				filtroFiltroListaServiziParam
-			);
-	}
-	
-	/**
-	 * Recupera gli enti per popolare dropdown selezione ente servizio
-	 * 
-	 * */
-	@PostMapping(path = "/facilitatore/enti/dropdown")
-	@ResponseStatus(value = HttpStatus.OK)
-	public List<EnteProjection> getEntiByFacilitatore(@RequestBody @Valid final SceltaProfiloParam profilazioneParam) {
-		return this.servizioSqlService.getEntiByFacilitatore(profilazioneParam);
-	}
-	
-	/**
-	 * Recupera tutte le sedi per popolare dropdown selezione sede servizio
-	 * 
-	 * */
-	@PostMapping(path = "/facilitatore/sedi/dropdown")
-	@ResponseStatus(value = HttpStatus.OK)
-	public List<SedeProjection> getSediByFacilitatore(@RequestBody @Valid final SceltaProfiloParam profilazioneParam) {
-		return this.servizioSqlService.getSediByFacilitatore(profilazioneParam);
-	}
-	
-	/**
-	 * Scarica lista elenco Servizi,
-	 * in base ai filtri richiesti e alla profilazione dell'utente loggatosi
-	 * 
-	 * */
-	@PostMapping(path = "/download")
-	@ResponseStatus(value = HttpStatus.OK)
-	public ResponseEntity<InputStreamResource> downloadCSVSElencoServizi(
-			@RequestParam(name = "criterioRicerca",   required = false) final String criterioRicercaFiltro,
-			@RequestParam(name = "tipologiaServizio", required = false) final List<String> tipologieServiziFiltro,
-			@RequestParam(name = "stato",             required = false) final List<String> statiFiltro,
-			@RequestBody @Valid final SceltaProfiloParam profilazioneParam) {
-		final FiltroListaServiziParam filtroListaServiziParam = new FiltroListaServiziParam(
-				criterioRicercaFiltro,
-				tipologieServiziFiltro,
-				statiFiltro
-			);
-		final List<ServizioEntity> serviziEntity = this.servizioService.getAllServiziByProfilazioneUtenteLoggatoAndFiltri(
-				profilazioneParam, 
-				filtroListaServiziParam
-			);
-		final List<ServizioResource> serviziResource = this.servizioMapper.toResourceFrom(serviziEntity);
-		final ByteArrayInputStream byteArrayInputStream = CSVServizioUtil.exportCSVServizi(serviziResource, CSVFormat.DEFAULT);
-		final InputStreamResource fileCSVCreato = new InputStreamResource(byteArrayInputStream);
-		return ResponseEntity.ok()
-				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=elenco-servizi.csv")
-				.contentType(MediaType.parseMediaType("application/csv"))
-				.body(fileCSVCreato);
-	}
-	
-	/***
-	 * Eliminazione di un servizio a partire dall suo id
-	 * 
-	 * */
-	@DeleteMapping(path = "/{id}")
-	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	public void eliminaServizioById(
-			@PathVariable(value = "id") final Long idServizio,
-			@RequestBody @Valid final SceltaProfiloParam profilazioneParam) {
-		this.servizioService.eliminaServizio(idServizio, profilazioneParam);
-	}
-} 
+}

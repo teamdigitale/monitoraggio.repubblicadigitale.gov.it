@@ -87,6 +87,31 @@ spec:
                 configMapKeyRef:
                   name: env-${K8S_NAMESPACE}-options
                   key: awsEmailMittente
+            - name: AWS.ACCESS_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: awsS3ImportCsvScartoAccessKey
+            - name: AWS.SECRET_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: awsS3ImportCsvScartoSecretKey
+            - name: AWS.BUCKET
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: awsS3ImportCsvScartoBucketName
+            - name: AWS.REGION
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: awsS3ImportCsvScartoRegion
+            - name: AWS.ENDPOINT
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: awsS3ImportCsvScartoEndpoint
             - name: CF_ST_KEY
               valueFrom:
                 configMapKeyRef:

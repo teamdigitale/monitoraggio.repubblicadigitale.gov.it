@@ -9,6 +9,8 @@ export interface QuestionarioRequestModel {
   occupazioneDaAggiornare?: string;
   tipoDocumentoDaAggiornare?: string | undefined;
   titoloDiStudioDaAggiornare?: string;
+  codiceRuoloUtenteLoggato?: string;
+  cfUtenteLoggato?: string;
   consensoTrattamentoDatiRequest?: ConsensoTrattamentoDatiRequestModel;
   sezioneQ1Questionario?: string;
   sezioneQ2Questionario?: string;

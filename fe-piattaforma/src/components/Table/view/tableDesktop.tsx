@@ -112,7 +112,10 @@ const TableDesktop: React.FC<TableI> = (props) => {
                 </td>
               )}
               {heading.map((th, j) => (
-                <td key={`td-${i}-${j}`} className='py-4'>
+                <td
+                  key={`td-${i}-${j}`}
+                  className={`py-4 ${th.classNames ?? ''}`}
+                >
                   {td[th.field] || '-'}
                 </td>
               ))}
@@ -256,6 +259,28 @@ const TableDesktop: React.FC<TableI> = (props) => {
                           />
                         </Button>
                       ) : null
+                    ) : null}
+                    {(
+                      td.actions
+                        ? td.actions
+                            .toString()
+                            .includes(CRUDActionTypes.DOWNLOAD)
+                        : onActionClick[CRUDActionTypes.DOWNLOAD]
+                    ) ? (
+                      <Button
+                        onClick={() =>
+                          onActionClick[CRUDActionTypes.DOWNLOAD](td)
+                        }
+                        className='mr-4 p-0'
+                        aria-label='Aggiungi nuovo'
+                      >
+                        <Icon
+                          icon='it-download'
+                          color='primary'
+                          aria-label='Download'
+                          aria-hidden
+                        />
+                      </Button>
                     ) : null}
                   </div>
                 </td>

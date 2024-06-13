@@ -3,6 +3,7 @@
 @import 'common/global';
 @import 'common/components';
 @import 'common/pages';
+@import "common/upload-csv";
 
 .main-container {
   overflow-x: hidden;
@@ -53,4 +54,13 @@ select:-webkit-autofill:focus {
 .anchor-reset {
   color: inherit !important;
   text-decoration: none !important;
+}
+
+.upload-dragdrop-success > .csv-upload-success-img {
+  width: 16px;
+  height: 16px;
+}
+
+.min-width-50 {
+  min-width: 50%;
 }

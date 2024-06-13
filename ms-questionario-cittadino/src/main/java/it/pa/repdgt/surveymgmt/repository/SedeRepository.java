@@ -1,6 +1,7 @@
 package it.pa.repdgt.surveymgmt.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -50,4 +51,6 @@ public interface SedeRepository extends JpaRepository<SedeEntity, Long> {
 	List<SedeProjection> findAllSediFiltrate(
 			@Param("criterioRicerca") String criterioRicerca,
 			@Param("idsSedi") List<String> idsSedi);
+
+	Optional<SedeEntity> findByNomeIgnoreCase(String nominativoSede);
 }

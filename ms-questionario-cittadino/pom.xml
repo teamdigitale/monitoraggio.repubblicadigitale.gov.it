@@ -14,7 +14,7 @@
 
 	<groupId>it.pa.repdgt</groupId>
 	<artifactId>ms-questionario-cittadino</artifactId>
-	<version>1.32.4</version>
+	<version>1.0.0-test.249</version>
 	<packaging>jar</packaging>
 
 	<properties>
@@ -48,6 +48,11 @@
 			<artifactId>h2</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-s3</artifactId>
+			<version>1.12.332</version>
+		</dependency>
+		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-boot-starter</artifactId>
 			<version>${springfox-boot-starter.version}</version>
@@ -62,11 +67,6 @@
 			<artifactId>gson</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.github.mervick</groupId>
-			<artifactId>aes-everywhere-java</artifactId>
-			<version>1.2.7</version>
-		</dependency>
-		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
 			<version>20220320</version>
@@ -75,6 +75,11 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-csv</artifactId>
 			<version>${commons-csv.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.mervick</groupId>
+			<artifactId>aes-everywhere-java</artifactId>
+			<version>1.2.7</version>
 		</dependency>
 		<dependency>
 		  	<groupId>org.apache.poi</groupId>
@@ -99,9 +104,19 @@
 		<dependency>
 		    <groupId>de.flapdoodle.embed</groupId>
 		    <artifactId>de.flapdoodle.embed.mongo</artifactId>
-		    <!-- da commentare si vuole lanciare in locale -->
+		    <!-- da commentare se si vuole lanciare in locale il DB come h2, altrimenti viene usato solo duurante i test junit -->
 		    <scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.11.0</version>
+		</dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+        </dependency>
 	</dependencies>
 
 	<build>

@@ -51,7 +51,7 @@ const SurveyDetailsEdit = lazy(
 import ProtectedComponent from '../../../hoc/AuthGuard/ProtectedComponent/ProtectedComponent';
 import { defaultRedirectUrl } from '../../../routes';
 import ViewSurvey from './Entities/Surveys/viewSurvey/viewSurvey';
-//import DataUploadPage from '../../../components/FileHandling/DataUploadPage';
+import DataUploadPage from '../../../components/FileHandling/DataUploadPage';
 
 interface PageTitleMockI {
   [key: string]: {
@@ -351,11 +351,11 @@ const AreaAmministrativaRoutes = [
     path='progetti/:projectId/ente-gestore-progetto'
     element={<ProjectsDetails />}
   />,
-  // <Route
-  //     key='progetti-dettaglio-ente-gestore-caricamento-dati'
-  //     path='progetti/:projectId/ente-gestore-progetto/caricamento-dati'
-  //     element={<DataUploadPage />}
-  // />,
+  <Route
+    key='progetti-dettaglio-ente-gestore-caricamento-dati'
+    path='progetti/:projectId/ente-gestore-progetto/caricamento-dati'
+    element={<ProjectsDetails />}
+  />,
   <Route
     key='progetti-dettaglio-ente-gestore'
     path='progetti/:projectId/ente-gestore-progetto/:authorityId'
@@ -366,11 +366,11 @@ const AreaAmministrativaRoutes = [
     path='progetti/:projectId/enti-partner'
     element={<ProjectsDetails />}
   />,
-  // <Route
-  //     key='progetti-dettaglio-enti-partner-caricamento-dati'
-  //     path='progetti/:projectId/enti-partner/caricamento-dati'
-  //     element={<DataUploadPage />}
-  // />,
+  <Route
+    key='progetti-dettaglio-enti-partner-caricamento-dati'
+    path='progetti/:projectId/enti-partner/:enteId/caricamento-dati'
+    element={<DataUploadPage />}
+  />,
   <Route
     key='progetti-dettaglio-enti'
     path='progetti/:projectId/:authorityType/:authorityId'

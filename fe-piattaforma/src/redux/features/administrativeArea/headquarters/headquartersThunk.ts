@@ -149,15 +149,14 @@ export const AssignAuthorityHeadquarter =
 
       const body = {
         ...headquarterDetails,
-        indirizziSedeFasceOrarie:
-          headquarterDetails.indirizziSedeFasceOrarie.map(
-            (addressInfo: AddressInfoI) => ({
-              ...addressInfo.indirizzoSede,
-              fasceOrarieAperturaIndirizzoSede: {
-                ...addressInfo.fasceOrarieAperturaIndirizzoSede,
-              },
-            })
-          ),
+        indirizziSedeFasceOrarie: headquarterDetails.indirizziSedeFasceOrarie
+          .filter((address: AddressInfoI) => !address.indirizzoSede.cancellato)
+          .map((addressInfo: AddressInfoI) => ({
+            ...addressInfo.indirizzoSede,
+            fasceOrarieAperturaIndirizzoSede: {
+              ...addressInfo.fasceOrarieAperturaIndirizzoSede,
+            },
+          })),
       };
 
       if (headquarterId) {

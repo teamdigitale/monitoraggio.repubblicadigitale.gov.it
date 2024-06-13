@@ -42,7 +42,7 @@ const Paginator: React.FC<PaginatorI> = (props) => {
   }, [total, pageSize]);
 
   useEffect(() => {
-    if (onChange && active !== activePage) onChange(active);
+    if (onChange) onChange(active);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active]);
 

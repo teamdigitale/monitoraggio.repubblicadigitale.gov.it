@@ -9,6 +9,7 @@ export interface TableHeadingI {
   label: string;
   field: string;
   size?: 'small' | 'medium' | 'large' | 'auto';
+  classNames?: string;
 }
 
 export interface TableRowI {

@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import it.pa.repdgt.shared.restapi.param.SceltaProfiloParamLightProgramma;
 import it.pa.repdgt.surveymgmt.annotation.JsonString;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,15 +28,15 @@ public class ServizioRequest extends SceltaProfiloParam implements Serializable 
 	@JsonProperty(value = "nomeServizio")
 	@NotBlank
 	private String nomeServizio;
-	
+
 	@JsonProperty(value = "idEnteServizio")
 	@NotNull
 	private Long idEnteServizio;
-	
+
 	@JsonProperty(value = "idSedeServizio")
 	@NotNull
 	private Long idSedeServizio;
-	
+
 	@JsonProperty(value = "data")
 	@NotNull
 	private Date dataServizio;
@@ -43,11 +44,11 @@ public class ServizioRequest extends SceltaProfiloParam implements Serializable 
 	@JsonProperty(value = "durataServizio")
 	@NotNull
 	private String durataServizio;
-	
+
 	@JsonProperty(value = "tipoDiServizioPrenotato")
 	@NotEmpty
 	private List<String> listaTipologiaServizi;
-	
+
 	@JsonProperty(value = "sezioneQuestionarioCompilatoQ3")
 	@NotBlank
 	@JsonString
