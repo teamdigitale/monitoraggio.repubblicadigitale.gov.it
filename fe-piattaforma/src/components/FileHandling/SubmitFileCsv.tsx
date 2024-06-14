@@ -1,4 +1,3 @@
-import { Spinner } from 'design-react-kit';
 import React, { useCallback, useContext, useState } from 'react';
 import { ElaboratoCsvResponse } from '../../models/ElaboratoCsvResponse.model';
 import { ElaboratoCsvRequest } from '../../models/ElaboratoCsvRequest.model';
@@ -56,7 +55,6 @@ function showErrorUpload() {
 }
 
 export default function SubmitFileCsv(props: { clearFile: () => void }) {
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const dataUploadContext = useContext<DataUploadContextModel | undefined>(
     DataUploadContext
   );
@@ -117,7 +115,6 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
         })
       );
       const parsedData = dataUploadContext.parsedData;
-      setIsSubmitting(true);
       let convertedFile: File;
       let activityReportId: number;
       let savedActivityReport: RegistroAttivita;
@@ -164,7 +161,6 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
           }
         })
         .finally(() => {
-          setIsSubmitting(false);
           props.clearFile();
           if (dataUploadContext) dataUploadContext.search();
           if (savedActivityReport) setLastActivityReport(savedActivityReport);
@@ -200,7 +196,6 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
         activityReport={lastActivityReport}
         handleCloseModal={handleCloseModal}
       />
-      {isSubmitting && <Spinner active />}
     </>
   );
 }

@@ -28,7 +28,7 @@ const tableHeading: TableHeadingI[] = [
     classNames: 'text-primary',
   },
   {
-    label: 'Rereferente / Delegato',
+    label: 'Referente / Delegato',
     field: 'operatore',
     size: 'medium',
   },

@@ -125,23 +125,23 @@ export const validateFields = (
   if (missingFields.length > 0) {
     const isMultipleMissing = missingFields.length > 1;
     const fieldText = isMultipleMissing ? 'I campi' : 'Il campo';
-    const verbForm = isMultipleMissing ? 'sono' : 'è';
+    const verbForm = isMultipleMissing ? 'sono' : 'e';
     const emptyForm = isMultipleMissing ? 'vuoti' : 'vuoto';
     errors.push(
       `${fieldText} "${missingFields.join(', ')}" ${verbForm} obbligator${
         isMultipleMissing ? 'i' : 'io'
-      } e non ${isMultipleMissing ? 'possono' : 'può'} essere ${emptyForm}.`
+      } e non ${isMultipleMissing ? 'possono' : 'puo'} essere ${emptyForm}.`
     );
   }
 
   if (record.AN4 !== 'SI' && record.AN3 && !validateFiscalCode(record.AN3)) {
-    errors.push('Il Codice Fiscale inserito è invalido.');
+    errors.push('Il Codice Fiscale inserito e invalido.');
   }
 
   const parsedDate = moment(record.SE1);
   if (!parsedDate.isValid() || parsedDate.isAfter(maxDate)) {
     errors.push(
-      'La data del servizio é invalida o successiva al 31 Maggio 2024.'
+      'La data del servizio e invalida o successiva al 31 Maggio 2024.'
     );
   }
 
