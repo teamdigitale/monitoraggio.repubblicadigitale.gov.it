@@ -14,12 +14,12 @@ public class CSVMapUtil {
         return map;
     }
 
-    public static Map<Integer, String> getAN8Map() {
-        Map<Integer, String> map = new HashMap<>();
-        map.put(1, "A");
-        map.put(2, "B");
-        map.put(3, "C");
-        map.put(4, "D");
+    public static Map<Long, String> getAN8Map() {
+        Map<Long, String> map = new HashMap<>();
+        map.put(1L, "A");
+        map.put(2L, "B");
+        map.put(3L, "C");
+        map.put(4L, "D");
         return map;
     }
 
