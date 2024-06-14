@@ -27,3 +27,8 @@
     z-index: -9999;
   }
 }
+
+.modal-content .no-overflow-modal {
+  max-height: 100vh;
+  overflow-y: auto;
+}

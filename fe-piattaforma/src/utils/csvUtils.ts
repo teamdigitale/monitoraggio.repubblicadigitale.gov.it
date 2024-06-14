@@ -137,12 +137,11 @@ export const validateFields = (
   if (record.AN4 !== 'SI' && record.AN3 && !validateFiscalCode(record.AN3)) {
     errors.push('Il Codice Fiscale inserito e invalido.');
   }
-
-  const parsedDate = moment(record.SE1);
-  if (!parsedDate.isValid() || parsedDate.isAfter(maxDate)) {
-    errors.push(
-      'La data del servizio e invalida o successiva al 31 Maggio 2024.'
-    );
+  if (record.SE1) {
+    const parsedDate = moment(record.SE1);
+    if (!parsedDate.isValid() || parsedDate.isAfter(maxDate)) {
+      errors.push('La data del servizio e successiva al 31 Maggio 2024.');
+    }
   }
 
   if (record.SE7 && record.SE7.length > 600) {

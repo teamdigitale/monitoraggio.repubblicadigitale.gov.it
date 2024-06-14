@@ -4,16 +4,9 @@ import { useCSVProcessor } from '../../hooks/useCSVProcessor';
 import { DataUploadContext } from '../../contexts/DataUploadContext';
 import { dispatchNotify } from '../../utils/notifictionHelper';
 import checkImg from './../../../public/assets/img/icon-check-no-circle.png';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { closeModal, openModal } from '../../redux/features/modal/modalSlice';
-import { selectProfile } from '../../redux/features/user/userSlice';
-import { mapRule } from '../../utils/csvUtils';
-import WarningModal from './WarningModal';
-import { ProjectContext } from '../../contexts/ProjectContext';
 
 type CSVProcessorProps = {
   file: File | undefined;
-  clearFile: () => void;
 };
 
 function showSuccess() {
@@ -36,12 +29,9 @@ function showError(error: Error) {
   });
 }
 
-export default function ProcessFileCsv({ file, clearFile }: CSVProcessorProps) {
+export default function ProcessFileCsv({ file }: CSVProcessorProps) {
   const { isProcessing, processCSV } = useCSVProcessor(file);
   const dataUploadContext = useContext(DataUploadContext);
-  const dispatch = useAppDispatch();
-  const { codiceRuolo: userRole } = useAppSelector(selectProfile) || {};
-  const projectContext = useContext(ProjectContext);
 
   const handleProcessCSV = useCallback(() => {
     processCSV()
@@ -56,45 +46,8 @@ export default function ProcessFileCsv({ file, clearFile }: CSVProcessorProps) {
       });
   }, [processCSV, dataUploadContext]);
 
-  const showConfirmDialog = useCallback(() => {
-    if (userRole !== 'DTD') {
-      dispatch(
-        openModal({
-          id: 'dataUpload',
-          payload: {
-            title: `Avviso`,
-          },
-        })
-      );
-    }
-  }, [userRole]);
-
-  const handleAccept = useCallback(() => {
-    dispatch(closeModal());
-    handleProcessCSV();
-  }, [handleProcessCSV]);
-
-  const handleReject = useCallback(() => {
-    clearFile();
-    dispatch(closeModal());
-  }, [clearFile]);
-
   return (
     <>
-      <WarningModal
-        id='dataUpload'
-        onClose={handleReject}
-        onConfirm={handleAccept}
-      >
-        Stai operando in qualità di {userRole ? mapRule.get(userRole) : ''}{' '}
-        dell'ente {projectContext?.nomeEnte} per il progetto{' '}
-        {projectContext?.nomeBreve}. Ricorda: puoi caricare{' '}
-        <strong>solo i dati dei servizi effettivamente erogati</strong> presso
-        le sedi del tuo ente e
-        <strong> sei responsabile della loro veridicità.</strong>
-        <br></br>Confermi di voler procedere?
-      </WarningModal>
-
       <div className='text-center mb-2'>
         <p className='font-weight-semibold text-primary'>
           {dataUploadContext?.parsedData ? (
@@ -115,7 +68,7 @@ export default function ProcessFileCsv({ file, clearFile }: CSVProcessorProps) {
 
       <button
         className='btn btn-secondary w-100'
-        onClick={showConfirmDialog}
+        onClick={handleProcessCSV}
         disabled={!!dataUploadContext?.parsedData}
       >
         Controlla

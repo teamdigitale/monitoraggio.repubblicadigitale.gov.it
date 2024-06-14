@@ -37,7 +37,9 @@ export default function DataUploadPage() {
     <DataUploadContext.Provider value={contextValue}>
       <div className='row my-4'>
         <div className='col'>
-          <h1>Caricamento massivo dei dati sui servizi</h1>
+          <h1 className='text-primary csv-title-page-size '>
+            Caricamento massivo dei dati sui servizi
+          </h1>
         </div>
       </div>
       <div className='row'>

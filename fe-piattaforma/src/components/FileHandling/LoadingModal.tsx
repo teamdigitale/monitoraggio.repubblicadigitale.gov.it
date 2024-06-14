@@ -19,6 +19,8 @@ export default function LoadingModal(props: {
       centerButtons
       showCloseBtn
       onCloseFromHeader={props.handleCloseModal}
+      onClose={props.handleCloseModal}
+      modalBodyClassNames='no-overflow-modal'
     >
       {props.activityReport ? (
         <div className='d-flex flex-column align-items-center my-4 p-4 text-secondary'>

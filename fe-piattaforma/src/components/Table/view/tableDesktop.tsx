@@ -32,6 +32,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
     citizenTable,
     pageSize,
     succesCSV,
+    actionHeadingLabel,
   } = props;
   const [rowChecked, setRowChecked] = useState<string>('');
   const { displayItem } = calculatePaginationBounds(
@@ -79,6 +80,14 @@ const TableDesktop: React.FC<TableI> = (props) => {
                   className={rolesTable ? 'th-actions-roles' : 'th-actions'}
                 />
               )}
+              {actionHeadingLabel && (
+                <th
+                  scope='col'
+                  className='th-auto table-container__intestazione'
+                >
+                  {actionHeadingLabel.toUpperCase()}
+                </th>
+              )}
             </tr>
           </thead>
         ) : null}
@@ -124,7 +133,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
                   <div
                     className={clsx(
                       'd-flex',
-                      'justify-content-end',
+                      'justify-content-center',
                       'align-content-center',
                       'mt-1'
                     )}
@@ -271,7 +280,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
                         onClick={() =>
                           onActionClick[CRUDActionTypes.DOWNLOAD](td)
                         }
-                        className='mr-4 p-0'
+                        className='p-0'
                         aria-label='Aggiungi nuovo'
                       >
                         <Icon

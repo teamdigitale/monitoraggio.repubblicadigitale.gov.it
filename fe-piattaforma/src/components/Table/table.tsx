@@ -34,6 +34,7 @@ export interface TableI {
   surveysTable?: boolean;
   pageNumber?: number;
   pageSize?: number;
+  actionHeadingLabel?: string;
 }
 
 const Table: React.FC<TableI> = (props) => {
