@@ -134,7 +134,7 @@ export const validateFields = (
     );
   }
 
-  if (record.AN4 !== 'SI' && record.AN3 && !validateFiscalCode(record.AN3)) {
+  if (record.AN3 && !validateFiscalCode(record.AN3)) {
     errors.push('Il Codice Fiscale inserito e invalido.');
   }
   if (record.SE1) {
