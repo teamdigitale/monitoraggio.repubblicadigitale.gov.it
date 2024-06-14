@@ -28,7 +28,6 @@ public class ServiziElaboratiCsvWriter extends GenericImportCsvWriter<ServiziEla
 
         private void convertFieldsToRiga(ServiziElaboratiDTO model, StringBuilder fileContent, Integer i) {
                 fileContent.append("\n");
-                model.getCampiAggiuntiviCSV().setNumeroRiga(i + 1);
                 fileContent.append(model.getCampiAggiuntiviCSV().getNumeroRiga()).append(",");
                 fileContent.append(model.getCampiAggiuntiviCSV().getNote()).append(",");
                 fileContent.append(model.getCampiAggiuntiviCSV().getIdFacilitatore() != null
