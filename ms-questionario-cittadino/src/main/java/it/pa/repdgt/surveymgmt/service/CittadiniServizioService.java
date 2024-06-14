@@ -242,9 +242,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
         }
         final Optional<CittadinoEntity> optionalCittadinoDBFetch = this.cittadinoService
                 .getCittadinoByCodiceFiscaleOrNumeroDocumento(
-                        nuovoCittadinoRequest.getCodiceFiscaleNonDisponibile(),
-                        nuovoCittadinoRequest.getCodiceFiscale(),
-                        nuovoCittadinoRequest.getNumeroDocumento());
+                        nuovoCittadinoRequest.getCodiceFiscale());
         CittadinoEntity cittadino = new CittadinoEntity();
         if (optionalCittadinoDBFetch.isPresent()) {
             if (nuovoCittadinoRequest.getNuovoCittadino()) {
@@ -329,11 +327,15 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
             nuovoCittadinoRequest.setNumeroDocumento(
                     EncodeUtils.encrypt(EncodeUtils.decrypt(nuovoCittadinoRequest.getNumeroDocumento())));
         }
+        /*
+         * if (nuovoCittadinoRequest.getCodiceFiscaleNonDisponibile()) {
+         * throw new CittadinoException("Il codice fiscale non e' disponibile",
+         * CodiceErroreEnum.U24);
+         * }
+         */
         final Optional<CittadinoEntity> optionalCittadinoDBFetch = this.cittadinoService
                 .getCittadinoByCodiceFiscaleOrNumeroDocumento(
-                        nuovoCittadinoRequest.getCodiceFiscaleNonDisponibile(),
-                        nuovoCittadinoRequest.getCodiceFiscale(),
-                        nuovoCittadinoRequest.getNumeroDocumento());
+                        nuovoCittadinoRequest.getCodiceFiscale());
         CittadinoEntity cittadino = new CittadinoEntity();
         if (optionalCittadinoDBFetch.isPresent()) {
             if (nuovoCittadinoRequest.getNuovoCittadino()) {

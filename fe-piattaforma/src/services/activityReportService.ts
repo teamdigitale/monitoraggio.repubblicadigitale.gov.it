@@ -111,3 +111,9 @@ export function downloadActivityReportResume(
 ): Promise<AxiosResponse<string>> {
   return axios.get(presignedUrl);
 }
+
+export function downloadCSVGuide(): Promise<AxiosResponse<any>> {
+  return axios.get(
+    'https://s3-mitd-drupal-prod.s3.eu-central-1.amazonaws.com/public/2024-06/doc_guida_tmp_17183517107416726678.pdf?versionId=GBZcjjjmeC7WYICPXGiOIHFVd1YfmY.r&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA6RGETSJQ7K6J4KNR%2F20240614%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20240614T075513Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7200&X-Amz-Signature=1e48108f1455c04aad1aa65e75f5795120fa3d02292052adec3ad38bfb41857d'
+  );
+}

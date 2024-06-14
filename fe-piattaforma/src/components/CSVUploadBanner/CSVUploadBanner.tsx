@@ -1,7 +1,7 @@
 import React from 'react';
 import fileUploadImg from './../../../public/assets/img/file_upload.png';
 import { Button } from 'design-react-kit';
-import "./csv-uploader-banner.scss";
+import './csv-uploader-banner.scss';
 
 export default function CSVUploadBanner(props: {
   onPrimaryButtonClick: () => void;
@@ -20,23 +20,33 @@ export default function CSVUploadBanner(props: {
                     aria-hidden='true'
                   />
                 </div>
-                <div className='col-12 col-xs-9 col-md-8 col-lg-10 d-flex align-items-center'>
+                <div className='col d-flex align-items-center'>
                   <div className='row w-100'>
-                    <div className='col-xs-12 col-md-6'>
-                      <h4 className='card-title font-bold text-primary mb-0'>
-                        Caricamento Massivo dati
+                    <div className='col'>
+                      <h4 className='card-title font-bold text-primary-action mb-0'>
+                        Caricamento massivo dei dati sui cittadini e sui servizi
+                        acquisiti al di fuori di Facilita
                       </h4>
-                      <p className='card-text'>
-                        Carica + vedi registro
+                      <p>
+                        Puoi caricare in modo massivo i dati relativi ai
+                        cittadini e ai servizi di facilitazione erogati presso
+                        le sedi del tuo ente e{' '}
+                        <strong>
+                          acquisiti al di fuori dalla piattaforma prima del 31
+                          maggio 2024
+                        </strong>
+                        . Inoltre, puoi consultare il{' '}
+                        <strong>registro dei caricamenti massivi</strong> gia'
+                        effettuati dal tuo ente.
                       </p>
                     </div>
-                    <div className='col-xs-12 col-md-6 d-flex align-items-center justify-content-end'>
+                    <div className='col-auto d-flex align-items-center justify-content-end ml-4'>
                       <Button
                         onClick={props.onPrimaryButtonClick}
                         type='button'
                         className='btn btn-outline-primary my-4'
                       >
-                        Vai al tool
+                        Vai al caricamento dati
                       </Button>
                     </div>
                   </div>

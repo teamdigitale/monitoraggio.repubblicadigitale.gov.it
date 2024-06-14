@@ -202,7 +202,7 @@ export function useCSVProcessor(file: File | undefined) {
     );
 
     const ageGroup = getAgeGroupCodeByYear(cfData.date);
-    const parsedDate = moment(filteredRecord.SE1, 'DD/MM/YYYY');
+    const parsedDate = moment(filteredRecord.SE1);
     return {
       servizioRequest: {
         nomeServizio: serviceName,

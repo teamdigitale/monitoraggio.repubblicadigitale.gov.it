@@ -26,14 +26,18 @@ export default function CSVFileHandler() {
   }, [dataUploadContext]);
 
   return (
-    <div className='csv-uploader-container container'>
+    <div className={`csv-uploader-container container h-100`}>
       <CSVUploader file={file} saveFile={saveFile} removeFile={removeFile} />
-      {file && (
-        <div className='my-2'>
-          <ProcessFileCsv file={file} />
-          <SubmitFileCsv clearFile={removeFile} />
+      <div className={file ? 'd-block' : 'd-none'}>
+        <div className='my-2 row'>
+          <div className='col-12 col-md-6 d-flex flex-column justify-content-around my-2 px-4'>
+            <ProcessFileCsv file={file} clearFile={removeFile} />
+          </div>
+          <div className='col-12 col-md-6 d-flex flex-column justify-content-around my-2 px-4'>
+            <SubmitFileCsv clearFile={removeFile} />
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }

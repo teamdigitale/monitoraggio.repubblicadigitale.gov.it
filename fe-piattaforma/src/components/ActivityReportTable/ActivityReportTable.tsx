@@ -12,20 +12,13 @@ import Paginator from '../Paginator/paginator';
 import { Page } from '../../models/Page.model';
 import { RegistroAttivita } from '../../models/RegistroAttivita.model';
 import { useAppDispatch } from '../../redux/hooks';
-import {
-  downloadActivityReportResume,
-  generateDownloadPUActivityReport,
-  searchActivityReport,
-} from '../../services/activityReportService';
+import { searchActivityReport } from '../../services/activityReportService';
 import { hideLoader, showLoader } from '../../redux/features/app/appSlice';
 import { ProjectInfo } from '../../models/ProjectInfo.model';
 import { ProjectContext } from '../../contexts/ProjectContext';
-import {
-  CRUDActionsI,
-  CRUDActionTypes,
-  downloadGeneratedFile,
-} from '../../utils/common';
+import { CRUDActionsI, CRUDActionTypes } from '../../utils/common';
 import { useParams } from 'react-router-dom';
+import { downloadResume } from '../../utils/csvUtils';
 
 const tableHeading: TableHeadingI[] = [
   {
@@ -35,7 +28,7 @@ const tableHeading: TableHeadingI[] = [
     classNames: 'text-primary',
   },
   {
-    label: 'Operatore',
+    label: 'Referente / Delegato',
     field: 'operatore',
     size: 'medium',
   },
@@ -55,17 +48,17 @@ const tableHeading: TableHeadingI[] = [
     size: 'medium',
   },
   {
-    label: 'Servizi Acquisiti',
+    label: 'Servizi Caricati',
     field: 'serviziAcquisiti',
     size: 'medium',
   },
   {
-    label: 'Cittadini aggiunti',
+    label: 'Cittadini Beneficiari',
     field: 'cittadiniAggiunti',
     size: 'medium',
   },
   {
-    label: 'Rilevazione di esperienza compilate',
+    label: 'Report righe scartate',
     field: 'rilevazioneDiEsperienzaCompilate',
     size: 'medium',
   },
@@ -74,17 +67,9 @@ const tableHeading: TableHeadingI[] = [
 const onActionClick: CRUDActionsI = {
   [CRUDActionTypes.DOWNLOAD]: (activityReport: TableRowI | string) => {
     const report = activityReport as RegistroAttivita;
-    generateDownloadPUActivityReport(report.id as number)
-      .then((presignedUrl) => {
-        return downloadActivityReportResume(presignedUrl.data.uri);
-      })
-      .then((res) => downloadFile(res.data, report.fileName as string));
+    downloadResume(report);
   },
 };
-
-function downloadFile(f: string, name: string) {
-  downloadGeneratedFile(new File([new Blob([f])], name));
-}
 
 const ActivityReportTable = forwardRef(function ActivityReportTable(
   _props,
@@ -132,22 +117,39 @@ const ActivityReportTable = forwardRef(function ActivityReportTable(
 
   return (
     <>
-      <h2 className='h3'>Registro dei caricamenti</h2>
-      <Table
-        id='table'
-        heading={tableHeading}
-        values={pagination?.content ?? []}
-        totalCounter={pagination?.totalElements ?? -1}
-        withActions
-        onActionClick={onActionClick}
-      />
-      {pagination && pagination.content.length > 0 && (
-        <Paginator
-          total={pagination.totalPages}
-          pageSize={pagination.size}
-          onChange={searchReports}
-        />
-      )}
+      <div className='row'>
+        <div className='col'>
+          <h2 className='h3'>Registro dei caricamenti</h2>
+        </div>
+      </div>
+      <div className='row'>
+        <div className='col-6'>
+          <p>
+            Consulta l'elenco dei caricamenti giá effettuati dal tuo ente e
+            scarica i report delle righe scartate durante ogni caricamento.
+          </p>
+        </div>
+      </div>
+
+      <div className='row my-4'>
+        <div className='col'>
+          <Table
+            id='table'
+            heading={tableHeading}
+            values={pagination?.content ?? []}
+            totalCounter={pagination?.totalElements ?? -1}
+            withActions
+            onActionClick={onActionClick}
+          />
+          {pagination && pagination.content.length > 0 && (
+            <Paginator
+              total={pagination.totalPages}
+              pageSize={pagination.size}
+              onChange={searchReports}
+            />
+          )}
+        </div>
+      </div>
     </>
   );
 });

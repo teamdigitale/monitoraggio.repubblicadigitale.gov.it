@@ -51,14 +51,14 @@ public class ImportMassivoCSVService {
 
     private String time = now.format(timeFormatter);
 
-    @Transactional
     public ElaboratoCSVResponse process(ElaboratoCSVRequest csvRequest) {
         List<ServiziElaboratiDTO> serviziValidati = csvRequest.getServiziValidati();
         List<ServiziElaboratiDTO> serviziScartati = csvRequest.getServiziScartati();
         return buildResponse(serviziValidati, serviziScartati);
     }
 
-    private ElaboratoCSVResponse buildResponse(List<ServiziElaboratiDTO> serviziValidati,
+    @Transactional
+    public ElaboratoCSVResponse buildResponse(List<ServiziElaboratiDTO> serviziValidati,
             List<ServiziElaboratiDTO> serviziScartati) {
         Long idServizio;
         Integer serviziAggiunti = 0;
@@ -128,6 +128,13 @@ public class ImportMassivoCSVService {
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(e.getMessage());
                 serviziScartati.add(servizioElaborato);
                 continue;
+            } catch (Exception e) {
+                if (serviziAggiunti > 0)
+                    serviziAggiunti--;
+                servizioElaborato.getCampiAggiuntiviCSV().setNote(
+                        "Impossibile salvare i dati del servizio, controllare bene tutti le colonne inserite e riprovare.");
+                serviziScartati.add(servizioElaborato);
+                continue;
             }
             try {
                 cittadiniAggiunti++;
@@ -152,6 +159,13 @@ public class ImportMassivoCSVService {
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(NoteCSV.NOTE_CITTADINO);
                 serviziScartati.add(servizioElaborato);
                 continue;
+            } catch (Exception e) {
+                if (cittadiniAggiunti > 0)
+                    cittadiniAggiunti--;
+                servizioElaborato.getCampiAggiuntiviCSV().setNote(
+                        "Impossibile salvare i dati del cittadino, non saranno salvati neanche quelli del servizio.");
+                serviziScartati.add(servizioElaborato);
+                continue;
             }
             try {
                 questionariAggiunti++;
@@ -166,6 +180,11 @@ public class ImportMassivoCSVService {
                 if (questionariAggiunti > 0)
                     questionariAggiunti--;
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(NoteCSV.NOTE_QUESTIONARIO);
+                serviziScartati.add(servizioElaborato);
+            } catch (Exception e) {
+                if (questionariAggiunti > 0)
+                    questionariAggiunti--;
+                servizioElaborato.getCampiAggiuntiviCSV().setNote("Impossibile salvare i dati del questionario.");
                 serviziScartati.add(servizioElaborato);
             }
         }
