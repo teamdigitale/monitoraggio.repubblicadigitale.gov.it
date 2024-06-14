@@ -212,7 +212,7 @@ public class ServizioCittadinoRestApi {
 		questionarioCompilatoService.valorizzaIPrimiTreQuestionari(idQuestionario, questionarioCompilatoRequest);
 		if (!cittadiniServizioService.checkPermessoIdQuestionarioCompilato(questionarioCompilatoRequest,
 				idQuestionario)) {
-			new ServizioException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
+			new ServizioException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A03);
 		}
 		this.questionarioCompilatoService.compilaQuestionario(idQuestionario, questionarioCompilatoRequest);
 	}
@@ -221,12 +221,12 @@ public class ServizioCittadinoRestApi {
 		try {
 			JsonNode jsonNode = objectMapper.readTree(questionarioCompilatoRequest.getSezioneQ4Questionario());
 			if (!jsonNode.has("sezioneQ4Questionario")) {
-				throw new ServizioException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
+				throw new ServizioException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A04);
 			}
 			JsonNode sezioneQ4QuestionarioNode = jsonNode.get("sezioneQ4Questionario");
 			if (sezioneQ4QuestionarioNode.has("properties") && sezioneQ4QuestionarioNode.get("properties").isArray() &&
 					sezioneQ4QuestionarioNode.get("properties").size() < 1) {
-				throw new ServizioException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
+				throw new ServizioException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A05);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
