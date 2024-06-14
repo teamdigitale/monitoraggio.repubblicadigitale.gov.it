@@ -21,7 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -51,7 +50,6 @@ public class ImportMassivoCSVService {
 
     private String time = now.format(timeFormatter);
 
-    @Transactional
     public ElaboratoCSVResponse process(ElaboratoCSVRequest csvRequest) {
         List<ServiziElaboratiDTO> serviziValidati = csvRequest.getServiziValidati();
         List<ServiziElaboratiDTO> serviziScartati = csvRequest.getServiziScartati();

@@ -112,34 +112,30 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
             Integer currPage,
             Integer pageSize) {
         CittadinoServizioBean bean = new CittadinoServizioBean();
-        // Recupero codiceFiscale e codiceRuolo con cui si è profilato l'utente loggato
-        // alla piattaforma
+        // Recupero codiceFiscale e codiceRuolo con cui si è profilato l'utente loggato alla piattaforma
         final String codiceFiscaleUtenteLoggato = profilazione.getCfUtenteLoggato().trim();
 
         // Verifico se il facilitatore è il creatore di quel servizio
-        if (!this.servizioSqlRepository.findByFacilitatoreAndIdServizio(codiceFiscaleUtenteLoggato, idServizio)
-                .isPresent()) {
-            final String messaggioErrore = String.format(
-                    "Servizio non accessibile per l'utente con codice fiscale '%s in quanto non risulta il creatore del servizio'",
-                    codiceFiscaleUtenteLoggato);
+        if (!this.servizioSqlRepository.findByFacilitatoreAndIdServizio(codiceFiscaleUtenteLoggato, idServizio).isPresent()) {
+            final String messaggioErrore = String.format("Servizio non accessibile per l'utente con codice fiscale '%s in quanto non risulta il creatore del servizio'", codiceFiscaleUtenteLoggato);
             throw new ServizioException(messaggioErrore, CodiceErroreEnum.A02);
         }
 
-        // Recupero tutti i cittadini del servizion con id idServizio in base ai filtri
-        // selezionati
+        // Recupero tutti i cittadini del servizion con id idServizio in base ai filtri selezionati
         final List<CittadinoServizioProjection> listaCittadiniServizio = this.getAllServiziByProfilazioneAndFiltro(
                 idServizio,
                 filtroListaCittadiniServizio,
                 currPage,
-                pageSize);
+                pageSize
+        );
 
         bean.setListaCittadiniServizio(listaCittadiniServizio);
         bean.setNumCittadini(listaCittadiniServizio.size());
         bean.setNumQuestionariCompilati(
                 listaCittadiniServizio.stream()
-                        .filter(c -> StatoQuestionarioEnum.COMPILATA.toString()
-                                .equalsIgnoreCase(c.getStatoQuestionario()))
-                        .count());
+                        .filter(c -> StatoQuestionarioEnum.COMPILATA.toString().equalsIgnoreCase(c.getStatoQuestionario()))
+                        .count()
+        );
         return bean;
     }
 
@@ -151,14 +147,14 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
         String criterioRicercaCittadinoServizioLike = null;
         String criterioRicercaCittadinoServizio = null;
         if (filtroListaCittadiniServizio.getCriterioRicerca() != null) {
-            criterioRicercaCittadinoServizio = EncodeUtils
-                    .encrypt(EncodeUtils.decrypt(filtroListaCittadiniServizio.getCriterioRicerca()));
+            criterioRicercaCittadinoServizio = EncodeUtils.encrypt(EncodeUtils.decrypt(filtroListaCittadiniServizio.getCriterioRicerca()));
             criterioRicercaCittadinoServizioLike = "%".concat(criterioRicercaCittadinoServizio).concat("%");
         }
         return cittadinoServizioRepository.findAllCittadiniServizioPaginatiByFiltro(
                 idServizio,
                 criterioRicercaCittadinoServizio,
-                filtroListaCittadiniServizio.getStatiQuestionario());
+                filtroListaCittadiniServizio.getStatiQuestionario()
+        );
     }
 
     @LogMethod
@@ -169,14 +165,14 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
         String criterioRicercaCittadinoServizioLike = null;
         String criterioRicercaCittadinoServizio = null;
         if (filtroListaCittadiniServizio.getCriterioRicerca() != null) {
-            criterioRicercaCittadinoServizio = EncodeUtils
-                    .encrypt(EncodeUtils.decrypt(filtroListaCittadiniServizio.getCriterioRicerca()));
+            criterioRicercaCittadinoServizio = EncodeUtils.encrypt(EncodeUtils.decrypt(filtroListaCittadiniServizio.getCriterioRicerca()));
             criterioRicercaCittadinoServizioLike = "%".concat(criterioRicercaCittadinoServizio).concat("%");
         }
         return cittadinoServizioRepository.findAllCittadiniServizioByFiltro(
                 idServizio,
                 criterioRicercaCittadinoServizio,
-                filtroListaCittadiniServizio.getStatiQuestionario()).size();
+                filtroListaCittadiniServizio.getStatiQuestionario()
+        ).size();
     }
 
     @LogMethod
@@ -186,19 +182,16 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
             final FiltroListaCittadiniServizioParam filtroListaCittadiniServizio,
             SceltaProfiloParam sceltaProfilo) {
         // Verifico se il facilitatore è il creatore di quel servizio
-        if (!this.servizioSqlRepository.findByFacilitatoreAndIdServizio(sceltaProfilo.getCfUtenteLoggato(), idServizio)
-                .isPresent()) {
-            final String messaggioErrore = String.format(
-                    "Servizio non accessibile per l'utente con codice fiscale '%s in quanto non risulta il creatore del servizio'",
-                    sceltaProfilo.getCfUtenteLoggato());
+        if (!this.servizioSqlRepository.findByFacilitatoreAndIdServizio(sceltaProfilo.getCfUtenteLoggato(), idServizio).isPresent()) {
+            final String messaggioErrore = String.format("Servizio non accessibile per l'utente con codice fiscale '%s in quanto non risulta il creatore del servizio'", sceltaProfilo.getCfUtenteLoggato());
             throw new ServizioException(messaggioErrore, CodiceErroreEnum.A02);
         }
         return filtroListaCittadiniServizio.getStatiQuestionario().isEmpty()
                 ? this.getAllStatiQuestionarioByProfilazioneAndFiltro(idServizio, filtroListaCittadiniServizio)
                 : this.getAllStatiQuestionarioByProfilazioneAndFiltro(idServizio, filtroListaCittadiniServizio)
-                        .containsAll(filtroListaCittadiniServizio.getStatiQuestionario())
-                                ? filtroListaCittadiniServizio.getStatiQuestionario()
-                                : new ArrayList<>();
+                .containsAll(filtroListaCittadiniServizio.getStatiQuestionario())
+                ? filtroListaCittadiniServizio.getStatiQuestionario()
+                : new ArrayList<>();
     }
 
     @LogMethod
@@ -220,7 +213,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
     @LogMethod
     @LogExecutionTime
     public List<GetCittadinoProjection> getAllCittadiniByCodFiscOrNumDoc(String tipoDocumento,
-            @NotNull String criterioRicerca) {
+                                                                         @NotNull String criterioRicerca) {
         criterioRicerca = EncodeUtils.encrypt(EncodeUtils.decrypt(criterioRicerca));
         return cittadinoServizioRepository.getAllCittadiniByCodFiscOrNumDoc(tipoDocumento, criterioRicerca);
     }
@@ -233,43 +226,35 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
             @NotNull final NuovoCittadinoServizioRequest nuovoCittadinoRequest) {
         String codiceFiscaleDecrypted;
         // Verifico se il facilitatore è il creatore di quel servizio
-        if (!this.servizioSqlRepository
-                .findByFacilitatoreAndIdServizio(nuovoCittadinoRequest.getCfUtenteLoggato(), idServizio).isPresent()) {
-            final String messaggioErrore = String.format(
-                    "Servizio non accessibile per l'utente con codice fiscale '%s in quanto non risulta il creatore del servizio'",
-                    nuovoCittadinoRequest.getCfUtenteLoggato());
+        if (!this.servizioSqlRepository.findByFacilitatoreAndIdServizio(nuovoCittadinoRequest.getCfUtenteLoggato(), idServizio).isPresent()) {
+            final String messaggioErrore = String.format("Servizio non accessibile per l'utente con codice fiscale '%s in quanto non risulta il creatore del servizio'", nuovoCittadinoRequest.getCfUtenteLoggato());
             throw new ServizioException(messaggioErrore, CodiceErroreEnum.A02);
         }
-        final Optional<CittadinoEntity> optionalCittadinoDBFetch = this.cittadinoService
-                .getCittadinoByCodiceFiscaleOrNumeroDocumento(
-                        nuovoCittadinoRequest.getCodiceFiscaleNonDisponibile(),
-                        nuovoCittadinoRequest.getCodiceFiscale(),
-                        nuovoCittadinoRequest.getNumeroDocumento());
+        final Optional<CittadinoEntity> optionalCittadinoDBFetch = this.cittadinoService.getCittadinoByCodiceFiscaleOrNumeroDocumento(
+                nuovoCittadinoRequest.getCodiceFiscale()
+        );
         CittadinoEntity cittadino = new CittadinoEntity();
         if (optionalCittadinoDBFetch.isPresent()) {
             if (nuovoCittadinoRequest.getNuovoCittadino()) {
                 final String messaggioErrore = String.format(
                         "Cittadino già esistente",
                         optionalCittadinoDBFetch.get().getCodiceFiscale(),
-                        optionalCittadinoDBFetch.get().getNumeroDocumento());
+                        optionalCittadinoDBFetch.get().getNumeroDocumento()
+                );
                 throw new CittadinoException(messaggioErrore, CodiceErroreEnum.U07);
             }
             cittadino = optionalCittadinoDBFetch.get();
         } else {
-            if (nuovoCittadinoRequest.getCodiceFiscale() != null
-                    && !nuovoCittadinoRequest.getCodiceFiscale().isEmpty()) {
+            if (nuovoCittadinoRequest.getCodiceFiscale() != null && !nuovoCittadinoRequest.getCodiceFiscale().isEmpty()) {
                 codiceFiscaleDecrypted = EncodeUtils.decrypt(nuovoCittadinoRequest.getCodiceFiscale());
                 if (codiceFiscaleDecrypted.length() != 16)
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                            "Il codice fiscale deve essere composto da 16 caratteri");
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Il codice fiscale deve essere composto da 16 caratteri");
                 if (!isCittadinoMaggiorenne(codiceFiscaleDecrypted))
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Il cittadino non è maggiorenne");
                 nuovoCittadinoRequest.setCodiceFiscale(EncodeUtils.encrypt(codiceFiscaleDecrypted));
             }
-            if (nuovoCittadinoRequest.getNumeroDocumento() != null
-                    && !nuovoCittadinoRequest.getNumeroDocumento().equals("")) {
-                nuovoCittadinoRequest.setNumeroDocumento(
-                        EncodeUtils.encrypt(EncodeUtils.decrypt(nuovoCittadinoRequest.getNumeroDocumento())));
+            if(nuovoCittadinoRequest.getNumeroDocumento() != null && !nuovoCittadinoRequest.getNumeroDocumento().equals("")) {
+                nuovoCittadinoRequest.setNumeroDocumento(EncodeUtils.encrypt(EncodeUtils.decrypt(nuovoCittadinoRequest.getNumeroDocumento())));
             }
             mapNuovoCittadinoRequestToCittadino(cittadino, nuovoCittadinoRequest);
         }
@@ -280,21 +265,22 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
                     "Cittadino già esistente sul Servizio con id=%s",
                     cittadino.getCodiceFiscale(),
                     cittadino.getNumeroDocumento(),
-                    idServizio);
+                    idServizio
+            );
             throw new CittadinoException(messaggioErrore, CodiceErroreEnum.U23);
         }
         cittadino.setDataOraAggiornamento(new Date());
         cittadino = cittadinoRepository.save(cittadino);
-        // associo il cittadino al servizio
+        //associo il cittadino al servizio
         this.associaCittadinoAServizio(idServizio, cittadino);
 
-        // recupero il servizio
+        //recupero il servizio
         ServizioEntity servizioDBFetch = servizioSqlService.getServizioById(idServizio);
 
         if (StatoEnum.NON_ATTIVO.getValue().equals(servizioDBFetch.getStato()))
             servizioDBFetch.setStato(StatoEnum.ATTIVO.getValue());
 
-        // creo il questionario in stato NON_INVIATO
+        //creo il questionario in stato NON_INVIATO
         this.creaQuestionarioNonInviato(servizioDBFetch, cittadino);
 
         return cittadino;
@@ -308,39 +294,35 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
             @NotNull final NuovoCittadinoServizioRequest nuovoCittadinoRequest) {
         String codiceFiscaleDecrypted;
         // Verifico se il facilitatore è il creatore di quel servizio
-        if (!this.servizioSqlRepository
-                .findByFacilitatoreAndIdServizio(nuovoCittadinoRequest.getCfUtenteLoggato(), idServizio).isPresent()) {
-            final String messaggioErrore = String.format(
-                    "Servizio non accessibile per l'utente con codice fiscale '%s in quanto non risulta il creatore del servizio'",
-                    nuovoCittadinoRequest.getCfUtenteLoggato());
+        if (!this.servizioSqlRepository.findByFacilitatoreAndIdServizio(nuovoCittadinoRequest.getCfUtenteLoggato(), idServizio).isPresent()) {
+            final String messaggioErrore = String.format("Servizio non accessibile per l'utente con codice fiscale '%s in quanto non risulta il creatore del servizio'", nuovoCittadinoRequest.getCfUtenteLoggato());
             throw new ServizioException(messaggioErrore, CodiceErroreEnum.A02);
         }
         if (nuovoCittadinoRequest.getCodiceFiscale() != null && !nuovoCittadinoRequest.getCodiceFiscale().isEmpty()) {
             codiceFiscaleDecrypted = EncodeUtils.decrypt(nuovoCittadinoRequest.getCodiceFiscale());
             if (codiceFiscaleDecrypted.length() != 16)
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                        "Il codice fiscale deve essere composto da 16 caratteri");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Il codice fiscale deve essere composto da 16 caratteri");
             if (!isCittadinoMaggiorenne(codiceFiscaleDecrypted))
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Il cittadino non è maggiorenne");
             nuovoCittadinoRequest.setCodiceFiscale(EncodeUtils.encrypt(codiceFiscaleDecrypted));
         }
-        if (nuovoCittadinoRequest.getNumeroDocumento() != null
-                && !nuovoCittadinoRequest.getNumeroDocumento().equals("")) {
-            nuovoCittadinoRequest.setNumeroDocumento(
-                    EncodeUtils.encrypt(EncodeUtils.decrypt(nuovoCittadinoRequest.getNumeroDocumento())));
+        if(nuovoCittadinoRequest.getNumeroDocumento() != null && !nuovoCittadinoRequest.getNumeroDocumento().equals("")) {
+            nuovoCittadinoRequest.setNumeroDocumento(EncodeUtils.encrypt(EncodeUtils.decrypt(nuovoCittadinoRequest.getNumeroDocumento())));
         }
-        final Optional<CittadinoEntity> optionalCittadinoDBFetch = this.cittadinoService
-                .getCittadinoByCodiceFiscaleOrNumeroDocumento(
-                        nuovoCittadinoRequest.getCodiceFiscaleNonDisponibile(),
-                        nuovoCittadinoRequest.getCodiceFiscale(),
-                        nuovoCittadinoRequest.getNumeroDocumento());
+        if (nuovoCittadinoRequest.getCodiceFiscaleNonDisponibile()) {
+            throw new CittadinoException("Il codice fiscale non e' disponibile", CodiceErroreEnum.U24);
+        }
+        final Optional<CittadinoEntity> optionalCittadinoDBFetch = this.cittadinoService.getCittadinoByCodiceFiscaleOrNumeroDocumento(
+                nuovoCittadinoRequest.getCodiceFiscale()
+        );
         CittadinoEntity cittadino = new CittadinoEntity();
         if (optionalCittadinoDBFetch.isPresent()) {
             if (nuovoCittadinoRequest.getNuovoCittadino()) {
                 final String messaggioErrore = String.format(
                         "Cittadino già esistente",
                         optionalCittadinoDBFetch.get().getCodiceFiscale(),
-                        optionalCittadinoDBFetch.get().getNumeroDocumento());
+                        optionalCittadinoDBFetch.get().getNumeroDocumento()
+                );
                 throw new CittadinoException(messaggioErrore, CodiceErroreEnum.U07);
             }
             cittadino = optionalCittadinoDBFetch.get();
@@ -354,29 +336,29 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
                     "Cittadino già esistente sul Servizio con id=%s",
                     cittadino.getCodiceFiscale(),
                     cittadino.getNumeroDocumento(),
-                    idServizio);
+                    idServizio
+            );
             throw new CittadinoException(messaggioErrore, CodiceErroreEnum.U23);
         }
         cittadino.setDataOraAggiornamento(new Date());
         cittadino = cittadinoRepository.save(cittadino);
-        // associo il cittadino al servizio
+        //associo il cittadino al servizio
         this.associaCittadinoAServizio(idServizio, cittadino);
 
-        // recupero il servizio
+        //recupero il servizio
         ServizioEntity servizioDBFetch = servizioSqlService.getServizioById(idServizio);
 
         if (StatoEnum.NON_ATTIVO.getValue().equals(servizioDBFetch.getStato()))
             servizioDBFetch.setStato(StatoEnum.ATTIVO.getValue());
 
-        // creo il questionario in stato NON_INVIATO
+        //creo il questionario in stato NON_INVIATO
         List<QuestionarioCompilatoEntity> questionarioCompilatoEntities = new ArrayList<>();
         questionarioCompilatoEntities.add(creaQuestionarioNonInviatoImportCsv(servizioDBFetch, cittadino));
         cittadino.setQuestionarioCompilato(questionarioCompilatoEntities);
         return cittadino;
     }
 
-    private CittadinoEntity mapNuovoCittadinoRequestToCittadino(CittadinoEntity cittadino,
-            NuovoCittadinoServizioRequest nuovoCittadinoRequest) {
+    private CittadinoEntity mapNuovoCittadinoRequestToCittadino(CittadinoEntity cittadino, NuovoCittadinoServizioRequest nuovoCittadinoRequest) {
         if (nuovoCittadinoRequest.getCodiceFiscale() != null) {
             cittadino.setCodiceFiscale(nuovoCittadinoRequest.getCodiceFiscale());
         }
@@ -389,7 +371,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
         }
         cittadino.setCittadinanza(nuovoCittadinoRequest.getCittadinanza());
         cittadino.setGenere(nuovoCittadinoRequest.getGenere());
-        cittadino.setDataOraCreazione(new Date());
+		cittadino.setDataOraCreazione(new Date());
         cittadino.setOccupazione(nuovoCittadinoRequest.getStatoOccupazionale());
         cittadino.setTitoloDiStudio(nuovoCittadinoRequest.getTitoloStudio());
         cittadino.setProvinciaDiDomicilio(nuovoCittadinoRequest.getProvinciaDiDomicilio());
@@ -411,8 +393,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
         int secolo = Integer.parseInt(codiceFiscaleDecrypted.substring(6, 8));
         int annoDiNascita = (secolo <= RANGE_SECOLO) ? 2000 + secolo : 1900 + secolo;
         Calendar cal = Calendar.getInstance();
-        cal.set(annoDiNascita, mappaMesi.get(String.valueOf(codiceFiscaleDecrypted.charAt(8)).toUpperCase()),
-                giornoDiNascita);
+        cal.set(annoDiNascita, mappaMesi.get(String.valueOf(codiceFiscaleDecrypted.charAt(8)).toUpperCase()), giornoDiNascita);
         return cal.getTime();
     }
 
@@ -424,10 +405,10 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
         return oggi.after(cal.getTime());
     }
 
-    public boolean esisteCittadinoByIdServizioAndIdCittadino(@NotNull final Long idServizio,
-            @NotNull final Long idCittadino) {
+    public boolean esisteCittadinoByIdServizioAndIdCittadino(@NotNull final Long idServizio, @NotNull final Long idCittadino) {
         return this.servizioXCittadinoRepository.findCittadinoByIdServizioAndIdCittadino(idServizio, idCittadino) > 0;
     }
+
 
     @LogMethod
     @LogExecutionTime
@@ -444,37 +425,36 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
     @LogMethod
     @LogExecutionTime
     @Transactional(rollbackOn = Exception.class)
-    public void creaQuestionarioNonInviato(@NotNull final ServizioEntity servizioDBFetch,
-            @NotNull final CittadinoEntity cittadino) {
+    public void creaQuestionarioNonInviato(@NotNull final ServizioEntity servizioDBFetch, @NotNull final CittadinoEntity cittadino) {
 
-        // creo il template questionario compilato per Mongo
+        //creo il template questionario compilato per Mongo
         QuestionarioCompilatoCollection questionarioCompilatoCreato = creoQuestionarioCompilatoCollection(
                 cittadino,
-                servizioDBFetch);
+                servizioDBFetch
+        );
 
-        // salvo il questionario compilato su MySql
+        //salvo il questionario compilato su MySql
         this.salvaQuestionarioCompilatoSql(cittadino, servizioDBFetch, questionarioCompilatoCreato);
 
-        // salvo il questionario Compilato su Mongo
+        //salvo il questionario Compilato su Mongo
         this.questionarioCompilatoMongoService.save(questionarioCompilatoCreato);
     }
 
     @LogMethod
     @LogExecutionTime
     @Transactional(rollbackOn = Exception.class)
-    public QuestionarioCompilatoEntity creaQuestionarioNonInviatoImportCsv(
-            @NotNull final ServizioEntity servizioDBFetch, @NotNull final CittadinoEntity cittadino) {
+    public QuestionarioCompilatoEntity creaQuestionarioNonInviatoImportCsv(@NotNull final ServizioEntity servizioDBFetch, @NotNull final CittadinoEntity cittadino) {
 
-        // creo il template questionario compilato per Mongo
+        //creo il template questionario compilato per Mongo
         QuestionarioCompilatoCollection questionarioCompilatoCreato = creoQuestionarioCompilatoCollection(
                 cittadino,
-                servizioDBFetch);
+                servizioDBFetch
+        );
 
-        // salvo il questionario compilato su MySql
-        QuestionarioCompilatoEntity questionarioCompilatoEntity = this.salvaQuestionarioCompilatoSqlImportCsv(cittadino,
-                servizioDBFetch, questionarioCompilatoCreato);
+        //salvo il questionario compilato su MySql
+        QuestionarioCompilatoEntity questionarioCompilatoEntity = this.salvaQuestionarioCompilatoSqlImportCsv(cittadino, servizioDBFetch, questionarioCompilatoCreato);
 
-        // salvo il questionario Compilato su Mongo
+        //salvo il questionario Compilato su Mongo
         this.questionarioCompilatoMongoService.save(questionarioCompilatoCreato);
 
         return questionarioCompilatoEntity;
@@ -487,15 +467,13 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
             CittadinoEntity cittadino,
             ServizioEntity servizio) {
         final String idQuestionarioTemplateQ3AssociatoAlServizio = servizio.getIdTemplateCompilatoQ3();
-        final Optional<SezioneQ3Collection> SezioneQuestionarioQ3DBFetch = sezioneQ3Respository
-                .findById(idQuestionarioTemplateQ3AssociatoAlServizio);
+        final Optional<SezioneQ3Collection> SezioneQuestionarioQ3DBFetch = sezioneQ3Respository.findById(idQuestionarioTemplateQ3AssociatoAlServizio);
 
         if (!SezioneQuestionarioQ3DBFetch.isPresent()) {
             final String messaggioErrore = String.format(
                     "Servizio con id={} non ha associato templateQ3 con id={} associato. "
                             + "Verifica che il templateQ3 con id={} esiste su MongoDB",
-                    servizio.getId(), idQuestionarioTemplateQ3AssociatoAlServizio,
-                    idQuestionarioTemplateQ3AssociatoAlServizio);
+                    servizio.getId(), idQuestionarioTemplateQ3AssociatoAlServizio, idQuestionarioTemplateQ3AssociatoAlServizio);
             throw new QuestionarioCompilatoException(messaggioErrore, CodiceErroreEnum.QT08);
         }
 
@@ -503,8 +481,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 
         String jsonStringSezioneQ1 = this.creaSezioneQuestionarioQ1ByCittadino(cittadino);
 
-        // creo questionario compilato inserendo sezione: Q1 (Anagrafica Cittadino), Q3
-        // (Anagrafica Servizio)
+        //creo questionario compilato inserendo sezione: Q1 (Anagrafica Cittadino), Q3 (Anagrafica Servizio)
         QuestionarioCompilatoCollection questionarioCompilato = new QuestionarioCompilatoCollection();
         questionarioCompilato.setIdQuestionarioCompilato(UUID.randomUUID().toString());
         DatiIstanza q1 = new DatiIstanza();
@@ -540,15 +517,14 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
                 ID_DOMANDA_TITOLO_DI_STUDIO, cittadino.getTitoloDiStudio(),
                 ID_DOMANDA_STATO_OCCUPAZIONALE, cittadino.getOccupazione(),
                 ID_DOMANDA_PROVINCIA, cittadino.getProvinciaDiDomicilio(),
-                ID_DOMANDA_CITTADINANZA, cittadino.getCittadinanza());
+                ID_DOMANDA_CITTADINANZA, cittadino.getCittadinanza()
+        );
     }
 
     @LogMethod
     @LogExecutionTime
-    public String creaSezioneQuestionarioQ2ByCittadino(@NotNull final Long idCittadino,
-            @NotNull final Long idServizio) {
-        Optional<ServizioEntity> primoServizio = servizioSqlService.getPrimoServizioByIdCittadino(idServizio,
-                idCittadino);
+    public String creaSezioneQuestionarioQ2ByCittadino(@NotNull final Long idCittadino, @NotNull final Long idServizio) {
+        Optional<ServizioEntity> primoServizio = servizioSqlService.getPrimoServizioByIdCittadino(idServizio, idCittadino);
         Boolean esistePrimoServizio = primoServizio.isPresent();
 
         String tipologiaServiziString = "";
@@ -563,8 +539,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
                         tipologiaServiziStringBuilder.append(tipologiaServizio.getTitolo().concat(", "));
                     }
                 });
-                tipologiaServiziString = tipologiaServiziStringBuilder.substring(0,
-                        tipologiaServiziStringBuilder.length() - 2);
+                tipologiaServiziString = tipologiaServiziStringBuilder.substring(0, tipologiaServiziStringBuilder.length() - 2);
             }
         }
         final String jsonStringSezioneQ2 = String.format(SEZIONE_Q2_TEMPLATE,
@@ -625,8 +600,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
     @LogMethod
     @LogExecutionTime
     @Transactional(rollbackOn = Exception.class)
-    public List<CittadinoUploadBean> caricaCittadiniSuServizio(MultipartFile fileCittadiniCSV, Long idServizio,
-            String codiceFiscaleUtenteLoggato) {
+    public List<CittadinoUploadBean> caricaCittadiniSuServizio(MultipartFile fileCittadiniCSV, Long idServizio, String codiceFiscaleUtenteLoggato) {
         List<CittadinoUploadBean> esiti = new ArrayList<>();
 
         if (this.servizioSqlService.getServizioById(idServizio) == null) {
@@ -634,18 +608,14 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
         }
 
         // Verifico se il facilitatore è il creatore di quel servizio
-        if (!this.servizioSqlRepository.findByFacilitatoreAndIdServizio(codiceFiscaleUtenteLoggato, idServizio)
-                .isPresent()) {
-            final String messaggioErrore = String.format(
-                    "Servizio non accessibile per l'utente con codice fiscale '%s in quanto non risulta il creatore del servizio'",
-                    codiceFiscaleUtenteLoggato);
+        if (!this.servizioSqlRepository.findByFacilitatoreAndIdServizio(codiceFiscaleUtenteLoggato, idServizio).isPresent()) {
+            final String messaggioErrore = String.format("Servizio non accessibile per l'utente con codice fiscale '%s in quanto non risulta il creatore del servizio'", codiceFiscaleUtenteLoggato);
             throw new ServizioException(messaggioErrore, CodiceErroreEnum.A02);
         }
 
         try {
-            // estraggo i cittadini dal file csv
-            List<CittadinoUploadBean> cittadiniUpload = CSVServizioUtil
-                    .excelToCittadini(fileCittadiniCSV.getInputStream());
+            //estraggo i cittadini dal file csv
+            List<CittadinoUploadBean> cittadiniUpload = CSVServizioUtil.excelToCittadini(fileCittadiniCSV.getInputStream());
             for (CittadinoUploadBean cittadinoUpload : cittadiniUpload) {
                 if (this.checkPassCittadinoUpload(cittadinoUpload)) {
                     Pattern pattern = Pattern.compile(CF_REGX);
@@ -656,12 +626,10 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
                             && matcher.find())
                             || (cf == null)) {
                         bonificaRecordUpload(cittadinoUpload);
-                        Optional<CittadinoEntity> optionalCittadinoDBFetch = this.cittadinoService
-                                .getByCodiceFiscaleOrNumeroDocumento(cittadinoUpload.getCodiceFiscale(),
-                                        cittadinoUpload.getNumeroDocumento());
+                        Optional<CittadinoEntity> optionalCittadinoDBFetch = this.cittadinoService.getByCodiceFiscaleOrNumeroDocumento(cittadinoUpload.getCodiceFiscale(), cittadinoUpload.getNumeroDocumento());
 
                         CittadinoEntity cittadino = new CittadinoEntity();
-                        // se il cittadino non esiste già a sistema
+                        //se il cittadino non esiste già a sistema
                         if (!optionalCittadinoDBFetch.isPresent()) {
                             try {
                                 popolaCittadino(cittadino, cittadinoUpload);
@@ -676,10 +644,12 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
                             // e in caso affermativo aggiungo KO
                             if (this.esisteCittadinoByIdServizioAndIdCittadino(idServizio, cittadinoDBFetch.getId())) {
                                 cittadinoUpload.setEsito(String.format(
-                                        "UPLOAD - KO - CITTADINO GIA' ESISTENTE SUL SERVIZIO",
-                                        cittadinoDBFetch.getCodiceFiscale(),
-                                        cittadinoDBFetch.getNumeroDocumento(),
-                                        idServizio));
+                                                "UPLOAD - KO - CITTADINO GIA' ESISTENTE SUL SERVIZIO",
+                                                cittadinoDBFetch.getCodiceFiscale(),
+                                                cittadinoDBFetch.getNumeroDocumento(),
+                                                idServizio
+                                        )
+                                );
                             } else {
                                 cittadino.setId(cittadinoDBFetch.getId());
                                 try {
@@ -711,8 +681,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
         if ((codiceFiscale == null || "".equals(codiceFiscale.trim())) &&
                 (numeroDocumento == null || "".equals(numeroDocumento.trim())) &&
                 (tipoDocumento == null || "".equals(tipoDocumento.trim()))) {
-            cittadinoUpload.setEsito(
-                    "UPLOAD - KO - CODICE FISCALE, NUMERO DOCUMENTO, TIPO DOCUMENTO NON POSSONO ESSERE TUTTI CONTEMPORANEMENTE NON VALORIZZATI");
+            cittadinoUpload.setEsito("UPLOAD - KO - CODICE FISCALE, NUMERO DOCUMENTO, TIPO DOCUMENTO NON POSSONO ESSERE TUTTI CONTEMPORANEMENTE NON VALORIZZATI");
             return false;
         }
         if (cittadinoUpload.getGenere() == null || "".equals(cittadinoUpload.getGenere().trim())) {
@@ -727,8 +696,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
             cittadinoUpload.setEsito("UPLOAD - KO - TITOLO_STUDIO DEVE ESSERE VALORIZZATO");
             return false;
         }
-        if (cittadinoUpload.getStatoOccupazionale() == null
-                || "".equals(cittadinoUpload.getStatoOccupazionale().trim())) {
+        if (cittadinoUpload.getStatoOccupazionale() == null || "".equals(cittadinoUpload.getStatoOccupazionale().trim())) {
             cittadinoUpload.setEsito("UPLOAD - KO - STATO_OCCUPAZIONALE DEVE ESSERE VALORIZZATO");
             return false;
         }
@@ -761,10 +729,10 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
     public void inserisciCittadino(CittadinoEntity cittadino, Long idServizio) {
         cittadino = cittadinoRepository.save(cittadino);
 
-        // associo il cittadino al servizio
+        //associo il cittadino al servizio
         this.associaCittadinoAServizio(idServizio, cittadino);
 
-        // recupero il servizio
+        //recupero il servizio
         ServizioEntity servizioDBFetch = servizioSqlService.getServizioById(idServizio);
 
         if (StatoEnum.NON_ATTIVO.getValue().equals(servizioDBFetch.getStato())) {
@@ -772,7 +740,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
             servizioSqlRepository.save(servizioDBFetch);
         }
 
-        // creo il questionario in stato NON_INVIATO
+        //creo il questionario in stato NON_INVIATO
         this.creaQuestionarioNonInviato(servizioDBFetch, cittadino);
 
     }
@@ -784,98 +752,71 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
         cittadino.setDataOraCreazione(new Date());
         cittadino.setDataOraAggiornamento(new Date());
 
-        cittadino
-                .setFasciaDiEta(fasciaDiEtaRepository.findById(Long.valueOf(cittadinoUpload.getFasciaDiEtaId())).get());
+        cittadino.setFasciaDiEta(fasciaDiEtaRepository.findById(Long.valueOf(cittadinoUpload.getFasciaDiEtaId())).get());
         cittadino.setCittadinanza(cittadinoUpload.getCittadinanza());
         cittadino.setGenere(cittadinoUpload.getGenere());
         cittadino.setOccupazione(cittadinoUpload.getStatoOccupazionale());
         cittadino.setTitoloDiStudio(cittadinoUpload.getTitoloStudio());
     }
 
-    /*
-     * @LogMethod
-     * 
-     * @LogExecutionTime
-     * public void inviaQuestionario(@NotNull final String idQuestionario, @NotNull
-     * final Long idCittadino) {
-     * QuestionarioCompilatoEntity questionarioCompilato =
-     * questionarioCompilatoSqlRepository.findById(idQuestionario)
-     * .orElseThrow(() -> new ServizioException("id questionario inesistente",
-     * CodiceErroreEnum.Q01) );
-     * CittadinoEntity cittadino = questionarioCompilato.getCittadino();
-     * 
-     * if(cittadino == null || !idCittadino.equals(cittadino.getId())) {
-     * throw new ServizioException("coppia cittadino - id questionario inesistente",
-     * CodiceErroreEnum.Q01);
-     * }
-     * inviaLinkAnonimoAndAggiornaStatoQuestionarioCompilato(idQuestionario,
-     * questionarioCompilato, cittadino);
-     * }
-     */
+	/*@LogMethod
+	@LogExecutionTime
+	public void inviaQuestionario(@NotNull final String idQuestionario, @NotNull final Long idCittadino) {
+		QuestionarioCompilatoEntity questionarioCompilato = questionarioCompilatoSqlRepository.findById(idQuestionario)
+				.orElseThrow(() -> new ServizioException("id questionario inesistente", CodiceErroreEnum.Q01) );
+		CittadinoEntity cittadino = questionarioCompilato.getCittadino();
 
-    /*
-     * @LogMethod
-     * 
-     * @LogExecutionTime
-     * 
-     * @Transactional(rollbackOn = Exception.class)
-     * public void inviaLinkAnonimoAndAggiornaStatoQuestionarioCompilato(
-     * final String idQuestionario,
-     * QuestionarioCompilatoEntity questionarioCompilato,
-     * CittadinoEntity cittadino) {
-     * if(questionarioCompilato.getStato().equals(StatoQuestionarioEnum.COMPILATO.
-     * getValue()))
-     * throw new ServizioException("Il questionario risulta già compilato",
-     * CodiceErroreEnum.Q02);
-     * //inviaLinkAnonimo(cittadino,idQuestionario);
-     * questionarioCompilato.setStato(StatoQuestionarioEnum.INVIATO.getValue());
-     * questionarioCompilatoSqlRepository.save(questionarioCompilato);
-     * }
-     */
+		if(cittadino == null || !idCittadino.equals(cittadino.getId())) {
+			throw new ServizioException("coppia cittadino - id questionario inesistente", CodiceErroreEnum.Q01);
+		}
+		inviaLinkAnonimoAndAggiornaStatoQuestionarioCompilato(idQuestionario, questionarioCompilato, cittadino);
+	}*/
 
-    /*
-     * @LogMethod
-     * 
-     * @LogExecutionTime
-     * 
-     * @Transactional(rollbackOn = Exception.class)
-     * public void inviaLinkAnonimo(CittadinoEntity cittadino,String idQuestionario)
-     * {
-     * new Thread( () -> {
-     * try {
-     * String token = this.generaToken(cittadino, idQuestionario);
-     * //recuper nome e data servizio
-     * ServizioEntity servizio =
-     * servizioSqlRepository.findServizioByQuestionarioCompilato(idQuestionario).get
-     * ();
-     * SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-     * String[] argsTemplate = new String[] { cittadino.getNome(),
-     * servizio.getNome(), sdf.format(servizio.getDataServizio()), idQuestionario,
-     * token};
-     * 
-     * // stacco un thread per invio email
-     * this.emailService.inviaEmail(
-     * cittadino.getEmail(),
-     * EmailTemplateEnum.QUESTIONARIO_ONLINE,
-     * argsTemplate
-     * );
-     * } catch(Exception ex) {
-     * log.error("Impossibile inviare la mail al cittadino con id={}.",
-     * cittadino.getId());
-     * log.error("{}", ex);
-     * throw new ServizioException("Impossibile inviare la mail", ex,
-     * CodiceErroreEnum.E01);
-     * }
-     * }).start();
-     * }
-     */
+	/*@LogMethod
+	@LogExecutionTime
+	@Transactional(rollbackOn = Exception.class)
+	public void inviaLinkAnonimoAndAggiornaStatoQuestionarioCompilato(
+			final String idQuestionario,
+			QuestionarioCompilatoEntity questionarioCompilato,
+			CittadinoEntity cittadino) {
+		if(questionarioCompilato.getStato().equals(StatoQuestionarioEnum.COMPILATO.getValue()))
+			throw new ServizioException("Il questionario risulta già compilato", CodiceErroreEnum.Q02);
+		//inviaLinkAnonimo(cittadino,idQuestionario);
+		questionarioCompilato.setStato(StatoQuestionarioEnum.INVIATO.getValue());
+		questionarioCompilatoSqlRepository.save(questionarioCompilato);
+	}*/
+
+	/*@LogMethod
+	@LogExecutionTime
+	@Transactional(rollbackOn = Exception.class)
+	public void inviaLinkAnonimo(CittadinoEntity cittadino,String idQuestionario) {
+		new Thread( () -> {
+			try {
+				String token = this.generaToken(cittadino, idQuestionario);
+				//recuper nome e data servizio
+				ServizioEntity servizio = servizioSqlRepository.findServizioByQuestionarioCompilato(idQuestionario).get();
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				String[] argsTemplate = new String[] { cittadino.getNome(), servizio.getNome(), sdf.format(servizio.getDataServizio()), idQuestionario, token};
+
+				// stacco un thread per invio email
+				this.emailService.inviaEmail(
+						cittadino.getEmail(),
+						EmailTemplateEnum.QUESTIONARIO_ONLINE, 
+						argsTemplate
+						);
+			} catch(Exception ex) {
+				log.error("Impossibile inviare la mail al cittadino con id={}.", cittadino.getId());
+				log.error("{}", ex);
+				throw new ServizioException("Impossibile inviare la mail", ex, CodiceErroreEnum.E01);
+			}
+		}).start();
+	}*/
 
     @Transactional(rollbackOn = Exception.class)
     @LogMethod
     @LogExecutionTime
     public String generaToken(CittadinoEntity cittadino, String idQuestionarioCompilato) {
-        // Recupera QuestionarioInviato a partire dal questionario compialato e codice
-        // fiscale/numDocumento cittadino se esiste.
+        // Recupera QuestionarioInviato a partire dal questionario compialato e codice fiscale/numDocumento cittadino se esiste.
         // Altrimenti crea un QuestionarioInviato ex-novo
         QuestionarioInviatoOnlineEntity invioQuestionario = questionarioInviatoOnlineRepository
                 .findByIdQuestionarioCompilatoAndCodiceFiscale(idQuestionarioCompilato, cittadino.getCodiceFiscale())
@@ -883,8 +824,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 
         if (invioQuestionario == null) {
             invioQuestionario = questionarioInviatoOnlineRepository
-                    .findByIdQuestionarioCompilatoAndNumDocumento(idQuestionarioCompilato,
-                            cittadino.getNumeroDocumento())
+                    .findByIdQuestionarioCompilatoAndNumDocumento(idQuestionarioCompilato, cittadino.getNumeroDocumento())
                     .orElse(new QuestionarioInviatoOnlineEntity());
         }
 
@@ -901,50 +841,35 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
         return token;
     }
 
-    /*
-     * @Transactional
-     * 
-     * @LogMethod
-     * 
-     * @LogExecutionTime
-     * public void inviaQuestionarioATuttiCittadiniNonAncoraInviatoByServizio(Long
-     * idServizio, String codiceFiscaleUtenteLoggato)
-     * {
-     * // Verifico se il facilitatore è il creatore di quel servizio
-     * if( !this.servizioSqlRepository.findByFacilitatoreAndIdServizio(
-     * codiceFiscaleUtenteLoggato, idServizio).isPresent() ) {
-     * final String messaggioErrore = String.
-     * format("Servizio non accessibile per l'utente con codice fiscale '%s in quanto non risulta il creatore del servizio'"
-     * ,codiceFiscaleUtenteLoggato);
-     * throw new ServizioException(messaggioErrore, CodiceErroreEnum.A02);
-     * }
-     * 
-     * // recupero tutti i questionari compilati con STATO = NON INVIATO per quel
-     * servizio
-     * List<QuestionarioCompilatoEntity> questionarioCompilatoList =
-     * this.questionarioCompilatoSqlRepository.findByIdServizioAndStato(idServizio,
-     * StatoQuestionarioEnum.NON_INVIATO.toString());
-     * 
-     * questionarioCompilatoList
-     * .stream()
-     * .forEach(questionarioCompilato -> {
-     * String idQuestionarioCompilato = questionarioCompilato.getId();
-     * CittadinoEntity cittadinoAssociatoQuestionarioCompilato =
-     * questionarioCompilato.getCittadino();
-     * this.inviaLinkAnonimoAndAggiornaStatoQuestionarioCompilato(
-     * idQuestionarioCompilato, questionarioCompilato,
-     * cittadinoAssociatoQuestionarioCompilato);
-     * });
-     * }
-     */
+	/*@Transactional
+	@LogMethod
+	@LogExecutionTime
+	public void inviaQuestionarioATuttiCittadiniNonAncoraInviatoByServizio(Long idServizio, String codiceFiscaleUtenteLoggato) 
+	{
+		// Verifico se il facilitatore è il creatore di quel servizio
+		if( !this.servizioSqlRepository.findByFacilitatoreAndIdServizio(codiceFiscaleUtenteLoggato, idServizio).isPresent() ) {
+			final String messaggioErrore = String.format("Servizio non accessibile per l'utente con codice fiscale '%s in quanto non risulta il creatore del servizio'",codiceFiscaleUtenteLoggato);
+			throw new ServizioException(messaggioErrore, CodiceErroreEnum.A02);
+		}
+
+		// recupero tutti i questionari compilati con STATO = NON INVIATO per quel servizio
+		List<QuestionarioCompilatoEntity> questionarioCompilatoList = this.questionarioCompilatoSqlRepository.findByIdServizioAndStato(idServizio, StatoQuestionarioEnum.NON_INVIATO.toString());
+
+		questionarioCompilatoList
+		.stream()
+		.forEach(questionarioCompilato -> {
+			String idQuestionarioCompilato = questionarioCompilato.getId();
+			CittadinoEntity cittadinoAssociatoQuestionarioCompilato = questionarioCompilato.getCittadino();
+			this.inviaLinkAnonimoAndAggiornaStatoQuestionarioCompilato(idQuestionarioCompilato, questionarioCompilato, cittadinoAssociatoQuestionarioCompilato);
+		});
+	}*/
 
     public boolean checkPermessoIdQuestionarioCompilato(SceltaProfiloParam sceltaProfilo, String idQuestionario) {
         switch (sceltaProfilo.getCodiceRuoloUtenteLoggato()) {
             case "FAC":
             case "VOL":
                 Long servizioId = questionarioCompilatoSqlRepository.findById(idQuestionario).get().getIdServizio();
-                return servizioSqlRepository.findById(servizioId).get().getIdEnteSedeProgettoFacilitatore()
-                        .getIdFacilitatore().equals(sceltaProfilo.getCfUtenteLoggato());
+                return servizioSqlRepository.findById(servizioId).get().getIdEnteSedeProgettoFacilitatore().getIdFacilitatore().equals(sceltaProfilo.getCfUtenteLoggato());
         }
         return false;
     }

@@ -120,7 +120,6 @@ public class CittadinoService {
 			Integer pageSize) {
 		FiltroListaCittadiniParam filtro = cittadiniPaginatiParam.getFiltro();
 		String criterioRicerca = filtro.getCriterioRicerca();
-
 		if (criterioRicerca != null) {
 			criterioRicerca = EncodeUtils.encrypt(EncodeUtils.decrypt(criterioRicerca));
 		}
@@ -242,15 +241,9 @@ public class CittadinoService {
 	@LogMethod
 	@LogExecutionTime
 	public Optional<CittadinoEntity> getCittadinoByCodiceFiscaleOrNumeroDocumento(
-			final Boolean isCodiceFiscaleNonDisponibile,
-			final String codiceFiscale,
-			final String numeroDocumento) {
-		if ((codiceFiscale == null || codiceFiscale.isEmpty()) &&
-				(numeroDocumento == null || numeroDocumento.isEmpty()))
-			throw new CittadinoException("ERRORE: occorre definire il CF o il numero documento", CodiceErroreEnum.U08);
-		if (isCodiceFiscaleNonDisponibile == null || isCodiceFiscaleNonDisponibile) {
-			return cittadinoRepository.findByNumeroDocumento(numeroDocumento);
-		}
+			final String codiceFiscale) {
+		if (codiceFiscale == null || codiceFiscale.isEmpty())
+			throw new CittadinoException("ERRORE: occorre definire il CF", CodiceErroreEnum.U08);
 		return cittadinoRepository.findByCodiceFiscale(codiceFiscale);
 	}
 
