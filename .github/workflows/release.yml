@@ -125,7 +125,7 @@ jobs:
       - name: Install semantic-release extra plugins
         run: |
               npm install --save-dev \
-                semantic-release \
+                semantic-release@23.1.1 \
                 @semantic-release/commit-analyzer \
                 @semantic-release/changelog \
                 @semantic-release/git \
@@ -698,7 +698,7 @@ jobs:
       - name: Install semantic-release extra plugins
         run: |
               npm install --save-dev \
-                semantic-release \
+                semantic-release@23.1.1 \
                 @semantic-release/commit-analyzer \
                 @semantic-release/changelog \
                 @semantic-release/git \
