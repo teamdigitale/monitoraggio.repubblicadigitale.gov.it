@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.33.2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.33.1...1.33.2) (2024-06-14)
+
+
+### Bug Fixes
+
+* **num-riga:** updates 20240614 ([6f7e9b0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6f7e9b03caa4b74682eac21b6485e11f6f9741c6))
+
 ## [1.33.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.33.0...1.33.1) (2024-06-14)
 
 
