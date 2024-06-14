@@ -57,7 +57,7 @@ public enum CodiceErroreEnum {
 	,U21("Errore email utente già esistente")
 	,U22("Errore upload immagine profilo ente")
 	,U23("Errore utente con codice fiscale o numero documento già presente sul servizio indicato")
-
+	,U24("Errore codice fiscale non disponibile")
 	,S01("Errore file upload cittadino non valido")
 	,S02("Errore export csv servizio")
 	,S03("Errore servizio non accessibile per l'utente")
