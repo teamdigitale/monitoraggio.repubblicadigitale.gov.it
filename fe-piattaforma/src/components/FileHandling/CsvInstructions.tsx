@@ -65,7 +65,7 @@ export default function CsvInstructions() {
           onClick={onDownloadGuide}
         >
           <img className='delete-csv-btn-img mr-2' src={uploadIcon} alt='' />
-          Scarica la guida operativa
+          Scarica la guida operativa (PDF)
         </button>
       </div>
     </div>

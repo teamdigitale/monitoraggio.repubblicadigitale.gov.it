@@ -28,7 +28,7 @@ const tableHeading: TableHeadingI[] = [
     classNames: 'text-primary',
   },
   {
-    label: 'Referente / Delegato',
+    label: 'Referente',
     field: 'operatore',
     size: 'medium',
   },
@@ -55,11 +55,6 @@ const tableHeading: TableHeadingI[] = [
   {
     label: 'Cittadini Beneficiari',
     field: 'cittadiniAggiunti',
-    size: 'medium',
-  },
-  {
-    label: 'Report righe scartate',
-    field: 'rilevazioneDiEsperienzaCompilate',
     size: 'medium',
   },
 ];
@@ -138,8 +133,8 @@ const ActivityReportTable = forwardRef(function ActivityReportTable(
             heading={tableHeading}
             values={pagination?.content ?? []}
             totalCounter={pagination?.totalElements ?? -1}
-            withActions
             onActionClick={onActionClick}
+            actionHeadingLabel='Report righe scartate'
           />
           {pagination && pagination.content.length > 0 && (
             <Paginator

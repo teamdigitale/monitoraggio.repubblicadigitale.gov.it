@@ -9,8 +9,8 @@
 }
 
 .success-upload-modal {
-  width: 150px;
-  height: 150px;
+  width: 100px;
+  height: 100px;
 }
 
 .success-upload-info {
@@ -34,4 +34,8 @@ p.file-title-csv {
 
 ol.csv-instruction-list>li::marker {
   font-weight: 600;
+}
+
+.csv-title-page-size {
+  font-size: 40px
 }

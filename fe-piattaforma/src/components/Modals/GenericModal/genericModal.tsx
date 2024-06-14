@@ -52,6 +52,7 @@ export interface GenericModalI {
   subtitle?: ReactNode;
   showCloseBtn?: boolean;
   onCloseFromHeader?: () => void;
+  modalBodyClassNames?: string;
 }
 
 const GenericModal: React.FC<GenericModalI> = (props) => {
@@ -85,6 +86,7 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
     subtitle,
     showCloseBtn = false,
     onCloseFromHeader,
+    modalBodyClassNames,
   } = props;
 
   const handleAction = (action: 'primary' | 'secondary' | 'tertiary') => {
@@ -209,7 +211,7 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
       </>
       {hasSearch || description || payload?.description || children ? (
         <ModalBody
-          className='p-0'
+          className={`p-0 ${modalBodyClassNames}`}
           style={{ maxHeight: isRocketChatModal ? '70vh' : '' }}
         >
           {hasSearch ? (

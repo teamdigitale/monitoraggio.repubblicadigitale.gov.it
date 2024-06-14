@@ -27,8 +27,10 @@ export default function WarningModal(props: {
       }}
       onClose={props.onClose}
       centerButtons
+      showCloseBtn
+      onCloseFromHeader={props.onClose}
     >
-      <div className='d-flex flex-column justify-content-center px-5 mb-4'>
+      <div className='d-flex flex-column justify-content-center px-5 my-4 pt-4'>
         <div className='d-flex justify-content-center mb-4'>
           <Icon
             icon='it-error'

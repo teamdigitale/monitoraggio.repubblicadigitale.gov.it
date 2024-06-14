@@ -99,6 +99,11 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
     [projectContext, projectId, enteId]
   );
 
+  const handleCloseModal = useCallback(() => {
+    dispatch(closeModal());
+    setLastActivityReport(undefined);
+  }, []);
+
   const handleSubmit = useCallback(() => {
     if (
       dataUploadContext &&
@@ -160,6 +165,9 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
             return updateActivityReportFileUploaded(activityReportId, false);
           }
         })
+        .catch(() => {
+          handleCloseModal();
+        })
         .finally(() => {
           props.clearFile();
           if (dataUploadContext) dataUploadContext.search();
@@ -171,12 +179,8 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
     projectContext,
     props.clearFile,
     handleSaveReport,
+    handleCloseModal,
   ]);
-
-  const handleCloseModal = useCallback(() => {
-    dispatch(closeModal());
-    setLastActivityReport(undefined);
-  }, []);
 
   return (
     <>
