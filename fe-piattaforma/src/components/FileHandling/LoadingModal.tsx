@@ -51,7 +51,7 @@ export default function LoadingModal(props: {
           <div className='my-4 d-flex flex-column align-items-center'>
             <p>
               Scarica il report delle righe che non é stato possibile acquisire
-              durante il caricamento:
+              durante il caricamento
             </p>
             <button
               className='btn p-0 ml-4 text-primary-action'

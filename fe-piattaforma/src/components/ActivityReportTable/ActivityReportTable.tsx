@@ -28,7 +28,7 @@ const tableHeading: TableHeadingI[] = [
     classNames: 'text-primary',
   },
   {
-    label: 'Operatore',
+    label: 'Rereferente / Delegato',
     field: 'operatore',
     size: 'medium',
   },
@@ -48,17 +48,17 @@ const tableHeading: TableHeadingI[] = [
     size: 'medium',
   },
   {
-    label: 'Servizi Acquisiti',
+    label: 'Servizi Caricati',
     field: 'serviziAcquisiti',
     size: 'medium',
   },
   {
-    label: 'Cittadini aggiunti',
+    label: 'Cittadini Beneficiari',
     field: 'cittadiniAggiunti',
     size: 'medium',
   },
   {
-    label: 'Rilevazione di esperienza compilate',
+    label: 'Report righe scartate',
     field: 'rilevazioneDiEsperienzaCompilate',
     size: 'medium',
   },

@@ -126,7 +126,7 @@ export default function CSVUploader({
             </>
           ) : (
             <>
-              <h5>Trascina il file CSV per caricarlo</h5>
+              <h5>Trascina il file dati (CSV)</h5>
               <p>
                 oppure{' '}
                 <input
@@ -141,7 +141,7 @@ export default function CSVUploader({
                 <label htmlFor='upload7'>selezionalo dal tuo dispositivo</label>
               </p>
               <hr />
-              <p>massimo 30 Mb</p>
+              <p></p>
             </>
           )}
         </div>

@@ -32,7 +32,7 @@ export default function CSVUploadBanner(props: {
                         cittadini e ai servizi di facilitazione erogati presso
                         le sedi del tuo ente e{' '}
                         <strong>
-                          acquisti al di fuori dalla piattaforma prima del 31
+                          acquisiti al di fuori dalla piattaforma prima del 31
                           maggio 2024
                         </strong>
                         . Inoltre, puoi consultare il{' '}
@@ -46,7 +46,7 @@ export default function CSVUploadBanner(props: {
                         type='button'
                         className='btn btn-outline-primary my-4'
                       >
-                        Vai al tool
+                        Vai al caricamento dati
                       </Button>
                     </div>
                   </div>

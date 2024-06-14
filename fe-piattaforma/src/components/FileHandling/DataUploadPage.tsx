@@ -78,7 +78,9 @@ export default function DataUploadPage() {
       >
         Stai operando in qualità di {userRole ? mapRule.get(userRole) : ''}{' '}
         dell'ente {projectContext?.nomeEnte} per il progetto{' '}
-        {projectContext?.nomeBreve} Ricorda: puoi caricare{' '}
+        {projectContext?.nomeBreve}.
+        
+        Ricorda: puoi caricare{' '}
         <strong>solo i dati dei servizi effettivamente erogati</strong> presso
         le sedi del tuo ente e
         <strong> sei responsabile della loro veridicità.</strong>
