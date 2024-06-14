@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.254](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.253...1.0.0-test.254) (2024-06-14)
+
+
+### Bug Fixes
+
+* **codice-fisc-non-disp-validazioni:** updates 20240614 ([93f960b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/93f960b9675c8dc91798861e9c2876ba55391fa0))
+
 ## [1.0.0-test.253](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.252...1.0.0-test.253) (2024-06-14)
 
 
