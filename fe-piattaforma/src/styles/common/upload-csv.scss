@@ -8,6 +8,17 @@
   height: 100px;
 }
 
+.success-upload-modal {
+  width: 150px;
+  height: 150px;
+}
+
+.success-upload-info {
+  background-color: #f2f6fa;
+  width: 80%;
+  padding: 2rem;
+}
+
 p.file-title-csv {
   font-size: 1rem;
 }
@@ -19,4 +30,8 @@ p.file-title-csv {
 
 .csv-resume-gap {
   gap: 40px
+}
+
+ol.csv-instruction-list>li::marker {
+  font-weight: 600;
 }

@@ -20,14 +20,14 @@ export default function CSVUploadBanner(props: {
                     aria-hidden='true'
                   />
                 </div>
-                <div className='col-12 col-xs-9 col-md-8 col-lg-10 d-flex align-items-center'>
+                <div className='col d-flex align-items-center'>
                   <div className='row w-100'>
-                    <div className='col-xs-12 col-md-6'>
-                      <h4 className='card-title font-bold text-primary mb-0'>
+                    <div className='col'>
+                      <h4 className='card-title font-bold text-primary-action mb-0'>
                         Caricamento massivo dei dati sui cittadini e sui servizi
                         acquisiti al di fuori di Facilita
                       </h4>
-                      <p className='card-text'>
+                      <p>
                         Puoi caricare in modo massivo i dati relativi ai
                         cittadini e ai servizi di facilitazione erogati presso
                         le sedi del tuo ente e{' '}
@@ -40,7 +40,7 @@ export default function CSVUploadBanner(props: {
                         effettuati dal tuo ente.
                       </p>
                     </div>
-                    <div className='col-xs-12 col-md-6 d-flex align-items-center justify-content-end'>
+                    <div className='col-auto d-flex align-items-center justify-content-end ml-4'>
                       <Button
                         onClick={props.onPrimaryButtonClick}
                         type='button'

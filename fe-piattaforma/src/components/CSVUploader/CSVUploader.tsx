@@ -91,9 +91,11 @@ export default function CSVUploader({
   );
 
   return (
-    <div className='flex-column min-width-50'>
+    <div className={`flex-column min-width-50 ${file ? 'h-auto' : 'h-100'}`}>
       <div
-        className={`upload-dragdrop ${file ? 'success' : ''} py-4 pr-4 w-100`}
+        className={`upload-dragdrop ${
+          file ? 'success' : ''
+        } py-4 pr-4 w-100 h-100 align-items-start`}
         data-bs-upload-dragdrop
         onDragOver={(e) => e.preventDefault()}
         onDrop={handleDrop}
@@ -138,10 +140,12 @@ export default function CSVUploader({
                   onChange={handleInput}
                   accept='.csv'
                 />
-                <label htmlFor='upload7'>selezionalo dal tuo dispositivo</label>
+                <label htmlFor='upload7' className='font-weight-semibold'>
+                  selezionalo dal tuo dispositivo
+                </label>
               </p>
               <hr />
-              <p></p>
+              <p>massimo 30 Mb</p>
             </>
           )}
         </div>

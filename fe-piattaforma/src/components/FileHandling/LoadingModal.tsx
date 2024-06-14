@@ -21,29 +21,29 @@ export default function LoadingModal(props: {
       onCloseFromHeader={props.handleCloseModal}
     >
       {props.activityReport ? (
-        <div className='d-flex flex-column align-items-center my-4 p-4'>
-          <img src={greenCheckCircle} alt='' />
+        <div className='d-flex flex-column align-items-center my-4 p-4 text-secondary'>
+          <img className='success-upload-modal' src={greenCheckCircle} alt='' />
           <div className='my-4 text-center'>
-            <p>Caricamento completato con successo!</p>
+            <p className='h5'>Caricamento completato con successo!</p>
           </div>
-          <div className='row csv-resume-gap'>
-            <div>
+          <div className='row csv-resume-gap success-upload-info justify-content-center'>
+            <div className='mx-4'>
               <p>
                 TOTALE RIGHE:{' '}
                 <strong>{props.activityReport.totaleRigheFile}</strong>
               </p>
               <p>
-                RIGHE SCARTATE:
+                RIGHE SCARTATE:{' '}
                 <strong>{props.activityReport.righeScartate}</strong>
               </p>
             </div>
-            <div>
+            <div className='mx-4'>
               <p>
-                SERVIZI CARICATI:
+                SERVIZI CARICATI:{' '}
                 <strong>{props.activityReport.serviziAcquisiti}</strong>
               </p>
               <p>
-                CITTADINI BENEFICIARI:
+                CITTADINI BENEFICIARI:{' '}
                 <strong>{props.activityReport.cittadiniAggiunti}</strong>
               </p>
             </div>
@@ -63,11 +63,11 @@ export default function LoadingModal(props: {
           </div>
         </div>
       ) : (
-        <div className='d-flex flex-column align-items-center my-4 p-4'>
+        <div className='d-flex flex-column align-items-center my-4 p-4 text-secondary'>
           <Spinner active />
           <div className='my-4 text-center'>
-            <p>Caricamento in corso</p>
-            <p>L'operazione potrebbe richiedere alcuni minuti</p>
+            <p className='h5'>Caricamento in corso</p>
+            <p className='h5'>L'operazione potrebbe richiedere alcuni minuti</p>
           </div>
         </div>
       )}

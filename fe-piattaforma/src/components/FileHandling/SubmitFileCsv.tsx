@@ -14,7 +14,7 @@ import {
   updateActivityReportFileUploaded,
   uploadActivityReportResume,
 } from '../../services/activityReportService';
-import { convertBase64ToFile, downloadGeneratedFile } from '../../utils/common';
+import { convertBase64ToFile } from '../../utils/common';
 import { DataUploadContextModel } from '../../models/DataUploadContext.model';
 import { DataUploadContext } from '../../contexts/DataUploadContext';
 import { dispatchNotify } from '../../utils/notifictionHelper';
@@ -184,7 +184,7 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
 
   return (
     <>
-      <div className='text-center'>
+      <div className='text-center mb-2'>
         <p className='font-weight-semibold text-primary'>
           Carica il file controllato
         </p>
@@ -194,7 +194,7 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
         onClick={handleSubmit}
         disabled={!dataUploadContext?.parsedData}
       >
-        Invia file
+        Carica
       </button>
       <LoadingModal
         activityReport={lastActivityReport}
