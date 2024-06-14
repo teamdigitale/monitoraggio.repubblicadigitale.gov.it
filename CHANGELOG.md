@@ -1,5 +1,20 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.33.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.32.4...1.33.0) (2024-06-14)
+
+
+### Features
+
+* **release-fe-be:** updates 20240614 ([475d10b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/475d10b2b31782d7aaad6464278c172eaca79fd2))
+* **rilasci-wave-2:** updates 20240613 ([ef9142f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ef9142fe7c470f725eb3461637c1bfb822277ab4))
+
+
+### Bug Fixes
+
+* **servizio-api:** updates 20240614 ([a317d1d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a317d1d63b40408ee6b5d03b08d6c1c69550e647))
+* **header:** updates 20240614 ([726dafc](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/726dafcce80daf596d3458b682dd7171377cc9a4))
+* **semantic-release:** updates 20240614 ([6227b58](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6227b58d8b7f67e7c78dbce83ca1cd31e4e73c47))
+
 ## [1.32.4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.32.3...1.32.4) (2024-05-21)
 
 
