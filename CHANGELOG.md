@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.255](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.254...1.0.0-test.255) (2024-06-14)
+
+
+### Bug Fixes
+
+* **fe-be-release-tr:** updates 20240614 ([80869c5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/80869c5ef82ed255765936de6016d1ffb6681128))
+
 ## [1.0.0-test.254](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.253...1.0.0-test.254) (2024-06-14)
 
 
