@@ -19,6 +19,7 @@ export default function CsvInstructions() {
     });
   }, []);
 
+
   return (
     <div className='d-flex flex-column'>
       <h1 className='h5 text-black font-weight-semibold'>
@@ -60,13 +61,15 @@ export default function CsvInstructions() {
           Scarica il manuale e consulta i dettagli su come caricare un nuovo
           file e leggere il registro dei caricamenti.
         </p>
-        <button
+        <a
+          href="https://s3-mitd-drupal-prod.s3.eu-central-1.amazonaws.com/public/2024-06/doc_guida_tmp_17183517107416726678.pdf?versionId=GBZcjjjmeC7WYICPXGiOIHFVd1YfmY.r&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA6RGETSJQ7K6J4KNR%2F20240614%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20240614T201539Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7200&X-Amz-Signature=2bf1aa6b77012b958431e1754efb1320a4ceb0cc40243ac087cbdf99607547db"
+          target="_blank"
+          rel="noreferrer"
           className='btn p-0 text-primary-action'
-          onClick={onDownloadGuide}
         >
           <img className='delete-csv-btn-img mr-2' src={uploadIcon} alt='' />
           Scarica la guida operativa (PDF)
-        </button>
+        </a>
       </div>
     </div>
   );
