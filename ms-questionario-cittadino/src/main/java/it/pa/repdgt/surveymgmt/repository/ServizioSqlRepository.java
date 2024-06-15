@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -315,4 +316,7 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 			+ "where qc.id = :idQuestionarioCompilato", nativeQuery = true)
 	Optional<ServizioEntity> findServizioByQuestionarioCompilato(
 			@Param(value = "idQuestionarioCompilato") String idQuestionarioCompilato);
+
+	boolean existsByIdAndIdEnteSedeProgettoFacilitatore(Long idServizio,
+			EnteSedeProgettoFacilitatoreKey enteSedeProgettoFacilitatoreKey);
 }

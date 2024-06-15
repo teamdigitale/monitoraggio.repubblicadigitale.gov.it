@@ -31,7 +31,7 @@ export interface CSVRecord {
     SE3: string;
     SE4: string;
     SE5: string;
-    SE6?: string;
+    SE6: string;
     SE7?: string;
   }
   

@@ -1,6 +1,6 @@
 import Papa from 'papaparse';
 import { useCallback, useState } from 'react';
-import { ServiziElaboratiDto } from '../models/ServiziElaboratiDto.model';
+import { ServiziElaboratiDto } from '../models/ServiziElaboratiDto.Model';
 import { ElaboratoCsvRequest } from '../models/ElaboratoCsvRequest.model';
 import { useFiscalCodeValidation } from './useFiscalCodeValidation';
 import { getUserHeaders } from '../redux/features/user/userThunk';
@@ -207,7 +207,7 @@ export function useCSVProcessor(file: File | undefined) {
       servizioRequest: {
         nomeServizio: serviceName,
         data: parsedDate.isValid() ? parsedDate.format('YYYY-MM-DD') : null,
-        durataServizio: filteredRecord.SE2,
+        durataServizio: filteredRecord.SE2.trim().substring(0, 4),
         idEnteServizio: idEnte,
         idProgetto: idProgetto,
         idEnte: idEnte,
@@ -254,15 +254,14 @@ export function useCSVProcessor(file: File | undefined) {
         competenzeTrattatePrimoLivello: getSE4ValueFromSE5Value(
           filteredRecord.SE5
         ),
-        competenzeTrattateSecondoLivello: generateDescriptionFromMappedValues(
-          filteredRecord.SE5,
-          secondLevelCompetenceMap
-        ),
+        competenzeTrattateSecondoLivello: filteredRecord.SE5,
+        ambitoServiziDigitaliTrattati: filteredRecord.SE6,
+        descrizioneDettagliServizio: filteredRecord.SE7,
         modalitaConoscenzaServizioPrenotato:
           generateDescriptionFromMappedValues(
             filteredRecord.ES1,
             discoveryMethodServiceMap
-          ),
+        ),
         motivoPrenotazione: generateDescriptionFromMappedValues(
           filteredRecord.ES2,
           bookingReasonMap
@@ -274,6 +273,8 @@ export function useCSVProcessor(file: File | undefined) {
           repeatExperienceMap
         ),
         ambitoFacilitazioneFormazioneInteressato: filteredRecord.ES4 || '',
+        risoluzioneProblemiDigitali: filteredRecord.ES5,
+        valutazioneInStelle: filteredRecord.ES6,
         numeroRiga: rowIndex,
       },
     };

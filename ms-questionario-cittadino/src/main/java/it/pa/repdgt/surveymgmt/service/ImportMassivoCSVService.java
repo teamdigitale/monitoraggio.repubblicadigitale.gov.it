@@ -1,7 +1,11 @@
 package it.pa.repdgt.surveymgmt.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import it.pa.repdgt.shared.entity.*;
+import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
+import it.pa.repdgt.surveymgmt.collection.SezioneQ3Collection;
 import it.pa.repdgt.surveymgmt.components.ServiziElaboratiCsvWriter;
 import it.pa.repdgt.surveymgmt.constants.NoteCSV;
 import it.pa.repdgt.surveymgmt.dto.ServiziElaboratiDTO;
@@ -12,12 +16,15 @@ import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
 import it.pa.repdgt.surveymgmt.exception.ServizioException;
 import it.pa.repdgt.surveymgmt.model.ElaboratoCSVRequest;
 import it.pa.repdgt.surveymgmt.model.ElaboratoCSVResponse;
+import it.pa.repdgt.surveymgmt.mongo.repository.SezioneQ3Respository;
 import it.pa.repdgt.surveymgmt.repository.*;
 import it.pa.repdgt.surveymgmt.request.QuestionarioCompilatoRequest;
 import it.pa.repdgt.surveymgmt.request.ServizioRequest;
 import it.pa.repdgt.surveymgmt.restapi.ServizioCittadinoRestApi;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +38,7 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class ImportMassivoCSVService {
+    private final SezioneQ3Respository sezioneQ3Respository;
     private final ProgettoRepository progettoRepository;
     private final ProgrammaRepository programmaRepository;
     private final SedeRepository sedeRepository;
@@ -88,13 +96,30 @@ public class ImportMassivoCSVService {
                 servizioRequest.setCfUtenteLoggato(utenteRecuperato.getCodiceFiscale());
                 servizioRequest.setIdSedeServizio(sedeRecuperata.getId());
                 EnteSedeProgettoFacilitatoreEntity enteSedeProgettoFacilitatore = enteSedeProgettoFacilitatoreRepository
-                        .existsByChiave(servizioRequest.getCfUtenteLoggato(),
+                        .existsByChiave(
+                                servizioRequest.getCfUtenteLoggato(),
                                 servizioRequest.getIdEnteServizio(),
                                 servizioRequest.getIdProgetto(),
                                 servizioRequest.getIdSedeServizio());
                 if (enteSedeProgettoFacilitatore == null) {
                     throw new ResourceNotFoundException(NoteCSV.NOTE_UTENTE_SEDE_NON_ASSOCIATI_AL_PROGETTO,
                             CodiceErroreEnum.C01);
+                }
+                if (servizioOpt.isPresent()) {
+                    if (!existsByServizioAndEnteSedeProgettoFacilitatoreKey(servizioOpt.get().getId(),
+                            enteSedeProgettoFacilitatore.getId())) {
+                        servizioOpt = Optional.empty();
+                    }
+                    ServizioEntity servizioRecuperato = servizioOpt.get();
+                    Optional<SezioneQ3Collection> optSezioneQ3Collection = sezioneQ3Respository
+                            .findById(servizioRecuperato.getIdTemplateCompilatoQ3());
+                    if (optSezioneQ3Collection.isPresent()) {
+                        String descrizioneMongo = recuperaDescrizioneDaMongo(optSezioneQ3Collection);
+                        if (!descrizioneMongo
+                                .equals(servizioElaborato.getCampiAggiuntiviCSV().getDescrizioneDettagliServizio())) {
+                            servizioOpt = Optional.empty();
+                        }
+                    }
                 }
                 servizioRequest.setCodiceRuoloUtenteLoggato(enteSedeProgettoFacilitatore.getRuoloUtente());
                 servizioElaborato.setServizioRequest(servizioRequest);
@@ -144,7 +169,7 @@ public class ImportMassivoCSVService {
             } catch (CittadinoException | ServizioException e) {
                 if (cittadiniAggiunti > 0)
                     cittadiniAggiunti--;
-                servizioElaborato.getCampiAggiuntiviCSV().setNote(e.getCodiceErroreEnum().getDescrizioneErrore());
+                servizioElaborato.getCampiAggiuntiviCSV().setNote(e.getMessage());
                 serviziScartati.add(servizioElaborato);
                 continue;
             } catch (IncorrectResultSizeDataAccessException incorrectException) {
@@ -196,6 +221,19 @@ public class ImportMassivoCSVService {
                 .build();
     }
 
+    private String recuperaDescrizioneDaMongo(Optional<SezioneQ3Collection> optSezioneQ3Collection) {
+        SezioneQ3Collection sezioneQ3Collection = optSezioneQ3Collection.get();
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.valueToTree(sezioneQ3Collection.getSezioneQ3Compilato());
+        JsonNode pathJson = rootNode.path("json");
+        JSONObject jsonObject = new JSONObject(pathJson.asText());
+        JSONArray properties = jsonObject.getJSONArray("properties");
+        JSONObject ultimoOggetto = properties.getJSONObject(properties.length() - 1);
+        String ultimaChiave = ultimoOggetto.keys().next();
+        JSONArray ultimoValoreArray = ultimoOggetto.getJSONArray(ultimaChiave);
+        return ultimoValoreArray.getString(0);
+    }
+
     private Optional<SedeEntity> recuperaSedeDaRichiesta(String nominativoSede) {
         return sedeRepository.findByNomeIgnoreCase(nominativoSede);
     }
@@ -237,6 +275,12 @@ public class ImportMassivoCSVService {
             return Optional.of(listaServizi.get(0));
         }
         return Optional.empty();
+    }
+
+    private boolean existsByServizioAndEnteSedeProgettoFacilitatoreKey(Long idServizio,
+            EnteSedeProgettoFacilitatoreKey enteSedeProgettoFacilitatoreKey) {
+        return servizioSqlRepository.existsByIdAndIdEnteSedeProgettoFacilitatore(idServizio,
+                enteSedeProgettoFacilitatoreKey);
     }
 
     private ServizioEntity salvaServizio(Optional<ServizioEntity> servizioOpt, ServizioRequest servizio) {

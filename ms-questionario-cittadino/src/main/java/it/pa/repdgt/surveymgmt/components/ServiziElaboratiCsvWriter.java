@@ -5,7 +5,11 @@ import it.pa.repdgt.surveymgmt.model.HeaderCSV;
 import it.pa.repdgt.surveymgmt.util.CSVMapUtil;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -60,32 +64,40 @@ public class ServiziElaboratiCsvWriter extends GenericImportCsvWriter<ServiziEla
                                                 : "")
                                 .append(",");
                 if (model.getNuovoCittadinoServizioRequest().getFasciaDiEtaId() != null) {
-                        fileContent.append(CSVMapUtil.getAN8Map().get(
-                                        model.getNuovoCittadinoServizioRequest().getFasciaDiEtaId().toString()) != null
-                                                        ? CSVMapUtil.getAN8Map()
-                                                                        .get(model.getNuovoCittadinoServizioRequest()
-                                                                                        .getFasciaDiEtaId().toString())
-                                                        : "")
+                        fileContent.append(
+                                        CSVMapUtil.getAN8Map().get(model.getNuovoCittadinoServizioRequest()
+                                                        .getFasciaDiEtaId()) != null
+                                                                        ? CSVMapUtil.getAN8Map().get(model
+                                                                                        .getNuovoCittadinoServizioRequest()
+                                                                                        .getFasciaDiEtaId())
+                                                                        : "")
                                         .append(",");
                 } else {
                         fileContent.append("").append(",");
                 }
-                fileContent.append(CSVMapUtil.getAN9Map()
-                                .get(model.getNuovoCittadinoServizioRequest().getTitoloStudio()) != null ? CSVMapUtil
-                                                .getAN9Map()
-                                                .get(model.getNuovoCittadinoServizioRequest().getTitoloStudio()) : "")
+                fileContent
+                                .append(CSVMapUtil.getAN9Map()
+                                                .get(model.getNuovoCittadinoServizioRequest().getTitoloStudio()) != null
+                                                                ? CSVMapUtil.getAN9Map().get(
+                                                                                model.getNuovoCittadinoServizioRequest()
+                                                                                                .getTitoloStudio())
+                                                                : "")
                                 .append(",");
-                fileContent.append(CSVMapUtil.getAN10Map()
-                                .get(model.getNuovoCittadinoServizioRequest().getStatoOccupazionale()) != null
-                                                ? CSVMapUtil.getAN10Map()
-                                                                .get(model.getNuovoCittadinoServizioRequest()
+                fileContent.append(
+                                CSVMapUtil.getAN10Map().get(model.getNuovoCittadinoServizioRequest()
+                                                .getStatoOccupazionale()) != null
+                                                                ? CSVMapUtil.getAN10Map().get(model
+                                                                                .getNuovoCittadinoServizioRequest()
                                                                                 .getStatoOccupazionale())
-                                                : "")
+                                                                : "")
                                 .append(",");
-                fileContent.append(CSVMapUtil.getAN11Map()
-                                .get(model.getNuovoCittadinoServizioRequest().getCittadinanza()) != null ? CSVMapUtil
-                                                .getAN11Map()
-                                                .get(model.getNuovoCittadinoServizioRequest().getCittadinanza()) : "")
+                fileContent
+                                .append(CSVMapUtil.getAN11Map()
+                                                .get(model.getNuovoCittadinoServizioRequest().getCittadinanza()) != null
+                                                                ? CSVMapUtil.getAN11Map().get(
+                                                                                model.getNuovoCittadinoServizioRequest()
+                                                                                                .getCittadinanza())
+                                                                : "")
                                 .append(",");
                 fileContent.append(model.getNuovoCittadinoServizioRequest().getProvinciaDiDomicilio() != null
                                 ? model.getNuovoCittadinoServizioRequest().getProvinciaDiDomicilio()
@@ -99,42 +111,46 @@ public class ServiziElaboratiCsvWriter extends GenericImportCsvWriter<ServiziEla
                                                 : "", CSVMapUtil.getPR2Map()))
                                 .append(",");
                 fileContent.append(model.getServizioRequest().getDataServizio() != null
-                                ? model.getServizioRequest().getDataServizio().toString()
+                                ? formattaData(model.getServizioRequest().getDataServizio())
                                 : "").append(",");
-                fileContent.append(model.getServizioRequest().getDurataServizio() != null
-                                ? model.getServizioRequest().getDurataServizio()
-                                : "").append(",");
+                fileContent.append(
+                                model.getServizioRequest().getDurataServizio() != null
+                                                ? model.getServizioRequest().getDurataServizio()
+                                                : "")
+                                .append(",");
                 fileContent.append(appendSplitValues(model.getCampiAggiuntiviCSV().getTipologiaServiziPrenotato(),
-                                CSVMapUtil.getSE3Map()) != null ? appendSplitValues(
-                                                model.getCampiAggiuntiviCSV().getTipologiaServiziPrenotato(),
-                                                CSVMapUtil.getSE3Map()) : "")
+                                CSVMapUtil.getSE3Map()) != null
+                                                ? appendSplitValues(
+                                                                model.getCampiAggiuntiviCSV()
+                                                                                .getTipologiaServiziPrenotato(),
+                                                                CSVMapUtil.getSE3Map())
+                                                : "")
                                 .append(",");
                 fileContent.append(appendSplitValues(model.getCampiAggiuntiviCSV().getCompetenzeTrattatePrimoLivello(),
-                                CSVMapUtil.getSE4Map()) != null ? appendSplitValues(
-                                                model.getCampiAggiuntiviCSV().getCompetenzeTrattatePrimoLivello(),
-                                                CSVMapUtil.getSE4Map()) : "")
+                                CSVMapUtil.getSE4Map()) != null
+                                                ? appendSplitValues(
+                                                                model.getCampiAggiuntiviCSV()
+                                                                                .getCompetenzeTrattatePrimoLivello(),
+                                                                CSVMapUtil.getSE4Map())
+                                                : "")
                                 .append(",");
-                fileContent.append(
-                                appendSplitValues(model.getCampiAggiuntiviCSV().getCompetenzeTrattateSecondoLivello(),
-                                                CSVMapUtil.getSE5Map()) != null
-                                                                ? appendSplitValues(model.getCampiAggiuntiviCSV()
-                                                                                .getCompetenzeTrattateSecondoLivello(),
-                                                                                CSVMapUtil.getSE5Map())
-                                                                : "")
-                                .append(",");
-                fileContent.append(appendSplitValues(model.getCampiAggiuntiviCSV().getAmbitoServiziDigitaliTrattati(),
-                                CSVMapUtil.getSE6Map()) != null ? appendSplitValues(
-                                                model.getCampiAggiuntiviCSV().getAmbitoServiziDigitaliTrattati(),
-                                                CSVMapUtil.getSE6Map()) : "")
-                                .append(",");
+                fileContent.append(model.getCampiAggiuntiviCSV().getCompetenzeTrattateSecondoLivello() != null
+                                ? model.getCampiAggiuntiviCSV().getCompetenzeTrattateSecondoLivello()
+                                : "").append(",");
+                fileContent.append(model.getCampiAggiuntiviCSV().getAmbitoServiziDigitaliTrattati() != null
+                                ? model.getCampiAggiuntiviCSV().getAmbitoServiziDigitaliTrattati()
+                                : "").append(",");
                 fileContent.append(model.getCampiAggiuntiviCSV().getDescrizioneDettagliServizio() != null
                                 ? model.getCampiAggiuntiviCSV().getDescrizioneDettagliServizio()
                                 : "").append(",");
-                fileContent.append(appendSplitValues(
-                                model.getCampiAggiuntiviCSV().getModalitaConoscenzaServizioPrenotato() != null
-                                                ? model.getCampiAggiuntiviCSV().getModalitaConoscenzaServizioPrenotato()
-                                                : "",
-                                CSVMapUtil.getES1Map())).append(",");
+                fileContent
+                                .append(appendSplitValues(model.getCampiAggiuntiviCSV()
+                                                .getModalitaConoscenzaServizioPrenotato() != null
+                                                                ? model.getCampiAggiuntiviCSV()
+                                                                                .getModalitaConoscenzaServizioPrenotato()
+                                                                : "",
+                                                CSVMapUtil.getES1Map()))
+                                .append(",");
                 fileContent.append(appendSplitValues(model.getCampiAggiuntiviCSV().getMotivoPrenotazione() != null
                                 ? model.getCampiAggiuntiviCSV().getMotivoPrenotazione()
                                 : "", CSVMapUtil.getES2Map())).append(",");
@@ -146,14 +162,20 @@ public class ServiziElaboratiCsvWriter extends GenericImportCsvWriter<ServiziEla
                 fileContent.append(model.getCampiAggiuntiviCSV().getAmbitoFacilitazioneFormazioneInteressato() != null
                                 ? model.getCampiAggiuntiviCSV().getAmbitoFacilitazioneFormazioneInteressato()
                                 : "").append(",");
-                fileContent.append(
-                                appendSplitValues(model.getCampiAggiuntiviCSV().getRisoluzioneProblemiDigitali() != null
-                                                ? model.getCampiAggiuntiviCSV().getRisoluzioneProblemiDigitali()
-                                                : "", CSVMapUtil.getES5Map()))
-                                .append(",");
+                fileContent.append(model.getCampiAggiuntiviCSV().getRisoluzioneProblemiDigitali() != null
+                                ? model.getCampiAggiuntiviCSV().getRisoluzioneProblemiDigitali()
+                                : "").append(",");
                 fileContent.append(model.getCampiAggiuntiviCSV().getValutazioneInStelle() != null
                                 ? model.getCampiAggiuntiviCSV().getValutazioneInStelle()
                                 : "");
+        }
+
+        private String formattaData(Date dataServizio) {
+                LocalDate localDate = dataServizio.toInstant()
+                                .atZone(ZoneId.systemDefault())
+                                .toLocalDate();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                return localDate.format(formatter);
         }
 
         private String appendSplitValues(String value, Map<String, String> map) {
