@@ -202,6 +202,9 @@ public class ImportMassivoCSVService {
                 serviziScartati.add(servizioElaborato);
             }
         }
+        serviziScartati.sort(Comparator.comparing(
+                serviziScartatiDTO -> serviziScartatiDTO.getCampiAggiuntiviCSV().getNumeroRiga()
+        ));
         return ElaboratoCSVResponse.builder()
                 .fileContent(Base64.getEncoder().encodeToString(serviziElaboratiCsvWriter.writeCsv(serviziScartati).getBytes()))
                 .response(buildResponseData(serviziScartati, serviziAggiunti, cittadiniAggiunti, questionariAggiunti))
