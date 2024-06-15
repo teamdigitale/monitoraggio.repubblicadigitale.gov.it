@@ -1,6 +1,7 @@
 package it.pa.repdgt.surveymgmt.service;
 
 import it.pa.repdgt.shared.entity.*;
+import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.surveymgmt.components.ServiziElaboratiCsvWriter;
 import it.pa.repdgt.surveymgmt.constants.NoteCSV;
@@ -88,13 +89,19 @@ public class ImportMassivoCSVService {
                 servizioRequest.setCfUtenteLoggato(utenteRecuperato.getCodiceFiscale());
                 servizioRequest.setIdSedeServizio(sedeRecuperata.getId());
                 EnteSedeProgettoFacilitatoreEntity enteSedeProgettoFacilitatore = enteSedeProgettoFacilitatoreRepository
-                        .existsByChiave(servizioRequest.getCfUtenteLoggato(),
+                        .existsByChiave(
+                                servizioRequest.getCfUtenteLoggato(),
                                 servizioRequest.getIdEnteServizio(),
                                 servizioRequest.getIdProgetto(),
                                 servizioRequest.getIdSedeServizio());
                 if (enteSedeProgettoFacilitatore == null) {
                     throw new ResourceNotFoundException(NoteCSV.NOTE_UTENTE_SEDE_NON_ASSOCIATI_AL_PROGETTO,
                             CodiceErroreEnum.C01);
+                }
+                if (servizioOpt.isPresent()
+                        && !existsByServizioAndEnteSedeProgettoFacilitatoreKey(servizioOpt.get().getId(),
+                                enteSedeProgettoFacilitatore.getId())) {
+                    servizioOpt = Optional.empty();
                 }
                 servizioRequest.setCodiceRuoloUtenteLoggato(enteSedeProgettoFacilitatore.getRuoloUtente());
                 servizioElaborato.setServizioRequest(servizioRequest);
@@ -237,6 +244,12 @@ public class ImportMassivoCSVService {
             return Optional.of(listaServizi.get(0));
         }
         return Optional.empty();
+    }
+
+    private boolean existsByServizioAndEnteSedeProgettoFacilitatoreKey(Long idServizio,
+            EnteSedeProgettoFacilitatoreKey enteSedeProgettoFacilitatoreKey) {
+        return servizioSqlRepository.existsByIdAndIdEnteSedeProgettoFacilitatore(idServizio,
+                enteSedeProgettoFacilitatoreKey);
     }
 
     private ServizioEntity salvaServizio(Optional<ServizioEntity> servizioOpt, ServizioRequest servizio) {

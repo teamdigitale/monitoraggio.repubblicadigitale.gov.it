@@ -9,11 +9,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import it.pa.repdgt.shared.entity.ServizioEntity;
+import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
 
 public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Long> {
 
 	Optional<List<ServizioEntity>> findAllByDataServizioAndDurataServizioAndTipologiaServizio(Date dataServizio,
 			String durataServizio, String tipologiaServizio);
+
+	boolean existsByIdAndIdEnteSedeProgettoFacilitatore(Long idServizio,
+			EnteSedeProgettoFacilitatoreKey enteSedeProgettoFacilitatoreKey);
 
 	@Query(value = ""
 			+ " SELECT "
