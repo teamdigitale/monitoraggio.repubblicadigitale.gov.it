@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.262](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.261...1.0.0-test.262) (2024-06-15)
+
+
+### Bug Fixes
+
+* **criterio-uguaglianza-servizio:** updates 20240615 ([21151f2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/21151f285dd5e0116ea10ecc87dfd3e3b697d4ad))
+
 ## [1.0.0-test.261](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.260...1.0.0-test.261) (2024-06-15)
 
 
