@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.33.3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.33.2...1.33.3) (2024-06-15)
+
+
+### Bug Fixes
+
+* **fe-be-release:** updates 20240615 ([a538f1c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a538f1cb46752bce2dcc5059e7fa0670c868f7f2))
+
 ## [1.33.2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.33.1...1.33.2) (2024-06-14)
 
 
