@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.264](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.263...1.0.0-test.264) (2024-06-15)
+
+
+### Bug Fixes
+
+* **numero-riga:** updates 20240615 ([c29b650](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c29b650a2ff06a858e95bc7caf49bae78a73be69))
+
 ## [1.0.0-test.263](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.262...1.0.0-test.263) (2024-06-15)
 
 
