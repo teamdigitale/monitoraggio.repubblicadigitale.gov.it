@@ -139,9 +139,12 @@ export const validateFields = (
   }
   if (record.SE1) {
     const parsedDate = moment(record.SE1);
-    if (!parsedDate.isValid() || parsedDate.isAfter(maxDate)) {
+    if (!parsedDate.isValid()) {
+      errors.push('La data inserita non è valida.');
+    } else if (parsedDate.isAfter(maxDate)) {
       errors.push('La data del servizio e successiva al 31 Maggio 2024.');
     }
+    
   }
 
   if (record.SE7 && record.SE7.length > 600) {

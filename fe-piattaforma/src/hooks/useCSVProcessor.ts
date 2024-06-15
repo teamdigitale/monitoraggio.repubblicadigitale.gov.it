@@ -207,7 +207,7 @@ export function useCSVProcessor(file: File | undefined) {
       servizioRequest: {
         nomeServizio: serviceName,
         data: parsedDate.isValid() ? parsedDate.format('YYYY-MM-DD') : null,
-        durataServizio: filteredRecord.SE2,
+        durataServizio: filteredRecord.SE2.trim().substring(0, 4),
         idEnteServizio: idEnte,
         idProgetto: idProgetto,
         idEnte: idEnte,
