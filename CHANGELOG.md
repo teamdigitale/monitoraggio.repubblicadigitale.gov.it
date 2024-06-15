@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.263](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.262...1.0.0-test.263) (2024-06-15)
+
+
+### Bug Fixes
+
+* **fe-be-mongo-durataservizio:** updates 20240615 ([5ce7d2c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5ce7d2ca1dd3b1dbdbcf77eece806402c5621e93))
+
 ## [1.0.0-test.262](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.261...1.0.0-test.262) (2024-06-15)
 
 
