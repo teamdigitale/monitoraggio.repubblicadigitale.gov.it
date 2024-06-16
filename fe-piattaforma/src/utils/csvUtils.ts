@@ -144,7 +144,17 @@ export const validateFields = (
     } else if (parsedDate.isAfter(maxDate)) {
       errors.push('La data del servizio e successiva al 31 Maggio 2024.');
     }
-    
+  }
+
+  if (record.SE2) {
+    const valoreDurataServizio = record.SE2.trim().substring(0, 5);
+    if (!(Number.parseInt(valoreDurataServizio.substring(0, 1)) as any instanceof Number) ||
+        !(Number.parseInt(valoreDurataServizio.substring(1, 2)) as any instanceof Number) ||
+        valoreDurataServizio.substring(2, 3) !== ':' ||
+        !(Number.parseInt(valoreDurataServizio.substring(3, 4)) as any instanceof Number) ||
+        !(Number.parseInt(valoreDurataServizio.substring(4, 5)) as any instanceof Number)) {
+          errors.push('Il formato del campo SE2 non rispetta i criteri di formattazione');
+    }
   }
 
   if (record.SE7 && record.SE7.length > 600) {

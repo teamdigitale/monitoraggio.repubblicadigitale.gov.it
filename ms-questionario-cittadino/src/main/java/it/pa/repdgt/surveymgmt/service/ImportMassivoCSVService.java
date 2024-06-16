@@ -111,7 +111,7 @@ public class ImportMassivoCSVService {
                     Optional<SezioneQ3Collection> optSezioneQ3Collection = sezioneQ3Respository.findById(servizioRecuperato.getIdTemplateCompilatoQ3());
                     if (optSezioneQ3Collection.isPresent()) {
                         String descrizioneMongo = recuperaDescrizioneDaMongo(optSezioneQ3Collection);
-                        if (!descrizioneMongo.equals(servizioElaborato.getCampiAggiuntiviCSV().getDescrizioneDettagliServizio())){
+                        if (!descrizioneMongo.equalsIgnoreCase(servizioElaborato.getCampiAggiuntiviCSV().getDescrizioneDettagliServizio())){
                             servizioOpt = Optional.empty();
                         }
                     }
