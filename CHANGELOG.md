@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.33.6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.33.5...1.33.6) (2024-06-16)
+
+
+### Bug Fixes
+
+* **fe-be-riallineamento:** updates 20240616 ([4e956b9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4e956b92d8a063ec87e598172a919289a0e3a28a))
+
 ## [1.33.5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.33.4...1.33.5) (2024-06-16)
 
 
