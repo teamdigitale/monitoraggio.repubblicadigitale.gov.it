@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.265](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.264...1.0.0-test.265) (2024-06-16)
+
+
+### Bug Fixes
+
+* **fe-be-release-ignorecase:** updates 20240616 ([e111ca7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e111ca71c2960bfa8d4fda8bc9bd90d4526d5ec7))
+
 ## [1.0.0-test.264](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.263...1.0.0-test.264) (2024-06-15)
 
 
