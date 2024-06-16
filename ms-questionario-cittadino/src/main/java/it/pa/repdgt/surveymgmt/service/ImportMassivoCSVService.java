@@ -116,7 +116,7 @@ public class ImportMassivoCSVService {
                     if (optSezioneQ3Collection.isPresent()) {
                         String descrizioneMongo = recuperaDescrizioneDaMongo(optSezioneQ3Collection);
                         if (!descrizioneMongo
-                                .equals(servizioElaborato.getCampiAggiuntiviCSV().getDescrizioneDettagliServizio())) {
+                                .equalsIgnoreCase(servizioElaborato.getCampiAggiuntiviCSV().getDescrizioneDettagliServizio())) {
                             servizioOpt = Optional.empty();
                         }
                     }
