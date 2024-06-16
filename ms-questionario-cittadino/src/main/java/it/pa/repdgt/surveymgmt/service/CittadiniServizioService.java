@@ -315,6 +315,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
         }
         if (nuovoCittadinoRequest.getCodiceFiscale() != null && !nuovoCittadinoRequest.getCodiceFiscale().isEmpty()) {
             codiceFiscaleDecrypted = EncodeUtils.decrypt(nuovoCittadinoRequest.getCodiceFiscale());
+            codiceFiscaleDecrypted = codiceFiscaleDecrypted.toUpperCase();
             if (codiceFiscaleDecrypted.length() != 16)
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                         "Il codice fiscale deve essere composto da 16 caratteri");

@@ -144,7 +144,22 @@ export const validateFields = (
     } else if (parsedDate.isAfter(maxDate)) {
       errors.push('La data del servizio e successiva al 31 Maggio 2024.');
     }
-    
+  }
+
+  if (record.SE2) {
+    if (record.SE2.length >= 5) {
+      const valoreDurataServizio = record.SE2.trim().substring(0, 5);
+      console.log(valoreDurataServizio);
+      if (!containsOnlyNumber(valoreDurataServizio.substring(0, 1)) ||
+          !containsOnlyNumber(valoreDurataServizio.substring(1, 2)) ||
+          valoreDurataServizio.substring(2, 3) !== ":" ||
+          !containsOnlyNumber(valoreDurataServizio.substring(3, 4)) ||
+          !containsOnlyNumber(valoreDurataServizio.substring(4, 5))) {
+            errors.push('Il formato del campo SE2 non rispetta i criteri di formattazione');
+      }
+    } else {
+      errors.push('Il formato del campo SE2 non rispetta i criteri di formattazione');
+    }
   }
 
   if (record.SE7 && record.SE7.length > 600) {
@@ -155,6 +170,10 @@ export const validateFields = (
 
   return errors;
 };
+
+export function containsOnlyNumber(value : string) : boolean{
+  return value >= '0' && value <= '9';
+}
 
 export function checkMapValues(record: CSVRecord, errors: string[]) {
   const mapFields = [
