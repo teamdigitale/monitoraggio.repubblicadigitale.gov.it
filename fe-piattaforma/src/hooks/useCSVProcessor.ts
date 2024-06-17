@@ -167,12 +167,12 @@ export function useCSVProcessor(file: File | undefined) {
             reject(error);
           },
         });
-      } else {
+      } /*else {
         reject({
           message:
             "Nessun file selezionato. Si prega di caricare un file per procedere con l'elaborazione.",
         });
-      }
+      }*/
     });
   }, [file, isValidFiscalCode]);
 

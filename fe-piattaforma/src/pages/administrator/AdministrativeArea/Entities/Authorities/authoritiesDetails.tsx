@@ -52,6 +52,8 @@ import { GetProgramDetail } from '../../../../../redux/features/administrativeAr
 import IconNote from '/public/assets/img/it-note-primary.png';
 import { getUserHeaders } from '../../../../../redux/features/user/userThunk';
 import CSVUploadBanner from '../../../../../components/CSVUploadBanner/CSVUploadBanner';
+import { ProjectContext } from '../../../../../contexts/ProjectContext';
+import DataUploadPage from '../../../../../components/FileHandling/DataUploadPage';
 
 const AuthoritiesDetails = () => {
   const authorityDetails = useAppSelector(selectAuthorities)?.detail;
@@ -456,162 +458,172 @@ const AuthoritiesDetails = () => {
   }, []);
 
   return (
-    <div
-      className={clsx(
-        'd-flex',
-        'flex-row',
-        'container',
-        device.mediaIsPhone && 'mt-5'
-      )}
-    >
-      <div className='d-flex flex-column w-100 container'>
-        <div>
-          <DetailLayout
-            titleInfo={{
-              title: authorityDetails?.dettagliInfoEnte?.nome,
-              status: authorityDetails?.dettagliInfoEnte?.stato,
-              upperTitle: { icon: PeopleIcon, text: 'Ente' },
-              subTitle: projectDetail?.nomeBreve || projectDetail?.nome || '',
-            }}
-            enteIcon
-            formButtons={buttons}
-            itemsList={itemsList}
-            // itemsAccordionList={itemAccordionList}
-            buttonsPosition='BOTTOM'
-            goBackPath={
-              projectId
-                ? `/area-amministrativa/progetti/${projectId}/enti-partner`
-                : '/area-amministrativa/enti'
-            }
-          >
-            <FormAuthorities
-              formDisabled
-              enteType={projectId ? formTypes.ENTE_PARTNER : ''}
-            />
-          </DetailLayout>
-          {itemAccordionList?.length
-            ? itemAccordionList?.map((item, index) => (
-                <Accordion
-                  key={index}
-                  title={item.title || ''}
-                  totElem={item.items.length}
-                  cta={getAccordionCTA(item.title).cta}
-                  onClickCta={getAccordionCTA(item.title)?.ctaAction}
-                  lastBottom={index === itemAccordionList.length - 1}
-                  detailAccordion
-                >
-                  {item.items?.length ? (
-                    item.items.map((cardItem) => (
-                      <CardStatusAction
-                        key={cardItem.id}
-                        title={`${cardItem.cognome ? cardItem.cognome : ''} ${
-                          cardItem.nome
-                        }`.trim()}
-                        status={cardItem.stato}
-                        id={cardItem.id}
-                        fullInfo={cardItem.fullInfo}
-                        cf={cardItem.codiceFiscale}
-                        onActionClick={cardItem.actions}
-                      />
-                    ))
-                  ) : (
-                    <EmptySection
-                      title={`Non sono presenti ${item.title?.toLowerCase()} ${
-                        item.title?.toLowerCase() === 'sedi'
-                          ? `associate.`
-                          : `associati.`
-                      }`}
-                      icon={IconNote}
-                      withIcon
-                      noMargin
+    <ProjectContext.Provider value={projectDetail}>
+      {location.pathname.includes('caricamento-dati') && projectDetail ? (
+        <DataUploadPage />
+      ) : (
+        <div
+          className={clsx(
+            'd-flex',
+            'flex-row',
+            'container',
+            device.mediaIsPhone && 'mt-5'
+          )}
+        >
+          <div className='d-flex flex-column w-100 container'>
+            <div>
+              <DetailLayout
+                titleInfo={{
+                  title: authorityDetails?.dettagliInfoEnte?.nome,
+                  status: authorityDetails?.dettagliInfoEnte?.stato,
+                  upperTitle: { icon: PeopleIcon, text: 'Ente' },
+                  subTitle:
+                    projectDetail?.nomeBreve || projectDetail?.nome || '',
+                }}
+                enteIcon
+                formButtons={buttons}
+                itemsList={itemsList}
+                // itemsAccordionList={itemAccordionList}
+                buttonsPosition='BOTTOM'
+                goBackPath={
+                  projectId
+                    ? `/area-amministrativa/progetti/${projectId}/enti-partner`
+                    : '/area-amministrativa/enti'
+                }
+              >
+                <FormAuthorities
+                  formDisabled
+                  enteType={projectId ? formTypes.ENTE_PARTNER : ''}
+                />
+              </DetailLayout>
+              {itemAccordionList?.length
+                ? itemAccordionList?.map((item, index) => (
+                    <Accordion
+                      key={index}
+                      title={item.title || ''}
+                      totElem={item.items.length}
+                      cta={getAccordionCTA(item.title).cta}
+                      onClickCta={getAccordionCTA(item.title)?.ctaAction}
+                      lastBottom={index === itemAccordionList.length - 1}
+                      detailAccordion
+                    >
+                      {item.items?.length ? (
+                        item.items.map((cardItem) => (
+                          <CardStatusAction
+                            key={cardItem.id}
+                            title={`${
+                              cardItem.cognome ? cardItem.cognome : ''
+                            } ${cardItem.nome}`.trim()}
+                            status={cardItem.stato}
+                            id={cardItem.id}
+                            fullInfo={cardItem.fullInfo}
+                            cf={cardItem.codiceFiscale}
+                            onActionClick={cardItem.actions}
+                          />
+                        ))
+                      ) : (
+                        <EmptySection
+                          title={`Non sono presenti ${item.title?.toLowerCase()} ${
+                            item.title?.toLowerCase() === 'sedi'
+                              ? `associate.`
+                              : `associati.`
+                          }`}
+                          icon={IconNote}
+                          withIcon
+                          noMargin
+                        />
+                      )}
+                    </Accordion>
+                  ))
+                : null}
+              {authorityDetails?.profili?.length ? (
+                <div className={clsx('my-5')}>
+                  <h5 className={clsx('primary-color', 'mb-4')}>Profili</h5>
+                  {authorityDetails?.profili.map((profile: any) => (
+                    <CardStatusAction
+                      key={profile.id}
+                      id={profile.id}
+                      status={profile.stato}
+                      title={!profile.tipoEntita ? profile.nome : undefined}
+                      fullInfo={
+                        !profile.referenti?.length
+                          ? {
+                              progetto:
+                                profile.tipoEntita?.toLowerCase() === 'progetto'
+                                  ? profile.nome
+                                  : undefined,
+                              programma:
+                                profile.tipoEntita?.toLowerCase() ===
+                                'programma'
+                                  ? profile.nome
+                                  : undefined,
+                              profilo: profile.profilo,
+                            }
+                          : {
+                              progetto:
+                                profile.tipoEntita?.toLowerCase() === 'progetto'
+                                  ? profile.nome
+                                  : undefined,
+                              programma:
+                                profile.tipoEntita?.toLowerCase() ===
+                                'programma'
+                                  ? profile.nome
+                                  : undefined,
+                              profilo: profile.profilo,
+                              ref:
+                                profile.referenti.length > 1
+                                  ? `Referenti associati:${profile.referenti.length}`
+                                  : profile.referenti,
+                            }
+                      }
+                      onActionClick={{
+                        [CRUDActionTypes.VIEW]: () =>
+                          handleOnProfileView(profile),
+                      }}
                     />
-                  )}
-                </Accordion>
-              ))
-            : null}
-          {authorityDetails?.profili?.length ? (
-            <div className={clsx('my-5')}>
-              <h5 className={clsx('primary-color', 'mb-4')}>Profili</h5>
-              {authorityDetails?.profili.map((profile: any) => (
-                <CardStatusAction
-                  key={profile.id}
-                  id={profile.id}
-                  status={profile.stato}
-                  title={!profile.tipoEntita ? profile.nome : undefined}
-                  fullInfo={
-                    !profile.referenti?.length
-                      ? {
-                          progetto:
-                            profile.tipoEntita?.toLowerCase() === 'progetto'
-                              ? profile.nome
-                              : undefined,
-                          programma:
-                            profile.tipoEntita?.toLowerCase() === 'programma'
-                              ? profile.nome
-                              : undefined,
-                          profilo: profile.profilo,
-                        }
-                      : {
-                          progetto:
-                            profile.tipoEntita?.toLowerCase() === 'progetto'
-                              ? profile.nome
-                              : undefined,
-                          programma:
-                            profile.tipoEntita?.toLowerCase() === 'programma'
-                              ? profile.nome
-                              : undefined,
-                          profilo: profile.profilo,
-                          ref:
-                            profile.referenti.length > 1
-                              ? `Referenti associati:${profile.referenti.length}`
-                              : profile.referenti,
-                        }
-                  }
-                  onActionClick={{
-                    [CRUDActionTypes.VIEW]: () => handleOnProfileView(profile),
-                  }}
-                />
-              ))}
+                  ))}
+                </div>
+              ) : null}
+              {projectId &&
+                (userHeaders.codiceRuoloUtenteLoggato === 'REPP' ||
+                  userHeaders.codiceRuoloUtenteLoggato === 'DTD') && (
+                  <div>
+                    <CSVUploadBanner
+                      onPrimaryButtonClick={handleNavigateToCaricamentoDati}
+                    />
+                  </div>
+                )}
+              <ManageGenericAuthority legend="form modifica ente, i campi con l'asterisco sono obbligatori" />
+              <ManagePartnerAuthority legend="form modifica ente partner, i campi con l'asterisco sono obbligatori" />
+              <ManageDelegate
+                legend="form aggiunta delegato, i campi con l'asterisco sono obbligatori"
+                creation
+              />
+              <ManageReferal
+                legend="form aggiunta referente, i campi con l'asterisco sono obbligatori"
+                creation
+              />
+              <ManageHeadquarter
+                legend="form aggiunta sede, i campi con l'asterisco sono obbligatori"
+                creation
+                enteType='partner'
+              />
+              <DeleteEntityModal
+                onClose={() => dispatch(closeModal())}
+                onConfirm={(payload) => {
+                  if (payload?.entity === 'referent-delegate')
+                    removeReferentDelegate(payload?.cf, payload?.role);
+                  if (payload?.entity === 'headquarter')
+                    removeHeadquarter(payload?.headquarterId);
+                  if (payload?.entity === 'authority')
+                    authorityId && removeAuthority(authorityId, projectId);
+                }}
+              />
             </div>
-          ) : null}
-          {projectId &&
-            (userHeaders.codiceRuoloUtenteLoggato === 'REPP' ||
-              userHeaders.codiceRuoloUtenteLoggato === 'DTD') && (
-              <div>
-                <CSVUploadBanner
-                  onPrimaryButtonClick={handleNavigateToCaricamentoDati}
-                />
-              </div>
-            )}
-          <ManageGenericAuthority legend="form modifica ente, i campi con l'asterisco sono obbligatori" />
-          <ManagePartnerAuthority legend="form modifica ente partner, i campi con l'asterisco sono obbligatori" />
-          <ManageDelegate
-            legend="form aggiunta delegato, i campi con l'asterisco sono obbligatori"
-            creation
-          />
-          <ManageReferal
-            legend="form aggiunta referente, i campi con l'asterisco sono obbligatori"
-            creation
-          />
-          <ManageHeadquarter
-            legend="form aggiunta sede, i campi con l'asterisco sono obbligatori"
-            creation
-            enteType='partner'
-          />
-          <DeleteEntityModal
-            onClose={() => dispatch(closeModal())}
-            onConfirm={(payload) => {
-              if (payload?.entity === 'referent-delegate')
-                removeReferentDelegate(payload?.cf, payload?.role);
-              if (payload?.entity === 'headquarter')
-                removeHeadquarter(payload?.headquarterId);
-              if (payload?.entity === 'authority')
-                authorityId && removeAuthority(authorityId, projectId);
-            }}
-          />
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </ProjectContext.Provider>
   );
 };
 
