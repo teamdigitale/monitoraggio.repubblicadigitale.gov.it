@@ -13,7 +13,7 @@ function showWarning() {
   dispatchNotify({
     title: 'Caricamento file',
     status: 'warning',
-    message: `É possibile inserire un solo file per volta in formato CSV, inoltre la dimensione massima consentitá é di 30 MB.`,
+    message: `Il file contenente i dati da caricare deve essere in formato CSV. Il sistema non accetta altri tipi di estensione.`,
     closable: true,
     duration: 'slow',
   });
@@ -41,7 +41,7 @@ function showError() {
     duration: 'slow',
   });
 }
-const maxSizeCSV = 31457280;
+//const maxSizeCSV = 531457280;
 const acceptedFileTypes = [
   '.csv',
   'text/csv',
@@ -68,7 +68,7 @@ export default function CSVUploader({
       if (
         !file &&
         filesToUpload.length === 1 &&
-        filesToUpload[0].size <= maxSizeCSV &&
+        //filesToUpload[0].size <= maxSizeCSV &&
         acceptedFileTypes.some((fileType) => fileType === filesToUpload[0].type)
       ) {
         saveFile(filesToUpload[0])

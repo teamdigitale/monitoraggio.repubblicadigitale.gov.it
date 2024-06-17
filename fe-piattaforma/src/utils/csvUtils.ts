@@ -125,7 +125,7 @@ export const validateFields = (
   if (missingFields.length > 0) {
     const isMultipleMissing = missingFields.length > 1;
     const fieldText = isMultipleMissing ? 'I campi' : 'Il campo';
-    const verbForm = isMultipleMissing ? 'sono' : 'e';
+    const verbForm = isMultipleMissing ? 'sono' : 'e\'';
     const emptyForm = isMultipleMissing ? 'vuoti' : 'vuoto';
     errors.push(
       `${fieldText} "${missingFields.join(', ')}" ${verbForm} obbligator${
@@ -135,14 +135,14 @@ export const validateFields = (
   }
 
   if (record.AN3 && !validateFiscalCode(record.AN3)) {
-    errors.push('Il Codice Fiscale inserito e invalido.');
+    errors.push('Il Codice Fiscale inserito e\' invalido.');
   }
   if (record.SE1) {
     const parsedDate = moment(record.SE1);
     if (!parsedDate.isValid()) {
-      errors.push('La data inserita non è valida.');
+      errors.push('La data inserita per il servizio non e\' valida.');
     } else if (parsedDate.isAfter(maxDate)) {
-      errors.push('La data del servizio e successiva al 31 Maggio 2024.');
+      errors.push('La data del servizio e\' successiva al 31 Maggio 2024.');
     }
   }
 
@@ -164,7 +164,7 @@ export const validateFields = (
 
   if (record.SE7 && record.SE7.length > 600) {
     errors.push(
-      'Il limite massimo per la descrizione del servizio é di 600 caratteri.'
+      'Il limite massimo per la descrizione del servizio e\' di 600 caratteri.'
     );
   }
 
