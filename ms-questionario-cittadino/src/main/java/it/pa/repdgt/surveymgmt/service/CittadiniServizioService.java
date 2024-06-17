@@ -247,7 +247,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
         if (optionalCittadinoDBFetch.isPresent()) {
             if (nuovoCittadinoRequest.getNuovoCittadino()) {
                 final String messaggioErrore = String.format(
-                        "Cittadino già esistente",
+                        "Cittadino gia' esistente",
                         optionalCittadinoDBFetch.get().getCodiceFiscale(),
                         optionalCittadinoDBFetch.get().getNumeroDocumento());
                 throw new CittadinoException(messaggioErrore, CodiceErroreEnum.U07);
@@ -261,7 +261,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                             "Il codice fiscale deve essere composto da 16 caratteri");
                 if (!isCittadinoMaggiorenne(codiceFiscaleDecrypted))
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Il cittadino non è maggiorenne");
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Il cittadino non e' maggiorenne");
                 nuovoCittadinoRequest.setCodiceFiscale(EncodeUtils.encrypt(codiceFiscaleDecrypted));
             }
             if (nuovoCittadinoRequest.getNumeroDocumento() != null
@@ -275,7 +275,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
         // e in caso affermativo sollevo eccezione
         if (this.esisteCittadinoByIdServizioAndIdCittadino(idServizio, cittadino.getId())) {
             final String messaggioErrore = String.format(
-                    "Cittadino già esistente sul Servizio con id=%s",
+                    "Cittadino gia' esistente sul Servizio con id=%s",
                     cittadino.getCodiceFiscale(),
                     cittadino.getNumeroDocumento(),
                     idServizio);
@@ -320,7 +320,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                         "Il codice fiscale deve essere composto da 16 caratteri");
             if (!isCittadinoMaggiorenne(codiceFiscaleDecrypted))
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Il cittadino non è maggiorenne");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Il cittadino non e' maggiorenne");
             nuovoCittadinoRequest.setCodiceFiscale(EncodeUtils.encrypt(codiceFiscaleDecrypted));
         }
         if (nuovoCittadinoRequest.getNumeroDocumento() != null
@@ -341,7 +341,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
         if (optionalCittadinoDBFetch.isPresent()) {
             if (nuovoCittadinoRequest.getNuovoCittadino()) {
                 final String messaggioErrore = String.format(
-                        "Cittadino già esistente",
+                        "Cittadino gia' esistente",
                         optionalCittadinoDBFetch.get().getCodiceFiscale(),
                         optionalCittadinoDBFetch.get().getNumeroDocumento());
                 throw new CittadinoException(messaggioErrore, CodiceErroreEnum.U07);
@@ -354,7 +354,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
         // e in caso affermativo sollevo eccezione
         if (this.esisteCittadinoByIdServizioAndIdCittadino(idServizio, cittadino.getId())) {
             final String messaggioErrore = String.format(
-                    "Cittadino già esistente sul Servizio con id=%s",
+                    "Cittadino gia' esistente sul Servizio con id=%s",
                     cittadino.getCodiceFiscale(),
                     cittadino.getNumeroDocumento(),
                     idServizio);
