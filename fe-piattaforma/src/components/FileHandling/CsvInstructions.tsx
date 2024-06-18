@@ -62,7 +62,7 @@ export default function CsvInstructions() {
           file e leggere il registro dei caricamenti.
         </p>
         <a
-          href="https://s3-mitd-drupal-prod.s3.eu-central-1.amazonaws.com/public/2024-06/doc_guida_tmp_17183517107416726678.pdf?versionId=GBZcjjjmeC7WYICPXGiOIHFVd1YfmY.r&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA6RGETSJQ7K6J4KNR%2F20240614%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20240614T201539Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7200&X-Amz-Signature=2bf1aa6b77012b958431e1754efb1320a4ceb0cc40243ac087cbdf99607547db"
+          href="https://s3-mitd-drupal-prod.s3.eu-central-1.amazonaws.com/public/2024-06/Guida_Operativa_Caricamento_Dati_17186481766690424010.pdf?versionId=4inbSdqj3DYQ4gcKM3TlaldlGFxIfqyy&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA6RGETSJQ7K6J4KNR%2F20240618%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20240618T043638Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7200&X-Amz-Signature=631b8710c7faa27ffaa47869924abe6647828fc245f389d64fb1067884307762"
           target="_blank"
           rel="noreferrer"
           className='btn p-0 text-primary-action'
