@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.269](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.268...1.0.0-test.269) (2024-06-18)
+
+
+### Bug Fixes
+
+* **import-fe:** updates 20240618 ([7272da6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7272da66b8375ab8f65d65deaa072dcd4e1d47dc))
+* **fe-be-data-serv-uiux:** updates 20240618 ([59c58be](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/59c58be6338b47cd85c05748bf08c09b3428f6bf))
+
 ## [1.0.0-test.268](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.267...1.0.0-test.268) (2024-06-18)
 
 
