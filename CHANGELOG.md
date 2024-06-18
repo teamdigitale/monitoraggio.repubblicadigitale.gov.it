@@ -1,5 +1,14 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.33.7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.33.6...1.33.7) (2024-06-18)
+
+
+### Bug Fixes
+
+* **guida-operativa:** updates 20240618 ([f7ee532](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f7ee53265d8256e8af0ca41887997311830e7a33))
+* **cittadini:** updates 20240617 ([9459c16](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9459c16738c925c7dd65f73c15e948b5165dde44))
+* **fe-be-testi:** updates 20240617 ([b6f34a3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b6f34a3d55c14e5bc90d51a22af5ba501f3886fa))
+
 ## [1.33.6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.33.5...1.33.6) (2024-06-16)
 
 
