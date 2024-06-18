@@ -51,7 +51,6 @@ const SurveyDetailsEdit = lazy(
 import ProtectedComponent from '../../../hoc/AuthGuard/ProtectedComponent/ProtectedComponent';
 import { defaultRedirectUrl } from '../../../routes';
 import ViewSurvey from './Entities/Surveys/viewSurvey/viewSurvey';
-import DataUploadPage from '../../../components/FileHandling/DataUploadPage';
 
 interface PageTitleMockI {
   [key: string]: {
@@ -368,7 +367,7 @@ const AreaAmministrativaRoutes = [
   />,
   <Route
     key='progetti-dettaglio-enti-partner-caricamento-dati'
-    path='progetti/:projectId/enti-partner/:enteId/caricamento-dati'
+    path='progetti/:projectId/enti-partner/:authorityId/caricamento-dati'
     element={<AuthoritiesDetails />}
   />,
   <Route

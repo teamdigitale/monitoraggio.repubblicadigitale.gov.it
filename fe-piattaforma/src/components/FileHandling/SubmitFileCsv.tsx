@@ -24,26 +24,6 @@ import LoadingModal from './LoadingModal';
 import { useAppDispatch } from '../../redux/hooks';
 import { closeModal, openModal } from '../../redux/features/modal/modalSlice';
 
-function showSuccessImport() {
-  dispatchNotify({
-    title: 'Caricamento file',
-    status: 'success',
-    message: `L'import dei dati è andato a buon fine.`,
-    closable: true,
-    duration: 'slow',
-  });
-}
-
-function showErrorImport() {
-  dispatchNotify({
-    title: 'Caricamento file',
-    status: 'error',
-    message: `I dati sono stati parzialmente o totalmente scartati, controllare il file e reinserire i dati mancanti.`,
-    closable: true,
-    duration: 'slow',
-  });
-}
-
 function showErrorUpload() {
   dispatchNotify({
     title: 'Salvataggio file',
@@ -134,9 +114,6 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
             res.data.fileName,
             'text/csv'
           );
-          res.data.response.serviziScartati.length > 0
-            ? showErrorImport()
-            : showSuccessImport();
           return handleSaveReport(res.data, parsedData, res.data.fileName);
         })
         .then((res) => {

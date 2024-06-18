@@ -152,6 +152,7 @@ public enum CodiceErroreEnum {
 	,A03("Non si dispone dei permessi per compilare il questionario")
 	,A04("Sezionario q4 completamente mancante, almeno una risposta deve essere selezionata")
 	,A05("La sezione q4 e' stata compilata ma nessuna risposta e' stata selezionata")
+	,A06("La data del servizio non e' compresa nell'inizio e fine del progetto")
 	;
 	
 	private String descrizioneErrore;

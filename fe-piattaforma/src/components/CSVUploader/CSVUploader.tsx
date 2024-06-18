@@ -9,20 +9,11 @@ import { closeModal, openModal } from '../../redux/features/modal/modalSlice';
 import { selectProfile } from '../../redux/features/user/userSlice';
 import { ProjectContext } from '../../contexts/ProjectContext';
 
-function showWarning() {
+function showErrorFormatCSV() {
   dispatchNotify({
     title: 'Caricamento file',
-    status: 'warning',
+    status: 'error',
     message: `Il file contenente i dati da caricare deve essere in formato CSV. Il sistema non accetta altri tipi di estensione.`,
-    closable: true,
-    duration: 'slow',
-  });
-}
-function showSuccess() {
-  dispatchNotify({
-    title: 'Caricamento file',
-    status: 'success',
-    message: 'File correttamente caricato',
     closable: true,
     duration: 'slow',
   });
@@ -71,15 +62,11 @@ export default function CSVUploader({
         //filesToUpload[0].size <= maxSizeCSV &&
         acceptedFileTypes.some((fileType) => fileType === filesToUpload[0].type)
       ) {
-        saveFile(filesToUpload[0])
-          .then(() => {
-            showSuccess();
-          })
-          .catch(() => {
-            showError();
-          });
+        saveFile(filesToUpload[0]).catch(() => {
+          showError();
+        });
       } else {
-        showWarning();
+        showErrorFormatCSV();
       }
     },
     [file, saveFile]
