@@ -637,3 +637,7 @@ export function downloadGeneratedFile(file: File) {
   document.body.removeChild(link);
   window.URL.revokeObjectURL(url);
 }
+
+export function cutValueAfterRange(value: string, range: number): string {
+  return value.trim().substring(0, range);
+}

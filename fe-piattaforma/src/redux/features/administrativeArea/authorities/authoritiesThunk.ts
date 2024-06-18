@@ -1,6 +1,6 @@
-import {Dispatch, Selector} from '@reduxjs/toolkit';
-import {hideLoader, showLoader} from '../../app/appSlice';
-import {RootState} from '../../../store';
+import { Dispatch, Selector } from '@reduxjs/toolkit';
+import { hideLoader, showLoader } from '../../app/appSlice';
+import { RootState } from '../../../store';
 import isEmpty from 'lodash.isempty';
 import API from '../../../../utils/apiHelper';
 import {
@@ -10,8 +10,8 @@ import {
   setEntityFilterOptions,
   setHeadquarterDetails,
 } from '../administrativeAreaSlice';
-import {mapOptions} from '../../../../utils/common';
-import {getUserHeaders} from '../../user/userThunk';
+import { mapOptions } from '../../../../utils/common';
+import { getUserHeaders } from '../../user/userThunk';
 
 // import { formTypes } from '../../../../pages/administrator/AdministrativeArea/Entities/utils';
 
@@ -264,7 +264,9 @@ export const GetAuthoritiesBySearch =
       dispatch(showLoader());
       dispatch({ ...GetAuthoritiesBySearchAction });
 
-      const res = await API.get(`${process?.env?.ENTE}ente/cerca?criterioRicerca=${search}`);
+      const res = await API.get(
+        `${process?.env?.ENTE}ente/cerca?criterioRicerca=${search}`
+      );
 
       if (search && res.data) {
         dispatch(setAuthoritiesList(res.data));
@@ -418,14 +420,23 @@ export const GetPartnerAuthorityDetail =
     dispatch(showLoader());
     dispatch({ ...SetAuthorityDetailAction });
     try {
-      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
-        getUserHeaders();
+      const {
+        codiceFiscale,
+        codiceRuolo,
+        idProgramma,
+        idProgetto,
+        idEnte,
+        cfUtenteLoggato,
+        codiceRuoloUtenteLoggato,
+      } = getUserHeaders();
       const body = {
         cfUtente: codiceFiscale,
         codiceRuolo,
         idProgramma,
         idProgetto,
         idEnte,
+        cfUtenteLoggato,
+        codiceRuoloUtenteLoggato,
       };
       const res = await API.post(
         `${process?.env?.ENTE}ente/partner/${projectId}/${authorityId}`,
@@ -537,11 +548,14 @@ export const TerminatePartnerAuthority =
 
       if (authorityId && entityId) {
         const { idProgramma, idProgetto, idEnte } = getUserHeaders();
-        await API.put(`${process?.env?.ENTE}ente/${authorityId}/terminaentepartner/${entityId}`, {
-          idProgramma,
-          idProgetto,
-          idEnte,
-        });
+        await API.put(
+          `${process?.env?.ENTE}ente/${authorityId}/terminaentepartner/${entityId}`,
+          {
+            idProgramma,
+            idProgetto,
+            idEnte,
+          }
+        );
       }
     } catch (error) {
       console.log(error);
@@ -570,7 +584,8 @@ export const AssignManagerAuthorityReferentDelegate =
     try {
       dispatch(showLoader());
       dispatch({ ...AssignReferentDelegateAction });
-      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
+      const { idProgramma, idProgetto, idEnte, codiceFiscale, codiceRuolo } =
+        getUserHeaders();
       const endpoint =
         entity === 'programma'
           ? `${process?.env?.ENTE}ente/associa/referenteDelegato/gestoreProgramma`
@@ -581,6 +596,8 @@ export const AssignManagerAuthorityReferentDelegate =
         idProgramma,
         idProgetto,
         idEnte,
+        cfUtenteLoggato: codiceFiscale,
+        codiceRuoloUtenteLoggato: codiceRuolo,
       };
       if (entity === 'programma') {
         body = {
@@ -625,7 +642,10 @@ export const AssignManagerAuthorityReferentDelegate =
           tipoContratto: userDetail?.tipoContratto,
         };
         // eslint-disable-next-line no-case-declarations
-        const res = await API.post(`/utente`, payload);
+        const res = await API.post(
+          `${process?.env?.GESTIONE_UTENTE}/utente`,
+          payload
+        );
         if (res) {
           await API.post(endpoint, body);
         }
@@ -726,7 +746,13 @@ export const RemoveReferentDelegate =
     try {
       dispatch(showLoader());
       dispatch({ ...RemoveReferentDelegateAction });
-      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
+      const {
+        cfUtenteLoggato,
+        codiceRuoloUtenteLoggato,
+        idProgramma,
+        idProgetto,
+        idEnte,
+      } = getUserHeaders();
       switch (role) {
         case 'DEPP':
         case 'REPP':
@@ -768,6 +794,8 @@ export const RemoveReferentDelegate =
               idProgramma,
               idProgetto,
               idEnte,
+              cfUtenteLoggato,
+              codiceRuoloUtenteLoggato,
               cfReferenteDelegato: userCF.toUpperCase(),
               codiceRuoloRefDeg: role,
               idEnteGestore: authorityId?.toString(),

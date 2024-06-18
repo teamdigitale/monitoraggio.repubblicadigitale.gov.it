@@ -33,6 +33,7 @@ import ManageDelegate from '../modals/manageDelegate';
 import ManageReferal from '../modals/manageReferal';
 import ManageHeadquarter from '../../../../../components/AdministrativeArea/Entities/Headquarters/ManageHeadquarter/manageHeadquarter';
 import {
+  GetAuthorityManagerDetail,
   GetPartnerAuthorityDetail,
   RemovePartnerAuthority,
   RemoveReferentDelegate,
@@ -71,6 +72,10 @@ const AuthoritiesDetails = () => {
   const programDetails =
     useAppSelector(selectPrograms).detail?.dettagliInfoProgramma || {};
   const userHeaders = getUserHeaders();
+
+  useEffect(() => {
+    if (authorityId) GetAuthorityManagerDetail(authorityId, 'progetto');
+  }, [authorityId]);
 
   useEffect(() => {
     dispatch(setHeadquarterDetails(null));
@@ -458,7 +463,14 @@ const AuthoritiesDetails = () => {
   }, []);
 
   return (
-    <ProjectContext.Provider value={projectDetail}>
+    <ProjectContext.Provider
+      value={{
+        ...projectDetail,
+        nomeEnte: authorityDetails.dettagliInfoEnte
+          ? authorityDetails.dettagliInfoEnte.nome
+          : undefined,
+      }}
+    >
       {location.pathname.includes('caricamento-dati') && projectDetail ? (
         <DataUploadPage />
       ) : (

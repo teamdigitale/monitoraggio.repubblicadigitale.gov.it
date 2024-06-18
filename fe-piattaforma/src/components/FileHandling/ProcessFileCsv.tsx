@@ -9,16 +9,6 @@ type CSVProcessorProps = {
   file: File | undefined;
 };
 
-function showSuccess() {
-  dispatchNotify({
-    title: 'Elaborazione file',
-    status: 'success',
-    message: 'Elaborazione del file completata con successo',
-    closable: true,
-    duration: 'slow',
-  });
-}
-
 function showError(error: Error) {
   dispatchNotify({
     title: 'Elaborazione file',
@@ -39,7 +29,6 @@ export default function ProcessFileCsv({ file }: CSVProcessorProps) {
         if (dataUploadContext) {
           dataUploadContext.setParsedData(data);
         }
-        showSuccess();
       })
       .catch((error) => {
         showError(error);

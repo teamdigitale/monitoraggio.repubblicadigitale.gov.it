@@ -21,7 +21,7 @@ import {
   downloadActivityReportResume,
   generateDownloadPUActivityReport,
 } from '../services/activityReportService';
-import { downloadGeneratedFile } from './common';
+import { cutValueAfterRange, downloadGeneratedFile } from './common';
 import { RegistroAttivita } from '../models/RegistroAttivita.model';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const AES256 = require('aes-everywhere');
@@ -125,7 +125,7 @@ export const validateFields = (
   if (missingFields.length > 0) {
     const isMultipleMissing = missingFields.length > 1;
     const fieldText = isMultipleMissing ? 'I campi' : 'Il campo';
-    const verbForm = isMultipleMissing ? 'sono' : 'e\'';
+    const verbForm = isMultipleMissing ? 'sono' : "e'";
     const emptyForm = isMultipleMissing ? 'vuoti' : 'vuoto';
     errors.push(
       `${fieldText} "${missingFields.join(', ')}" ${verbForm} obbligator${
@@ -135,14 +135,14 @@ export const validateFields = (
   }
 
   if (record.AN3 && !validateFiscalCode(record.AN3)) {
-    errors.push('Il Codice Fiscale inserito e\' invalido.');
+    errors.push("Il Codice Fiscale inserito e' invalido.");
   }
   if (record.SE1) {
     const parsedDate = moment(record.SE1);
     if (!parsedDate.isValid()) {
-      errors.push('La data inserita per il servizio non e\' valida.');
+      errors.push("La data inserita per il servizio non e' valida.");
     } else if (parsedDate.isAfter(maxDate)) {
-      errors.push('La data del servizio e\' successiva al 31 Maggio 2024.');
+      errors.push("La data del servizio e' successiva al 31 Maggio 2024.");
     }
   }
 
@@ -150,28 +150,31 @@ export const validateFields = (
     if (record.SE2.length >= 5) {
       const valoreDurataServizio = record.SE2.trim().substring(0, 5);
       console.log(valoreDurataServizio);
-      if (!containsOnlyNumber(valoreDurataServizio.substring(0, 1)) ||
-          !containsOnlyNumber(valoreDurataServizio.substring(1, 2)) ||
-          valoreDurataServizio.substring(2, 3) !== ":" ||
-          !containsOnlyNumber(valoreDurataServizio.substring(3, 4)) ||
-          !containsOnlyNumber(valoreDurataServizio.substring(4, 5))) {
-            errors.push('Il formato del campo SE2 non rispetta i criteri di formattazione');
+      if (
+        !containsOnlyNumber(valoreDurataServizio.substring(0, 1)) ||
+        !containsOnlyNumber(valoreDurataServizio.substring(1, 2)) ||
+        valoreDurataServizio.substring(2, 3) !== ':' ||
+        !containsOnlyNumber(valoreDurataServizio.substring(3, 4)) ||
+        !containsOnlyNumber(valoreDurataServizio.substring(4, 5))
+      ) {
+        errors.push(
+          'Il formato del campo SE2 non rispetta i criteri di formattazione'
+        );
       }
     } else {
-      errors.push('Il formato del campo SE2 non rispetta i criteri di formattazione');
+      errors.push(
+        'Il formato del campo SE2 non rispetta i criteri di formattazione'
+      );
     }
   }
 
-  if (record.SE7 && record.SE7.length > 600) {
-    errors.push(
-      'Il limite massimo per la descrizione del servizio e\' di 600 caratteri.'
-    );
-  }
+  if (record.SE7) record.SE7 = cutValueAfterRange(record.SE7, 600);
+  if (record.ES4) record.ES4 = cutValueAfterRange(record.ES4, 600);
 
   return errors;
 };
 
-export function containsOnlyNumber(value : string) : boolean{
+export function containsOnlyNumber(value: string): boolean {
   return value >= '0' && value <= '9';
 }
 
