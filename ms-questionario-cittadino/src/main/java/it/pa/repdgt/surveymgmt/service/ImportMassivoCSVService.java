@@ -142,7 +142,7 @@ public class ImportMassivoCSVService {
                 if (!controllaDataServizioProgettoValida(servizioOpt, servizioElaborato, progettoEntity)) {
                     throw new ResourceNotFoundException(
                             "La data del servizio non e' compresa nell'inizio e fine del progetto",
-                            new RuntimeException(), CodiceErroreEnum.A02);
+                            CodiceErroreEnum.A02);
                 }
                 servizioElaborato.setQuestionarioCompilatoRequest(questionarioCompilatoRequest);
                 ServizioEntity servizioEntity = salvaServizio(servizioOpt, servizioElaborato.getServizioRequest());
