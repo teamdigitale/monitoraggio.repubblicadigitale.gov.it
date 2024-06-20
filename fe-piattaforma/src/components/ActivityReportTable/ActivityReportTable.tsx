@@ -136,7 +136,7 @@ const ActivityReportTable = forwardRef(function ActivityReportTable(
             onActionClick={onActionClick}
             actionHeadingLabel='Report righe scartate'
           />
-          {pagination && pagination.content.length > 0 && (
+          {pagination && pagination?.content?.length > 0 && (
             <Paginator
               total={pagination.totalPages}
               pageSize={pagination.size}

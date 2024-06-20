@@ -469,6 +469,7 @@ const AuthoritiesDetails = () => {
         nomeEnte: authorityDetails.dettagliInfoEnte
           ? authorityDetails.dettagliInfoEnte.nome
           : undefined,
+        idEnte: authorityId,
       }}
     >
       {location.pathname.includes('caricamento-dati') && projectDetail ? (
