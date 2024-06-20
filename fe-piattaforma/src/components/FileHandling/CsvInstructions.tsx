@@ -44,8 +44,8 @@ export default function CsvInstructions() {
           file e leggere il registro dei caricamenti.
         </p>
         <a
-          href='/assets/pdf/guida-operativa-csv.pdf'
-          download='guida-operativa-csv.pdf'
+          href='/assets/pdf/Guida_Operativa_Caricamento_Dati.pdf'
+          download='Guida_Operativa_Caricamento_Dati.pdf'
           target='_blank'
           className='btn p-0 text-primary-action'
         >
