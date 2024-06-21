@@ -111,6 +111,7 @@ export function useCSVProcessor(file: File | undefined) {
             const serviziValidati: ServiziElaboratiDto[] = [];
             const serviziScartati: ServiziElaboratiDto[] = [];
             const data: CSVRecord[] = results.data;
+            
             if (data.length > 0) {
               data.forEach((record: CSVRecord, index: number) => {
                 const {
