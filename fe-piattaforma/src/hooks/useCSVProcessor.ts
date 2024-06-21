@@ -92,75 +92,86 @@ export function useCSVProcessor(file: File | undefined) {
           header: true,
           skipEmptyLines: true,
           complete: (results: Papa.ParseResult<CSVRecord>) => {
+
+            
             if (!headersCSV.every((header) => header in results.data[0])) {
               rejectWithMessage(
                 'Il file inserito non é conforme ai criteri di elaborazione, assicurati che tutte le colonne siano presenti.'
               );
-            } else {
-              const serviziValidati: ServiziElaboratiDto[] = [];
-              const serviziScartati: ServiziElaboratiDto[] = [];
-              const data: CSVRecord[] = results.data;
-              if (data.length > 0) {
-                data.forEach((record: CSVRecord, index: number) => {
-                  const {
-                    AN14: _AN14,
-                    AN17: _AN17,
-                    ...filteredRecord
-                  } = record;
-                  filteredRecord.AN3 = filteredRecord.AN3.trim();
-                  const { rejectedTypes } = generateServiceName(
-                    filteredRecord.SE3
-                  );
-                  const errors = validateFields(
-                    filteredRecord,
-                    isValidFiscalCode
-                  );
-                  checkMapValues(record, errors);
-                  if (
-                    rejectedTypes.length > 0 &&
-                    filteredRecord.SE3 &&
-                    filteredRecord.SE3.trim() !== ''
-                  ) {
-                    errors.push(
-                      `Servizio non riconosciuto nel campo SE3: ${rejectedTypes.join(
-                        ', '
-                      )}. Assicurati che i tipi di servizio inseriti siano corretti`
-                    );
-                  }
+              return;
+            } 
 
-                  const cfData: IPersonalInfo =
-                    CodiceFiscaleUtils.Parser.cfDecode(filteredRecord.AN3);
-
-                  if (!getAgeGroupCodeByYear(cfData.date)) {
-                    errors.push('Il cittadino deve essere maggiorenne.');
-                  }
-
-                  const isValidFields = errors.length === 0;
-                  const servizioElaborato: ServiziElaboratiDto =
-                    mappingDatiElaborati(
-                      filteredRecord,
-                      errors,
-                      index + 1,
-                      cfData
-                    );
-                  if (isValidFields && rejectedTypes.length === 0) {
-                    serviziValidati.push(servizioElaborato);
-                  } else {
-                    serviziScartati.push(servizioElaborato);
-                  }
-                });
-                const serviziElaborati: ElaboratoCsvRequest = {
-                  serviziValidati: serviziValidati,
-                  serviziScartati: serviziScartati,
-                };
-                resolve(serviziElaborati);
-                setIsProcessing(false);
-              } else {
-                rejectWithMessage(
-                  'Il file inserito non é conforme ai criteri di elaborazione, assicurati che siano presenti dei dati da elaborare.'
-                );
-              }
+            if(results.data.length > 400) {
+              rejectWithMessage(
+                "Visto l'elevato numero di caricamenti odierni, ti chiediamo di inserire file contenenti un massimo di 400 righe"
+              );
+              return;
             }
+            
+            const serviziValidati: ServiziElaboratiDto[] = [];
+            const serviziScartati: ServiziElaboratiDto[] = [];
+            const data: CSVRecord[] = results.data;
+            if (data.length > 0) {
+              data.forEach((record: CSVRecord, index: number) => {
+                const {
+                  AN14: _AN14,
+                  AN17: _AN17,
+                  ...filteredRecord
+                } = record;
+                filteredRecord.AN3 = filteredRecord.AN3.trim();
+                const { rejectedTypes } = generateServiceName(
+                  filteredRecord.SE3
+                );
+                const errors = validateFields(
+                  filteredRecord,
+                  isValidFiscalCode
+                );
+                checkMapValues(record, errors);
+                if (
+                  rejectedTypes.length > 0 &&
+                  filteredRecord.SE3 &&
+                  filteredRecord.SE3.trim() !== ''
+                ) {
+                  errors.push(
+                    `Servizio non riconosciuto nel campo SE3: ${rejectedTypes.join(
+                      ', '
+                    )}. Assicurati che i tipi di servizio inseriti siano corretti`
+                  );
+                }
+
+                const cfData: IPersonalInfo =
+                  CodiceFiscaleUtils.Parser.cfDecode(filteredRecord.AN3);
+
+                if (!getAgeGroupCodeByYear(cfData.date)) {
+                  errors.push('Il cittadino deve essere maggiorenne.');
+                }
+
+                const isValidFields = errors.length === 0;
+                const servizioElaborato: ServiziElaboratiDto =
+                  mappingDatiElaborati(
+                    filteredRecord,
+                    errors,
+                    index + 1,
+                    cfData
+                  );
+                if (isValidFields && rejectedTypes.length === 0) {
+                  serviziValidati.push(servizioElaborato);
+                } else {
+                  serviziScartati.push(servizioElaborato);
+                }
+              });
+              const serviziElaborati: ElaboratoCsvRequest = {
+                serviziValidati: serviziValidati,
+                serviziScartati: serviziScartati,
+              };
+              resolve(serviziElaborati);
+              setIsProcessing(false);
+            } else {
+              rejectWithMessage(
+                'Il file inserito non é conforme ai criteri di elaborazione, assicurati che siano presenti dei dati da elaborare.'
+              );
+            }
+            
           },
           error: (error: Error) => {
             setIsProcessing(false);
