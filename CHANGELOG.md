@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.274](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.273...1.0.0-test.274) (2024-06-21)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** fix csv 20240621 ([e9695f9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e9695f908ea1f7b6c962d967abf386e1a65939d0))
+
 ## [1.0.0-test.273](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.272...1.0.0-test.273) (2024-06-21)
 
 
