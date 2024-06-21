@@ -133,7 +133,8 @@ public class ImportMassivoCSVService {
                     throw new ResourceNotFoundException(NoteCSV.NOTE_PROGETTO_NON_PRESENTE, CodiceErroreEnum.C01);
                 }
                 ProgettoEntity progettoEntityData = progettoEntity.get();
-                if (servizioRequest.getDataServizio().before(progettoEntityData.getDataFineProgetto()) && servizioRequest.getDataServizio().after(progettoEntityData.getDataInizioProgetto())) {
+                if (!servizioRequest.getDataServizio().after(progettoEntityData.getDataFineProgetto()) &&
+                        !servizioRequest.getDataServizio().before(progettoEntityData.getDataInizioProgetto())) {
                     servizioElaborato.setQuestionarioCompilatoRequest(questionarioCompilatoRequest);
                     ServizioEntity servizioEntity = salvaServizio(servizioOpt, servizioElaborato.getServizioRequest());
                     idServizio = servizioEntity.getId();
