@@ -1,5 +1,18 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.33.8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.33.7...1.33.8) (2024-06-24)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** fix csv 20240621 ([b11680d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b11680d21572b5c9b859540394c1ae4af399ad5d))
+* **be-data-progetto:** updates 20240621 ([a410322](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a410322cdf073f0497709904f9659bb72da9f236))
+* **fe-authorities:** updates 20240620 ([563defb](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/563defb716b3609d99a3eb713dbe95120b2a34a4))
+* **be-data-servizi:** updates 20240620 ([dd8813a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/dd8813aa66a122d93f2ead4c9db788831ac02827))
+* **csv-link:** updates 20240618 ([af83392](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/af83392135140092116b8b86dd618e5eb16c3be3))
+* **be-except:** updates 20240618 ([a52f937](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a52f937e394114c53d04359fdc08a0c88d715ad5))
+* **fe-be-release-prod:** updates 20240618 ([e80f37f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e80f37f5f1b9b8c296e3c57ec62871f8fd94ea40))
+
 ## [1.33.7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.33.6...1.33.7) (2024-06-18)
 
 
