@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.276](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.275...1.0.0-test.276) (2024-06-26)
+
+
+### Bug Fixes
+
+* **ms-questionario-cittadino:** fix csv 20240626 ([508df84](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/508df84518b8f58809bdcb826f6c75cde4684a2b))
+
 ## [1.0.0-test.275](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.274...1.0.0-test.275) (2024-06-26)
 
 
