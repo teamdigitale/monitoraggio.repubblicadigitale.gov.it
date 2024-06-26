@@ -75,11 +75,8 @@ public class ImportMassivoCSVService {
         Integer questionariAggiunti = 0;
         String idQuestionario;
         for (ServiziElaboratiDTO servizioElaborato : serviziValidati) {
-            Optional<ServizioEntity> servizioOpt = getServizioByCriteria(servizioElaborato.getServizioRequest());
+            Optional<ServizioEntity> servizioOpt = Optional.empty();
             try {
-                if (!servizioOpt.isPresent()) {
-                    serviziAggiunti++;
-                }
                 Optional<UtenteEntity> utenteFacilitatoreDellaRichiesta = recuperaUtenteFacilitatoreDaRichiesta(
                         servizioElaborato.getCampiAggiuntiviCSV().getIdFacilitatore(),
                         servizioElaborato.getCampiAggiuntiviCSV().getNominativoFacilitatore()
@@ -104,10 +101,11 @@ public class ImportMassivoCSVService {
                 if (enteSedeProgettoFacilitatore == null) {
                     throw new ResourceNotFoundException(NoteCSV.NOTE_UTENTE_SEDE_NON_ASSOCIATI_AL_PROGETTO, CodiceErroreEnum.C01);
                 }
+                
+                //existsByServizioAndEnteSedeProgettoFacilitatoreKey(servizioOpt.get().getId(), enteSedeProgettoFacilitatore.getId())){
+                servizioOpt = getServizioByDatiControllo(servizioElaborato.getServizioRequest(), enteSedeProgettoFacilitatore.getId());
+                
                 if (servizioOpt.isPresent()){
-                    if (!existsByServizioAndEnteSedeProgettoFacilitatoreKey(servizioOpt.get().getId(), enteSedeProgettoFacilitatore.getId())){
-                        servizioOpt = Optional.empty();
-                    }
                     ServizioEntity servizioRecuperato = servizioOpt.get();
                     Optional<SezioneQ3Collection> optSezioneQ3Collection = sezioneQ3Respository.findById(servizioRecuperato.getIdTemplateCompilatoQ3());
                     if (optSezioneQ3Collection.isPresent()) {
@@ -116,6 +114,10 @@ public class ImportMassivoCSVService {
                             servizioOpt = Optional.empty();
                         }
                     }
+                }
+
+                if (!servizioOpt.isPresent()) {
+                    serviziAggiunti++;
                 }
                 servizioRequest.setCodiceRuoloUtenteLoggato(enteSedeProgettoFacilitatore.getRuoloUtente());
                 servizioElaborato.setServizioRequest(servizioRequest);
@@ -292,6 +294,19 @@ public class ImportMassivoCSVService {
 
     private ServizioEntity salvaServizio(Optional<ServizioEntity> servizioOpt, ServizioRequest servizio) {
         return servizioOpt.orElseGet(() -> servizioService.creaServizio(servizio));
+    }
+
+
+    private Optional<ServizioEntity> getServizioByDatiControllo(ServizioRequest servizioRequest, EnteSedeProgettoFacilitatoreKey enteSedeProgettoFacilitatoreKey) {
+        Optional<List<ServizioEntity>> servizioOpt = servizioSqlRepository.findAllByDataServizioAndDurataServizioAndTipologiaServizioAndIdEnteSedeProgettoFacilitatore(
+                servizioRequest.getDataServizio(),
+                servizioRequest.getDurataServizio(),
+                String.join(", ", servizioRequest.getListaTipologiaServizi()), enteSedeProgettoFacilitatoreKey);
+        if (servizioOpt.isPresent() && !servizioOpt.get().isEmpty()) {
+            List<ServizioEntity> listaServizi = servizioOpt.get();
+            return Optional.of(listaServizi.get(0));
+        }
+        return Optional.empty();
     }
 
 }

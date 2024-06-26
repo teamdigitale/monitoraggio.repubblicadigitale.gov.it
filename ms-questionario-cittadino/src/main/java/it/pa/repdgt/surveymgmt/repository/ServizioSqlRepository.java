@@ -319,4 +319,8 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 
 	boolean existsByIdAndIdEnteSedeProgettoFacilitatore(Long idServizio,
 			EnteSedeProgettoFacilitatoreKey enteSedeProgettoFacilitatoreKey);
+
+
+	Optional<List<ServizioEntity>> findAllByDataServizioAndDurataServizioAndTipologiaServizioAndIdEnteSedeProgettoFacilitatore(Date dataServizio,
+		String durataServizio, String tipologiaServizio, EnteSedeProgettoFacilitatoreKey enteSedeProgettoFacilitatoreKey);
 }
