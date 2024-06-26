@@ -23,9 +23,9 @@ public class CampiAggiuntiviCSV {
     private String serviziPassatiFacilitazione;
     private String tipologiaServiziPrenotato;
     private String competenzeTrattatePrimoLivello;
-    private String competenzeTrattateSecondoLivello;
-    private String ambitoServiziDigitaliTrattati;
-    private String descrizioneDettagliServizio;
+    private String competenzeTrattateSecondoLivello; // 26
+    private String ambitoServiziDigitaliTrattati; // 27
+    private String descrizioneDettagliServizio; // 28
     private String modalitaConoscenzaServizioPrenotato;
     private String motivoPrenotazione;
     private String valutazioneRipetizioneEsperienza;

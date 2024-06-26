@@ -21,12 +21,12 @@ import it.pa.repdgt.surveymgmt.repository.*;
 import it.pa.repdgt.surveymgmt.request.QuestionarioCompilatoRequest;
 import it.pa.repdgt.surveymgmt.request.ServizioRequest;
 import it.pa.repdgt.surveymgmt.restapi.ServizioCittadinoRestApi;
+import it.pa.repdgt.surveymgmt.util.CSVMapUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -109,8 +109,21 @@ public class ImportMassivoCSVService {
                     ServizioEntity servizioRecuperato = servizioOpt.get();
                     Optional<SezioneQ3Collection> optSezioneQ3Collection = sezioneQ3Respository.findById(servizioRecuperato.getIdTemplateCompilatoQ3());
                     if (optSezioneQ3Collection.isPresent()) {
-                        String descrizioneMongo = recuperaDescrizioneDaMongo(optSezioneQ3Collection);
-                        if (!descrizioneMongo.equalsIgnoreCase(servizioElaborato.getCampiAggiuntiviCSV().getDescrizioneDettagliServizio())){
+                       // String descrizioneMongo = recuperaDescrizioneDaMongo(optSezioneQ3Collection);
+                        boolean isStessoServizio = true;
+                        if (!recuperaDescrizioneDaMongo(optSezioneQ3Collection, 6, null).equalsIgnoreCase(servizioElaborato.getCampiAggiuntiviCSV().getDescrizioneDettagliServizio())){
+                            isStessoServizio = false;
+                            //servizioOpt = Optional.empty();
+                        }
+                        if (!recuperaDescrizioneDaMongo(optSezioneQ3Collection,5, CSVMapUtil.getSE6Map()).equalsIgnoreCase(servizioElaborato.getCampiAggiuntiviCSV().getAmbitoServiziDigitaliTrattati())){
+                            isStessoServizio = false;
+                            //servizioOpt = Optional.empty();
+                        }
+                        if (!recuperaDescrizioneDaMongo(optSezioneQ3Collection,4, CSVMapUtil.getSE5Map()).equalsIgnoreCase(servizioElaborato.getCampiAggiuntiviCSV().getCompetenzeTrattateSecondoLivello())){
+                            isStessoServizio = false;
+                            //servizioOpt = Optional.empty();
+                        }
+                        if(!isStessoServizio){
                             servizioOpt = Optional.empty();
                         }
                     }
@@ -232,19 +245,42 @@ public class ImportMassivoCSVService {
         }
     }
 
-    private String recuperaDescrizioneDaMongo(Optional<SezioneQ3Collection> optSezioneQ3Collection) {
+    // private String recuperaDescrizioneDaMongo(Optional<SezioneQ3Collection> optSezioneQ3Collection, int index) {
+    //     SezioneQ3Collection sezioneQ3Collection = optSezioneQ3Collection.get();
+    //     ObjectMapper objectMapper = new ObjectMapper();
+    //     JsonNode rootNode = objectMapper.valueToTree(sezioneQ3Collection.getSezioneQ3Compilato());
+    //     JsonNode pathJson = rootNode.path("json");
+    //     JSONObject jsonObject = new JSONObject(pathJson.asText());
+    //     JSONArray properties = jsonObject.getJSONArray("properties");
+    //     JSONObject ultimoOggetto = properties.getJSONObject(index);
+    //     String ultimaChiave = ultimoOggetto.keys().next();
+    //     JSONArray ultimoValoreArray = ultimoOggetto.getJSONArray(ultimaChiave);
+    //     return ultimoValoreArray.getString(0);
+    // }
+
+
+    private String recuperaDescrizioneDaMongo(Optional<SezioneQ3Collection> optSezioneQ3Collection, int index, Map<String,String> map) {
         SezioneQ3Collection sezioneQ3Collection = optSezioneQ3Collection.get();
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode rootNode = objectMapper.valueToTree(sezioneQ3Collection.getSezioneQ3Compilato());
         JsonNode pathJson = rootNode.path("json");
         JSONObject jsonObject = new JSONObject(pathJson.asText());
         JSONArray properties = jsonObject.getJSONArray("properties");
-        JSONObject ultimoOggetto = properties.getJSONObject(properties.length() - 1);
+        JSONObject ultimoOggetto = properties.getJSONObject(index);
         String ultimaChiave = ultimoOggetto.keys().next();
         JSONArray ultimoValoreArray = ultimoOggetto.getJSONArray(ultimaChiave);
-        return ultimoValoreArray.getString(0);
-    }
+        if(map != null){
+            List<String> resultString = new ArrayList<>();
+            for(int i = 0; i<ultimoValoreArray.length(); i++){
+                String jsonObjectArray = ultimoValoreArray.getString(i);
+                resultString.add(map.get(jsonObjectArray));
+            }
+            return String.join(":", resultString); 
 
+        }else{
+            return ultimoValoreArray.getString(0);
+        }
+    }
 
     private Optional<SedeEntity> recuperaSedeDaRichiesta(String nominativoSede) {
         return sedeRepository.findByNomeIgnoreCase(nominativoSede);
