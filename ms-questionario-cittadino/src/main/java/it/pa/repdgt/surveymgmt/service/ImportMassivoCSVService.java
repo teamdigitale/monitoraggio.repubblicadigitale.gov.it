@@ -103,31 +103,34 @@ public class ImportMassivoCSVService {
                 }
                 
                 //existsByServizioAndEnteSedeProgettoFacilitatoreKey(servizioOpt.get().getId(), enteSedeProgettoFacilitatore.getId())){
-                servizioOpt = getServizioByDatiControllo(servizioElaborato.getServizioRequest(), enteSedeProgettoFacilitatore.getId());
+                List<ServizioEntity> listaServizi = getServizioByDatiControllo(servizioElaborato.getServizioRequest(), enteSedeProgettoFacilitatore.getId());
                 
-                if (servizioOpt.isPresent()){
-                    ServizioEntity servizioRecuperato = servizioOpt.get();
-                    Optional<SezioneQ3Collection> optSezioneQ3Collection = sezioneQ3Respository.findById(servizioRecuperato.getIdTemplateCompilatoQ3());
-                    if (optSezioneQ3Collection.isPresent()) {
-                       // String descrizioneMongo = recuperaDescrizioneDaMongo(optSezioneQ3Collection);
-                        boolean isStessoServizio = true;
-                        if (!recuperaDescrizioneDaMongo(optSezioneQ3Collection, 6, null).equalsIgnoreCase(servizioElaborato.getCampiAggiuntiviCSV().getDescrizioneDettagliServizio())){
-                            isStessoServizio = false;
-                            //servizioOpt = Optional.empty();
+                
+                for(ServizioEntity servizioRecuperato : listaServizi){
+                        servizioOpt = Optional.ofNullable(servizioRecuperato);
+                        Optional<SezioneQ3Collection> optSezioneQ3Collection = sezioneQ3Respository.findById(servizioRecuperato.getIdTemplateCompilatoQ3());
+                        if (optSezioneQ3Collection.isPresent()) {
+                        // String descrizioneMongo = recuperaDescrizioneDaMongo(optSezioneQ3Collection);
+                            boolean isStessoServizio = true;
+                            if (!recuperaDescrizioneDaMongo(optSezioneQ3Collection, 6, null).equalsIgnoreCase(servizioElaborato.getCampiAggiuntiviCSV().getDescrizioneDettagliServizio())){
+                                isStessoServizio = false;
+                                //servizioOpt = Optional.empty();
+                            }
+                            if (!recuperaDescrizioneDaMongo(optSezioneQ3Collection,5, CSVMapUtil.getSE6Map()).equalsIgnoreCase(servizioElaborato.getCampiAggiuntiviCSV().getAmbitoServiziDigitaliTrattati())){
+                                isStessoServizio = false;
+                                //servizioOpt = Optional.empty();
+                            }
+                            if (!recuperaDescrizioneDaMongo(optSezioneQ3Collection,4, CSVMapUtil.getSE5Map()).equalsIgnoreCase(servizioElaborato.getCampiAggiuntiviCSV().getCompetenzeTrattateSecondoLivello())){
+                                isStessoServizio = false;
+                                //servizioOpt = Optional.empty();
+                            }
+                            if(!isStessoServizio){
+                                servizioOpt = Optional.empty();
+                            }else{
+                                break;
+                            }
                         }
-                        if (!recuperaDescrizioneDaMongo(optSezioneQ3Collection,5, CSVMapUtil.getSE6Map()).equalsIgnoreCase(servizioElaborato.getCampiAggiuntiviCSV().getAmbitoServiziDigitaliTrattati())){
-                            isStessoServizio = false;
-                            //servizioOpt = Optional.empty();
-                        }
-                        if (!recuperaDescrizioneDaMongo(optSezioneQ3Collection,4, CSVMapUtil.getSE5Map()).equalsIgnoreCase(servizioElaborato.getCampiAggiuntiviCSV().getCompetenzeTrattateSecondoLivello())){
-                            isStessoServizio = false;
-                            //servizioOpt = Optional.empty();
-                        }
-                        if(!isStessoServizio){
-                            servizioOpt = Optional.empty();
-                        }
-                    }
-                }
+                }   
 
                 if (!servizioOpt.isPresent()) {
                     serviziAggiunti++;
@@ -333,16 +336,16 @@ public class ImportMassivoCSVService {
     }
 
 
-    private Optional<ServizioEntity> getServizioByDatiControllo(ServizioRequest servizioRequest, EnteSedeProgettoFacilitatoreKey enteSedeProgettoFacilitatoreKey) {
+    private List<ServizioEntity> getServizioByDatiControllo(ServizioRequest servizioRequest, EnteSedeProgettoFacilitatoreKey enteSedeProgettoFacilitatoreKey) {
         Optional<List<ServizioEntity>> servizioOpt = servizioSqlRepository.findAllByDataServizioAndDurataServizioAndTipologiaServizioAndIdEnteSedeProgettoFacilitatore(
                 servizioRequest.getDataServizio(),
                 servizioRequest.getDurataServizio(),
                 String.join(", ", servizioRequest.getListaTipologiaServizi()), enteSedeProgettoFacilitatoreKey);
         if (servizioOpt.isPresent() && !servizioOpt.get().isEmpty()) {
             List<ServizioEntity> listaServizi = servizioOpt.get();
-            return Optional.of(listaServizi.get(0));
+            return listaServizi;
         }
-        return Optional.empty();
+        return new ArrayList<>();
     }
 
 }
