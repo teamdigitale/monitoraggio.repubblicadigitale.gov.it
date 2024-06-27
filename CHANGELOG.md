@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.279](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.278...1.0.0-test.279) (2024-06-27)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** updates 20240626 ([c022e42](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c022e42a21fdd7be54843557dfbe1484c61a7a5c))
+* **ms-questionario-cittadino:** updates 20240626 ([4fa0457](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4fa045797fce78f3f7d567315c298961105cf636))
+
 ## [1.0.0-test.278](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.277...1.0.0-test.278) (2024-06-27)
 
 
