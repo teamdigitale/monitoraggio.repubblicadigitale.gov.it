@@ -105,7 +105,8 @@ public class ImportMassivoCSVService {
                 //existsByServizioAndEnteSedeProgettoFacilitatoreKey(servizioOpt.get().getId(), enteSedeProgettoFacilitatore.getId())){
                 List<ServizioEntity> listaServizi = getServizioByDatiControllo(servizioElaborato.getServizioRequest(), enteSedeProgettoFacilitatore.getId());
                 
-                
+                log.info("-XXX- Dati che sto per confrontare: {}  -XXX-",String.join(" - ", Arrays.asList(servizioElaborato.getCampiAggiuntiviCSV().getDescrizioneDettagliServizio(),
+                servizioElaborato.getCampiAggiuntiviCSV().getAmbitoServiziDigitaliTrattati(), servizioElaborato.getCampiAggiuntiviCSV().getCompetenzeTrattateSecondoLivello())));
                 for(ServizioEntity servizioRecuperato : listaServizi){
                         servizioOpt = Optional.ofNullable(servizioRecuperato);
                         Optional<SezioneQ3Collection> optSezioneQ3Collection = sezioneQ3Respository.findById(servizioRecuperato.getIdTemplateCompilatoQ3());
@@ -278,9 +279,11 @@ public class ImportMassivoCSVService {
                 String jsonObjectArray = ultimoValoreArray.getString(i);
                 resultString.add(map.get(jsonObjectArray));
             }
+            log.info("-XXX- Stringa recuperata dall'indice {} : {} -XXX-",index,String.join(":", resultString));
             return String.join(":", resultString); 
 
         }else{
+            log.info("-XXX- Stringa recuperata dall'indice {} : {} -XXX-", index, ultimoValoreArray.getString(0));
             return ultimoValoreArray.getString(0);
         }
     }
