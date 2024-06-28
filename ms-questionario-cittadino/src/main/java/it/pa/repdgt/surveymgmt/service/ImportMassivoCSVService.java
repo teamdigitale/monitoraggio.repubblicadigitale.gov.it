@@ -287,13 +287,13 @@ public class ImportMassivoCSVService {
         String ultimaChiave = ultimoOggetto.keys().next();
         JSONArray ultimoValoreArray = ultimoOggetto.getJSONArray(ultimaChiave);
         if(map != null){
-            List<String> resultString = new ArrayList<>();
-            for(int i = 0; i<ultimoValoreArray.length(); i++){
-                String jsonObjectArray = ultimoValoreArray.getString(i);
-                resultString.add(map.get(jsonObjectArray));
+            String jsonObjectArray = ultimoValoreArray.getString(0);
+            for (String key : map.keySet()) {
+                jsonObjectArray = jsonObjectArray.replace(key, map.get(key));
             }
-            log.info("-XXX- Stringa recuperata dall'indice {} : {} -XXX-",index,String.join(":", resultString));
-            return String.join(":", resultString); 
+            jsonObjectArray = jsonObjectArray.replace(": ", ":");
+            log.info("-XXX- Stringa recuperata dall'indice {} : {} -XXX-",index, jsonObjectArray);
+            return jsonObjectArray;
 
         }else{
             log.info("-XXX- Stringa recuperata dall'indice {} : {} -XXX-", index, ultimoValoreArray.getString(0));
@@ -365,13 +365,6 @@ public class ImportMassivoCSVService {
     }
 
     private Optional<ServizioEntity> getServizioDaListaAggiunti(List<ServiziAggiuntiDTO> serviziAggiuntiList, ServiziElaboratiDTO servizioElaborato){
-        //dataServizio
-        //durataServizio
-        //tipologiaServizio
-        //enteSedeProgettoFacilitatoreKey
-        //competenzeTrattateSecondoLivello; // 26
-        //ambitoServiziDigitaliTrattati; // 27
-        //descrizioneDettagliServizio; // 28
         
         for(ServiziAggiuntiDTO servizioAggiunto : serviziAggiuntiList){
             Optional<ServizioEntity> response = Optional.ofNullable(servizioAggiunto.getServizioEntity());
