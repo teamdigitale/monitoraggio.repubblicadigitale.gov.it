@@ -8,6 +8,7 @@ import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.surveymgmt.collection.SezioneQ3Collection;
 import it.pa.repdgt.surveymgmt.components.ServiziElaboratiCsvWriter;
 import it.pa.repdgt.surveymgmt.constants.NoteCSV;
+import it.pa.repdgt.surveymgmt.dto.ServiziAggiuntiDTO;
 import it.pa.repdgt.surveymgmt.dto.ServiziElaboratiDTO;
 import it.pa.repdgt.surveymgmt.dto.ServiziElaboratiDTOResponse;
 import it.pa.repdgt.surveymgmt.exception.CittadinoException;
@@ -21,12 +22,12 @@ import it.pa.repdgt.surveymgmt.repository.*;
 import it.pa.repdgt.surveymgmt.request.QuestionarioCompilatoRequest;
 import it.pa.repdgt.surveymgmt.request.ServizioRequest;
 import it.pa.repdgt.surveymgmt.restapi.ServizioCittadinoRestApi;
+import it.pa.repdgt.surveymgmt.util.CSVMapUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -74,12 +75,11 @@ public class ImportMassivoCSVService {
         Integer cittadiniAggiunti = 0;
         Integer questionariAggiunti = 0;
         String idQuestionario;
+        List<ServiziAggiuntiDTO> serviziAggiuntiList = new ArrayList<>();
         for (ServiziElaboratiDTO servizioElaborato : serviziValidati) {
-            Optional<ServizioEntity> servizioOpt = getServizioByCriteria(servizioElaborato.getServizioRequest());
+            Optional<ServizioEntity> servizioOpt = Optional.empty();
+            boolean nuovoAggiunto = false;
             try {
-                if (!servizioOpt.isPresent()) {
-                    serviziAggiunti++;
-                }
                 Optional<UtenteEntity> utenteFacilitatoreDellaRichiesta = recuperaUtenteFacilitatoreDaRichiesta(
                         servizioElaborato.getCampiAggiuntiviCSV().getIdFacilitatore(),
                         servizioElaborato.getCampiAggiuntiviCSV().getNominativoFacilitatore()
@@ -104,18 +104,44 @@ public class ImportMassivoCSVService {
                 if (enteSedeProgettoFacilitatore == null) {
                     throw new ResourceNotFoundException(NoteCSV.NOTE_UTENTE_SEDE_NON_ASSOCIATI_AL_PROGETTO, CodiceErroreEnum.C01);
                 }
-                if (servizioOpt.isPresent()){
-                    if (!existsByServizioAndEnteSedeProgettoFacilitatoreKey(servizioOpt.get().getId(), enteSedeProgettoFacilitatore.getId())){
-                        servizioOpt = Optional.empty();
-                    }
-                    ServizioEntity servizioRecuperato = servizioOpt.get();
-                    Optional<SezioneQ3Collection> optSezioneQ3Collection = sezioneQ3Respository.findById(servizioRecuperato.getIdTemplateCompilatoQ3());
-                    if (optSezioneQ3Collection.isPresent()) {
-                        String descrizioneMongo = recuperaDescrizioneDaMongo(optSezioneQ3Collection);
-                        if (!descrizioneMongo.equalsIgnoreCase(servizioElaborato.getCampiAggiuntiviCSV().getDescrizioneDettagliServizio())){
-                            servizioOpt = Optional.empty();
-                        }
-                    }
+                
+                servizioOpt = getServizioDaListaAggiunti(serviziAggiuntiList, servizioElaborato);
+                if(!servizioOpt.isPresent()){
+                    List<ServizioEntity> listaServizi = getServizioByDatiControllo(servizioElaborato.getServizioRequest(), enteSedeProgettoFacilitatore.getId());
+                    
+                    log.info("-XXX- Dati che sto per confrontare: {}  -XXX-",String.join(" - ", Arrays.asList(servizioElaborato.getCampiAggiuntiviCSV().getDescrizioneDettagliServizio(),
+                    servizioElaborato.getCampiAggiuntiviCSV().getAmbitoServiziDigitaliTrattati(), servizioElaborato.getCampiAggiuntiviCSV().getCompetenzeTrattateSecondoLivello())));
+                    for(ServizioEntity servizioRecuperato : listaServizi){
+                            servizioOpt = Optional.ofNullable(servizioRecuperato);
+                            Optional<SezioneQ3Collection> optSezioneQ3Collection = sezioneQ3Respository.findById(servizioRecuperato.getIdTemplateCompilatoQ3());
+                            if (optSezioneQ3Collection.isPresent()) {
+                            // String descrizioneMongo = recuperaDescrizioneDaMongo(optSezioneQ3Collection);
+                                boolean isStessoServizio = true;
+                                if (!recuperaDescrizioneDaMongo(optSezioneQ3Collection, 6, null).equalsIgnoreCase(servizioElaborato.getCampiAggiuntiviCSV().getDescrizioneDettagliServizio())){
+                                    isStessoServizio = false;
+                                    //servizioOpt = Optional.empty();
+                                }
+                                if (!recuperaDescrizioneDaMongo(optSezioneQ3Collection,5, CSVMapUtil.getSE6Map()).equalsIgnoreCase(servizioElaborato.getCampiAggiuntiviCSV().getAmbitoServiziDigitaliTrattati())){
+                                    isStessoServizio = false;
+                                    //servizioOpt = Optional.empty();
+                                }
+                                if (!recuperaDescrizioneDaMongo(optSezioneQ3Collection,4, CSVMapUtil.getSE5Map()).equalsIgnoreCase(servizioElaborato.getCampiAggiuntiviCSV().getCompetenzeTrattateSecondoLivello())){
+                                    isStessoServizio = false;
+                                    //servizioOpt = Optional.empty();
+                                }
+                                if(!isStessoServizio){
+                                    servizioOpt = Optional.empty();
+                                }else{
+                                    log.info("-XXX- Servizio uguale a quello che sto inserendo: {} -XXX-", servizioOpt.get().getId());
+                                    
+                                    break;
+                                }
+                            }
+                    }   
+                }
+                if (!servizioOpt.isPresent()) {
+                    serviziAggiunti++;
+                    nuovoAggiunto = true;
                 }
                 servizioRequest.setCodiceRuoloUtenteLoggato(enteSedeProgettoFacilitatore.getRuoloUtente());
                 servizioElaborato.setServizioRequest(servizioRequest);
@@ -137,6 +163,12 @@ public class ImportMassivoCSVService {
                         !servizioRequest.getDataServizio().before(progettoEntityData.getDataInizioProgetto())) {
                     servizioElaborato.setQuestionarioCompilatoRequest(questionarioCompilatoRequest);
                     ServizioEntity servizioEntity = salvaServizio(servizioOpt, servizioElaborato.getServizioRequest());
+                    if(nuovoAggiunto){
+                        ServiziAggiuntiDTO  servizioAggiunto = new ServiziAggiuntiDTO(servizioElaborato, servizioEntity);
+                        serviziAggiuntiList.add(servizioAggiunto);
+                        log.info("-XXX- Servizio aggiunto alla lista {} -XXX-",servizioAggiunto.getServizioEntity().getId());
+                    }
+                    
                     idServizio = servizioEntity.getId();
                 } else {
                     throw new ResourceNotFoundException(NoteCSV.NOTE_DATA_SERVIZIO_NON_COMPRESA_IN_PROGETTO, CodiceErroreEnum.A06);
@@ -230,19 +262,44 @@ public class ImportMassivoCSVService {
         }
     }
 
-    private String recuperaDescrizioneDaMongo(Optional<SezioneQ3Collection> optSezioneQ3Collection) {
+    // private String recuperaDescrizioneDaMongo(Optional<SezioneQ3Collection> optSezioneQ3Collection, int index) {
+    //     SezioneQ3Collection sezioneQ3Collection = optSezioneQ3Collection.get();
+    //     ObjectMapper objectMapper = new ObjectMapper();
+    //     JsonNode rootNode = objectMapper.valueToTree(sezioneQ3Collection.getSezioneQ3Compilato());
+    //     JsonNode pathJson = rootNode.path("json");
+    //     JSONObject jsonObject = new JSONObject(pathJson.asText());
+    //     JSONArray properties = jsonObject.getJSONArray("properties");
+    //     JSONObject ultimoOggetto = properties.getJSONObject(index);
+    //     String ultimaChiave = ultimoOggetto.keys().next();
+    //     JSONArray ultimoValoreArray = ultimoOggetto.getJSONArray(ultimaChiave);
+    //     return ultimoValoreArray.getString(0);
+    // }
+
+
+    private String recuperaDescrizioneDaMongo(Optional<SezioneQ3Collection> optSezioneQ3Collection, int index, Map<String,String> map) {
         SezioneQ3Collection sezioneQ3Collection = optSezioneQ3Collection.get();
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode rootNode = objectMapper.valueToTree(sezioneQ3Collection.getSezioneQ3Compilato());
         JsonNode pathJson = rootNode.path("json");
         JSONObject jsonObject = new JSONObject(pathJson.asText());
         JSONArray properties = jsonObject.getJSONArray("properties");
-        JSONObject ultimoOggetto = properties.getJSONObject(properties.length() - 1);
+        JSONObject ultimoOggetto = properties.getJSONObject(index);
         String ultimaChiave = ultimoOggetto.keys().next();
         JSONArray ultimoValoreArray = ultimoOggetto.getJSONArray(ultimaChiave);
-        return ultimoValoreArray.getString(0);
-    }
+        if(map != null){
+            String jsonObjectArray = ultimoValoreArray.getString(0);
+            for (String key : map.keySet()) {
+                jsonObjectArray = jsonObjectArray.replace(key, map.get(key));
+            }
+            jsonObjectArray = jsonObjectArray.replace(": ", ":");
+            log.info("-XXX- Stringa recuperata dall'indice {} : {} -XXX-",index, jsonObjectArray);
+            return jsonObjectArray;
 
+        }else{
+            log.info("-XXX- Stringa recuperata dall'indice {} : {} -XXX-", index, ultimoValoreArray.getString(0));
+            return ultimoValoreArray.getString(0);
+        }
+    }
 
     private Optional<SedeEntity> recuperaSedeDaRichiesta(String nominativoSede) {
         return sedeRepository.findByNomeIgnoreCase(nominativoSede);
@@ -292,6 +349,72 @@ public class ImportMassivoCSVService {
 
     private ServizioEntity salvaServizio(Optional<ServizioEntity> servizioOpt, ServizioRequest servizio) {
         return servizioOpt.orElseGet(() -> servizioService.creaServizio(servizio));
+    }
+
+
+    private List<ServizioEntity> getServizioByDatiControllo(ServizioRequest servizioRequest, EnteSedeProgettoFacilitatoreKey enteSedeProgettoFacilitatoreKey) {
+        Optional<List<ServizioEntity>> servizioOpt = servizioSqlRepository.findAllByDataServizioAndDurataServizioAndTipologiaServizioAndIdEnteSedeProgettoFacilitatore(
+                servizioRequest.getDataServizio(),
+                servizioRequest.getDurataServizio(),
+                String.join(", ", servizioRequest.getListaTipologiaServizi()), enteSedeProgettoFacilitatoreKey);
+        if (servizioOpt.isPresent() && !servizioOpt.get().isEmpty()) {
+            List<ServizioEntity> listaServizi = servizioOpt.get();
+            return listaServizi;
+        }
+        return new ArrayList<>();
+    }
+
+    private Optional<ServizioEntity> getServizioDaListaAggiunti(List<ServiziAggiuntiDTO> serviziAggiuntiList, ServiziElaboratiDTO servizioElaborato){
+        
+        for(ServiziAggiuntiDTO servizioAggiunto : serviziAggiuntiList){
+            Optional<ServizioEntity> response = Optional.ofNullable(servizioAggiunto.getServizioEntity());
+            boolean isStessoServizio = true;
+            if(!servizioElaborato.getServizioRequest().getDataServizio().equals(servizioAggiunto.getServiziElaboratiDTO().getServizioRequest().getDataServizio())){
+                isStessoServizio = false;
+            }
+
+            if(!servizioElaborato.getServizioRequest().getDurataServizio().equals(servizioAggiunto.getServiziElaboratiDTO().getServizioRequest().getDurataServizio())){
+                isStessoServizio = false;
+            }
+
+            if(!servizioElaborato.getServizioRequest().getListaTipologiaServizi().equals(servizioAggiunto.getServiziElaboratiDTO().getServizioRequest().getListaTipologiaServizi())){
+                isStessoServizio = false;
+            }
+
+            if(!(servizioElaborato.getServizioRequest().getCfUtenteLoggato().equals(servizioAggiunto.getServiziElaboratiDTO().getServizioRequest().getCfUtenteLoggato()))){
+                isStessoServizio = false;
+            }
+
+            if(!(servizioElaborato.getServizioRequest().getIdEnteServizio().equals(servizioAggiunto.getServiziElaboratiDTO().getServizioRequest().getIdEnteServizio()))){
+                isStessoServizio = false;
+            }
+
+            if(!(servizioElaborato.getServizioRequest().getIdProgetto().equals(servizioAggiunto.getServiziElaboratiDTO().getServizioRequest().getIdProgetto()))){
+                isStessoServizio = false;
+            }
+
+            if(!(servizioElaborato.getServizioRequest().getIdSedeServizio().equals(servizioAggiunto.getServiziElaboratiDTO().getServizioRequest().getIdSedeServizio()))){
+                isStessoServizio = false;
+            }
+
+            if(!servizioElaborato.getCampiAggiuntiviCSV().getCompetenzeTrattateSecondoLivello().equals(servizioAggiunto.getServiziElaboratiDTO().getCampiAggiuntiviCSV().getCompetenzeTrattateSecondoLivello())){
+                isStessoServizio = false;
+            }
+
+            if(!servizioElaborato.getCampiAggiuntiviCSV().getAmbitoServiziDigitaliTrattati().equals(servizioAggiunto.getServiziElaboratiDTO().getCampiAggiuntiviCSV().getAmbitoServiziDigitaliTrattati())){
+                isStessoServizio = false;
+            }
+
+            if(!servizioElaborato.getCampiAggiuntiviCSV().getDescrizioneDettagliServizio().equals(servizioAggiunto.getServiziElaboratiDTO().getCampiAggiuntiviCSV().getDescrizioneDettagliServizio())){
+                isStessoServizio = false;
+            }
+
+            if(isStessoServizio){
+                return response;
+            }
+        }
+
+        return Optional.empty();
     }
 
 }
