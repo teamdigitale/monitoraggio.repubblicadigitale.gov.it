@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.33.9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.33.8...1.33.9) (2024-06-28)
+
+
+### Bug Fixes
+
+* **ms-questionario-cittadino:** update ins csv 20240628 ([ebaa0d9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ebaa0d9373a72d46d2c6f3a4e2ed834862f66d4c))
+
 ## [1.33.8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.33.7...1.33.8) (2024-06-24)
 
 
