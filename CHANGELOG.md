@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.33.10](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.33.9...1.33.10) (2024-07-01)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** updates limite csv 20240701 ([f5adaef](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f5adaef2b929772e2bb460c518f777de5e9ca7b0))
+
 ## [1.33.9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.33.8...1.33.9) (2024-06-28)
 
 
