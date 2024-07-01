@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.281](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.280...1.0.0-test.281) (2024-07-01)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** updates limite csv 20240701 ([bfa5de8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/bfa5de8f0a27a5f62c5da6c568edf2df2800b1f1))
+
 ## [1.0.0-test.280](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.279...1.0.0-test.280) (2024-06-28)
 
 
