@@ -101,9 +101,9 @@ export function useCSVProcessor(file: File | undefined) {
               return;
             } 
 
-            if(results.data.length > 600) {
+            if(results.data.length > 400) {
               rejectWithMessage(
-                "Visto l'elevato numero di caricamenti odierni, ti chiediamo di inserire file contenenti un massimo di 600 righe"
+                "Visto l'elevato numero di caricamenti odierni, ti chiediamo di inserire file contenenti un massimo di 400 righe"
               );
               return;
             }
