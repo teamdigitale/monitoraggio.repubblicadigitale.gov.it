@@ -64,7 +64,8 @@ const serviceNameMap: Record<string, string> = {
   A: 'Facilitazione individuale',
   B: 'Facilitazione di gruppo',
   C: 'Formazione in presenza',
-  D: 'Formazione individuale',
+  D: 'Formazione online',
+  E: 'Altro',
 };
 
 const firstLevelCompetenceMap: Record<string, string> = {
