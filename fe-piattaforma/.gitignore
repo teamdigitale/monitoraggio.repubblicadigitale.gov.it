@@ -5,6 +5,7 @@ dist/
 cypress/
 cypress*
 .idea/
+.env*
 
 # Log files
 *.log
