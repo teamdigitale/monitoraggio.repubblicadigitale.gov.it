@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.282](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.281...1.0.0-test.282) (2024-07-03)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** updates ins massivo 20240703 ([f476c06](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f476c06e7678398cccae95cf6582c381e33b2d58))
+
 ## [1.0.0-test.281](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.280...1.0.0-test.281) (2024-07-01)
 
 
