@@ -14,7 +14,7 @@
 
 	<groupId>it.pa.repdgt</groupId>
 	<artifactId>ms-ente</artifactId>
-	<version>1.33.10</version>
+	<version>1.33.11</version>
 	<packaging>jar</packaging>
 
 	<properties>
