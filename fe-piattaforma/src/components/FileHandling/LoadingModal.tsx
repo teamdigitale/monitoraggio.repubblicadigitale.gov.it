@@ -17,10 +17,11 @@ export default function LoadingModal(props: {
     <GenericModal
       id='caricamento-csv'
       centerButtons
-      showCloseBtn
-      onCloseFromHeader={props.handleCloseModal}
-      onClose={props.handleCloseModal}
-      modalBodyClassNames='no-overflow-modal'
+      showCloseBtn={props.activityReport ? true : false}
+      onCloseFromHeader={props.activityReport ? props.handleCloseModal : () => {}}
+      onClose={props.activityReport ? props.handleCloseModal : () => {}}
+      //modalBodyClassNames='no-overflow-modal'
+      closableKey={props.activityReport ? 'unclosable' : undefined}
     >
       {props.activityReport ? (
         <div className='d-flex flex-column align-items-center my-4 p-4 text-secondary'>

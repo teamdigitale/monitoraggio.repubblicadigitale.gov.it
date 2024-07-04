@@ -34,7 +34,7 @@ export const generateServiceName = (
     B: 'facgru',
     C: 'forminp',
     D: 'formind',
-    Altro: 'Altro',
+    E: 'Altro',
   };
 
   const date = moment().format('YYYYMMDD');
