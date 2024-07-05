@@ -3,7 +3,8 @@ import {
   AddressInfoI
 } from '../components/AdministrativeArea/Entities/Headquarters/AccordionAddressList/AccordionAddress/AccordionAddress';
 import {formFieldI} from './formHelper';
-import {Validator} from '@marketto/codice-fiscale-utils';
+//import {Validator} from '@marketto/codice-fiscale-utils';
+import CodiceFiscale from 'codice-fiscale-js'
 
 /* eslint-disable */
 export const RegexpType = {
@@ -31,7 +32,7 @@ export const RegexpType = {
   URL: 'url',
 };
 const isValidFiscalCode = (fiscalCode: string): boolean => {
-  return Validator.codiceFiscale(fiscalCode).valid;
+  return CodiceFiscale.check(fiscalCode);
 };
 const RegexpRule = {
   [RegexpType.EMAIL]:
