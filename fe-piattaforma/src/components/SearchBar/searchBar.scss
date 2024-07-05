@@ -6,12 +6,12 @@
 
   &--menu-is-open,
   &--is-focused {
-    font-size: rem(20px);
+    font-size: rem(20px,20px);
   }
 
   .search-bar__value-container,
   .search-bar__input-container {
-    margin-left: rem(12px);
+    margin-left: rem(12px,12px);
     box-shadow: none;
   }
 
@@ -39,11 +39,11 @@
 }
 
 .search-bar__input-container {
-  margin-left: rem(12px);
+  margin-left: rem(12px,12px);
 }
 
 .closure {
-  border-bottom: rem(1px) solid #979797 !important;
+  border-bottom: rem(1px,1px) solid #979797 !important;
 }
 
 .input-search {
@@ -62,7 +62,7 @@
 
 .input-text-bold > .form-control[type="text"][value]:not([value=""]) {
   font-weight: 600;
-  font-size: rem(20px);
+  font-size: rem(20px,20px);
   background-position: 200px !important;
 }
 
@@ -71,7 +71,7 @@
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-between;
-    border-bottom: rem(1px) solid color('grey-550');
+    border-bottom: rem(1px,1px) solid color('grey-550');
 
     & > div:first-child,
     & > input:first-child,
@@ -88,14 +88,14 @@
   &__left-section {
     display: flex;
     flex-wrap: nowrap;
-    gap: rem(10px);
+    gap: rem(10px,10px);
     width: 100%;
   }
 }
 
 #placeholder-icon {
   position: absolute;
-  top: rem(8px);
+  top: rem(8px,8px);
   z-index: 10;
   left: 0;
 }

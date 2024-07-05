@@ -12,8 +12,8 @@ import {selectDevice} from '../../redux/features/app/appSlice';
 import {useDispatch} from 'react-redux';
 import {deleteFiltroCriterioRicerca} from '../../redux/features/administrativeArea/administrativeAreaSlice';
 import {deleteFiltroCriterioRicercaCitizen} from '../../redux/features/citizensArea/citizensAreaSlice';
-import {Validator} from '@marketto/codice-fiscale-utils';
 import {selectedSteps} from '../../pages/administrator/CitizensArea/Entities/SearchCitizenModal/searchCitizenModal';
+import { useFiscalCodeValidation } from '../../hooks/useFiscalCodeValidation';
 
 interface SearchBarI extends Omit<SelectI, 'onInputChange'> {
   autocomplete?: boolean;
@@ -74,6 +74,7 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
 
   const [searchValue, setSearchValue] = useState<string>('');
   const [hasSearchValue, setHasSearchValue] = useState<boolean>(false);
+  const { isValidFiscalCode } = useFiscalCodeValidation();
 
   const handleInputChange = (newValue: string) => newValue.replace(/\W/g, '');
 
@@ -96,10 +97,7 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
       setSearchValue(formattedFiscalCode);
 
       if (searchType === selectedSteps.FISCAL_CODE) {
-        const isValidFiscalCode =
-          Validator.codiceFiscale(formattedFiscalCode).valid &&
-          formattedFiscalCode.length === 16;
-        setIsFiscalCodeValid(isValidFiscalCode);
+        setIsFiscalCodeValid(isValidFiscalCode(formattedFiscalCode));
       }
 
       if (props.onQueryChange) {

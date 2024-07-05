@@ -11,7 +11,8 @@ import { setCitizenSearchResults } from '../../redux/features/citizensArea/citiz
 import { SearchValue } from '../../pages/forms/models/searchValue.model';
 import { emitNotify } from '../../redux/features/notification/notificationSlice';
 import moment from 'moment';
-import { Parser, Validator } from '@marketto/codice-fiscale-utils';
+import { Parser } from '@marketto/codice-fiscale-utils';
+import { useFiscalCodeValidation } from '../../hooks/useFiscalCodeValidation';
 
 interface SearchBarOptionsI {
   setCurrentStep: (value: string) => void;
@@ -43,6 +44,7 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
   const [canSubmit, setCanSubmit] = useState<boolean>(false);
   const [query, setQuery] = useState<string>('');
   const [mustValidateCf, setMustValidateCf] = useState<boolean>(true);
+  const { isValidFiscalCode: isCodiceFiscaleValido } = useFiscalCodeValidation();
 
   const isMaggiorenne = useCallback((cf: string): boolean => {
     return moment().diff(Parser.cfToBirthDate(cf), 'years', false) >= 18;
@@ -59,9 +61,7 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
 
   const isValidFiscalCode = useCallback(
     (query: string) => {
-      const fiscalCodeValid = Validator.codiceFiscale(query).valid;
-
-      if (fiscalCodeValid) {
+      if (isCodiceFiscaleValido(query)) {
         const isAdult = isMaggiorenne(query);
         if (!isAdult) {
           dispatchNotify(

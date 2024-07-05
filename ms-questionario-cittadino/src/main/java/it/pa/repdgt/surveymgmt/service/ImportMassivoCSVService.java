@@ -121,11 +121,11 @@ public class ImportMassivoCSVService {
                                     isStessoServizio = false;
                                     //servizioOpt = Optional.empty();
                                 }
-                                if (!recuperaDescrizioneDaMongo(optSezioneQ3Collection,5, CSVMapUtil.getSE6Map()).equalsIgnoreCase(servizioElaborato.getCampiAggiuntiviCSV().getAmbitoServiziDigitaliTrattati())){
+                                if (!recuperaDescrizioneDaMongo(optSezioneQ3Collection,5, CSVMapUtil.getSE6Map()).equalsIgnoreCase(servizioElaborato.getCampiAggiuntiviCSV().getAmbitoServiziDigitaliTrattati().replace(" ", ""))){
                                     isStessoServizio = false;
                                     //servizioOpt = Optional.empty();
                                 }
-                                if (!recuperaDescrizioneDaMongo(optSezioneQ3Collection,4, CSVMapUtil.getSE5Map()).equalsIgnoreCase(servizioElaborato.getCampiAggiuntiviCSV().getCompetenzeTrattateSecondoLivello())){
+                                if (!recuperaDescrizioneDaMongo(optSezioneQ3Collection,4, CSVMapUtil.getSE5Map()).equalsIgnoreCase(servizioElaborato.getCampiAggiuntiviCSV().getCompetenzeTrattateSecondoLivello().replace(" ", ""))){
                                     isStessoServizio = false;
                                     //servizioOpt = Optional.empty();
                                 }

@@ -18,6 +18,7 @@ import {
   validateFields,
   getSE4ValueFromSE5Value,
   getAgeGroupCodeByYear,
+  checkMapSpaces,
 } from '../utils/csvUtils';
 import {
   ageGroupMap,
@@ -128,6 +129,7 @@ export function useCSVProcessor(file: File | undefined) {
                   isValidFiscalCode
                 );
                 checkMapValues(record, errors);
+                checkMapSpaces(record,errors);
                 if (
                   rejectedTypes.length > 0 &&
                   filteredRecord.SE3 &&
