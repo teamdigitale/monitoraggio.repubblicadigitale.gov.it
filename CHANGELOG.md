@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.33.12](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.33.11...1.33.12) (2024-07-05)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** update controlli 20240705 ([ef4f252](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ef4f252d04c9ffe1d299e081fb9fdf957e8700b0))
+
 ## [1.33.11](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.33.10...1.33.11) (2024-07-04)
 
 
