@@ -20,7 +20,7 @@ export default function LoadingModal(props: {
       showCloseBtn={props.activityReport ? true : false}
       onCloseFromHeader={props.activityReport ? props.handleCloseModal : () => {}}
       onClose={props.activityReport ? props.handleCloseModal : () => {}}
-      //modalBodyClassNames='no-overflow-modal'
+      modalBodyClassNames='no-overflow-modal'
       closableKey={props.activityReport ? 'unclosable' : undefined}
     >
       {props.activityReport ? (

@@ -220,6 +220,33 @@ export function checkMapValues(record: CSVRecord, errors: string[]) {
   });
 }
 
+export function checkMapSpaces(record: CSVRecord, errors: string[]) {
+  const mapFields = [
+    { key: 'SE3', map: serviceNameMap, multi: true },
+    { key: 'SE4', map: firstLevelCompetenceMap, multi: true },
+    { key: 'SE5', map: secondLevelCompetenceMap, multi: true },
+    { key: 'SE6', map: publicServiceDomainMap, multi: true },
+    { key: 'PR2', map: serviceBookingTypeMap, multi: true },
+    { key: 'ES1', map: discoveryMethodServiceMap, multi: true },
+    { key: 'ES2', map: bookingReasonMap, multi: true },
+    { key: 'ES3', map: repeatExperienceMap, multi: true },
+    { key: 'ES5', map: digitalProblemSolvingMap, multi: true },
+  ];
+
+  mapFields.forEach(({ key }) => {
+    const fieldValue = record[key];
+    if (fieldValue !== undefined && fieldValue !== null && fieldValue !== '') {
+      let splittedValues = fieldValue.split(':')
+      let hasSpace = splittedValues.some((value: string) => value.includes(' '))
+      if (hasSpace) {
+        errors.push(
+          `Il campo "${key}" non risulta formattato correttamente.`
+        );
+      }
+    }
+  });
+}
+
 export function generateDescriptionFromMappedValues(
   value: string | undefined,
   map: { [key: string]: string }
