@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.33.13](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.33.12...1.33.13) (2024-07-08)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** fix scss 20240708 ([520a5bb](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/520a5bbe78ace8a412765eb4e3d3419ba222d438))
+
 ## [1.33.12](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.33.11...1.33.12) (2024-07-05)
 
 
