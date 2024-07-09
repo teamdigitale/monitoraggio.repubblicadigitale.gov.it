@@ -171,6 +171,14 @@ const digitalProblemSolvingMap: Record<string, string> = {
   O: 'Materiale informativo, giornali, articoli e altre pubblicazioni online',
 };
 
+const valutazioneMap: Record<string, string> = {
+  1: '1',
+  2: '2',
+  3: '3',
+  4: '4',
+  5: '5',
+};
+
 export {
   documentTypeMap,
   genderMap,
@@ -187,4 +195,5 @@ export {
   repeatExperienceMap,
   serviceNameMap,
   digitalProblemSolvingMap,
+  valutazioneMap,
 };
