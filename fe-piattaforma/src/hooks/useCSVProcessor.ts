@@ -8,6 +8,7 @@ import moment from 'moment';
 import { CSVRecord } from '../models/RecordCSV.model';
 import {
   checkMapValues,
+  sanitizeFields,
   encryptDocumentAndDetermineType,
   encryptFiscalCode,
   generateExperienceSection,
@@ -91,10 +92,11 @@ export function useCSVProcessor(file: File | undefined) {
         setIsProcessing(true);
         Papa.parse<CSVRecord>(file, {
           header: true,
+          quoteChar: '"',
+          escapeChar: '"',
           skipEmptyLines: true,
           complete: (results: Papa.ParseResult<CSVRecord>) => {
 
-            
             if (!headersCSV.every((header) => header in results.data[0])) {
               rejectWithMessage(
                 'Il file inserito non é conforme ai criteri di elaborazione, assicurati che tutte le colonne siano presenti.'
@@ -115,6 +117,7 @@ export function useCSVProcessor(file: File | undefined) {
             
             if (data.length > 0) {
               data.forEach((record: CSVRecord, index: number) => {
+                sanitizeFields(record);
                 const {
                   AN14: _AN14,
                   AN17: _AN17,

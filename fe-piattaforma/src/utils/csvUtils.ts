@@ -16,6 +16,7 @@ import {
   secondLevelCompetenceMap,
   serviceBookingTypeMap,
   serviceNameMap,
+  valutazioneMap,
 } from './ResponseCodeMappings';
 import {
   downloadActivityReportResume,
@@ -195,6 +196,7 @@ export function checkMapValues(record: CSVRecord, errors: string[]) {
     { key: 'ES2', map: bookingReasonMap, multi: true },
     { key: 'ES3', map: repeatExperienceMap, multi: true },
     { key: 'ES5', map: digitalProblemSolvingMap, multi: true },
+    { key: 'ES6', map: valutazioneMap},
   ];
 
   mapFields.forEach(({ key, map, multi }) => {
@@ -242,6 +244,22 @@ export function checkMapSpaces(record: CSVRecord, errors: string[]) {
         errors.push(
           `Il campo "${key}" non risulta formattato correttamente.`
         );
+      }
+    }
+  });
+}
+
+export function sanitizeFields(record: CSVRecord) {
+  Object.keys(record).forEach(key => {
+    let fieldValue = record[key];
+    if (fieldValue !== undefined && fieldValue !== null && fieldValue !== '') {
+      // Controllo per i doppi apici
+      try{
+        fieldValue = fieldValue.replaceAll('\"','');
+        record[key] = fieldValue.trim();
+      }
+      catch(e){
+        console.log(e);
       }
     }
   });
