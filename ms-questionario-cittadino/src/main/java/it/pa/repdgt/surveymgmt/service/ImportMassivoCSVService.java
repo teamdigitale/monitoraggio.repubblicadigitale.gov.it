@@ -42,7 +42,6 @@ import java.util.*;
 public class ImportMassivoCSVService {
     private final SezioneQ3Respository sezioneQ3Respository;
     private final ProgettoRepository progettoRepository;
-    private final ProgrammaRepository programmaRepository;
     private final SedeRepository sedeRepository;
     private final UtenteRepository utenteRepository;
     private final ServiziElaboratiCsvWriter serviziElaboratiCsvWriter;
@@ -52,15 +51,7 @@ public class ImportMassivoCSVService {
     private final ServizioSqlRepository servizioSqlRepository;
     private final EnteSedeProgettoFacilitatoreRepository enteSedeProgettoFacilitatoreRepository;
     private static final String FILE_NAME = "%s_righe_scartate_%s_%s.csv";
-
-    private String uuid = UUID.randomUUID().toString().replaceAll("-", "");
-
-    private LocalTime now = LocalTime.now();
-
     private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH-mm", Locale.ITALIAN);
-
-    private String time = now.format(timeFormatter);
-
 
     public ElaboratoCSVResponse process(ElaboratoCSVRequest csvRequest) {
         List<ServiziElaboratiDTO> serviziValidati = csvRequest.getServiziValidati();
@@ -244,6 +235,9 @@ public class ImportMassivoCSVService {
         serviziScartati.sort(Comparator.comparing(
                 serviziScartatiDTO -> serviziScartatiDTO.getCampiAggiuntiviCSV().getNumeroRiga()
         ));
+        String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+        LocalTime now = LocalTime.now();
+        String time = now.format(timeFormatter);
         return ElaboratoCSVResponse.builder()
                 .fileContent(Base64.getEncoder().encodeToString(serviziElaboratiCsvWriter.writeCsv(serviziScartati).getBytes()))
                 .response(buildResponseData(serviziScartati, serviziAggiunti, cittadiniAggiunti, questionariAggiunti))
