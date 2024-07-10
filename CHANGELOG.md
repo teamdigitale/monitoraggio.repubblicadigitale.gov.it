@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.287](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.286...1.0.0-test.287) (2024-07-10)
+
+
+### Bug Fixes
+
+* **ms-questionario-cittadino:** fix filename scarti 20240710 ([4bbd243](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4bbd2433b416c44932c9104f082a3a0699b35f39))
+
 ## [1.0.0-test.286](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.285...1.0.0-test.286) (2024-07-09)
 
 
