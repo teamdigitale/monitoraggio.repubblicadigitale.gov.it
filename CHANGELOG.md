@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.288](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.287...1.0.0-test.288) (2024-07-11)
+
+
+### Features
+
+* **feature async:** updates 20240711 ([90f7446](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/90f744619a382656a87ebe9cf06befee4628ba9c))
+
 ## [1.0.0-test.287](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.286...1.0.0-test.287) (2024-07-10)
 
 
