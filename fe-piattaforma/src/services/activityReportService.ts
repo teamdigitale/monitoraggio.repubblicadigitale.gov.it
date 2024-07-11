@@ -7,7 +7,6 @@ import {
 import API from '../utils/apiHelper';
 import { getUserHeaders } from '../redux/features/user/userThunk';
 import { ElaboratoCsvRequest } from '../models/ElaboratoCsvRequest.model';
-import { ElaboratoCsvResponse } from '../models/ElaboratoCsvResponse.model';
 import { UriPresigned } from '../models/UriPresigned.model';
 
 export function searchActivityReport(
@@ -54,20 +53,17 @@ export function elaborateCsv(
   elaborato: ElaboratoCsvRequest,
   idProgetto: number,
   idEnte: number
-): Promise<AxiosResponse<ElaboratoCsvResponse>> {
+): Promise<AxiosResponse<string>> {
   const { cfUtenteLoggato, codiceRuoloUtenteLoggato, idProgramma } =
     getUserHeaders();
-  return API.post<ElaboratoCsvResponse>(
-    `${process.env.QUESTIONARIO_CITTADINO}importCsv`,
-    {
-      ...elaborato,
-      cfUtenteLoggato,
-      codiceRuoloUtenteLoggato,
-      idEnte,
-      idProgetto,
-      idProgramma,
-    }
-  );
+  return API.post<string>(`${process.env.QUESTIONARIO_CITTADINO}importCsv`, {
+    ...elaborato,
+    cfUtenteLoggato,
+    codiceRuoloUtenteLoggato,
+    idEnte,
+    idProgetto,
+    idProgramma,
+  });
 }
 
 export function generateUploadPUActivityReport(
@@ -112,8 +108,10 @@ export function downloadActivityReportResume(
   return axios.get(presignedUrl);
 }
 
-export function downloadCSVGuide(): Promise<AxiosResponse<any>> {
-  return axios.get(
-    'https://s3-mitd-drupal-prod.s3.eu-central-1.amazonaws.com/public/2024-06/doc_guida_tmp_17183517107416726678.pdf?versionId=GBZcjjjmeC7WYICPXGiOIHFVd1YfmY.r&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA6RGETSJQ7K6J4KNR%2F20240614%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20240614T075513Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7200&X-Amz-Signature=1e48108f1455c04aad1aa65e75f5795120fa3d02292052adec3ad38bfb41857d'
+export function checkActivityReportStatus(
+  activityReportUUID: string
+): Promise<AxiosResponse<RegistroAttivita>> {
+  return API.get(
+    `${process.env.QUESTIONARIO_CITTADINO}registroAttivita/polling/${activityReportUUID}`
   );
 }

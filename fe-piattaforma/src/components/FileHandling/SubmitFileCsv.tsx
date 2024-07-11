@@ -1,19 +1,5 @@
 import React, { useCallback, useContext, useState } from 'react';
-import { ElaboratoCsvResponse } from '../../models/ElaboratoCsvResponse.model';
-import { ElaboratoCsvRequest } from '../../models/ElaboratoCsvRequest.model';
-import { getUserHeaders } from '../../redux/features/user/userThunk';
-import {
-  RegistroAttivita,
-  RegistroAttivitaWithoutID,
-} from '../../models/RegistroAttivita.model';
-import {
-  elaborateCsv,
-  generateUploadPUActivityReport,
-  saveActivityReport,
-  updateActivityReportFileUploaded,
-  uploadActivityReportResume,
-} from '../../services/activityReportService';
-import { convertBase64ToFile } from '../../utils/common';
+import { elaborateCsv } from '../../services/activityReportService';
 import { DataUploadContextModel } from '../../models/DataUploadContext.model';
 import { DataUploadContext } from '../../contexts/DataUploadContext';
 import { dispatchNotify } from '../../utils/notifictionHelper';
@@ -41,47 +27,47 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
   const projectContext = useContext<ProjectInfo | undefined>(ProjectContext);
   const { projectId, enteId } = useParams();
   const dispatch = useAppDispatch();
-  const [lastActivityReport, setLastActivityReport] = useState<
-    RegistroAttivita | undefined
+  const [activityReportUUID, setActivityReportUUID] = useState<
+    string | undefined
   >(undefined);
 
-  const handleSaveReport = useCallback(
-    (
-      elaboratoResponse: ElaboratoCsvResponse,
-      elaboratoRequest: ElaboratoCsvRequest,
-      fileName: string
-    ) => {
-      if (projectId && (enteId || projectContext)) {
-        const { cfUtenteLoggato, codiceFiscale, codiceRuoloUtenteLoggato } =
-          getUserHeaders();
-        const report: RegistroAttivitaWithoutID = {
-          operatore: codiceFiscale || cfUtenteLoggato,
-          totaleRigheFile:
-            elaboratoRequest.serviziScartati.length +
-            elaboratoRequest.serviziValidati.length,
-          righeScartate: elaboratoResponse.response.serviziScartati.length,
-          serviziAcquisiti: elaboratoResponse.response.serviziAggiunti,
-          cittadiniAggiunti: elaboratoResponse.response.cittadiniAggiunti,
-          rilevazioneDiEsperienzaCompilate:
-            elaboratoResponse.response.questionariAggiunti,
-          idProgetto: parseInt(projectId),
-          codiceRuoloUtenteLoggato,
-          fileName,
-        };
-
-        return saveActivityReport(
-          report,
-          parseInt(projectId),
-          enteId ? parseInt(enteId) : projectContext!.idEnte
-        );
-      }
-    },
-    [projectContext, projectId, enteId]
-  );
+  // const handleSaveReport = useCallback(
+  //   (
+  //     elaboratoResponse: ElaboratoCsvResponse,
+  //     elaboratoRequest: ElaboratoCsvRequest,
+  //     fileName: string
+  //   ) => {
+  //     if (projectId && (enteId || projectContext)) {
+  //       const { cfUtenteLoggato, codiceFiscale, codiceRuoloUtenteLoggato } =
+  //         getUserHeaders();
+  //       const report: RegistroAttivitaWithoutID = {
+  //         operatore: codiceFiscale || cfUtenteLoggato,
+  //         totaleRigheFile:
+  //           elaboratoRequest.serviziScartati.length +
+  //           elaboratoRequest.serviziValidati.length,
+  //         righeScartate: elaboratoResponse.response.serviziScartati.length,
+  //         serviziAcquisiti: elaboratoResponse.response.serviziAggiunti,
+  //         cittadiniAggiunti: elaboratoResponse.response.cittadiniAggiunti,
+  //         rilevazioneDiEsperienzaCompilate:
+  //           elaboratoResponse.response.questionariAggiunti,
+  //         idProgetto: parseInt(projectId),
+  //         codiceRuoloUtenteLoggato,
+  //         fileName,
+  //       };
+  //
+  //       return saveActivityReport(
+  //         report,
+  //         parseInt(projectId),
+  //         enteId ? parseInt(enteId) : projectContext!.idEnte
+  //       );
+  //     }
+  //   },
+  //   [projectContext, projectId, enteId]
+  // );
 
   const handleCloseModal = useCallback(() => {
     dispatch(closeModal());
-    setLastActivityReport(undefined);
+    setActivityReportUUID(undefined);
   }, []);
 
   const handleSubmit = useCallback(() => {
@@ -91,73 +77,33 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
       projectId &&
       (enteId || projectContext)
     ) {
-      dispatch(
-        openModal({
-          id: 'caricamento-csv',
-          payload: {
-            title: ``,
-          },
-        })
-      );
-      const parsedData = dataUploadContext.parsedData;
-      let convertedFile: File;
-      let activityReportId: number;
-      let savedActivityReport: RegistroAttivita;
       elaborateCsv(
         dataUploadContext.parsedData,
         parseInt(projectId),
         enteId ? parseInt(enteId) : projectContext!.idEnte
       )
         .then((res) => {
-          convertedFile = convertBase64ToFile(
-            res.data.fileContent,
-            res.data.fileName,
-            'text/csv'
+          setActivityReportUUID(res.data);
+          dispatch(
+            openModal({
+              id: 'caricamento-csv',
+            })
           );
-          return handleSaveReport(res.data, parsedData, res.data.fileName);
         })
-        .then((res) => {
-          if (res) {
-            savedActivityReport = res.data;
-            activityReportId = savedActivityReport.id;
-            return generateUploadPUActivityReport(
-              activityReportId,
-              convertedFile.name
-            );
-          }
-        })
-        .then((res) => {
-          if (res) {
-            return uploadActivityReportResume(res.data.uri, convertedFile);
-          }
-        })
-        .then((res) => {
-          if (activityReportId && res) {
-            return updateActivityReportFileUploaded(activityReportId, true);
-          }
-        })
-        .catch(() => {
-          if (activityReportId) {
-            showErrorUpload();
-            return updateActivityReportFileUploaded(activityReportId, false);
-          }
-        })
-        .catch(() => {
-          handleCloseModal();
-        })
-        .finally(() => {
-          props.clearFile();
-          if (dataUploadContext) dataUploadContext.search();
-          if (savedActivityReport) setLastActivityReport(savedActivityReport);
-        });
+        .catch(() => showErrorUpload());
     }
   }, [
     dataUploadContext?.parsedData,
     projectContext,
     props.clearFile,
-    handleSaveReport,
     handleCloseModal,
   ]);
+
+  const triggerSearch = useCallback(() => {
+    if (dataUploadContext) {
+      dataUploadContext.search();
+    }
+  }, [dataUploadContext]);
 
   return (
     <>
@@ -173,10 +119,14 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
       >
         Carica
       </button>
-      <LoadingModal
-        activityReport={lastActivityReport}
+      {activityReportUUID && (
+        <LoadingModal
+        activityReportUUID={activityReportUUID}
         handleCloseModal={handleCloseModal}
+        triggerSearch={triggerSearch}
       />
+      )}
+      
     </>
   );
 }

@@ -2,6 +2,7 @@ package it.pa.repdgt.surveymgmt.components;
 
 import lombok.RequiredArgsConstructor;
 
+import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +12,7 @@ public abstract class GenericImportCsvWriter<Model, Header> {
 
     private final Class<Header> headerClass;
 
-    public String writeCsv(List<Model> models) {
+    public ByteArrayOutputStream writeCsv(List<Model> models) {
         String headers = getFields(headerClass);
         return getRaw(models, headers);
     }
@@ -25,6 +26,6 @@ public abstract class GenericImportCsvWriter<Model, Header> {
         return String.join(",", headers);
     }
 
-    protected abstract String getRaw(List<Model> model, String headers);
+    protected abstract ByteArrayOutputStream getRaw(List<Model> model, String headers);
 
 }
