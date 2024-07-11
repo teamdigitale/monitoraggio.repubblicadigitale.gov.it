@@ -14,6 +14,7 @@ export interface RegistroAttivita extends TableRowI {
   idProgetto: number;
   fileName: string;
   isFileUpdated?: boolean;
+  jobStatus: string;
 }
 
 export type RegistroAttivitaWithoutID = Omit<RegistroAttivita, 'id'>;

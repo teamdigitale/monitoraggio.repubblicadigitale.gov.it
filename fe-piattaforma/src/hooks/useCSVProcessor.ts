@@ -1,6 +1,6 @@
 import Papa from 'papaparse';
 import { useCallback, useState } from 'react';
-import { ServiziElaboratiDto } from '../models/ServiziElaboratiDto.Model';
+import { ServiziElaboratiDto } from '../models/ServiziElaboratiDto.model';
 import { ElaboratoCsvRequest } from '../models/ElaboratoCsvRequest.model';
 import { useFiscalCodeValidation } from './useFiscalCodeValidation';
 import { getUserHeaders } from '../redux/features/user/userThunk';
@@ -29,7 +29,6 @@ import {
   educationLevelMap,
   occupationalStatusMap,
   repeatExperienceMap,
-  secondLevelCompetenceMap,
   serviceNameMap,
 } from '../utils/ResponseCodeMappings';
 import * as CodiceFiscaleUtils from '@marketto/codice-fiscale-utils';
@@ -96,33 +95,21 @@ export function useCSVProcessor(file: File | undefined) {
           escapeChar: '"',
           skipEmptyLines: true,
           complete: (results: Papa.ParseResult<CSVRecord>) => {
-
             if (!headersCSV.every((header) => header in results.data[0])) {
               rejectWithMessage(
                 'Il file inserito non é conforme ai criteri di elaborazione, assicurati che tutte le colonne siano presenti.'
               );
               return;
-            } 
-
-            if(results.data.length > 400) {
-              rejectWithMessage(
-                "Visto l'elevato numero di caricamenti odierni, ti chiediamo di inserire file contenenti un massimo di 400 righe"
-              );
-              return;
             }
-            
+
             const serviziValidati: ServiziElaboratiDto[] = [];
             const serviziScartati: ServiziElaboratiDto[] = [];
             const data: CSVRecord[] = results.data;
-            
+
             if (data.length > 0) {
               data.forEach((record: CSVRecord, index: number) => {
                 sanitizeFields(record);
-                const {
-                  AN14: _AN14,
-                  AN17: _AN17,
-                  ...filteredRecord
-                } = record;
+                const { AN14: _AN14, AN17: _AN17, ...filteredRecord } = record;
                 filteredRecord.AN3 = filteredRecord.AN3.trim();
                 const { rejectedTypes } = generateServiceName(
                   filteredRecord.SE3
@@ -177,7 +164,6 @@ export function useCSVProcessor(file: File | undefined) {
                 'Il file inserito non é conforme ai criteri di elaborazione, assicurati che siano presenti dei dati da elaborare.'
               );
             }
-            
           },
           error: (error: Error) => {
             setIsProcessing(false);
@@ -278,7 +264,7 @@ export function useCSVProcessor(file: File | undefined) {
           generateDescriptionFromMappedValues(
             filteredRecord.ES1,
             discoveryMethodServiceMap
-        ),
+          ),
         motivoPrenotazione: generateDescriptionFromMappedValues(
           filteredRecord.ES2,
           bookingReasonMap

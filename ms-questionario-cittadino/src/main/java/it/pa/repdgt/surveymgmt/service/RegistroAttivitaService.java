@@ -3,6 +3,7 @@ package it.pa.repdgt.surveymgmt.service;
 import com.amazonaws.HttpMethod;
 import it.pa.repdgt.shared.entity.RegistroAttivitaEntity;
 import it.pa.repdgt.shared.entity.UtenteEntity;
+import it.pa.repdgt.shared.entityenum.JobStatusEnum;
 import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import it.pa.repdgt.surveymgmt.components.S3StorageService;
 import it.pa.repdgt.surveymgmt.configurations.S3PropertiesConfig;
@@ -20,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Service
@@ -43,6 +45,15 @@ public class RegistroAttivitaService {
         return registroAttivitaRepository.save(registroAttivitaEntity);
     }
 
+    public RegistroAttivitaEntity getRegistroAttivitaByUUID(String jobUUID) {
+        String uuid = jobUUID.replaceAll("-", "");
+        Optional<RegistroAttivitaEntity> registroOpt = registroAttivitaRepository.findByJobUUID(uuid);
+        if (!registroOpt.isPresent() || !registroOpt.get().getJobStatus().equals(JobStatusEnum.SUCCESS))
+            return RegistroAttivitaEntity.builder()
+                    .jobStatus(JobStatusEnum.IN_PROGRESS).build();
+        return registroOpt.get();
+    }
+
     private String getNomeCognomeOperatore(String operatore) {
         Optional<UtenteEntity> utenteOpt = utenteRepository.findByCodiceFiscale(operatore);
         if (!utenteOpt.isPresent()) {
@@ -52,24 +63,20 @@ public class RegistroAttivitaService {
         return utente.getNome() + " " + utente.getCognome();
     }
 
-    private String getNomi() {
-        return "";
-    }
-
     public Page<RegistroAttivitaEntity> getRegistroAttivita(Integer page, Integer size,
             SceltaProfiloParam sceltaProfiloParam) {
         Sort sort = Sort.by(Sort.Direction.DESC, "dataInserimento");
         Pageable pageable = PageRequest.of(page, size, sort);
         switch (sceltaProfiloParam.getCodiceRuoloUtenteLoggato()) {
             case "FAC":
-                return registroAttivitaRepository.findAllByCodiceFiscale(pageable,
-                        sceltaProfiloParam.getCfUtenteLoggato());
+                return registroAttivitaRepository.findAllByCodiceFiscaleAndJobStatus(pageable,
+                        sceltaProfiloParam.getCfUtenteLoggato(), JobStatusEnum.SUCCESS);
             case "REG":
             case "REGP":
             case "REPP":
             case "DTD":
-                return registroAttivitaRepository.findAllByIdEnteAndIdProgetto(pageable, sceltaProfiloParam.getIdEnte(),
-                        sceltaProfiloParam.getIdProgetto());
+                return registroAttivitaRepository.findAllByIdEnteAndIdProgettoAndJobStatus(pageable,
+                        sceltaProfiloParam.getIdEnte(), sceltaProfiloParam.getIdProgetto(), JobStatusEnum.SUCCESS);
             default:
                 throw new IllegalArgumentException();
         }

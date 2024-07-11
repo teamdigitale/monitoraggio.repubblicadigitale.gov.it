@@ -2,6 +2,7 @@ package it.pa.repdgt.shared.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import it.pa.repdgt.shared.entityenum.JobStatusEnum;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -48,4 +49,10 @@ public class RegistroAttivitaEntity {
     private Long idProgetto;
     private String fileName;
     private boolean isFileUpdated;
+    @NotNull
+    private String jobUUID;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private JobStatusEnum jobStatus;
+    private String note;
 }

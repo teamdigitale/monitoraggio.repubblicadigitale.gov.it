@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.client.RestTemplate;
 
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "it.pa.repdgt")
 @EnableJpaAuditing
+@EnableAsync
 @ComponentScan(basePackages = { "it.pa.repdgt" })
 @EntityScan(basePackages = { "it.pa.repdgt" })
 @Slf4j

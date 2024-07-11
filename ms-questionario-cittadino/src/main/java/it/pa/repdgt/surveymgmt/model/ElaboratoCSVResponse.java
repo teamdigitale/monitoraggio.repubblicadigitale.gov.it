@@ -6,13 +6,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.ByteArrayOutputStream;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class ElaboratoCSVResponse {
 
-    private String fileContent;
+    private ByteArrayOutputStream fileContent;
 
     private String fileName;
 
