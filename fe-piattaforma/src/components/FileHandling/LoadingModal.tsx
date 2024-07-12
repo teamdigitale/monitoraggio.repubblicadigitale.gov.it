@@ -50,11 +50,11 @@ export default function LoadingModal(props: {
     <GenericModal
       id='caricamento-csv'
       centerButtons
-      showCloseBtn={savedActivityReport ? true : false}
-      onCloseFromHeader={savedActivityReport ? props.handleCloseModal : () => {}}
-      onClose={savedActivityReport ? props.handleCloseModal : () => {}}
+      showCloseBtn={props.activityReportUUID ? true : false}
+      onCloseFromHeader={props.activityReportUUID ? props.handleCloseModal : () => {}}
+      onClose={props.activityReportUUID ? props.handleCloseModal : () => {}}
       modalBodyClassNames='no-overflow-modal'
-      closableKey={savedActivityReport ? 'unclosable' : undefined}
+      closableKey={props.activityReportUUID ? 'unclosable' : undefined}
     >
       <div className='d-flex flex-column align-items-center my-4 p-4 text-secondary'>
         {props.activityReportUUID && savedActivityReport !== null ? (
