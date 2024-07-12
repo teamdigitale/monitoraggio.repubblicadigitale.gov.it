@@ -47,6 +47,7 @@ public class ServiziElaboratiCsvWriter extends GenericImportCsvWriter<ServiziEla
                         String[] lines = csvContent.toString().split(System.lineSeparator());
                         for (String line : lines) {
                                 writer.append(line);
+                                writer.append(System.lineSeparator());
                         }
                         writer.flush();
                 }
