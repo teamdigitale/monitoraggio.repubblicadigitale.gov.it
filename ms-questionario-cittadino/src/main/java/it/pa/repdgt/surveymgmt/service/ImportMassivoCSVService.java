@@ -241,19 +241,19 @@ public class ImportMassivoCSVService {
                             CodiceErroreEnum.A06);
                 }
             } catch (ResourceNotFoundException ex) {
-                if (serviziAggiunti > 0)
+                if (serviziAggiunti > 0 && nuovoAggiunto)
                     serviziAggiunti--;
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(ex.getMessage());
                 serviziScartati.add(servizioElaborato);
                 continue;
             } catch (RuntimeException e) {
-                if (serviziAggiunti > 0)
+                if (serviziAggiunti > 0 && nuovoAggiunto)
                     serviziAggiunti--;
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(e.getMessage());
                 serviziScartati.add(servizioElaborato);
                 continue;
             } catch (Exception e) {
-                if (serviziAggiunti > 0)
+                if (serviziAggiunti > 0 && nuovoAggiunto)
                     serviziAggiunti--;
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(
                         "Impossibile salvare i dati del servizio, controllare bene tutti le colonne inserite e riprovare.");
