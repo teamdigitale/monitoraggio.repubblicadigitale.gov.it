@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.290](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.289...1.0.0-test.290) (2024-07-12)
+
+
+### Bug Fixes
+
+* **ms-questionario-cittadino:** fix creazione file scarti 20240712 ([46c364f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/46c364fc6e92fa5bb10785b63fc90122ac0182a5))
+
 ## [1.0.0-test.289](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.288...1.0.0-test.289) (2024-07-12)
 
 
