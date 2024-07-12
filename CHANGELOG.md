@@ -1,5 +1,14 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.289](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.288...1.0.0-test.289) (2024-07-12)
+
+
+### Bug Fixes
+
+* **ms-questionario-cittadino:** fix calcolo servizi aggiunti 20240712 ([f998b97](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f998b97abb7562ea11e495bee9c9d5c65ba54be3))
+* **fe-piattaforma:** controllo modale 20240712 ([6c1f2a6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6c1f2a62b8a9ac8097356dab73c1d59ec36ed7ab))
+* **fe-piattaforma:** controllo modale 20240712 ([a1c99c9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a1c99c9e9dd9b958aefaa0dd6272ede44962ffc1))
+
 ## [1.0.0-test.288](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.287...1.0.0-test.288) (2024-07-11)
 
 
