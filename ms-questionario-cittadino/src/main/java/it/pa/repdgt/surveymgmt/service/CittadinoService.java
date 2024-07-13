@@ -370,4 +370,21 @@ public class CittadinoService {
 		return cittadinoRepository.findCittadinoByCodiceFiscaleOrNumeroDocumentoAndIdDiverso(codiceFiscale,
 				numDocumento, id);
 	}
+
+	public boolean removeCittadino(Long id) {
+
+		List<QuestionarioCompilatoEntity> questionarioCompilatoList = questionarioCompilatoRepository
+				.findQuestionariCompilatiByCittadinoAndStatoNonCompilato(id);
+		for (QuestionarioCompilatoEntity entity : questionarioCompilatoList) {
+			this.questionarioCompilatoMongoRepository
+					.deleteByIdQuestionarioTemplate(entity.getId());
+			this.questionarioCompilatoRepository.delete(entity);
+
+		}
+
+		cittadinoRepository.deleteById(id);
+
+		return true;
+
+	}
 }

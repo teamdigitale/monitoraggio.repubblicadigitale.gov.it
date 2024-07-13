@@ -37,6 +37,7 @@ import it.pa.repdgt.surveymgmt.mapper.ServizioMapper;
 import it.pa.repdgt.surveymgmt.mongo.repository.SezioneQ3Respository;
 import it.pa.repdgt.surveymgmt.param.FiltroListaServiziParam;
 import it.pa.repdgt.surveymgmt.projection.ProgettoProjection;
+import it.pa.repdgt.surveymgmt.repository.TipologiaServizioRepository;
 import it.pa.repdgt.surveymgmt.request.ServizioRequest;
 
 @Service
@@ -60,6 +61,9 @@ public class ServizioService {
 	private QuestionarioTemplateService questionarioTemplateService;
 	@Autowired
 	private QuestionarioTemplateSqlService questionarioTemplateSqlService;
+
+	@Autowired
+	private TipologiaServizioRepository tipologiaServizioRepository;
 
 	/**
 	 * Recupera l'elenco dei servizi paginati sulla base della profilazione
@@ -426,5 +430,21 @@ public class ServizioService {
 	@LogExecutionTime
 	public boolean isServizioEliminabile(@NotNull final String statoServizio) {
 		return StatoEnum.NON_ATTIVO.getValue().equalsIgnoreCase(statoServizio);
+	}
+
+	@LogMethod
+	@LogExecutionTime
+	@Transactional(rollbackOn = Exception.class)
+	public void eliminaServizioForce(@NotNull final Long idServizio) {
+
+		final ServizioEntity servizioEntity = this.servizioSQLService.getServizioById(idServizio);
+
+		// Cancello tipologie servizio
+		tipologiaServizioRepository.deleteByIdServizio(idServizio);
+		// cancello SezioneQ3Compilato su MongoDB
+		this.sezioneQ3Repository.deleteByIdSezioneQ3(servizioEntity.getIdTemplateCompilatoQ3());
+		// cancello servizio su MySql
+		this.servizioSQLService.cancellaServivio(servizioEntity);
+
 	}
 }

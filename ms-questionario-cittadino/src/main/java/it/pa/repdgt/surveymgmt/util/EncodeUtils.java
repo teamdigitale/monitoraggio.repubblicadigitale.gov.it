@@ -9,9 +9,10 @@ import java.security.MessageDigest;
 
 public class EncodeUtils {
 
+    private static String key = System.getenv("CF_ST_KEY");
+
     public static String decrypt(String encryptedData) {
         try {
-            String key = System.getenv("CF_ST_KEY");
             encryptedData.replace(" ", "+");
             return Aes256.decrypt(encryptedData, key);
         } catch (Exception e) {

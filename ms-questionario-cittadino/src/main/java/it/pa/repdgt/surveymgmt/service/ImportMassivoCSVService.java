@@ -9,6 +9,7 @@ import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.surveymgmt.collection.SezioneQ3Collection;
 import it.pa.repdgt.surveymgmt.components.ServiziElaboratiCsvWriter;
 import it.pa.repdgt.surveymgmt.constants.NoteCSV;
+import it.pa.repdgt.surveymgmt.dto.NuovoCittadinoDTO;
 import it.pa.repdgt.surveymgmt.dto.ServiziAggiuntiDTO;
 import it.pa.repdgt.surveymgmt.dto.ServiziElaboratiDTO;
 import it.pa.repdgt.surveymgmt.dto.ServiziElaboratiDTOResponse;
@@ -28,15 +29,19 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -55,6 +60,12 @@ public class ImportMassivoCSVService {
     private final ServizioSqlRepository servizioSqlRepository;
     private final EnteSedeProgettoFacilitatoreRepository enteSedeProgettoFacilitatoreRepository;
     private final RegistroAttivitaService registroAttivitaService;
+    @Autowired
+    private ServizioXCittadinoRepository servizioXCittadinoRepository;
+    @Autowired
+    private CittadinoService cittadinoService;
+    @Autowired
+    private QuestionarioCompilatoService questionarioCompilatoService;
     private static final String FILE_NAME = "%s_righe_scartate_%s_%s.csv";
 
     private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH-mm", Locale.ITALIAN);
@@ -65,8 +76,15 @@ public class ImportMassivoCSVService {
         List<ServiziElaboratiDTO> serviziScartati = csvRequest.getServiziScartati();
         String UUID = replaceUUID(uuid);
         int totaleRighe = serviziScartati.size() + serviziValidati.size();
+        List<ServiziElaboratiDTO> servizi = !serviziValidati.isEmpty()
+                ? serviziValidati
+                : serviziScartati;
+        String cfUtenteLoggato = servizi != null && servizi.size() > 0
+                ? servizi.get(0).getServizioRequest().getCfUtenteLoggato()
+                : null;
         ElaboratoCSVResponse response = buildResponse(serviziValidati, serviziScartati, UUID);
-        RegistroAttivitaEntity registroAttivitaEntity = faseIntermezzoSalvataggioRegistroAttivita(UUID, csvRequest);
+        RegistroAttivitaEntity registroAttivitaEntity = faseIntermezzoSalvataggioRegistroAttivita(UUID, csvRequest,
+                cfUtenteLoggato);
         try {
             uploadFile(response, registroAttivitaEntity.getId());
         } catch (IOException e) {
@@ -99,12 +117,12 @@ public class ImportMassivoCSVService {
     }
 
     private RegistroAttivitaEntity faseIntermezzoSalvataggioRegistroAttivita(String uuid,
-            ElaboratoCSVRequest elaboratoCSVRequest) {
+            ElaboratoCSVRequest elaboratoCSVRequest, String cfUtenteLoggato) {
         List<ServiziElaboratiDTO> servizi = !elaboratoCSVRequest.getServiziValidati().isEmpty()
                 ? elaboratoCSVRequest.getServiziValidati()
                 : elaboratoCSVRequest.getServiziScartati();
         RegistroAttivitaEntity registroAttivita = RegistroAttivitaEntity.builder()
-                .operatore(servizi.get(0).getServizioRequest().getCfUtenteLoggato())
+                .operatore(cfUtenteLoggato)
                 .totaleRigheFile(0)
                 .righeScartate(0)
                 .serviziAcquisiti(0)
@@ -121,15 +139,17 @@ public class ImportMassivoCSVService {
     @Transactional
     public ElaboratoCSVResponse buildResponse(List<ServiziElaboratiDTO> serviziValidati,
             List<ServiziElaboratiDTO> serviziScartati, String uuid) {
-        Long idServizio;
+        Long idServizio = null;
         Integer serviziAggiunti = 0;
         Integer cittadiniAggiunti = 0;
         Integer questionariAggiunti = 0;
-        String idQuestionario;
+        String idQuestionario = null;
         List<ServiziAggiuntiDTO> serviziAggiuntiList = new ArrayList<>();
+        NuovoCittadinoDTO nuovoCittadinoDTO = new NuovoCittadinoDTO();
         for (ServiziElaboratiDTO servizioElaborato : serviziValidati) {
             Optional<ServizioEntity> servizioOpt = Optional.empty();
             boolean nuovoAggiunto = false;
+            idServizio = null;
             try {
                 Optional<UtenteEntity> utenteFacilitatoreDellaRichiesta = recuperaUtenteFacilitatoreDaRichiesta(
                         servizioElaborato.getCampiAggiuntiviCSV().getIdFacilitatore(),
@@ -243,52 +263,219 @@ public class ImportMassivoCSVService {
             } catch (ResourceNotFoundException ex) {
                 if (serviziAggiunti > 0 && nuovoAggiunto)
                     serviziAggiunti--;
+                log.info("-XXX- Eccezione gestita servizio: {} -XXX-", ex.getMessage());
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(ex.getMessage());
                 serviziScartati.add(servizioElaborato);
+                try {
+                    if (nuovoAggiunto && idServizio != null) {
+                        servizioService.eliminaServizioForce(idServizio);
+                        removeFromList(serviziAggiuntiList, idServizio);
+                    }
+                } catch (Exception exc) {
+                    log.info("-XXX- Exception eccezione bonifica record servizio: {} -XXX-", exc.getMessage());
+                    log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {}", idServizio);
+                }
                 continue;
             } catch (RuntimeException e) {
                 if (serviziAggiunti > 0 && nuovoAggiunto)
                     serviziAggiunti--;
+                log.info("-XXX- Eccezione gestita servizio: {} -XXX-", e.getMessage());
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(e.getMessage());
                 serviziScartati.add(servizioElaborato);
+                try {
+                    if (nuovoAggiunto && idServizio != null) {
+                        servizioService.eliminaServizioForce(idServizio);
+                        removeFromList(serviziAggiuntiList, idServizio);
+                    }
+                } catch (Exception exc) {
+                    log.info("-XXX- Exception eccezione bonifica record servizio: {} -XXX-", exc.getMessage());
+                    log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {}", idServizio);
+                }
                 continue;
             } catch (Exception e) {
                 if (serviziAggiunti > 0 && nuovoAggiunto)
                     serviziAggiunti--;
+                log.info("-XXX- Eccezione gestita servizio: {} -XXX-", e.getMessage());
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(
                         "Impossibile salvare i dati del servizio, controllare bene tutti le colonne inserite e riprovare.");
                 serviziScartati.add(servizioElaborato);
+                try {
+                    if (nuovoAggiunto && idServizio != null) {
+                        servizioService.eliminaServizioForce(idServizio);
+                        removeFromList(serviziAggiuntiList, idServizio);
+                    }
+                } catch (Exception exc) {
+                    log.info("-XXX- Exception eccezione bonifica record servizio: {} -XXX-", exc.getMessage());
+                    log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {} -XXX-", idServizio);
+                }
                 continue;
             }
             try {
                 cittadiniAggiunti++;
-                CittadinoEntity cittadinoEntity = cittadiniServizioService.creaNuovoCittadinoImportCsv(idServizio,
+                idQuestionario = null;
+                nuovoCittadinoDTO = cittadiniServizioService.creaNuovoCittadinoImportCsv(idServizio,
                         servizioElaborato.getNuovoCittadinoServizioRequest());
-                idQuestionario = cittadinoEntity.getQuestionarioCompilato().get(0).getId();
+                idQuestionario = nuovoCittadinoDTO.getCittadinoEntity().getQuestionarioCompilato().get(0).getId();
             } catch (CittadinoException | ServizioException e) {
                 if (cittadiniAggiunti > 0)
                     cittadiniAggiunti--;
+                log.info("-XXX- Eccezione gestita cittadino: {} -XXX-", e.getMessage());
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(e.getMessage());
                 serviziScartati.add(servizioElaborato);
+                try {
+                    if (idQuestionario != null) {
+                        questionarioCompilatoService.rimuoviQuestionarioById(idQuestionario);
+                    }
+                    if (nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null) {
+                        servizioXCittadinoRepository.deleteRelazioneByIdServizioAndIdCittadino(idServizio,
+                                nuovoCittadinoDTO.getCittadinoEntity().getId());
+                    }
+                    if (nuovoCittadinoDTO != null && nuovoCittadinoDTO.isNuovoCittadino()) {
+                        cittadinoService.removeCittadino(nuovoCittadinoDTO.getCittadinoEntity().getId());
+                    }
+                    if (nuovoAggiunto) {
+                        if (serviziAggiunti > 0)
+                            serviziAggiunti--;
+                        servizioService.eliminaServizioForce(idServizio);
+                        removeFromList(serviziAggiuntiList, idServizio);
+                    }
+                } catch (Exception exc) {
+                    log.info("-XXX- Exception eccezione bonifica record cittadino: {} -XXX-", exc.getMessage());
+                    log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
+                            idServizio,
+                            nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null
+                                    ? nuovoCittadinoDTO.getCittadinoEntity().getId()
+                                    : "NON ANCORA CREATO");
+                }
+                continue;
+            } catch (ResponseStatusException e) {
+                if (cittadiniAggiunti > 0)
+                    cittadiniAggiunti--;
+                log.info("-XXX- Eccezione gestita cittadino: {} -XXX-", e.getReason());
+                servizioElaborato.getCampiAggiuntiviCSV().setNote(e.getReason());
+                serviziScartati.add(servizioElaborato);
+                try {
+                    if (idQuestionario != null) {
+                        questionarioCompilatoService.rimuoviQuestionarioById(idQuestionario);
+                    }
+                    if (nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null) {
+                        servizioXCittadinoRepository.deleteRelazioneByIdServizioAndIdCittadino(idServizio,
+                                nuovoCittadinoDTO.getCittadinoEntity().getId());
+                    }
+                    if (nuovoCittadinoDTO != null && nuovoCittadinoDTO.isNuovoCittadino()) {
+                        cittadinoService.removeCittadino(nuovoCittadinoDTO.getCittadinoEntity().getId());
+                    }
+                    if (nuovoAggiunto) {
+                        if (serviziAggiunti > 0)
+                            serviziAggiunti--;
+                        servizioService.eliminaServizioForce(idServizio);
+                        removeFromList(serviziAggiuntiList, idServizio);
+                    }
+                } catch (Exception exc) {
+                    log.info("-XXX- Exception eccezione bonifica record cittadino: {} -XXX-", exc.getMessage());
+                    log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
+                            idServizio,
+                            nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null
+                                    ? nuovoCittadinoDTO.getCittadinoEntity().getId()
+                                    : "NON ANCORA CREATO");
+                }
                 continue;
             } catch (IncorrectResultSizeDataAccessException incorrectException) {
                 if (cittadiniAggiunti > 0)
                     cittadiniAggiunti--;
+                log.info("-XXX- Eccezione gestita cittadino: {} -XXX-", incorrectException.getMessage());
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(NoteCSV.NOTE_CITTADINO_PRESENTE);
                 serviziScartati.add(servizioElaborato);
+                try {
+                    if (idQuestionario != null) {
+                        questionarioCompilatoService.rimuoviQuestionarioById(idQuestionario);
+                    }
+                    if (nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null) {
+                        servizioXCittadinoRepository.deleteRelazioneByIdServizioAndIdCittadino(idServizio,
+                                nuovoCittadinoDTO.getCittadinoEntity().getId());
+                    }
+                    if (nuovoCittadinoDTO != null && nuovoCittadinoDTO.isNuovoCittadino()) {
+                        cittadinoService.removeCittadino(nuovoCittadinoDTO.getCittadinoEntity().getId());
+                    }
+                    if (nuovoAggiunto) {
+                        if (serviziAggiunti > 0)
+                            serviziAggiunti--;
+                        servizioService.eliminaServizioForce(idServizio);
+                        removeFromList(serviziAggiuntiList, idServizio);
+                    }
+                } catch (Exception exc) {
+                    log.info("-XXX- Exception eccezione bonifica record cittadino: {} -XXX-", exc.getMessage());
+                    log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
+                            idServizio,
+                            nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null
+                                    ? nuovoCittadinoDTO.getCittadinoEntity().getId()
+                                    : "NON ANCORA CREATO");
+                }
                 continue;
             } catch (RuntimeException e) {
                 if (cittadiniAggiunti > 0)
                     cittadiniAggiunti--;
+                log.info("-XXX- Eccezione gestita cittadino: {} -XXX-", e.getMessage());
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(NoteCSV.NOTE_CITTADINO);
                 serviziScartati.add(servizioElaborato);
+                try {
+                    if (idQuestionario != null) {
+                        questionarioCompilatoService.rimuoviQuestionarioById(idQuestionario);
+                    }
+                    if (nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null) {
+                        servizioXCittadinoRepository.deleteRelazioneByIdServizioAndIdCittadino(idServizio,
+                                nuovoCittadinoDTO.getCittadinoEntity().getId());
+                    }
+                    if (nuovoCittadinoDTO != null && nuovoCittadinoDTO.isNuovoCittadino()) {
+                        cittadinoService.removeCittadino(nuovoCittadinoDTO.getCittadinoEntity().getId());
+                    }
+                    if (nuovoAggiunto) {
+                        if (serviziAggiunti > 0)
+                            serviziAggiunti--;
+                        servizioService.eliminaServizioForce(idServizio);
+                        removeFromList(serviziAggiuntiList, idServizio);
+                    }
+                } catch (Exception exc) {
+                    log.info("-XXX- Exception eccezione bonifica record cittadino: {} -XXX-", exc.getMessage());
+                    log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
+                            idServizio,
+                            nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null
+                                    ? nuovoCittadinoDTO.getCittadinoEntity().getId()
+                                    : "NON ANCORA CREATO");
+                }
                 continue;
             } catch (Exception e) {
                 if (cittadiniAggiunti > 0)
                     cittadiniAggiunti--;
+                log.info("-XXX- Eccezione gestita cittadino: {} -XXX-", e.getMessage());
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(
                         "Impossibile salvare i dati del cittadino, non saranno salvati neanche quelli del servizio.");
                 serviziScartati.add(servizioElaborato);
+                try {
+                    if (idQuestionario != null) {
+                        questionarioCompilatoService.rimuoviQuestionarioById(idQuestionario);
+                    }
+                    if (nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null) {
+                        servizioXCittadinoRepository.deleteRelazioneByIdServizioAndIdCittadino(idServizio,
+                                nuovoCittadinoDTO.getCittadinoEntity().getId());
+                    }
+                    if (nuovoCittadinoDTO != null && nuovoCittadinoDTO.isNuovoCittadino()) {
+                        cittadinoService.removeCittadino(nuovoCittadinoDTO.getCittadinoEntity().getId());
+                    }
+                    if (nuovoAggiunto) {
+                        if (serviziAggiunti > 0)
+                            serviziAggiunti--;
+                        servizioService.eliminaServizioForce(idServizio);
+                        removeFromList(serviziAggiuntiList, idServizio);
+                    }
+                } catch (Exception exc) {
+                    log.info("-XXX- Exception eccezione bonifica record cittadino: {} -XXX-", exc.getMessage());
+                    log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
+                            idServizio,
+                            nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null
+                                    ? nuovoCittadinoDTO.getCittadinoEntity().getId()
+                                    : "NON ANCORA CREATO");
+                }
                 continue;
             }
             try {
@@ -298,18 +485,102 @@ public class ImportMassivoCSVService {
             } catch (CittadinoException | ServizioException | QuestionarioCompilatoException e) {
                 if (questionariAggiunti > 0)
                     questionariAggiunti--;
+                log.info("-XXX- Eccezione gestita questionario: {} -XXX-", e.getMessage());
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(e.getCodiceErroreEnum().getDescrizioneErrore());
                 serviziScartati.add(servizioElaborato);
+                try {
+                    if (idQuestionario != null) {
+                        questionarioCompilatoService.rimuoviQuestionarioById(idQuestionario);
+                    }
+                    if (nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null) {
+                        servizioXCittadinoRepository.deleteRelazioneByIdServizioAndIdCittadino(idServizio,
+                                nuovoCittadinoDTO.getCittadinoEntity().getId());
+                        if (cittadiniAggiunti > 0)
+                            cittadiniAggiunti--;
+                    }
+                    if (nuovoCittadinoDTO != null && nuovoCittadinoDTO.isNuovoCittadino()) {
+                        cittadinoService.removeCittadino(nuovoCittadinoDTO.getCittadinoEntity().getId());
+                    }
+                    if (nuovoAggiunto) {
+                        if (serviziAggiunti > 0)
+                            serviziAggiunti--;
+                        servizioService.eliminaServizioForce(idServizio);
+                        removeFromList(serviziAggiuntiList, idServizio);
+                    }
+                } catch (Exception exc) {
+                    log.info("-XXX- Exception eccezione bonifica record questionario: {} -XXX-", exc.getMessage());
+                    log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
+                            idServizio,
+                            nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null
+                                    ? nuovoCittadinoDTO.getCittadinoEntity().getId()
+                                    : "NON ANCORA CREATO");
+                }
             } catch (RuntimeException e) {
                 if (questionariAggiunti > 0)
                     questionariAggiunti--;
+                log.info("-XXX- Eccezione gestita questionario: {} -XXX-", e.getMessage());
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(NoteCSV.NOTE_QUESTIONARIO);
                 serviziScartati.add(servizioElaborato);
+                try {
+                    if (idQuestionario != null) {
+                        questionarioCompilatoService.rimuoviQuestionarioById(idQuestionario);
+                    }
+                    if (nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null) {
+                        servizioXCittadinoRepository.deleteRelazioneByIdServizioAndIdCittadino(idServizio,
+                                nuovoCittadinoDTO.getCittadinoEntity().getId());
+                        if (cittadiniAggiunti > 0)
+                            cittadiniAggiunti--;
+                    }
+                    if (nuovoCittadinoDTO != null && nuovoCittadinoDTO.isNuovoCittadino()) {
+                        cittadinoService.removeCittadino(nuovoCittadinoDTO.getCittadinoEntity().getId());
+                    }
+                    if (nuovoAggiunto) {
+                        if (serviziAggiunti > 0)
+                            serviziAggiunti--;
+                        servizioService.eliminaServizioForce(idServizio);
+                        removeFromList(serviziAggiuntiList, idServizio);
+                    }
+                } catch (Exception exc) {
+                    log.info("-XXX- Exception eccezione bonifica record questionario: {} -XXX-", exc.getMessage());
+                    log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
+                            idServizio,
+                            nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null
+                                    ? nuovoCittadinoDTO.getCittadinoEntity().getId()
+                                    : "NON ANCORA CREATO");
+                }
             } catch (Exception e) {
                 if (questionariAggiunti > 0)
                     questionariAggiunti--;
+                log.info("-XXX- Eccezione gestita questionario: {} -XXX-", e.getMessage());
                 servizioElaborato.getCampiAggiuntiviCSV().setNote("Impossibile salvare i dati del questionario.");
                 serviziScartati.add(servizioElaborato);
+                try {
+                    if (idQuestionario != null) {
+                        questionarioCompilatoService.rimuoviQuestionarioById(idQuestionario);
+                    }
+                    if (nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null) {
+                        servizioXCittadinoRepository.deleteRelazioneByIdServizioAndIdCittadino(idServizio,
+                                nuovoCittadinoDTO.getCittadinoEntity().getId());
+                        if (cittadiniAggiunti > 0)
+                            cittadiniAggiunti--;
+                    }
+                    if (nuovoCittadinoDTO != null && nuovoCittadinoDTO.isNuovoCittadino()) {
+                        cittadinoService.removeCittadino(nuovoCittadinoDTO.getCittadinoEntity().getId());
+                    }
+                    if (nuovoAggiunto) {
+                        if (serviziAggiunti > 0)
+                            serviziAggiunti--;
+                        servizioService.eliminaServizioForce(idServizio);
+                        removeFromList(serviziAggiuntiList, idServizio);
+                    }
+                } catch (Exception exc) {
+                    log.info("-XXX- Exception eccezione bonifica record questionario: {} -XXX-", exc.getMessage());
+                    log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
+                            idServizio,
+                            nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null
+                                    ? nuovoCittadinoDTO.getCittadinoEntity().getId()
+                                    : "NON ANCORA CREATO");
+                }
             }
         }
         serviziScartati.sort(Comparator.comparing(
@@ -513,6 +784,12 @@ public class ImportMassivoCSVService {
         }
 
         return Optional.empty();
+    }
+
+    private List<ServiziAggiuntiDTO> removeFromList(List<ServiziAggiuntiDTO> lista, Long id) {
+        List<ServiziAggiuntiDTO> listaresult = lista.stream()
+                .filter(element -> !element.getServizioEntity().getId().equals(id)).collect(Collectors.toList());
+        return listaresult;
     }
 
 }

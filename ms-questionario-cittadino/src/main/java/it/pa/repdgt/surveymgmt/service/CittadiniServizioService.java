@@ -15,6 +15,7 @@ import it.pa.repdgt.surveymgmt.bean.CittadinoServizioBean;
 import it.pa.repdgt.surveymgmt.bean.CittadinoUploadBean;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection.DatiIstanza;
+import it.pa.repdgt.surveymgmt.dto.NuovoCittadinoDTO;
 import it.pa.repdgt.surveymgmt.collection.SezioneQ3Collection;
 import it.pa.repdgt.surveymgmt.exception.CittadinoException;
 import it.pa.repdgt.surveymgmt.exception.QuestionarioCompilatoException;
@@ -301,10 +302,11 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
     @LogMethod
     @LogExecutionTime
     @Transactional(rollbackOn = Exception.class)
-    public CittadinoEntity creaNuovoCittadinoImportCsv(
+    public NuovoCittadinoDTO creaNuovoCittadinoImportCsv(
             @NotNull final Long idServizio,
             @NotNull final NuovoCittadinoServizioRequest nuovoCittadinoRequest) {
         String codiceFiscaleDecrypted;
+        boolean nuovoCittadino = true;
         // Verifico se il facilitatore è il creatore di quel servizio
         if (!this.servizioSqlRepository
                 .findByFacilitatoreAndIdServizio(nuovoCittadinoRequest.getCfUtenteLoggato(), idServizio).isPresent()) {
@@ -347,6 +349,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
                 throw new CittadinoException(messaggioErrore, CodiceErroreEnum.U07);
             }
             cittadino = optionalCittadinoDBFetch.get();
+            nuovoCittadino = false;
         } else {
             mapNuovoCittadinoRequestToCittadino(cittadino, nuovoCittadinoRequest);
         }
@@ -375,7 +378,8 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
         List<QuestionarioCompilatoEntity> questionarioCompilatoEntities = new ArrayList<>();
         questionarioCompilatoEntities.add(creaQuestionarioNonInviatoImportCsv(servizioDBFetch, cittadino));
         cittadino.setQuestionarioCompilato(questionarioCompilatoEntities);
-        return cittadino;
+        NuovoCittadinoDTO resultCittadino = new NuovoCittadinoDTO(cittadino, nuovoCittadino);
+        return resultCittadino;
     }
 
     private CittadinoEntity mapNuovoCittadinoRequestToCittadino(CittadinoEntity cittadino,
