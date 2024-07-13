@@ -36,6 +36,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
+
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -326,10 +327,6 @@ public class ImportMassivoCSVService {
                     if (idQuestionario != null) {
                         questionarioCompilatoService.rimuoviQuestionarioById(idQuestionario);
                     }
-                    if (nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null) {
-                        servizioXCittadinoRepository.deleteRelazioneByIdServizioAndIdCittadino(idServizio,
-                                nuovoCittadinoDTO.getCittadinoEntity().getId());
-                    }
                     if (nuovoCittadinoDTO != null && nuovoCittadinoDTO.isNuovoCittadino()) {
                         cittadinoService.removeCittadino(nuovoCittadinoDTO.getCittadinoEntity().getId());
                     }
@@ -357,10 +354,6 @@ public class ImportMassivoCSVService {
                 try {
                     if (idQuestionario != null) {
                         questionarioCompilatoService.rimuoviQuestionarioById(idQuestionario);
-                    }
-                    if (nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null) {
-                        servizioXCittadinoRepository.deleteRelazioneByIdServizioAndIdCittadino(idServizio,
-                                nuovoCittadinoDTO.getCittadinoEntity().getId());
                     }
                     if (nuovoCittadinoDTO != null && nuovoCittadinoDTO.isNuovoCittadino()) {
                         cittadinoService.removeCittadino(nuovoCittadinoDTO.getCittadinoEntity().getId());
@@ -390,10 +383,6 @@ public class ImportMassivoCSVService {
                     if (idQuestionario != null) {
                         questionarioCompilatoService.rimuoviQuestionarioById(idQuestionario);
                     }
-                    if (nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null) {
-                        servizioXCittadinoRepository.deleteRelazioneByIdServizioAndIdCittadino(idServizio,
-                                nuovoCittadinoDTO.getCittadinoEntity().getId());
-                    }
                     if (nuovoCittadinoDTO != null && nuovoCittadinoDTO.isNuovoCittadino()) {
                         cittadinoService.removeCittadino(nuovoCittadinoDTO.getCittadinoEntity().getId());
                     }
@@ -421,10 +410,6 @@ public class ImportMassivoCSVService {
                 try {
                     if (idQuestionario != null) {
                         questionarioCompilatoService.rimuoviQuestionarioById(idQuestionario);
-                    }
-                    if (nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null) {
-                        servizioXCittadinoRepository.deleteRelazioneByIdServizioAndIdCittadino(idServizio,
-                                nuovoCittadinoDTO.getCittadinoEntity().getId());
                     }
                     if (nuovoCittadinoDTO != null && nuovoCittadinoDTO.isNuovoCittadino()) {
                         cittadinoService.removeCittadino(nuovoCittadinoDTO.getCittadinoEntity().getId());
@@ -454,10 +439,6 @@ public class ImportMassivoCSVService {
                 try {
                     if (idQuestionario != null) {
                         questionarioCompilatoService.rimuoviQuestionarioById(idQuestionario);
-                    }
-                    if (nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null) {
-                        servizioXCittadinoRepository.deleteRelazioneByIdServizioAndIdCittadino(idServizio,
-                                nuovoCittadinoDTO.getCittadinoEntity().getId());
                     }
                     if (nuovoCittadinoDTO != null && nuovoCittadinoDTO.isNuovoCittadino()) {
                         cittadinoService.removeCittadino(nuovoCittadinoDTO.getCittadinoEntity().getId());
