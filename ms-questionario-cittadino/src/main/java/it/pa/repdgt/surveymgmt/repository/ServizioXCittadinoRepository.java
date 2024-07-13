@@ -1,5 +1,7 @@
 package it.pa.repdgt.surveymgmt.repository;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -26,6 +28,20 @@ public interface ServizioXCittadinoRepository extends JpaRepository<ServizioXCit
 			@Param(value = "idServizio") Long idServizio,
 			@Param(value = "idCittadino") Long idCittadino);
 
+	@Query(value = " "
+			+ " SELECT "
+			+ "	* "
+			+ " FROM "
+			+ "	servizio_x_cittadino sxc "
+			+ " WHERE 1=1 "
+			+ "	AND sxc.ID_SERVIZIO  = :idServizio  "
+			+ " AND sxc.ID_CITTADINO = :idCittadino "
+			+ " ORDER BY sxc.data_ora_creazione asc "
+			+ " ", nativeQuery = true)
+	List<ServizioXCittadinoEntity> findListCittadinoByIdServizioAndIdCittadino(
+			@Param(value = "idServizio") Long idServizio,
+			@Param(value = "idCittadino") Long idCittadino);
+
 	@Modifying
 	@Query(value = " "
 			+ " DELETE FROM "
@@ -33,7 +49,7 @@ public interface ServizioXCittadinoRepository extends JpaRepository<ServizioXCit
 			+ " WHERE "
 			+ "    ID_SERVIZIO  = :idServizio "
 			+ "    AND ID_CITTADINO = :idCittadino ", nativeQuery = true)
-	boolean deleteRelazioneByIdServizioAndIdCittadino(
+	void deleteRelazioneByIdServizioAndIdCittadino(
 			@Param(value = "idServizio") Long idServizio,
 			@Param(value = "idCittadino") Long idCittadino);
 }
