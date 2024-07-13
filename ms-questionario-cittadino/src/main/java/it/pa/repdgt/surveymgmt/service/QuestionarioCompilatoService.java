@@ -35,6 +35,7 @@ import it.pa.repdgt.surveymgmt.exception.QuestionarioCompilatoException;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
 import it.pa.repdgt.surveymgmt.exception.ServizioException;
 import it.pa.repdgt.surveymgmt.mongo.repository.QuestionarioCompilatoMongoRepository;
+import it.pa.repdgt.surveymgmt.repository.QuestionarioCompilatoRepository;
 import it.pa.repdgt.surveymgmt.repository.QuestionarioCompilatoSqlRepository;
 import it.pa.repdgt.surveymgmt.repository.QuestionarioInviatoOnlineRepository;
 import it.pa.repdgt.surveymgmt.request.QuestionarioCompilatoAnonimoRequest;
@@ -57,6 +58,8 @@ public class QuestionarioCompilatoService {
 	private QuestionarioTemplateService questionarioTemplateService;
 	@Autowired
 	private FasciaDiEtaRepository fasciaDiEtaRepository;
+	@Autowired
+	private QuestionarioCompilatoRepository questionarioCompilatoRepository;
 
 	@LogMethod
 	@LogExecutionTime
@@ -370,4 +373,28 @@ public class QuestionarioCompilatoService {
 		return currentDate.after(c.getTime());
 	}
 
+	public boolean rimuoviQuestionarioByCittadinoAndServizio(Long idServizio, Long idCittadino) {
+		List<QuestionarioCompilatoEntity> questionarioCompilatoList = questionarioCompilatoRepository
+				.findQuestionariCompilatiByCittadinoAndServizio(idServizio, idCittadino);
+		for (QuestionarioCompilatoEntity entity : questionarioCompilatoList) {
+			this.questionarioCompilatoMongoRepository
+					.deleteByIdQuestionarioTemplate(entity.getId());
+			this.questionarioCompilatoRepository.delete(entity);
+
+		}
+
+		return true;
+	}
+
+	public boolean rimuoviQuestionarioById(String idQuestionario) {
+		Optional<QuestionarioCompilatoEntity> questionarioCompilatoEntity = questionarioCompilatoRepository
+				.findById(idQuestionario);
+		if (questionarioCompilatoEntity.isPresent()) {
+			this.questionarioCompilatoMongoRepository
+					.deleteByIdQuestionarioTemplate(questionarioCompilatoEntity.get().getId());
+			this.questionarioCompilatoRepository.delete(questionarioCompilatoEntity.get());
+		}
+
+		return true;
+	}
 }
