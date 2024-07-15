@@ -434,7 +434,6 @@ public class ServizioService {
 
 	@LogMethod
 	@LogExecutionTime
-	@Transactional(rollbackOn = Exception.class)
 	public void eliminaServizioForce(@NotNull final Long idServizio) {
 
 		final ServizioEntity servizioEntity = this.servizioSQLService.getServizioById(idServizio);
