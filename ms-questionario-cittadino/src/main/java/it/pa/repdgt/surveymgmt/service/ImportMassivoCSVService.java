@@ -265,7 +265,7 @@ public class ImportMassivoCSVService {
                 if (serviziAggiunti > 0 && nuovoAggiunto)
                     serviziAggiunti--;
                 log.info("-XXX- Eccezione gestita servizio: {} -XXX-", ex.getMessage());
-                log.error(ex.getStackTrace().toString());
+                ex.getStackTrace().toString();
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(ex.getMessage());
                 serviziScartati.add(servizioElaborato);
                 try {
@@ -275,6 +275,7 @@ public class ImportMassivoCSVService {
                     }
                 } catch (Exception exc) {
                     log.info("-XXX- Exception eccezione bonifica record servizio: {} -XXX-", exc.getMessage());
+                    exc.getStackTrace();
                     log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {}", idServizio);
                 }
                 continue;
@@ -282,7 +283,7 @@ public class ImportMassivoCSVService {
                 if (serviziAggiunti > 0 && nuovoAggiunto)
                     serviziAggiunti--;
                 log.info("-XXX- Eccezione gestita servizio: {} -XXX-", e.getMessage());
-                log.error(e.getStackTrace().toString());
+                e.getStackTrace();
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(e.getMessage());
                 serviziScartati.add(servizioElaborato);
                 try {
@@ -292,6 +293,7 @@ public class ImportMassivoCSVService {
                     }
                 } catch (Exception exc) {
                     log.info("-XXX- Exception eccezione bonifica record servizio: {} -XXX-", exc.getMessage());
+                    exc.getStackTrace();
                     log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {}", idServizio);
                 }
                 continue;
@@ -299,7 +301,7 @@ public class ImportMassivoCSVService {
                 if (serviziAggiunti > 0 && nuovoAggiunto)
                     serviziAggiunti--;
                 log.info("-XXX- Eccezione gestita servizio: {} -XXX-", e.getMessage());
-                log.error(e.getStackTrace().toString());
+                e.getStackTrace();
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(
                         "Impossibile salvare i dati del servizio, controllare bene tutti le colonne inserite e riprovare.");
                 serviziScartati.add(servizioElaborato);
@@ -310,6 +312,7 @@ public class ImportMassivoCSVService {
                     }
                 } catch (Exception exc) {
                     log.info("-XXX- Exception eccezione bonifica record servizio: {} -XXX-", exc.getMessage());
+                    exc.getStackTrace();
                     log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {} -XXX-", idServizio);
                 }
                 continue;
@@ -324,7 +327,7 @@ public class ImportMassivoCSVService {
                 if (cittadiniAggiunti > 0)
                     cittadiniAggiunti--;
                 log.info("-XXX- Eccezione gestita cittadino: {} -XXX-", e.getMessage());
-                log.error(e.getStackTrace().toString());
+                e.getStackTrace();
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(e.getMessage());
                 serviziScartati.add(servizioElaborato);
                 try {
@@ -342,6 +345,7 @@ public class ImportMassivoCSVService {
                     }
                 } catch (Exception exc) {
                     log.info("-XXX- Exception eccezione bonifica record cittadino: {} -XXX-", exc.getMessage());
+                    exc.getStackTrace();
                     log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
                             idServizio,
                             nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null
@@ -353,7 +357,7 @@ public class ImportMassivoCSVService {
                 if (cittadiniAggiunti > 0)
                     cittadiniAggiunti--;
                 log.info("-XXX- Eccezione gestita cittadino: {} -XXX-", e.getReason());
-                log.error(e.getStackTrace().toString());
+                e.getStackTrace();
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(e.getReason());
                 serviziScartati.add(servizioElaborato);
                 try {
@@ -371,6 +375,7 @@ public class ImportMassivoCSVService {
                     }
                 } catch (Exception exc) {
                     log.info("-XXX- Exception eccezione bonifica record cittadino: {} -XXX-", exc.getMessage());
+                    exc.getStackTrace();
                     log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
                             idServizio,
                             nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null
@@ -382,7 +387,7 @@ public class ImportMassivoCSVService {
                 if (cittadiniAggiunti > 0)
                     cittadiniAggiunti--;
                 log.info("-XXX- Eccezione gestita cittadino: {} -XXX-", incorrectException.getMessage());
-                log.error(incorrectException.getStackTrace().toString());
+                incorrectException.getStackTrace();
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(NoteCSV.NOTE_CITTADINO_PRESENTE);
                 serviziScartati.add(servizioElaborato);
                 try {
@@ -400,6 +405,7 @@ public class ImportMassivoCSVService {
                     }
                 } catch (Exception exc) {
                     log.info("-XXX- Exception eccezione bonifica record cittadino: {} -XXX-", exc.getMessage());
+                    exc.getStackTrace();
                     log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
                             idServizio,
                             nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null
@@ -411,7 +417,7 @@ public class ImportMassivoCSVService {
                 if (cittadiniAggiunti > 0)
                     cittadiniAggiunti--;
                 log.info("-XXX- Eccezione gestita cittadino: {} -XXX-", e.getMessage());
-                log.error(e.getStackTrace().toString());
+                e.getStackTrace();
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(NoteCSV.NOTE_CITTADINO);
                 serviziScartati.add(servizioElaborato);
                 try {
@@ -429,6 +435,7 @@ public class ImportMassivoCSVService {
                     }
                 } catch (Exception exc) {
                     log.info("-XXX- Exception eccezione bonifica record cittadino: {} -XXX-", exc.getMessage());
+                    exc.getStackTrace();
                     log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
                             idServizio,
                             nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null
@@ -440,7 +447,7 @@ public class ImportMassivoCSVService {
                 if (cittadiniAggiunti > 0)
                     cittadiniAggiunti--;
                 log.info("-XXX- Eccezione gestita cittadino: {} -XXX-", e.getMessage());
-                log.error(e.getStackTrace().toString());
+                e.getStackTrace();
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(
                         "Impossibile salvare i dati del cittadino, non saranno salvati neanche quelli del servizio.");
                 serviziScartati.add(servizioElaborato);
@@ -459,6 +466,7 @@ public class ImportMassivoCSVService {
                     }
                 } catch (Exception exc) {
                     log.info("-XXX- Exception eccezione bonifica record cittadino: {} -XXX-", exc.getMessage());
+                    exc.getStackTrace();
                     log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
                             idServizio,
                             nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null
@@ -475,7 +483,7 @@ public class ImportMassivoCSVService {
                 if (questionariAggiunti > 0)
                     questionariAggiunti--;
                 log.info("-XXX- Eccezione gestita questionario: {} -XXX-", e.getMessage());
-                log.error(e.getStackTrace().toString());
+                e.getStackTrace();
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(e.getCodiceErroreEnum().getDescrizioneErrore());
                 serviziScartati.add(servizioElaborato);
                 try {
@@ -499,6 +507,7 @@ public class ImportMassivoCSVService {
                     }
                 } catch (Exception exc) {
                     log.info("-XXX- Exception eccezione bonifica record questionario: {} -XXX-", exc.getMessage());
+                    exc.getStackTrace();
                     log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
                             idServizio,
                             nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null
@@ -509,7 +518,7 @@ public class ImportMassivoCSVService {
                 if (questionariAggiunti > 0)
                     questionariAggiunti--;
                 log.info("-XXX- Eccezione gestita questionario: {} -XXX-", e.getMessage());
-                log.error(e.getStackTrace().toString());
+                e.getStackTrace();
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(NoteCSV.NOTE_QUESTIONARIO);
                 serviziScartati.add(servizioElaborato);
                 try {
@@ -533,6 +542,7 @@ public class ImportMassivoCSVService {
                     }
                 } catch (Exception exc) {
                     log.info("-XXX- Exception eccezione bonifica record questionario: {} -XXX-", exc.getMessage());
+                    exc.getStackTrace();
                     log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
                             idServizio,
                             nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null
@@ -543,7 +553,7 @@ public class ImportMassivoCSVService {
                 if (questionariAggiunti > 0)
                     questionariAggiunti--;
                 log.info("-XXX- Eccezione gestita questionario: {} -XXX-", e.getMessage());
-                log.error(e.getStackTrace().toString());
+                e.getStackTrace();
                 servizioElaborato.getCampiAggiuntiviCSV().setNote("Impossibile salvare i dati del questionario.");
                 serviziScartati.add(servizioElaborato);
                 try {
@@ -567,6 +577,7 @@ public class ImportMassivoCSVService {
                     }
                 } catch (Exception exc) {
                     log.info("-XXX- Exception eccezione bonifica record questionario: {} -XXX-", exc.getMessage());
+                    exc.getStackTrace();
                     log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
                             idServizio,
                             nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null

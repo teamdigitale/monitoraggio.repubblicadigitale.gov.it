@@ -301,7 +301,6 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 
     @LogMethod
     @LogExecutionTime
-    @Transactional(rollbackOn = Exception.class)
     public NuovoCittadinoDTO creaNuovoCittadinoImportCsv(
             @NotNull final Long idServizio,
             @NotNull final NuovoCittadinoServizioRequest nuovoCittadinoRequest) {
@@ -438,7 +437,6 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 
     @LogMethod
     @LogExecutionTime
-    @Transactional(rollbackOn = Exception.class)
     public void associaCittadinoAServizio(@NotNull final Long idServizio, @NotNull final CittadinoEntity cittadino) {
         ServizioXCittadinoEntity servizioXCittadino = new ServizioXCittadinoEntity();
         ServizioCittadinoKey key = new ServizioCittadinoKey(cittadino.getId(), idServizio);
@@ -468,7 +466,6 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 
     @LogMethod
     @LogExecutionTime
-    @Transactional(rollbackOn = Exception.class)
     public QuestionarioCompilatoEntity creaQuestionarioNonInviatoImportCsv(
             @NotNull final ServizioEntity servizioDBFetch, @NotNull final CittadinoEntity cittadino) {
 
@@ -489,7 +486,6 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 
     @LogMethod
     @LogExecutionTime
-    @Transactional(rollbackOn = Exception.class)
     public QuestionarioCompilatoCollection creoQuestionarioCompilatoCollection(
             CittadinoEntity cittadino,
             ServizioEntity servizio) {
@@ -608,7 +604,6 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 
     @LogMethod
     @LogExecutionTime
-    @Transactional(rollbackOn = Exception.class)
     public QuestionarioCompilatoEntity salvaQuestionarioCompilatoSqlImportCsv(
             @NotNull final CittadinoEntity cittadino,
             @NotNull final ServizioEntity servizio,
