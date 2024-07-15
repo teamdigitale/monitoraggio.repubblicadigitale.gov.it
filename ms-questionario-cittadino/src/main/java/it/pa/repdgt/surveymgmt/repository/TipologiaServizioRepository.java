@@ -1,5 +1,6 @@
 package it.pa.repdgt.surveymgmt.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,11 +16,17 @@ public interface TipologiaServizioRepository extends JpaRepository<TipologiaServ
 			+ ""
 			+ " DELETE "
 			+ "	FROM   "
-			+ "		tipologia_servizio ts               "
+			+ "		tipologia_servizio ts "
 			+ " WHERE ts.SERVIZIO_ID = :idServizio"
-			+ "",
-		  nativeQuery = true)
-	void deleteByIdServizio(@Param(value="idServizio") Long idServizio);
+			+ "", nativeQuery = true)
+	void deleteByIdServizio(@Param(value = "idServizio") Long idServizio);
+
+	@Modifying
+	@Query("DELETE FROM TipologiaServizio ts WHERE ts.servizioId = :idServizio")
+	void deleteByIdServizioJPA(@Param("idServizio") Long idServizio);
+
+	@Query("SELECT ts FROM TipologiaServizio ts WHERE ts.servizioId = :idServizio")
+	List<TipologiaServizioEntity> findByIdServizioJPA(@Param("idServizio") Long idServizio);
 
 	@Query(value = ""
 			+ ""
@@ -29,9 +36,8 @@ public interface TipologiaServizioRepository extends JpaRepository<TipologiaServ
 			+ "		tipologia_servizio ts                  "
 			+ " WHERE ts.TITOLO = :titoloTipologiaServizio "
 			+ "	  AND ts.SERVIZIO_ID = :servizioId         "
-			+ "",
-		  nativeQuery = true)
+			+ "", nativeQuery = true)
 	Optional<TipologiaServizioEntity> findByTitoloAndServizioId(
-			@Param(value="titoloTipologiaServizio") String titoloTipologiaServizio,
-	@Param(value="servizioId") Long servizioId);
+			@Param(value = "titoloTipologiaServizio") String titoloTipologiaServizio,
+			@Param(value = "servizioId") Long servizioId);
 }

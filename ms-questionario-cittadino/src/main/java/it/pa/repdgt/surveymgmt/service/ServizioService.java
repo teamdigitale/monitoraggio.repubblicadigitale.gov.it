@@ -11,6 +11,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -24,6 +25,7 @@ import it.pa.repdgt.shared.constants.RuoliUtentiConstants;
 import it.pa.repdgt.shared.entity.EnteEntity;
 import it.pa.repdgt.shared.entity.SedeEntity;
 import it.pa.repdgt.shared.entity.ServizioEntity;
+import it.pa.repdgt.shared.entity.TipologiaServizioEntity;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
@@ -439,7 +441,9 @@ public class ServizioService {
 		final ServizioEntity servizioEntity = this.servizioSQLService.getServizioById(idServizio);
 
 		// Cancello tipologie servizio
-		tipologiaServizioRepository.deleteByIdServizio(idServizio);
+		List<TipologiaServizioEntity> tipologiaList = tipologiaServizioRepository.findByIdServizioJPA(idServizio);
+		if (CollectionUtils.isNotEmpty(tipologiaList))
+			tipologiaServizioRepository.deleteByIdServizioJPA(idServizio);
 		// cancello SezioneQ3Compilato su MongoDB
 		this.sezioneQ3Repository.deleteByIdSezioneQ3(servizioEntity.getIdTemplateCompilatoQ3());
 		// cancello servizio su MySql
