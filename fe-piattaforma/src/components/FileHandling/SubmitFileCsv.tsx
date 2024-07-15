@@ -84,6 +84,7 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
       )
         .then((res) => {
           setActivityReportUUID(res.data);
+          props.clearFile()
           dispatch(
             openModal({
               id: 'caricamento-csv',
@@ -121,12 +122,12 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
       </button>
       {activityReportUUID && (
         <LoadingModal
-        activityReportUUID={activityReportUUID}
-        handleCloseModal={handleCloseModal}
-        triggerSearch={triggerSearch}
-      />
+          activityReportUUID={activityReportUUID}
+          handleCloseModal={handleCloseModal}
+          triggerSearch={triggerSearch}
+        />
       )}
-      
+
     </>
   );
 }

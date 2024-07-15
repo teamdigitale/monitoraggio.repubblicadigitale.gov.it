@@ -51,8 +51,8 @@ export default function LoadingModal(props: {
       id='caricamento-csv'
       centerButtons
       showCloseBtn={props.activityReportUUID ? true : false}
-      onCloseFromHeader={props.activityReportUUID ? props.handleCloseModal : () => {}}
-      onClose={props.activityReportUUID ? props.handleCloseModal : () => {}}
+      onCloseFromHeader={props.activityReportUUID ? props.handleCloseModal : () => { }}
+      onClose={props.activityReportUUID ? props.handleCloseModal : () => { }}
       modalBodyClassNames='no-overflow-modal'
       closableKey={props.activityReportUUID ? 'unclosable' : undefined}
     >
@@ -117,6 +117,9 @@ export default function LoadingModal(props: {
                     il
                     <strong> report</strong> al termine dell'operazione nel
                     registro caricamenti
+                  </p>
+                  <p className='text-secondary font-weight-normal'>
+                    Vi preghiamo di non effettuare un nuovo caricamento prima di aver ricevuto il report di completamento di quello in corso
                   </p>
                 </div>
               </div>
