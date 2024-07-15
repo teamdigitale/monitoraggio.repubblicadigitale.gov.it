@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.295](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.294...1.0.0-test.295) (2024-07-15)
+
+
+### Bug Fixes
+
+* **ms-questionario-cittadino:** gestione exc 20240715 ([22640ef](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/22640ef83304c5dd4ce454cebafece5659486604))
+
 ## [1.0.0-test.294](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.293...1.0.0-test.294) (2024-07-15)
 
 
