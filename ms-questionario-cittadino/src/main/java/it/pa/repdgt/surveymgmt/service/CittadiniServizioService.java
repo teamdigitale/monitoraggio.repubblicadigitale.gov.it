@@ -370,9 +370,10 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
         // recupero il servizio
         ServizioEntity servizioDBFetch = servizioSqlService.getServizioById(idServizio);
 
-        if (StatoEnum.NON_ATTIVO.getValue().equals(servizioDBFetch.getStato()))
+        if (StatoEnum.NON_ATTIVO.getValue().equals(servizioDBFetch.getStato())) {
             servizioDBFetch.setStato(StatoEnum.ATTIVO.getValue());
-
+            servizioSqlRepository.save(servizioDBFetch);
+        }
         // creo il questionario in stato NON_INVIATO
         List<QuestionarioCompilatoEntity> questionarioCompilatoEntities = new ArrayList<>();
         questionarioCompilatoEntities.add(creaQuestionarioNonInviatoImportCsv(servizioDBFetch, cittadino));
