@@ -1,5 +1,15 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.34.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.34.0...1.34.1) (2024-07-15)
+
+
+### Bug Fixes
+
+* **ms-questionario-cittadino:** fix import csv 20240715 ([1c6f81e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1c6f81eb74ae89b5cc511668f30bc7f4f9389ce1))
+* **ms-questionario-cittadino:** gestione exc 20240715 ([7c5db92](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7c5db92cac33c0f461bf3e264a47786b21f796f2))
+* **ms-questionario-cittadino:** gestione exc 20240715 ([f13dfab](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f13dfab20a1604d16f10fc1ae13500f4d797cf28))
+* **ms-questionario-cittadino:** gestione exc 20240715 ([ab70ee7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ab70ee746bd1aac0a304a5c4e323525c247ffcf2))
+
 ## [1.34.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.33.13...1.34.0) (2024-07-15)
 
 
