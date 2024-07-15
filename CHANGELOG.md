@@ -1,5 +1,24 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.34.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.33.13...1.34.0) (2024-07-15)
+
+
+### Features
+
+* **feature async:** updates 20240711 ([c8c7e45](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c8c7e4523a6e7647e01e732fea0d9edadf3bb407))
+
+
+### Bug Fixes
+
+* **ms-questionario-cittadino:** fix misc 20240715 ([550a4b9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/550a4b9e96bbd3daac63c53b9ed044d23d4e8613))
+* **ms-questionario-cittadino:** fix import csv bis 20240713 ([058de7d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/058de7dcf579610fc827a1b63477f01601fcb21c))
+* **ms-questionario-cittadino:** fix import csv 20240713 ([ef055a4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ef055a46056f188a2c5cf187a57ea643e67a74a8))
+* **ms-questionario-cittadino:** fix creazione file scarti 20240712 ([f51ab41](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f51ab416a2c9e970b72e012f5667ecd566ca12a2))
+* **ms-questionario-cittadino:** fix calcolo servizi aggiunti 20240712 ([64e7015](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/64e7015559d11bafb86e9962ea26dad9cfcc0d81))
+* **fe-piattaforma:** controllo modale 20240712 ([ef47bba](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ef47bba21837692d1ddf4100b84d3ab9a7281f68))
+* **fe-piattaforma:** controllo modale 20240712 ([4961ebc](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4961ebc67107d17a8c39b1d8e29107f35a458ae5))
+* **ms-questionario-cittadino:** fix filename scarti 20240710 ([c302e7a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c302e7aa49356434672826dec3648ebbc5509ba9))
+
 ## [1.33.13](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.33.12...1.33.13) (2024-07-08)
 
 
