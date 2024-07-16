@@ -265,7 +265,7 @@ public class ImportMassivoCSVService {
                 if (serviziAggiunti > 0 && nuovoAggiunto)
                     serviziAggiunti--;
                 log.info("-XXX- Eccezione gestita servizio: {} -XXX-", ex.getMessage());
-                ex.getStackTrace().toString();
+                ex.printStackTrace();
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(ex.getMessage());
                 serviziScartati.add(servizioElaborato);
                 try {
@@ -275,7 +275,7 @@ public class ImportMassivoCSVService {
                     }
                 } catch (Exception exc) {
                     log.info("-XXX- Exception eccezione bonifica record servizio: {} -XXX-", exc.getMessage());
-                    exc.getStackTrace();
+                    exc.printStackTrace();
                     log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {}", idServizio);
                 }
                 continue;
@@ -283,7 +283,7 @@ public class ImportMassivoCSVService {
                 if (serviziAggiunti > 0 && nuovoAggiunto)
                     serviziAggiunti--;
                 log.info("-XXX- Eccezione gestita servizio: {} -XXX-", e.getMessage());
-                e.getStackTrace();
+                e.printStackTrace();
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(e.getMessage());
                 serviziScartati.add(servizioElaborato);
                 try {
@@ -293,7 +293,7 @@ public class ImportMassivoCSVService {
                     }
                 } catch (Exception exc) {
                     log.info("-XXX- Exception eccezione bonifica record servizio: {} -XXX-", exc.getMessage());
-                    exc.getStackTrace();
+                    exc.printStackTrace();
                     log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {}", idServizio);
                 }
                 continue;
@@ -301,7 +301,7 @@ public class ImportMassivoCSVService {
                 if (serviziAggiunti > 0 && nuovoAggiunto)
                     serviziAggiunti--;
                 log.info("-XXX- Eccezione gestita servizio: {} -XXX-", e.getMessage());
-                e.getStackTrace();
+                e.printStackTrace();
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(
                         "Impossibile salvare i dati del servizio, controllare bene tutti le colonne inserite e riprovare.");
                 serviziScartati.add(servizioElaborato);
@@ -312,7 +312,7 @@ public class ImportMassivoCSVService {
                     }
                 } catch (Exception exc) {
                     log.info("-XXX- Exception eccezione bonifica record servizio: {} -XXX-", exc.getMessage());
-                    exc.getStackTrace();
+                    exc.printStackTrace();
                     log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {} -XXX-", idServizio);
                 }
                 continue;
@@ -320,6 +320,7 @@ public class ImportMassivoCSVService {
             try {
                 cittadiniAggiunti++;
                 idQuestionario = null;
+                nuovoCittadinoDTO = null;
                 nuovoCittadinoDTO = cittadiniServizioService.creaNuovoCittadinoImportCsv(idServizio,
                         servizioElaborato.getNuovoCittadinoServizioRequest());
                 idQuestionario = nuovoCittadinoDTO.getCittadinoEntity().getQuestionarioCompilato().get(0).getId();
@@ -327,7 +328,7 @@ public class ImportMassivoCSVService {
                 if (cittadiniAggiunti > 0)
                     cittadiniAggiunti--;
                 log.info("-XXX- Eccezione gestita cittadino: {} -XXX-", e.getMessage());
-                e.getStackTrace();
+                e.printStackTrace();
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(e.getMessage());
                 serviziScartati.add(servizioElaborato);
                 try {
@@ -338,14 +339,14 @@ public class ImportMassivoCSVService {
                         cittadinoService.removeCittadino(nuovoCittadinoDTO.getCittadinoEntity().getId());
                     }
                     if (nuovoAggiunto) {
-                        if (serviziAggiunti > 0)
-                            serviziAggiunti--;
                         servizioService.eliminaServizioForce(idServizio);
                         removeFromList(serviziAggiuntiList, idServizio);
+                        if (serviziAggiunti > 0)
+                            serviziAggiunti--;
                     }
                 } catch (Exception exc) {
                     log.info("-XXX- Exception eccezione bonifica record cittadino: {} -XXX-", exc.getMessage());
-                    exc.getStackTrace();
+                    exc.printStackTrace();
                     log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
                             idServizio,
                             nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null
@@ -357,7 +358,7 @@ public class ImportMassivoCSVService {
                 if (cittadiniAggiunti > 0)
                     cittadiniAggiunti--;
                 log.info("-XXX- Eccezione gestita cittadino: {} -XXX-", e.getReason());
-                e.getStackTrace();
+                e.printStackTrace();
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(e.getReason());
                 serviziScartati.add(servizioElaborato);
                 try {
@@ -368,14 +369,14 @@ public class ImportMassivoCSVService {
                         cittadinoService.removeCittadino(nuovoCittadinoDTO.getCittadinoEntity().getId());
                     }
                     if (nuovoAggiunto) {
-                        if (serviziAggiunti > 0)
-                            serviziAggiunti--;
                         servizioService.eliminaServizioForce(idServizio);
                         removeFromList(serviziAggiuntiList, idServizio);
+                        if (serviziAggiunti > 0)
+                            serviziAggiunti--;
                     }
                 } catch (Exception exc) {
                     log.info("-XXX- Exception eccezione bonifica record cittadino: {} -XXX-", exc.getMessage());
-                    exc.getStackTrace();
+                    exc.printStackTrace();
                     log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
                             idServizio,
                             nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null
@@ -387,7 +388,7 @@ public class ImportMassivoCSVService {
                 if (cittadiniAggiunti > 0)
                     cittadiniAggiunti--;
                 log.info("-XXX- Eccezione gestita cittadino: {} -XXX-", incorrectException.getMessage());
-                incorrectException.getStackTrace();
+                incorrectException.printStackTrace();
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(NoteCSV.NOTE_CITTADINO_PRESENTE);
                 serviziScartati.add(servizioElaborato);
                 try {
@@ -402,10 +403,12 @@ public class ImportMassivoCSVService {
                             serviziAggiunti--;
                         servizioService.eliminaServizioForce(idServizio);
                         removeFromList(serviziAggiuntiList, idServizio);
+                        if (serviziAggiunti > 0)
+                            serviziAggiunti--;
                     }
                 } catch (Exception exc) {
                     log.info("-XXX- Exception eccezione bonifica record cittadino: {} -XXX-", exc.getMessage());
-                    exc.getStackTrace();
+                    exc.printStackTrace();
                     log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
                             idServizio,
                             nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null
@@ -417,7 +420,7 @@ public class ImportMassivoCSVService {
                 if (cittadiniAggiunti > 0)
                     cittadiniAggiunti--;
                 log.info("-XXX- Eccezione gestita cittadino: {} -XXX-", e.getMessage());
-                e.getStackTrace();
+                e.printStackTrace();
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(NoteCSV.NOTE_CITTADINO);
                 serviziScartati.add(servizioElaborato);
                 try {
@@ -428,14 +431,14 @@ public class ImportMassivoCSVService {
                         cittadinoService.removeCittadino(nuovoCittadinoDTO.getCittadinoEntity().getId());
                     }
                     if (nuovoAggiunto) {
-                        if (serviziAggiunti > 0)
-                            serviziAggiunti--;
                         servizioService.eliminaServizioForce(idServizio);
                         removeFromList(serviziAggiuntiList, idServizio);
+                        if (serviziAggiunti > 0)
+                            serviziAggiunti--;
                     }
                 } catch (Exception exc) {
                     log.info("-XXX- Exception eccezione bonifica record cittadino: {} -XXX-", exc.getMessage());
-                    exc.getStackTrace();
+                    exc.printStackTrace();
                     log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
                             idServizio,
                             nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null
@@ -447,7 +450,7 @@ public class ImportMassivoCSVService {
                 if (cittadiniAggiunti > 0)
                     cittadiniAggiunti--;
                 log.info("-XXX- Eccezione gestita cittadino: {} -XXX-", e.getMessage());
-                e.getStackTrace();
+                e.printStackTrace();
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(
                         "Impossibile salvare i dati del cittadino, non saranno salvati neanche quelli del servizio.");
                 serviziScartati.add(servizioElaborato);
@@ -459,14 +462,14 @@ public class ImportMassivoCSVService {
                         cittadinoService.removeCittadino(nuovoCittadinoDTO.getCittadinoEntity().getId());
                     }
                     if (nuovoAggiunto) {
-                        if (serviziAggiunti > 0)
-                            serviziAggiunti--;
                         servizioService.eliminaServizioForce(idServizio);
                         removeFromList(serviziAggiuntiList, idServizio);
+                        if (serviziAggiunti > 0)
+                            serviziAggiunti--;
                     }
                 } catch (Exception exc) {
                     log.info("-XXX- Exception eccezione bonifica record cittadino: {} -XXX-", exc.getMessage());
-                    exc.getStackTrace();
+                    exc.printStackTrace();
                     log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
                             idServizio,
                             nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null
@@ -483,7 +486,7 @@ public class ImportMassivoCSVService {
                 if (questionariAggiunti > 0)
                     questionariAggiunti--;
                 log.info("-XXX- Eccezione gestita questionario: {} -XXX-", e.getMessage());
-                e.getStackTrace();
+                e.printStackTrace();
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(e.getCodiceErroreEnum().getDescrizioneErrore());
                 serviziScartati.add(servizioElaborato);
                 try {
@@ -500,14 +503,14 @@ public class ImportMassivoCSVService {
                         cittadinoService.removeCittadino(nuovoCittadinoDTO.getCittadinoEntity().getId());
                     }
                     if (nuovoAggiunto) {
-                        if (serviziAggiunti > 0)
-                            serviziAggiunti--;
                         servizioService.eliminaServizioForce(idServizio);
                         removeFromList(serviziAggiuntiList, idServizio);
+                        if (serviziAggiunti > 0)
+                            serviziAggiunti--;
                     }
                 } catch (Exception exc) {
                     log.info("-XXX- Exception eccezione bonifica record questionario: {} -XXX-", exc.getMessage());
-                    exc.getStackTrace();
+                    exc.printStackTrace();
                     log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
                             idServizio,
                             nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null
@@ -518,7 +521,7 @@ public class ImportMassivoCSVService {
                 if (questionariAggiunti > 0)
                     questionariAggiunti--;
                 log.info("-XXX- Eccezione gestita questionario: {} -XXX-", e.getMessage());
-                e.getStackTrace();
+                e.printStackTrace();
                 servizioElaborato.getCampiAggiuntiviCSV().setNote(NoteCSV.NOTE_QUESTIONARIO);
                 serviziScartati.add(servizioElaborato);
                 try {
@@ -535,14 +538,14 @@ public class ImportMassivoCSVService {
                         cittadinoService.removeCittadino(nuovoCittadinoDTO.getCittadinoEntity().getId());
                     }
                     if (nuovoAggiunto) {
-                        if (serviziAggiunti > 0)
-                            serviziAggiunti--;
                         servizioService.eliminaServizioForce(idServizio);
                         removeFromList(serviziAggiuntiList, idServizio);
+                        if (serviziAggiunti > 0)
+                            serviziAggiunti--;
                     }
                 } catch (Exception exc) {
                     log.info("-XXX- Exception eccezione bonifica record questionario: {} -XXX-", exc.getMessage());
-                    exc.getStackTrace();
+                    exc.printStackTrace();
                     log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
                             idServizio,
                             nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null
@@ -553,7 +556,7 @@ public class ImportMassivoCSVService {
                 if (questionariAggiunti > 0)
                     questionariAggiunti--;
                 log.info("-XXX- Eccezione gestita questionario: {} -XXX-", e.getMessage());
-                e.getStackTrace();
+                e.printStackTrace();
                 servizioElaborato.getCampiAggiuntiviCSV().setNote("Impossibile salvare i dati del questionario.");
                 serviziScartati.add(servizioElaborato);
                 try {
@@ -577,7 +580,7 @@ public class ImportMassivoCSVService {
                     }
                 } catch (Exception exc) {
                     log.info("-XXX- Exception eccezione bonifica record questionario: {} -XXX-", exc.getMessage());
-                    exc.getStackTrace();
+                    exc.printStackTrace();
                     log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
                             idServizio,
                             nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null
