@@ -41,7 +41,7 @@ public class CittadinoEntity implements Serializable {
 	private String genere;
 
 	@OneToOne
-	@Column(name = "FASCIA_DI_ETA_ID")
+	@JoinColumn(name = "FASCIA_DI_ETA_ID")
 	private FasciaDiEtaEntity fasciaDiEta;
 
 	@Column(name = "TITOLO_DI_STUDIO")
