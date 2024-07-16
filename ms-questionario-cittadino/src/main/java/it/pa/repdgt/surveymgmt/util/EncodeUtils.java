@@ -13,7 +13,7 @@ public class EncodeUtils {
 
     public static String decrypt(String encryptedData) {
         try {
-            encryptedData.replace(" ", "+");
+            encryptedData = encryptedData.replace(" ", "+");
             return Aes256.decrypt(encryptedData, key);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Il dato inviato non è corretto");
