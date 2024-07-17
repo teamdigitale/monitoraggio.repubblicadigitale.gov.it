@@ -316,9 +316,12 @@ const UsersDetails = () => {
           );
         case userRoles.REG:
         case userRoles.REGP:
+          return (
+            <ManageReferal enteType={formTypes.ENTE_GESTORE_PROGETTO} legend="form modifica referente, i campi con l'asterisco sono obbligatori" />
+          );
         case userRoles.REPP:
           return (
-            <ManageReferal legend="form modifica referente, i campi con l'asterisco sono obbligatori" />
+            <ManageReferal enteType={formTypes.ENTE_PARTNER} legend="form modifica referente, i campi con l'asterisco sono obbligatori" />
           );
         case userRoles.FAC:
         case userRoles.VOL:
