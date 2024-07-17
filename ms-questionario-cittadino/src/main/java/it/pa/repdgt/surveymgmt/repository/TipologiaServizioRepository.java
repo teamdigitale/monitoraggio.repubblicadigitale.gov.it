@@ -25,7 +25,7 @@ public interface TipologiaServizioRepository extends JpaRepository<TipologiaServ
 	@Query("DELETE FROM TipologiaServizioEntity ts WHERE ts.servizio.id = :idServizio")
 	void deleteByIdServizioJPA(@Param("idServizio") Long idServizio);
 
-	@Query("SELECT ts FROM TipologiaServizioEntity ts WHERE ts.servizio = :idServizio")
+	@Query("SELECT ts FROM TipologiaServizioEntity ts WHERE ts.servizio.id = :idServizio")
 	List<TipologiaServizioEntity> findByIdServizioJPA(@Param("idServizio") Long idServizio);
 
 	@Query(value = ""
