@@ -114,7 +114,7 @@ export default function CSVUploader({
   }, [selectedFile, handleFileInput]);
 
   const handleReject = useCallback(() => {  
-    dispatch(closeModal());
+    dispatch(closeModal());    
     setSelectedFile(null);
   }, []);
 
@@ -173,7 +173,7 @@ export default function CSVUploader({
                   <p className='font-weight-semibold text-black'>
                     {file?.name}
                   </p>
-                  <button className='btn p-0 ml-4' onClick={handleReject}>
+                  <button className='btn p-0 ml-4' onClick={removeFile}>
                     <img
                       className='delete-csv-btn-img'
                       src={itDeletePrimary}
