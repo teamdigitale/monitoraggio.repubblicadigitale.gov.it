@@ -1,5 +1,14 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.299](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.298...1.0.0-test.299) (2024-07-17)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** fix controllo file csv input 20240717 ([fa1c124](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fa1c1242d59d1ed85cec2fd0cc55066b53a5398c))
+* **fe-piattaforma:** fix chiusura modale upload csv 20240717 ([d68d55e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d68d55e18cb89e0f6eef520645d9356e2c263d28))
+* **ms-questionario-cittadino:** fix import csv 20240717 ([4996cf7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4996cf7dead741124d8600f05afc983f44278b96))
+
 ## [1.0.0-test.298](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.297...1.0.0-test.298) (2024-07-16)
 
 
