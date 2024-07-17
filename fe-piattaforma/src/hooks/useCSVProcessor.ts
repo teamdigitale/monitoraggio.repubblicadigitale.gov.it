@@ -94,12 +94,21 @@ export function useCSVProcessor(file: File | undefined) {
           quoteChar: '"',
           escapeChar: '"',
           skipEmptyLines: true,
-          complete: (results: Papa.ParseResult<CSVRecord>) => {
+          complete: (results: Papa.ParseResult<CSVRecord>) => { 
             if (!headersCSV.every((header) => header in results.data[0])) {
               rejectWithMessage(
                 'Il file inserito non é conforme ai criteri di elaborazione, assicurati che tutte le colonne siano presenti.'
               );
               return;
+            }
+                       
+            for(let r in results.data){
+              if (Object.keys(headersCSV).length != Object.keys(results.data[r]).length) {
+                rejectWithMessage(
+                  'Il file inserito non é conforme ai criteri di elaborazione, assicurati che tutte le colonne siano presenti.'
+                );
+                return;
+              }              
             }
 
             const serviziValidati: ServiziElaboratiDto[] = [];
