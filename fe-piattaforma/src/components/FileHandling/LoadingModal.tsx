@@ -119,7 +119,7 @@ export default function LoadingModal(props: {
                     registro caricamenti
                   </p>
                   <p className='text-secondary font-weight-normal'>
-                    Vi preghiamo di non effettuare un nuovo caricamento prima di aver ricevuto il report di completamento di quello in corso
+                  <strong>Vi preghiamo di non effettuare un nuovo caricamento prima di aver ricevuto il report di completamento di quello in corso</strong>
                   </p>
                 </div>
               </div>
