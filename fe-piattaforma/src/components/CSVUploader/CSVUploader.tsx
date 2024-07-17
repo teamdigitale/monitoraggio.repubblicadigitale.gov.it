@@ -113,8 +113,8 @@ export default function CSVUploader({
     setSelectedFile(null);
   }, [selectedFile, handleFileInput]);
 
-  const handleReject = useCallback(() => {
-    dispatch(closeModal());
+  const handleReject = useCallback(() => {  
+    dispatch(closeModal());    
     setSelectedFile(null);
   }, []);
 
