@@ -59,6 +59,7 @@ export const headings: TableHeadingI[] = [
 ];
 
 interface ManageReferalFormI {
+  enteType?: string;
   formDisabled?: boolean;
   creation?: boolean;
   legend?: string | undefined;
@@ -67,6 +68,7 @@ interface ManageReferalFormI {
 interface ManageReferalI extends withFormHandlerProps, ManageReferalFormI {}
 
 const ManageReferal: React.FC<ManageReferalI> = ({
+  enteType,
   clearForm = () => ({}),
   // formDisabled,
   creation = false,
@@ -124,7 +126,9 @@ const ManageReferal: React.FC<ManageReferalI> = ({
               !isUserSelected
             )
           );
-          await dispatch(GetPartnerAuthorityDetail(projectId, authorityId));
+          if(enteType == formTypes.ENTE_PARTNER){
+            await dispatch(GetPartnerAuthorityDetail(projectId, authorityId));
+          }
           if (userId) await dispatch(GetUserDetails(userId));
         } else if (authority?.id) {
           res = await dispatch(
