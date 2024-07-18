@@ -7,8 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -73,7 +72,7 @@ public class QuestionarioCompilatoService {
 
 	@LogMethod
 	@LogExecutionTime
-	@Transactional(rollbackOn = Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	public void compilaQuestionario(
 			@NotNull String idQuestionarioCompilato,
 			@NotNull @Valid QuestionarioCompilatoRequest questionarioCompilatoRequest) {
@@ -166,7 +165,7 @@ public class QuestionarioCompilatoService {
 
 	@LogMethod
 	@LogExecutionTime
-	@Transactional(rollbackOn = Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	public void compilaQuestionarioPerAnonimo(
 			@NotNull String idQuestionarioCompilato,
 			@NotNull @Valid QuestionarioCompilatoAnonimoRequest questionarioCompilatoAnonimoRequest,
@@ -224,7 +223,7 @@ public class QuestionarioCompilatoService {
 
 	@LogMethod
 	@LogExecutionTime
-	@Transactional(rollbackOn = Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	public void verificaEseguiESalvaConsensoTrattamentoDatiPerAnonimo(String codiceFiscaleCittadino,
 			String numeroDocumento, DatiIstanza q1) {
 		String q1Text = ((JsonObject) q1.getDomandaRisposta()).toString();
@@ -247,7 +246,7 @@ public class QuestionarioCompilatoService {
 
 	@LogMethod
 	@LogExecutionTime
-	@Transactional(rollbackOn = Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	public void verificaEseguiESalvaConsensoTrattamentoDati(String codiceFiscaleCittadino, String numeroDocumento) {
 		// Se cittadino non ha mai dato il consenso, allora devo eseguire operazioni per
 		// la registrazione del consenso dati
@@ -272,7 +271,7 @@ public class QuestionarioCompilatoService {
 
 	@LogMethod
 	@LogExecutionTime
-	@Transactional(rollbackOn = Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	public void compilaQuestionarioAnonimo(
 			@NotNull String idQuestionarioCompilato,
 			@NotNull @Valid QuestionarioCompilatoAnonimoRequest questionarioCompilatoAnonimoRequest,
