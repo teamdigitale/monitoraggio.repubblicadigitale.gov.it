@@ -8,9 +8,10 @@ import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import it.pa.repdgt.shared.entity.ServizioEntity;
-
+@Repository
 public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Long> {
 
 	Optional<List<ServizioEntity>> findAllByDataServizioAndDurataServizioAndTipologiaServizio(Date dataServizio,

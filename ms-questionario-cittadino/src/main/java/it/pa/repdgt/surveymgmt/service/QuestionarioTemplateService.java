@@ -8,10 +8,10 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -289,7 +289,7 @@ public class QuestionarioTemplateService {
 
 	@LogMethod
 	@LogExecutionTime
-	@Transactional(rollbackOn = Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	public QuestionarioTemplateCollection creaNuovoQuestionarioTemplate(
 			@NotNull(message = "Questionario da creare deve essere non null") 
 			@Valid final QuestionarioTemplateCollection questionarioTemplateCollection) {
@@ -316,7 +316,7 @@ public class QuestionarioTemplateService {
 
 	@LogMethod
 	@LogExecutionTime
-	@Transactional(rollbackOn = Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	public QuestionarioTemplateCollection aggiornaQuestionarioTemplate(
 			@NotNull(message = "id questionario template deve essere non null") String idQuestionarioTemplate,
 			@NotNull @Valid final QuestionarioTemplateCollection questionarioTemplateDaAggiornare) {
@@ -381,7 +381,7 @@ public class QuestionarioTemplateService {
 
 	@LogMethod
 	@LogExecutionTime
-	@Transactional(rollbackOn = Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	public void cancellaQuestionarioTemplate(@NotNull(message = "id questionario template deve essere non null") final String idQuestioanarioTemplate) {
 		QuestionarioTemplateCollection questionarioTemplateMongoDaCancellare = null;
 		QuestionarioTemplateEntity questionarioTemplateMysqlDaCancellare = null;
@@ -456,7 +456,7 @@ public class QuestionarioTemplateService {
 	
 	@LogMethod
 	@LogExecutionTime
-	@Transactional(rollbackOn = Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	public void aggiornaDefaultQuestionarioTemplate(String idQuestionario, String tipoDefault) {
 		QuestionarioTemplateEntity questionarioTemplate = this.questionarioTemplateSqlService.getQuestionarioTemplateById(idQuestionario);
 		Optional<QuestionarioTemplateEntity> questionarioDaAggiornare;

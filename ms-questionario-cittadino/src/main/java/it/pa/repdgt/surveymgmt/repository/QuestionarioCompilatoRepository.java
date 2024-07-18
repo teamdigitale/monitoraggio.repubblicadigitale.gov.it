@@ -46,4 +46,12 @@ public interface QuestionarioCompilatoRepository extends JpaRepository<Questiona
 	boolean deleteQuestionarioCompilatoByIdServizioAndIdCittadino(
 			@Param(value = "idServizio") Long idServizio,
 			@Param(value = "idCittadino") Long idCittadino);
+
+	@Modifying
+	@Query(value = "DELETE FROM QuestionarioCompilatoEntity qce WHERE qce.idServizio  = :idServizio ")
+	void deleteQuestionarioCompilatoByIdServizioJPA(
+			@Param(value = "idServizio") Long idServizio);
+
+	@Query(value = "SELECT qce FROM QuestionarioCompilatoEntity qce WHERE qce.idServizio  = :idServizio ")
+	List<QuestionarioCompilatoEntity> findByIdServizioJPA(@Param(value = "idServizio") Long idServizio);
 }

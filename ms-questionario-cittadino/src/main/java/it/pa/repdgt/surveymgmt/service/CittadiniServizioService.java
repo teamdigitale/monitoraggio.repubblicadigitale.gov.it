@@ -6,6 +6,7 @@ import it.pa.repdgt.shared.awsintegration.service.EmailService;
 import it.pa.repdgt.shared.constants.DomandeStrutturaQ1AndQ2Constants;
 import it.pa.repdgt.shared.entity.*;
 import it.pa.repdgt.shared.entity.key.ServizioCittadinoKey;
+import it.pa.repdgt.shared.entity.tipologica.FasciaDiEtaEntity;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.entityenum.StatoQuestionarioEnum;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
@@ -390,7 +391,8 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
             cittadino.setNumeroDocumento(nuovoCittadinoRequest.getNumeroDocumento());
         }
         if (fasciaDiEtaRepository.existsById(nuovoCittadinoRequest.getFasciaDiEtaId())) {
-            cittadino.setFasciaDiEta(fasciaDiEtaRepository.getReferenceById(nuovoCittadinoRequest.getFasciaDiEtaId()));
+            Optional<FasciaDiEtaEntity> fascOptional = fasciaDiEtaRepository.findById(nuovoCittadinoRequest.getFasciaDiEtaId());
+            cittadino.setFasciaDiEta(fascOptional.isPresent() ? fascOptional.get() : null);
         }
         cittadino.setCittadinanza(nuovoCittadinoRequest.getCittadinanza());
         cittadino.setGenere(nuovoCittadinoRequest.getGenere());
