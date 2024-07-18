@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.300](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.299...1.0.0-test.300) (2024-07-18)
+
+
+### Bug Fixes
+
+* **ms-questionario-cittadino:** fix import trans 20240718 ([f88e1d9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f88e1d9489635e9d44b5ede547886813538cc03f))
+* **fe-piattaforma:** fix chiamata endpoint per ente gestore 20240717 ([26998e1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/26998e1d652d9e42afd3e1da29e082269fd21cef))
+
 ## [1.0.0-test.299](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.298...1.0.0-test.299) (2024-07-17)
 
 
