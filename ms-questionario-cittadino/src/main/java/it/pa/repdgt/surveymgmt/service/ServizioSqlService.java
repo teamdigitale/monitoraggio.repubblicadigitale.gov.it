@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -238,7 +238,7 @@ public class ServizioSqlService {
 
 	@LogMethod
 	@LogExecutionTime
-	@Transactional(rollbackOn = Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	public ServizioEntity salvaServizio(
 			@NotNull final ServizioRequest servizioRequest,
 			@NotBlank final String idSezioneQ3Compilato) {
@@ -307,7 +307,7 @@ public class ServizioSqlService {
 
 	@LogMethod
 	@LogExecutionTime
-	@Transactional(rollbackOn = Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	public ServizioEntity aggiornaServizio(
 			@NotNull final Long idServizio,
 			@NotNull final @Valid ServizioRequest servizioDaAggiornareRequest) {

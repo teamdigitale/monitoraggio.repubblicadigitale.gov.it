@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -186,7 +186,7 @@ public class ServizioService {
 
 	@LogMethod
 	@LogExecutionTime
-	@Transactional(rollbackOn = Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	public ServizioEntity creaServizio(
 			@NotNull final ServizioRequest servizioRequest) {
 
@@ -225,7 +225,7 @@ public class ServizioService {
 
 	@LogMethod
 	@LogExecutionTime
-	@Transactional(rollbackOn = Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	public void aggiornaServizio(
 			@NotNull Long idServizioDaAggiornare,
 			@NotNull @Valid ServizioRequest servizioDaAggiornareRequest) {
@@ -405,7 +405,7 @@ public class ServizioService {
 
 	@LogMethod
 	@LogExecutionTime
-	@Transactional(rollbackOn = Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	public void eliminaServizio(@NotNull final Long idServizio, final SceltaProfiloParam profilazioneParam) {
 		if (profilazioneParam != null
 				&& !isAutorizzatoForGetSchedaDettaglioServizioAndEliminaServizio(idServizio, profilazioneParam)) {

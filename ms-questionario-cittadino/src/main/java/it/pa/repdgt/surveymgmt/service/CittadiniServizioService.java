@@ -39,7 +39,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.PostConstruct;
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
@@ -97,8 +97,6 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
     private QuestionarioCompilatoMongoRepository questionarioCompilatoMongoService;
     @Autowired
     private QuestionarioCompilatoRepository questionarioCompilatoSqlRepository;
-    @Autowired
-    private EmailService emailService;
     @Autowired
     private QuestionarioInviatoOnlineRepository questionarioInviatoOnlineRepository;
     @Autowired
@@ -228,7 +226,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 
     @LogMethod
     @LogExecutionTime
-    @Transactional(rollbackOn = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public CittadinoEntity creaNuovoCittadino(
             @NotNull final Long idServizio,
             @NotNull final NuovoCittadinoServizioRequest nuovoCittadinoRequest) {
@@ -449,7 +447,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 
     @LogMethod
     @LogExecutionTime
-    @Transactional(rollbackOn = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public void creaQuestionarioNonInviato(@NotNull final ServizioEntity servizioDBFetch,
             @NotNull final CittadinoEntity cittadino) {
 
@@ -580,7 +578,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 
     @LogMethod
     @LogExecutionTime
-    @Transactional(rollbackOn = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public void salvaQuestionarioCompilatoSql(
             @NotNull final CittadinoEntity cittadino,
             @NotNull final ServizioEntity servizio,
@@ -627,7 +625,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 
     @LogMethod
     @LogExecutionTime
-    @Transactional(rollbackOn = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public List<CittadinoUploadBean> caricaCittadiniSuServizio(MultipartFile fileCittadiniCSV, Long idServizio,
             String codiceFiscaleUtenteLoggato) {
         List<CittadinoUploadBean> esiti = new ArrayList<>();
@@ -821,7 +819,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
      * 
      * @LogExecutionTime
      * 
-     * @Transactional(rollbackOn = Exception.class)
+     * @Transactional(rollbackFor = Exception.class)
      * public void inviaLinkAnonimoAndAggiornaStatoQuestionarioCompilato(
      * final String idQuestionario,
      * QuestionarioCompilatoEntity questionarioCompilato,
@@ -841,7 +839,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
      * 
      * @LogExecutionTime
      * 
-     * @Transactional(rollbackOn = Exception.class)
+     * @Transactional(rollbackFor = Exception.class)
      * public void inviaLinkAnonimo(CittadinoEntity cittadino,String idQuestionario)
      * {
      * new Thread( () -> {
@@ -873,7 +871,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
      * }
      */
 
-    @Transactional(rollbackOn = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     @LogMethod
     @LogExecutionTime
     public String generaToken(CittadinoEntity cittadino, String idQuestionarioCompilato) {

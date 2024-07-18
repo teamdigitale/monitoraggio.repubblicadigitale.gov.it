@@ -2,8 +2,7 @@ package it.pa.repdgt.surveymgmt.service;
 
 import java.util.*;
 import java.util.stream.Collectors;
-
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import javax.validation.Valid;
 
 import it.pa.repdgt.surveymgmt.util.EncodeUtils;
@@ -263,7 +262,7 @@ public class CittadinoService {
 
 	@LogMethod
 	@LogExecutionTime
-	@Transactional(rollbackOn = Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	public void aggiornaCittadino(Long id, CittadinoRequest cittadinoRequest) {
 		String errorMessage = null;
 		if (!this.cittadinoRepository.findById(id).isPresent()) {
