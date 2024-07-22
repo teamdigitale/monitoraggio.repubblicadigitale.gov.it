@@ -55,9 +55,21 @@ import java.util.regex.Pattern;
 public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constants {
 
     Map<String, Integer> mappaMesi = new HashMap<>();
+    Map<Character, Integer> mappaOmocodia = new HashMap<>();
 
     @PostConstruct
     public void init() {
+        mappaOmocodia.put('L', 0);
+        mappaOmocodia.put('M', 1);
+        mappaOmocodia.put('N', 2);
+        mappaOmocodia.put('P', 3);
+        mappaOmocodia.put('Q', 4);
+        mappaOmocodia.put('R', 5);
+        mappaOmocodia.put('S', 6);
+        mappaOmocodia.put('T', 7);
+        mappaOmocodia.put('U', 8);
+        mappaOmocodia.put('V', 9);
+
         mappaMesi.put("A", Calendar.JANUARY);
         mappaMesi.put("B", Calendar.FEBRUARY);
         mappaMesi.put("C", Calendar.MARCH);
@@ -414,13 +426,24 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 
     private Date estraiDataDiNascita(String codiceFiscaleDecrypted) throws ParseException {
         boolean isFemmina = codiceFiscaleDecrypted.charAt(9) >= '4';
-        int giornoDiNascita = Integer.parseInt(codiceFiscaleDecrypted.substring(9, 11)) - (isFemmina ? 40 : 0);
-        int secolo = Integer.parseInt(codiceFiscaleDecrypted.substring(6, 8));
+        int giornoDiNascita = convertiCarattereInNumero(codiceFiscaleDecrypted.charAt(9)) * 10
+            + convertiCarattereInNumero(codiceFiscaleDecrypted.charAt(10)) - (isFemmina ? 40 : 0);
+
+        int secolo = convertiCarattereInNumero(codiceFiscaleDecrypted.charAt(6)) * 10
+            + convertiCarattereInNumero(codiceFiscaleDecrypted.charAt(7));
         int annoDiNascita = (secolo <= RANGE_SECOLO) ? 2000 + secolo : 1900 + secolo;
         Calendar cal = Calendar.getInstance();
         cal.set(annoDiNascita, mappaMesi.get(String.valueOf(codiceFiscaleDecrypted.charAt(8)).toUpperCase()),
                 giornoDiNascita);
         return cal.getTime();
+    }
+
+    private int convertiCarattereInNumero(char carattere) {
+        if (Character.isDigit(carattere)) {
+            return Character.getNumericValue(carattere);
+        } else {
+            return mappaOmocodia.getOrDefault(Character.toUpperCase(carattere), -1);
+        }
     }
 
     private boolean isMaggiorenne(Date dataNascita) {
