@@ -94,7 +94,15 @@ export function useCSVProcessor(file: File | undefined) {
           quoteChar: '"',
           escapeChar: '"',
           skipEmptyLines: true,
-          complete: (results: Papa.ParseResult<CSVRecord>) => {
+          complete: (results: Papa.ParseResult<CSVRecord>) => { 
+
+            if(results.data.length > 3000) {
+              rejectWithMessage(
+                "Visto l'elevato numero di caricamenti odierni, ti chiediamo di inserire file contenenti un massimo di 3000 righe"
+              );
+              return;
+            }
+
             if (!headersCSV.every((header) => header in results.data[0])) {
               rejectWithMessage(
                 'Il file inserito non é conforme ai criteri di elaborazione, assicurati che tutte le colonne siano presenti.'
