@@ -1,5 +1,19 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.34.6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.34.5...1.34.6) (2024-07-22)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** aggiunto el lista istruzioni  20240722 ([61d704c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/61d704c36c28c2179b12656c8f2fbcab8766084d))
+* **fe-piattaforma:** modifica limite temporale data inserimento 20240722 ([6e633ab](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6e633ab31fca4c63faadd85d93c38bd217097bbd))
+* **fe-piattaforma:** fix messaggio csv upload banner 20240722 ([661f04a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/661f04a95a7dca7cad23ee6bd1f03bcc2445cee1))
+* **fe-piattaforma:** aggiunto el lista istruzioni  20240722 ([5497fca](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5497fcac1818ba408ba477e2f8c027e3526c7b61))
+* **fe-piattaforma:** fix data lim 20240722 ([9106c33](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9106c331afab684038a0a574b16097f215b5164e))
+* **fe-piattaforma:** fix chiamata endpoint per ente gestore 20240717 ([6655408](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6655408b86b1a3b29e0d50327701ad38ed10f994))
+* **fe-piattaforma:** fix controllo file csv input 20240717 ([ee04624](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ee04624cd7401b76de44a92ed7ccf7f6a4440305))
+* **fe-piattaforma:** fix chiusura modale upload csv 20240717 ([6804487](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6804487292a6d8751b3901c9f248a6bc56bbf526))
+
 ## [1.34.5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.34.4...1.34.5) (2024-07-22)
 
 
