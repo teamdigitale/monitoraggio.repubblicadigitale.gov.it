@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.302](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.301...1.0.0-test.302) (2024-07-22)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** lim 20240722 ([5546acc](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5546acc158a68112857920643c89ae9ee75d6ae8))
+
 ## [1.0.0-test.301](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.300...1.0.0-test.301) (2024-07-18)
 
 
