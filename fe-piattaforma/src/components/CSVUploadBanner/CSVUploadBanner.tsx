@@ -32,8 +32,8 @@ export default function CSVUploadBanner(props: {
                         cittadini e ai servizi di facilitazione erogati presso
                         le sedi del tuo ente e{' '}
                         <strong>
-                          acquisiti al di fuori dalla piattaforma prima del 31
-                          maggio 2024
+                          acquisiti al di fuori dalla piattaforma prima del 30
+                          giugno 2024
                         </strong>
                         . Inoltre, puoi consultare il{' '}
                         <strong>registro dei caricamenti massivi</strong> già
