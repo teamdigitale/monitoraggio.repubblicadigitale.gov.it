@@ -36,7 +36,7 @@ export default function CSVUploadBanner(props: {
                           maggio 2024
                         </strong>
                         . Inoltre, puoi consultare il{' '}
-                        <strong>registro dei caricamenti massivi</strong> gia'
+                        <strong>registro dei caricamenti massivi</strong> già
                         effettuati dal tuo ente.
                       </p>
                     </div>
