@@ -36,6 +36,14 @@ export default function CsvInstructions() {
             incoerenze nei dati.
           </p>
         </li>
+        <li>
+          <p>
+            <strong>Attenzione:</strong> una volta individuati e corretti i problemi 
+            segnalati nel file di scarti, dovrai predisporre un nuovo file contenente 
+            <strong>le sole righe scartate e rettificate</strong> prima di procedere a 
+            un nuovo caricamento seguendo gli stessi step descritti in precedenza.
+          </p>
+        </li>
       </ol>
       <hr />
       <div>
