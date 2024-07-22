@@ -1,5 +1,15 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.303](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.302...1.0.0-test.303) (2024-07-22)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** modifica limite temporale data inserimento 20240722 ([de5a4e7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/de5a4e7ae2e3bdae667ed8ae300a1a978d478926))
+* **fe-piattaforma:** fix messaggio csv upload banner 20240722 ([e1a425e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e1a425e26a585168637f4c295d48c89e6b7fe83b))
+* **fe-piattaforma:** aggiunto el lista istruzioni  20240722 ([0e087f0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0e087f04870b39e32aed4760af462406a1476a49))
+* **fe-piattaforma:** fix data lim 20240722 ([b810ab3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b810ab325de2ad860970b0d44d59008abdee1ec9))
+
 ## [1.0.0-test.302](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.301...1.0.0-test.302) (2024-07-22)
 
 
