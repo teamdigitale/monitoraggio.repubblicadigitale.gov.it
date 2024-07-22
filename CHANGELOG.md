@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.304](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.303...1.0.0-test.304) (2024-07-22)
+
+
+### Bug Fixes
+
+* **ms-questionario-cittadino:** gestione casistica omocodia 20240722 ([219f11b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/219f11b585fa7216647f9cf3ca566617a7617956))
+* **fe-piattaforma:** aggiunto el lista istruzioni  20240722 ([f9c666c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f9c666c150df6e0ff6549713b7d34433be87600a))
+
 ## [1.0.0-test.303](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.302...1.0.0-test.303) (2024-07-22)
 
 
