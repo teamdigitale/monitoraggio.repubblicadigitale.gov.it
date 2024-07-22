@@ -80,7 +80,7 @@ export const mandatoryFields: (keyof CSVRecord)[] = [
   'SE6',
 ];
 
-const maxDate = moment('2024-05-31', 'YYYY-MM-DD');
+const maxDate = moment('2024-06-30', 'YYYY-MM-DD');
 
 export function encryptFiscalCode(filteredRecord: CSVRecord) {
   return filteredRecord.AN3
@@ -139,11 +139,11 @@ export const validateFields = (
     errors.push("Il Codice Fiscale inserito e' invalido.");
   }
   if (record.SE1) {
-    const parsedDate = moment(record.SE1);
+    const parsedDate = moment(record.SE1, 'YYYY-MM-DD');
     if (!parsedDate.isValid()) {
       errors.push("La data inserita per il servizio non e' valida.");
     } else if (parsedDate.isAfter(maxDate)) {
-      errors.push("La data del servizio e' successiva al 31 Maggio 2024.");
+      errors.push("La data del servizio e' successiva al 30 Giugno 2024.");
     }
   }
 
