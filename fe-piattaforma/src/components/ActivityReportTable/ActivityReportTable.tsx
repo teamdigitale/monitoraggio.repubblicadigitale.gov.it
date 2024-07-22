@@ -120,7 +120,7 @@ const ActivityReportTable = forwardRef(function ActivityReportTable(
       <div className='row'>
         <div className='col-6'>
           <p>
-            Consulta l'elenco dei caricamenti giá effettuati dal tuo ente e
+            Consulta l'elenco dei caricamenti già effettuati dal tuo ente e
             scarica i report delle righe scartate durante ogni caricamento.
           </p>
         </div>
