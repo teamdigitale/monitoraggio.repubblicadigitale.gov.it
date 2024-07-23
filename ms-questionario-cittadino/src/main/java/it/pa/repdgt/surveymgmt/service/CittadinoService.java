@@ -248,6 +248,15 @@ public class CittadinoService {
 
 	@LogMethod
 	@LogExecutionTime
+	public List<CittadinoEntity> getCittadinoByCodiceFiscaleOrNumeroDocumentoList(
+			final String codiceFiscale) {
+		if (codiceFiscale == null || codiceFiscale.isEmpty())
+			throw new CittadinoException("ERRORE: occorre definire il CF", CodiceErroreEnum.U08);
+		return cittadinoRepository.findAllByCodiceFiscale(codiceFiscale);
+	}
+
+	@LogMethod
+	@LogExecutionTime
 	public Optional<CittadinoEntity> getByCodiceFiscaleOrNumeroDocumento(
 			final String codiceFiscale,
 			final String numeroDocumento) {
