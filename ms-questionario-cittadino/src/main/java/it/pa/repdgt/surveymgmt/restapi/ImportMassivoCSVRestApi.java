@@ -5,7 +5,6 @@ import it.pa.repdgt.surveymgmt.model.ElaboratoCSVRequest;
 import it.pa.repdgt.surveymgmt.model.ImportCsvInputData;
 import it.pa.repdgt.surveymgmt.service.ImportMassivoCSVService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.springframework.http.HttpStatus;
