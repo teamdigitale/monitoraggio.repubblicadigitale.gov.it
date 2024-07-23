@@ -7,9 +7,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import it.pa.repdgt.shared.entity.TipologiaServizioEntity;
 
+@Repository
 public interface TipologiaServizioRepository extends JpaRepository<TipologiaServizioEntity, Long> {
 	@Modifying
 	@Query(value = ""
@@ -25,7 +27,7 @@ public interface TipologiaServizioRepository extends JpaRepository<TipologiaServ
 	@Query("DELETE FROM TipologiaServizioEntity ts WHERE ts.servizio.id = :idServizio")
 	void deleteByIdServizioJPA(@Param("idServizio") Long idServizio);
 
-	@Query("SELECT ts FROM TipologiaServizioEntity ts WHERE ts.servizio = :idServizio")
+	@Query("SELECT ts FROM TipologiaServizioEntity ts WHERE ts.servizio.id = :idServizio")
 	List<TipologiaServizioEntity> findByIdServizioJPA(@Param("idServizio") Long idServizio);
 
 	@Query(value = ""

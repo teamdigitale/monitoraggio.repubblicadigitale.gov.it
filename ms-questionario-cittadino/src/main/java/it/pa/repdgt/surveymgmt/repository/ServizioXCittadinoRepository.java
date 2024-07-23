@@ -2,8 +2,6 @@ package it.pa.repdgt.surveymgmt.repository;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -52,4 +50,11 @@ public interface ServizioXCittadinoRepository extends JpaRepository<ServizioXCit
 	void deleteRelazioneByIdServizioAndIdCittadino(
 			@Param(value = "idServizio") Long idServizio,
 			@Param(value = "idCittadino") Long idCittadino);
+
+	@Query(value = "SELECT sxc FROM ServizioXCittadinoEntity sxc WHERE sxc.id.idServizio = :idServizio")
+	List<ServizioXCittadinoEntity> findByIdServizioJPA(@Param("idServizio") Long idServizio);
+
+	@Modifying
+	@Query(value = "DELETE FROM ServizioXCittadinoEntity sxc WHERE sxc.id.idServizio = :idServizio")
+	void deleteByIdServizioJPA(@Param("idServizio") Long idServizio);
 }

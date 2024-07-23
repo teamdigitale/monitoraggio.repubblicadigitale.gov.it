@@ -1,5 +1,64 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.304](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.303...1.0.0-test.304) (2024-07-22)
+
+
+### Bug Fixes
+
+* **ms-questionario-cittadino:** gestione casistica omocodia 20240722 ([219f11b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/219f11b585fa7216647f9cf3ca566617a7617956))
+* **fe-piattaforma:** aggiunto el lista istruzioni  20240722 ([f9c666c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f9c666c150df6e0ff6549713b7d34433be87600a))
+
+## [1.0.0-test.303](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.302...1.0.0-test.303) (2024-07-22)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** modifica limite temporale data inserimento 20240722 ([de5a4e7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/de5a4e7ae2e3bdae667ed8ae300a1a978d478926))
+* **fe-piattaforma:** fix messaggio csv upload banner 20240722 ([e1a425e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e1a425e26a585168637f4c295d48c89e6b7fe83b))
+* **fe-piattaforma:** aggiunto el lista istruzioni  20240722 ([0e087f0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0e087f04870b39e32aed4760af462406a1476a49))
+* **fe-piattaforma:** fix data lim 20240722 ([b810ab3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b810ab325de2ad860970b0d44d59008abdee1ec9))
+
+## [1.0.0-test.302](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.301...1.0.0-test.302) (2024-07-22)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** lim 20240722 ([5546acc](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5546acc158a68112857920643c89ae9ee75d6ae8))
+
+## [1.0.0-test.301](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.300...1.0.0-test.301) (2024-07-18)
+
+
+### Bug Fixes
+
+* **ms-questionario-cittadino:** fix import csv 20240718 ([d4e011d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d4e011d6868a0403c8301f7790bab75ceb32bf93))
+
+## [1.0.0-test.300](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.299...1.0.0-test.300) (2024-07-18)
+
+
+### Bug Fixes
+
+* **ms-questionario-cittadino:** fix import trans 20240718 ([f88e1d9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f88e1d9489635e9d44b5ede547886813538cc03f))
+* **fe-piattaforma:** fix chiamata endpoint per ente gestore 20240717 ([26998e1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/26998e1d652d9e42afd3e1da29e082269fd21cef))
+
+## [1.0.0-test.299](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.298...1.0.0-test.299) (2024-07-17)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** fix controllo file csv input 20240717 ([fa1c124](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fa1c1242d59d1ed85cec2fd0cc55066b53a5398c))
+* **fe-piattaforma:** fix chiusura modale upload csv 20240717 ([d68d55e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d68d55e18cb89e0f6eef520645d9356e2c263d28))
+* **ms-questionario-cittadino:** fix import csv 20240717 ([4996cf7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4996cf7dead741124d8600f05afc983f44278b96))
+
+## [1.0.0-test.298](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.297...1.0.0-test.298) (2024-07-16)
+
+
+### Bug Fixes
+
+* **ms-questionario-cittadino:** fix import csv 20240716 ([f92c7a8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f92c7a8b97af0c2e09a75251f0e9f37b1cb0ed05))
+* **ms-questionario-cittadino:** fix import csv 20240716 ([6635fae](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6635faebb1597229efceb11e2def20be905fb1f5))
+* **ms-questionario-cittadino:** fix ricerca cittadino 20240716 ([3bb3a83](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3bb3a83a3453fb46430353aa794e29470d047c96))
+* **fe-piattaforma:** fix chiusura modale upload file csv 20240716 ([7fcb032](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7fcb03288b771df4edfaf0d8214a02b6b87a7e8b))
+
 ## [1.0.0-test.297](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.296...1.0.0-test.297) (2024-07-15)
 
 

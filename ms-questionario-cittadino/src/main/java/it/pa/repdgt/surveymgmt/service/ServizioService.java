@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -23,8 +23,10 @@ import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.constants.RuoliUtentiConstants;
 import it.pa.repdgt.shared.entity.EnteEntity;
+import it.pa.repdgt.shared.entity.QuestionarioCompilatoEntity;
 import it.pa.repdgt.shared.entity.SedeEntity;
 import it.pa.repdgt.shared.entity.ServizioEntity;
+import it.pa.repdgt.shared.entity.ServizioXCittadinoEntity;
 import it.pa.repdgt.shared.entity.TipologiaServizioEntity;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
@@ -36,9 +38,12 @@ import it.pa.repdgt.surveymgmt.collection.SezioneQ3Collection;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
 import it.pa.repdgt.surveymgmt.exception.ServizioException;
 import it.pa.repdgt.surveymgmt.mapper.ServizioMapper;
+import it.pa.repdgt.surveymgmt.mongo.repository.QuestionarioCompilatoMongoRepository;
 import it.pa.repdgt.surveymgmt.mongo.repository.SezioneQ3Respository;
 import it.pa.repdgt.surveymgmt.param.FiltroListaServiziParam;
 import it.pa.repdgt.surveymgmt.projection.ProgettoProjection;
+import it.pa.repdgt.surveymgmt.repository.QuestionarioCompilatoRepository;
+import it.pa.repdgt.surveymgmt.repository.ServizioXCittadinoRepository;
 import it.pa.repdgt.surveymgmt.repository.TipologiaServizioRepository;
 import it.pa.repdgt.surveymgmt.request.ServizioRequest;
 
@@ -66,6 +71,15 @@ public class ServizioService {
 
 	@Autowired
 	private TipologiaServizioRepository tipologiaServizioRepository;
+
+	@Autowired
+	private ServizioXCittadinoRepository servizioXCittadinoRepository;
+
+	@Autowired
+	private QuestionarioCompilatoRepository questionarioCompilatoRepository;
+
+	@Autowired
+	private QuestionarioCompilatoMongoRepository questionarioCompilatoMongoRepository;
 
 	/**
 	 * Recupera l'elenco dei servizi paginati sulla base della profilazione
@@ -186,7 +200,7 @@ public class ServizioService {
 
 	@LogMethod
 	@LogExecutionTime
-	@Transactional(rollbackOn = Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	public ServizioEntity creaServizio(
 			@NotNull final ServizioRequest servizioRequest) {
 
@@ -225,7 +239,7 @@ public class ServizioService {
 
 	@LogMethod
 	@LogExecutionTime
-	@Transactional(rollbackOn = Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	public void aggiornaServizio(
 			@NotNull Long idServizioDaAggiornare,
 			@NotNull @Valid ServizioRequest servizioDaAggiornareRequest) {
@@ -405,7 +419,7 @@ public class ServizioService {
 
 	@LogMethod
 	@LogExecutionTime
-	@Transactional(rollbackOn = Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	public void eliminaServizio(@NotNull final Long idServizio, final SceltaProfiloParam profilazioneParam) {
 		if (profilazioneParam != null
 				&& !isAutorizzatoForGetSchedaDettaglioServizioAndEliminaServizio(idServizio, profilazioneParam)) {
@@ -436,14 +450,33 @@ public class ServizioService {
 
 	@LogMethod
 	@LogExecutionTime
-	public void eliminaServizioForce(@NotNull final Long idServizio) {
+	@Transactional
+	public void eliminaServizioForce(@NotNull Long idServizio) {
 
-		final ServizioEntity servizioEntity = this.servizioSQLService.getServizioById(idServizio);
+		ServizioEntity servizioEntity = this.servizioSQLService.getServizioById(idServizio);
+
+		// Cancello questionario compilato
+		List<QuestionarioCompilatoEntity> questionarioCompilatoEntityList = questionarioCompilatoRepository.findByIdServizioJPA(idServizio);
+		for(QuestionarioCompilatoEntity questionario : questionarioCompilatoEntityList){
+			questionarioCompilatoMongoRepository
+					.deleteByIdQuestionarioTemplate(questionario.getId());
+			this.questionarioCompilatoRepository.deleteById(questionario.getId());
+		}
+
+		// Cancello servizio x cittadino
+		List<ServizioXCittadinoEntity> servizioXCittadinolist = servizioXCittadinoRepository.findByIdServizioJPA(idServizio);
+		if (CollectionUtils.isNotEmpty(servizioXCittadinolist))
+			 servizioXCittadinoRepository.deleteByIdServizioJPA(idServizio);
 
 		// Cancello tipologie servizio
 		List<TipologiaServizioEntity> tipologiaList = tipologiaServizioRepository.findByIdServizioJPA(idServizio);
-		if (CollectionUtils.isNotEmpty(tipologiaList))
-			tipologiaServizioRepository.deleteByIdServizioJPA(idServizio);
+		if (CollectionUtils.isNotEmpty(tipologiaList)) {
+			for (TipologiaServizioEntity tipologia : tipologiaList) {
+				tipologia.setServizio(null); // Rimuovi la referenza a ServizioEntity
+				tipologiaServizioRepository.save(tipologia); // Salva le modifiche
+				tipologiaServizioRepository.delete(tipologia); // Elimina l'entità
+			}
+		}
 		// cancello SezioneQ3Compilato su MongoDB
 		this.sezioneQ3Repository.deleteByIdSezioneQ3(servizioEntity.getIdTemplateCompilatoQ3());
 		// cancello servizio su MySql
