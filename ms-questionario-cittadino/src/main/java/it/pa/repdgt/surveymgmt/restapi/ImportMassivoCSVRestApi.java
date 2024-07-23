@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.util.Set;
 import java.util.UUID;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/importCsv")
