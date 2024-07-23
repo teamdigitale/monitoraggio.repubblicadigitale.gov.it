@@ -399,8 +399,6 @@ public class ImportMassivoCSVService {
                         cittadinoService.removeCittadino(nuovoCittadinoDTO.getCittadinoEntity().getId());
                     }
                     if (nuovoAggiunto) {
-                        if (serviziAggiunti > 0)
-                            serviziAggiunti--;
                         servizioService.eliminaServizioForce(idServizio);
                         removeFromList(serviziAggiuntiList, idServizio);
                         if (serviziAggiunti > 0)
