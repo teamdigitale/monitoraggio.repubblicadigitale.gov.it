@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Set;
 import java.util.UUID;
-@Slf4j
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/importCsv")
