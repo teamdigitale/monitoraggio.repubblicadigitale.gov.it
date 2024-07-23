@@ -8,6 +8,7 @@ import API from '../utils/apiHelper';
 import { getUserHeaders } from '../redux/features/user/userThunk';
 import { ElaboratoCsvRequest } from '../models/ElaboratoCsvRequest.model';
 import { UriPresigned } from '../models/UriPresigned.model';
+import {compressPayload, toBase64} from '../utils/common'
 
 export function searchActivityReport(
   page: number,
@@ -49,21 +50,25 @@ export function saveActivityReport(
   );
 }
 
-export function elaborateCsv(
+
+export async function elaborateCsv(
   elaborato: ElaboratoCsvRequest,
   idProgetto: number,
   idEnte: number
 ): Promise<AxiosResponse<string>> {
-  const { cfUtenteLoggato, codiceRuoloUtenteLoggato, idProgramma } =
-    getUserHeaders();
-  return API.post<string>(`${process.env.QUESTIONARIO_CITTADINO}importCsv`, {
-    ...elaborato,
-    cfUtenteLoggato,
-    codiceRuoloUtenteLoggato,
-    idEnte,
-    idProgetto,
-    idProgramma,
-  });
+  const { cfUtenteLoggato, codiceRuoloUtenteLoggato, idProgramma } = getUserHeaders();
+  let payloadGzip = compressPayload(elaborato)
+  let fileData = await toBase64(payloadGzip)
+  //return API.post(`${process.env.QUESTIONARIO_CITTADINO}importCsv`, 
+  return API.post(`${process.env.QUESTIONARIO_CITTADINO}importCsv`,
+    {
+      cfUtenteLoggato,
+      codiceRuoloUtenteLoggato,
+      idEnte,
+      idProgetto,
+      idProgramma,
+      fileData
+    });
 }
 
 export function generateUploadPUActivityReport(

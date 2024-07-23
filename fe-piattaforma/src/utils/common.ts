@@ -21,6 +21,7 @@ import { getSessionValues } from './sessionHelper';
 import store from '../redux/store';
 import { GetNotificationsByUser } from '../redux/features/user/userThunk';
 import { setUserNotificationsToRead } from '../redux/features/user/userSlice';
+import pako from 'pako'
 
 export const getUserIdsFromNotification = (notification: string) => {
   // ex. Utente userId:$userId$ ha segnalato il post di authorId:$authorId$
@@ -641,3 +642,30 @@ export function downloadGeneratedFile(file: File) {
 export function cutValueAfterRange(value: string, range: number): string {
   return value.trim().substring(0, range);
 }
+
+
+export const compressPayload = (payload: any) => {
+  const jsonString = JSON.stringify(payload);
+  const compressed = pako.gzip(jsonString);
+  return new Blob([compressed], { type: 'application/gzip' });
+};
+
+export const toBase64 = (file: Blob) => new Promise((resolve, reject) => {
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+
+  reader.onload = () => {
+    try {
+      const result = reader.result;
+      if (typeof result === 'string' && result.includes(',')) {
+        resolve(result.split(',')[1]);
+      } else {
+        throw new Error('Invalid result format');
+      }
+    } catch (error) {
+      reject(error);
+    }
+  };
+
+  reader.onerror = error => reject(error);
+});
