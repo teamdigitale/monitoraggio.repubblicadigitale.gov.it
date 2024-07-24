@@ -25,5 +25,11 @@ public interface UtenteRepository extends JpaRepository<UtenteEntity, String> {
 
 	List<UtenteEntity> findByNomeAndCognome(String nome, String cognome);
 
+	@Query(value = ""
+			+ " SELECT * "
+			+ " FROM utente u "
+			+ " WHERE REPLACE(CONCAT(u.COGNOME, u.NOME), ' ', '') = :csvNominativoFacilitatore", nativeQuery = true)
+	List<UtenteEntity> findByNominativoFacilitatore(@Param("csvNominativoFacilitatore") String csvNominativoFacilitatore);
+
 	Optional<UtenteEntity> findByCodiceFiscale(String codiceFiscale);
 }
