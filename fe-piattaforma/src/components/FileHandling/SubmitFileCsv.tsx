@@ -77,22 +77,24 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
       projectId &&
       (enteId || projectContext)
     ) {
-      elaborateCsv(
+      const dispatchPromise = dispatch(
+        openModal({
+          id: 'caricamento-csv',
+        })
+      );
+      const elaborateCsvPromise = elaborateCsv(
         dataUploadContext.parsedData,
         parseInt(projectId),
         enteId ? parseInt(enteId) : projectContext!.idEnte
-      )
-        .then((res) => {
-          setActivityReportUUID(res.data);
-          props.clearFile()
-          dispatch(
-            openModal({
-              id: 'caricamento-csv',
-            })
-          );
-        })
-        .catch(() => showErrorUpload());
-    }
+      );
+      Promise.all([dispatchPromise, elaborateCsvPromise])
+      .then((results) => {
+        const res = results[1];
+        setActivityReportUUID(res.data);
+        props.clearFile();
+      })
+      .catch(() => showErrorUpload());
+  }
   }, [
     dataUploadContext?.parsedData,
     projectContext,

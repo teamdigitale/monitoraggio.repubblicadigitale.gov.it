@@ -1,5 +1,26 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.307](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.306...1.0.0-test.307) (2024-07-23)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** fix chiamata importCsv 20240723 ([bfa18f9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/bfa18f90d3b58c39c32e0e7918edb7495f24736d))
+
+## [1.0.0-test.306](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.305...1.0.0-test.306) (2024-07-23)
+
+
+### Bug Fixes
+
+* **ms-questionario-cittadino:** fix import csv 20240723 ([ff2aab4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ff2aab48850bc6fb9cb691e16db2e15e25cecf7e))
+
+## [1.0.0-test.305](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.304...1.0.0-test.305) (2024-07-23)
+
+
+### Bug Fixes
+
+* **ms-questionario-cittadino:** fix typo 20240723 ([58705a1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/58705a1e2575aae3028c6905b63e202fbb92d218))
+
 ## [1.0.0-test.304](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.303...1.0.0-test.304) (2024-07-22)
 
 

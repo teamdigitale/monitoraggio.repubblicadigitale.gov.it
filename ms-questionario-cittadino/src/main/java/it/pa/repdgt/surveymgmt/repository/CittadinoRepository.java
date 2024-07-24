@@ -59,6 +59,8 @@ public interface CittadinoRepository extends JpaRepository<CittadinoEntity, Long
 
 	Optional<CittadinoEntity> findByCodiceFiscale(String codiceFiscale);
 
+	List<CittadinoEntity> findAllByCodiceFiscale(String codiceFiscale);
+
 	Optional<CittadinoEntity> findByNumeroDocumento(String numeroDocumento);
 
 	@Query(value = " "

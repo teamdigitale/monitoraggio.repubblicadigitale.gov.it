@@ -31,6 +31,8 @@ import it.pa.repdgt.surveymgmt.request.NuovoCittadinoServizioRequest;
 import it.pa.repdgt.surveymgmt.util.CSVServizioUtil;
 import it.pa.repdgt.surveymgmt.util.EncodeUtils;
 import lombok.extern.slf4j.Slf4j;
+
+import org.apache.commons.collections4.CollectionUtils;
 import org.bson.json.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -346,19 +348,19 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
          * CodiceErroreEnum.U24);
          * }
          */
-        final Optional<CittadinoEntity> optionalCittadinoDBFetch = this.cittadinoService
-                .getCittadinoByCodiceFiscaleOrNumeroDocumento(
+        final List<CittadinoEntity> cittadinoDBFetchList = this.cittadinoService
+                .getCittadinoByCodiceFiscaleOrNumeroDocumentoList(
                         nuovoCittadinoRequest.getCodiceFiscale());
         CittadinoEntity cittadino = new CittadinoEntity();
-        if (optionalCittadinoDBFetch.isPresent()) {
+        if (CollectionUtils.isNotEmpty(cittadinoDBFetchList)) {
             if (nuovoCittadinoRequest.getNuovoCittadino()) {
                 final String messaggioErrore = String.format(
                         "Cittadino gia' esistente",
-                        optionalCittadinoDBFetch.get().getCodiceFiscale(),
-                        optionalCittadinoDBFetch.get().getNumeroDocumento());
+                        cittadinoDBFetchList.get(0).getCodiceFiscale(),
+                        cittadinoDBFetchList.get(0).getNumeroDocumento());
                 throw new CittadinoException(messaggioErrore, CodiceErroreEnum.U07);
             }
-            cittadino = optionalCittadinoDBFetch.get();
+            cittadino = cittadinoDBFetchList.get(0);
             nuovoCittadino = false;
         } else {
             mapNuovoCittadinoRequestToCittadino(cittadino, nuovoCittadinoRequest);
