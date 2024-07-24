@@ -665,17 +665,22 @@ public class ImportMassivoCSVService {
 
     private Optional<UtenteEntity> recuperaUtenteFacilitatoreDaRichiesta(String idFacilitatore,
             String nominativoFacilitatore) {
-        String[] nomeCognome = nominativoFacilitatore.split(" ");
-        String cognome = nomeCognome[0];
-        String nome = nomeCognome[1];
+        // String[] nomeCognome = nominativoFacilitatore.split(" ");
+        // String cognome = nomeCognome[0];
+        // String nome = nomeCognome[1];
+        String nominativoFacilitatoreModified = nominativoFacilitatore.replace(" ", "").toUpperCase();
         Optional<UtenteEntity> optutenteEntity = utenteRepository.findByCodiceFiscale(idFacilitatore);
         if (optutenteEntity.isPresent()) {
             return optutenteEntity;
         }
-        List<UtenteEntity> utenteEntities = utenteRepository.findByNomeAndCognome(nome, cognome);
+        List<UtenteEntity> utenteEntities = utenteRepository.findByNominativoFacilitatore(nominativoFacilitatoreModified);
         if (!utenteEntities.isEmpty()) {
             return Optional.of(utenteEntities.get(0));
         }
+        // List<UtenteEntity> utenteEntities = utenteRepository.findByNomeAndCognome(nome, cognome);
+        // if (!utenteEntities.isEmpty()) {
+        //     return Optional.of(utenteEntities.get(0));
+        // }
         return Optional.ofNullable(null);
     }
 
