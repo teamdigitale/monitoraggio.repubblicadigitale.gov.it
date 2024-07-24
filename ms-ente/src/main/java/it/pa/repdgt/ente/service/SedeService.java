@@ -89,7 +89,7 @@ public class SedeService {
 	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public SedeEntity creaNuovaSede(@NotNull final NuovaSedeRequest nuovaSedeRequest) {
-		final String nomeSede = nuovaSedeRequest.getNome();
+		final String nomeSede = nuovaSedeRequest.getNome().trim();
 		if (this.esisteSedeByNome(nomeSede)) {
 			final String messaggioErrore = String.format("Errore Creazione Sede. Sede con nome='%s' già presente",
 					nomeSede);
