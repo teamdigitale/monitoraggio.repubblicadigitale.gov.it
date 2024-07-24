@@ -89,7 +89,8 @@ const Sedi: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
     value: formFieldI['value'],
     field?: formFieldI['field']
   ) => {
-    onInputChange(value, field);
+    const trimmedValue = typeof value === 'string' ? value.trim() : value;
+    onInputChange(trimmedValue, field);
     setIsFormValid(isValidForm);
   };
 
