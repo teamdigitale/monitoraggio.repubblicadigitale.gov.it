@@ -220,12 +220,8 @@ public class ServizioCittadinoRestApi {
 	private void validaQuestionarioQuattro(QuestionarioCompilatoRequest questionarioCompilatoRequest) {
 		try {
 			JsonNode jsonNode = objectMapper.readTree(questionarioCompilatoRequest.getSezioneQ4Questionario());
-			if (!jsonNode.has("sezioneQ4Questionario")) {
-				throw new ServizioException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A04);
-			}
-			JsonNode sezioneQ4QuestionarioNode = jsonNode.get("sezioneQ4Questionario");
-			if (sezioneQ4QuestionarioNode.has("properties") && sezioneQ4QuestionarioNode.get("properties").isArray() &&
-					sezioneQ4QuestionarioNode.get("properties").size() < 1) {
+			if (jsonNode.has("properties") && jsonNode.get("properties").isArray() &&
+				jsonNode.get("properties").size() < 1) {
 				throw new ServizioException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A05);
 			}
 		} catch (Exception e) {
