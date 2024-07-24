@@ -23,6 +23,7 @@ import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.constants.RuoliUtentiConstants;
 import it.pa.repdgt.shared.entity.EnteEntity;
+import it.pa.repdgt.shared.entity.ProgettoEntity;
 import it.pa.repdgt.shared.entity.QuestionarioCompilatoEntity;
 import it.pa.repdgt.shared.entity.SedeEntity;
 import it.pa.repdgt.shared.entity.ServizioEntity;
@@ -212,6 +213,12 @@ public class ServizioService {
 					"Impossibile creare servizio. Utente con codice fiscale '%s' non ha ruolo FACILITATORE",
 					codiceFiscaletenteLoggato);
 			throw new ServizioException(messaggioErrore, CodiceErroreEnum.S05);
+		}
+
+		ProgettoEntity progettoServizio = progettoService.getProgettoById(servizioRequest.getIdProgetto());
+		if(servizioRequest.getDataServizio().before(progettoServizio.getDataInizioProgetto()) || servizioRequest.getDataServizio().after(progettoServizio.getDataFineProgetto())){
+			final String messaggioErrore = "Impossibile creare servizio. La data del servizio deve essere compresa fra la data di inizio e data di fine progetto";
+			throw new ServizioException(messaggioErrore, CodiceErroreEnum.A06);
 		}
 
 		// creo SezioneQ3Mongo
