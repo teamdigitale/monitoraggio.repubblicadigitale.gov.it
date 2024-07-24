@@ -1,5 +1,14 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.308](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.307...1.0.0-test.308) (2024-07-24)
+
+
+### Bug Fixes
+
+* **ms-questionario-cittadino:** fix csv utenti cognome composto 20240724 ([10595fa](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/10595faa3a19e7ed5030426f6ec5af11302ebe37))
+* **ms-questionario-cittadino:** fix unicita citt su servizio 20240724 ([7a7c684](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7a7c684f12188c2ada981f997f6064d6a3c6befa))
+* **ms-questionario-cittadino:** fix sezione Q4 questionario 20240724 ([f4f259e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f4f259eaa1d7f721e1b2cc4cff4858fa8afd8f5a))
+
 ## [1.0.0-test.307](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.306...1.0.0-test.307) (2024-07-23)
 
 
