@@ -1,5 +1,16 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.34.8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.34.7...1.34.8) (2024-07-24)
+
+
+### Bug Fixes
+
+* **ms-questionario-cittadino:** fix csv utenti cognome composto 20240724 ([45734fb](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/45734fb670716e1f8bae1967cd8ce092a5650925))
+* **ms-questionario-cittadino:** fix unicita citt su servizio 20240724 ([0b47dfb](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0b47dfb61129564644d00c3b24a1c43a52db8c57))
+* **ms-questionario-cittadino:** fix sezione Q4 questionario 20240724 ([33bf434](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/33bf4348e5e16ba643d955953122ae325b772588))
+* **ms-questionario-cittadino:** fix typo 20240723 ([0c8495e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0c8495e70d8cc48dc0a6f98896a90890c1a6bda7))
+* **ms-questionario-cittadino:** gestione casistica omocodia 20240722 ([4909399](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/49093999859d1ef39860695a8f317bbf6ee7818e))
+
 ## [1.34.7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.34.6...1.34.7) (2024-07-23)
 
 
