@@ -1,5 +1,14 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.309](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.308...1.0.0-test.309) (2024-07-24)
+
+
+### Bug Fixes
+
+* **ms-questionario-cittadino:** gestione errore data servizio fuori range 20240724 ([da0da55](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/da0da55a9c48e15238e1bc7440c70ec1bf2e1f30))
+* **ms-ente:** trim nome nuova sede BE 20240724 ([3a77688](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3a77688e331c365b173f516449223b404f4285bd))
+* **fe-piattaforma:** trim nome nuova sede FE 20240724 ([76edbcb](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/76edbcba2ef8c86e68d8915ee082621c3f469964))
+
 ## [1.0.0-test.308](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.307...1.0.0-test.308) (2024-07-24)
 
 
