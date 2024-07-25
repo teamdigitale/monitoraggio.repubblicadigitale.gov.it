@@ -1,5 +1,17 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.310](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.309...1.0.0-test.310) (2024-07-25)
+
+
+### Bug Fixes
+
+* **ms-questionario-cittadino:** controlli unicita servizio da fe 20240725 ([5ac3246](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5ac32460ad3919a96c1c262d8fe06fe5e6310706))
+* **ms-ente:** fix test non funzionanti 20240725 ([666c378](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/666c378bf4f7d93d4b610a5c254c5b6afe336299))
+* **ms-questionario-cittadino:** fix inserimento sede CSV 20240725 ([73ebe21](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/73ebe21aa3cf36861b047a0ed969517580aa93a1))
+* **ms-ente:** fix inserimento sede già presente 20240725 ([8ccd337](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8ccd337cd95c4dec2bbc23a36023bb55eeba2360))
+* **fe-piattaforma:** fix visul modale ins csv 20240725 ([1e32e18](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1e32e188aa3790ccced05766a8c9ed60029314d1))
+* **fe-piattaforma:** nuova guida operativa 20240724 ([d7aafa3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d7aafa39796eb7e5b6bf6482fe9ebe4ec820d628))
+
 ## [1.0.0-test.309](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.308...1.0.0-test.309) (2024-07-24)
 
 
