@@ -2,6 +2,7 @@ package it.pa.repdgt.ente.service;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -103,24 +104,36 @@ public class SedeServiceTest {
 		sedeService.cercaSedeByNomeSedeLike(sede1.getNome());
 	}
 	
-	@Test
-	public void creaNuovaSedeTest() {
-		when(this.sedeRepository.findSedeByNomeSede(nuovaSedeRequest.getNome())).thenReturn(Optional.empty());
-		when(this.sedeMapper.toEntityFrom(nuovaSedeRequest)).thenReturn(sede1);
-		when(this.sedeRepository.save(sede1)).thenReturn(sede1);
-		when(this.indirizzoSedeMapper.toEntityFrom(indirizzoSedeRequest)).thenReturn(indirizzoSedeEntity);
-		when(this.indirizzoSedeService.salvaIndirizzoSede(indirizzoSedeEntity)).thenReturn(indirizzoSedeEntity);
-		doAnswer(invocation -> {
-			return null;
-		}).when(this.indirizzoSedeFasciaOrariaService).salvaIndirizzoSedeFasciaOraria(indirizzoSedeFasciaOraria);
-		sedeService.creaNuovaSede(nuovaSedeRequest);
-	}
+@Test
+public void creaNuovaSedeTest() {
+    String modifiedNome = nuovaSedeRequest.getNome().replace(" ", "").toUpperCase();
+    nuovaSedeRequest.setNome(modifiedNome);
+    when(this.sedeRepository.findSedeByNomeSedeModified(modifiedNome)).thenReturn(Optional.empty());
+    when(this.sedeMapper.toEntityFrom(nuovaSedeRequest)).thenReturn(sede1);
+    when(this.sedeRepository.save(sede1)).thenReturn(sede1);
+    when(this.indirizzoSedeMapper.toEntityFrom(indirizzoSedeRequest)).thenReturn(indirizzoSedeEntity);
+    when(this.indirizzoSedeService.salvaIndirizzoSede(indirizzoSedeEntity)).thenReturn(indirizzoSedeEntity);
+    
+    doAnswer(invocation -> null).when(this.indirizzoSedeFasciaOrariaService).salvaIndirizzoSedeFasciaOraria(indirizzoSedeFasciaOraria);
+
+    sedeService.creaNuovaSede(nuovaSedeRequest);
+
+    verify(sedeRepository).findSedeByNomeSedeModified(modifiedNome);
+    verify(sedeMapper).toEntityFrom(nuovaSedeRequest);
+    verify(sedeRepository).save(sede1);
+    verify(indirizzoSedeMapper).toEntityFrom(indirizzoSedeRequest);
+    verify(indirizzoSedeService).salvaIndirizzoSede(indirizzoSedeEntity);
+    verify(indirizzoSedeFasciaOrariaService).salvaIndirizzoSedeFasciaOraria(indirizzoSedeFasciaOraria);
+}
 	
 	@Test
 	public void creaNuovaSedeKOTest() {
-		when(this.sedeRepository.findSedeByNomeSede(nuovaSedeRequest.getNome())).thenReturn(Optional.of(sede1));
-		Assertions.assertThrows(SedeException.class, () -> 	sedeService.creaNuovaSede(nuovaSedeRequest));
-		assertThatExceptionOfType(SedeException.class);
+		// Modify the name before stubbing
+		String modifiedNome = nuovaSedeRequest.getNome().replace(" ", "").toUpperCase();
+		nuovaSedeRequest.setNome(modifiedNome);
+		when(this.sedeRepository.findSedeByNomeSedeModified(modifiedNome)).thenReturn(Optional.of(sede1));
+		Assertions.assertThrows(SedeException.class, () -> sedeService.creaNuovaSede(nuovaSedeRequest));
+		assertThatExceptionOfType(SedeException.class).isThrownBy(() -> sedeService.creaNuovaSede(nuovaSedeRequest));
 	}
 	
 	@Test
