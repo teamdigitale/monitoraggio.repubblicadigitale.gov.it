@@ -1,5 +1,21 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.34.9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.34.8...1.34.9) (2024-07-25)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** Fix errore ins servizio 20240725 ([9a5cacc](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9a5cacc5186d5568407f18b6c76307b26a36602a))
+* **fe-piattaforma:** Fix errore ins servizio 20240725 ([157667d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/157667d48050a57d66223b41f4f24834a089ccd0))
+* **ms-questionario-cittadino:** fix typo 20240725 ([8dc1c52](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8dc1c522d6792809597db0cbb8eee20334b2099f))
+* **fe-piattaforma:** fix visul modale ins csv 20240725 ([b025861](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b025861163d04db644984451541eda892ccd2288))
+* **fe-piattaforma:** fix chiamata importCsv 20240723 ([38d61ff](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/38d61ff0b6d3673179847fbb12f492b73c8ccd85))
+* **ms-questionario-cittadino:** controlli unicita servizio da fe 20240725 ([b17e192](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b17e19256fe46a9b95a17e3896ef78ab021620ec))
+* **ms-questionario-cittadino:** fix inserimento sede CSV 20240725 ([be0f8ca](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/be0f8ca7b4bbc916a405f204041af9dc11656c36))
+* **ms-ente:** fix test non funzionanti 20240725 ([2688940](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2688940b730272823e0bb1699afabc454d4ffd41))
+* **ms-ente:** fix inserimento sede già presente 20240725 ([8e7f955](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8e7f955293ea6febbbf4573d00eee929d52eed80))
+* **ms-questionario-cittadino:** gestione errore data servizio fuori range 20240724 ([88eb12c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/88eb12cefa9daaca67ae76628c038175ab0d0ba4))
+
 ## [1.34.8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.34.7...1.34.8) (2024-07-24)
 
 
