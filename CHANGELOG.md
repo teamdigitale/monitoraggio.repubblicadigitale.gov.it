@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.311](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.310...1.0.0-test.311) (2024-07-25)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** Fix errore ins servizio 20240725 ([838f716](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/838f71668b13fbf284df415ea821ab067046aaf4))
+* **fe-piattaforma:** Fix errore ins servizio 20240725 ([c4e974a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c4e974ac7f4de433f7e115555c56cada2c7f3e5b))
+
 ## [1.0.0-test.310](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.309...1.0.0-test.310) (2024-07-25)
 
 
