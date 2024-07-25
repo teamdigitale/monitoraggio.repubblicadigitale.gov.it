@@ -445,7 +445,7 @@
       "descrizione": "Riformula il testo per poterlo salvare"
     },
     "A06": {
-      "titolo": "DATA SERVIZIO ERRATA",
+      "titolo": "ERRORE DATA SERVIZIO",
       "descrizione": "Inserisci una data compresa fra le date di inizio e fine progetto"
     }
   }
