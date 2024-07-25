@@ -158,8 +158,8 @@ public class ImportMassivoCSVService {
                 if (!utenteFacilitatoreDellaRichiesta.isPresent()) {
                     throw new ResourceNotFoundException(NoteCSV.NOTE_FACILITATORE_NON_PRESENTE, CodiceErroreEnum.C01);
                 }
-                Optional<SedeEntity> optSedeRecuperata = recuperaSedeDaRichiesta(
-                        servizioElaborato.getCampiAggiuntiviCSV().getNominativoSede());
+                String nominativoSedeModified = servizioElaborato.getCampiAggiuntiviCSV().getNominativoSede().replace(" ", "").toUpperCase();
+                Optional<SedeEntity> optSedeRecuperata = recuperaSedeDaRichiesta(nominativoSedeModified);
                 if (!optSedeRecuperata.isPresent()) {
                     throw new ResourceNotFoundException(NoteCSV.NOTE_SEDE_NON_PRESENTE, CodiceErroreEnum.C01);
                 }
@@ -660,7 +660,7 @@ public class ImportMassivoCSVService {
     }
 
     private Optional<SedeEntity> recuperaSedeDaRichiesta(String nominativoSede) {
-        return sedeRepository.findByNomeIgnoreCase(nominativoSede);
+        return sedeRepository.findSedeByNomeSedeModified(nominativoSede);
     }
 
     private Optional<UtenteEntity> recuperaUtenteFacilitatoreDaRichiesta(String idFacilitatore,
