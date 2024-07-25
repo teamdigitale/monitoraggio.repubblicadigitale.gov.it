@@ -128,4 +128,14 @@ public interface SedeRepository extends JpaRepository<SedeEntity, Long> {
 	List<FasciaOrariaAperturaIndirizzoSedeProjection> findFasceOrarieIndirizzoSedeByIdSede(
 			@Param(value = "idSede") Long idSede
 		);
+
+		@Query(value = ""
+        + " SELECT "
+        + " s "
+        + " FROM "
+        + " SedeEntity s "
+        + " WHERE REPLACE(s.nome, ' ', '') = :nomeSedeModified "
+        ,nativeQuery = false)
+		Optional<SedeEntity> findSedeByNomeSedeModified(@Param(value = "nomeSedeModified") String nomeSedeModified);
+
 }

@@ -89,8 +89,9 @@ public class SedeService {
 	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
 	public SedeEntity creaNuovaSede(@NotNull final NuovaSedeRequest nuovaSedeRequest) {
-		final String nomeSede = nuovaSedeRequest.getNome();
-		if (this.esisteSedeByNome(nomeSede)) {
+		final String nomeSede = nuovaSedeRequest.getNome().trim();
+		final String nomeSedeModified = nomeSede.replace(" ", "").toUpperCase();
+		if (this.esisteSedeByNome(nomeSedeModified)) {
 			final String messaggioErrore = String.format("Errore Creazione Sede. Sede con nome='%s' già presente",
 					nomeSede);
 			throw new SedeException(messaggioErrore, CodiceErroreEnum.SD01);
@@ -128,7 +129,7 @@ public class SedeService {
 	@LogMethod
 	@LogExecutionTime
 	public boolean esisteSedeByNome(@NotNull final String nomeSede) {
-		return this.sedeRepository.findSedeByNomeSede(nomeSede).isPresent();
+		return this.sedeRepository.findSedeByNomeSedeModified(nomeSede).isPresent();
 	}
 
 	@LogMethod
