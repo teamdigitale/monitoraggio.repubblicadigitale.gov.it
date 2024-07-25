@@ -1,17 +1,23 @@
 package it.pa.repdgt.surveymgmt.service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.springframework.transaction.annotation.Transactional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -19,16 +25,23 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.constants.RuoliUtentiConstants;
 import it.pa.repdgt.shared.entity.EnteEntity;
+import it.pa.repdgt.shared.entity.EnteSedeProgettoFacilitatoreEntity;
 import it.pa.repdgt.shared.entity.ProgettoEntity;
 import it.pa.repdgt.shared.entity.QuestionarioCompilatoEntity;
 import it.pa.repdgt.shared.entity.SedeEntity;
 import it.pa.repdgt.shared.entity.ServizioEntity;
 import it.pa.repdgt.shared.entity.ServizioXCittadinoEntity;
 import it.pa.repdgt.shared.entity.TipologiaServizioEntity;
+import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
@@ -36,6 +49,7 @@ import it.pa.repdgt.surveymgmt.bean.DettaglioServizioBean;
 import it.pa.repdgt.surveymgmt.bean.SchedaDettaglioServizioBean;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioTemplateCollection;
 import it.pa.repdgt.surveymgmt.collection.SezioneQ3Collection;
+import it.pa.repdgt.surveymgmt.constants.NoteCSV;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
 import it.pa.repdgt.surveymgmt.exception.ServizioException;
 import it.pa.repdgt.surveymgmt.mapper.ServizioMapper;
@@ -43,13 +57,18 @@ import it.pa.repdgt.surveymgmt.mongo.repository.QuestionarioCompilatoMongoReposi
 import it.pa.repdgt.surveymgmt.mongo.repository.SezioneQ3Respository;
 import it.pa.repdgt.surveymgmt.param.FiltroListaServiziParam;
 import it.pa.repdgt.surveymgmt.projection.ProgettoProjection;
+import it.pa.repdgt.surveymgmt.repository.EnteSedeProgettoFacilitatoreRepository;
 import it.pa.repdgt.surveymgmt.repository.QuestionarioCompilatoRepository;
+import it.pa.repdgt.surveymgmt.repository.ServizioSqlRepository;
 import it.pa.repdgt.surveymgmt.repository.ServizioXCittadinoRepository;
 import it.pa.repdgt.surveymgmt.repository.TipologiaServizioRepository;
 import it.pa.repdgt.surveymgmt.request.ServizioRequest;
+import it.pa.repdgt.surveymgmt.util.CSVMapUtil;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Validated
+@Slf4j
 public class ServizioService {
 	@Autowired
 	private ServizioMapper servizioMapper;
@@ -81,6 +100,17 @@ public class ServizioService {
 
 	@Autowired
 	private QuestionarioCompilatoMongoRepository questionarioCompilatoMongoRepository;
+
+	@Autowired
+	private EnteSedeProgettoFacilitatoreRepository enteSedeProgettoFacilitatoreRepository;
+
+	@Autowired
+	private ServizioSqlRepository servizioSqlRepository;
+
+	@Autowired
+	private SezioneQ3Respository sezioneQ3Respository;
+
+	private ObjectMapper objectMapper = new ObjectMapper();
 
 	/**
 	 * Recupera l'elenco dei servizi paginati sulla base della profilazione
@@ -203,7 +233,7 @@ public class ServizioService {
 	@LogExecutionTime
 	@Transactional(rollbackFor = Exception.class)
 	public ServizioEntity creaServizio(
-			@NotNull final ServizioRequest servizioRequest) {
+			@NotNull final ServizioRequest servizioRequest, boolean isMassivo) {
 
 		final String codiceFiscaletenteLoggato = servizioRequest.getCfUtenteLoggato();
 		final String ruoloUtenteLoggato = servizioRequest.getCodiceRuoloUtenteLoggato().toString();
@@ -221,6 +251,48 @@ public class ServizioService {
 			throw new ServizioException(messaggioErrore, CodiceErroreEnum.A06);
 		}
 
+		if(!isMassivo){
+			// controllo unicità servizio su progetto
+			EnteSedeProgettoFacilitatoreEntity enteSedeProgettoFacilitatore = enteSedeProgettoFacilitatoreRepository
+					.existsByChiave(
+							servizioRequest.getCfUtenteLoggato(),
+							servizioRequest.getIdEnteServizio(),
+							servizioRequest.getIdProgetto(),
+							servizioRequest.getIdSedeServizio());
+			if (enteSedeProgettoFacilitatore == null) {
+				throw new ResourceNotFoundException(NoteCSV.NOTE_UTENTE_SEDE_NON_ASSOCIATI_AL_PROGETTO,
+						CodiceErroreEnum.C01);
+			}
+
+			List<ServizioEntity> listaServizi = getServizioByDatiControllo(servizioRequest, enteSedeProgettoFacilitatore.getId());
+			if(CollectionUtils.isNotEmpty(listaServizi)){
+
+				JSONObject rootNodeNuovoServizio = new JSONObject(servizioRequest.getSezioneQuestionarioCompilatoQ3());				
+				for (ServizioEntity servizioRecuperato : listaServizi) {
+					Optional<SezioneQ3Collection> optSezioneQ3Collection = sezioneQ3Respository
+							.findById(servizioRecuperato.getIdTemplateCompilatoQ3());
+					if (optSezioneQ3Collection.isPresent()) {
+						JsonNode nodeActual = objectMapper.valueToTree(optSezioneQ3Collection.get().getSezioneQ3Compilato());
+						JsonNode pathJson = nodeActual.path("json");
+						JSONObject jsonObjectActual = new JSONObject(pathJson.asText());
+						boolean isStessoServizio = true;
+						if (!recuperaDescrizioneDaJson(jsonObjectActual, 6).equals(recuperaDescrizioneDaJson(rootNodeNuovoServizio, 6))) {
+							isStessoServizio = false;
+						}
+						if (!recuperaDescrizioneDaJson(jsonObjectActual, 5).equals(recuperaDescrizioneDaJson(rootNodeNuovoServizio, 5))) {
+							isStessoServizio = false;
+						}
+						if (!recuperaDescrizioneDaJson(jsonObjectActual, 4).equals(recuperaDescrizioneDaJson(rootNodeNuovoServizio, 4))) {
+							isStessoServizio = false;
+						}
+						if (isStessoServizio) {
+							final String messaggioErrore = "Impossibile creare servizio. Servizio già presente in banca dati";
+							throw new ServizioException(messaggioErrore, CodiceErroreEnum.S10);
+						} 
+					}
+				}
+			}
+	}
 		// creo SezioneQ3Mongo
 		final SezioneQ3Collection sezioneQ3Compilato = this.creaSezioneQ3(servizioRequest);
 
@@ -233,6 +305,33 @@ public class ServizioService {
 
 		return servizioCreato;
 	}
+
+	private List<ServizioEntity> getServizioByDatiControllo(ServizioRequest servizioRequest,
+			EnteSedeProgettoFacilitatoreKey enteSedeProgettoFacilitatoreKey) {
+		Optional<List<ServizioEntity>> servizioOpt = servizioSqlRepository
+				.findAllByDataServizioAndDurataServizioAndTipologiaServizioAndIdEnteSedeProgettoFacilitatore(
+						servizioRequest.getDataServizio(),
+						servizioRequest.getDurataServizio(),
+						String.join(", ", servizioRequest.getListaTipologiaServizi()), enteSedeProgettoFacilitatoreKey);
+		if (servizioOpt.isPresent() && !servizioOpt.get().isEmpty()) {
+			List<ServizioEntity> listaServizi = servizioOpt.get();
+			return listaServizi;
+		}
+		return new ArrayList<>();
+	}
+
+	private Set<String> recuperaDescrizioneDaJson(JSONObject jsonObject, int index) {
+        
+        JSONArray properties = jsonObject.getJSONArray("properties");
+        JSONObject ultimoOggetto = properties.getJSONObject(index);
+        String ultimaChiave = ultimoOggetto.keys().next();
+        JSONArray ultimoValoreArray = ultimoOggetto.getJSONArray(ultimaChiave);
+		Set<String> result = IntStream.range(0, ultimoValoreArray.length())
+                .mapToObj(ultimoValoreArray::getString)
+                .collect(Collectors.toSet());
+		return result;
+        
+    }
 
 	@LogMethod
 	@LogExecutionTime

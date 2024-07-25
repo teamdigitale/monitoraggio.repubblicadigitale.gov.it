@@ -101,7 +101,7 @@ public class ServizioRestApi {
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public ServizioIdResource creaServizio(@RequestBody @Valid final ServizioRequest servizioRequest) {
-		return new ServizioIdResource(this.servizioService.creaServizio(servizioRequest).getId());
+		return new ServizioIdResource(this.servizioService.creaServizio(servizioRequest, false).getId());
 	}
 
 	/***
