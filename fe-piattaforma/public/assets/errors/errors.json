@@ -188,6 +188,18 @@
       "titolo": "NOME SERVIZIO GIÀ IN USO",
       "descrizione": "Il nome inserito risulta associato a un altro servizio. Inserisci un nome servizio differente"
     },
+    "S09": {
+      "titolo": "",
+      "descrizione": "Errore servizio non esistente"
+    },
+    "S10": {
+      "titolo": "",
+      "descrizione": "Errore servizio già esistente"
+    },
+    "S11": {
+      "titolo": "",
+      "descrizione": "Errore creazione servizio"
+    },
     "SD01": {
       "titolo": "NOME SEDE GIÀ IN USO",
       "descrizione": "Il nome inserito risulta associato a un'altra sede. Inserisci un nome sede differente"
