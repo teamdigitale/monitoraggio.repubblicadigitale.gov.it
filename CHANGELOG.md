@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.312](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.311...1.0.0-test.312) (2024-07-26)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** fix controllo data servizio csv 20240726 ([da95346](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/da95346a6fdfb8fc4c6bd18b34c1ea3d8e2ee278))
+
 ## [1.0.0-test.311](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.310...1.0.0-test.311) (2024-07-25)
 
 
