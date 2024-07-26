@@ -1,5 +1,14 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.34.10](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.34.9...1.34.10) (2024-07-26)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** trim nome nuova sede FE 20240724 ([54e01c6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/54e01c6f7c05e31473fe5e9b9d986e63250dcc8d))
+* **fe-piattaforma:** aggiunti errori fe 20240726 ([2f7a656](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2f7a6565d43cbf5f8e16fc789033afd5b2a926df))
+* **fe-piattaforma:** fix controllo data servizio csv 20240726 ([b2561ee](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b2561eeaecce6cac0bb8a9a4eb482d76103f3a90))
+
 ## [1.34.9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.34.8...1.34.9) (2024-07-25)
 
 
