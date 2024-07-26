@@ -153,6 +153,9 @@ const ProjectsDetails = () => {
 
   const { hasUserPermission } = useGuard();
 
+  if (location.pathname === `/area-amministrativa/progetti/${entityId}`) {
+    navigate(`/area-amministrativa/progetti/${entityId}/info`);
+  }  
   useEffect(() => {
     // For breadcrumb
     if (location.pathname === `/area-amministrativa/progetti/${entityId}`) {
