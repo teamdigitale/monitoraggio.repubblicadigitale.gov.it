@@ -92,7 +92,7 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
       <div
         className={clsx(
           !isForumLayout &&
-            'd-flex flex-row w-100 justify-content-center align-items-center',
+            'd-flex flex-row w-100 align-items-center',
           !isForumLayout && 'd-flex flex-row w-100 align-items-center',
           className ? className : 'justify-content-center',
           device.mediaIsPhone && !isForumLayout && 'flex-column'
