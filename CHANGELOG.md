@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.314](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.313...1.0.0-test.314) (2024-07-31)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** fix redirect projectDetails 20240726 ([7487ee4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7487ee428770b4221c008009d6f218c9e375281d))
+
 ## [1.0.0-test.313](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.312...1.0.0-test.313) (2024-07-26)
 
 
