@@ -1,5 +1,57 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.313](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.312...1.0.0-test.313) (2024-07-26)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** aggiunti errori fe 20240726 ([9a890a0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9a890a0e1f41ebc2d6770d5f5adc07e0d41e6d11))
+
+## [1.0.0-test.312](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.311...1.0.0-test.312) (2024-07-26)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** fix controllo data servizio csv 20240726 ([da95346](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/da95346a6fdfb8fc4c6bd18b34c1ea3d8e2ee278))
+
+## [1.0.0-test.311](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.310...1.0.0-test.311) (2024-07-25)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** Fix errore ins servizio 20240725 ([838f716](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/838f71668b13fbf284df415ea821ab067046aaf4))
+* **fe-piattaforma:** Fix errore ins servizio 20240725 ([c4e974a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c4e974ac7f4de433f7e115555c56cada2c7f3e5b))
+
+## [1.0.0-test.310](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.309...1.0.0-test.310) (2024-07-25)
+
+
+### Bug Fixes
+
+* **ms-questionario-cittadino:** controlli unicita servizio da fe 20240725 ([5ac3246](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5ac32460ad3919a96c1c262d8fe06fe5e6310706))
+* **ms-ente:** fix test non funzionanti 20240725 ([666c378](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/666c378bf4f7d93d4b610a5c254c5b6afe336299))
+* **ms-questionario-cittadino:** fix inserimento sede CSV 20240725 ([73ebe21](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/73ebe21aa3cf36861b047a0ed969517580aa93a1))
+* **ms-ente:** fix inserimento sede già presente 20240725 ([8ccd337](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8ccd337cd95c4dec2bbc23a36023bb55eeba2360))
+* **fe-piattaforma:** fix visul modale ins csv 20240725 ([1e32e18](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1e32e188aa3790ccced05766a8c9ed60029314d1))
+* **fe-piattaforma:** nuova guida operativa 20240724 ([d7aafa3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d7aafa39796eb7e5b6bf6482fe9ebe4ec820d628))
+
+## [1.0.0-test.309](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.308...1.0.0-test.309) (2024-07-24)
+
+
+### Bug Fixes
+
+* **ms-questionario-cittadino:** gestione errore data servizio fuori range 20240724 ([da0da55](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/da0da55a9c48e15238e1bc7440c70ec1bf2e1f30))
+* **ms-ente:** trim nome nuova sede BE 20240724 ([3a77688](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3a77688e331c365b173f516449223b404f4285bd))
+* **fe-piattaforma:** trim nome nuova sede FE 20240724 ([76edbcb](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/76edbcba2ef8c86e68d8915ee082621c3f469964))
+
+## [1.0.0-test.308](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.307...1.0.0-test.308) (2024-07-24)
+
+
+### Bug Fixes
+
+* **ms-questionario-cittadino:** fix csv utenti cognome composto 20240724 ([10595fa](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/10595faa3a19e7ed5030426f6ec5af11302ebe37))
+* **ms-questionario-cittadino:** fix unicita citt su servizio 20240724 ([7a7c684](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7a7c684f12188c2ada981f997f6064d6a3c6befa))
+* **ms-questionario-cittadino:** fix sezione Q4 questionario 20240724 ([f4f259e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f4f259eaa1d7f721e1b2cc4cff4858fa8afd8f5a))
+
 ## [1.0.0-test.307](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.306...1.0.0-test.307) (2024-07-23)
 
 

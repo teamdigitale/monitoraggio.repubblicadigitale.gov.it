@@ -26,6 +26,20 @@ public interface ServizioXCittadinoRepository extends JpaRepository<ServizioXCit
 			@Param(value = "idServizio") Long idServizio,
 			@Param(value = "idCittadino") Long idCittadino);
 
+	@Query(value = " " +
+			" SELECT \n" + 
+			" COUNT(*)\n" + 
+			" FROM \n" + 
+			" servizio_x_cittadino sxc \n" + 
+			" JOIN cittadino c ON c.id = sxc.id_cittadino\n" + 
+			" WHERE 1=1\n" + 
+			" AND sxc.ID_SERVIZIO  = :idServizio  \n" + 
+			" AND c.codice_fiscale = :codiceFiscale \n"
+			+ " ", nativeQuery = true)
+	int findCittadinoByIdServizioAndCodiceFiscale(
+			@Param(value = "idServizio") Long idServizio,
+			@Param(value = "codiceFiscale") String codiceFiscale);
+
 	@Query(value = " "
 			+ " SELECT "
 			+ "	* "

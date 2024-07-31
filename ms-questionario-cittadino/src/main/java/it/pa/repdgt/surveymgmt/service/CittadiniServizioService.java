@@ -254,19 +254,19 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
                     nuovoCittadinoRequest.getCfUtenteLoggato());
             throw new ServizioException(messaggioErrore, CodiceErroreEnum.A02);
         }
-        final Optional<CittadinoEntity> optionalCittadinoDBFetch = this.cittadinoService
-                .getCittadinoByCodiceFiscaleOrNumeroDocumento(
+        final List<CittadinoEntity> cittadinoDBFetchList = this.cittadinoService
+                .getCittadinoByCodiceFiscaleOrNumeroDocumentoList(
                         nuovoCittadinoRequest.getCodiceFiscale());
         CittadinoEntity cittadino = new CittadinoEntity();
-        if (optionalCittadinoDBFetch.isPresent()) {
+        if (CollectionUtils.isNotEmpty(cittadinoDBFetchList)) {
             if (nuovoCittadinoRequest.getNuovoCittadino()) {
                 final String messaggioErrore = String.format(
                         "Cittadino gia' esistente",
-                        optionalCittadinoDBFetch.get().getCodiceFiscale(),
-                        optionalCittadinoDBFetch.get().getNumeroDocumento());
+                        cittadinoDBFetchList.get(0).getCodiceFiscale(),
+                        cittadinoDBFetchList.get(0).getNumeroDocumento());
                 throw new CittadinoException(messaggioErrore, CodiceErroreEnum.U07);
             }
-            cittadino = optionalCittadinoDBFetch.get();
+            cittadino = cittadinoDBFetchList.get(0);
         } else {
             if (nuovoCittadinoRequest.getCodiceFiscale() != null
                     && !nuovoCittadinoRequest.getCodiceFiscale().isEmpty()) {
@@ -287,7 +287,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
         }
         // verifico se già esiste il cittadino per quel determinato servizio
         // e in caso affermativo sollevo eccezione
-        if (this.esisteCittadinoByIdServizioAndIdCittadino(idServizio, cittadino.getId())) {
+        if (this.esisteCittadinoByIdServizioAndCodiceFiscale(idServizio, cittadino.getCodiceFiscale())) {
             final String messaggioErrore = String.format(
                     "Cittadino gia' esistente sul Servizio con id=%s",
                     cittadino.getCodiceFiscale(),
@@ -367,7 +367,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
         }
         // verifico se già esiste il cittadino per quel determinato servizio
         // e in caso affermativo sollevo eccezione
-        if (this.esisteCittadinoByIdServizioAndIdCittadino(idServizio, cittadino.getId())) {
+        if (this.esisteCittadinoByIdServizioAndCodiceFiscale(idServizio, cittadino.getCodiceFiscale())) {
             final String messaggioErrore = String.format(
                     "Cittadino gia' esistente sul Servizio con id=%s",
                     cittadino.getCodiceFiscale(),
@@ -459,6 +459,11 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
     public boolean esisteCittadinoByIdServizioAndIdCittadino(@NotNull final Long idServizio,
             @NotNull final Long idCittadino) {
         return this.servizioXCittadinoRepository.findCittadinoByIdServizioAndIdCittadino(idServizio, idCittadino) > 0;
+    }
+
+    public boolean esisteCittadinoByIdServizioAndCodiceFiscale(@NotNull final Long idServizio,
+        @NotNull final String codiceFiscale) {
+        return this.servizioXCittadinoRepository.findCittadinoByIdServizioAndCodiceFiscale(idServizio, codiceFiscale) > 0;
     }
 
     @LogMethod

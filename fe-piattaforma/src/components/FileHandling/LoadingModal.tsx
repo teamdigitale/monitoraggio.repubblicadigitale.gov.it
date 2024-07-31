@@ -12,6 +12,7 @@ export default function LoadingModal(props: {
   handleCloseModal: () => void;
   activityReportUUID: string | undefined;
   triggerSearch: () => void;
+  showModal: boolean | undefined
 }) {
   const [savedActivityReport, setSavedActivityReport] = useState<
     RegistroAttivita | undefined | null
@@ -57,7 +58,7 @@ export default function LoadingModal(props: {
       closableKey={props.activityReportUUID ? 'unclosable' : undefined}
     >
       <div className='d-flex flex-column align-items-center my-4 p-4 text-secondary'>
-        {props.activityReportUUID && savedActivityReport !== null ? (
+        {props.activityReportUUID && savedActivityReport !== null || props.showModal ? (
           savedActivityReport ? (
             <>
               <img

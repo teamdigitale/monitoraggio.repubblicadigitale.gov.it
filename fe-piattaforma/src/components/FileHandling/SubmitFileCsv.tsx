@@ -27,9 +27,8 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
   const projectContext = useContext<ProjectInfo | undefined>(ProjectContext);
   const { projectId, enteId } = useParams();
   const dispatch = useAppDispatch();
-  const [activityReportUUID, setActivityReportUUID] = useState<
-    string | undefined
-  >(undefined);
+  const [activityReportUUID, setActivityReportUUID] = useState<string | undefined>(undefined);
+  const [showModal, setShowModal] = useState<boolean | undefined>(undefined)
 
   // const handleSaveReport = useCallback(
   //   (
@@ -68,6 +67,7 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
   const handleCloseModal = useCallback(() => {
     dispatch(closeModal());
     setActivityReportUUID(undefined);
+    setShowModal(false)
   }, []);
 
   const handleSubmit = useCallback(() => {
@@ -77,6 +77,7 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
       projectId &&
       (enteId || projectContext)
     ) {
+      
       const dispatchPromise = dispatch(
         openModal({
           id: 'caricamento-csv',
@@ -87,13 +88,15 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
         parseInt(projectId),
         enteId ? parseInt(enteId) : projectContext!.idEnte
       );
+      setShowModal(true)
       Promise.all([dispatchPromise, elaborateCsvPromise])
       .then((results) => {
         const res = results[1];
         setActivityReportUUID(res.data);
         props.clearFile();
       })
-      .catch(() => showErrorUpload());
+      .catch(() => 
+        showErrorUpload());
   }
   }, [
     dataUploadContext?.parsedData,
@@ -122,11 +125,12 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
       >
         Carica
       </button>
-      {activityReportUUID && (
+      {showModal && (
         <LoadingModal
           activityReportUUID={activityReportUUID}
           handleCloseModal={handleCloseModal}
           triggerSearch={triggerSearch}
+          showModal={showModal}
         />
       )}
 

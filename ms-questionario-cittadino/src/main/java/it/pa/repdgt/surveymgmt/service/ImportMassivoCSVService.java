@@ -714,7 +714,7 @@ public class ImportMassivoCSVService {
     }
 
     private ServizioEntity salvaServizio(Optional<ServizioEntity> servizioOpt, ServizioRequest servizio) {
-        return servizioOpt.orElseGet(() -> servizioService.creaServizio(servizio));
+        return servizioOpt.orElseGet(() -> servizioService.creaServizio(servizio, true));
     }
 
     private List<ServizioEntity> getServizioByDatiControllo(ServizioRequest servizioRequest,

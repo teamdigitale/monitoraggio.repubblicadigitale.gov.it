@@ -80,7 +80,7 @@ export const mandatoryFields: (keyof CSVRecord)[] = [
   'SE6',
 ];
 
-const maxDate = moment('2024-06-30', 'YYYY-MM-DD');
+const maxDate = new Date('2024-06-30')
 
 export function encryptFiscalCode(filteredRecord: CSVRecord) {
   return filteredRecord.AN3
@@ -139,10 +139,10 @@ export const validateFields = (
     errors.push("Il Codice Fiscale inserito e' invalido.");
   }
   if (record.SE1) {
-    const parsedDate = moment(record.SE1, 'YYYY-MM-DD');
-    if (!parsedDate.isValid()) {
+    const parsedDate = new Date(record.SE1);
+    if(!isValidDateFormat(record.SE1)){
       errors.push("La data inserita per il servizio non e' valida.");
-    } else if (parsedDate.isAfter(maxDate)) {
+    } else if (parsedDate > maxDate) {
       errors.push("La data del servizio e' successiva al 30 Giugno 2024.");
     }
   }
@@ -150,7 +150,6 @@ export const validateFields = (
   if (record.SE2) {
     if (record.SE2.length >= 5) {
       const valoreDurataServizio = record.SE2.trim().substring(0, 5);
-      console.log(valoreDurataServizio);
       if (
         !containsOnlyNumber(valoreDurataServizio.substring(0, 1)) ||
         !containsOnlyNumber(valoreDurataServizio.substring(1, 2)) ||
@@ -171,9 +170,13 @@ export const validateFields = (
 
   if (record.SE7) record.SE7 = cutValueAfterRange(record.SE7, 600);
   if (record.ES4) record.ES4 = cutValueAfterRange(record.ES4, 600);
-
   return errors;
 };
+
+function isValidDateFormat(dateString : string) {
+  const regex = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
+  return regex.test(dateString);
+}
 
 export function containsOnlyNumber(value: string): boolean {
   return value >= '0' && value <= '9';
