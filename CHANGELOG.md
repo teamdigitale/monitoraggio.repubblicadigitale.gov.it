@@ -1,5 +1,14 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.34.11](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.34.10...1.34.11) (2024-08-01)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** fix redirect projectDetails 20240726 ([c73163e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c73163eb423e9cb0dc482ab5916e7633bbc99624))
+* **fe-piattaforma:** updates guida operativa 20240801 ([723c252](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/723c252610ccdf2bd11d61a80dd3eab317fd2179))
+* **fe-piattaforma:** nuova guida operativa 20240724 ([c699253](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c699253f347a5a1022f4d01d3f68bd434898b66f))
+
 ## [1.34.10](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.34.9...1.34.10) (2024-07-26)
 
 
