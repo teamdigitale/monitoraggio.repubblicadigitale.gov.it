@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.315](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.314...1.0.0-test.315) (2024-08-01)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** updates guida operativa 20240801 ([d633d0b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d633d0b3f669a41e4f1311854e31e00ef6fbf8c1))
+
 ## [1.0.0-test.314](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.313...1.0.0-test.314) (2024-07-31)
 
 
