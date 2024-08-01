@@ -216,7 +216,7 @@ export function useCSVProcessor(file: File | undefined) {
       encryptedFiscalCode
     );
     const { serviceName } = generateServiceName(filteredRecord.SE3);
-    const errorNotes = errors.length > 0 ? errors.join(', ') : '';
+    const errorNotes = errors.length > 0 ? errors.join('- ') : '';
     const tipoDiServizioPrenotato: string[] = mapKeysToServiceNames(
       filteredRecord.SE3
     );
