@@ -21,12 +21,6 @@ public class CittadinoRequest extends SceltaProfiloParam implements Serializable
 	@JsonProperty(value = "codiceFiscaleNonDisponibile")
 	private Boolean codiceFiscaleNonDisponibile;
 
-	@JsonProperty(value = "tipoDocumento")
-	private String tipoDocumento;
-
-	@JsonProperty(value = "numeroDocumento")
-	private String numeroDocumento;
-
 	@JsonProperty(value = "genere")
 	private String genere;
 

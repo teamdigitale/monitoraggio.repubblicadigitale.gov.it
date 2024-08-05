@@ -112,8 +112,7 @@ public class ServizioCittadinoRestApi {
 	private List<GetCittadinoResource> getCittadini(
 			@RequestBody @Valid GetCittadiniRequest request) {
 
-		final List<GetCittadinoProjection> cittadini = this.cittadiniServizioService.getAllCittadiniByCodFiscOrNumDoc(
-				request.getTipoDocumento(),
+		final List<GetCittadinoProjection> cittadini = this.cittadiniServizioService.getAllCittadiniByCodFisc(
 				request.getCriterioRicerca());
 
 		return this.getCittadinoServizioMapper.toResourceFrom(cittadini);
