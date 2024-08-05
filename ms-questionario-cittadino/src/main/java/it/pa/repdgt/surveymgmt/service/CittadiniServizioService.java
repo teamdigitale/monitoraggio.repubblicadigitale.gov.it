@@ -233,10 +233,10 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 
     @LogMethod
     @LogExecutionTime
-    public List<GetCittadinoProjection> getAllCittadiniByCodFiscOrNumDoc(String tipoDocumento,
+    public List<GetCittadinoProjection> getAllCittadiniByCodFisc(
             @NotNull String criterioRicerca) {
         criterioRicerca = EncodeUtils.encrypt(EncodeUtils.decrypt(criterioRicerca));
-        return cittadinoServizioRepository.getAllCittadiniByCodFiscOrNumDoc(tipoDocumento, criterioRicerca);
+        return cittadinoServizioRepository.getAllCittadiniByCodFisc(criterioRicerca);
     }
 
     @LogMethod
@@ -255,15 +255,14 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
             throw new ServizioException(messaggioErrore, CodiceErroreEnum.A02);
         }
         final List<CittadinoEntity> cittadinoDBFetchList = this.cittadinoService
-                .getCittadinoByCodiceFiscaleOrNumeroDocumentoList(
+                .getCittadinoByCodiceFiscaleList(
                         nuovoCittadinoRequest.getCodiceFiscale());
         CittadinoEntity cittadino = new CittadinoEntity();
         if (CollectionUtils.isNotEmpty(cittadinoDBFetchList)) {
             if (nuovoCittadinoRequest.getNuovoCittadino()) {
                 final String messaggioErrore = String.format(
                         "Cittadino gia' esistente",
-                        cittadinoDBFetchList.get(0).getCodiceFiscale(),
-                        cittadinoDBFetchList.get(0).getNumeroDocumento());
+                        cittadinoDBFetchList.get(0).getCodiceFiscale());
                 throw new CittadinoException(messaggioErrore, CodiceErroreEnum.U07);
             }
             cittadino = cittadinoDBFetchList.get(0);
@@ -278,11 +277,6 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Il cittadino non e' maggiorenne");
                 nuovoCittadinoRequest.setCodiceFiscale(EncodeUtils.encrypt(codiceFiscaleDecrypted));
             }
-            if (nuovoCittadinoRequest.getNumeroDocumento() != null
-                    && !nuovoCittadinoRequest.getNumeroDocumento().equals("")) {
-                nuovoCittadinoRequest.setNumeroDocumento(
-                        EncodeUtils.encrypt(EncodeUtils.decrypt(nuovoCittadinoRequest.getNumeroDocumento())));
-            }
             mapNuovoCittadinoRequestToCittadino(cittadino, nuovoCittadinoRequest);
         }
         // verifico se già esiste il cittadino per quel determinato servizio
@@ -291,7 +285,6 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
             final String messaggioErrore = String.format(
                     "Cittadino gia' esistente sul Servizio con id=%s",
                     cittadino.getCodiceFiscale(),
-                    cittadino.getNumeroDocumento(),
                     idServizio);
             throw new CittadinoException(messaggioErrore, CodiceErroreEnum.U23);
         }
@@ -337,11 +330,6 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Il cittadino non e' maggiorenne");
             nuovoCittadinoRequest.setCodiceFiscale(EncodeUtils.encrypt(codiceFiscaleDecrypted));
         }
-        if (nuovoCittadinoRequest.getNumeroDocumento() != null
-                && !nuovoCittadinoRequest.getNumeroDocumento().equals("")) {
-            nuovoCittadinoRequest.setNumeroDocumento(
-                    EncodeUtils.encrypt(EncodeUtils.decrypt(nuovoCittadinoRequest.getNumeroDocumento())));
-        }
         /*
          * if (nuovoCittadinoRequest.getCodiceFiscaleNonDisponibile()) {
          * throw new CittadinoException("Il codice fiscale non e' disponibile",
@@ -349,15 +337,14 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
          * }
          */
         final List<CittadinoEntity> cittadinoDBFetchList = this.cittadinoService
-                .getCittadinoByCodiceFiscaleOrNumeroDocumentoList(
+                .getCittadinoByCodiceFiscaleList(
                         nuovoCittadinoRequest.getCodiceFiscale());
         CittadinoEntity cittadino = new CittadinoEntity();
         if (CollectionUtils.isNotEmpty(cittadinoDBFetchList)) {
             if (nuovoCittadinoRequest.getNuovoCittadino()) {
                 final String messaggioErrore = String.format(
                         "Cittadino gia' esistente",
-                        cittadinoDBFetchList.get(0).getCodiceFiscale(),
-                        cittadinoDBFetchList.get(0).getNumeroDocumento());
+                        cittadinoDBFetchList.get(0).getCodiceFiscale());
                 throw new CittadinoException(messaggioErrore, CodiceErroreEnum.U07);
             }
             cittadino = cittadinoDBFetchList.get(0);
@@ -371,7 +358,6 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
             final String messaggioErrore = String.format(
                     "Cittadino gia' esistente sul Servizio con id=%s",
                     cittadino.getCodiceFiscale(),
-                    cittadino.getNumeroDocumento(),
                     idServizio);
             throw new CittadinoException(messaggioErrore, CodiceErroreEnum.U23);
         }
@@ -399,10 +385,6 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
             NuovoCittadinoServizioRequest nuovoCittadinoRequest) {
         if (nuovoCittadinoRequest.getCodiceFiscale() != null) {
             cittadino.setCodiceFiscale(nuovoCittadinoRequest.getCodiceFiscale());
-        }
-        if (nuovoCittadinoRequest.getNumeroDocumento() != null) {
-            cittadino.setTipoDocumento(nuovoCittadinoRequest.getTipoDocumento());
-            cittadino.setNumeroDocumento(nuovoCittadinoRequest.getNumeroDocumento());
         }
         if (fasciaDiEtaRepository.existsById(nuovoCittadinoRequest.getFasciaDiEtaId())) {
             Optional<FasciaDiEtaEntity> fascOptional = fasciaDiEtaRepository.findById(nuovoCittadinoRequest.getFasciaDiEtaId());
@@ -567,8 +549,8 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
                 ID_DOMANDA_CODICE_FISCALE, cittadino.getCodiceFiscale(),
                 ID_DOMANDA_CODICE_FISCALE_NON_DISPONIBILE, cittadino.getCodiceFiscale() == null
                         || cittadino.getCodiceFiscale().isEmpty(),
-                ID_DOMANDA_TIPO_DOCUMENTO, cittadino.getTipoDocumento(),
-                ID_DOMANDA_NUMERO_DOCUMENTO, cittadino.getNumeroDocumento(),
+                ID_DOMANDA_TIPO_DOCUMENTO, null, //cittadino.getTipoDocumento(),
+                ID_DOMANDA_NUMERO_DOCUMENTO, null, //cittadino.getNumeroDocumento(),
                 ID_DOMANDA_GENERE, cittadino.getGenere(),
                 ID_DOMANDA_FASCIA_DI_ETA, cittadino.getFasciaDiEta().getFascia(),
                 ID_DOMANDA_TITOLO_DI_STUDIO, cittadino.getTitoloDiStudio(),
@@ -690,8 +672,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
                             || (cf == null)) {
                         bonificaRecordUpload(cittadinoUpload);
                         Optional<CittadinoEntity> optionalCittadinoDBFetch = this.cittadinoService
-                                .getByCodiceFiscaleOrNumeroDocumento(cittadinoUpload.getCodiceFiscale(),
-                                        cittadinoUpload.getNumeroDocumento());
+                                .getCittadinoByCodiceFiscale(cittadinoUpload.getCodiceFiscale());
 
                         CittadinoEntity cittadino = new CittadinoEntity();
                         // se il cittadino non esiste già a sistema
@@ -711,7 +692,6 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
                                 cittadinoUpload.setEsito(String.format(
                                         "UPLOAD - KO - CITTADINO GIA' ESISTENTE SUL SERVIZIO",
                                         cittadinoDBFetch.getCodiceFiscale(),
-                                        cittadinoDBFetch.getNumeroDocumento(),
                                         idServizio));
                             } else {
                                 cittadino.setId(cittadinoDBFetch.getId());
@@ -739,13 +719,10 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 
     private boolean checkPassCittadinoUpload(CittadinoUploadBean cittadinoUpload) {
         final String codiceFiscale = cittadinoUpload.getCodiceFiscale();
-        final String numeroDocumento = cittadinoUpload.getNumeroDocumento();
-        final String tipoDocumento = cittadinoUpload.getTipoDocumento();
-        if ((codiceFiscale == null || "".equals(codiceFiscale.trim())) &&
-                (numeroDocumento == null || "".equals(numeroDocumento.trim())) &&
-                (tipoDocumento == null || "".equals(tipoDocumento.trim()))) {
+        if ((codiceFiscale == null || "".equals(codiceFiscale.trim()))
+                ){
             cittadinoUpload.setEsito(
-                    "UPLOAD - KO - CODICE FISCALE, NUMERO DOCUMENTO, TIPO DOCUMENTO NON POSSONO ESSERE TUTTI CONTEMPORANEMENTE NON VALORIZZATI");
+                    "UPLOAD - KO - CODICE FISCALE" +/*, NUMERO DOCUMENTO", TIPO DOCUMENTO*/  " NON VALORIZZATO");
             return false;
         }
         if (cittadinoUpload.getGenere() == null || "".equals(cittadinoUpload.getGenere().trim())) {
@@ -781,12 +758,8 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
             cittadinoUpload.setCodiceFiscale(cittadinoUpload.getCodiceFiscale().replace("'", "’"));
         if (cittadinoUpload.getGenere() != null)
             cittadinoUpload.setGenere(cittadinoUpload.getGenere().replace("'", "’"));
-        if (cittadinoUpload.getNumeroDocumento() != null)
-            cittadinoUpload.setNumeroDocumento(cittadinoUpload.getNumeroDocumento().replace("'", "’"));
         if (cittadinoUpload.getStatoOccupazionale() != null)
             cittadinoUpload.setStatoOccupazionale(cittadinoUpload.getStatoOccupazionale().replace("'", "’"));
-        if (cittadinoUpload.getTipoDocumento() != null)
-            cittadinoUpload.setTipoDocumento(cittadinoUpload.getTipoDocumento().replace("'", "’"));
         if (cittadinoUpload.getTitoloStudio() != null)
             cittadinoUpload.setTitoloStudio(cittadinoUpload.getTitoloStudio().replace("'", "’"));
     }
@@ -812,8 +785,6 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 
     public void popolaCittadino(CittadinoEntity cittadino, CittadinoUploadBean cittadinoUpload) {
         cittadino.setCodiceFiscale(cittadinoUpload.getCodiceFiscale());
-        cittadino.setTipoDocumento(cittadinoUpload.getTipoDocumento());
-        cittadino.setNumeroDocumento(cittadinoUpload.getNumeroDocumento());
         cittadino.setDataOraCreazione(new Date());
         cittadino.setDataOraAggiornamento(new Date());
 
@@ -914,15 +885,8 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
                 .findByIdQuestionarioCompilatoAndCodiceFiscale(idQuestionarioCompilato, cittadino.getCodiceFiscale())
                 .orElse(null);
 
-        if (invioQuestionario == null) {
-            invioQuestionario = questionarioInviatoOnlineRepository
-                    .findByIdQuestionarioCompilatoAndNumDocumento(idQuestionarioCompilato,
-                            cittadino.getNumeroDocumento())
-                    .orElse(new QuestionarioInviatoOnlineEntity());
-        }
-
         invioQuestionario.setCodiceFiscale(cittadino.getCodiceFiscale());
-        invioQuestionario.setNumDocumento(cittadino.getNumeroDocumento());
+        // invioQuestionario.setNumDocumento(cittadino.getNumeroDocumento());
         invioQuestionario.setIdQuestionarioCompilato(idQuestionarioCompilato);
 
         String token = UUID.randomUUID().toString();

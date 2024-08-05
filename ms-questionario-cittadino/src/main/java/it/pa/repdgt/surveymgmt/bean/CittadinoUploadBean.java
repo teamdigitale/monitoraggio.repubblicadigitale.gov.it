@@ -11,8 +11,6 @@ public class CittadinoUploadBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private String codiceFiscale;
-	private String tipoDocumento;
-	private String numeroDocumento;
 	private String genere;
 	private String fasciaDiEtaId;
 	private String titoloStudio;
@@ -24,13 +22,11 @@ public class CittadinoUploadBean implements Serializable {
 		super();
 	}
 
-	public CittadinoUploadBean(String codiceFiscale, String tipoDocumento,
-			String numeroDocumento, String genere, String fasciaDiEtaId, String titoloStudio, String statoOccupazionale,
+	public CittadinoUploadBean(String codiceFiscale, 
+		String genere, String fasciaDiEtaId, String titoloStudio, String statoOccupazionale,
 			String cittadinanza) {
 		super();
 		this.codiceFiscale = codiceFiscale;
-		this.tipoDocumento = tipoDocumento;
-		this.numeroDocumento = numeroDocumento;
 		this.genere = genere;
 		this.fasciaDiEtaId = fasciaDiEtaId;
 		this.titoloStudio = titoloStudio;

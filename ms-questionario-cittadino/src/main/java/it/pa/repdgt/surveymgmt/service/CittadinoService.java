@@ -239,7 +239,7 @@ public class CittadinoService {
 
 	@LogMethod
 	@LogExecutionTime
-	public Optional<CittadinoEntity> getCittadinoByCodiceFiscaleOrNumeroDocumento(
+	public Optional<CittadinoEntity> getCittadinoByCodiceFiscale(
 			final String codiceFiscale) {
 		if (codiceFiscale == null || codiceFiscale.isEmpty())
 			throw new CittadinoException("ERRORE: occorre definire il CF", CodiceErroreEnum.U08);
@@ -248,20 +248,13 @@ public class CittadinoService {
 
 	@LogMethod
 	@LogExecutionTime
-	public List<CittadinoEntity> getCittadinoByCodiceFiscaleOrNumeroDocumentoList(
+	public List<CittadinoEntity> getCittadinoByCodiceFiscaleList(
 			final String codiceFiscale) {
 		if (codiceFiscale == null || codiceFiscale.isEmpty())
 			throw new CittadinoException("ERRORE: occorre definire il CF", CodiceErroreEnum.U08);
 		return cittadinoRepository.findAllByCodiceFiscale(codiceFiscale);
 	}
 
-	@LogMethod
-	@LogExecutionTime
-	public Optional<CittadinoEntity> getByCodiceFiscaleOrNumeroDocumento(
-			final String codiceFiscale,
-			final String numeroDocumento) {
-		return this.cittadinoRepository.findByCodiceFiscaleOrNumeroDocumento(codiceFiscale, numeroDocumento);
-	}
 
 	@LogMethod
 	@LogExecutionTime
@@ -280,7 +273,7 @@ public class CittadinoService {
 		}
 		CittadinoEntity cittadinoFetchDb = this.cittadinoRepository.findById(id).get();
 
-		if (!this.getCittadinoPerCfOrNumDoc(cittadinoRequest.getCodiceFiscale(), cittadinoRequest.getNumeroDocumento(),
+		if (!this.getCittadinoPerCfOrNumDoc(cittadinoRequest.getCodiceFiscale(), // rimuovere dopo bonifica cittadini
 				id).isEmpty()) {
 			errorMessage = String.format(
 					"Impossibile aggiornare il cittadino. Cittadino con codice fiscale o numero documento già esistente");
@@ -351,13 +344,9 @@ public class CittadinoService {
 	 */
 	@LogMethod
 	@LogExecutionTime
-	public String getConsensoByCodiceFiscaleCittadinoOrNumeroDocumento(String codiceFiscaleCittadino,
-			String numeroDocumento) {
+	public String getConsensoByCodiceFiscaleCittadino(String codiceFiscaleCittadino) {
 		if (codiceFiscaleCittadino != null && !codiceFiscaleCittadino.isEmpty()) {
 			return this.cittadinoRepository.findConsensoByCodiceFiscaleCittadino(codiceFiscaleCittadino);
-		}
-		if (numeroDocumento != null && !numeroDocumento.isEmpty()) {
-			return this.cittadinoRepository.findConsensoByNumDocumentoCittadino(numeroDocumento);
 		}
 		return null;
 	}
@@ -374,9 +363,8 @@ public class CittadinoService {
 		}
 	}
 
-	public List<CittadinoEntity> getCittadinoPerCfOrNumDoc(String codiceFiscale, String numDocumento, Long id) {
-		return cittadinoRepository.findCittadinoByCodiceFiscaleOrNumeroDocumentoAndIdDiverso(codiceFiscale,
-				numDocumento, id);
+	public List<CittadinoEntity> getCittadinoPerCfOrNumDoc(String codiceFiscale, Long id) {
+		return cittadinoRepository.findCittadinoByCodiceFiscaleOrNumeroDocumentoAndIdDiverso(codiceFiscale, id);
 	}
 
 	public boolean removeCittadino(Long id) {

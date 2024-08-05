@@ -111,8 +111,6 @@ public class CSVServizioUtil {
 			for (CSVRecord csvRecord : csvRecords) {
 				CittadinoUploadBean citadinoUpload = new CittadinoUploadBean(
 						csvRecord.get("CodiceFiscale"),
-						csvRecord.get("TipoDocumento"),
-						csvRecord.get("NumeroDocumento"),
 						csvRecord.get("Genere"),
 						csvRecord.get("FasciaDiEtaId"),
 						csvRecord.get("TitoloStudio"),
@@ -160,19 +158,19 @@ public class CSVServizioUtil {
 							break;
 						}
 						case 1: {
-							cittadinoUpload.setTipoDocumento(cell == null ? null : cell.getStringCellValue());
+							//cittadinoUpload.setTipoDocumento(cell == null ? null : cell.getStringCellValue());
 							break;
 						}
 						case 2: {
-							String numeroDocumento = null;
-							if (cell != null) {
-								try {
-									numeroDocumento = cell.getStringCellValue();
-								} catch (IllegalStateException ex) {
-									numeroDocumento = String.valueOf((int) cell.getNumericCellValue());
-								}
-							}
-							cittadinoUpload.setNumeroDocumento(numeroDocumento);
+							// String numeroDocumento = null;
+							// if (cell != null) {
+							// 	try {
+							// 		numeroDocumento = cell.getStringCellValue();
+							// 	} catch (IllegalStateException ex) {
+							// 		numeroDocumento = String.valueOf((int) cell.getNumericCellValue());
+							// 	}
+							// }
+							// cittadinoUpload.setNumeroDocumento(numeroDocumento);
 							break;
 						}
 						case 3: {

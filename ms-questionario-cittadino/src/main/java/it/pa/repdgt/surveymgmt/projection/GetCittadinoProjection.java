@@ -5,8 +5,6 @@ public interface GetCittadinoProjection {
 
 	public String getCodiceFiscale();
 
-	public String getNumeroDocumento();
-
 	public String getGenere();
 
 	public Integer getFasciaDiEta();

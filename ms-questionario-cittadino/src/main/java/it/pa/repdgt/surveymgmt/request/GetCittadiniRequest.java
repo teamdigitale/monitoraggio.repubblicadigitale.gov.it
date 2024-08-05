@@ -10,9 +10,4 @@ import lombok.Setter;
 public class GetCittadiniRequest {
 	@NotBlank(message = "criterioRicerca deve essere valorizzato")
 	private String criterioRicerca;
-	/*
-	 * Valori disponibili: CF, NUM_DOC
-	 */
-	@NotBlank(message = "tipoDocumento deve essere valorizzato")
-	private String tipoDocumento;
 }

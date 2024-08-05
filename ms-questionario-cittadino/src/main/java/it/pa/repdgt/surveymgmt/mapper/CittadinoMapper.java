@@ -20,8 +20,6 @@ public class CittadinoMapper {
 
 		dettaglioCittadino.setId(cittadinoFetchDB.getId());
 		dettaglioCittadino.setCodiceFiscale(cittadinoFetchDB.getCodiceFiscale());
-		dettaglioCittadino.setTipoDocumento(cittadinoFetchDB.getTipoDocumento());
-		dettaglioCittadino.setNumeroDocumento(cittadinoFetchDB.getNumeroDocumento());
 		dettaglioCittadino.setGenere(cittadinoFetchDB.getGenere());
 		dettaglioCittadino.setFasciaDiEta(cittadinoFetchDB.getFasciaDiEta().getId());
 		dettaglioCittadino.setTitoloStudio(cittadinoFetchDB.getTitoloDiStudio());
@@ -37,8 +35,6 @@ public class CittadinoMapper {
 
 		cittadinoEntity.setCodiceFiscale(cittadinoRequest.getCodiceFiscale());
 		cittadinoEntity.setFasciaDiEta(fasciaDiEtaRepository.findByFascia(cittadinoRequest.getFasciaDiEta()));
-		cittadinoEntity.setTipoDocumento(cittadinoRequest.getTipoDocumento());
-		cittadinoEntity.setNumeroDocumento(cittadinoRequest.getNumeroDocumento());
 		cittadinoEntity.setGenere(cittadinoRequest.getGenere());
 		cittadinoEntity.setTitoloDiStudio(cittadinoRequest.getTitoloStudio());
 		cittadinoEntity.setOccupazione(cittadinoRequest.getStatoOccupazionale());
