@@ -80,7 +80,7 @@ export const mandatoryFields: (keyof CSVRecord)[] = [
   'SE6',
 ];
 
-const maxDate = new Date('2024-06-30')
+const maxDate = new Date('2024-07-31')
 
 export function encryptFiscalCode(filteredRecord: CSVRecord) {
   return filteredRecord.AN3
@@ -143,7 +143,7 @@ export const validateFields = (
     if(!isValidDateFormat(record.SE1) || !isValidDate(record.SE1)){ //valido tramite regex
       errors.push("La data inserita per il servizio non e' valida.");
     } else if (parsedDate > maxDate) {
-      errors.push("La data del servizio e' successiva al 30 Giugno 2024.");
+      errors.push("La data del servizio e' successiva al 31 Luglio 2024.");
     }
   }
 
