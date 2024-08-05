@@ -26,7 +26,6 @@ public class GetCittadinoServizioMapper {
 		final GetCittadinoResource getCittadinoResource = new GetCittadinoResource();
 		getCittadinoResource.setIdCittadino(getCittadino.getId());
 		getCittadinoResource.setCodiceFiscale(getCittadino.getCodiceFiscale());
-		getCittadinoResource.setNumeroDocumento(getCittadino.getNumeroDocumento());
 		getCittadinoResource.setCittadinanza(getCittadino.getCittadinanza());
 		getCittadinoResource.setGenere(getCittadino.getGenere());
 		getCittadinoResource.setTitoloStudio(getCittadino.getTitoloStudio());

@@ -31,11 +31,11 @@ public class CittadinoEntity implements Serializable {
 	@Column(name = "CODICE_FISCALE")
 	private String codiceFiscale;
 
-	@Column(name = "TIPO_DOCUMENTO")
-	private String tipoDocumento;
+	// @Column(name = "TIPO_DOCUMENTO")
+	// private String tipoDocumento;
 
-	@Column(name = "NUM_DOCUMENTO", unique = true)
-	private String numeroDocumento;
+	// @Column(name = "NUM_DOCUMENTO", unique = true)
+	// private String numeroDocumento;
 
 	@Column(name = "GENERE")
 	private String genere;
