@@ -140,7 +140,7 @@ export const validateFields = (
   }
   if (record.SE1) {
     const parsedDate = new Date(record.SE1);
-    if(!isValidDateFormat(record.SE1)){
+    if(!isValidDateFormat(record.SE1) || !isValidDate(record.SE1)){ //valido tramite regex
       errors.push("La data inserita per il servizio non e' valida.");
     } else if (parsedDate > maxDate) {
       errors.push("La data del servizio e' successiva al 31 Luglio 2024.");
@@ -176,6 +176,11 @@ export const validateFields = (
 function isValidDateFormat(dateString : string) {
   const regex = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
   return regex.test(dateString);
+}
+
+function isValidDate(dateString : string) {
+  let parsedDate = moment(dateString);
+  return parsedDate.isValid()
 }
 
 export function containsOnlyNumber(value: string): boolean {
