@@ -357,9 +357,9 @@ public class ServizioService {
 		final String ruoloUtenteLoggato = servizioDaAggiornareRequest.getCodiceRuoloUtenteLoggato().toString();
 
 		String nomeServizio = servizioDaAggiornareRequest.getNomeServizio();
-		Optional<ServizioEntity> servizioDBFetch = this.servizioSQLService.getServizioByNomeUpdate(nomeServizio,
+		List<ServizioEntity> servizioDBFetchList = this.servizioSQLService.getServizioByNomeUpdate(nomeServizio,
 				idServizioDaAggiornare);
-		if (servizioDBFetch.isPresent()) {
+		if (CollectionUtils.isNotEmpty(servizioDBFetchList)) {
 			final String messaggioErrore = String
 					.format("Impossibile aggiornare il servizio. Servizio con nome=%s già esistente", nomeServizio);
 			throw new ServizioException(messaggioErrore, CodiceErroreEnum.S08);
