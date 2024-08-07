@@ -1,5 +1,19 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.316](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.315...1.0.0-test.316) (2024-08-07)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** sostituzione delimitatore note 20240801 ([81f10d3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/81f10d3299e8b6a09403bcce40a34a1a63dfc466))
+* **ms-questionario-cittadino:** update error message 20240807 ([190db72](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/190db72d46460bffcf8e9514fc0766353f00ad24))
+* **fe-piattaforma:** titolo schede drupal su 2 righe 20240805" ([1e1a8d6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1e1a8d65f2221cfafb2a9bd670ed32de59006f7f))
+* **fe-piattaforma:** allineamento titoli Bacheca e Documenti 20240731 ([fdac540](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fdac5409315039205d071baa4e5c9165c37e1788))
+* **ms-questionario-cittadino:** fix EP aggiorna servizio 2 20240807 ([f050bf0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f050bf03b86cb72501dd826f42f06060ad1cde13))
+* **fe-piattaforma:** fix validazione data servizio massimo 20240807 ([1ffee23](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1ffee231ec1626ef0bb3d9bb88144468bd52138f))
+* **ms-questionario-cittadino:** fix EP aggiorna servizio 20240807 ([49f259f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/49f259f0269ba39dea8ab6767fd9b151f5bd0f64))
+* **fe-piattaforma:** aggiornata data limite ins servizi ([a0161f0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a0161f065bfe983995267b4a38d8f9973736adc6))
+
 ## [1.0.0-test.315](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.314...1.0.0-test.315) (2024-08-01)
 
 
