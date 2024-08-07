@@ -356,15 +356,6 @@ public class ServizioService {
 		final String codiceFiscaletenteLoggato = servizioDaAggiornareRequest.getCfUtenteLoggato();
 		final String ruoloUtenteLoggato = servizioDaAggiornareRequest.getCodiceRuoloUtenteLoggato().toString();
 
-		String nomeServizio = servizioDaAggiornareRequest.getNomeServizio();
-		List<ServizioEntity> servizioDBFetchList = this.servizioSQLService.getServizioByNomeUpdate(nomeServizio,
-				idServizioDaAggiornare);
-		if (CollectionUtils.isNotEmpty(servizioDBFetchList)) {
-			final String messaggioErrore = String
-					.format("Impossibile aggiornare il servizio. Servizio con nome=%s già esistente", nomeServizio);
-			throw new ServizioException(messaggioErrore, CodiceErroreEnum.S08);
-		}
-
 		if (!this.utenteService.isUtenteFacilitatore(codiceFiscaletenteLoggato, ruoloUtenteLoggato)) {
 			final String messaggioErrore = String.format(
 					"Impossibile aggiornare servizio. Utente con codice fiscale '%s' non ha ruolo FACILITATORE",
