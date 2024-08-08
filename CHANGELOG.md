@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.317](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.316...1.0.0-test.317) (2024-08-08)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** fix route caricamento dati da programma 20240809 ([1b340f2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1b340f2e790e185375d7adbc60e4679d9e63c22c))
+
 ## [1.0.0-test.316](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.315...1.0.0-test.316) (2024-08-07)
 
 
