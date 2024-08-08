@@ -1,5 +1,18 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.34.12](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.34.11...1.34.12) (2024-08-08)
+
+
+### Bug Fixes
+
+* **ms-questionario-cittadino:** fix EP aggiorna servizio 2 20240807 ([a067b47](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a067b47ad7107bff74364c088455a289ac042294))
+* **ms-questionario-cittadino:** fix EP aggiorna servizio 20240807 ([b69df61](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b69df615e7b3602f74c3dc15bc6ab260550dbff8))
+* **fe-piattaforma:** fix validazione data servizio massimo 20240807 ([d66b6ab](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d66b6ab5852d03d4ddf7e82d8ed9ce6a9734a183))
+* **fe-piattaforma:** allineamento titoli Bacheca e Documenti 20240731 ([c0c6cc3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c0c6cc33669b5ec279b72f4be9ff95d1dae3be9b))
+* **fe-piattaforma:** titolo schede drupal su 2 righe 20240805" ([04ea9a1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/04ea9a1a02f504f66ecfec76ed2a7ffb8ea514dd))
+* **fe-piattaforma:** sostituzione delimitatore note 20240801 ([dbbd49b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/dbbd49bbd5870c6446d820644b1bf722ef9a7081))
+* **ms-questionario-cittadino:** update error message 20240807 ([14d1ebb](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/14d1ebb71a4fa98ed9311a06999ecc8606c0719e))
+
 ## [1.34.11](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.34.10...1.34.11) (2024-08-01)
 
 
