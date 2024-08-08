@@ -157,15 +157,15 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
           }
         /> */}
         <Input
-          {...form?.['3']}
-          placeholder={`${form?.['3']?.label}`}
+          {...form?.['5']}
+          placeholder={`${form?.['5']?.label}`}
           onInputChange={onInputDataChange}
           col='col-12 col-lg-6'
           wrapperClassName='mb-5 pr-lg-3'
         />
         <Select
-          {...form?.['4']}
-          placeholder={`${form?.['4']?.label}`}
+          {...form?.['6']}
+          placeholder={`${form?.['6']?.label}`}
           onInputChange={onInputDataChange}
           options={citizenFormDropdownOptions['fasciaDiEtaId']}
           isDisabled={formDisabled}
@@ -173,29 +173,29 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
           wrapperClassName='mb-5 pr-lg-3'
         />
         <Input
-          {...form?.['5']}
-          placeholder={`Seleziona ${form?.['5']?.label?.toLowerCase()}`}
-          onInputChange={onInputDataChange}
-          col='col-12 col-lg-6'
-          wrapperClassName='mb-5 pr-lg-3'
-        />
-        <Input
-          {...form?.['6']}
-          placeholder={`Seleziona ${form?.['6']?.label?.toLowerCase()}`}
-          onInputChange={onInputDataChange}
-          col='col-12 col-lg-6'
-          wrapperClassName='mb-5 pr-lg-3'
-        />
-        <Input
           {...form?.['7']}
           placeholder={`Seleziona ${form?.['7']?.label?.toLowerCase()}`}
-          col='col-12 col-lg-6'
           onInputChange={onInputDataChange}
+          col='col-12 col-lg-6'
           wrapperClassName='mb-5 pr-lg-3'
         />
         <Input
           {...form?.['8']}
           placeholder={`Seleziona ${form?.['8']?.label?.toLowerCase()}`}
+          onInputChange={onInputDataChange}
+          col='col-12 col-lg-6'
+          wrapperClassName='mb-5 pr-lg-3'
+        />
+        <Input
+          {...form?.['9']}
+          placeholder={`Seleziona ${form?.['9']?.label?.toLowerCase()}`}
+          col='col-12 col-lg-6'
+          onInputChange={onInputDataChange}
+          wrapperClassName='mb-5 pr-lg-3'
+        />
+        <Input
+          {...form?.['10']}
+          placeholder={`Seleziona ${form?.['10']?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
           col='col-12 col-lg-6'
           wrapperClassName='mb-5 pr-lg-3'
@@ -234,43 +234,43 @@ const form = newForm([
   // }),
   newFormField({
     keyBE: 'genere',
-    id: '3',
-    field: '3',
+    id: '5',
+    field: '5',
     label: 'Genere',
     type: 'text',
   }),
   newFormField({
     keyBE: 'fasciaDiEta',
-    id: '4',
-    field: '4',
+    id: '6',
+    field: '6',
     label: 'Fascia di età',
     type: 'select',
   }),
   newFormField({
     keyBE: 'titoloStudio',
-    id: '5',
-    field: '5',
+    id: '7',
+    field: '7',
     label: 'Titolo di studio (livello più alto raggiunto)',
     type: 'text',
   }),
   newFormField({
     keyBE: 'statoOccupazionale',
-    id: '6',
-    field: '6',
+    id: '8',
+    field: '8',
     label: 'Stato occupazionale',
     type: 'text',
   }),
   newFormField({
     keyBE: 'provincia',
-    id: '7',
-    field: '7',
+    id: '9',
+    field: '9',
     label: 'Provincia di domicilio',
     type: 'text',
   }),
   newFormField({
     keyBE: 'cittadinanza',
-    id: '8',
-    field: '8',
+    id: '10',
+    field: '10',
     label: 'Cittadinanza',
     type: 'text',
   }),
