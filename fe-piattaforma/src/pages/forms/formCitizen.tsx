@@ -138,7 +138,7 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
               : 'Codice fiscale non presente'
           }
         />
-        <Input
+        {/* <Input
           {...form?.['3']}
           placeholder={`${form?.['3']?.label}`}
           onInputChange={onInputDataChange}
@@ -155,17 +155,17 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
               ? 'Documento disponibile ma non visualizzabile'
               : 'Documento non presente'
           }
-        />
+        /> */}
         <Input
-          {...form?.['5']}
-          placeholder={`${form?.['5']?.label}`}
+          {...form?.['3']}
+          placeholder={`${form?.['3']?.label}`}
           onInputChange={onInputDataChange}
           col='col-12 col-lg-6'
           wrapperClassName='mb-5 pr-lg-3'
         />
         <Select
-          {...form?.['6']}
-          placeholder={`${form?.['6']?.label}`}
+          {...form?.['4']}
+          placeholder={`${form?.['4']?.label}`}
           onInputChange={onInputDataChange}
           options={citizenFormDropdownOptions['fasciaDiEtaId']}
           isDisabled={formDisabled}
@@ -173,29 +173,29 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
           wrapperClassName='mb-5 pr-lg-3'
         />
         <Input
-          {...form?.['7']}
-          placeholder={`Seleziona ${form?.['7']?.label?.toLowerCase()}`}
+          {...form?.['5']}
+          placeholder={`Seleziona ${form?.['5']?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
           col='col-12 col-lg-6'
+          wrapperClassName='mb-5 pr-lg-3'
+        />
+        <Input
+          {...form?.['6']}
+          placeholder={`Seleziona ${form?.['6']?.label?.toLowerCase()}`}
+          onInputChange={onInputDataChange}
+          col='col-12 col-lg-6'
+          wrapperClassName='mb-5 pr-lg-3'
+        />
+        <Input
+          {...form?.['7']}
+          placeholder={`Seleziona ${form?.['7']?.label?.toLowerCase()}`}
+          col='col-12 col-lg-6'
+          onInputChange={onInputDataChange}
           wrapperClassName='mb-5 pr-lg-3'
         />
         <Input
           {...form?.['8']}
           placeholder={`Seleziona ${form?.['8']?.label?.toLowerCase()}`}
-          onInputChange={onInputDataChange}
-          col='col-12 col-lg-6'
-          wrapperClassName='mb-5 pr-lg-3'
-        />
-        <Input
-          {...form?.['9']}
-          placeholder={`Seleziona ${form?.['9']?.label?.toLowerCase()}`}
-          col='col-12 col-lg-6'
-          onInputChange={onInputDataChange}
-          wrapperClassName='mb-5 pr-lg-3'
-        />
-        <Input
-          {...form?.['10']}
-          placeholder={`Seleziona ${form?.['10']?.label?.toLowerCase()}`}
           onInputChange={onInputDataChange}
           col='col-12 col-lg-6'
           wrapperClassName='mb-5 pr-lg-3'
@@ -218,59 +218,59 @@ const form = newForm([
     field: '2',
     label: 'Codice fiscale',
   }),
-  newFormField({
-    keyBE: 'tipoDocumento',
-    id: '3',
-    field: '3',
-    label: 'Tipo documento',
-    type: 'text',
-  }),
-  newFormField({
-    keyBE: 'numeroDocumento',
-    id: '4',
-    field: '4',
-    label: 'Numero documento',
-    type: 'text',
-  }),
+  // newFormField({
+  //   keyBE: 'tipoDocumento',
+  //   id: '3',
+  //   field: '3',
+  //   label: 'Tipo documento',
+  //   type: 'text',
+  // }),
+  // newFormField({
+  //   keyBE: 'numeroDocumento',
+  //   id: '4',
+  //   field: '4',
+  //   label: 'Numero documento',
+  //   type: 'text',
+  // }),
   newFormField({
     keyBE: 'genere',
-    id: '5',
-    field: '5',
+    id: '3',
+    field: '3',
     label: 'Genere',
     type: 'text',
   }),
   newFormField({
     keyBE: 'fasciaDiEta',
-    id: '6',
-    field: '6',
+    id: '4',
+    field: '4',
     label: 'Fascia di età',
     type: 'select',
   }),
   newFormField({
     keyBE: 'titoloStudio',
-    id: '7',
-    field: '7',
+    id: '5',
+    field: '5',
     label: 'Titolo di studio (livello più alto raggiunto)',
     type: 'text',
   }),
   newFormField({
     keyBE: 'statoOccupazionale',
-    id: '8',
-    field: '8',
+    id: '6',
+    field: '6',
     label: 'Stato occupazionale',
     type: 'text',
   }),
   newFormField({
     keyBE: 'provincia',
-    id: '9',
-    field: '9',
+    id: '7',
+    field: '7',
     label: 'Provincia di domicilio',
     type: 'text',
   }),
   newFormField({
     keyBE: 'cittadinanza',
-    id: '10',
-    field: '10',
+    id: '8',
+    field: '8',
     label: 'Cittadinanza',
     type: 'text',
   }),
