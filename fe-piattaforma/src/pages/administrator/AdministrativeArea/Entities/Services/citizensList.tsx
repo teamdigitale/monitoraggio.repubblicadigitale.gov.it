@@ -131,7 +131,7 @@ const CitizensList: React.FC = () => {
   const searchInformation: SearchInformationI = {
     title: 'Cerca cittadino',
     onHandleSearch: handleOnSearch,
-    placeholder: 'Cerca cittadino per codice fiscale o numero documento',
+    placeholder: 'Cerca cittadino per codice fiscale',
     autocomplete: false,
     isClearable: true,
   };
@@ -296,7 +296,7 @@ const CitizensList: React.FC = () => {
           isDetail
           citizenList={true}
           tooltip
-          tooltiptext='Cerca cittadino per codice fiscale o numero documento'
+          tooltiptext='Cerca cittadino per codice fiscale'
         >
           <table className='details-table-container'>
             {(citizens?.cittadini || []).map((citizen: CitizenI, i: number) => (
