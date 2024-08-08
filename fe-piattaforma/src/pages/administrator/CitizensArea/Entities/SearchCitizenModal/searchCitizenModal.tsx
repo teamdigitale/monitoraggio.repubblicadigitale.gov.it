@@ -42,7 +42,7 @@ const AES256 = require('aes-everywhere');
 
 export const selectedSteps = {
   FISCAL_CODE: 'codiceFiscale',
-  DOC_NUMBER: 'numeroDoc',
+  // DOC_NUMBER: 'numeroDoc',
   ADD_CITIZEN: 'addCitizen',
 };
 
@@ -213,8 +213,8 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
 
   const onConfirm = async () => {
     if (
-      currentStep === selectedSteps.FISCAL_CODE ||
-      currentStep === selectedSteps.DOC_NUMBER
+      currentStep === selectedSteps.FISCAL_CODE 
+      // || currentStep === selectedSteps.DOC_NUMBER
     ) {
       setCurrentStep(selectedSteps.ADD_CITIZEN);
     } else if (currentStep === selectedSteps.ADD_CITIZEN) {
@@ -231,15 +231,17 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
               searchValue.value.toUpperCase(),
               process?.env?.AES256_KEY
             );
-          } else if (
-            searchValue?.type === 'numeroDoc' &&
-            key === 'numeroDocumento'
-          ) {
-            body[key] = AES256.encrypt(
-              searchValue.value.toUpperCase(),
-              process?.env?.AES256_KEY
-            );
-          } else if (key === 'fasciaDiEtaId') {
+          }
+          //  else if (
+          //   searchValue?.type === 'numeroDoc' &&
+          //   key === 'numeroDocumento'
+          // ) {
+          //   body[key] = AES256.encrypt(
+          //     searchValue.value.toUpperCase(),
+          //     process?.env?.AES256_KEY
+          //   );
+          // } 
+          else if (key === 'fasciaDiEtaId') {
             if (searchValue?.type !== 'codiceFiscale') {
               let fasciaDiEtaId: string | undefined;
               citizenFormDropdownOptions['fasciaDiEtaId'].forEach(
@@ -311,8 +313,8 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
         disabled:
           (currentStep === selectedSteps.FISCAL_CODE &&
             !(Object.keys(selectedCitizen)?.length > 0)) ||
-          (currentStep === selectedSteps.DOC_NUMBER &&
-            !(Object.keys(selectedCitizen)?.length > 0)) ||
+          // (currentStep === selectedSteps.DOC_NUMBER &&
+          //   !(Object.keys(selectedCitizen)?.length > 0)) ||
           (currentStep === selectedSteps.ADD_CITIZEN && !validForm),
       }}
       secondaryCTA={{
@@ -322,14 +324,13 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
       centerButtons
     >
       <div className='d-flex flex-column search-citizen-modal'>
-        <div className='mb-5'>
+        <div className='mb-3'>
           <SearchBarOptionsCitizen
             setCurrentStep={setCurrentStep}
             setRadioFilter={setRadioFilter}
             currentStep={radioFilter}
-            steps={(({ FISCAL_CODE, DOC_NUMBER }) => ({
-              FISCAL_CODE,
-              DOC_NUMBER,
+            steps={(({ FISCAL_CODE }) => ({
+              FISCAL_CODE
             }))(selectedSteps)}
             alreadySearched={(searched) => setAlreadySearched(searched)}
             setSearchValue={(searchValue) => setSearchValue(searchValue)}
@@ -338,7 +339,7 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
               setCurrentStep(radioFilter);
             }}
           />
-          <div className={clsx('d-flex', 'align-items-center', 'px-5','py-3')}>
+          {/* <div className={clsx('d-flex', 'align-items-center', 'px-5','py-3')}>
             <Icon
               icon="it-info-circle"
               size="sm"
@@ -346,15 +347,15 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
               aria-label="Informazione"
             />
             <p className={clsx('ml-2' ,'text-500')}>Non è al momento possibile inserire il numero di documento</p>
-          </div>
+          </div> */}
           <div
             className={clsx(
               'd-block px-5',
               currentStep === selectedSteps.ADD_CITIZEN ? 'mt-3' : 'mt-5'
             )}
           >
-            {currentStep === selectedSteps.FISCAL_CODE ||
-            currentStep === selectedSteps.DOC_NUMBER
+            {currentStep === selectedSteps.FISCAL_CODE 
+            // || currentStep === selectedSteps.DOC_NUMBER
               ? loadFirstStep()
               : loadSecondStep()}
           </div>

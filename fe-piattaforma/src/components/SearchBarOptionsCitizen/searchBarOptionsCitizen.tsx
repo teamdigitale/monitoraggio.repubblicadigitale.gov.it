@@ -119,7 +119,7 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
         'search-bar-options-custom'
       )}
     >
-      <div>
+      {/* <div>
         <Form id='form-searchbar-opt' className='m-3' showMandatory={false}>
           <FormGroup check className='justify-content-around'>
             {Object.keys(steps).map((item, index) => (
@@ -145,7 +145,7 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
             ))}
           </FormGroup>
         </Form>
-      </div>
+      </div> */}
       <SearchBar
         placeholder='Inserisci il codice fiscale'
         searchType={currentStep ?? ''}

@@ -109,7 +109,7 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
 
   useEffect(() => {
     if (
-      searchType === selectedSteps.DOC_NUMBER ||
+      // searchType === selectedSteps.DOC_NUMBER ||
       searchType === selectedSteps.FISCAL_CODE
     ) {
       setSearchValue('');
@@ -229,7 +229,7 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
           <div
             className={clsx(
               'input-group',
-              'mb-3',
+              // 'mb-3',
               'search-bar-custom__input-group'
             )}
           >
