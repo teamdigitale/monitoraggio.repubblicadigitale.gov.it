@@ -188,70 +188,70 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
           );
         }
 
-        if (field.keyBE === 'numeroDocumento') {
-          return (
-            <Input
-              {...field}
-              id={`input-${field.field}`}
-              col={
-                field.label && field.label?.length > 30
-                  ? 'col-12'
-                  : 'col-12 col-lg-6'
-              }
-              label={field.label}
-              type={field.type}
-              disabled={true}
-              onInputChange={onInputDataChange}
-              placeholder={`${field.label}`}
-              touched={true}
-              required={searchValue?.type === 'numeroDoc'}
-              value={
-                searchValue?.type === 'numeroDoc' ? searchValue?.value : ''
-              }
-            />
-          );
-        }
+      //   if (field.keyBE === 'numeroDocumento') {
+      //     return (
+      //       <Input
+      //         {...field}
+      //         id={`input-${field.field}`}
+      //         col={
+      //           field.label && field.label?.length > 30
+      //             ? 'col-12'
+      //             : 'col-12 col-lg-6'
+      //         }
+      //         label={field.label}
+      //         type={field.type}
+      //         disabled={true}
+      //         onInputChange={onInputDataChange}
+      //         placeholder={`${field.label}`}
+      //         touched={true}
+      //         required={searchValue?.type === 'numeroDoc'}
+      //         value={
+      //           searchValue?.type === 'numeroDoc' ? searchValue?.value : ''
+      //         }
+      //       />
+      //     );
+      //   }
 
-        return (
-          <Input
-            {...field}
-            id={`input-${field.field}`}
-            col={
-              field.label && field.label?.length > 30
-                ? 'col-12'
-                : 'col-12 col-lg-6'
-            }
-            label={field.label}
-            type={field.type}
-            required={field.required || false}
-            onInputChange={onInputDataChange}
-            placeholder={`${field.label}`}
-          />
-        );
+      //   return (
+      //     <Input
+      //       {...field}
+      //       id={`input-${field.field}`}
+      //       col={
+      //         field.label && field.label?.length > 30
+      //           ? 'col-12'
+      //           : 'col-12 col-lg-6'
+      //       }
+      //       label={field.label}
+      //       type={field.type}
+      //       required={field.required || false}
+      //       onInputChange={onInputDataChange}
+      //       placeholder={`${field.label}`}
+      //     />
+      //   );
       }
       case 'select': {
-        if (field.keyBE === 'tipoDocumento') {
-          return (
-            <Select
-              {...field}
-              id={`input-${field}`}
-              field={field.field}
-              label={field.label || ''}
-              col={'col-12 col-lg-6'}
-              onInputChange={onInputDataChange}
-              placeholder={`Seleziona ${field.label?.toLowerCase()}`}
-              options={field.options}
-              required={searchValue?.type === 'numeroDoc'}
-              isDisabled={formDisabled || searchValue?.type === 'codiceFiscale'}
-              value={
-                searchValue?.type === 'numeroDoc'
-                  ? searchValue?.value
-                  : field.value
-              }
-              wrapperClassName='mb-5 pr-lg-3'
-            />
-          );
-        }
+      //   if (field.keyBE === 'tipoDocumento') {
+      //     return (
+      //       <Select
+      //         {...field}
+      //         id={`input-${field}`}
+      //         field={field.field}
+      //         label={field.label || ''}
+      //         col={'col-12 col-lg-6'}
+      //         onInputChange={onInputDataChange}
+      //         placeholder={`Seleziona ${field.label?.toLowerCase()}`}
+      //         options={field.options}
+      //         required={searchValue?.type === 'numeroDoc'}
+      //         isDisabled={formDisabled || searchValue?.type === 'codiceFiscale'}
+      //         value={
+      //           searchValue?.type === 'numeroDoc'
+      //             ? searchValue?.value
+      //             : field.value
+      //         }
+      //         wrapperClassName='mb-5 pr-lg-3'
+      //       />
+      //     );
+      //   }
 
         if (field.keyBE === 'genere') {
           return (
@@ -315,22 +315,22 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
         );
       }
       case 'checkbox': {
-        if (field.keyBE === 'codiceFiscaleNonDisponibile') {
-          return (
-            <CheckboxGroup
-              {...field}
-              id={`input-${field}`}
-              field={field.field}
-              className={clsx('col-12 col-lg-6')}
-              noLabel={field.keyBE === 'codiceFiscaleNonDisponibile'}
-              styleLabelForm
-              classNameLabelOption='pl-5'
-              disabled={searchValue?.type !== ''}
-              value={searchValue?.type === 'numeroDoc'}
-              required={searchValue?.type === 'numeroDoc'}
-            />
-          );
-        }
+        // if (field.keyBE === 'codiceFiscaleNonDisponibile') {
+        //   return (
+        //     <CheckboxGroup
+        //       {...field}
+        //       id={`input-${field}`}
+        //       field={field.field}
+        //       className={clsx('col-12 col-lg-6')}
+        //       noLabel={field.keyBE === 'codiceFiscaleNonDisponibile'}
+        //       styleLabelForm
+        //       classNameLabelOption='pl-5'
+        //       disabled={searchValue?.type !== ''}
+        //       value={searchValue?.type === 'numeroDoc'}
+        //       required={searchValue?.type === 'numeroDoc'}
+        //     />
+        //   );
+        // }
 
         // checkbox if options
         if (field.options && field.options?.length) {
@@ -389,32 +389,32 @@ const form = newForm([
     label: 'Codice fiscale',
     required: false,
   }),
-  newFormField({
-    keyBE: 'codiceFiscaleNonDisponibile',
-    id: '2',
-    field: '2',
-    type: 'checkbox',
-    options: citizenFormDropdownOptions['codiceFiscaleNonDisponibile'],
-    required: false,
-  }),
-  newFormField({
-    keyBE: 'tipoDocumento',
-    id: '3',
-    field: '3',
-    label: 'Tipo documento',
-    options: citizenFormDropdownOptions['tipoDocumento'],
-    type: 'select',
-    required: false,
-  }),
-  newFormField({
-    keyBE: 'numeroDocumento',
-    id: '4',
-    field: '4',
-    label: 'Numero documento',
-    type: 'text',
-    required: false,
-    regex: RegexpType.DOCUMENT_NUMBER,
-  }),
+  // newFormField({
+  //   keyBE: 'codiceFiscaleNonDisponibile',
+  //   id: '2',
+  //   field: '2',
+  //   type: 'checkbox',
+  //   options: citizenFormDropdownOptions['codiceFiscaleNonDisponibile'],
+  //   required: false,
+  // }),
+  // newFormField({
+  //   keyBE: 'tipoDocumento',
+  //   id: '3',
+  //   field: '3',
+  //   label: 'Tipo documento',
+  //   options: citizenFormDropdownOptions['tipoDocumento'],
+  //   type: 'select',
+  //   required: false,
+  // }),
+  // newFormField({
+  //   keyBE: 'numeroDocumento',
+  //   id: '4',
+  //   field: '4',
+  //   label: 'Numero documento',
+  //   type: 'text',
+  //   required: false,
+  //   regex: RegexpType.DOCUMENT_NUMBER,
+  // }),
   newFormField({
     keyBE: 'genere',
     id: '5',
