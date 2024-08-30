@@ -90,7 +90,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
   );
   const [interventionsDropdownOptions, setInterventionsDropdownOptions] =
     useState(programsList || []);
-  const {handleScrollToBottom} = useInfiniteScrollCategories('board_categories')
+  //const {handleScrollToBottom} = useInfiniteScrollCategories('board_categories')
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -373,7 +373,7 @@ const FormPublishNews: React.FC<publishNewsI> = (props) => {
           label='Categoria'
           wrapperClassName='col-12 col-lg-6'
           onInputChange={onInputChange}
-          onMenuScrollToBottom={handleScrollToBottom}
+          //onMenuScrollToBottom={handleScrollToBottom}
           options={categoriesList?.map((opt) => ({
             label: opt.name,
             value: opt.id,

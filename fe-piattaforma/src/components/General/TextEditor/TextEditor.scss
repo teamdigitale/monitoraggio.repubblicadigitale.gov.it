@@ -14,8 +14,8 @@
     display: flex;
     flex-direction: column;
     .toolbar {
-      position: relative;
-      height: fit-content;
+      position: static;
+      height: 30px;
     }
     .toolbar:before {
       background: none;
