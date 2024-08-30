@@ -75,7 +75,7 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
   const docDetail: { [key: string]: string | boolean } | undefined =
     useAppSelector(selectDocDetail);
   const device = useAppSelector(selectDevice);
-  const {handleScrollToBottom} = useInfiniteScrollCategories('document_categories');
+  //const {handleScrollToBottom} = useInfiniteScrollCategories('document_categories');
   const getInterventionsList = () => {
     dispatch(GetEntityFilterValues({ entity, dropdownType: 'policies' }));
   };
@@ -280,7 +280,7 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
           {...form?.category}
           wrapperClassName='col-12 col-lg-6'
           onInputChange={onInputChange}
-          onMenuScrollToBottom={handleScrollToBottom}
+          //onMenuScrollToBottom={handleScrollToBottom}
           options={categoriesList?.map((opt) => ({
             label: opt.name,
             value: opt.id,
