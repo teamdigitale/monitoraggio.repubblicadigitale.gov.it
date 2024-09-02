@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.319](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.318...1.0.0-test.319) (2024-09-02)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** aggiornata data limite ins servizi ([4edd753](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4edd753338b4d87be6b277a0f6244b390c436c92))
+
 ## [1.0.0-test.318](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.317...1.0.0-test.318) (2024-09-02)
 
 
