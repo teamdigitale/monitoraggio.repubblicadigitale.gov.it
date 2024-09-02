@@ -1,5 +1,17 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.318](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.317...1.0.0-test.318) (2024-09-02)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** remove numero documento ricerca 20240808 ([364a456](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/364a4569e714a3bb1f58b53d68d0fbaf4706d450))
+* **fe-piattaforma:** remove field numero documento 20240808 ([24f55b3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/24f55b36c0def4565eb0d8696e804cddddb274b9))
+* **fe-piattaforma:** WIP rimozione riferimenti numero documenti 20240808 ([d1f4e12](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d1f4e12a6da13ce5dc103d0fed0d135102a52ed8))
+* **rimozione_numero_documento:** wip rimozione numero documento 20240805 ([1d6aea1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1d6aea1d6738268d2bdb567f88a64ccf99bd9240))
+* **fe-piattaforma:** fix label crea argomento 20240830 ([8616579](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8616579acfa63a459c1a3cf03db2c491b07aa6a6))
+* **fe-piattaforma:** fix click bottoni toolbar e chiamata numero items errato 20240830 ([32449f4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/32449f431c77a5b35f66c2fd2b18e8fcfe56a738))
+
 ## [1.0.0-test.317](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.316...1.0.0-test.317) (2024-08-08)
 
 
