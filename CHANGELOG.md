@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.320](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.319...1.0.0-test.320) (2024-09-03)
+
+
+### Bug Fixes
+
+* **ms-notifiche-integration:** fix controllo nomefile 20240903 ([94e0622](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/94e062298b8ab8862ead62670f25cd9c00a59c98))
+
 ## [1.0.0-test.319](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.318...1.0.0-test.319) (2024-09-02)
 
 
