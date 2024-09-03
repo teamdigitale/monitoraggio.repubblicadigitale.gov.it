@@ -58,9 +58,9 @@ public class DrupalRestApi {
 			}
 			
 			final String[] fileNameDotSplitted = fileNameToUpload.split("\\.");
-			if(fileNameDotSplitted != null && fileNameDotSplitted.length > 2) {
-				throw new DrupalException("Nome file upload deve avere solo una estensione", CodiceErroreEnum.D01);
-			}
+			// if(fileNameDotSplitted != null && fileNameDotSplitted.length > 2) {
+			// 	throw new DrupalException("Nome file upload deve avere solo una estensione", CodiceErroreEnum.D01);
+			// }
 			
 			if(fileNameDotSplitted.length > 0) {
 				final String estensioneFileUpperCase = fileNameDotSplitted[fileNameDotSplitted.length-1].toUpperCase();
