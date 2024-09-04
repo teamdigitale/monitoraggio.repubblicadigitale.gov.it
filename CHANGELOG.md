@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.34.15](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.34.14...1.34.15) (2024-09-04)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** nuova guida operativa 20240904 ([95344e3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/95344e32d09c4e57aa50c3739aad53d77843f19d))
+
 ## [1.34.14](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.34.13...1.34.14) (2024-09-02)
 
 
