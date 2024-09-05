@@ -363,6 +363,12 @@ public class ServizioService {
 			throw new ServizioException(messaggioErrore, CodiceErroreEnum.S05);
 		}
 
+		ProgettoEntity progettoServizio = progettoService.getProgettoById(servizioDaAggiornareRequest.getIdProgetto());
+		if(servizioDaAggiornareRequest.getDataServizio().before(progettoServizio.getDataInizioProgetto()) || servizioDaAggiornareRequest.getDataServizio().after(progettoServizio.getDataFineProgetto())){
+			final String messaggioErrore = "Impossibile creare servizio. La data del servizio deve essere compresa fra la data di inizio e data di fine progetto";
+			throw new ServizioException(messaggioErrore, CodiceErroreEnum.A06);
+		}
+
 		// Aggiorno servizio su MySql
 		final ServizioEntity servizioAggiornato = this.servizioSQLService.aggiornaServizio(idServizioDaAggiornare,
 				servizioDaAggiornareRequest);
