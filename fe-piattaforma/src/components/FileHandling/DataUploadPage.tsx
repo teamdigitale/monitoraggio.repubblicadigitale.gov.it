@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import CsvInstructions from './CsvInstructions';
 import ActivityReportTable from '../ActivityReportTable/ActivityReportTable';
 import { DataUploadContext } from '../../contexts/DataUploadContext';
@@ -6,6 +6,10 @@ import CSVFileHandler from './CSVFileHandler/CSVFileHandler';
 import { ElaboratoCsvRequest } from '../../models/ElaboratoCsvRequest.model';
 import { useAppSelector } from '../../redux/hooks';
 import { selectProfile } from '../../redux/features/user/userSlice';
+import { GetItemDetail } from '../../redux/features/forum/forumThunk';
+import { useDispatch } from 'react-redux';
+import { selectUser } from '../../redux/features/user/userSlice';
+
 
 export default function DataUploadPage() {
   const searchRef = useRef<{ search: () => void }>(null);
@@ -13,6 +17,21 @@ export default function DataUploadPage() {
   const [elaboratedCSV, setElaboratedCSV] = useState<
     ElaboratoCsvRequest | undefined
   >(undefined);
+
+  const [urlGuida, setUrlGuida] = useState(null)
+  const dispatch = useDispatch();
+  const userId = useAppSelector(selectUser)?.id ?? "";
+  const idGuida = '178';
+  
+  const getItemDetails = async () => {
+   
+      const res = await dispatch(GetItemDetail(idGuida, userId, 'document'));
+      setUrlGuida(res?.data?.data?.items?.[0]?.external_link);
+  };
+
+  useEffect(() => {
+    getItemDetails();
+  }, []);
 
   const triggerSearch = useCallback(() => {
     if (searchRef && searchRef.current) {
@@ -50,7 +69,7 @@ export default function DataUploadPage() {
             <>
               <div className='row justify-content-between align-items-center mb-5'>
                 <div className='col-12 col-md-6'>
-                  <CsvInstructions />
+                  <CsvInstructions urlGuida={urlGuida || ''} />
                 </div>
                 <div className='col-12 col-md-6 align-self-stretch'>
                   <CSVFileHandler />

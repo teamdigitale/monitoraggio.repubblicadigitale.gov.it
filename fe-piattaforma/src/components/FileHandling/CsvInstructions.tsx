@@ -1,7 +1,7 @@
 import React from 'react';
 import uploadIcon from '../../../public/assets/img/it-upload-primary.png';
 
-export default function CsvInstructions() {
+export default function CsvInstructions({ urlGuida }: { urlGuida: string | "" }) {
   return (
     <div className='d-flex flex-column'>
       <h1 className='h5 text-black font-weight-semibold'>
@@ -52,7 +52,7 @@ export default function CsvInstructions() {
           file e leggere il registro dei caricamenti.
         </p>
         <a
-          href='/assets/pdf/Guida_Operativa_Caricamento_Dati.pdf'
+          href={urlGuida}
           download='Guida_Operativa_Caricamento_Dati.pdf'
           target='_blank'
           className='btn p-0 text-primary-action'
