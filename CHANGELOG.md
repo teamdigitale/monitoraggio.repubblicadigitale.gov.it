@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.322](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.321...1.0.0-test.322) (2024-09-05)
+
+
+### Bug Fixes
+
+* **ms-questionario-cittadino:** fix modifica controllo data scadenza servizio ([7389e0b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7389e0bb17d1bf964faaf23d601235b8981e17ea))
+* **ms-questionario-cittadino:** fix query syntax ([d210a37](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d210a377861be6f865a56421e1c0bd7633913797))
+
 ## [1.0.0-test.321](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.320...1.0.0-test.321) (2024-09-04)
 
 
