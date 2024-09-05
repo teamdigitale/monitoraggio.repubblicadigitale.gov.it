@@ -9,6 +9,7 @@ import { selectProfile } from '../../redux/features/user/userSlice';
 import { GetItemDetail } from '../../redux/features/forum/forumThunk';
 import { useDispatch } from 'react-redux';
 import { selectUser } from '../../redux/features/user/userSlice';
+import { cleanDrupalFileURL } from '../../utils/common';
 
 
 export default function DataUploadPage() {
@@ -21,7 +22,7 @@ export default function DataUploadPage() {
   const [urlGuida, setUrlGuida] = useState(null)
   const dispatch = useDispatch();
   const userId = useAppSelector(selectUser)?.id ?? "";
-  const idGuida = '178';
+  const idGuida = '178';    // 97 per produzione, 178 per test
   
   const getItemDetails = async () => {
    
@@ -69,7 +70,7 @@ export default function DataUploadPage() {
             <>
               <div className='row justify-content-between align-items-center mb-5'>
                 <div className='col-12 col-md-6'>
-                  <CsvInstructions urlGuida={urlGuida || ''} />
+                  <CsvInstructions urlGuida={cleanDrupalFileURL(urlGuida|| '') } />
                 </div>
                 <div className='col-12 col-md-6 align-self-stretch'>
                   <CSVFileHandler />
