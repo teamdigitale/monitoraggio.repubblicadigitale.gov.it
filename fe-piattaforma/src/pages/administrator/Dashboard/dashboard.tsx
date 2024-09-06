@@ -71,6 +71,10 @@ const dashboardRoles: {
   CITTADINO: {
     endpoint: 'vw-cittadino',
   },
+  REPP: {
+    rfd: 'vw_ente_partner_RFD_test_def',
+    scd: 'vw_ente_partner_SCD_test_def'
+  }
 };
 
 const publicContents = {
@@ -177,6 +181,16 @@ const Dashboard = () => {
         }
         break;
       }
+      case userRoles.REPP:
+      case userRoles.DEPP:
+        if (project?.policy?.toLowerCase() === 'rfd') {
+          requestURL = `${requestURL}/${dashboardRoles.REPP.rfd}`;
+        } else if (project?.policy?.toLowerCase() === 'scd') {
+          requestURL = `${requestURL}/${dashboardRoles.REPP.scd}`;
+        } else {
+          return null;
+        }
+        break;
       default: {
         requestURL = `${requestURL}/${dashboardRoles.CITTADINO.endpoint}`;
         break;
