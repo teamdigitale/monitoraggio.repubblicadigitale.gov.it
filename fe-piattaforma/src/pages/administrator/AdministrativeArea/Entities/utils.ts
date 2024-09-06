@@ -228,3 +228,8 @@ export const contractTypes = [
     value: 'Collaboratore',
   },
 ];
+
+export const policy = {
+  SCD: 'SCD',
+  RFD: 'RFD'
+};
