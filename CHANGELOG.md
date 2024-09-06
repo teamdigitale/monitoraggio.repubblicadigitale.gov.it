@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.323](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.322...1.0.0-test.323) (2024-09-06)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** configurazione dashboard per enti partner 20240906 ([6129480](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6129480d4b056e611a234a0483e8ff8dd6749bdd))
+
 ## [1.0.0-test.322](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.321...1.0.0-test.322) (2024-09-05)
 
 
