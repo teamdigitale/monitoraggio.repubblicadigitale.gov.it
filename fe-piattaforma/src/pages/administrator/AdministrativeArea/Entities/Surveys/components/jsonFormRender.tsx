@@ -10,6 +10,7 @@ import { formFieldI, FormI } from '../../../../../../utils/formHelper';
 import CheckboxGroup from '../../../../../../components/Form/checkboxGroup';
 import clsx from 'clsx';
 import '../compileSurvey/compileSurvey.scss';
+import './jsonFormRender.scss'
 import { setCompilingSurveyForm } from '../../../../../../redux/features/administrativeArea/surveys/surveysSlice';
 import { useDispatch } from 'react-redux';
 import { Label } from 'design-react-kit';
@@ -93,7 +94,7 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
             col={clsx(
               formField?.keyBE?.toLowerCase() === 'numerocellulare'
                 ? 'col-8 col-lg-4'
-                : 'col-12 col-lg-6',
+                : 'col-12 col-lg-6 textField',
               formField?.field === '19' && 'mt-4'
             )}
             label={formField?.label}
@@ -124,6 +125,7 @@ const JsonFormRender: React.FC<JsonFormRenderI> = (props) => {
               }`}
               label={`${formField?.label}`}
               isDisabled={formField?.disabled || viewMode}
+              wrapperClassName='selectField'
             />
           );
         }
