@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.324](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.323...1.0.0-test.324) (2024-09-10)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** nascosto caricamento massivo SCD 20240906 ([555b475](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/555b47528cdbe9e3b5a758363e3cf774c6d7cb9f))
+* **fe-piattaforma:** allineati campi select/checkbox/text ([872eed4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/872eed43c4949564742ef6c0557223d6c2cb9b8f))
+
 ## [1.0.0-test.323](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.322...1.0.0-test.323) (2024-09-06)
 
 
