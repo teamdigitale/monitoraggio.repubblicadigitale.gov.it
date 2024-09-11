@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.325](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.324...1.0.0-test.325) (2024-09-11)
+
+
+### Features
+
+* **ms-questionario-cittadino:** update column name dataFineInserimento ([e698a60](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e698a60236719fbd30eabae0d745c62d70821428))
+
 ## [1.0.0-test.324](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.323...1.0.0-test.324) (2024-09-10)
 
 
