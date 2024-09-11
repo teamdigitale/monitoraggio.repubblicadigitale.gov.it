@@ -65,7 +65,7 @@ public class RegistroAttivitaService {
 
     public Page<RegistroAttivitaEntity> getRegistroAttivita(Integer page, Integer size,
             SceltaProfiloParam sceltaProfiloParam) {
-        Sort sort = Sort.by(Sort.Direction.DESC, "dataInserimento");
+        Sort sort = Sort.by(Sort.Direction.DESC, "dataFineInserimento");
         Pageable pageable = PageRequest.of(page, size, sort);
         switch (sceltaProfiloParam.getCodiceRuoloUtenteLoggato()) {
             case "FAC":

@@ -34,7 +34,7 @@ const tableHeading: TableHeadingI[] = [
   },
   {
     label: 'Data e ora',
-    field: 'dataInserimento',
+    field: 'dataFineInserimento',
     size: 'medium',
   },
   {
