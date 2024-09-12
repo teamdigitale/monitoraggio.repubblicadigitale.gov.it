@@ -175,7 +175,7 @@ const GetEntitySearchResultAction = {
 };
 
 export const GetEntitySearchResult =
-  (searchValue: string, searchType: string) => async (dispatch: Dispatch) => {
+  (searchValue: string, searchType: string, setSearchHasResult: any) => async (dispatch: Dispatch) => {
     try {
       dispatch({ ...GetEntitySearchResultAction, searchValue, searchType });
       dispatch(showLoader());
@@ -196,6 +196,7 @@ export const GetEntitySearchResult =
       console.log('GetEntitySearchResult citizensArea error', error);
     } finally {
       dispatch(hideLoader());
+      setSearchHasResult(true);
     }
   };
 
