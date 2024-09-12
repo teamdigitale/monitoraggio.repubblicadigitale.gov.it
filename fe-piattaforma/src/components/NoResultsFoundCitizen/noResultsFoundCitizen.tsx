@@ -14,7 +14,6 @@ const NoResultsFoundCitizen: React.FC<NoResultsFoundCitizenI> = ({
     <>
       <div className={'try-again-search'}>
         <h3 className={'try-again-search__error-label'}>
-          {t('make_a_new_research_try_the_other_search_field')}
         </h3>
       </div>
       <div className='card-bg no-results-found__first-access'>
