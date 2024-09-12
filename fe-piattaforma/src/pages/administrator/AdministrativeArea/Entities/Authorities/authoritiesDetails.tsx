@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { entityStatus, formTypes, userRoles } from '../utils';
+import { entityStatus, formTypes, userRoles, policy } from '../utils';
 import {
   CRUDActionsI,
   CRUDActionTypes,
@@ -72,7 +72,6 @@ const AuthoritiesDetails = () => {
   const programDetails =
     useAppSelector(selectPrograms).detail?.dettagliInfoProgramma || {};
   const userHeaders = getUserHeaders();
-
   useEffect(() => {
     if (authorityId) GetAuthorityManagerDetail(authorityId, 'progetto');
   }, [authorityId]);
@@ -599,7 +598,8 @@ const AuthoritiesDetails = () => {
               ) : null}
               {projectId &&
                 (userHeaders.codiceRuoloUtenteLoggato === 'REPP' ||
-                  userHeaders.codiceRuoloUtenteLoggato === 'DTD') && (
+                  userHeaders.codiceRuoloUtenteLoggato === 'DTD') &&
+                  projectDetail?.policy == policy.RFD && (
                   <div>
                     <CSVUploadBanner
                       onPrimaryButtonClick={handleNavigateToCaricamentoDati}

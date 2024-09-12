@@ -30,7 +30,7 @@ public class RegistroAttivitaEntity {
     private String operatore;
     @CreatedDate
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", timezone = "Europe/Rome")
-    private Date dataInserimento;
+    private Date dataFineInserimento;
     @JsonIgnore
     private String codiceFiscale;
     @NotNull

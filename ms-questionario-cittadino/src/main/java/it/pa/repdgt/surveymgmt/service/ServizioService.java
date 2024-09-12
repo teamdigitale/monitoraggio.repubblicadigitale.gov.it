@@ -356,20 +356,17 @@ public class ServizioService {
 		final String codiceFiscaletenteLoggato = servizioDaAggiornareRequest.getCfUtenteLoggato();
 		final String ruoloUtenteLoggato = servizioDaAggiornareRequest.getCodiceRuoloUtenteLoggato().toString();
 
-		String nomeServizio = servizioDaAggiornareRequest.getNomeServizio();
-		Optional<ServizioEntity> servizioDBFetch = this.servizioSQLService.getServizioByNomeUpdate(nomeServizio,
-				idServizioDaAggiornare);
-		if (servizioDBFetch.isPresent()) {
-			final String messaggioErrore = String
-					.format("Impossibile aggiornare il servizio. Servizio con nome=%s già esistente", nomeServizio);
-			throw new ServizioException(messaggioErrore, CodiceErroreEnum.S08);
-		}
-
 		if (!this.utenteService.isUtenteFacilitatore(codiceFiscaletenteLoggato, ruoloUtenteLoggato)) {
 			final String messaggioErrore = String.format(
 					"Impossibile aggiornare servizio. Utente con codice fiscale '%s' non ha ruolo FACILITATORE",
 					codiceFiscaletenteLoggato);
 			throw new ServizioException(messaggioErrore, CodiceErroreEnum.S05);
+		}
+
+		ProgettoEntity progettoServizio = progettoService.getProgettoById(servizioDaAggiornareRequest.getIdProgetto());
+		if(servizioDaAggiornareRequest.getDataServizio().before(progettoServizio.getDataInizioProgetto()) || servizioDaAggiornareRequest.getDataServizio().after(progettoServizio.getDataFineProgetto())){
+			final String messaggioErrore = "Impossibile creare servizio. La data del servizio deve essere compresa fra la data di inizio e data di fine progetto";
+			throw new ServizioException(messaggioErrore, CodiceErroreEnum.A06);
 		}
 
 		// Aggiorno servizio su MySql

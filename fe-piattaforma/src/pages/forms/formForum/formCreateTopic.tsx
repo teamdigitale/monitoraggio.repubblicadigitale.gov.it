@@ -65,7 +65,7 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
   const categoriesList = useAppSelector(selectCategoriesList);
   const topicDetail: { [key: string]: string | boolean } | undefined =
     useAppSelector(selectTopicDetail);
-  const {handleScrollToBottom} = useInfiniteScrollCategories('community_categories')
+  //const {handleScrollToBottom} = useInfiniteScrollCategories('community_categories')
   useEffect(() => {
     dispatch(GetCategoriesList({ type: 'community_categories' }));
     dispatch(GetTagsList());
@@ -188,7 +188,7 @@ const FormCreateTopic: React.FC<createTopicI> = (props) => {
           {...form?.category}
           wrapperClassName='col-12 col-lg-6'
           onInputChange={onInputChange}
-          onMenuScrollToBottom={handleScrollToBottom}
+          //onMenuScrollToBottom={handleScrollToBottom}
           options={categoriesList?.map((opt) => ({
             label: opt.name,
             value: opt.id,
