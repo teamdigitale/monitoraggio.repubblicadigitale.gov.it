@@ -22,6 +22,7 @@ interface SearchBarOptionsI {
   alreadySearched?: (param: boolean) => void;
   setSearchValue: (param: { type: string; value: string }) => void;
   resetModal?: () => void;
+  setSearchHasResult: (value: boolean) => void;
 }
 
 const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
@@ -32,6 +33,7 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
   alreadySearched,
   setSearchValue,
   resetModal,
+  setSearchHasResult
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -162,7 +164,7 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
             };
             setSearchValue(searchValue);
             dispatch(
-              GetEntitySearchResult(encrypted, currentStep ? currentStep : '')
+              GetEntitySearchResult(encrypted, currentStep ? currentStep : '', setSearchHasResult)
             );
             if (alreadySearched) alreadySearched(true);
           }

@@ -94,6 +94,8 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
   )?.sezioniQuestionarioTemplate?.[0];
   //const [stringQ1, setStringQ1] = useState<string>('');
 
+  const [searchHasResult, setSearchHasResult] = useState<boolean>(false);
+
 
   useEffect(() => {
     if (typeof surveyTemplateQ1 !== 'string') {
@@ -144,10 +146,15 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
   };
 
   const loadFirstStep = () => {
-    if (!alreadySearched) {
+    console.log("Dati Cittadino", citizensData);
+    
+    if (!alreadySearched || !searchHasResult) {
       return null;
     } else {
-      if (citizensData?.length > 1) {
+      if (citizensData?.length === 1) {
+        setCurrentStep(selectedSteps.ADD_CITIZEN);
+        setSelectedCitizen(citizensData?.[0]);
+      } else if (citizensData?.length > 1) {
         return (
           <CitizenTableResult
             data={citizensData}
@@ -157,9 +164,6 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
             }}
           />
         );
-      } else if (citizensData?.length === 1) {
-        setCurrentStep(selectedSteps.ADD_CITIZEN);
-        setSelectedCitizen(citizensData?.[0]);
       } else if (citizensData?.length === 0) {
         return <NoResultsFoundCitizen onClickCta={addCitizen} />;
       }
@@ -301,6 +305,8 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
     }
   };
 
+  console.log("RISULTATO: ", searchHasResult);
+  
   return (
     <GenericModal
       id={id}
@@ -328,6 +334,7 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
           <SearchBarOptionsCitizen
             setCurrentStep={setCurrentStep}
             setRadioFilter={setRadioFilter}
+            setSearchHasResult={setSearchHasResult}
             currentStep={radioFilter}
             steps={(({ FISCAL_CODE }) => ({
               FISCAL_CODE
@@ -354,7 +361,7 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
               currentStep === selectedSteps.ADD_CITIZEN ? 'mt-3' : 'mt-5'
             )}
           >
-            {currentStep === selectedSteps.FISCAL_CODE 
+            {currentStep === selectedSteps.FISCAL_CODE
             // || currentStep === selectedSteps.DOC_NUMBER
               ? loadFirstStep()
               : loadSecondStep()}
