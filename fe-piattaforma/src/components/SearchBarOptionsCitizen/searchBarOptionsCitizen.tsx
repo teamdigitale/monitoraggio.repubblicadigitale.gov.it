@@ -1,18 +1,15 @@
+import { Parser } from '@marketto/codice-fiscale-utils';
+import clsx from 'clsx';
+import moment from 'moment';
 import React, { useCallback, useState } from 'react';
-import SearchBar from '../SearchBar/searchBar';
-import { Form } from '..';
-import { FormGroup, Label } from 'design-react-kit';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
-import clsx from 'clsx';
-import { GetEntitySearchResult } from '../../redux/features/citizensArea/citizensAreaThunk';
-import Input from '../Form/input';
-import { setCitizenSearchResults } from '../../redux/features/citizensArea/citizensAreaSlice';
-import { SearchValue } from '../../pages/forms/models/searchValue.model';
-import { emitNotify } from '../../redux/features/notification/notificationSlice';
-import moment from 'moment';
-import { Parser } from '@marketto/codice-fiscale-utils';
 import { useFiscalCodeValidation } from '../../hooks/useFiscalCodeValidation';
+import { SearchValue } from '../../pages/forms/models/searchValue.model';
+import { setCitizenSearchResults } from '../../redux/features/citizensArea/citizensAreaSlice';
+import { GetEntitySearchResult } from '../../redux/features/citizensArea/citizensAreaThunk';
+import { emitNotify } from '../../redux/features/notification/notificationSlice';
+import SearchBar from '../SearchBar/searchBar';
 
 interface SearchBarOptionsI {
   setCurrentStep: (value: string) => void;
@@ -22,7 +19,6 @@ interface SearchBarOptionsI {
   alreadySearched?: (param: boolean) => void;
   setSearchValue: (param: { type: string; value: string }) => void;
   resetModal?: () => void;
-  setSearchHasResult: (value: boolean) => void;
 }
 
 const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
@@ -32,8 +28,7 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
   steps,
   alreadySearched,
   setSearchValue,
-  resetModal,
-  setSearchHasResult
+  resetModal
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -163,16 +158,16 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
             };
             setSearchValue(searchValue);
             dispatch(
-              GetEntitySearchResult(encrypted, currentStep ? currentStep : '', setSearchHasResult)
+              GetEntitySearchResult(encrypted, currentStep ? currentStep : '', alreadySearched)
             );
-            if (alreadySearched) alreadySearched(true);
+            if (alreadySearched) alreadySearched(false);
           }
         }}
         onReset={handleSearchReset}
         onQueryChange={onQueryChange}
         disableSubmit={!canSubmit}
       />
-
+    
     </div>
   );
 };
