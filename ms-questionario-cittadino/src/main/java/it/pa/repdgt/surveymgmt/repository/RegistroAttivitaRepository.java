@@ -17,8 +17,11 @@ public interface RegistroAttivitaRepository extends JpaRepository<RegistroAttivi
         Page<RegistroAttivitaEntity> findAllByIdEnteAndIdProgettoAndJobStatus(Pageable pageable, Long idEnte,
                         Long idProgetto, JobStatusEnum jobStatusEnum);
 
-        Page<RegistroAttivitaEntity> findAllByCodiceFiscaleAndJobStatus(Pageable pageable, String cfUtenteLoggato,
-                        JobStatusEnum jobStatusEnum);
+    Page<RegistroAttivitaEntity> findAllByIdEnteAndIdProgetto(Pageable pageable, Long idEnte,
+            Long idProgetto);
+
+    Page<RegistroAttivitaEntity> findAllByCodiceFiscaleAndJobStatus(Pageable pageable, String cfUtenteLoggato,
+            JobStatusEnum jobStatusEnum);
 
         Optional<RegistroAttivitaEntity> findByJobUUIDAndJobStatus(String jobUUID, JobStatusEnum success);
 

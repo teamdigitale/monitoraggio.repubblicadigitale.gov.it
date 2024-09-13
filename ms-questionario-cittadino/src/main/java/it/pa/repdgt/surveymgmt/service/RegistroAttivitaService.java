@@ -69,14 +69,14 @@ public class RegistroAttivitaService {
         Pageable pageable = PageRequest.of(page, size, sort);
         switch (sceltaProfiloParam.getCodiceRuoloUtenteLoggato()) {
             case "FAC":
-                return registroAttivitaRepository.findAllByCodiceFiscaleAndJobStatus(pageable,
-                        sceltaProfiloParam.getCfUtenteLoggato(), JobStatusEnum.SUCCESS);
+                return registroAttivitaRepository.findAllByCodiceFiscale(pageable,
+                        sceltaProfiloParam.getCfUtenteLoggato());
             case "REG":
             case "REGP":
             case "REPP":
             case "DTD":
-                return registroAttivitaRepository.findAllByIdEnteAndIdProgettoAndJobStatus(pageable,
-                        sceltaProfiloParam.getIdEnte(), sceltaProfiloParam.getIdProgetto(), JobStatusEnum.SUCCESS);
+                return registroAttivitaRepository.findAllByIdEnteAndIdProgetto(pageable,
+                        sceltaProfiloParam.getIdEnte(), sceltaProfiloParam.getIdProgetto());
             default:
                 throw new IllegalArgumentException();
         }
