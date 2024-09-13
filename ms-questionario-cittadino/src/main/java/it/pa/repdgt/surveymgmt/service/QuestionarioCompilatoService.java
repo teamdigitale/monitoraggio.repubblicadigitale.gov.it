@@ -130,6 +130,8 @@ public class QuestionarioCompilatoService {
 		final QuestionarioCompilatoEntity questionarioCompilatoDBMySqlFetch = questionarioCompilatoEntity.get();
 		questionarioCompilatoDBMySqlFetch.setStato(StatoQuestionarioEnum.COMPILATA.getValue());
 		questionarioCompilatoDBMySqlFetch.setDataOraAggiornamento(new Date());
+		if(questionarioCompilatoRequest.getCodInserimento() != null)
+			questionarioCompilatoDBMySqlFetch.setCodInserimento(questionarioCompilatoRequest.getCodInserimento());
 		this.questionarioCompilatoSQLRepository.save(questionarioCompilatoDBMySqlFetch);
 
 		final QuestionarioCompilatoCollection questionarioCompilatoDBMongoFetch = questionarioCompilatoCollection.get();

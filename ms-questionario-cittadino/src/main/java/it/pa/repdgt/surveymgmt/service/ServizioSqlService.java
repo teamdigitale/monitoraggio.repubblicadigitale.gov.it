@@ -288,6 +288,9 @@ public class ServizioSqlService {
 		servizioEntity.setDataOraAggiornamento(servizioEntity.getDataOraCreazione());
 		servizioEntity.setStato(StatoEnum.NON_ATTIVO.getValue());
 		servizioEntity.setTipologiaServizio(String.join(", ", servizioRequest.getListaTipologiaServizi()));
+		if(servizioRequest.getCodInserimento() != null) {
+			servizioEntity.setCodInserimento(servizioRequest.getCodInserimento());
+		}
 
 		final List<String> listaTitoloTipologiaServizi = servizioRequest.getListaTipologiaServizi();
 

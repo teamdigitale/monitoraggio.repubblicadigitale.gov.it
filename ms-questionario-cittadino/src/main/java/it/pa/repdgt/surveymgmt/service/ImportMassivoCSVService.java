@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import it.pa.repdgt.shared.entity.*;
 import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
 import it.pa.repdgt.shared.entityenum.JobStatusEnum;
+import it.pa.repdgt.shared.exception.BaseException;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.surveymgmt.collection.SezioneQ3Collection;
 import it.pa.repdgt.surveymgmt.components.ServiziElaboratiCsvWriter;
@@ -17,6 +18,7 @@ import it.pa.repdgt.surveymgmt.exception.CittadinoException;
 import it.pa.repdgt.surveymgmt.exception.QuestionarioCompilatoException;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
 import it.pa.repdgt.surveymgmt.exception.ServizioException;
+import it.pa.repdgt.surveymgmt.exception.ValidationException;
 import it.pa.repdgt.surveymgmt.model.ElaboratoCSVRequest;
 import it.pa.repdgt.surveymgmt.model.ElaboratoCSVResponse;
 import it.pa.repdgt.surveymgmt.mongo.repository.SezioneQ3Respository;
@@ -27,6 +29,8 @@ import it.pa.repdgt.surveymgmt.restapi.ServizioCittadinoRestApi;
 import it.pa.repdgt.surveymgmt.util.CSVMapUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.apache.commons.collections4.CollectionUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,20 +87,47 @@ public class ImportMassivoCSVService {
         String cfUtenteLoggato = servizi != null && servizi.size() > 0
                 ? servizi.get(0).getServizioRequest().getCfUtenteLoggato()
                 : null;
-        ElaboratoCSVResponse response = buildResponse(serviziValidati, serviziScartati, UUID);
-        RegistroAttivitaEntity registroAttivitaEntity = faseIntermezzoSalvataggioRegistroAttivita(UUID, csvRequest,
-                cfUtenteLoggato);
+
+        Long idEnte = servizi.get(0).getNuovoCittadinoServizioRequest().getIdEnte();
+        Long idProgetto = servizi.get(0).getNuovoCittadinoServizioRequest().getIdProgetto();
+
+        RegistroAttivitaEntity registroAttivitaEntity = faseInizializzazioneSalvataggioRegistroAttivita(UUID,
+                cfUtenteLoggato, idEnte, idProgetto);
+
         try {
-            uploadFile(response, registroAttivitaEntity.getId());
-        } catch (IOException e) {
-            log.error(e.getMessage());
-            registroAttivitaEntity.setJobStatus(JobStatusEnum.FAIL_S3_UPLOAD);
-            registroAttivitaEntity.setNote("Upload del file su s3 Fallito");
+            ElaboratoCSVResponse response = buildResponse(serviziValidati, serviziScartati, UUID,
+                    registroAttivitaEntity);
+            // registroAttivitaEntity = faseIntermezzoSalvataggioRegistroAttivita(UUID,
+            // csvRequest,
+            // cfUtenteLoggato);
+            try {
+                uploadFile(response, registroAttivitaEntity.getId());
+            } catch (IOException e) {
+                log.error(e.getMessage());
+                registroAttivitaEntity.setJobStatus(JobStatusEnum.FAIL_S3_UPLOAD);
+                registroAttivitaEntity.setNote("Upload del file su s3 Fallito");
+                registroAttivitaRepository.save(registroAttivitaEntity);
+                return;
+            }
+            aggiornaRegistroAttivita(totaleRighe, serviziScartati.size(), serviziValidati.size(),
+                    registroAttivitaEntity,
+                    response.getResponse(), response.getFileName());
+        } catch (Exception e) {
+            registroAttivitaEntity.setJobStatus(JobStatusEnum.GENERIC_FAIL);
+            registroAttivitaEntity.setDataFineInserimento(new Date());
             registroAttivitaRepository.save(registroAttivitaEntity);
-            return;
+            log.info("Errore generico durante l'elaborazione del file, id RegistroAttivitaEntity: {}", registroAttivitaEntity.getId());
+            e.printStackTrace();        
         }
-        aggiornaRegistroAttivita(totaleRighe, serviziScartati.size(), serviziValidati.size(), registroAttivitaEntity,
-                response.getResponse(), response.getFileName());
+    }
+
+    public void checkPreliminareCaricamentoMassivo(Long idEnte, Long idProgetto) {
+        List<RegistroAttivitaEntity> registroAttivita = registroAttivitaRepository
+                .findByIdEnteAndIdProgettoAndJobStatus(idEnte, idProgetto, JobStatusEnum.IN_PROGRESS);
+        if (CollectionUtils.isNotEmpty(registroAttivita)) {
+            log.info("E' già in corso un caricamento dati: idEnte {} - idProgetto {}", idEnte, idProgetto);
+            throw new ValidationException("E' già in corso un caricamento dati", CodiceErroreEnum.CM01);
+        }
     }
 
     private void aggiornaRegistroAttivita(int totaleRighe, int numeroScartati, int numeroValidati,
@@ -110,6 +141,7 @@ public class ImportMassivoCSVService {
         registroAttivitaEntity.setServiziAcquisiti(response.getServiziAggiunti());
         registroAttivitaEntity.setFileName(fileName);
         registroAttivitaEntity.setJobStatus(JobStatusEnum.SUCCESS);
+        registroAttivitaEntity.setDataFineInserimento(new Date());
         registroAttivitaService.saveRegistroAttivita(registroAttivitaEntity);
     }
 
@@ -117,20 +149,19 @@ public class ImportMassivoCSVService {
         return uuid.replaceAll("-", "");
     }
 
-    private RegistroAttivitaEntity faseIntermezzoSalvataggioRegistroAttivita(String uuid,
-            ElaboratoCSVRequest elaboratoCSVRequest, String cfUtenteLoggato) {
-        List<ServiziElaboratiDTO> servizi = !elaboratoCSVRequest.getServiziValidati().isEmpty()
-                ? elaboratoCSVRequest.getServiziValidati()
-                : elaboratoCSVRequest.getServiziScartati();
+    private RegistroAttivitaEntity faseInizializzazioneSalvataggioRegistroAttivita(String uuid,
+            String cfUtenteLoggato, Long idEnte, Long idProgetto) {
+
         RegistroAttivitaEntity registroAttivita = RegistroAttivitaEntity.builder()
+                .jobStatus(JobStatusEnum.IN_PROGRESS)
                 .operatore(cfUtenteLoggato)
                 .totaleRigheFile(0)
                 .righeScartate(0)
                 .serviziAcquisiti(0)
                 .cittadiniAggiunti(0)
                 .rilevazioneDiEsperienzaCompilate(0)
-                .idEnte(servizi.get(0).getNuovoCittadinoServizioRequest().getIdEnte())
-                .idProgetto(servizi.get(0).getNuovoCittadinoServizioRequest().getIdProgetto())
+                .idEnte(idEnte)
+                .idProgetto(idProgetto)
                 .jobUUID(uuid)
                 .jobStatus(JobStatusEnum.IN_PROGRESS)
                 .build();
@@ -139,7 +170,7 @@ public class ImportMassivoCSVService {
 
     @Transactional
     public ElaboratoCSVResponse buildResponse(List<ServiziElaboratiDTO> serviziValidati,
-            List<ServiziElaboratiDTO> serviziScartati, String uuid) {
+            List<ServiziElaboratiDTO> serviziScartati, String uuid, RegistroAttivitaEntity registroAttivitaEntity) {
         Long idServizio = null;
         Integer serviziAggiunti = 0;
         Integer cittadiniAggiunti = 0;
@@ -185,9 +216,11 @@ public class ImportMassivoCSVService {
                             servizioElaborato.getServizioRequest(), enteSedeProgettoFacilitatore.getId());
 
                     log.info("-XXX- Dati che sto per confrontare: {}  -XXX-", String.join(" - ",
-                            Arrays.asList(servizioElaborato.getCampiAggiuntiviCSV().getDescrizioneDettagliServizio(),
+                            Arrays.asList(
+                                    servizioElaborato.getCampiAggiuntiviCSV().getDescrizioneDettagliServizio(),
                                     servizioElaborato.getCampiAggiuntiviCSV().getAmbitoServiziDigitaliTrattati(),
-                                    servizioElaborato.getCampiAggiuntiviCSV().getCompetenzeTrattateSecondoLivello())));
+                                    servizioElaborato.getCampiAggiuntiviCSV()
+                                            .getCompetenzeTrattateSecondoLivello())));
                     for (ServizioEntity servizioRecuperato : listaServizi) {
                         servizioOpt = Optional.ofNullable(servizioRecuperato);
                         Optional<SezioneQ3Collection> optSezioneQ3Collection = sezioneQ3Respository
@@ -238,7 +271,8 @@ public class ImportMassivoCSVService {
                 questionarioCompilatoRequest.setCodiceFiscaleDaAggiornare(utenteRecuperato.getCodiceFiscale());
                 questionarioCompilatoRequest.setIdEnte(servizioRequest.getIdEnteServizio());
                 questionarioCompilatoRequest.setIdProgetto(servizioRequest.getIdProgetto());
-                Optional<ProgettoEntity> progettoEntity = progettoRepository.findById(servizioRequest.getIdProgetto());
+                Optional<ProgettoEntity> progettoEntity = progettoRepository
+                        .findById(servizioRequest.getIdProgetto());
                 if (progettoEntity.isPresent()) {
                     questionarioCompilatoRequest.setIdProgramma(progettoEntity.get().getProgramma().getId());
                 } else {
@@ -248,9 +282,12 @@ public class ImportMassivoCSVService {
                 if (!servizioRequest.getDataServizio().after(progettoEntityData.getDataFineProgetto()) &&
                         !servizioRequest.getDataServizio().before(progettoEntityData.getDataInizioProgetto())) {
                     servizioElaborato.setQuestionarioCompilatoRequest(questionarioCompilatoRequest);
-                    ServizioEntity servizioEntity = salvaServizio(servizioOpt, servizioElaborato.getServizioRequest());
+                    
+                    ServizioEntity servizioEntity = salvaServizio(servizioOpt,                  
+                            servizioElaborato.getServizioRequest(), registroAttivitaEntity.getId().toString());                                //QUA
                     if (nuovoAggiunto) {
-                        ServiziAggiuntiDTO servizioAggiunto = new ServiziAggiuntiDTO(servizioElaborato, servizioEntity);
+                        ServiziAggiuntiDTO servizioAggiunto = new ServiziAggiuntiDTO(servizioElaborato,
+                                servizioEntity);
                         serviziAggiuntiList.add(servizioAggiunto);
                         log.info("-XXX- Servizio aggiunto alla lista {} -XXX-",
                                 servizioAggiunto.getServizioEntity().getId());
@@ -322,7 +359,7 @@ public class ImportMassivoCSVService {
                 idQuestionario = null;
                 nuovoCittadinoDTO = null;
                 nuovoCittadinoDTO = cittadiniServizioService.creaNuovoCittadinoImportCsv(idServizio,
-                        servizioElaborato.getNuovoCittadinoServizioRequest());
+                        servizioElaborato.getNuovoCittadinoServizioRequest(), registroAttivitaEntity.getId().toString());              //QUA OK
                 idQuestionario = nuovoCittadinoDTO.getCittadinoEntity().getQuestionarioCompilato().get(0).getId();
             } catch (CittadinoException | ServizioException e) {
                 if (cittadiniAggiunti > 0)
@@ -347,7 +384,8 @@ public class ImportMassivoCSVService {
                 } catch (Exception exc) {
                     log.info("-XXX- Exception eccezione bonifica record cittadino: {} -XXX-", exc.getMessage());
                     exc.printStackTrace();
-                    log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
+                    log.info(
+                            "-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
                             idServizio,
                             nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null
                                     ? nuovoCittadinoDTO.getCittadinoEntity().getId()
@@ -377,7 +415,8 @@ public class ImportMassivoCSVService {
                 } catch (Exception exc) {
                     log.info("-XXX- Exception eccezione bonifica record cittadino: {} -XXX-", exc.getMessage());
                     exc.printStackTrace();
-                    log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
+                    log.info(
+                            "-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
                             idServizio,
                             nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null
                                     ? nuovoCittadinoDTO.getCittadinoEntity().getId()
@@ -407,7 +446,8 @@ public class ImportMassivoCSVService {
                 } catch (Exception exc) {
                     log.info("-XXX- Exception eccezione bonifica record cittadino: {} -XXX-", exc.getMessage());
                     exc.printStackTrace();
-                    log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
+                    log.info(
+                            "-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
                             idServizio,
                             nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null
                                     ? nuovoCittadinoDTO.getCittadinoEntity().getId()
@@ -437,7 +477,8 @@ public class ImportMassivoCSVService {
                 } catch (Exception exc) {
                     log.info("-XXX- Exception eccezione bonifica record cittadino: {} -XXX-", exc.getMessage());
                     exc.printStackTrace();
-                    log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
+                    log.info(
+                            "-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
                             idServizio,
                             nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null
                                     ? nuovoCittadinoDTO.getCittadinoEntity().getId()
@@ -468,7 +509,8 @@ public class ImportMassivoCSVService {
                 } catch (Exception exc) {
                     log.info("-XXX- Exception eccezione bonifica record cittadino: {} -XXX-", exc.getMessage());
                     exc.printStackTrace();
-                    log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
+                    log.info(
+                            "-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
                             idServizio,
                             nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null
                                     ? nuovoCittadinoDTO.getCittadinoEntity().getId()
@@ -477,9 +519,12 @@ public class ImportMassivoCSVService {
                 continue;
             }
             try {
+                QuestionarioCompilatoRequest questionarioCompilatoRequest = servizioElaborato
+                        .getQuestionarioCompilatoRequest();
+                questionarioCompilatoRequest.setCodInserimento(registroAttivitaEntity.getId().toString());
                 questionariAggiunti++;
-                servizioCittadinoRestApi.compilaQuestionario(idQuestionario,
-                        servizioElaborato.getQuestionarioCompilatoRequest());
+                servizioCittadinoRestApi.compilaQuestionario(idQuestionario,            //QUA
+                                        questionarioCompilatoRequest);
             } catch (CittadinoException | ServizioException | QuestionarioCompilatoException e) {
                 if (questionariAggiunti > 0)
                     questionariAggiunti--;
@@ -509,7 +554,8 @@ public class ImportMassivoCSVService {
                 } catch (Exception exc) {
                     log.info("-XXX- Exception eccezione bonifica record questionario: {} -XXX-", exc.getMessage());
                     exc.printStackTrace();
-                    log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
+                    log.info(
+                            "-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
                             idServizio,
                             nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null
                                     ? nuovoCittadinoDTO.getCittadinoEntity().getId()
@@ -544,7 +590,8 @@ public class ImportMassivoCSVService {
                 } catch (Exception exc) {
                     log.info("-XXX- Exception eccezione bonifica record questionario: {} -XXX-", exc.getMessage());
                     exc.printStackTrace();
-                    log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
+                    log.info(
+                            "-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
                             idServizio,
                             nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null
                                     ? nuovoCittadinoDTO.getCittadinoEntity().getId()
@@ -579,13 +626,15 @@ public class ImportMassivoCSVService {
                 } catch (Exception exc) {
                     log.info("-XXX- Exception eccezione bonifica record questionario: {} -XXX-", exc.getMessage());
                     exc.printStackTrace();
-                    log.info("-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
+                    log.info(
+                            "-XXX- Eccezione bonifica record andato in errore in servizio: {} e cittadino {} -XXX-",
                             idServizio,
                             nuovoCittadinoDTO != null && nuovoCittadinoDTO.getCittadinoEntity() != null
                                     ? nuovoCittadinoDTO.getCittadinoEntity().getId()
                                     : "NON ANCORA CREATO");
                 }
             }
+
         }
         serviziScartati.sort(Comparator.comparing(
                 serviziScartatiDTO -> serviziScartatiDTO.getCampiAggiuntiviCSV().getNumeroRiga()));
@@ -673,13 +722,15 @@ public class ImportMassivoCSVService {
         if (optutenteEntity.isPresent()) {
             return optutenteEntity;
         }
-        List<UtenteEntity> utenteEntities = utenteRepository.findByNominativoFacilitatore(nominativoFacilitatoreModified);
+        List<UtenteEntity> utenteEntities = utenteRepository
+                .findByNominativoFacilitatore(nominativoFacilitatoreModified);
         if (!utenteEntities.isEmpty()) {
             return Optional.of(utenteEntities.get(0));
         }
-        // List<UtenteEntity> utenteEntities = utenteRepository.findByNomeAndCognome(nome, cognome);
+        // List<UtenteEntity> utenteEntities =
+        // utenteRepository.findByNomeAndCognome(nome, cognome);
         // if (!utenteEntities.isEmpty()) {
-        //     return Optional.of(utenteEntities.get(0));
+        // return Optional.of(utenteEntities.get(0));
         // }
         return Optional.ofNullable(null);
     }
@@ -713,7 +764,8 @@ public class ImportMassivoCSVService {
                 enteSedeProgettoFacilitatoreKey);
     }
 
-    private ServizioEntity salvaServizio(Optional<ServizioEntity> servizioOpt, ServizioRequest servizio) {
+    private ServizioEntity salvaServizio(Optional<ServizioEntity> servizioOpt, ServizioRequest servizio, String idRegistroAttivita) {
+        servizio.setCodInserimento(idRegistroAttivita);
         return servizioOpt.orElseGet(() -> servizioService.creaServizio(servizio, true));
     }
 
