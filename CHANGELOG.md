@@ -1,5 +1,35 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.325](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.324...1.0.0-test.325) (2024-09-11)
+
+
+### Features
+
+* **ms-questionario-cittadino:** update column name dataFineInserimento ([e698a60](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e698a60236719fbd30eabae0d745c62d70821428))
+
+## [1.0.0-test.324](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.323...1.0.0-test.324) (2024-09-10)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** nascosto caricamento massivo SCD 20240906 ([555b475](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/555b47528cdbe9e3b5a758363e3cf774c6d7cb9f))
+* **fe-piattaforma:** allineati campi select/checkbox/text ([872eed4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/872eed43c4949564742ef6c0557223d6c2cb9b8f))
+
+## [1.0.0-test.323](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.322...1.0.0-test.323) (2024-09-06)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** configurazione dashboard per enti partner 20240906 ([6129480](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6129480d4b056e611a234a0483e8ff8dd6749bdd))
+
+## [1.0.0-test.322](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.321...1.0.0-test.322) (2024-09-05)
+
+
+### Bug Fixes
+
+* **ms-questionario-cittadino:** fix modifica controllo data scadenza servizio ([7389e0b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7389e0bb17d1bf964faaf23d601235b8981e17ea))
+* **ms-questionario-cittadino:** fix query syntax ([d210a37](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d210a377861be6f865a56421e1c0bd7633913797))
+
 ## [1.0.0-test.321](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.320...1.0.0-test.321) (2024-09-04)
 
 

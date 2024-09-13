@@ -58,15 +58,13 @@ public interface CittadinoServizioRepository extends JpaRepository<CittadinoEnti
 			@Param(value = "idServizio") Long idServizio,
 			@Param(value = "criterioRicercaServizio") String criterioRicercaServizio);
 
-	@Query(value = "    "
-			+ " SELECT  "
-			+ "		id, "
-			+ "		codice_fiscale as codiceFiscale, "
+	@Query(value = " SELECT "
+			+ "	id, "
+			+ "	codice_fiscale as codiceFiscale, "
 			+ " genere as genere, fascia_di_eta_id as fasciaDiEta, titolo_di_Studio as titoloStudio, occupazione as statoOccupazionale, cittadinanza as cittadinanza, provincia_di_domicilio as provinciaDiDomicilio  "
-			+ " FROM          "
-			+ "		cittadino "
+			+ " FROM cittadino "
 			+ " WHERE 1=1     "
-			+ "AND UPPER(codice_fiscale) = UPPER(:criterioRicerca)) "
+			+ "AND UPPER(codice_fiscale) = UPPER(:criterioRicerca) "
 			+ " ORDER BY codice_fiscale", nativeQuery = true)
 	List<GetCittadinoProjection> getAllCittadiniByCodFisc(@Param(value = "criterioRicerca") String criterioRicerca);
 }
