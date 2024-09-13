@@ -68,4 +68,7 @@ public class CittadinoEntity implements Serializable {
 
 	@Column(name = "PROVINCIA_DI_DOMICILIO")
 	private String provinciaDiDomicilio;
+
+	@Column(name = "COD_INSERIMENTO")
+	private String codInserimento;
 }
