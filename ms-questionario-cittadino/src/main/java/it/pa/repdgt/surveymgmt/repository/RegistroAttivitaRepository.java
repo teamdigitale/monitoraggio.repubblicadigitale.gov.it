@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.List;
+
 
 @Repository
 public interface RegistroAttivitaRepository extends JpaRepository<RegistroAttivitaEntity, Long> {
@@ -25,5 +27,8 @@ public interface RegistroAttivitaRepository extends JpaRepository<RegistroAttivi
 
         Optional<RegistroAttivitaEntity> findByJobUUIDAndJobStatus(String jobUUID, JobStatusEnum success);
 
-        Optional<RegistroAttivitaEntity> findByJobUUID(String jobUUID);
+    Optional<RegistroAttivitaEntity> findByJobUUID(String jobUUID);
+
+    List<RegistroAttivitaEntity> findByIdEnteAndIdProgettoAndJobStatus(Long idEnte, Long idProgetto,
+            JobStatusEnum jobStatusEnum);
 }

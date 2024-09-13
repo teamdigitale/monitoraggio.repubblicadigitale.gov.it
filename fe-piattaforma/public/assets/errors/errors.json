@@ -455,6 +455,10 @@
     "A06": {
       "titolo": "ERRORE DATA SERVIZIO",
       "descrizione": "Inserisci una data compresa fra le date di inizio e fine progetto"
+    },
+    "CM01" : {
+      "titolo": "IMPOSSIBILE AVVIARE INSERIMENTO DATI",
+      "descrizione": "E' già in corso un inserimento dati"
     }
   }
 }

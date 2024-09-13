@@ -23,6 +23,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -40,6 +41,12 @@ public class ImportMassivoCSVRestApi {
         String csvRequestString = decompressGzip(inputData.getFileData());
         ElaboratoCSVRequest csvRequest = objectMapper.readValue(csvRequestString, ElaboratoCSVRequest.class);
         String uuid = UUID.randomUUID().toString();
+        List<ServiziElaboratiDTO> servizi = !csvRequest.getServiziValidati().isEmpty()
+                ? csvRequest.getServiziValidati()
+                : csvRequest.getServiziScartati();
+        Long idEnte = servizi.get(0).getNuovoCittadinoServizioRequest().getIdEnte();
+        Long idProgetto = servizi.get(0).getNuovoCittadinoServizioRequest().getIdProgetto();
+        importMassivoCSVService.checkPreliminareCaricamentoMassivo(idEnte, idProgetto);
         for (int i = csvRequest.getServiziValidati().size() - 1; i >= 0; i--) {
             ServiziElaboratiDTO servizioValidato = csvRequest.getServiziValidati().get(i);
             if (valida(servizioValidato)) {

@@ -55,4 +55,7 @@ public class ServizioRequest extends SceltaProfiloParam implements Serializable 
 	@NotBlank
 	@JsonString
 	private String sezioneQuestionarioCompilatoQ3;
+
+	@JsonProperty(value = "codInserimento")
+	private String codInserimento;
 }

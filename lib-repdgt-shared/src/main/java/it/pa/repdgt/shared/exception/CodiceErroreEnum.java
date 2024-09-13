@@ -155,6 +155,8 @@ public enum CodiceErroreEnum {
 	,A04("Sezionario q4 completamente mancante, almeno una risposta deve essere selezionata")
 	,A05("La sezione q4 e' stata compilata ma nessuna risposta e' stata selezionata")
 	,A06("La data del servizio non rientra all’interno delle date di progetto")
+
+	,CM01("E' già in corso un inserimento dati")
 	;
 	
 	private String descrizioneErrore;
