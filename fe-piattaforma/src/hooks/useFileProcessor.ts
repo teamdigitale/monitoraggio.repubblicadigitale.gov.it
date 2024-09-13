@@ -33,6 +33,11 @@ import {
 } from '../utils/ResponseCodeMappings';
 import * as CodiceFiscaleUtils from '@marketto/codice-fiscale-utils';
 import IPersonalInfo from '@marketto/codice-fiscale-utils/src/interfaces/personal-info.interface';
+import * as XLSX from 'xlsx'
+import { useAppSelector } from '../redux/hooks';
+import { selectProjects } from '../redux/features/administrativeArea/administrativeAreaSlice';
+import { policy } from '../pages/administrator/AdministrativeArea/Entities/utils';
+
 const {
   idProgetto,
   idEnte,
@@ -76,11 +81,54 @@ const headersCSV = [
   'ES5',
   'ES6',
 ];
+/*
+const  headerEXCEL = []
 
-export function useCSVProcessor(file: File | undefined) {
+oppure
+
+interface headerEXCEL {
+  Intestazione1: string;
+  Intestazione2: string;
+  Intestazione3: string;
+  Intestazione4: string;
+  Intestazione5: string;
+}
+*/
+
+export function useFileProcessor(file: File | undefined) {
   const { isValidFiscalCode } = useFiscalCodeValidation();
   const [isProcessing, setIsProcessing] = useState(false);
-  const processCSV = useCallback(() => {
+  const projectDetail = useAppSelector(selectProjects).detail?.dettagliInfoProgetto;
+  
+/*
+const [excelData, setExcelData] = useState<DataObject[]>([]);
+  const handleFileUpload = (file) => {
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const data = new Uint8Array(e.target?.result as ArrayBuffer);
+        const workbook = XLSX.read(data, { type: "array" });
+        const sheetName = workbook.SheetNames[0]; // Prendiamo il nome del primo foglio
+        const worksheet = workbook.Sheets[sheetName];
+        const jsonData: DataObject[] = XLSX.utils.sheet_to_json(worksheet, {
+          header: 1,
+          defval: "", // Assegna una stringa vuota se ci sono valori mancanti
+        });
+        const mappedData = jsonData.slice(1).map((row: any) => ({
+          Intestazione1: row[0] || "",
+          Intestazione2: row[1] || "",
+          Intestazione3: row[2] || "",
+          Intestazione4: row[3] || "",
+          Intestazione5: row[4] || "",
+        }));
+        setExcelData(mappedData);
+      };
+      reader.readAsArrayBuffer(file);
+    }
+  };
+  */
+
+  const processFile = useCallback(() => {
     return new Promise<ElaboratoCsvRequest>((resolve, reject) => {
       function rejectWithMessage(message: string) {
         setIsProcessing(false);
@@ -89,6 +137,7 @@ export function useCSVProcessor(file: File | undefined) {
 
       if (file) {
         setIsProcessing(true);
+        if(projectDetail?.policy == policy.RFD ){
         Papa.parse<CSVRecord>(file, {
           header: true,
           quoteChar: '"',
@@ -187,6 +236,10 @@ export function useCSVProcessor(file: File | undefined) {
             reject(error);
           },
         });
+      }else
+      {
+        // Operazioni SCD
+      }
       } /*else {
         reject({
           message:
@@ -197,7 +250,7 @@ export function useCSVProcessor(file: File | undefined) {
   }, [file, isValidFiscalCode]);
 
   return {
-    processCSV,
+    processFile,
     isProcessing,
   };
 
