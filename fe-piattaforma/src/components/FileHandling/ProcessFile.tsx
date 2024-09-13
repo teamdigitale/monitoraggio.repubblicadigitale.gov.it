@@ -1,6 +1,6 @@
 import React, { useCallback, useContext } from 'react';
 import { Spinner } from 'design-react-kit';
-import { useCSVProcessor } from '../../hooks/useCSVProcessor';
+import { useFileProcessor } from '../../hooks/useFileProcessor';
 import { DataUploadContext } from '../../contexts/DataUploadContext';
 import { dispatchNotify } from '../../utils/notifictionHelper';
 import checkImg from './../../../public/assets/img/icon-check-no-circle.png';
@@ -19,12 +19,12 @@ function showError(error: Error) {
   });
 }
 
-export default function ProcessFileCsv({ file }: CSVProcessorProps) {
-  const { isProcessing, processCSV } = useCSVProcessor(file);
+export default function ProcessFile({ file }: CSVProcessorProps) {
+  const { isProcessing, processFile } = useFileProcessor(file);
   const dataUploadContext = useContext(DataUploadContext);
 
-  const handleProcessCSV = useCallback(() => {
-    processCSV()
+  const handleProcessFile = useCallback(() => {
+    processFile()
       .then((data) => {
         if (dataUploadContext) {
           dataUploadContext.setParsedData(data);
@@ -33,7 +33,7 @@ export default function ProcessFileCsv({ file }: CSVProcessorProps) {
       .catch((error) => {
         showError(error);
       });
-  }, [processCSV, dataUploadContext]);
+  }, [processFile, dataUploadContext]);
 
   return (
     <>
@@ -57,7 +57,7 @@ export default function ProcessFileCsv({ file }: CSVProcessorProps) {
 
       <button
         className='btn btn-secondary w-100'
-        onClick={handleProcessCSV}
+        onClick={handleProcessFile}
         disabled={!!dataUploadContext?.parsedData}
       >
         Controlla

@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useState } from 'react';
 import CSVUploader from '../../CSVUploader/CSVUploader';
-import ProcessFileCsv from '../ProcessFileCsv';
+import ProcessFile from '../ProcessFile';
 import SubmitFileCsv from '../SubmitFileCsv';
 import { DataUploadContext } from '../../../contexts/DataUploadContext';
 import { DataUploadContextModel } from '../../../models/DataUploadContext.model';
@@ -31,7 +31,7 @@ export default function CSVFileHandler() {
       <div className={file ? 'd-block' : 'd-none'}>
         <div className='my-2 row'>
           <div className='col-12 col-md-6 d-flex flex-column justify-content-around my-2 px-4'>
-            <ProcessFileCsv file={file} />
+            <ProcessFile file={file} />
           </div>
           <div className='col-12 col-md-6 d-flex flex-column justify-content-around my-2 px-4'>
             <SubmitFileCsv clearFile={removeFile} />

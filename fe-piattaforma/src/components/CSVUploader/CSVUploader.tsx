@@ -34,6 +34,7 @@ function showError() {
 }
 //const maxSizeCSV = 531457280;
 const acceptedFileTypes = [
+  // Estensioni e MIME types per file CSV
   '.csv',
   'text/csv',
   'application/vnd.ms-excel',
@@ -42,6 +43,13 @@ const acceptedFileTypes = [
   'application/x-csv',
   'text/comma-separated-values',
   'text/x-comma-separated-values',
+  // Estensioni e MIME types per file XLS
+  '.xls',
+  'application/vnd.ms-excel',
+  'application/vnd.ms-excel.sheet.macroEnabled.12',
+  // Estensioni e MIME types per file XLSX
+  '.xlsx',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 ];
 
 export default function CSVUploader({
@@ -195,7 +203,7 @@ export default function CSVUploader({
                     className='upload-dragdrop-input'
                     value={file}
                     onChange={handleInput}
-                    accept='.csv'
+                    accept='.csv .xlsx .xls'
                   />
                   <label htmlFor='upload7' className='font-weight-semibold'>
                     selezionalo dal tuo dispositivo
