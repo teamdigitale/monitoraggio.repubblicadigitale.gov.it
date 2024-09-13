@@ -94,9 +94,6 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
   )?.sezioniQuestionarioTemplate?.[0];
   //const [stringQ1, setStringQ1] = useState<string>('');
 
-  const [searchHasResult, setSearchHasResult] = useState<boolean>(false);
-
-
   useEffect(() => {
     if (typeof surveyTemplateQ1 !== 'string') {
       typeof surveyTemplateQ1?.schema !== 'string'
@@ -146,9 +143,7 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
   };
 
   const loadFirstStep = () => {
-    console.log("Dati Cittadino", citizensData);
-    
-    if (!alreadySearched || !searchHasResult) {
+    if (!alreadySearched) {
       return null;
     } else {
       if (citizensData?.length === 1) {
@@ -184,6 +179,7 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
         />
       );
     }
+    
     return (
       <>
         {citizensList?.cittadini.filter(
@@ -304,8 +300,6 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
       }
     }
   };
-
-  console.log("RISULTATO: ", searchHasResult);
   
   return (
     <GenericModal
@@ -325,7 +319,7 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
       }}
       secondaryCTA={{
         label: 'Annulla',
-        onClick: resetModal,
+        onClick: resetModal
       }}
       centerButtons
     >
@@ -334,7 +328,6 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
           <SearchBarOptionsCitizen
             setCurrentStep={setCurrentStep}
             setRadioFilter={setRadioFilter}
-            setSearchHasResult={setSearchHasResult}
             currentStep={radioFilter}
             steps={(({ FISCAL_CODE }) => ({
               FISCAL_CODE
@@ -370,6 +363,7 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
 
       </div>
     </GenericModal>
+    
   );
 };
 
