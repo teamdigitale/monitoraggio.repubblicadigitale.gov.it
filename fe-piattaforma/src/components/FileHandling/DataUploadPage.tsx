@@ -10,24 +10,50 @@ import { GetItemDetail } from '../../redux/features/forum/forumThunk';
 import { useDispatch } from 'react-redux';
 import { selectUser } from '../../redux/features/user/userSlice';
 import { cleanDrupalFileURL } from '../../utils/common';
+import { ManageItemEvent, ActionTracker } from '../../redux/features/forum/forumThunk';
 
+
+interface GuidaOperativaI {
+  external_link: string
+  attachment: string,
+  category_label: string,
+  category: string
+}
 
 export default function DataUploadPage() {
   const searchRef = useRef<{ search: () => void }>(null);
   const { codiceRuolo: userRole } = useAppSelector(selectProfile) || {};
-  const [elaboratedCSV, setElaboratedCSV] = useState<
-    ElaboratoCsvRequest | undefined
-  >(undefined);
+  const [elaboratedCSV, setElaboratedCSV] = useState<ElaboratoCsvRequest | undefined>(undefined);
+  const [guidaOpearativa, setGuidaOperativa] = useState<GuidaOperativaI>({
+    external_link: "",
+    attachment: "",
+    category_label: "",
+    category: ""
+  })
 
-  const [urlGuida, setUrlGuida] = useState(null)
   const dispatch = useDispatch();
   const userId = useAppSelector(selectUser)?.id ?? "";
   const idGuida = '178';    // 97 per produzione, 178 per test
   
   const getItemDetails = async () => {
-   
       const res = await dispatch(GetItemDetail(idGuida, userId, 'document'));
-      setUrlGuida(res?.data?.data?.items?.[0]?.external_link);
+      setGuidaOperativa(res?.data?.data?.items?.[0])
+  };
+
+  const trackDownload = async () => {
+    if(guidaOpearativa.attachment != ""){
+      await dispatch(ManageItemEvent(idGuida, 'downloaded'));
+      await dispatch(
+        ActionTracker({
+          target: 'tnd',
+          action_type: 'VISUALIZZAZIONE-DOWNLOAD',
+          event_type: 'DOCUMENTI',
+          category: guidaOpearativa.category_label || guidaOpearativa.category,
+        })
+      );
+    
+    window.open(cleanDrupalFileURL(guidaOpearativa.attachment), '_blank');
+    }
   };
 
   useEffect(() => {
@@ -43,6 +69,7 @@ export default function DataUploadPage() {
   const setParsedData = useCallback(
     (elaborato: ElaboratoCsvRequest | undefined) => {
       setElaboratedCSV(elaborato);
+
     },
     []
   );
@@ -70,7 +97,7 @@ export default function DataUploadPage() {
             <>
               <div className='row justify-content-between align-items-center mb-5'>
                 <div className='col-12 col-md-6'>
-                  <CsvInstructions urlGuida={cleanDrupalFileURL(urlGuida|| '') } />
+                  <CsvInstructions urlGuida={cleanDrupalFileURL(guidaOpearativa.external_link)} attachmentGuida={trackDownload} />
                 </div>
                 <div className='col-12 col-md-6 align-self-stretch'>
                   <CSVFileHandler />
