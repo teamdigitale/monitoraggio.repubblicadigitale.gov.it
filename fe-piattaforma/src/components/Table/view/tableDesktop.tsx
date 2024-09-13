@@ -270,12 +270,14 @@ const TableDesktop: React.FC<TableI> = (props) => {
                       ) : null
                     ) : null}
                     {(
+                      td.actions &&
+                      td.jobStatus === "SUCCESS" && 
                       td.actions
-                        ? td.actions
-                            .toString()
-                            .includes(CRUDActionTypes.DOWNLOAD)
-                        : onActionClick[CRUDActionTypes.DOWNLOAD]
-                    ) ? (
+                        .toString()
+                        .includes(CRUDActionTypes.DOWNLOAD)
+                    ) || (
+                        onActionClick[CRUDActionTypes.DOWNLOAD] && td.jobStatus === "SUCCESS"
+                      ) ? (
                       <Button
                         onClick={() =>
                           onActionClick[CRUDActionTypes.DOWNLOAD](td)
