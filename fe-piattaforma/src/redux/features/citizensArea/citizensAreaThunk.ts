@@ -175,7 +175,7 @@ const GetEntitySearchResultAction = {
 };
 
 export const GetEntitySearchResult =
-  (searchValue: string, searchType: string, setSearchHasResult: any) => async (dispatch: Dispatch) => {
+  (searchValue: string, searchType: string, alreadySearched: any) => async (dispatch: Dispatch) => {
     try {
       dispatch({ ...GetEntitySearchResultAction, searchValue, searchType });
       dispatch(showLoader());
@@ -196,9 +196,13 @@ export const GetEntitySearchResult =
       console.log('GetEntitySearchResult citizensArea error', error);
     } finally {
       dispatch(hideLoader());
-      setSearchHasResult(true);
+      alreadySearched(true);
     }
   };
+
+export const SetSearchHasResultToFalse = (setSearchHasResult: any) => {
+  setSearchHasResult(false);
+}
 
 const UpdateCitizenDetailAction = {
   type: 'citizensArea/UpdateCitizenDetail',
@@ -210,30 +214,30 @@ export const UpdateCitizenDetail =
       [key: string]: string | number | boolean | Date | string[] | undefined;
     }
   ) =>
-  async (dispatch: Dispatch) => {
-    try {
-      dispatch(showLoader());
-      dispatch({ ...UpdateCitizenDetailAction, idCittadino, body });
-      const { idProgramma, idProgetto, idEnte } = getUserHeaders();
-      const res = await API.put(
-        `${process?.env?.QUESTIONARIO_CITTADINO}cittadino/${idCittadino}`,
-        {
-          ...body,
-          idProgramma,
-          idProgetto,
-          idEnte,
+    async (dispatch: Dispatch) => {
+      try {
+        dispatch(showLoader());
+        dispatch({ ...UpdateCitizenDetailAction, idCittadino, body });
+        const { idProgramma, idProgetto, idEnte } = getUserHeaders();
+        const res = await API.put(
+          `${process?.env?.QUESTIONARIO_CITTADINO}cittadino/${idCittadino}`,
+          {
+            ...body,
+            idProgramma,
+            idProgetto,
+            idEnte,
+          }
+        );
+        if (res) {
+          return true;
         }
-      );
-      if (res) {
-        return true;
+      } catch (error) {
+        console.log('UpdateCitizenDetail citizensArea error', error);
+        return false;
+      } finally {
+        dispatch(hideLoader());
       }
-    } catch (error) {
-      console.log('UpdateCitizenDetail citizensArea error', error);
-      return false;
-    } finally {
-      dispatch(hideLoader());
-    }
-  };
+    };
 
 const DownloadEntityValuesAction = {
   type: 'citizensArea/DownloadEntityValues',
