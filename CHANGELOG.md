@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.34.17](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.34.16...1.34.17) (2024-09-16)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** fix giustificazione testo card 20240616 ([5f87a74](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5f87a7495012a4dab095ee2633d2432e180a690f))
+
 ## [1.34.16](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.34.15...1.34.16) (2024-09-16)
 
 
