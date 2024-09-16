@@ -1,5 +1,14 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.326](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.325...1.0.0-test.326) (2024-09-16)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** apertura documento e link per guida op 20240913 ([0e2d64d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0e2d64de8c2002e053962341aa3ae86ef674ee01))
+* **fe-piattaforma:** fix label tabella elenco servizi 20240916 ([c639965](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c6399659f32fda29b8d74c1b23ecfa40f6472a78))
+* **fe-piattaforma:** fix modale aggiungi cittadino 20240913 ([0ee9d59](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0ee9d59a6d97cec6e549fa32f6335108664bc7f9))
+
 ## [1.0.0-test.325](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.324...1.0.0-test.325) (2024-09-11)
 
 
