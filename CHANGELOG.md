@@ -1,5 +1,15 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.34.16](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.34.15...1.34.16) (2024-09-16)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** fix label crea argomento 20240830 ([2379998](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2379998b000e4d22047fafbe85ad7b25a27b211a))
+* **fe-piattaforma:** fix click bottoni toolbar e chiamata numero items errato 20240830 ([37c2102](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/37c21028a180621b2d2b643e994005174049a2ad))
+* **ms-notifiche-integration:** fix controllo nomefile 20240903 ([e1ac8b3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e1ac8b356bd2db05939efb8e118d293068dd678e))
+* **ms-questionario-cittadino:** fix modifica controllo data scadenza servizio ([cdb5462](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/cdb5462b092767ce7f3bc21d11c2a93c9cd692d3))
+
 ## [1.34.15](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.34.14...1.34.15) (2024-09-04)
 
 
