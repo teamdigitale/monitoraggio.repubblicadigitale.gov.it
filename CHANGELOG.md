@@ -1,5 +1,14 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.327](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.326...1.0.0-test.327) (2024-09-16)
+
+
+### Features
+
+* **upgrade-caricamento-massivo:** upgrade caricamento massivo 20240913 ([d56d324](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d56d32494617f3faa61e5ffa32d4ca9db4351cd7))
+* **ms-questionario-cittadino:** aggiornata tabella registro attivita ([62941bc](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/62941bcd89111e2a1c20ced8dc5c63b235187744))
+* **fe-piattaforma:** aggiornata tabella registro attivita ([63587b4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/63587b47e014a950b7c4b6c9646a9caf5a792a6f))
+
 ## [1.0.0-test.326](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.325...1.0.0-test.326) (2024-09-16)
 
 
