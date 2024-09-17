@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap');
 .document-card-container {
   width: 365px;
   box-shadow: 0px 0px 80px rgba(0, 43, 85, 0.1);
@@ -12,7 +13,7 @@
   }
 
   &__page-document-card {
-    height: 300px;
+    height: 261px;
   }
 
   &__pre-title {
@@ -54,11 +55,13 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    width: 100%;
   }
   &__span-icons {
     font-weight: 400;
     line-height: 18px;
     letter-spacing: 0.933333px;
+    color: #001a33;
   }
   &__date {
     color: #455b71;
