@@ -102,6 +102,7 @@ public class ApplicationExceptionHandler {
 		CittadinoException cittadinoException;
 		ServizioException servizioException;
 		QuestionarioCompilatoException questionarioCompilatoException;
+		ValidationException validationException;
 		if(exc instanceof QuestionarioTemplateException) {
 			questionarioTemplateException = (QuestionarioTemplateException) exc;
 			errori.put("errorCode", questionarioTemplateException.getCodiceErroreEnum().toString());
@@ -114,6 +115,9 @@ public class ApplicationExceptionHandler {
 		} else if(exc instanceof QuestionarioCompilatoException) {
 			questionarioCompilatoException = (QuestionarioCompilatoException) exc;
 			errori.put("errorCode", questionarioCompilatoException.getCodiceErroreEnum().toString());
+		} else if(exc instanceof ValidationException) {
+			validationException = (ValidationException) exc;
+			errori.put("errorCode", validationException.getCodiceErroreEnum().toString()); 
 		} else {
 			errori.put("errorCode", CodiceErroreEnum.G01.toString());
 		}

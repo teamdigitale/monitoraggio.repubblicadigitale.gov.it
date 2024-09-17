@@ -341,6 +341,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
                         nuovoCittadinoRequest.getCodiceFiscale());
         CittadinoEntity cittadino = new CittadinoEntity();
         if (CollectionUtils.isNotEmpty(cittadinoDBFetchList)) {
+            // Cittadino identificato su DB
             if (nuovoCittadinoRequest.getNuovoCittadino()) {
                 final String messaggioErrore = String.format(
                         "Cittadino gia' esistente",
@@ -350,7 +351,9 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
             cittadino = cittadinoDBFetchList.get(0);
             nuovoCittadino = false;
         } else {
+            // Inserimento nuovo cittadino
             mapNuovoCittadinoRequestToCittadino(cittadino, nuovoCittadinoRequest);
+            cittadino.setCodInserimento(idRegistroAttivita);
         }
         // verifico se già esiste il cittadino per quel determinato servizio
         // e in caso affermativo sollevo eccezione
@@ -362,7 +365,6 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
             throw new CittadinoException(messaggioErrore, CodiceErroreEnum.U23);
         }
         cittadino.setDataOraAggiornamento(new Date());
-        cittadino.setCodInserimento(idRegistroAttivita);
         cittadino = cittadinoRepository.save(cittadino);
         // associo il cittadino al servizio
         this.associaCittadinoAServizio(idServizio, cittadino, idRegistroAttivita);
