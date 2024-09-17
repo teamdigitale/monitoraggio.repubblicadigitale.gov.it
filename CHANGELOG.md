@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.328](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.327...1.0.0-test.328) (2024-09-17)
+
+
+### Bug Fixes
+
+* **upgrade-massivo:** fix bug upgrade caricamento massivo 20240917 ([f0f1236](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f0f1236656026580c4754458aefc337df2542f67))
+
 ## [1.0.0-test.327](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.326...1.0.0-test.327) (2024-09-16)
 
 
