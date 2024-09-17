@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.329](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.328...1.0.0-test.329) (2024-09-17)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** allineamento card a prototipo 20240917 ([0ec3934](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0ec3934c7d00e31cc84a3b61fb9a77ab9d936448))
+
 ## [1.0.0-test.328](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.327...1.0.0-test.328) (2024-09-17)
 
 
