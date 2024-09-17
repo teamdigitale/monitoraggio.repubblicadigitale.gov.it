@@ -1,6 +1,7 @@
 package it.pa.repdgt.surveymgmt.restapi;
 
 import it.pa.repdgt.surveymgmt.dto.ServiziElaboratiDTO;
+import it.pa.repdgt.surveymgmt.exception.ValidationException;
 import it.pa.repdgt.surveymgmt.model.ElaboratoCSVRequest;
 import it.pa.repdgt.surveymgmt.model.ImportCsvInputData;
 import it.pa.repdgt.surveymgmt.service.ImportMassivoCSVService;
@@ -37,7 +38,7 @@ public class ImportMassivoCSVRestApi {
     private final ObjectMapper objectMapper;
 
     @PostMapping()
-    public ResponseEntity<String> importCsvData(@RequestBody ImportCsvInputData inputData) throws IOException {
+    public ResponseEntity<String> importCsvData(@RequestBody ImportCsvInputData inputData) throws IOException, ValidationException{
         String csvRequestString = decompressGzip(inputData.getFileData());
         ElaboratoCSVRequest csvRequest = objectMapper.readValue(csvRequestString, ElaboratoCSVRequest.class);
         String uuid = UUID.randomUUID().toString();
