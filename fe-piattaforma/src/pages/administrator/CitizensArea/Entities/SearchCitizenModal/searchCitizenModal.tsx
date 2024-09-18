@@ -161,7 +161,11 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
         setCurrentStep(selectedSteps.ADD_CITIZEN);
         setSelectedCitizen(citizensData?.[0]);
       } else if (citizensData?.length === 0) {
-        return <NoResultsFoundCitizen onClickCta={addCitizen} />;
+        return (
+          <div style={{ margin: '50px 0' }}>
+            <NoResultsFoundCitizen onClickCta={addCitizen} />
+          </div>
+        );
       }
     }
   };
@@ -304,7 +308,7 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
   return (
     <GenericModal
       id={id}
-      title='Aggiungi cittadino'
+      title='Aggiungi cittadino al servizio'
       subtitle={<DescriptionForAddingCitizen/>}
       noPaddingPrimary
       primaryCTA={{
