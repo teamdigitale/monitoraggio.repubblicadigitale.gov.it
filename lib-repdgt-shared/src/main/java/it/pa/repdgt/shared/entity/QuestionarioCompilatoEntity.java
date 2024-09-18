@@ -56,4 +56,7 @@ public class QuestionarioCompilatoEntity implements Serializable {
 	@LastModifiedDate
 	@Column(name = "DATA_ORA_AGGIORNAMENTO")
 	private Date dataOraAggiornamento;
+
+	@Column(name = "COD_INSERIMENTO")
+	private String codInserimento;
 }

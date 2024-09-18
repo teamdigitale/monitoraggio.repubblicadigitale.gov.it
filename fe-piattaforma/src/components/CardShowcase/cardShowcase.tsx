@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { CardProps, CardText, CardTitle, Col, Icon } from 'design-react-kit';
-import Heart from '/public/assets/img/hollow-grey-heart.png';
+import Heart from '/public/assets/img/hollow-blue-heart.png';
 import bookmark from '/public/assets/img/bookmark.png';
 import './cardShowcase.scss';
 import { useAppSelector } from '../../redux/hooks';
@@ -130,20 +130,22 @@ const CardShowcase: React.FC<ForumCardsI> = (props) => {
               className={clsx(
                 'showcase-card__pre-title',
                 highlighted
-                  ? 'my-4 pt-4 showcase-card__highlighted-pre-title'
-                  : 'mb-4 mt-3 pt-1'
+                  ? 'my-4 pt-3 showcase-card__highlighted-pre-title'
+                  : 'mb-4 mt-2 pt-1'
               )}
             >
               <span className='font-weight-bold'>
                 {category_label}
-                {/*  —  */}
+              </span>
+              <span>
+                {date ? ` — ${formatDate(date, 'shortDate')}` : ''}
               </span>
             </div>
           ) : null}
           {title ? (
             <CardTitle
               tag='p'
-              className='showcase-card__title font-weight-bold my-3'
+              className='showcase-card__title font-weight-bold'
             >
               {title}
             </CardTitle>
@@ -154,8 +156,8 @@ const CardShowcase: React.FC<ForumCardsI> = (props) => {
             </CardText>
           ) : null}
           {entity ? (
-            <PublishingAuthority authority={entity} />
-          ) : (
+              <PublishingAuthority authority={entity} />
+            ) : (
             <div className='pt-4 pb-3'></div>
           )}
         </Col>
@@ -167,9 +169,7 @@ const CardShowcase: React.FC<ForumCardsI> = (props) => {
             'showcase-card__icon-container-alignment'
           )}
         >
-          <span className='showcase-card__date'>
-            {date && formatDate(date, 'shortDate')}
-          </span>
+          <p></p>
           <div className='d-flex'>
             <div
               className={clsx(
@@ -202,6 +202,7 @@ const CardShowcase: React.FC<ForumCardsI> = (props) => {
                 size='sm'
                 aria-label='Commento'
                 aria-hidden
+                style={{ fill: '#0073E5' }}
               />
               <span className='showcase-card__span-icons pl-1'>
                 {comment_count}
@@ -216,6 +217,7 @@ const CardShowcase: React.FC<ForumCardsI> = (props) => {
                 size='sm'
                 aria-label='Views'
                 aria-hidden
+                style={{ fill: '#0073E5' }}
               />
               <span className='showcase-card__span-icons pl-1'>{views}</span>
             </div>

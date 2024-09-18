@@ -1,7 +1,7 @@
 import { Icon } from 'design-react-kit';
 import React from 'react';
 import './cardSlider.scss';
-import CuoreVuoto from '../../../public/assets/img/hollow-grey-heart.png';
+import CuoreVuoto from '../../../public/assets/img/hollow-blue-heart.png';
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
 import { formatDate } from '../../utils/datesHelper';
@@ -65,7 +65,9 @@ const CardSlider: React.FC<ForumCardsI> = (props) => {
         <div className='card-slider-container__pre-title'>
           <span className='font-weight-bold'>
             {category_label}
-            {/* &nbsp;—&nbsp; */}
+          </span>
+          <span>
+            {date ? ` — ${formatDate(date, 'shortDate')}` : ''}
           </span>
         </div>
         <p className='card-slider-container__title my-2 font-weight-bold'>
@@ -79,9 +81,7 @@ const CardSlider: React.FC<ForumCardsI> = (props) => {
             'pt-4'
           )}
         >
-          <span className='card-slider-container__date'>
-            {date && formatDate(date, 'shortDate')}
-          </span>
+          <p></p>
           <div className='d-flex'>
             {!isDocument ? (
               <div className='d-flex align-items-center'>
@@ -104,6 +104,7 @@ const CardSlider: React.FC<ForumCardsI> = (props) => {
                 color='note'
                 aria-label='Commento'
                 aria-hidden
+                style={{ fill: '#0073E5' }}
               />
               <span className='card-slider-container__span-icons ml-1 mr-2'>
                 {comment_count}
@@ -117,6 +118,7 @@ const CardSlider: React.FC<ForumCardsI> = (props) => {
                   color='note'
                   aria-label='Download'
                   aria-hidden
+                  style={{ fill: '#0073E5' }}
                 />
                 <span className='card-slider-container__span-icons ml-1'>
                   {downloads}
@@ -131,6 +133,7 @@ const CardSlider: React.FC<ForumCardsI> = (props) => {
                   color='note'
                   aria-label='Views'
                   aria-hidden
+                  style={{ fill: '#0073E5' }}
                 />
                 <span className='card-slider-container__span-icons ml-1'>
                   {views}

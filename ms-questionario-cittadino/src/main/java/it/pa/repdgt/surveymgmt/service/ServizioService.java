@@ -292,7 +292,7 @@ public class ServizioService {
 					}
 				}
 			}
-	}
+		}
 		// creo SezioneQ3Mongo
 		final SezioneQ3Collection sezioneQ3Compilato = this.creaSezioneQ3(servizioRequest);
 
