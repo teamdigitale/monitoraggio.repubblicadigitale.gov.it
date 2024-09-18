@@ -64,6 +64,8 @@ const PrintSurvey: React.FC = () => {
     question: PrintSurveyQuestionI,
     section: PrintSuveySectionI
   ) => {
+    //18/09/2024 NASCOSTE SEZIONI FASCIA DI ETA' E GENERE DA STAMPA PER ADEGUAMENTO
+    if(!(['5','6'].includes(question.id as string)))
     switch (question.type) {
       case 'range':
         return <PrintFieldRating info={question} className={classQuestion} />;
