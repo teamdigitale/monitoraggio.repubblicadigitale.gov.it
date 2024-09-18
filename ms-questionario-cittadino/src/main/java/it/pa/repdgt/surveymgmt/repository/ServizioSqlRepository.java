@@ -322,5 +322,8 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 			EnteSedeProgettoFacilitatoreKey enteSedeProgettoFacilitatoreKey);
 
 	Optional<List<ServizioEntity>> findAllByDataServizioAndDurataServizioAndTipologiaServizioAndIdEnteSedeProgettoFacilitatore(Date dataServizio,
-	String durataServizio, String tipologiaServizio, EnteSedeProgettoFacilitatoreKey enteSedeProgettoFacilitatoreKey);
+		String durataServizio, String tipologiaServizio, EnteSedeProgettoFacilitatoreKey enteSedeProgettoFacilitatoreKey);
+
+	Optional<List<ServizioEntity>> findAllByDataServizioAndDurataServizioAndTipologiaServizioAndIdEnteSedeProgettoFacilitatoreAndNome(Date dataServizio,
+		String durataServizio, String tipologiaServizio, EnteSedeProgettoFacilitatoreKey enteSedeProgettoFacilitatoreKey, String nome);
 }
