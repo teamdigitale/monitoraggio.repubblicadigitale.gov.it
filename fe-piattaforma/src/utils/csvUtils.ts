@@ -413,3 +413,28 @@ export const mapRule = new Map<string, string>([
   ['REPP', 'REFERENTE ENTE PARTNER'],
   ['VOL', 'VOLONTARIO'],
 ]);
+
+export function excelSerialDateToJSDate(serial: number): string {
+  const excelEpoch = new Date(1899, 11, 30); 
+  const days = Math.floor(serial);
+  const milliseconds = (serial - days) * 24 * 60 * 60 * 1000;
+  const date = new Date(excelEpoch.getTime() + days * 24 * 60 * 60 * 1000 + milliseconds);
+
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  return `${year}-${month}-${day}`;
+}
+
+export function excelSerialTimeToHHMM(serial: number): string {
+  const totalSecondsInDay = 24 * 60 * 60;
+  const totalMillisecondsInDay = totalSecondsInDay * 1000;
+
+  const milliseconds = serial * totalMillisecondsInDay;
+  const date = new Date(milliseconds);
+
+  const hours = String(date.getUTCHours()).padStart(2, '0');
+  const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+
+  return `${hours}:${minutes}`;
+}
