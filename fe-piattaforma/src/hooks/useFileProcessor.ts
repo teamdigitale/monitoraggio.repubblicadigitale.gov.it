@@ -20,6 +20,8 @@ import {
   getSE4ValueFromSE5Value,
   getAgeGroupCodeByYear,
   checkMapSpaces,
+  excelSerialDateToJSDate,
+  excelSerialTimeToHHMM,
 } from '../utils/csvUtils';
 import {
   ageGroupMap,
@@ -33,7 +35,7 @@ import {
 } from '../utils/ResponseCodeMappings';
 import * as CodiceFiscaleUtils from '@marketto/codice-fiscale-utils';
 import IPersonalInfo from '@marketto/codice-fiscale-utils/src/interfaces/personal-info.interface';
-import * as XLSX from 'xlsx'
+import * as XLSX from 'xlsx';
 import { useAppSelector } from '../redux/hooks';
 import { selectProjects } from '../redux/features/administrativeArea/administrativeAreaSlice';
 import { policy } from '../pages/administrator/AdministrativeArea/Entities/utils';
@@ -81,55 +83,52 @@ const headersCSV = [
   'ES5',
   'ES6',
 ];
-/*
-const  headerEXCEL = []
-
-oppure
-
-interface headerEXCEL {
-  Intestazione1: string;
-  Intestazione2: string;
-  Intestazione3: string;
-  Intestazione4: string;
-  Intestazione5: string;
-}
-*/
 
 export function useFileProcessor(file: File | undefined) {
   const { isValidFiscalCode } = useFiscalCodeValidation();
   const [isProcessing, setIsProcessing] = useState(false);
   const projectDetail = useAppSelector(selectProjects).detail?.dettagliInfoProgetto;
-  
-/*
-const [excelData, setExcelData] = useState<DataObject[]>([]);
-  const handleFileUpload = (file) => {
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const data = new Uint8Array(e.target?.result as ArrayBuffer);
-        const workbook = XLSX.read(data, { type: "array" });
-        const sheetName = workbook.SheetNames[0]; // Prendiamo il nome del primo foglio
-        const worksheet = workbook.Sheets[sheetName];
-        const jsonData: DataObject[] = XLSX.utils.sheet_to_json(worksheet, {
-          header: 1,
-          defval: "", // Assegna una stringa vuota se ci sono valori mancanti
-        });
-        const mappedData = jsonData.slice(1).map((row: any) => ({
-          Intestazione1: row[0] || "",
-          Intestazione2: row[1] || "",
-          Intestazione3: row[2] || "",
-          Intestazione4: row[3] || "",
-          Intestazione5: row[4] || "",
-        }));
-        setExcelData(mappedData);
-      };
-      reader.readAsArrayBuffer(file);
-    }
-  };
-  */
 
-  const processFile = useCallback(() => {
-    return new Promise<ElaboratoCsvRequest>((resolve, reject) => {
+  const handleExcelFileUpload = (file: File): Promise<CSVRecord[]> => {
+    return new Promise((resolve, reject) => {
+      if (file) {
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+          const data = new Uint8Array(e.target?.result as ArrayBuffer);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const sheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[sheetName];
+          const jsonData: CSVRecord[] = XLSX.utils.sheet_to_json(worksheet, {
+            header: 1,
+            defval: '',
+            blankrows: false,
+          });
+
+          const mappedData: CSVRecord[] = jsonData.slice(3).map((row: any) => {
+            // salto le prime 3 righe che contengono intestazioni
+            const record: CSVRecord = {} as CSVRecord;
+            headersCSV.forEach((key, index) => {
+              record[key] = row[index]?.toString() || '';
+            });
+            return record;
+          });
+          resolve(mappedData);
+        };
+
+        reader.onerror = (e) => {
+          reject(e);
+        };
+
+        reader.readAsArrayBuffer(file);
+      } else {
+        reject(new Error('Nessun file selezionato'));
+      }
+    });
+  };
+
+  const processFile = useCallback(async () => {
+    return new Promise<ElaboratoCsvRequest>(async (resolve, reject) => {
       function rejectWithMessage(message: string) {
         setIsProcessing(false);
         reject({ message });
@@ -137,55 +136,144 @@ const [excelData, setExcelData] = useState<DataObject[]>([]);
 
       if (file) {
         setIsProcessing(true);
-        if(projectDetail?.policy == policy.RFD ){
-        Papa.parse<CSVRecord>(file, {
-          header: true,
-          quoteChar: '"',
-          escapeChar: '"',
-          skipEmptyLines: true,
-          complete: (results: Papa.ParseResult<CSVRecord>) => { 
+        const fileExtension = file.name.split('.').pop()?.toLowerCase();
 
-            // if(results.data.length > 3000) {
-            //   rejectWithMessage(
-            //     "Visto l'elevato numero di caricamenti odierni, ti chiediamo di inserire file contenenti un massimo di 3000 righe"
-            //   );
-            //   return;
-            // }
+        if (fileExtension === 'csv') {
+          if (projectDetail?.policy == policy.RFD) {
+            Papa.parse<CSVRecord>(file, {
+              header: true,
+              quoteChar: '"',
+              escapeChar: '"',
+              skipEmptyLines: true,
+              complete: (results: Papa.ParseResult<CSVRecord>) => {
+                // if(results.data.length > 3000) {
+                //   rejectWithMessage(
+                //     "Visto l'elevato numero di caricamenti odierni, ti chiediamo di inserire file contenenti un massimo di 3000 righe"
+                //   );
+                //   return;
+                // }
 
-            if (!headersCSV.every((header) => header in results.data[0])) {
-              rejectWithMessage(
-                'Il file inserito non é conforme ai criteri di elaborazione, assicurati che tutte le colonne siano presenti.'
-              );
-              return;
-            }
-                       
-            for(let r in results.data){
-              if (Object.keys(headersCSV).length != Object.keys(results.data[r]).length) {
-                rejectWithMessage(
-                  'Il file inserito non é conforme ai criteri di elaborazione, assicurati che tutte le colonne siano presenti.'
-                );
-                return;
-              }              
-            }
+                if (!headersCSV.every((header) => header in results.data[0])) {
+                  rejectWithMessage(
+                    'Il file inserito non é conforme ai criteri di elaborazione, assicurati che tutte le colonne siano presenti.'
+                  );
+                  return;
+                }
+
+                for (let r in results.data) {
+                  if (
+                    Object.keys(headersCSV).length !=
+                    Object.keys(results.data[r]).length
+                  ) {
+                    rejectWithMessage(
+                      'Il file inserito non é conforme ai criteri di elaborazione, assicurati che tutte le colonne siano presenti.'
+                    );
+                    return;
+                  }
+                }
+
+                const serviziValidati: ServiziElaboratiDto[] = [];
+                const serviziScartati: ServiziElaboratiDto[] = [];
+                const data: CSVRecord[] = results.data;
+
+                if (data.length > 0) {
+                  data.forEach((record: CSVRecord, index: number) => {
+                    sanitizeFields(record);
+                    const {
+                      AN14: _AN14,
+                      AN17: _AN17,
+                      ...filteredRecord
+                    } = record;
+                    filteredRecord.AN3 = filteredRecord.AN3.trim();
+                    const { rejectedTypes } = generateServiceName(
+                      filteredRecord.SE3
+                    );
+                    const errors = validateFields(
+                      filteredRecord,
+                      isValidFiscalCode
+                    );
+                    checkMapValues(record, errors);
+                    checkMapSpaces(record, errors);
+                    if (
+                      rejectedTypes.length > 0 &&
+                      filteredRecord.SE3 &&
+                      filteredRecord.SE3.trim() !== ''
+                    ) {
+                      errors.push(
+                        `Servizio non riconosciuto nel campo SE3: ${rejectedTypes.join(
+                          ', '
+                        )}. Assicurati che i tipi di servizio inseriti siano corretti`
+                      );
+                    }
+
+                    const cfData: IPersonalInfo =
+                      CodiceFiscaleUtils.Parser.cfDecode(filteredRecord.AN3);
+
+                    if (!getAgeGroupCodeByYear(cfData.date)) {
+                      errors.push('Il cittadino deve essere maggiorenne.');
+                    }
+
+                    const isValidFields = errors.length === 0;
+                    const servizioElaborato: ServiziElaboratiDto =
+                      mappingDatiElaborati(
+                        filteredRecord,
+                        errors,
+                        index + 1,
+                        cfData
+                      );
+                    if (isValidFields && rejectedTypes.length === 0) {
+                      serviziValidati.push(servizioElaborato);
+                    } else {
+                      serviziScartati.push(servizioElaborato);
+                    }
+                  });
+                  const serviziElaborati: ElaboratoCsvRequest = {
+                    serviziValidati: serviziValidati,
+                    serviziScartati: serviziScartati,
+                  };
+                  resolve(serviziElaborati);
+                  setIsProcessing(false);
+                } else {
+                  rejectWithMessage(
+                    'Il file inserito non é conforme ai criteri di elaborazione, assicurati che siano presenti dei dati da elaborare.'
+                  );
+                }
+              },
+              error: (error: Error) => {
+                setIsProcessing(false);
+                reject(error);
+              },
+            });
+          } else {
+            // Operazioni SCD
+          }
+          /*else {
+            reject({
+              message:
+                "Nessun file selezionato. Si prega di caricare un file per procedere con l'elaborazione.",
+            });
+          }*/
+        } else if (fileExtension === 'xlsx' || fileExtension === 'xls') {
+          try {
+            const excelData = await handleExcelFileUpload(file);
 
             const serviziValidati: ServiziElaboratiDto[] = [];
             const serviziScartati: ServiziElaboratiDto[] = [];
-            const data: CSVRecord[] = results.data;
 
-            if (data.length > 0) {
-              data.forEach((record: CSVRecord, index: number) => {
+            if (excelData.length > 0) {
+              excelData.forEach((record: CSVRecord, index: number) => {
                 sanitizeFields(record);
                 const { AN14: _AN14, AN17: _AN17, ...filteredRecord } = record;
                 filteredRecord.AN3 = filteredRecord.AN3.trim();
-                const { rejectedTypes } = generateServiceName(
-                  filteredRecord.SE3
-                );
+                filteredRecord.SE1 = excelSerialDateToJSDate(Number(filteredRecord.SE1));
+                filteredRecord.SE2 = excelSerialTimeToHHMM(Number(filteredRecord.SE2));
+                const { rejectedTypes } = generateServiceName(filteredRecord.SE3);
                 const errors = validateFields(
                   filteredRecord,
                   isValidFiscalCode
                 );
                 checkMapValues(record, errors);
-                checkMapSpaces(record,errors);
+                checkMapSpaces(record, errors);
                 if (
                   rejectedTypes.length > 0 &&
                   filteredRecord.SE3 &&
@@ -227,27 +315,26 @@ const [excelData, setExcelData] = useState<DataObject[]>([]);
               setIsProcessing(false);
             } else {
               rejectWithMessage(
-                'Il file inserito non é conforme ai criteri di elaborazione, assicurati che siano presenti dei dati da elaborare.'
+                'Il file inserito non è conforme ai criteri di elaborazione, assicurati che siano presenti dei dati da elaborare.'
               );
             }
-          },
-          error: (error: Error) => {
+          } catch (error) {
             setIsProcessing(false);
             reject(error);
-          },
-        });
-      }else
-      {
-        // Operazioni SCD
-      }
-      } /*else {
+          }
+        } else {
+          rejectWithMessage(
+            'Formato di file non supportato. Si prega di caricare un file CSV o XLSX.'
+          );
+        }
+      } else {
         reject({
           message:
             "Nessun file selezionato. Si prega di caricare un file per procedere con l'elaborazione.",
         });
-      }*/
+      }
     });
-  }, [file, isValidFiscalCode]);
+  }, [file, isValidFiscalCode, projectDetail]);
 
   return {
     processFile,

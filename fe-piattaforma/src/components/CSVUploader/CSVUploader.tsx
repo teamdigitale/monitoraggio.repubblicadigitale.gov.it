@@ -203,7 +203,7 @@ export default function CSVUploader({
                     className='upload-dragdrop-input'
                     value={file}
                     onChange={handleInput}
-                    accept='.csv .xlsx .xls'
+                    accept='.csv, .xlsx, .xls'
                   />
                   <label htmlFor='upload7' className='font-weight-semibold'>
                     selezionalo dal tuo dispositivo
