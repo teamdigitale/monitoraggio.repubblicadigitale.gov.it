@@ -1,5 +1,6 @@
 package it.pa.repdgt.surveymgmt.restapi;
 
+import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.surveymgmt.dto.ServiziElaboratiDTO;
 import it.pa.repdgt.surveymgmt.exception.ValidationException;
 import it.pa.repdgt.surveymgmt.model.ElaboratoCSVRequest;
@@ -47,6 +48,7 @@ public class ImportMassivoCSVRestApi {
                 : csvRequest.getServiziScartati();
         Long idEnte = servizi.get(0).getNuovoCittadinoServizioRequest().getIdEnte();
         Long idProgetto = servizi.get(0).getNuovoCittadinoServizioRequest().getIdProgetto();
+        PolicyEnum policy = importMassivoCSVService.recuperaPolicydaProgetto(idProgetto);
         importMassivoCSVService.checkPreliminareCaricamentoMassivo(idEnte, idProgetto);
         for (int i = csvRequest.getServiziValidati().size() - 1; i >= 0; i--) {
             ServiziElaboratiDTO servizioValidato = csvRequest.getServiziValidati().get(i);
@@ -54,7 +56,7 @@ public class ImportMassivoCSVRestApi {
                 csvRequest.getServiziScartati().add(csvRequest.getServiziValidati().remove(i));
             }
         }
-        importMassivoCSVService.process(csvRequest, uuid);
+        importMassivoCSVService.process(csvRequest, uuid, policy);
         return new ResponseEntity<>(uuid, HttpStatus.OK);
     }
 
