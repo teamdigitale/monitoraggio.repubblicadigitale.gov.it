@@ -57,4 +57,5 @@ public class RegistroAttivitaEntity {
     @Enumerated(EnumType.STRING)
     private JobStatusEnum jobStatus;
     private String note;
+    private String estensioneInput;
 }

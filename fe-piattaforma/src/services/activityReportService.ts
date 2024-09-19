@@ -55,7 +55,8 @@ export function saveActivityReport(
 export async function elaborateCsv(
   elaborato: ElaboratoCsvRequest,
   idProgetto: number,
-  idEnte: number
+  idEnte: number,
+  estensioneInput: string,
 ): Promise<AxiosResponse<string>> {
   const { cfUtenteLoggato, codiceRuoloUtenteLoggato, idProgramma } = getUserHeaders();
   let payloadGzip = compressPayload(elaborato)
@@ -68,6 +69,7 @@ export async function elaborateCsv(
       idEnte,
       idProgetto,
       idProgramma,
+      estensioneInput,
       fileData
     });
 }
