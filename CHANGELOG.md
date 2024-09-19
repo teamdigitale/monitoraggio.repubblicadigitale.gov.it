@@ -1,5 +1,51 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.330](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.329...1.0.0-test.330) (2024-09-19)
+
+
+### Features
+
+* **ms-questionario-cittadino:** aggiunto controllo unicità su nome servizio in creazione 20240918 ([fd03097](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fd0309783906242790a55eb8f09b0363947ac391))
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** rimozione sezioni da stampa questionario 20240918 ([49a36d2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/49a36d26e291c07952ea652296eff78877ce09dc))
+* **fe-piattaforma:** rimozione colore background searchbar 20240919 ([2ddb7f3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2ddb7f3823cc9aa5e5b58870f5882fb348dcf27f))
+* **fe-piattaforma:** allineamento modale aggiungi cittadino a figma 20240918 ([37dc18c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/37dc18c13c8140456b8652e4aede79c86e361141))
+
+## [1.0.0-test.329](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.328...1.0.0-test.329) (2024-09-17)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** allineamento card a prototipo 20240917 ([0ec3934](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0ec3934c7d00e31cc84a3b61fb9a77ab9d936448))
+
+## [1.0.0-test.328](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.327...1.0.0-test.328) (2024-09-17)
+
+
+### Bug Fixes
+
+* **upgrade-massivo:** fix bug upgrade caricamento massivo 20240917 ([f0f1236](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f0f1236656026580c4754458aefc337df2542f67))
+
+## [1.0.0-test.327](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.326...1.0.0-test.327) (2024-09-16)
+
+
+### Features
+
+* **upgrade-caricamento-massivo:** upgrade caricamento massivo 20240913 ([d56d324](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d56d32494617f3faa61e5ffa32d4ca9db4351cd7))
+* **ms-questionario-cittadino:** aggiornata tabella registro attivita ([62941bc](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/62941bcd89111e2a1c20ced8dc5c63b235187744))
+* **fe-piattaforma:** aggiornata tabella registro attivita ([63587b4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/63587b47e014a950b7c4b6c9646a9caf5a792a6f))
+
+## [1.0.0-test.326](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.325...1.0.0-test.326) (2024-09-16)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** apertura documento e link per guida op 20240913 ([0e2d64d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0e2d64de8c2002e053962341aa3ae86ef674ee01))
+* **fe-piattaforma:** fix label tabella elenco servizi 20240916 ([c639965](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c6399659f32fda29b8d74c1b23ecfa40f6472a78))
+* **fe-piattaforma:** fix modale aggiungi cittadino 20240913 ([0ee9d59](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0ee9d59a6d97cec6e549fa32f6335108664bc7f9))
+
 ## [1.0.0-test.325](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.324...1.0.0-test.325) (2024-09-11)
 
 

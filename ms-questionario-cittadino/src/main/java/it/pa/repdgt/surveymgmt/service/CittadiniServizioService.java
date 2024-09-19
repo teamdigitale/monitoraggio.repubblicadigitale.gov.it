@@ -291,7 +291,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
         cittadino.setDataOraAggiornamento(new Date());
         cittadino = cittadinoRepository.save(cittadino);
         // associo il cittadino al servizio
-        this.associaCittadinoAServizio(idServizio, cittadino);
+        this.associaCittadinoAServizio(idServizio, cittadino, null);
 
         // recupero il servizio
         ServizioEntity servizioDBFetch = servizioSqlService.getServizioById(idServizio);
@@ -309,7 +309,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
     @LogExecutionTime
     public NuovoCittadinoDTO creaNuovoCittadinoImportCsv(
             @NotNull final Long idServizio,
-            @NotNull final NuovoCittadinoServizioRequest nuovoCittadinoRequest) {
+            @NotNull final NuovoCittadinoServizioRequest nuovoCittadinoRequest, String idRegistroAttivita) {
         String codiceFiscaleDecrypted;
         boolean nuovoCittadino = true;
         // Verifico se il facilitatore è il creatore di quel servizio
@@ -341,6 +341,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
                         nuovoCittadinoRequest.getCodiceFiscale());
         CittadinoEntity cittadino = new CittadinoEntity();
         if (CollectionUtils.isNotEmpty(cittadinoDBFetchList)) {
+            // Cittadino identificato su DB
             if (nuovoCittadinoRequest.getNuovoCittadino()) {
                 final String messaggioErrore = String.format(
                         "Cittadino gia' esistente",
@@ -350,7 +351,9 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
             cittadino = cittadinoDBFetchList.get(0);
             nuovoCittadino = false;
         } else {
+            // Inserimento nuovo cittadino
             mapNuovoCittadinoRequestToCittadino(cittadino, nuovoCittadinoRequest);
+            cittadino.setCodInserimento(idRegistroAttivita);
         }
         // verifico se già esiste il cittadino per quel determinato servizio
         // e in caso affermativo sollevo eccezione
@@ -364,7 +367,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
         cittadino.setDataOraAggiornamento(new Date());
         cittadino = cittadinoRepository.save(cittadino);
         // associo il cittadino al servizio
-        this.associaCittadinoAServizio(idServizio, cittadino);
+        this.associaCittadinoAServizio(idServizio, cittadino, idRegistroAttivita);
 
         // recupero il servizio
         ServizioEntity servizioDBFetch = servizioSqlService.getServizioById(idServizio);
@@ -450,12 +453,14 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 
     @LogMethod
     @LogExecutionTime
-    public void associaCittadinoAServizio(@NotNull final Long idServizio, @NotNull final CittadinoEntity cittadino) {
+    public void associaCittadinoAServizio(@NotNull final Long idServizio, @NotNull final CittadinoEntity cittadino, String idRegistroAttivita) {
         ServizioXCittadinoEntity servizioXCittadino = new ServizioXCittadinoEntity();
         ServizioCittadinoKey key = new ServizioCittadinoKey(cittadino.getId(), idServizio);
         servizioXCittadino.setId(key);
         servizioXCittadino.setDataOraAggiornamento(new Date());
         servizioXCittadino.setDataOraCreazione(new Date());
+        if(idRegistroAttivita != null)
+            servizioXCittadino.setCodInserimento(idRegistroAttivita);
         servizioXCittadinoRepository.save(servizioXCittadino);
     }
 
@@ -768,7 +773,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
         cittadino = cittadinoRepository.save(cittadino);
 
         // associo il cittadino al servizio
-        this.associaCittadinoAServizio(idServizio, cittadino);
+        this.associaCittadinoAServizio(idServizio, cittadino, null);
 
         // recupero il servizio
         ServizioEntity servizioDBFetch = servizioSqlService.getServizioById(idServizio);

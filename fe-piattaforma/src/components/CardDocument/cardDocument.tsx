@@ -88,7 +88,9 @@ const CardDocument: React.FC<ForumCardsI> = (props) => {
         <div className='document-card-container__pre-title'>
           <span className='font-weight-bold'>
             {category_label}
-            {/*  —  */}
+          </span>
+          <span>
+            {date ? ` — ${formatDate(date, 'shortDate')}` : ''}
           </span>
         </div>
         <p
@@ -120,9 +122,7 @@ const CardDocument: React.FC<ForumCardsI> = (props) => {
               'mt-1'
             )}
           >
-            <span className='document-card-container__date'>
-              {date && formatDate(date, 'shortDate')}
-            </span>
+            <p></p>
             <div className='d-flex align-items-center'>
               <Icon
                 icon='it-download'
@@ -130,6 +130,7 @@ const CardDocument: React.FC<ForumCardsI> = (props) => {
                 color='note'
                 aria-label='Downloads'
                 aria-hidden
+                style={{ fill: '#0073E5' }}
               />
               <span className='document-card-container__span-icons ml-1 mr-2'>
                 {downloads}
@@ -140,6 +141,7 @@ const CardDocument: React.FC<ForumCardsI> = (props) => {
                 color='note'
                 aria-label='Comments'
                 aria-hidden
+                style={{ fill: '#0073E5' }}
               />
               <span className='document-card-container__span-icons ml-1'>
                 {comment_count}

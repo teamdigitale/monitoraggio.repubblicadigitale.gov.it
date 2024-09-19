@@ -67,7 +67,7 @@ public enum CodiceErroreEnum {
 	,S07("Errore impossibile eliminare il servizio.")
 	,S08("Errore creazione servizio. Servizio con stesso nome già esistente")
 	,S09("Errore servizio non esistente")
-	,S10("Errore servizio già esistente")
+	,S10("Il servizio che vuoi creare riporta gli stessi dati di un servizio già esistente. Per creare una nuovo servizio, assicurati di differenziare almeno un’informazione, per esempio il nome o la descrizione")
 	,S11("Errore creazione servizio")
 	
 	,SD01("Errore creazione sede")
@@ -155,6 +155,8 @@ public enum CodiceErroreEnum {
 	,A04("Sezionario q4 completamente mancante, almeno una risposta deve essere selezionata")
 	,A05("La sezione q4 e' stata compilata ma nessuna risposta e' stata selezionata")
 	,A06("La data del servizio non rientra all’interno delle date di progetto")
+
+	,CM01("E' già in corso un inserimento dati")
 	;
 	
 	private String descrizioneErrore;

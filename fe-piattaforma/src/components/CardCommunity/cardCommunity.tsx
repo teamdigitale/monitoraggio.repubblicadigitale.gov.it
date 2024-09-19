@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { CardText, CardTitle, Col, Icon } from 'design-react-kit';
 import React, { memo } from 'react';
-import Heart from '/public/assets/img/hollow-grey-heart.png';
+import Heart from '/public/assets/img/hollow-blue-heart.png';
 import './cardCommunity.scss';
 import { useNavigate } from 'react-router-dom';
 import PublishingAuthority from '../CardDocument/PublishingAuthority';
@@ -59,7 +59,9 @@ const CardCommunity: React.FC<ForumCardsI> = (props) => {
           <div className='mb-2 card-community__pre-title'>
             <span className='font-weight-bold'>
               {category_label}
-              {/* &nbsp;—&nbsp; */}
+            </span>
+            <span>
+              {date ? ` — ${formatDate(date, 'shortDate')}` : ''}
             </span>
           </div>
         ) : null}
@@ -87,9 +89,7 @@ const CardCommunity: React.FC<ForumCardsI> = (props) => {
           'align-items-center'
         )}
       >
-        <span className='card-community__date'>
-          {date && formatDate(date, 'shortDate')}
-        </span>
+        <p></p>
         <div className='d-flex'>
           <div
             className={clsx(
@@ -122,6 +122,7 @@ const CardCommunity: React.FC<ForumCardsI> = (props) => {
               size='sm'
               aria-label='Comments'
               aria-hidden
+              style={{ fill: '#0073E5' }}
             />
             <span className='card-community__span-icons pl-1'>
               {comment_count}
@@ -134,6 +135,7 @@ const CardCommunity: React.FC<ForumCardsI> = (props) => {
               size='sm'
               aria-label='Views'
               aria-hidden
+              style={{ fill: '#0073E5' }}
             />
             <span className='card-community__span-icons pl-1'>{views}</span>
           </div>

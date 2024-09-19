@@ -1,6 +1,7 @@
 package it.pa.repdgt.surveymgmt.restapi;
 
 import it.pa.repdgt.surveymgmt.dto.ServiziElaboratiDTO;
+import it.pa.repdgt.surveymgmt.exception.ValidationException;
 import it.pa.repdgt.surveymgmt.model.ElaboratoCSVRequest;
 import it.pa.repdgt.surveymgmt.model.ImportCsvInputData;
 import it.pa.repdgt.surveymgmt.service.ImportMassivoCSVService;
@@ -23,6 +24,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -36,10 +38,16 @@ public class ImportMassivoCSVRestApi {
     private final ObjectMapper objectMapper;
 
     @PostMapping()
-    public ResponseEntity<String> importCsvData(@RequestBody ImportCsvInputData inputData) throws IOException {
+    public ResponseEntity<String> importCsvData(@RequestBody ImportCsvInputData inputData) throws IOException, ValidationException{
         String csvRequestString = decompressGzip(inputData.getFileData());
         ElaboratoCSVRequest csvRequest = objectMapper.readValue(csvRequestString, ElaboratoCSVRequest.class);
         String uuid = UUID.randomUUID().toString();
+        List<ServiziElaboratiDTO> servizi = !csvRequest.getServiziValidati().isEmpty()
+                ? csvRequest.getServiziValidati()
+                : csvRequest.getServiziScartati();
+        Long idEnte = servizi.get(0).getNuovoCittadinoServizioRequest().getIdEnte();
+        Long idProgetto = servizi.get(0).getNuovoCittadinoServizioRequest().getIdProgetto();
+        importMassivoCSVService.checkPreliminareCaricamentoMassivo(idEnte, idProgetto);
         for (int i = csvRequest.getServiziValidati().size() - 1; i >= 0; i--) {
             ServiziElaboratiDTO servizioValidato = csvRequest.getServiziValidati().get(i);
             if (valida(servizioValidato)) {
