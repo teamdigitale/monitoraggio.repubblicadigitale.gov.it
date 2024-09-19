@@ -1,5 +1,19 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.330](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.329...1.0.0-test.330) (2024-09-19)
+
+
+### Features
+
+* **ms-questionario-cittadino:** aggiunto controllo unicità su nome servizio in creazione 20240918 ([fd03097](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fd0309783906242790a55eb8f09b0363947ac391))
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** rimozione sezioni da stampa questionario 20240918 ([49a36d2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/49a36d26e291c07952ea652296eff78877ce09dc))
+* **fe-piattaforma:** rimozione colore background searchbar 20240919 ([2ddb7f3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2ddb7f3823cc9aa5e5b58870f5882fb348dcf27f))
+* **fe-piattaforma:** allineamento modale aggiungi cittadino a figma 20240918 ([37dc18c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/37dc18c13c8140456b8652e4aede79c86e361141))
+
 ## [1.0.0-test.329](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.328...1.0.0-test.329) (2024-09-17)
 
 
