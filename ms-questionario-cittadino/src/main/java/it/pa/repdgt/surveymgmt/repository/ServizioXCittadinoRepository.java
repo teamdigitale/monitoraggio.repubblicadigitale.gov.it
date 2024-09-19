@@ -72,5 +72,5 @@ public interface ServizioXCittadinoRepository extends JpaRepository<ServizioXCit
 	@Query(value = "DELETE FROM ServizioXCittadinoEntity sxc WHERE sxc.id.idServizio = :idServizio")
 	void deleteByIdServizioJPA(@Param("idServizio") Long idServizio);
 
-	List<ServizioXCittadinoEntity> findByIdCittadino(@Param("idCittadino") Long idCittadino);
+	List<ServizioXCittadinoEntity> findById_IdCittadino(@Param("idCittadino") Long idCittadino);
 }

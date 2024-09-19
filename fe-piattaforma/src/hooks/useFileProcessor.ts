@@ -230,6 +230,7 @@ export function useFileProcessor(file: File | undefined) {
                   const serviziElaborati: ElaboratoCsvRequest = {
                     serviziValidati: serviziValidati,
                     serviziScartati: serviziScartati,
+                    estensioneInput: fileExtension
                   };
                   resolve(serviziElaborati);
                   setIsProcessing(false);
@@ -310,6 +311,7 @@ export function useFileProcessor(file: File | undefined) {
               const serviziElaborati: ElaboratoCsvRequest = {
                 serviziValidati: serviziValidati,
                 serviziScartati: serviziScartati,
+                estensioneInput: fileExtension
               };
               resolve(serviziElaborati);
               setIsProcessing(false);
