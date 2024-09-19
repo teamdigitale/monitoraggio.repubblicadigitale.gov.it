@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.331](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.330...1.0.0-test.331) (2024-09-19)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** nuova sezione informativa privacy volontari 20240919 ([652ba42](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/652ba423302cf65128585773150ffe4464f27df0))
+
 ## [1.0.0-test.330](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.329...1.0.0-test.330) (2024-09-19)
 
 
