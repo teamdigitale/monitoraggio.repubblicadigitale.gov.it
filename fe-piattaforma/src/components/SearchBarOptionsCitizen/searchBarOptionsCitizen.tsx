@@ -112,7 +112,6 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
   return (
     <div
       className={clsx(
-        'neutral-1-bg-a1',
         'py-2',
         'px-5',
         'd-block',
