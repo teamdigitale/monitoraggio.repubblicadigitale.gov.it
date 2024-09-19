@@ -99,7 +99,7 @@ public class ImportMassivoCSVService {
         Long idProgetto = servizi.get(0).getNuovoCittadinoServizioRequest().getIdProgetto();
 
         RegistroAttivitaEntity registroAttivitaEntity = faseInizializzazioneSalvataggioRegistroAttivita(UUID,
-                cfUtenteLoggato, idEnte, idProgetto);
+                cfUtenteLoggato, idEnte, idProgetto, estensioneInput);
 
         try {
             ElaboratoCSVResponse response = buildResponse(serviziValidati, serviziScartati, UUID,
@@ -186,7 +186,7 @@ public class ImportMassivoCSVService {
     }
 
     private RegistroAttivitaEntity faseInizializzazioneSalvataggioRegistroAttivita(String uuid,
-            String cfUtenteLoggato, Long idEnte, Long idProgetto) {
+            String cfUtenteLoggato, Long idEnte, Long idProgetto, String estensioneInput) {
 
         RegistroAttivitaEntity registroAttivita = RegistroAttivitaEntity.builder()
                 .jobStatus(JobStatusEnum.IN_PROGRESS)
@@ -200,6 +200,7 @@ public class ImportMassivoCSVService {
                 .idProgetto(idProgetto)
                 .jobUUID(uuid)
                 .jobStatus(JobStatusEnum.IN_PROGRESS)
+                .estensioneInput(estensioneInput)
                 .build();
         return registroAttivitaService.saveRegistroAttivita(registroAttivita);
     }
@@ -402,7 +403,7 @@ public class ImportMassivoCSVService {
                 idQuestionario = nuovoCittadinoDTO.getCittadinoEntity().getQuestionarioCompilato().get(0).getId();
                 if(!nuovoCittadinoDTO.isNuovoCittadino()){
                     // Se cittadino non è stato appena inserito, controllare che esso non sia associato ad un servizio identico a quello appena inserito
-                    List<ServizioXCittadinoEntity> servizioXCittadinoList = servizioXCittadinoRepository.findByIdCittadino(nuovoCittadinoDTO.getCittadinoEntity().getId());
+                    List<ServizioXCittadinoEntity> servizioXCittadinoList = servizioXCittadinoRepository.findById_IdCittadino(nuovoCittadinoDTO.getCittadinoEntity().getId());
                     if(CollectionUtils.isNotEmpty(servizioXCittadinoList)){
                         // controllare uguaglianza per ogni servizio con servizio appena inserito
                         Boolean isStessoServizio = false;

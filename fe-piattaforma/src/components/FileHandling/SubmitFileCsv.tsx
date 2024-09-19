@@ -86,7 +86,8 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
       const elaborateCsvPromise = elaborateCsv(
         dataUploadContext.parsedData,
         parseInt(projectId),
-        enteId ? parseInt(enteId) : projectContext!.idEnte
+        enteId ? parseInt(enteId) : projectContext!.idEnte,
+        dataUploadContext.parsedData.estensioneInput
       );
       setShowModal(true)
       Promise.all([dispatchPromise, elaborateCsvPromise])

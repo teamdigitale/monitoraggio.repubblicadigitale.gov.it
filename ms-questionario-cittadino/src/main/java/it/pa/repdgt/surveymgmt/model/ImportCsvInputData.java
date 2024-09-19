@@ -22,4 +22,6 @@ public class ImportCsvInputData {
     private Long idProgetto;
 
     private Long idProgramma;
+
+    private String estensioneInput;
 }

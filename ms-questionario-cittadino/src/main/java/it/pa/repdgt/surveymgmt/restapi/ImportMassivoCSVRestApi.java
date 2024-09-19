@@ -55,7 +55,7 @@ public class ImportMassivoCSVRestApi {
                 csvRequest.getServiziScartati().add(csvRequest.getServiziValidati().remove(i));
             }
         }
-        importMassivoCSVService.process(csvRequest, uuid, policy);
+        importMassivoCSVService.process(csvRequest, uuid, policy, inputData.getEstensioneInput());
         return new ResponseEntity<>(uuid, HttpStatus.OK);
     }
 
