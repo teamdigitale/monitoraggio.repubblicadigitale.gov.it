@@ -1,5 +1,14 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.332](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.331...1.0.0-test.332) (2024-09-20)
+
+
+### Bug Fixes
+
+* **creazione-servizio:** aggiornato errore unicita servizio 20240920 ([c14a248](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c14a2486448ffab62d57871de8d1eda8a826764c))
+* **fe-piattaforma:** modifica font authority schede drupal 20240920 ([86a90bc](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/86a90bcf4b4c2226bf56a91e66b5d1225fe3a6f3))
+* **fe-piattaforma:** aggiunta didascalia a campo Provincia 20240920 ([0252639](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/025263960cf428383bfe65ad962101115db68cc4))
+
 ## [1.0.0-test.331](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.330...1.0.0-test.331) (2024-09-19)
 
 
