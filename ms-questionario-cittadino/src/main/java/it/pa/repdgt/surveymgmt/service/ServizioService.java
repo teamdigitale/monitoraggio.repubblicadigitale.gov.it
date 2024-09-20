@@ -17,6 +17,7 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -253,45 +254,7 @@ public class ServizioService {
 
 		if(!isMassivo){
 			// controllo unicità servizio su progetto
-			EnteSedeProgettoFacilitatoreEntity enteSedeProgettoFacilitatore = enteSedeProgettoFacilitatoreRepository
-					.existsByChiave(
-							servizioRequest.getCfUtenteLoggato(),
-							servizioRequest.getIdEnteServizio(),
-							servizioRequest.getIdProgetto(),
-							servizioRequest.getIdSedeServizio());
-			if (enteSedeProgettoFacilitatore == null) {
-				throw new ResourceNotFoundException(NoteCSV.NOTE_UTENTE_SEDE_NON_ASSOCIATI_AL_PROGETTO,
-						CodiceErroreEnum.C01);
-			}
-
-			List<ServizioEntity> listaServizi = getServizioByDatiControllo(servizioRequest, enteSedeProgettoFacilitatore.getId());
-			if(CollectionUtils.isNotEmpty(listaServizi)){
-
-				JSONObject rootNodeNuovoServizio = new JSONObject(servizioRequest.getSezioneQuestionarioCompilatoQ3());				
-				for (ServizioEntity servizioRecuperato : listaServizi) {
-					Optional<SezioneQ3Collection> optSezioneQ3Collection = sezioneQ3Respository
-							.findById(servizioRecuperato.getIdTemplateCompilatoQ3());
-					if (optSezioneQ3Collection.isPresent()) {
-						JsonNode nodeActual = objectMapper.valueToTree(optSezioneQ3Collection.get().getSezioneQ3Compilato());
-						JsonNode pathJson = nodeActual.path("json");
-						JSONObject jsonObjectActual = new JSONObject(pathJson.asText());
-						boolean isStessoServizio = true;
-						if (!recuperaDescrizioneDaJson(jsonObjectActual, 6).equals(recuperaDescrizioneDaJson(rootNodeNuovoServizio, 6))) {
-							isStessoServizio = false;
-						}
-						if (!recuperaDescrizioneDaJson(jsonObjectActual, 5).equals(recuperaDescrizioneDaJson(rootNodeNuovoServizio, 5))) {
-							isStessoServizio = false;
-						}
-						if (!recuperaDescrizioneDaJson(jsonObjectActual, 4).equals(recuperaDescrizioneDaJson(rootNodeNuovoServizio, 4))) {
-							isStessoServizio = false;
-						}
-						if (isStessoServizio) {
-							final String messaggioErrore = "Il servizio che vuoi creare riporta gli stessi dati di un servizio già esistente. Per creare una nuovo servizio, assicurati di differenziare almeno un’informazione, per esempio il nome o la descrizione";
-							throw new ServizioException(messaggioErrore, CodiceErroreEnum.S10);
-						} 
-					}
-				}
-			}
+			checkUnicitaServizio(servizioRequest);
 		}
 		// creo SezioneQ3Mongo
 		final SezioneQ3Collection sezioneQ3Compilato = this.creaSezioneQ3(servizioRequest);
@@ -304,6 +267,48 @@ public class ServizioService {
 		this.sezioneQ3Repository.save(sezioneQ3Compilato);
 
 		return servizioCreato;
+	}
+
+	private void checkUnicitaServizio(final ServizioRequest servizioRequest) throws JSONException {
+		EnteSedeProgettoFacilitatoreEntity enteSedeProgettoFacilitatore = enteSedeProgettoFacilitatoreRepository
+				.existsByChiave(
+						servizioRequest.getCfUtenteLoggato(),
+						servizioRequest.getIdEnteServizio(),
+						servizioRequest.getIdProgetto(),
+						servizioRequest.getIdSedeServizio());
+		if (enteSedeProgettoFacilitatore == null) {
+			throw new ResourceNotFoundException(NoteCSV.NOTE_UTENTE_SEDE_NON_ASSOCIATI_AL_PROGETTO,
+					CodiceErroreEnum.C01);
+		}
+
+		List<ServizioEntity> listaServizi = getServizioByDatiControllo(servizioRequest, enteSedeProgettoFacilitatore.getId());
+		if(CollectionUtils.isNotEmpty(listaServizi)){
+
+			JSONObject rootNodeNuovoServizio = new JSONObject(servizioRequest.getSezioneQuestionarioCompilatoQ3());				
+			for (ServizioEntity servizioRecuperato : listaServizi) {
+				Optional<SezioneQ3Collection> optSezioneQ3Collection = sezioneQ3Respository
+						.findById(servizioRecuperato.getIdTemplateCompilatoQ3());
+				if (optSezioneQ3Collection.isPresent()) {
+					JsonNode nodeActual = objectMapper.valueToTree(optSezioneQ3Collection.get().getSezioneQ3Compilato());
+					JsonNode pathJson = nodeActual.path("json");
+					JSONObject jsonObjectActual = new JSONObject(pathJson.asText());
+					boolean isStessoServizio = true;
+					if (!recuperaDescrizioneDaJson(jsonObjectActual, 6).equals(recuperaDescrizioneDaJson(rootNodeNuovoServizio, 6))) {
+						isStessoServizio = false;
+					}
+					if (!recuperaDescrizioneDaJson(jsonObjectActual, 5).equals(recuperaDescrizioneDaJson(rootNodeNuovoServizio, 5))) {
+						isStessoServizio = false;
+					}
+					if (!recuperaDescrizioneDaJson(jsonObjectActual, 4).equals(recuperaDescrizioneDaJson(rootNodeNuovoServizio, 4))) {
+						isStessoServizio = false;
+					}
+					if (isStessoServizio) {
+						final String messaggioErrore = "Il servizio che vuoi creare riporta gli stessi dati di un servizio già esistente. Per creare una nuovo servizio, assicurati di differenziare almeno un’informazione, per esempio il nome o la descrizione";
+						throw new ServizioException(messaggioErrore, CodiceErroreEnum.S10);
+					} 
+				}
+			}
+		}
 	}
 
 	private List<ServizioEntity> getServizioByDatiControllo(ServizioRequest servizioRequest,
@@ -369,6 +374,8 @@ public class ServizioService {
 			final String messaggioErrore = "Impossibile creare servizio. La data del servizio deve essere compresa fra la data di inizio e data di fine progetto";
 			throw new ServizioException(messaggioErrore, CodiceErroreEnum.A06);
 		}
+
+		checkUnicitaServizio(servizioDaAggiornareRequest);
 
 		// Aggiorno servizio su MySql
 		final ServizioEntity servizioAggiornato = this.servizioSQLService.aggiornaServizio(idServizioDaAggiornare,
