@@ -67,7 +67,7 @@ public enum CodiceErroreEnum {
 	,S07("Errore impossibile eliminare il servizio.")
 	,S08("Errore creazione servizio. Servizio con stesso nome già esistente")
 	,S09("Errore servizio non esistente")
-	,S10("Il servizio che vuoi creare riporta gli stessi dati di un servizio già esistente. Per creare una nuovo servizio, assicurati di differenziare almeno un’informazione, per esempio il nome o la descrizione")
+	,S10("Il servizio che vuoi creare riporta gli stessi dati di un servizio già esistente per la stessa data. Per creare una nuovo servizio, assicurati di differenziare almeno un’informazione, per esempio il nome o la descrizione")
 	,S11("Errore creazione servizio")
 	
 	,SD01("Errore creazione sede")
