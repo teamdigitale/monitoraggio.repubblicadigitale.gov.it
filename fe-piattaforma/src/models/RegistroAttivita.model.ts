@@ -16,6 +16,7 @@ export interface RegistroAttivita extends TableRowI {
   isFileUpdated?: boolean;
   jobStatus: string;
   stato: string;
+  statoChip?: JSX.Element;
 }
 
 export type RegistroAttivitaWithoutID = Omit<RegistroAttivita, 'id'>;

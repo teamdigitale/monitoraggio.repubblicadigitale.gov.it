@@ -94,6 +94,9 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
         const res = results[1];
         setActivityReportUUID(res.data);
         props.clearFile();
+        setTimeout(() => {
+          triggerSearch();
+        }, 2000);
       })
       .catch(() => {
         //showErrorUpload()
