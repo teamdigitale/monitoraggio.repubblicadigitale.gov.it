@@ -1,5 +1,26 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.35.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.34.17...1.35.0) (2024-09-20)
+
+
+### Features
+
+* **ms-questionario-cittadino:** aggiunto controllo unicità su nome servizio in creazione 20240918 ([32c6b48](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/32c6b48d894d445262416d72b0c18563e1512b05))
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** apertura documento e link per guida op 20240913 ([1ce1f15](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1ce1f15bae0a70f315dc5bb416ea3a55d66d18d8))
+* **fe-piattaforma:** fix controllo questionario stampabile 20240920 ([12f6e2c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/12f6e2c4755e18cc6bb75f4b1175cc4c71b9c91e))
+* **fe-piattaforma:** aggiunta didascalia a campo Provincia 20240920 ([0a62909](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0a62909f0c95f0a7a6c7b26952a9d79a1e6d2f83))
+* **fe-piattaforma:** rimozione sezioni da stampa questionario 20240918 ([bc139dc](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/bc139dca5270d708788a381517d740474ee1914b))
+* **ms-questionario-cittadino:** aggiunti controlli unicita modifica servizio 20240920 ([299dd8a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/299dd8ac930fe3a85ec3d9689973f9cf163882bf))
+* **creazione-servizio:** aggiornato errore unicita servizio 20240920 ([691d4c8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/691d4c8a60119904b65098a6be0d7defcb6eb6c1))
+* **fe-piattaforma:** fix label tabella elenco servizi 20240916 ([3fb739f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3fb739ff0b5ff2994437b5fbf55c5b820853c71b))
+* **fe-piattaforma:** nuova sezione informativa privacy volontari 20240919 ([1956aae](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1956aae7d9bca1e5b974c7b653b23bfd0eaa8bcb))
+* **fe-piattaforma:** modifica font authority schede drupal 20240920 ([d4b2d20](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d4b2d20963008f54170659c26e8f36b965cd43b6))
+* **fe-piattaforma:** allineamento card a prototipo 20240917 ([1b483bf](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1b483bfa5f3e33dd32a4b4f1ee36a78abff13859))
+
 ## [1.34.17](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.34.16...1.34.17) (2024-09-16)
 
 
