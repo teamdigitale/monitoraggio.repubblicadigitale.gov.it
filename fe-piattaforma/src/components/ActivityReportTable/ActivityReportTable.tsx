@@ -19,6 +19,7 @@ import { ProjectContext } from '../../contexts/ProjectContext';
 import { CRUDActionsI, CRUDActionTypes } from '../../utils/common';
 import { useParams } from 'react-router-dom';
 import { downloadResume } from '../../utils/csvUtils';
+import StatusChip from '../StatusChip/statusChip';
 
 const tableHeading: TableHeadingI[] = [
   {
@@ -33,8 +34,8 @@ const tableHeading: TableHeadingI[] = [
     size: 'medium',
   },
   {
-    label: 'Data e ora',
-    field: 'dataFineInserimento',
+    label: 'Data e ora avvio',
+    field: 'dataInizioInserimento',
     size: 'medium',
   },
   {
@@ -59,7 +60,7 @@ const tableHeading: TableHeadingI[] = [
   },
   {
     label: 'Stato',
-    field: 'stato',
+    field: 'statoChip',
     size: 'medium',
   },
 ];
@@ -90,19 +91,29 @@ const ActivityReportTable = forwardRef(function ActivityReportTable(
           enteId ? parseInt(enteId) : projectContext!.idEnte
         )
         .then((res) => {
-          // mappo gli stati per inserirli in tabella in modo semplificato ('IN CORSO', 'COMPLETATO', 'NON COMPLETATO')
+          // mappo gli stati per inserirli in tabella in modo semplificato ('IN CORSO', 'COMPLETATO', 'FALLITO')
           const statusMap: { [key: string]: string } = {
             IN_PROGRESS: 'IN CORSO',
             SUCCESS: 'COMPLETATO',
-            FAIL_MONGO: 'NON COMPLETATO',
-            FAIL_S3_API: 'NON COMPLETATO',
-            'FAIL-S3_UPLOAD': 'NON COMPLETATO',
-            GENERIC_FAIL: 'NON COMPLETATO'
+            FAIL_MONGO: 'FALLITO',
+            FAIL_S3_API: 'FALLITO',
+            'FAIL-S3_UPLOAD': 'FALLITO',
+            GENERIC_FAIL: 'FALLITO'
           };  
-          const updatedContent = res.data.content.map((item: RegistroAttivita) => ({
-            ...item,
-            stato: statusMap[item.jobStatus] || item.stato
-          }));
+          const updatedContent = res.data.content.map((item: RegistroAttivita) => {
+            const updatedItem = {
+              ...item,
+              stato: statusMap[item.jobStatus] || item.stato,
+              statoChip: <StatusChip status={statusMap[item.jobStatus] || item.stato} />,
+            };
+            if (statusMap[item.jobStatus] === 'FALLITO') {
+              updatedItem.cittadiniAggiunti = 0;
+              updatedItem.serviziAcquisiti = 0;
+              updatedItem.totaleRigheFile = 0;
+              updatedItem.righeScartate = 0;
+            }
+            return updatedItem;
+          });
           setPagination({ ...res.data, content: updatedContent });
         })
           .catch(() => {
