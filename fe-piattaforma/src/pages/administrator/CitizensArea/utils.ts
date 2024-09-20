@@ -51,7 +51,7 @@ export const TableHeadingServicesList: TableHeadingI[] = [
   },
   {
     field: 'data',
-    label: 'data',
+    label: 'data creazione',
     //size: 'small',
   },
   /*{

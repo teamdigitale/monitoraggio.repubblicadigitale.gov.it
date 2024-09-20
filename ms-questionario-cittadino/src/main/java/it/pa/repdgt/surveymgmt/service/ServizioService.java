@@ -286,13 +286,13 @@ public class ServizioService {
 							isStessoServizio = false;
 						}
 						if (isStessoServizio) {
-							final String messaggioErrore = "Impossibile creare servizio. Servizio già presente in banca dati";
+							final String messaggioErrore = "Il servizio che vuoi creare riporta gli stessi dati di un servizio già esistente. Per creare una nuovo servizio, assicurati di differenziare almeno un’informazione, per esempio il nome o la descrizione";
 							throw new ServizioException(messaggioErrore, CodiceErroreEnum.S10);
 						} 
 					}
 				}
 			}
-	}
+		}
 		// creo SezioneQ3Mongo
 		final SezioneQ3Collection sezioneQ3Compilato = this.creaSezioneQ3(servizioRequest);
 
@@ -309,10 +309,11 @@ public class ServizioService {
 	private List<ServizioEntity> getServizioByDatiControllo(ServizioRequest servizioRequest,
 			EnteSedeProgettoFacilitatoreKey enteSedeProgettoFacilitatoreKey) {
 		Optional<List<ServizioEntity>> servizioOpt = servizioSqlRepository
-				.findAllByDataServizioAndDurataServizioAndTipologiaServizioAndIdEnteSedeProgettoFacilitatore(
+				.findAllByDataServizioAndDurataServizioAndTipologiaServizioAndIdEnteSedeProgettoFacilitatoreAndNome(
 						servizioRequest.getDataServizio(),
 						servizioRequest.getDurataServizio(),
-						String.join(", ", servizioRequest.getListaTipologiaServizi()), enteSedeProgettoFacilitatoreKey);
+						String.join(", ", servizioRequest.getListaTipologiaServizi()), enteSedeProgettoFacilitatoreKey,
+						servizioRequest.getNomeServizio());
 		if (servizioOpt.isPresent() && !servizioOpt.get().isEmpty()) {
 			List<ServizioEntity> listaServizi = servizioOpt.get();
 			return listaServizi;
@@ -356,20 +357,17 @@ public class ServizioService {
 		final String codiceFiscaletenteLoggato = servizioDaAggiornareRequest.getCfUtenteLoggato();
 		final String ruoloUtenteLoggato = servizioDaAggiornareRequest.getCodiceRuoloUtenteLoggato().toString();
 
-		String nomeServizio = servizioDaAggiornareRequest.getNomeServizio();
-		Optional<ServizioEntity> servizioDBFetch = this.servizioSQLService.getServizioByNomeUpdate(nomeServizio,
-				idServizioDaAggiornare);
-		if (servizioDBFetch.isPresent()) {
-			final String messaggioErrore = String
-					.format("Impossibile aggiornare il servizio. Servizio con nome=%s già esistente", nomeServizio);
-			throw new ServizioException(messaggioErrore, CodiceErroreEnum.S08);
-		}
-
 		if (!this.utenteService.isUtenteFacilitatore(codiceFiscaletenteLoggato, ruoloUtenteLoggato)) {
 			final String messaggioErrore = String.format(
 					"Impossibile aggiornare servizio. Utente con codice fiscale '%s' non ha ruolo FACILITATORE",
 					codiceFiscaletenteLoggato);
 			throw new ServizioException(messaggioErrore, CodiceErroreEnum.S05);
+		}
+
+		ProgettoEntity progettoServizio = progettoService.getProgettoById(servizioDaAggiornareRequest.getIdProgetto());
+		if(servizioDaAggiornareRequest.getDataServizio().before(progettoServizio.getDataInizioProgetto()) || servizioDaAggiornareRequest.getDataServizio().after(progettoServizio.getDataFineProgetto())){
+			final String messaggioErrore = "Impossibile creare servizio. La data del servizio deve essere compresa fra la data di inizio e data di fine progetto";
+			throw new ServizioException(messaggioErrore, CodiceErroreEnum.A06);
 		}
 
 		// Aggiorno servizio su MySql

@@ -104,7 +104,7 @@ const FormServiceCitizenBase: React.FC<FormEnteGestoreProgettoFullInterface> = (
             }  `}
             onInputChange={onInputDataChange}
           />
-          <Input
+          {/* <Input
             {...form?.tipoDocumento}
             placeholder='Tipo documento'
             onInputChange={onInputDataChange}
@@ -121,7 +121,7 @@ const FormServiceCitizenBase: React.FC<FormEnteGestoreProgettoFullInterface> = (
                 : 'Numero Documento non presente'
             }  `}
             onInputChange={onInputDataChange}
-          />
+          /> */}
           <Input
             {...form?.genere}
             placeholder='Genere'
@@ -185,18 +185,18 @@ const form = newForm([
     type: 'text',
     label: 'Codice fiscale',
   }),
-  newFormField({
-    field: 'tipoDocumento',
-    type: 'text',
-    id: 'tipoDocumento',
-    label: 'Tipo documento',
-  }),
-  newFormField({
-    field: 'numeroDocumento',
-    id: 'numeroDocumento',
-    type: 'text',
-    label: 'Numero documento',
-  }),
+  // newFormField({
+  //   field: 'tipoDocumento',
+  //   type: 'text',
+  //   id: 'tipoDocumento',
+  //   label: 'Tipo documento',
+  // }),
+  // newFormField({
+  //   field: 'numeroDocumento',
+  //   id: 'numeroDocumento',
+  //   type: 'text',
+  //   label: 'Numero documento',
+  // }),
   newFormField({
     field: 'genere',
     id: 'genere',

@@ -138,7 +138,7 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
               : 'Codice fiscale non presente'
           }
         />
-        <Input
+        {/* <Input
           {...form?.['3']}
           placeholder={`${form?.['3']?.label}`}
           onInputChange={onInputDataChange}
@@ -155,7 +155,7 @@ const FormCitizen: React.FC<FormEnteGestoreProgettoFullInterface> = (props) => {
               ? 'Documento disponibile ma non visualizzabile'
               : 'Documento non presente'
           }
-        />
+        /> */}
         <Input
           {...form?.['5']}
           placeholder={`${form?.['5']?.label}`}
@@ -218,20 +218,20 @@ const form = newForm([
     field: '2',
     label: 'Codice fiscale',
   }),
-  newFormField({
-    keyBE: 'tipoDocumento',
-    id: '3',
-    field: '3',
-    label: 'Tipo documento',
-    type: 'text',
-  }),
-  newFormField({
-    keyBE: 'numeroDocumento',
-    id: '4',
-    field: '4',
-    label: 'Numero documento',
-    type: 'text',
-  }),
+  // newFormField({
+  //   keyBE: 'tipoDocumento',
+  //   id: '3',
+  //   field: '3',
+  //   label: 'Tipo documento',
+  //   type: 'text',
+  // }),
+  // newFormField({
+  //   keyBE: 'numeroDocumento',
+  //   id: '4',
+  //   field: '4',
+  //   label: 'Numero documento',
+  //   type: 'text',
+  // }),
   newFormField({
     keyBE: 'genere',
     id: '5',

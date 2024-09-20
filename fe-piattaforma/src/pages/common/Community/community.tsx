@@ -32,7 +32,7 @@ import useGuard from '../../../hooks/guard';
 const categoryDropdownLabel = 'categories';
 
 const TopicCta = {
-  textCta: 'Crea argormento',
+  textCta: 'Crea argomento',
   iconCta: 'it-plus',
 };
 

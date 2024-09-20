@@ -3,7 +3,7 @@ import { TableRowI } from '../components/Table/table';
 export interface RegistroAttivita extends TableRowI {
   id: number;
   operatore: string;
-  dataInserimento?: string;
+  dataFineInserimento?: string;
   totaleRigheFile: number;
   righeScartate: number;
   serviziAcquisiti: number;
@@ -15,6 +15,7 @@ export interface RegistroAttivita extends TableRowI {
   fileName: string;
   isFileUpdated?: boolean;
   jobStatus: string;
+  stato: string;
 }
 
 export type RegistroAttivitaWithoutID = Omit<RegistroAttivita, 'id'>;

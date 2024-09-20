@@ -1,5 +1,142 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.331](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.330...1.0.0-test.331) (2024-09-19)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** nuova sezione informativa privacy volontari 20240919 ([652ba42](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/652ba423302cf65128585773150ffe4464f27df0))
+
+## [1.0.0-test.330](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.329...1.0.0-test.330) (2024-09-19)
+
+
+### Features
+
+* **ms-questionario-cittadino:** aggiunto controllo unicità su nome servizio in creazione 20240918 ([fd03097](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fd0309783906242790a55eb8f09b0363947ac391))
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** rimozione sezioni da stampa questionario 20240918 ([49a36d2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/49a36d26e291c07952ea652296eff78877ce09dc))
+* **fe-piattaforma:** rimozione colore background searchbar 20240919 ([2ddb7f3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2ddb7f3823cc9aa5e5b58870f5882fb348dcf27f))
+* **fe-piattaforma:** allineamento modale aggiungi cittadino a figma 20240918 ([37dc18c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/37dc18c13c8140456b8652e4aede79c86e361141))
+
+## [1.0.0-test.329](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.328...1.0.0-test.329) (2024-09-17)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** allineamento card a prototipo 20240917 ([0ec3934](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0ec3934c7d00e31cc84a3b61fb9a77ab9d936448))
+
+## [1.0.0-test.328](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.327...1.0.0-test.328) (2024-09-17)
+
+
+### Bug Fixes
+
+* **upgrade-massivo:** fix bug upgrade caricamento massivo 20240917 ([f0f1236](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f0f1236656026580c4754458aefc337df2542f67))
+
+## [1.0.0-test.327](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.326...1.0.0-test.327) (2024-09-16)
+
+
+### Features
+
+* **upgrade-caricamento-massivo:** upgrade caricamento massivo 20240913 ([d56d324](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d56d32494617f3faa61e5ffa32d4ca9db4351cd7))
+* **ms-questionario-cittadino:** aggiornata tabella registro attivita ([62941bc](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/62941bcd89111e2a1c20ced8dc5c63b235187744))
+* **fe-piattaforma:** aggiornata tabella registro attivita ([63587b4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/63587b47e014a950b7c4b6c9646a9caf5a792a6f))
+
+## [1.0.0-test.326](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.325...1.0.0-test.326) (2024-09-16)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** apertura documento e link per guida op 20240913 ([0e2d64d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0e2d64de8c2002e053962341aa3ae86ef674ee01))
+* **fe-piattaforma:** fix label tabella elenco servizi 20240916 ([c639965](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c6399659f32fda29b8d74c1b23ecfa40f6472a78))
+* **fe-piattaforma:** fix modale aggiungi cittadino 20240913 ([0ee9d59](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0ee9d59a6d97cec6e549fa32f6335108664bc7f9))
+
+## [1.0.0-test.325](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.324...1.0.0-test.325) (2024-09-11)
+
+
+### Features
+
+* **ms-questionario-cittadino:** update column name dataFineInserimento ([e698a60](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e698a60236719fbd30eabae0d745c62d70821428))
+
+## [1.0.0-test.324](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.323...1.0.0-test.324) (2024-09-10)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** nascosto caricamento massivo SCD 20240906 ([555b475](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/555b47528cdbe9e3b5a758363e3cf774c6d7cb9f))
+* **fe-piattaforma:** allineati campi select/checkbox/text ([872eed4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/872eed43c4949564742ef6c0557223d6c2cb9b8f))
+
+## [1.0.0-test.323](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.322...1.0.0-test.323) (2024-09-06)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** configurazione dashboard per enti partner 20240906 ([6129480](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6129480d4b056e611a234a0483e8ff8dd6749bdd))
+
+## [1.0.0-test.322](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.321...1.0.0-test.322) (2024-09-05)
+
+
+### Bug Fixes
+
+* **ms-questionario-cittadino:** fix modifica controllo data scadenza servizio ([7389e0b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7389e0bb17d1bf964faaf23d601235b8981e17ea))
+* **ms-questionario-cittadino:** fix query syntax ([d210a37](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d210a377861be6f865a56421e1c0bd7633913797))
+
+## [1.0.0-test.321](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.320...1.0.0-test.321) (2024-09-04)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** nuova guida operativa 20240904 ([204aa87](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/204aa87923cc9c1ff6743a6deaec4145f090ff02))
+
+## [1.0.0-test.320](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.319...1.0.0-test.320) (2024-09-03)
+
+
+### Bug Fixes
+
+* **ms-notifiche-integration:** fix controllo nomefile 20240903 ([94e0622](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/94e062298b8ab8862ead62670f25cd9c00a59c98))
+
+## [1.0.0-test.319](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.318...1.0.0-test.319) (2024-09-02)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** aggiornata data limite ins servizi ([4edd753](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4edd753338b4d87be6b277a0f6244b390c436c92))
+
+## [1.0.0-test.318](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.317...1.0.0-test.318) (2024-09-02)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** remove numero documento ricerca 20240808 ([364a456](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/364a4569e714a3bb1f58b53d68d0fbaf4706d450))
+* **fe-piattaforma:** remove field numero documento 20240808 ([24f55b3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/24f55b36c0def4565eb0d8696e804cddddb274b9))
+* **fe-piattaforma:** WIP rimozione riferimenti numero documenti 20240808 ([d1f4e12](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d1f4e12a6da13ce5dc103d0fed0d135102a52ed8))
+* **rimozione_numero_documento:** wip rimozione numero documento 20240805 ([1d6aea1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1d6aea1d6738268d2bdb567f88a64ccf99bd9240))
+* **fe-piattaforma:** fix label crea argomento 20240830 ([8616579](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8616579acfa63a459c1a3cf03db2c491b07aa6a6))
+* **fe-piattaforma:** fix click bottoni toolbar e chiamata numero items errato 20240830 ([32449f4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/32449f431c77a5b35f66c2fd2b18e8fcfe56a738))
+
+## [1.0.0-test.317](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.316...1.0.0-test.317) (2024-08-08)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** fix route caricamento dati da programma 20240809 ([1b340f2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1b340f2e790e185375d7adbc60e4679d9e63c22c))
+
+## [1.0.0-test.316](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.315...1.0.0-test.316) (2024-08-07)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** sostituzione delimitatore note 20240801 ([81f10d3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/81f10d3299e8b6a09403bcce40a34a1a63dfc466))
+* **ms-questionario-cittadino:** update error message 20240807 ([190db72](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/190db72d46460bffcf8e9514fc0766353f00ad24))
+* **fe-piattaforma:** titolo schede drupal su 2 righe 20240805" ([1e1a8d6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1e1a8d65f2221cfafb2a9bd670ed32de59006f7f))
+* **fe-piattaforma:** allineamento titoli Bacheca e Documenti 20240731 ([fdac540](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fdac5409315039205d071baa4e5c9165c37e1788))
+* **ms-questionario-cittadino:** fix EP aggiorna servizio 2 20240807 ([f050bf0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f050bf03b86cb72501dd826f42f06060ad1cde13))
+* **fe-piattaforma:** fix validazione data servizio massimo 20240807 ([1ffee23](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1ffee231ec1626ef0bb3d9bb88144468bd52138f))
+* **ms-questionario-cittadino:** fix EP aggiorna servizio 20240807 ([49f259f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/49f259f0269ba39dea8ab6767fd9b151f5bd0f64))
+* **fe-piattaforma:** aggiornata data limite ins servizi ([a0161f0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a0161f065bfe983995267b4a38d8f9973736adc6))
+
 ## [1.0.0-test.315](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.314...1.0.0-test.315) (2024-08-01)
 
 

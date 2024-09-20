@@ -1,5 +1,5 @@
 .no-results-found {
-  margin-bottom: rem(51px);
+  margin-bottom: 20px;
   gap: rem(20px);
 
   &__icon {
@@ -12,6 +12,13 @@
     color: color('grey-600');
     font-weight: 400;
   }
+
+  &__subtitle {
+    color: color('grey-600');
+    font-weight: 200;
+    font-size: 1rem;
+    margin: 30px 0;
+  }
 }
 
 .no-results-found__first-access {
@@ -20,7 +27,7 @@
   justify-content: space-between;
   box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.1);
   background: #fff;
-
+  
   .first-access-title {
     color: color('blue-500');
     font-weight: 600;

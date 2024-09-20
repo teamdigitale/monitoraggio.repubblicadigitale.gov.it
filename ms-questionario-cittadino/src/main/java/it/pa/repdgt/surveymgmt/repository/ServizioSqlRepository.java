@@ -246,7 +246,7 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 			+ "    AND s.id <> :idServizio "
 			+ "	AND s.nome = :nomeServizio"
 			+ " ", nativeQuery = true)
-	Optional<ServizioEntity> findByNomeUpdate(@Param(value = "nomeServizio") String nomeServizio,
+	List<ServizioEntity> findByNomeUpdate(@Param(value = "nomeServizio") String nomeServizio,
 			@Param(value = "idServizio") Long idServizio);
 
 	@Query(value = "SELECT DISTINCT "
@@ -324,4 +324,7 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 
 	Optional<List<ServizioEntity>> findAllByDataServizioAndDurataServizioAndTipologiaServizioAndIdEnteSedeProgettoFacilitatore(Date dataServizio,
 		String durataServizio, String tipologiaServizio, EnteSedeProgettoFacilitatoreKey enteSedeProgettoFacilitatoreKey);
+
+	Optional<List<ServizioEntity>> findAllByDataServizioAndDurataServizioAndTipologiaServizioAndIdEnteSedeProgettoFacilitatoreAndNome(Date dataServizio,
+		String durataServizio, String tipologiaServizio, EnteSedeProgettoFacilitatoreKey enteSedeProgettoFacilitatoreKey, String nome);
 }

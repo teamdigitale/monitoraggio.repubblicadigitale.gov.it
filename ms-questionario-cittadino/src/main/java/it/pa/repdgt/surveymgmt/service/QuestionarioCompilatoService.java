@@ -98,7 +98,6 @@ public class QuestionarioCompilatoService {
 			throw new ServizioException("Il questionario risulta già compilato", CodiceErroreEnum.Q02);
 
 		if (!cittadinoService.getCittadinoPerCfOrNumDoc(questionarioCompilatoRequest.getCodiceFiscaleDaAggiornare(),
-				questionarioCompilatoRequest.getNumeroDocumentoDaAggiornare(),
 				questionarioCompilatoEntity.get().getCittadino().getId()).isEmpty()) {
 			String errorMessage = String.format(
 					"Impossibile aggiornare il cittadino. Cittadino con codice fiscale o numero documento già esistente");
@@ -111,18 +110,16 @@ public class QuestionarioCompilatoService {
 			// - numero documento del cittadino che sta compilando il questionario
 			String codiceFiscaleCittadino = questionarioCompilatoRequest.getConsensoTrattamentoDatiRequest()
 					.getCodiceFiscaleCittadino();
-			String numeroDocumentoCittadino = questionarioCompilatoRequest.getConsensoTrattamentoDatiRequest()
-					.getNumeroDocumentoCittadino();
 
 			// Verifico il consenso trattamento dati per il cittadino e in caso non lo abbia
 			// già dato,
 			// lo registro per la prima volta. Ovvero salvo l'informazione sulla tabella
 			// Cittadino
-			this.verificaEseguiESalvaConsensoTrattamentoDati(codiceFiscaleCittadino, numeroDocumentoCittadino);
+			this.verificaEseguiESalvaConsensoTrattamentoDati(codiceFiscaleCittadino);
 
 			// Recupero il cittadino e lo aggiorno i nuovi dati provenienti dalla request
 			Optional<CittadinoEntity> optionalCittadinoDBFetch = this.cittadinoService
-					.getByCodiceFiscaleOrNumeroDocumento(codiceFiscaleCittadino, numeroDocumentoCittadino);
+					.getCittadinoByCodiceFiscale(codiceFiscaleCittadino);
 
 			optionalCittadinoDBFetch.ifPresent(cittadino -> {
 				cittadino.setDataOraAggiornamento(new Date());
@@ -133,6 +130,8 @@ public class QuestionarioCompilatoService {
 		final QuestionarioCompilatoEntity questionarioCompilatoDBMySqlFetch = questionarioCompilatoEntity.get();
 		questionarioCompilatoDBMySqlFetch.setStato(StatoQuestionarioEnum.COMPILATA.getValue());
 		questionarioCompilatoDBMySqlFetch.setDataOraAggiornamento(new Date());
+		if(questionarioCompilatoRequest.getCodInserimento() != null)
+			questionarioCompilatoDBMySqlFetch.setCodInserimento(questionarioCompilatoRequest.getCodInserimento());
 		this.questionarioCompilatoSQLRepository.save(questionarioCompilatoDBMySqlFetch);
 
 		final QuestionarioCompilatoCollection questionarioCompilatoDBMongoFetch = questionarioCompilatoCollection.get();
@@ -185,8 +184,7 @@ public class QuestionarioCompilatoService {
 		// già dato,
 		// lo registro per la prima volta. Ovvero salvo l'informazione sulla tabella
 		// Cittadino
-		this.verificaEseguiESalvaConsensoTrattamentoDatiPerAnonimo(questionarioInviato.getCodiceFiscale(),
-				questionarioInviato.getNumDocumento(), q1);
+		this.verificaEseguiESalvaConsensoTrattamentoDatiPerAnonimo(questionarioInviato.getCodiceFiscale(), q1);
 		// Aggiorno questionarioCompilato MySQl
 		final QuestionarioCompilatoEntity questionarioCompilatoDBMySqlFetch = questionarioCompilatoEntity;
 		questionarioCompilatoDBMySqlFetch.setStato(StatoQuestionarioEnum.COMPILATA.getValue());
@@ -224,14 +222,13 @@ public class QuestionarioCompilatoService {
 	@LogMethod
 	@LogExecutionTime
 	@Transactional(rollbackFor = Exception.class)
-	public void verificaEseguiESalvaConsensoTrattamentoDatiPerAnonimo(String codiceFiscaleCittadino,
-			String numeroDocumento, DatiIstanza q1) {
+	public void verificaEseguiESalvaConsensoTrattamentoDatiPerAnonimo(String codiceFiscaleCittadino, DatiIstanza q1) {
 		String q1Text = ((JsonObject) q1.getDomandaRisposta()).toString();
 		// Se cittadino non ha mai dato il consenso, allora devo eseguire operazioni per
 		// la registrazione del consenso dati
-		if (!this.consensoCittadinoGiaDatoByCodiceFiscaleCittadino(codiceFiscaleCittadino, numeroDocumento)) {
+		if (!this.consensoCittadinoGiaDatoByCodiceFiscaleCittadino(codiceFiscaleCittadino)) {
 			CittadinoEntity cittadinoDBFetch = this.cittadinoService
-					.getByCodiceFiscaleOrNumeroDocumento(codiceFiscaleCittadino, numeroDocumento).get();
+					.getCittadinoByCodiceFiscale(codiceFiscaleCittadino).get();
 			Date dateNow = new Date();
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			q1Text = q1Text.replace("$dataConsenso", sdf.format(dateNow));
@@ -247,12 +244,12 @@ public class QuestionarioCompilatoService {
 	@LogMethod
 	@LogExecutionTime
 	@Transactional(rollbackFor = Exception.class)
-	public void verificaEseguiESalvaConsensoTrattamentoDati(String codiceFiscaleCittadino, String numeroDocumento) {
+	public void verificaEseguiESalvaConsensoTrattamentoDati(String codiceFiscaleCittadino) {
 		// Se cittadino non ha mai dato il consenso, allora devo eseguire operazioni per
 		// la registrazione del consenso dati
-		if (!this.consensoCittadinoGiaDatoByCodiceFiscaleCittadino(codiceFiscaleCittadino, numeroDocumento)) {
+		if (!this.consensoCittadinoGiaDatoByCodiceFiscaleCittadino(codiceFiscaleCittadino)) {
 			CittadinoEntity cittadinoDBFetch = this.cittadinoService
-					.getByCodiceFiscaleOrNumeroDocumento(codiceFiscaleCittadino, numeroDocumento).get();
+					.getCittadinoByCodiceFiscale(codiceFiscaleCittadino).get();
 			Date dateNow = new Date();
 
 			cittadinoDBFetch.setDataOraAggiornamento(dateNow);
@@ -263,10 +260,8 @@ public class QuestionarioCompilatoService {
 		}
 	}
 
-	private boolean consensoCittadinoGiaDatoByCodiceFiscaleCittadino(String codiceFiscaleCittadino,
-			String numeroDocumento) {
-		return this.cittadinoService.getConsensoByCodiceFiscaleCittadinoOrNumeroDocumento(codiceFiscaleCittadino,
-				numeroDocumento) != null;
+	private boolean consensoCittadinoGiaDatoByCodiceFiscaleCittadino(String codiceFiscaleCittadino) {
+		return this.cittadinoService.getConsensoByCodiceFiscaleCittadino(codiceFiscaleCittadino) != null;
 	}
 
 	@LogMethod

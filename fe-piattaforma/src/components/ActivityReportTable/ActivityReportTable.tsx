@@ -34,7 +34,7 @@ const tableHeading: TableHeadingI[] = [
   },
   {
     label: 'Data e ora',
-    field: 'dataInserimento',
+    field: 'dataFineInserimento',
     size: 'medium',
   },
   {
@@ -55,6 +55,11 @@ const tableHeading: TableHeadingI[] = [
   {
     label: 'Cittadini Beneficiari',
     field: 'cittadiniAggiunti',
+    size: 'medium',
+  },
+  {
+    label: 'Stato',
+    field: 'stato',
     size: 'medium',
   },
 ];
@@ -84,7 +89,22 @@ const ActivityReportTable = forwardRef(function ActivityReportTable(
           parseInt(projectId),
           enteId ? parseInt(enteId) : projectContext!.idEnte
         )
-          .then((res) => setPagination(res.data))
+        .then((res) => {
+          // mappo gli stati per inserirli in tabella in modo semplificato ('IN CORSO', 'COMPLETATO', 'NON COMPLETATO')
+          const statusMap: { [key: string]: string } = {
+            IN_PROGRESS: 'IN CORSO',
+            SUCCESS: 'COMPLETATO',
+            FAIL_MONGO: 'NON COMPLETATO',
+            FAIL_S3_API: 'NON COMPLETATO',
+            'FAIL-S3_UPLOAD': 'NON COMPLETATO',
+            GENERIC_FAIL: 'NON COMPLETATO'
+          };  
+          const updatedContent = res.data.content.map((item: RegistroAttivita) => ({
+            ...item,
+            stato: statusMap[item.jobStatus] || item.stato
+          }));
+          setPagination({ ...res.data, content: updatedContent });
+        })
           .catch(() => {
             setPagination(null);
           })

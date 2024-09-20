@@ -38,4 +38,6 @@ public class QuestionarioCompilatoRequest extends SceltaProfiloParam implements 
 	private String titoloDiStudioDaAggiornare;
 	private String occupazioneDaAggiornare;
 	private String cittadinanzaDaAggiornare;
+
+	private String codInserimento;
 }

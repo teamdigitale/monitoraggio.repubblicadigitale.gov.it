@@ -95,8 +95,10 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
         setActivityReportUUID(res.data);
         props.clearFile();
       })
-      .catch(() => 
-        showErrorUpload());
+      .catch(() => {
+        //showErrorUpload()
+        handleCloseModal()
+    });
   }
   }, [
     dataUploadContext?.parsedData,

@@ -371,6 +371,16 @@ const AreaAmministrativaRoutes = [
     element={<AuthoritiesDetails />}
   />,
   <Route
+  key='programmi-dettaglio-progetti-dettaglio-enti-partner-caricamento-dati'
+  path='programmi/:entityId/progetti/:projectId/enti-partner/:authorityId/caricamento-dati'
+  element={<AuthoritiesDetails />}
+  />,
+  <Route
+  key='programmi-dettaglio-progetti-dettaglio-ente-gestore-caricamento-dati'
+  path='programmi/:entityId/progetti/:projectId/ente-gestore-progetto/caricamento-dati'
+  element={<ProjectsDetails />}
+  />,
+  <Route
     key='progetti-dettaglio-enti'
     path='progetti/:projectId/:authorityType/:authorityId'
     element={<AuthoritiesDetails />}

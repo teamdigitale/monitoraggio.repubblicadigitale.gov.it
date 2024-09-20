@@ -12,8 +12,6 @@ public class DettaglioCittadinoBean implements Serializable {
 
 	private Long id;
 	private String codiceFiscale;
-	private String tipoDocumento;
-	private String numeroDocumento;
 	private String genere;
 	private Long fasciaDiEta;
 	private String titoloStudio;
