@@ -65,7 +65,21 @@ const PrintSurvey: React.FC = () => {
     section: PrintSuveySectionI
   ) => {
     //18/09/2024 NASCOSTE SEZIONI FASCIA DI ETA' E GENERE DA STAMPA PER ADEGUAMENTO
-    if(!(['5','6'].includes(question.id as string)))
+    if (!(['5', '6'].includes(question.id as string)))
+
+      if (question.id === '9') {
+        const didascalia = <span style={{ fontWeight: 'normal' }}>(scrivere la Provincia per esteso)</span>;
+        const updatedQuestion = {
+          ...question,
+          title: (
+            <>
+              {question.title} {didascalia}
+            </>
+          ),
+        };
+        question = updatedQuestion;
+      }
+
     switch (question.type) {
       case 'range':
         return <PrintFieldRating info={question} className={classQuestion} />;
