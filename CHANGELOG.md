@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.333](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.332...1.0.0-test.333) (2024-09-20)
+
+
+### Bug Fixes
+
+* **ms-questionario-cittadino:** aggiunti controlli unicita modifica servizio 20240920 ([2a4f45c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2a4f45c37ca7e22f1cb27018c85c3b919e1fbf12))
+* **fe-piattaforma:** fix controllo questionario stampabile 20240920 ([7f851ae](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7f851ae0f229d5b112601b8f307c8f806bcf927c))
+
 ## [1.0.0-test.332](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.331...1.0.0-test.332) (2024-09-20)
 
 
