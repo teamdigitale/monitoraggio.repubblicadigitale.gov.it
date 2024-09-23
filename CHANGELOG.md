@@ -1,5 +1,18 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.334](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.333...1.0.0-test.334) (2024-09-23)
+
+
+### Features
+
+* **fe-piattaforma:** polling tabella registro attivita ([57959cb](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/57959cb5bf6595df082ba7d547a31f2c2c81e13d))
+* **fe-piattaforma:** update tabella caricamento massivo ([5bdd720](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5bdd720cd421a18d8a6a27d78696bed8ac8f78bf))
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** update descrizioni errori 20240923 ([b6eed33](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b6eed33f68eff51c9ea349f075c9d32c45aaacfb))
+
 ## [1.0.0-test.333](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.332...1.0.0-test.333) (2024-09-20)
 
 
