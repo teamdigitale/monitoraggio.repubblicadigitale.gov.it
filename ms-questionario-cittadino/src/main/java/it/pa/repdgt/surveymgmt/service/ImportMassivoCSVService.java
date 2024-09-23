@@ -6,7 +6,6 @@ import it.pa.repdgt.shared.entity.*;
 import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
 import it.pa.repdgt.shared.entityenum.JobStatusEnum;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
-import it.pa.repdgt.shared.exception.BaseException;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.surveymgmt.collection.SezioneQ3Collection;
 import it.pa.repdgt.surveymgmt.components.ServiziElaboratiCsvWriter;
@@ -47,7 +46,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -378,7 +376,10 @@ public class ImportMassivoCSVService {
                         for(ServizioXCittadinoEntity servizioXCittadinoEntity : servizioXCittadinoList){
                             ServizioEntity servizioActual = servizioSqlRepository.getReferenceById(servizioXCittadinoEntity.getId().getIdServizio());
                             isStessoServizio = checkUguaglianzaServizio(servizioActual, servizioElaborato);
-                            // Se si blocco, rollback
+                            if(isStessoServizio){
+                                // servizio_x_cittadino duplicato, rollback
+                                throw new CittadinoException(NoteCSV.NOTE_CITTADINO_PRESENTE, CodiceErroreEnum.U23);
+                            }
                             // Se no vado avanti
 
                         }
