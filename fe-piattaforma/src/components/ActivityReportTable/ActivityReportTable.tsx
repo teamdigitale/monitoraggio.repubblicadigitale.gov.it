@@ -87,6 +87,7 @@ const ActivityReportTable = forwardRef(function ActivityReportTable(
         dispatch(showLoader());
         searchActivityReport(
           newPage - 1,
+          10,
           parseInt(projectId),
           enteId ? parseInt(enteId) : projectContext!.idEnte
         )
@@ -127,6 +128,12 @@ const ActivityReportTable = forwardRef(function ActivityReportTable(
 
   useEffect(() => {
     searchReports(1);
+  
+    const interval = setInterval(() => {
+      searchReports(1);
+    }, 30000);
+  
+    return () => clearInterval(interval);
   }, [projectId]);
 
   useImperativeHandle(
