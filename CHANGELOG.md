@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.35.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.35.0...1.35.1) (2024-09-24)
+
+
+### Bug Fixes
+
+* **terminazione-utente:** migliorati controlli terminazione utente 20240924 ([5f8aecf](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5f8aecf02219031a570675676389c1ca0fd2bdcb))
+
 ## [1.35.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.34.17...1.35.0) (2024-09-20)
 
 
