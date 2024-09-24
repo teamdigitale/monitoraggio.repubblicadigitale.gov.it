@@ -1,5 +1,21 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.335](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.334...1.0.0-test.335) (2024-09-24)
+
+
+### Features
+
+* **caricamento-excel:** gestione rollback per caricamento SCD 20240923 ([c638f08](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c638f086a081c269fc1454ec316f10157393f4fb))
+* **caricamento-massivo-excel:** aggiunta estensione file caricamento in registro attivita 20240919 ([fad5ba5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fad5ba58ce5795cdeade858db2f9ed736f015592))
+* **caricamento-excel:** WIP controlli BE unicita servizio cittadino 20240919 ([1576d7c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1576d7c0350ce475c60d1306621f802490b0ca16))
+* **fe-piattaforma:** caricamento massivo excel 20240918 ([28f462a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/28f462acb3b1c1c84131ad853255a58763554e01))
+* **fe-piattaforma:** WIP caricamento massivo EXCEL 20240913 ([facb912](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/facb9125e344fb94f18a9e2882c4cb6f8ee775d8))
+
+
+### Bug Fixes
+
+* **terminazione-utente:** migliorati controlli terminazione utente 20240924 ([1f79ff9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1f79ff9dec31895dca464a996f287bf32f4e4aae))
+
 ## [1.0.0-test.334](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.333...1.0.0-test.334) (2024-09-23)
 
 
