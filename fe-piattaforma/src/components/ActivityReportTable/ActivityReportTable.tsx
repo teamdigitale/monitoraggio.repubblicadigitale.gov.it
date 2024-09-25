@@ -82,9 +82,10 @@ const ActivityReportTable = forwardRef(function ActivityReportTable(
   const { projectId, enteId } = useParams();
 
   const searchReports = useCallback(
-    (newPage: number) => {
+    (newPage: number, showLoaderFlag = true) => {
       if (projectId && (enteId || projectContext)) {
-        dispatch(showLoader());
+        if(showLoaderFlag)
+          dispatch(showLoader());
         searchActivityReport(
           newPage - 1,
           10,
@@ -130,7 +131,7 @@ const ActivityReportTable = forwardRef(function ActivityReportTable(
     searchReports(1);
   
     const interval = setInterval(() => {
-      searchReports(1);
+      searchReports(1, false);
     }, 30000);
   
     return () => clearInterval(interval);

@@ -5,6 +5,7 @@ import {
   Icon,
   Label,
   Table as TableKit,
+  Tooltip,
   UncontrolledTooltip,
 } from 'design-react-kit';
 import clsx from 'clsx';
@@ -186,9 +187,8 @@ const TableDesktop: React.FC<TableI> = (props) => {
                       <Button
                         onClick={() => onActionClick[CRUDActionTypes.EDIT](td)}
                         className='mr-4 p-0'
-                        aria-label={`Modifica ${
-                          td?.nome || td?.label || td?.name
-                        }`}
+                        aria-label={`Modifica ${td?.nome || td?.label || td?.name
+                          }`}
                       >
                         <Icon
                           icon='it-pencil'
@@ -209,9 +209,8 @@ const TableDesktop: React.FC<TableI> = (props) => {
                           onActionClick[CRUDActionTypes.DELETE](td)
                         }
                         className='mr-4 p-0'
-                        aria-label={`Elimina ${
-                          td?.nome || td?.label || td?.name
-                        }`}
+                        aria-label={`Elimina ${td?.nome || td?.label || td?.name
+                          }`}
                       >
                         <Icon
                           icon='it-less-circle'
@@ -230,9 +229,8 @@ const TableDesktop: React.FC<TableI> = (props) => {
                       <Button
                         onClick={() => onActionClick[CRUDActionTypes.CLONE](td)}
                         className='mr-4 p-0'
-                        aria-label={`Clona ${
-                          td?.nome || td?.label || td?.name
-                        }`}
+                        aria-label={`Clona ${td?.nome || td?.label || td?.name
+                          }`}
                       >
                         <Icon
                           icon='it-copy'
@@ -254,9 +252,8 @@ const TableDesktop: React.FC<TableI> = (props) => {
                             onActionClick[CRUDActionTypes.VIEW](td)
                           }
                           className='p-0'
-                          aria-label={`Vai al dettaglio di ${
-                            td?.nome || td?.label || td?.name
-                          }`}
+                          aria-label={`Vai al dettaglio di ${td?.nome || td?.label || td?.name
+                            }`}
                         >
                           <Icon
                             icon='it-chevron-right'
@@ -271,7 +268,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
                     ) : null}
                     {(
                       td.actions &&
-                      td.jobStatus === "SUCCESS" && 
+                      td.jobStatus === "SUCCESS" &&
                       td.actions
                         .toString()
                         .includes(CRUDActionTypes.DOWNLOAD)
@@ -292,12 +289,25 @@ const TableDesktop: React.FC<TableI> = (props) => {
                           aria-hidden
                         />
                       </Button>
-                    ) : null}
+                    ) :
+                      <Button
+                        className='p-0'
+                        aria-label='Informazioni'
+                        title='Caricamento fallito'
+                      >
+                        <Icon
+                          icon='it-info-circle'
+                          color='primary'
+                          aria-label='Info'
+                          aria-hidden
+                        />
+                      </Button>
+                    }
                   </div>
                 </td>
               ) : null}
               {((onTooltipInfo || td?.onTooltipInfo) && td?.isPresentInList) ||
-              td?.failedCSV ? (
+                td?.failedCSV ? (
                 <td id={`tooltip-${td.id}-${i}`}>
                   <div className='d-inline-flex position-relative'>
                     <UncontrolledTooltip
