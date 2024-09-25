@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.339](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.338...1.0.0-test.339) (2024-09-25)
+
+
+### Bug Fixes
+
+* **caricamento-excel:** fix caricamento excel be 20240925 ([ce54cdd](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ce54cdd9b5eb4bfe40689f871246ee55e371d034))
+
 ## [1.0.0-test.338](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.337...1.0.0-test.338) (2024-09-25)
 
 
