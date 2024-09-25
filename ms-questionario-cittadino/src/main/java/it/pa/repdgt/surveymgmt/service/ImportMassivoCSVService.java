@@ -401,13 +401,18 @@ public class ImportMassivoCSVService {
                 idQuestionario = nuovoCittadinoDTO.getCittadinoEntity().getQuestionarioCompilato().get(0).getId();
                 if(!nuovoCittadinoDTO.isNuovoCittadino() && policy.equals(PolicyEnum.SCD)){
                     // Se cittadino non è stato appena inserito, controllare che esso non sia associato ad un servizio identico a quello appena inserito
-                    List<ServizioXCittadinoEntity> servizioXCittadinoList = servizioXCittadinoRepository.findById_IdCittadino(nuovoCittadinoDTO.getCittadinoEntity().getId());
-                    if(CollectionUtils.isNotEmpty(servizioXCittadinoList)){
+                    // recuperando su MySQL i servizi a lui associato che combaciano con le caratteristiche
+                    ServizioRequest servizioRequest = servizioElaborato.getServizioRequest();
+                    EnteSedeProgettoFacilitatoreEntity enteSedeProgettoFacilitatore = enteSedeProgettoFacilitatoreRepository.existsByChiave(
+                        servizioRequest.getCfUtenteLoggato(),
+                        servizioRequest.getIdEnteServizio(),
+                        servizioRequest.getIdProgetto(),
+                        servizioRequest.getIdSedeServizio());
+                    List<ServizioEntity> listaServizi = getServizioByDatiControlloPerSingoloCittadino(servizioElaborato.getServizioRequest(), enteSedeProgettoFacilitatore.getId(), nuovoCittadinoDTO.getCittadinoEntity().getId());
+                    if(CollectionUtils.isNotEmpty(listaServizi)){
                         // controllare uguaglianza per ogni servizio con servizio appena inserito
                         Boolean isStessoServizio = false;
-                        for(ServizioXCittadinoEntity servizioXCittadinoEntity : servizioXCittadinoList){
-                            Optional<ServizioEntity> servizioActualOpt = servizioSqlRepository.findById(servizioXCittadinoEntity.getId().getIdServizio());
-                            ServizioEntity servizioEntity = servizioActualOpt.get();
+                        for(ServizioEntity servizioEntity : listaServizi){                           
                             isStessoServizio = checkUguaglianzaServizio(servizioEntity, servizioElaborato);
                             if(isStessoServizio){
                                 // servizio_x_cittadino duplicato, rollback
@@ -710,19 +715,19 @@ public class ImportMassivoCSVService {
         restTemplateS3Service.uploadDocument(presignedUrl, elaboratoCSVResponse.getFileContent());
     }
 
-    private boolean controllaDataServizioProgettoValida(Optional<ServizioEntity> servizioOpt,
-            ServiziElaboratiDTO servizioElaborato, Optional<ProgettoEntity> progettoEntity) {
-        if (servizioOpt.isPresent()) {
-            ServizioEntity servizio = servizioOpt.get();
-            return servizio.getDataServizio().after(progettoEntity.get().getDataInizioProgetto()) &&
-                    servizio.getDataServizio().before(progettoEntity.get().getDataFineProgetto());
-        } else {
-            return servizioElaborato.getServizioRequest().getDataServizio()
-                    .after(progettoEntity.get().getDataInizioProgetto()) &&
-                    servizioElaborato.getServizioRequest().getDataServizio()
-                            .before(progettoEntity.get().getDataFineProgetto());
-        }
-    }
+    // private boolean controllaDataServizioProgettoValida(Optional<ServizioEntity> servizioOpt,
+    //         ServiziElaboratiDTO servizioElaborato, Optional<ProgettoEntity> progettoEntity) {
+    //     if (servizioOpt.isPresent()) {
+    //         ServizioEntity servizio = servizioOpt.get();
+    //         return servizio.getDataServizio().after(progettoEntity.get().getDataInizioProgetto()) &&
+    //                 servizio.getDataServizio().before(progettoEntity.get().getDataFineProgetto());
+    //     } else {
+    //         return servizioElaborato.getServizioRequest().getDataServizio()
+    //                 .after(progettoEntity.get().getDataInizioProgetto()) &&
+    //                 servizioElaborato.getServizioRequest().getDataServizio()
+    //                         .before(progettoEntity.get().getDataFineProgetto());
+    //     }
+    // }
 
     // private String recuperaDescrizioneDaMongo(Optional<SezioneQ3Collection>
     // optSezioneQ3Collection, int index) {
@@ -815,11 +820,11 @@ public class ImportMassivoCSVService {
         return Optional.empty();
     }
 
-    private boolean existsByServizioAndEnteSedeProgettoFacilitatoreKey(Long idServizio,
-            EnteSedeProgettoFacilitatoreKey enteSedeProgettoFacilitatoreKey) {
-        return servizioSqlRepository.existsByIdAndIdEnteSedeProgettoFacilitatore(idServizio,
-                enteSedeProgettoFacilitatoreKey);
-    }
+    // private boolean existsByServizioAndEnteSedeProgettoFacilitatoreKey(Long idServizio,
+    //         EnteSedeProgettoFacilitatoreKey enteSedeProgettoFacilitatoreKey) {
+    //     return servizioSqlRepository.existsByIdAndIdEnteSedeProgettoFacilitatore(idServizio,
+    //             enteSedeProgettoFacilitatoreKey);
+    // }
 
     private ServizioEntity salvaServizio(Optional<ServizioEntity> servizioOpt, ServizioRequest servizio, String idRegistroAttivita) {
         servizio.setCodInserimento(idRegistroAttivita);
@@ -833,6 +838,22 @@ public class ImportMassivoCSVService {
                         servizioRequest.getDataServizio(),
                         servizioRequest.getDurataServizio(),
                         String.join(", ", servizioRequest.getListaTipologiaServizi()), enteSedeProgettoFacilitatoreKey);
+        if (servizioOpt.isPresent() && !servizioOpt.get().isEmpty()) {
+            List<ServizioEntity> listaServizi = servizioOpt.get();
+            return listaServizi;
+        }
+        return new ArrayList<>();
+    }
+
+    private List<ServizioEntity> getServizioByDatiControlloPerSingoloCittadino(ServizioRequest servizioRequest,
+            EnteSedeProgettoFacilitatoreKey enteSedeProgettoFacilitatoreKey, Long idCittadino) {
+        Optional<List<ServizioEntity>> servizioOpt = servizioSqlRepository
+                .findAllByDataServizioAndDurataServizioAndTipologiaServizioAndIdEnteSedeProgettoFacilitatoreAndIdCittadino(
+                        servizioRequest.getDataServizio(),
+                        servizioRequest.getDurataServizio(),
+                        String.join(", ", servizioRequest.getListaTipologiaServizi()), 
+                        enteSedeProgettoFacilitatoreKey,
+                        idCittadino);
         if (servizioOpt.isPresent() && !servizioOpt.get().isEmpty()) {
             List<ServizioEntity> listaServizi = servizioOpt.get();
             return listaServizi;
@@ -918,43 +939,6 @@ public class ImportMassivoCSVService {
 
     private Boolean checkUguaglianzaServizio(ServizioEntity servizioActual,
             ServiziElaboratiDTO servizioElaborato) {
-
-        if (!servizioElaborato.getServizioRequest().getDataServizio()
-                .equals(servizioActual.getDataServizio())) {
-            return false;
-        }
-
-        if (!servizioElaborato.getServizioRequest().getDurataServizio()
-                .equals(servizioActual.getDurataServizio())) {
-            return false;
-        }
-
-        if (!servizioElaborato.getServizioRequest().getListaTipologiaServizi().equals(
-                servizioActual.getListaTipologiaServizi())) {
-                    return false;
-        }
-
-        // if (!(servizioElaborato.getServizioRequest().getCfUtenteLoggato()
-        // .equals(servizioActual.getCfUtenteLoggato()))) {
-        // isStessoServizio = false;
-        // }
-
-        if (!(servizioElaborato.getServizioRequest().getIdEnteServizio()
-                .equals(servizioActual.getIdEnteSedeProgettoFacilitatore().getIdEnte()))) {
-            return false;
-        }
-
-        if (!(servizioElaborato.getServizioRequest().getIdProgetto()
-                .equals(servizioActual.getIdEnteSedeProgettoFacilitatore().getIdProgetto()))) {
-            return false;
-        }
-
-        if (!(servizioElaborato.getServizioRequest().getIdSedeServizio()
-                .equals(servizioActual.getIdEnteSedeProgettoFacilitatore().getIdSede()))) {
-            return false;
-        }
-
-        // MONGODB
 
         Optional<SezioneQ3Collection> optSezioneQ3Collection = sezioneQ3Respository.findById(servizioActual.getIdTemplateCompilatoQ3());
         if (optSezioneQ3Collection.isPresent()) {
