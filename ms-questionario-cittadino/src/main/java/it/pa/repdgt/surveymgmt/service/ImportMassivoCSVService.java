@@ -43,6 +43,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -408,7 +409,7 @@ public class ImportMassivoCSVService {
                         servizioRequest.getIdEnteServizio(),
                         servizioRequest.getIdProgetto(),
                         servizioRequest.getIdSedeServizio());
-                    List<ServizioEntity> listaServizi = getServizioByDatiControlloPerSingoloCittadino(servizioElaborato.getServizioRequest(), enteSedeProgettoFacilitatore.getId(), nuovoCittadinoDTO.getCittadinoEntity().getId());
+                    List<ServizioEntity> listaServizi = getServizioByDatiControlloPerSingoloCittadino(servizioElaborato.getServizioRequest(), enteSedeProgettoFacilitatore.getId(), nuovoCittadinoDTO.getCittadinoEntity().getId(), idServizio);
                     if(CollectionUtils.isNotEmpty(listaServizi)){
                         // controllare uguaglianza per ogni servizio con servizio appena inserito
                         Boolean isStessoServizio = false;
@@ -846,14 +847,20 @@ public class ImportMassivoCSVService {
     }
 
     private List<ServizioEntity> getServizioByDatiControlloPerSingoloCittadino(ServizioRequest servizioRequest,
-            EnteSedeProgettoFacilitatoreKey enteSedeProgettoFacilitatoreKey, Long idCittadino) {
+            EnteSedeProgettoFacilitatoreKey enteSedeProgettoFacilitatoreKey, Long idCittadino, Long idServizio) {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                String dateString = dateFormat.format(servizioRequest.getDataServizio());
         Optional<List<ServizioEntity>> servizioOpt = servizioSqlRepository
                 .findAllByDataServizioAndDurataServizioAndTipologiaServizioAndIdEnteSedeProgettoFacilitatoreAndIdCittadino(
-                        servizioRequest.getDataServizio(),
+                        dateString,
                         servizioRequest.getDurataServizio(),
                         String.join(", ", servizioRequest.getListaTipologiaServizi()), 
-                        enteSedeProgettoFacilitatoreKey,
-                        idCittadino);
+                        enteSedeProgettoFacilitatoreKey.getIdEnte(),
+                        enteSedeProgettoFacilitatoreKey.getIdFacilitatore(),
+                        enteSedeProgettoFacilitatoreKey.getIdProgetto(),
+                        enteSedeProgettoFacilitatoreKey.getIdSede(),
+                        idCittadino,
+                        idServizio);
         if (servizioOpt.isPresent() && !servizioOpt.get().isEmpty()) {
             List<ServizioEntity> listaServizi = servizioOpt.get();
             return listaServizi;

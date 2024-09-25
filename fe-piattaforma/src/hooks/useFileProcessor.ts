@@ -272,7 +272,7 @@ export function useFileProcessor(file: File | undefined, removeFile: () => void)
                   const { AN14: _AN14, AN17: _AN17, ...filteredRecord } = record;
                   filteredRecord.AN3 = filteredRecord.AN3.trim();
                   filteredRecord.SE1 = excelSerialDateToJSDate(Number(filteredRecord.SE1));
-                  filteredRecord.SE2 = excelSerialTimeToHHMM(Number(filteredRecord.SE2));
+                  //filteredRecord.SE2 = excelSerialTimeToHHMM(filteredRecord.SE2);
                   const { rejectedTypes } = generateServiceName(filteredRecord.SE3);
                   const errors = validateFields(
                     filteredRecord,
