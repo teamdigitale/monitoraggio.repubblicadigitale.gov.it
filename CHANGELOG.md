@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.336](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.335...1.0.0-test.336) (2024-09-25)
+
+
+### Bug Fixes
+
+* **ms-questionario-cittadino:** fix salvataggio registro attivita 20240925 ([30eacf4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/30eacf442902ee46843feda4194bb7a5fb891cba))
+* **caricamento-excel:** fix rollback su uguaglianza servizio cittadino 20240925 ([2dc17ca](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2dc17ca916ddcb59abee52f702650554b2dd6b27))
+
 ## [1.0.0-test.335](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.334...1.0.0-test.335) (2024-09-24)
 
 
