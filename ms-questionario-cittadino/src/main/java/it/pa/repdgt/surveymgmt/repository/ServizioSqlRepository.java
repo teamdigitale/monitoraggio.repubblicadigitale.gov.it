@@ -330,7 +330,7 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 
 	Optional<ServizioEntity> findById(Long idServizio);
 
-	@Query(value = "SELECT *\n" +
+	@Query(value = "SELECT s.*\n" +
 			"FROM servizio s\n" +
 			"JOIN servizio_x_cittadino sxc ON sxc.id_servizio = s.id \n" +
 			"WHERE 1=1\n" +
@@ -338,12 +338,13 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 			"AND s.data_servizio = :dataServizio\n" +
 			"AND s.durata_servizio = :durataServizio\n" +
 			"AND s.tipologia_servizio = :tipologiaServizio\n" +
-			"AND s.id_ente = :#{#enteSedeProgettoFacilitatoreKey.idEnte}\n" +
-			"AND s.id_progetto = :#{#enteSedeProgettoFacilitatoreKey.idProgetto}\n" +
-			"AND s.id_sede = :#{#enteSedeProgettoFacilitatoreKey.idSede}\n" +
-			"AND s.id_facilitatore = :#{#enteSedeProgettoFacilitatoreKey.idFacilitatore}\n", nativeQuery = true)
+			"AND s.id_ente = :idEnte\n" +
+			"AND s.id_progetto = :idProgetto\n" +
+			"AND s.id_sede = :idSede\n" +
+			"AND s.id_facilitatore = :idFacilitatore\n" +
+			"AND s.id <> :idServizio\n", nativeQuery = true)
 	Optional<List<ServizioEntity>> findAllByDataServizioAndDurataServizioAndTipologiaServizioAndIdEnteSedeProgettoFacilitatoreAndIdCittadino(
-			Date dataServizio,
+			String dataServizio,
 			String durataServizio, String tipologiaServizio,
-			EnteSedeProgettoFacilitatoreKey enteSedeProgettoFacilitatoreKey, Long idCittadino);
+			Long idEnte, String idFacilitatore, Long idProgetto, Long idSede, Long idCittadino, Long idServizio);
 }
