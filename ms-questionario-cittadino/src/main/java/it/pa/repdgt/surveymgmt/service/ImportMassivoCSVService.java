@@ -168,7 +168,7 @@ public class ImportMassivoCSVService {
                 .jobStatus(JobStatusEnum.IN_PROGRESS)
                 .estensioneInput(estensioneInput)
                 .build();
-        return registroAttivitaRepository.save(registroAttivita);
+        return registroAttivitaService.saveRegistroAttivita(registroAttivita);
     }
 
     @Transactional
