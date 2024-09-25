@@ -327,4 +327,6 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 
 	Optional<List<ServizioEntity>> findAllByDataServizioAndDurataServizioAndTipologiaServizioAndIdEnteSedeProgettoFacilitatoreAndNome(Date dataServizio,
 		String durataServizio, String tipologiaServizio, EnteSedeProgettoFacilitatoreKey enteSedeProgettoFacilitatoreKey, String nome);
+
+	Optional<ServizioEntity> findById(Long idServizio);
 }
