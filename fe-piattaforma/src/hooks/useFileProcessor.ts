@@ -84,7 +84,7 @@ const headersCSV = [
   'ES6',
 ];
 
-export function useFileProcessor(file: File | undefined) {
+export function useFileProcessor(file: File | undefined, removeFile: () => void) {
   const { isValidFiscalCode } = useFiscalCodeValidation();
   const [isProcessing, setIsProcessing] = useState(false);
   const projectDetail = useAppSelector(selectProjects).detail?.dettagliInfoProgetto;
@@ -246,7 +246,11 @@ export function useFileProcessor(file: File | undefined) {
               },
             });
           } else {
-            // Operazioni SCD
+            setIsProcessing(false);
+            removeFile();
+            rejectWithMessage(
+              'Tipo file non supportato.'
+            );
           }
           /*else {
             reject({
@@ -255,74 +259,81 @@ export function useFileProcessor(file: File | undefined) {
             });
           }*/
         } else if (fileExtension === 'xlsx' || fileExtension === 'xls') {
-          try {
-            const excelData = await handleExcelFileUpload(file);
-
-            const serviziValidati: ServiziElaboratiDto[] = [];
-            const serviziScartati: ServiziElaboratiDto[] = [];
-
-            if (excelData.length > 0) {
-              excelData.forEach((record: CSVRecord, index: number) => {
-                sanitizeFields(record);
-                const { AN14: _AN14, AN17: _AN17, ...filteredRecord } = record;
-                filteredRecord.AN3 = filteredRecord.AN3.trim();
-                filteredRecord.SE1 = excelSerialDateToJSDate(Number(filteredRecord.SE1));
-                filteredRecord.SE2 = excelSerialTimeToHHMM(Number(filteredRecord.SE2));
-                const { rejectedTypes } = generateServiceName(filteredRecord.SE3);
-                const errors = validateFields(
-                  filteredRecord,
-                  isValidFiscalCode
-                );
-                checkMapValues(record, errors);
-                checkMapSpaces(record, errors);
-                if (
-                  rejectedTypes.length > 0 &&
-                  filteredRecord.SE3 &&
-                  filteredRecord.SE3.trim() !== ''
-                ) {
-                  errors.push(
-                    `Servizio non riconosciuto nel campo SE3: ${rejectedTypes.join(
-                      ', '
-                    )}. Assicurati che i tipi di servizio inseriti siano corretti`
-                  );
-                }
-
-                const cfData: IPersonalInfo =
-                  CodiceFiscaleUtils.Parser.cfDecode(filteredRecord.AN3);
-
-                if (!getAgeGroupCodeByYear(cfData.date)) {
-                  errors.push('Il cittadino deve essere maggiorenne.');
-                }
-
-                const isValidFields = errors.length === 0;
-                const servizioElaborato: ServiziElaboratiDto =
-                  mappingDatiElaborati(
+          if (projectDetail?.policy == policy.SCD) {
+            try {
+              const excelData = await handleExcelFileUpload(file);
+  
+              const serviziValidati: ServiziElaboratiDto[] = [];
+              const serviziScartati: ServiziElaboratiDto[] = [];
+  
+              if (excelData.length > 0) {
+                excelData.forEach((record: CSVRecord, index: number) => {
+                  sanitizeFields(record);
+                  const { AN14: _AN14, AN17: _AN17, ...filteredRecord } = record;
+                  filteredRecord.AN3 = filteredRecord.AN3.trim();
+                  filteredRecord.SE1 = excelSerialDateToJSDate(Number(filteredRecord.SE1));
+                  filteredRecord.SE2 = excelSerialTimeToHHMM(Number(filteredRecord.SE2));
+                  const { rejectedTypes } = generateServiceName(filteredRecord.SE3);
+                  const errors = validateFields(
                     filteredRecord,
-                    errors,
-                    index + 1,
-                    cfData
+                    isValidFiscalCode
                   );
-                if (isValidFields && rejectedTypes.length === 0) {
-                  serviziValidati.push(servizioElaborato);
-                } else {
-                  serviziScartati.push(servizioElaborato);
-                }
-              });
-              const serviziElaborati: ElaboratoCsvRequest = {
-                serviziValidati: serviziValidati,
-                serviziScartati: serviziScartati,
-                estensioneInput: fileExtension
-              };
-              resolve(serviziElaborati);
+                  checkMapValues(record, errors);
+                  checkMapSpaces(record, errors);
+                  if (
+                    rejectedTypes.length > 0 &&
+                    filteredRecord.SE3 &&
+                    filteredRecord.SE3.trim() !== ''
+                  ) {
+                    errors.push(
+                      `Servizio non riconosciuto nel campo SE3: ${rejectedTypes.join(
+                        ', '
+                      )}. Assicurati che i tipi di servizio inseriti siano corretti`
+                    );
+                  }
+  
+                  const cfData: IPersonalInfo =
+                    CodiceFiscaleUtils.Parser.cfDecode(filteredRecord.AN3);
+  
+                  if (!getAgeGroupCodeByYear(cfData.date)) {
+                    errors.push('Il cittadino deve essere maggiorenne.');
+                  }
+  
+                  const isValidFields = errors.length === 0;
+                  const servizioElaborato: ServiziElaboratiDto =
+                    mappingDatiElaborati(
+                      filteredRecord,
+                      errors,
+                      index + 1,
+                      cfData
+                    );
+                  if (isValidFields && rejectedTypes.length === 0) {
+                    serviziValidati.push(servizioElaborato);
+                  } else {
+                    serviziScartati.push(servizioElaborato);
+                  }
+                });
+                const serviziElaborati: ElaboratoCsvRequest = {
+                  serviziValidati: serviziValidati,
+                  serviziScartati: serviziScartati,
+                  estensioneInput: fileExtension
+                };
+                resolve(serviziElaborati);
+                setIsProcessing(false);
+              } else {
+                rejectWithMessage(
+                  'Il file inserito non è conforme ai criteri di elaborazione, assicurati che siano presenti dei dati da elaborare.'
+                );
+              }
+            } catch (error) {
               setIsProcessing(false);
-            } else {
-              rejectWithMessage(
-                'Il file inserito non è conforme ai criteri di elaborazione, assicurati che siano presenti dei dati da elaborare.'
-              );
+              reject(error);
             }
-          } catch (error) {
+          }else{
             setIsProcessing(false);
-            reject(error);
+            rejectWithMessage(
+              'Tipo file non supportato.'
+            );
           }
         } else {
           rejectWithMessage(

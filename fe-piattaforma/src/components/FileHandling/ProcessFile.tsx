@@ -7,6 +7,7 @@ import checkImg from './../../../public/assets/img/icon-check-no-circle.png';
 
 type CSVProcessorProps = {
   file: File | undefined;
+  removeFile: () => void;
 };
 
 function showError(error: Error) {
@@ -19,8 +20,8 @@ function showError(error: Error) {
   });
 }
 
-export default function ProcessFile({ file }: CSVProcessorProps) {
-  const { isProcessing, processFile } = useFileProcessor(file);
+export default function ProcessFile({ file, removeFile }: CSVProcessorProps) {
+  const { isProcessing, processFile } = useFileProcessor(file, removeFile);
   const dataUploadContext = useContext(DataUploadContext);
 
   const handleProcessFile = useCallback(() => {

@@ -31,7 +31,7 @@ export default function CSVFileHandler() {
       <div className={file ? 'd-block' : 'd-none'}>
         <div className='my-2 row'>
           <div className='col-12 col-md-6 d-flex flex-column justify-content-around my-2 px-4'>
-            <ProcessFile file={file} />
+            <ProcessFile file={file} removeFile={removeFile} />
           </div>
           <div className='col-12 col-md-6 d-flex flex-column justify-content-around my-2 px-4'>
             <SubmitFileCsv clearFile={removeFile} />
