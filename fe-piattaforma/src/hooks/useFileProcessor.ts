@@ -331,6 +331,7 @@ export function useFileProcessor(file: File | undefined, removeFile: () => void)
             }
           }else{
             setIsProcessing(false);
+            removeFile();
             rejectWithMessage(
               'Tipo file non supportato.'
             );
