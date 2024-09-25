@@ -109,7 +109,7 @@ public class ImportMassivoCSVService {
                 registroAttivitaEntity.setJobStatus(JobStatusEnum.FAIL_S3_UPLOAD);
                 registroAttivitaEntity.setNote("Upload del file su s3 Fallito");
                 registroAttivitaEntity.setDataFineInserimento(new Date());
-                registroAttivitaService.saveRegistroAttivita(registroAttivitaEntity);
+                registroAttivitaRepository.save(registroAttivitaEntity);
                 return;
             }
             aggiornaRegistroAttivita(totaleRighe, serviziScartati.size(), serviziValidati.size(),
@@ -118,8 +118,8 @@ public class ImportMassivoCSVService {
         } catch (Exception e) {
             registroAttivitaEntity.setJobStatus(JobStatusEnum.GENERIC_FAIL);
             registroAttivitaEntity.setDataFineInserimento(new Date());
-            registroAttivitaService.saveRegistroAttivita(registroAttivitaEntity);
-            log.info("Errore generico durante l'elaborazione del file, id RegistroAttivitaEntity: {}", registroAttivitaEntity.getId());
+            registroAttivitaRepository.save(registroAttivitaEntity);
+            log.info("-XXX- Errore generico durante l'elaborazione del file, id RegistroAttivitaEntity: {} -XXX-", registroAttivitaEntity.getId());
             e.printStackTrace();        
         }
     }
@@ -145,7 +145,7 @@ public class ImportMassivoCSVService {
         registroAttivitaEntity.setFileName(fileName);
         registroAttivitaEntity.setJobStatus(JobStatusEnum.SUCCESS);
         registroAttivitaEntity.setDataFineInserimento(new Date());
-        registroAttivitaService.saveRegistroAttivita(registroAttivitaEntity);
+        registroAttivitaRepository.save(registroAttivitaEntity);
     }
 
     private String replaceUUID(String uuid) {
