@@ -1,5 +1,21 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.338](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.337...1.0.0-test.338) (2024-09-25)
+
+
+### Features
+
+* **fe-piattaforma:** rimozione file formato errato 20240925 ([bcdbb90](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/bcdbb907b6f5593045014dc5df945a24dfa1058c))
+* **fe-piattaforma:** aggiornamento gestione scd rfd per caricamento massivo 20240925 ([b895af2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b895af21901521f10c9a7b955478116477b7fce4))
+* **fe-piattaforma:** sblocco sezione caricamento massivo per progetti SCD 20240925 ([6f80033](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6f800338833a11219db3ff06c150a7e292bff6a4))
+* **fe-piattaforma:** icona info tabella caricamento massivo 20240925 ([969ff80](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/969ff80adbb54c58c8f64b31c3b1e51072616194))
+
+
+### Bug Fixes
+
+* **ms-questionario-cittadino:** fix salvataggio record registro attivita 20240925 ([f566905](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f566905172a9b97d2595a495afbb49f210eca95b))
+* **caricamento-excel:** gestione migliorata controllo unicita servizio cittadino 20240925 ([5e9c02b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5e9c02b073ce5008644176350c5327677ae7bcba))
+
 ## [1.0.0-test.337](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.336...1.0.0-test.337) (2024-09-25)
 
 
