@@ -598,8 +598,7 @@ const AuthoritiesDetails = () => {
               ) : null}
               {projectId &&
                 (userHeaders.codiceRuoloUtenteLoggato === 'REPP' ||
-                  userHeaders.codiceRuoloUtenteLoggato === 'DTD') &&
-                  projectDetail?.policy == policy.RFD && (
+                  userHeaders.codiceRuoloUtenteLoggato === 'DTD') && (
                   <div>
                     <CSVUploadBanner
                       onPrimaryButtonClick={handleNavigateToCaricamentoDati}
