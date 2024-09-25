@@ -1,5 +1,18 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.337](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.336...1.0.0-test.337) (2024-09-25)
+
+
+### Features
+
+* **fe-piattaforma:** aggiunta tooltip in caso di caricamento fallito 20240925 ([dabd17d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/dabd17de36ff18196ba71d4582e16997ed359840))
+
+
+### Bug Fixes
+
+* **caricamento-excel:** fix controllo uguaglianza servizio cittadino SCD 20240925 ([2b9520c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2b9520cdbc67ac0649cb9c34cb4f179985d4b7a4))
+* **ms-questionario-cittadino:** fix ricerca registro attivita 20240925 ([a5c7c9c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a5c7c9cb814c808c317b73a9eb2d8de31e102633))
+
 ## [1.0.0-test.336](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.335...1.0.0-test.336) (2024-09-25)
 
 
