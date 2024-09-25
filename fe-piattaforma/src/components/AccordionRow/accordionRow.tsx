@@ -151,7 +151,18 @@ const AccordionRow: React.FC<AccordionRowI> = ({
                 color='primary'
               />
             </Button>
-          ) : null}
+          ) : <Button
+                className='px-2'
+                aria-label='Informazioni'
+                title='Caricamento fallito'
+            >
+              <Icon
+                icon='it-info-circle'
+                color='primary'
+                aria-label='Info'
+                aria-hidden
+              />
+            </Button>}
         </div>
         {((onTooltipInfo || innerInfo?.onTooltipInfo) &&
           innerInfo?.isPresentInList) ||
