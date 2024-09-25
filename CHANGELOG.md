@@ -1,5 +1,72 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.337](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.336...1.0.0-test.337) (2024-09-25)
+
+
+### Features
+
+* **fe-piattaforma:** aggiunta tooltip in caso di caricamento fallito 20240925 ([dabd17d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/dabd17de36ff18196ba71d4582e16997ed359840))
+
+
+### Bug Fixes
+
+* **caricamento-excel:** fix controllo uguaglianza servizio cittadino SCD 20240925 ([2b9520c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2b9520cdbc67ac0649cb9c34cb4f179985d4b7a4))
+* **ms-questionario-cittadino:** fix ricerca registro attivita 20240925 ([a5c7c9c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a5c7c9cb814c808c317b73a9eb2d8de31e102633))
+
+## [1.0.0-test.336](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.335...1.0.0-test.336) (2024-09-25)
+
+
+### Bug Fixes
+
+* **ms-questionario-cittadino:** fix salvataggio registro attivita 20240925 ([30eacf4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/30eacf442902ee46843feda4194bb7a5fb891cba))
+* **caricamento-excel:** fix rollback su uguaglianza servizio cittadino 20240925 ([2dc17ca](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2dc17ca916ddcb59abee52f702650554b2dd6b27))
+
+## [1.0.0-test.335](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.334...1.0.0-test.335) (2024-09-24)
+
+
+### Features
+
+* **caricamento-excel:** gestione rollback per caricamento SCD 20240923 ([c638f08](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c638f086a081c269fc1454ec316f10157393f4fb))
+* **caricamento-massivo-excel:** aggiunta estensione file caricamento in registro attivita 20240919 ([fad5ba5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fad5ba58ce5795cdeade858db2f9ed736f015592))
+* **caricamento-excel:** WIP controlli BE unicita servizio cittadino 20240919 ([1576d7c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1576d7c0350ce475c60d1306621f802490b0ca16))
+* **fe-piattaforma:** caricamento massivo excel 20240918 ([28f462a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/28f462acb3b1c1c84131ad853255a58763554e01))
+* **fe-piattaforma:** WIP caricamento massivo EXCEL 20240913 ([facb912](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/facb9125e344fb94f18a9e2882c4cb6f8ee775d8))
+
+
+### Bug Fixes
+
+* **terminazione-utente:** migliorati controlli terminazione utente 20240924 ([1f79ff9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1f79ff9dec31895dca464a996f287bf32f4e4aae))
+
+## [1.0.0-test.334](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.333...1.0.0-test.334) (2024-09-23)
+
+
+### Features
+
+* **fe-piattaforma:** polling tabella registro attivita ([57959cb](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/57959cb5bf6595df082ba7d547a31f2c2c81e13d))
+* **fe-piattaforma:** update tabella caricamento massivo ([5bdd720](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5bdd720cd421a18d8a6a27d78696bed8ac8f78bf))
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** update descrizioni errori 20240923 ([b6eed33](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b6eed33f68eff51c9ea349f075c9d32c45aaacfb))
+
+## [1.0.0-test.333](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.332...1.0.0-test.333) (2024-09-20)
+
+
+### Bug Fixes
+
+* **ms-questionario-cittadino:** aggiunti controlli unicita modifica servizio 20240920 ([2a4f45c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2a4f45c37ca7e22f1cb27018c85c3b919e1fbf12))
+* **fe-piattaforma:** fix controllo questionario stampabile 20240920 ([7f851ae](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7f851ae0f229d5b112601b8f307c8f806bcf927c))
+
+## [1.0.0-test.332](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.331...1.0.0-test.332) (2024-09-20)
+
+
+### Bug Fixes
+
+* **creazione-servizio:** aggiornato errore unicita servizio 20240920 ([c14a248](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c14a2486448ffab62d57871de8d1eda8a826764c))
+* **fe-piattaforma:** modifica font authority schede drupal 20240920 ([86a90bc](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/86a90bcf4b4c2226bf56a91e66b5d1225fe3a6f3))
+* **fe-piattaforma:** aggiunta didascalia a campo Provincia 20240920 ([0252639](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/025263960cf428383bfe65ad962101115db68cc4))
+
 ## [1.0.0-test.331](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.330...1.0.0-test.331) (2024-09-19)
 
 

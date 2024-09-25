@@ -129,12 +129,12 @@
       "descrizione": "Errore ruolo non definito per l'utente"
     },
     "U07": {
-      "titolo": "CODICE FISCALE  O N. DOCUMENTO GIÀ IN USO",
-      "descrizione": "Il codice fiscale o il n. documento inserito risulta associato a un altro cittadino. Ti invitiamo a verificarne la correttezza"
+      "titolo": "CODICE FISCALE GIÀ IN USO",
+      "descrizione": "Il codice fiscale inserito risulta associato a un altro cittadino. Ti invitiamo a verificarne la correttezza"
     },
     "U08": {
       "titolo": "",
-      "descrizione": "Errore codice fiscale o numero documento non specificato"
+      "descrizione": "Errore codice fiscale non specificato"
     },
     "U09": {
       "titolo": "",
@@ -194,7 +194,7 @@
     },
     "S10": {
       "titolo": "",
-      "descrizione": "Il servizio che vuoi creare riporta gli stessi dati di un servizio già esistente. Per creare una nuovo servizio, assicurati di differenziare almeno un’informazione, per esempio il nome o la descrizione"
+      "descrizione": "Il servizio che vuoi creare riporta gli stessi dati di un servizio già esistente per la stessa data. Per creare una nuovo servizio, assicurati di differenziare almeno un’informazione, per esempio il nome o la descrizione"
     },
     "S11": {
       "titolo": "",

@@ -12,6 +12,7 @@ import {compressPayload, toBase64} from '../utils/common'
 
 export function searchActivityReport(
   page: number,
+  size: number,
   idProgetto: number,
   idEnte: number
 ): Promise<AxiosResponse<Page<RegistroAttivita>>> {
@@ -26,7 +27,7 @@ export function searchActivityReport(
       idProgetto,
       idProgramma,
     },
-    { params: { page } }
+    { params: { page, size } }
   );
 }
 

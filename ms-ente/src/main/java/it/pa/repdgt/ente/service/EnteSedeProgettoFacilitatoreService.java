@@ -281,15 +281,17 @@ public class EnteSedeProgettoFacilitatoreService {
 		
 		final String codiceFiscaleUtenteFacilitaore = id.getIdFacilitatore();
 		final UtenteEntity utenteDBFetch = this.utenteService.getUtenteByCodiceFiscale(codiceFiscaleUtenteFacilitaore);
-		
-		String idUtenteWorkdocs = utenteDBFetch.getIntegrazioneUtente().getIdUtenteWorkdocs();
-		if(utenteDBFetch.getRuoli().size() == 1 && idUtenteWorkdocs != null) {
-			try {
-				new Thread(() -> {
-					this.workdocsService.disattivaWorkDocsUser(idUtenteWorkdocs);
-				}).start();
-			} catch (Exception ex) {
-				log.error("Errore disattivazione utente workdocs ", ex);
+		if( utenteDBFetch.getIntegrazioneUtente() != null && utenteDBFetch.getIntegrazioneUtente().getIdUtenteWorkdocs() != null){
+			// Utente non presenta relazione su integrazione_utente da eliminare
+			String idUtenteWorkdocs = utenteDBFetch.getIntegrazioneUtente().getIdUtenteWorkdocs();
+			if(utenteDBFetch.getRuoli().size() == 1 && idUtenteWorkdocs != null) {
+				try {
+					new Thread(() -> {
+						this.workdocsService.disattivaWorkDocsUser(idUtenteWorkdocs);
+					}).start();
+				} catch (Exception ex) {
+					log.error("Errore disattivazione utente workdocs ", ex);
+				}
 			}
 		}
 	}

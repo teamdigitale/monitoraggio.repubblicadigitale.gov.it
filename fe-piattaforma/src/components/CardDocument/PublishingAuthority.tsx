@@ -20,7 +20,6 @@ const PublishingAuthority: React.FC<PublishingAuthorityI> = ({
           'document-card-container__authority',
           'ml-2',
           'text-serif',
-          'font-italic',
           'font-weight-bold'
         )}
       >

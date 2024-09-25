@@ -8,6 +8,9 @@ import WarningModal from '../FileHandling/WarningModal';
 import { closeModal, openModal } from '../../redux/features/modal/modalSlice';
 import { selectProfile } from '../../redux/features/user/userSlice';
 import { ProjectContext } from '../../contexts/ProjectContext';
+import { useParams } from 'react-router-dom';
+import { searchActivityReport } from '../../services/activityReportService';
+import { hideLoader, showLoader } from '../../redux/features/app/appSlice';
 
 function showErrorFormatCSV() {
   dispatchNotify({
@@ -61,6 +64,7 @@ export default function CSVUploader({
   const { codiceRuolo: userRole } = useAppSelector(selectProfile) || {};
   const projectContext = useContext(ProjectContext);
   const [selectedFile, setSelectedFile] = useState<File[] | null>(null);
+  const { projectId, enteId } = useParams();
 
   const handleFileInput = useCallback(
     (filesToUpload: File[]) => {
@@ -97,18 +101,57 @@ export default function CSVUploader({
     [userRole]
   );
 
+
+  const checkTable = async () => {
+    if (projectId && (enteId || projectContext)) {
+      try {
+        dispatch(showLoader());
+        const res = await searchActivityReport(
+          0,
+          100,
+          parseInt(projectId),
+          enteId ? parseInt(enteId) : projectContext!.idEnte
+        )
+        .finally(() => dispatch(hideLoader()));
+        for (const element of res.data.content) {
+          if (element.jobStatus === 'IN_PROGRESS') {
+            dispatchNotify({
+              title: 'IMPOSSIBILE AVVIARE INSERIMENTO DATI',
+              status: 'error',
+              message: `E' già in corso un inserimento dati (errore CM01)`,
+              closable: true,
+              duration: 'slow',
+            });
+            return false;
+          }
+        }
+        return true;
+      } catch (err) {
+        return false;
+      }
+    }
+    return false;
+  }
+
+
   const handleDrop = useCallback(
-    (event) => {
+    async (event) => {
       event.preventDefault();
-      showConfirmDialog(event.dataTransfer.files);
+      const canProceed = await checkTable();
+      if (canProceed) {
+        showConfirmDialog(event.dataTransfer.files);
+      } 
     },
     [handleFileInput, showConfirmDialog]
   );
 
   const handleInput = useCallback(
-    (e) => {
+    async (e) => {
       e.preventDefault();
+      const canProceed = await checkTable();
+      if (canProceed) {
       showConfirmDialog(e.target.files);
+      }
     },
     [handleFileInput, showConfirmDialog]
   );
