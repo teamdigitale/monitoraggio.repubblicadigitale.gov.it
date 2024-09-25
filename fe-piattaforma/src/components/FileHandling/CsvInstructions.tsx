@@ -1,7 +1,12 @@
 import React from 'react';
 import uploadIcon from '../../../public/assets/img/it-upload-primary.png';
+import { selectProjects } from '../../redux/features/administrativeArea/administrativeAreaSlice';
+import { useAppSelector } from '../../redux/hooks';
+import { policy } from '../../pages/administrator/AdministrativeArea/Entities/utils';
 
 export default function CsvInstructions({ urlGuida, attachmentGuida }: { urlGuida: string | "" , attachmentGuida: any}) {
+  const projectDetail = useAppSelector(selectProjects).detail?.dettagliInfoProgetto;
+  const fileInputConsentito = projectDetail?.policy === policy.RFD ? 'CSV' : 'EXCEL';
   return (
     <div className='d-flex flex-column'>
       <h1 className='h5 text-black font-weight-semibold'>
@@ -11,7 +16,7 @@ export default function CsvInstructions({ urlGuida, attachmentGuida }: { urlGuid
         <li>
           <p>
             <strong>
-              Trascina o seleziona il file dei dati in formato CSV
+              Trascina o seleziona il file dei dati in formato {fileInputConsentito}
             </strong>{' '}
             per inserirlo nello strumento di caricamento massivo.
           </p>
