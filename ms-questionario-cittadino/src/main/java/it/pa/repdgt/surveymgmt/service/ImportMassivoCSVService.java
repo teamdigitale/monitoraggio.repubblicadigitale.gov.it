@@ -406,8 +406,9 @@ public class ImportMassivoCSVService {
                         // controllare uguaglianza per ogni servizio con servizio appena inserito
                         Boolean isStessoServizio = false;
                         for(ServizioXCittadinoEntity servizioXCittadinoEntity : servizioXCittadinoList){
-                            ServizioEntity servizioActual = servizioSqlRepository.getReferenceById(servizioXCittadinoEntity.getId().getIdServizio());
-                            isStessoServizio = checkUguaglianzaServizio(servizioActual, servizioElaborato);
+                            Optional<ServizioEntity> servizioActualOpt = servizioSqlRepository.findById(servizioXCittadinoEntity.getId().getIdServizio());
+                            ServizioEntity servizioEntity = servizioActualOpt.get();
+                            isStessoServizio = checkUguaglianzaServizio(servizioEntity, servizioElaborato);
                             if(isStessoServizio){
                                 // servizio_x_cittadino duplicato, rollback
                                 throw new CittadinoException(NoteCSV.NOTE_CITTADINO_PRESENTE, CodiceErroreEnum.U23);
