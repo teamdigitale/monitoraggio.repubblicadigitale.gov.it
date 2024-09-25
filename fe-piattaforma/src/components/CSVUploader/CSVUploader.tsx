@@ -11,6 +11,8 @@ import { ProjectContext } from '../../contexts/ProjectContext';
 import { useParams } from 'react-router-dom';
 import { searchActivityReport } from '../../services/activityReportService';
 import { hideLoader, showLoader } from '../../redux/features/app/appSlice';
+import { selectProjects } from '../../redux/features/administrativeArea/administrativeAreaSlice';
+import { policy } from '../../pages/administrator/AdministrativeArea/Entities/utils';
 
 function showErrorFormatCSV() {
   dispatchNotify({
@@ -65,6 +67,8 @@ export default function CSVUploader({
   const projectContext = useContext(ProjectContext);
   const [selectedFile, setSelectedFile] = useState<File[] | null>(null);
   const { projectId, enteId } = useParams();
+  const projectDetail = useAppSelector(selectProjects).detail?.dettagliInfoProgetto;
+  const fileInputConsentito = projectDetail?.policy === policy.RFD ? 'CSV' : 'EXCEL';
 
   const handleFileInput = useCallback(
     (filesToUpload: File[]) => {
@@ -236,7 +240,7 @@ export default function CSVUploader({
               </>
             ) : (
               <>
-                <h5>Trascina il file dati (CSV)</h5>
+                <h5>Trascina il file dati ({fileInputConsentito})</h5>
                 <p>
                   oppure{' '}
                   <input
