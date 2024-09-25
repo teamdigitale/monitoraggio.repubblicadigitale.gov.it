@@ -5,7 +5,6 @@ import {
   Icon,
   Label,
   Table as TableKit,
-  Tooltip,
   UncontrolledTooltip,
 } from 'design-react-kit';
 import clsx from 'clsx';
@@ -289,19 +288,29 @@ const TableDesktop: React.FC<TableI> = (props) => {
                           aria-hidden
                         />
                       </Button>
-                    ) :
-                      <Button
-                        className='p-0'
-                        aria-label='Informazioni'
-                        title='Caricamento fallito'
-                      >
-                        <Icon
-                          icon='it-info-circle'
-                          color='primary'
-                          aria-label='Info'
-                          aria-hidden
-                        />
-                      </Button>
+                    ) : td.jobStatus === "GENERIC_FAIL" || td.jobStatus === "FAIL_MONGO" || td.jobStatus === "FAIL_S3_API" ? (
+                      <div>
+                        <Button
+                          className='p-0'
+                          aria-label='Informazioni'
+                          id='icon-info'
+                        >
+                          <Icon
+                            icon='it-info-circle'
+                            color='primary'
+                            aria-label='Info'
+                            aria-hidden
+                          />
+                        </Button>
+
+                        <UncontrolledTooltip
+                          placement='top'
+                          target='icon-info'
+                        >
+                          Caricamento fallito
+                        </UncontrolledTooltip>
+                      </div>
+                    ) : null
                     }
                   </div>
                 </td>

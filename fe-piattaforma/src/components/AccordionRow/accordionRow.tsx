@@ -22,10 +22,10 @@ export interface AccordionRowI {
   clickDeleteAction?: () => void;
   clickDownloadAction?: () => void;
   innerInfo?:
-    | {
-        [key: string]: string;
-      }
-    | undefined;
+  | {
+    [key: string]: string;
+  }
+  | undefined;
   status?: string | undefined;
   StatusElement?: ReactElement | undefined;
   onTooltipInfo?: string;
@@ -151,10 +151,11 @@ const AccordionRow: React.FC<AccordionRowI> = ({
                 color='primary'
               />
             </Button>
-          ) : <Button
-                className='px-2'
-                aria-label='Informazioni'
-                title='Caricamento fallito'
+          ) : <div className='mr-2'>
+            <Button
+              className='p-0'
+              aria-label='Informazioni'
+              id='icon-info'
             >
               <Icon
                 icon='it-info-circle'
@@ -162,11 +163,19 @@ const AccordionRow: React.FC<AccordionRowI> = ({
                 aria-label='Info'
                 aria-hidden
               />
-            </Button>}
+            </Button>
+
+            <UncontrolledTooltip
+              placement='top'
+              target='icon-info'
+            >
+              Caricamento fallito
+            </UncontrolledTooltip>
+          </div>}
         </div>
         {((onTooltipInfo || innerInfo?.onTooltipInfo) &&
           innerInfo?.isPresentInList) ||
-        innerInfo?.failedCSV ? (
+          innerInfo?.failedCSV ? (
           <div
             className='d-inline-flex position-relative'
             id={`tooltip-${innerInfo.id}`}
@@ -174,8 +183,8 @@ const AccordionRow: React.FC<AccordionRowI> = ({
             <UncontrolledTooltip
               placement='bottom'
               target={`tooltip-${innerInfo.id}`}
-              /*  isOpen={openOne}
-                  toggle={() => toggleOne(!openOne)} */
+            /*  isOpen={openOne}
+                toggle={() => toggleOne(!openOne)} */
             >
               {onTooltipInfo}
               {innerInfo.onTooltipInfo}
