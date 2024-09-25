@@ -367,7 +367,7 @@ public class ImportMassivoCSVService {
                 nuovoCittadinoDTO = null;
                 nuovoCittadinoDTO = cittadiniServizioService.creaNuovoCittadinoImportCsv(idServizio, servizioElaborato.getNuovoCittadinoServizioRequest(), registroAttivitaEntity.getId().toString());
                 idQuestionario = nuovoCittadinoDTO.getCittadinoEntity().getQuestionarioCompilato().get(0).getId();
-                if(!nuovoCittadinoDTO.isNuovoCittadino()){
+                if(!nuovoCittadinoDTO.isNuovoCittadino() && policy.equals(PolicyEnum.SCD)){
                     // Se cittadino non è stato appena inserito, controllare che esso non sia associato ad un servizio identico a quello appena inserito
                     List<ServizioXCittadinoEntity> servizioXCittadinoList = servizioXCittadinoRepository.findById_IdCittadino(nuovoCittadinoDTO.getCittadinoEntity().getId());
                     if(CollectionUtils.isNotEmpty(servizioXCittadinoList)){
@@ -887,20 +887,19 @@ public class ImportMassivoCSVService {
     private Boolean checkUguaglianzaServizio(ServizioEntity servizioActual,
             ServiziElaboratiDTO servizioElaborato) {
 
-        boolean isStessoServizio = true;
         if (!servizioElaborato.getServizioRequest().getDataServizio()
                 .equals(servizioActual.getDataServizio())) {
-            isStessoServizio = false;
+            return false;
         }
 
         if (!servizioElaborato.getServizioRequest().getDurataServizio()
                 .equals(servizioActual.getDurataServizio())) {
-            isStessoServizio = false;
+            return false;
         }
 
         if (!servizioElaborato.getServizioRequest().getListaTipologiaServizi().equals(
                 servizioActual.getListaTipologiaServizi())) {
-            isStessoServizio = false;
+                    return false;
         }
 
         // if (!(servizioElaborato.getServizioRequest().getCfUtenteLoggato()
@@ -910,17 +909,17 @@ public class ImportMassivoCSVService {
 
         if (!(servizioElaborato.getServizioRequest().getIdEnteServizio()
                 .equals(servizioActual.getIdEnteSedeProgettoFacilitatore().getIdEnte()))) {
-            isStessoServizio = false;
+            return false;
         }
 
         if (!(servizioElaborato.getServizioRequest().getIdProgetto()
                 .equals(servizioActual.getIdEnteSedeProgettoFacilitatore().getIdProgetto()))) {
-            isStessoServizio = false;
+            return false;
         }
 
         if (!(servizioElaborato.getServizioRequest().getIdSedeServizio()
                 .equals(servizioActual.getIdEnteSedeProgettoFacilitatore().getIdSede()))) {
-            isStessoServizio = false;
+            return false;
         }
 
         // MONGODB
@@ -930,21 +929,21 @@ public class ImportMassivoCSVService {
             // String descrizioneMongo = recuperaDescrizioneDaMongo(optSezioneQ3Collection);
             if (!recuperaDescrizioneDaMongo(optSezioneQ3Collection, 6, null).equalsIgnoreCase(
                     servizioElaborato.getCampiAggiuntiviCSV().getDescrizioneDettagliServizio())) {
-                isStessoServizio = false;
+                return false;
             }
             if (!recuperaDescrizioneDaMongo(optSezioneQ3Collection, 5, CSVMapUtil.getSE6Map())
                     .equalsIgnoreCase(servizioElaborato.getCampiAggiuntiviCSV()
                             .getAmbitoServiziDigitaliTrattati().replace(" ", ""))) {
-                isStessoServizio = false;
+                return false;
             }
             if (!recuperaDescrizioneDaMongo(optSezioneQ3Collection, 4, CSVMapUtil.getSE5Map())
                     .equalsIgnoreCase(servizioElaborato.getCampiAggiuntiviCSV()
                             .getCompetenzeTrattateSecondoLivello().replace(" ", ""))) {
-                isStessoServizio = false;
+                return false;
             }
         }
 
-        return isStessoServizio;
+        return true;
 
     }
 
