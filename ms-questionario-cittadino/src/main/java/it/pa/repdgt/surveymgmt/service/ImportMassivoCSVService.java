@@ -122,7 +122,7 @@ public class ImportMassivoCSVService {
                     log.info(
                             "-XXX- Errore durante il rollback del caricamento massivo, id RegistroAttivitaEntity: {} -XXX",
                             registroAttivitaEntity.getId());
-                    e.printStackTrace();
+                    e2.printStackTrace();
                     registroAttivitaEntity.setJobStatus(JobStatusEnum.FAIL_S3_UPLOAD);
                     registroAttivitaEntity.setNote("Upload del file su s3 Fallito, rollback fallito");
                     registroAttivitaEntity.setDataFineInserimento(new Date());
@@ -147,7 +147,7 @@ public class ImportMassivoCSVService {
             } catch (Exception e2) {
                 log.info("-XXX- Errore durante il rollback del caricamento massivo, id RegistroAttivitaEntity: {} -XXX",
                         registroAttivitaEntity.getId());
-                e.printStackTrace();
+                e2.printStackTrace();
                 registroAttivitaEntity.setJobStatus(JobStatusEnum.GENERIC_FAIL);
                 registroAttivitaEntity.setNote("Caricamento fallito, rollback fallito");
                 registroAttivitaEntity.setDataFineInserimento(new Date());
