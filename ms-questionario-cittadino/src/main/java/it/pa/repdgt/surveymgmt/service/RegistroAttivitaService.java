@@ -48,9 +48,8 @@ public class RegistroAttivitaService {
     public RegistroAttivitaEntity getRegistroAttivitaByUUID(String jobUUID) {
         String uuid = jobUUID.replaceAll("-", "");
         Optional<RegistroAttivitaEntity> registroOpt = registroAttivitaRepository.findByJobUUID(uuid);
-        if (!registroOpt.isPresent() || !registroOpt.get().getJobStatus().equals(JobStatusEnum.SUCCESS))
-            return RegistroAttivitaEntity.builder()
-                    .jobStatus(JobStatusEnum.IN_PROGRESS).build();
+        if (!registroOpt.isPresent())
+            return RegistroAttivitaEntity.builder().jobStatus(JobStatusEnum.IN_PROGRESS).build();
         return registroOpt.get();
     }
 
