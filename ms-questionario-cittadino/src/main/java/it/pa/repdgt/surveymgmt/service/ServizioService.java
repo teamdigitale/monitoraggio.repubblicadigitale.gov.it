@@ -586,4 +586,41 @@ public class ServizioService {
 		this.servizioSQLService.cancellaServivio(servizioEntity);
 
 	}
+
+	@LogMethod
+	@LogExecutionTime
+	@Transactional
+	public void eliminaQuestionariMongoByListaQuestionari(List<QuestionarioCompilatoEntity> listaQuestionari){
+
+		for(QuestionarioCompilatoEntity questionario : listaQuestionari){
+			questionarioCompilatoMongoRepository
+					.deleteByIdQuestionarioTemplate(questionario.getId());
+		}
+
+	}
+
+	@LogMethod
+	@LogExecutionTime
+	@Transactional
+	public void eliminaServiziMongoByListaServizi(List<ServizioEntity> listaServizi){
+
+		for(ServizioEntity servizio : listaServizi){
+			this.sezioneQ3Repository.deleteByIdSezioneQ3(servizio.getIdTemplateCompilatoQ3());
+		}
+	}
+
+	public void eliminaTipologiaServizioByListaServizi(List<ServizioEntity> listaServizi){
+				// Cancello tipologie servizio
+		for (ServizioEntity servizio : listaServizi) {
+			tipologiaServizioRepository.deleteByIdServizio(servizio.getId());
+		}
+	}
+
+	public void eliminaServiziByListaServizi(List<ServizioEntity> listaServizi){
+
+		for(ServizioEntity servizio : listaServizi){
+			servizioSqlRepository.delete(servizio);
+		}
+
+	}
 }

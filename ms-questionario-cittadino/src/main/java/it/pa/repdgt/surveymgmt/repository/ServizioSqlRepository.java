@@ -324,4 +324,35 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 
 	Optional<List<ServizioEntity>> findAllByDataServizioAndDurataServizioAndTipologiaServizioAndIdEnteSedeProgettoFacilitatore(Date dataServizio,
 		String durataServizio, String tipologiaServizio, EnteSedeProgettoFacilitatoreKey enteSedeProgettoFacilitatoreKey);
+
+	Optional<List<ServizioEntity>> findAllByDataServizioAndDurataServizioAndTipologiaServizioAndIdEnteSedeProgettoFacilitatoreAndNome(Date dataServizio,
+		String durataServizio, String tipologiaServizio, EnteSedeProgettoFacilitatoreKey enteSedeProgettoFacilitatoreKey, String nome);
+
+	Optional<ServizioEntity> findById(Long idServizio);
+
+	@Query(value = "SELECT s.*\n" +
+			"FROM servizio s\n" +
+			"JOIN servizio_x_cittadino sxc ON sxc.id_servizio = s.id \n" +
+			"WHERE 1=1\n" +
+			"AND sxc.id_cittadino = :idCittadino\n" +
+			"AND s.data_servizio = :dataServizio\n" +
+			"AND s.durata_servizio = :durataServizio\n" +
+			"AND s.tipologia_servizio = :tipologiaServizio\n" +
+			"AND s.id_ente = :idEnte\n" +
+			"AND s.id_progetto = :idProgetto\n" +
+			"AND s.id_sede = :idSede\n" +
+			"AND s.id_facilitatore = :idFacilitatore\n" +
+			"AND s.id <> :idServizio\n", nativeQuery = true)
+	Optional<List<ServizioEntity>> findAllByDataServizioAndDurataServizioAndTipologiaServizioAndIdEnteSedeProgettoFacilitatoreAndIdCittadino(
+			String dataServizio,
+			String durataServizio, String tipologiaServizio,
+			Long idEnte, String idFacilitatore, Long idProgetto, Long idSede, Long idCittadino, Long idServizio);
+
+
+	@Query(value = "SELECT s.*\n" +
+			"FROM servizio s\n" +
+			"LEFT JOIN servizio_x_cittadino sxc ON sxc.id_servizio = s.id \n" +
+			"WHERE s.codInserimento = :codInserimento\n" +
+			"AND sxc.idServizio IS NULL\n", nativeQuery = true)
+	List<ServizioEntity> findAllByCodInserimentoWithoutSXC(String codInserimento);
 }

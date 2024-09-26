@@ -21,6 +21,7 @@ import it.pa.repdgt.surveymgmt.exception.ServizioException;
 import it.pa.repdgt.surveymgmt.exception.ValidationException;
 import it.pa.repdgt.surveymgmt.model.ElaboratoCSVRequest;
 import it.pa.repdgt.surveymgmt.model.ElaboratoCSVResponse;
+import it.pa.repdgt.surveymgmt.mongo.repository.QuestionarioCompilatoMongoRepository;
 import it.pa.repdgt.surveymgmt.mongo.repository.SezioneQ3Respository;
 import it.pa.repdgt.surveymgmt.repository.*;
 import it.pa.repdgt.surveymgmt.request.QuestionarioCompilatoRequest;
@@ -72,8 +73,12 @@ public class ImportMassivoCSVService {
     @Autowired
     private QuestionarioCompilatoService questionarioCompilatoService;
     private static final String FILE_NAME = "%s_righe_scartate_%s_%s.csv";
-
+    @Autowired
+	private ProgettoService progettoService;
+    @Autowired
+    private QuestionarioCompilatoRepository questionarioCompilatoRepository;
     private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH-mm", Locale.ITALIAN);
+
 
     @Async
     public void process(ElaboratoCSVRequest csvRequest, String uuid) throws IOException {
@@ -103,22 +108,50 @@ public class ImportMassivoCSVService {
             try {
                 uploadFile(response, registroAttivitaEntity.getId());
             } catch (IOException e) {
-                log.error(e.getMessage());
-                registroAttivitaEntity.setJobStatus(JobStatusEnum.FAIL_S3_UPLOAD);
-                registroAttivitaEntity.setNote("Upload del file su s3 Fallito");
-                registroAttivitaEntity.setDataFineInserimento(new Date());
-                registroAttivitaRepository.save(registroAttivitaEntity);
-                return;
+                log.info("-XXX- Errore durante il salvataggio del file scarti, id RegistroAttivitaEntity: {} -XXX",
+                        registroAttivitaEntity.getId());
+                e.printStackTrace();
+                try {
+                    rollbackCaricamentoMassivo(registroAttivitaEntity.getId());
+                    registroAttivitaEntity.setJobStatus(JobStatusEnum.FAIL_S3_UPLOAD);
+                    registroAttivitaEntity.setNote("Upload del file su s3 Fallito");
+                    registroAttivitaEntity.setDataFineInserimento(new Date());
+                    registroAttivitaRepository.save(registroAttivitaEntity);
+                } catch (Exception e2) {
+                    log.info(
+                            "-XXX- Errore durante il rollback del caricamento massivo, id RegistroAttivitaEntity: {} -XXX",
+                            registroAttivitaEntity.getId());
+                    e.printStackTrace();
+                    registroAttivitaEntity.setJobStatus(JobStatusEnum.FAIL_S3_UPLOAD);
+                    registroAttivitaEntity.setNote("Upload del file su s3 Fallito, rollback fallito");
+                    registroAttivitaEntity.setDataFineInserimento(new Date());
+                    registroAttivitaRepository.save(registroAttivitaEntity);
+                }
             }
             aggiornaRegistroAttivita(totaleRighe, serviziScartati.size(), serviziValidati.size(),
                     registroAttivitaEntity,
                     response.getResponse(), response.getFileName());
         } catch (Exception e) {
-            registroAttivitaEntity.setJobStatus(JobStatusEnum.GENERIC_FAIL);
-            registroAttivitaEntity.setDataFineInserimento(new Date());
-            registroAttivitaRepository.save(registroAttivitaEntity);
-            log.info("-XXX- Errore generico durante l'elaborazione del file, id RegistroAttivitaEntity: {} -XXX-", registroAttivitaEntity.getId());
-            e.printStackTrace();        
+
+            log.info("-XXX- Errore generico durante l'elaborazione del file, id RegistroAttivitaEntity: {} -XXX-",
+                    registroAttivitaEntity.getId());
+            e.printStackTrace();
+            try {
+                rollbackCaricamentoMassivo(registroAttivitaEntity.getId());
+                registroAttivitaEntity.setJobStatus(JobStatusEnum.GENERIC_FAIL);
+                registroAttivitaEntity.setNote("Caricamento fallito");
+                registroAttivitaEntity.setDataFineInserimento(new Date());
+                registroAttivitaRepository.save(registroAttivitaEntity);
+            } catch (Exception e2) {
+                log.info("-XXX- Errore durante il rollback del caricamento massivo, id RegistroAttivitaEntity: {} -XXX",
+                        registroAttivitaEntity.getId());
+                e.printStackTrace();
+                registroAttivitaEntity.setJobStatus(JobStatusEnum.GENERIC_FAIL);
+                registroAttivitaEntity.setNote("Caricamento fallito, rollback fallito");
+                registroAttivitaEntity.setDataFineInserimento(new Date());
+                registroAttivitaRepository.save(registroAttivitaEntity);
+
+            }
         }
     }
 
@@ -854,4 +887,33 @@ public class ImportMassivoCSVService {
         return listaresult;
     }
 
+    private void rollbackCaricamentoMassivo(Long idRegistroAttivita) throws Exception {
+        // prendo idRegistroAttività
+        // cancello tutti i servizio_x_cittadino per cod_caricamento uguale a idRegistroAttività
+        // cerco tutti i servizi tramite codInserimento e senza associazione su servizio_x_cittadino  
+        // cerco tutti i questionari tramite codInserimento
+        
+        // cancello da mongoDb tutti i servizi con id trovati dalla lista (id di mongo)
+        // cancello da mongoDb tutti i questionari con id trovati dalla lista (id di mongo)
+        
+        // cancello tutti i questionario_compilato per cod_caricamento uguale a idRegistroAttività
+        // cancell tutti i tipologia_servizio per ogni servizio
+        // cancello tutti i servizi per cod_caricamento uguale a idRegistroAttivita
+
+        // try catch + aggiornamento registro attivita
+        servizioXCittadinoRepository.deleteAllByCodInserimento(idRegistroAttivita.toString());
+
+        List<ServizioEntity> listaServizi = servizioSqlRepository.findAllByCodInserimentoWithoutSXC(idRegistroAttivita.toString());
+        List<QuestionarioCompilatoEntity> listaQuestionari = questionarioCompilatoRepository.findByCodInserimento(idRegistroAttivita.toString());
+
+        servizioService.eliminaQuestionariMongoByListaQuestionari(listaQuestionari);
+        servizioService.eliminaServiziMongoByListaServizi(listaServizi);
+
+        questionarioCompilatoRepository.deleteAllByCodInserimento(idRegistroAttivita.toString());
+
+        servizioService.eliminaTipologiaServizioByListaServizi(listaServizi);
+
+        servizioService.eliminaServiziByListaServizi(listaServizi);
+
+    }
 }
