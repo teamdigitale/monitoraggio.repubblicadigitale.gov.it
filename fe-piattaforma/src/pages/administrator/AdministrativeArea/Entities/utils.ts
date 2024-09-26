@@ -233,3 +233,19 @@ export const policy = {
   SCD: 'SCD',
   RFD: 'RFD'
 };
+
+export const statusMassivo = {
+  IN_PROGRESS: "IN_PROGRESS",
+  SUCCESS: "SUCCESS",
+  FAIL_MONGO: "FAIL_MONGO", 
+  FAIL_S3_API: "FAIL_S3_API",
+  FAIL_S3_UPLOAD: "FAIL_S3_UPLOAD", 
+  GENERIC_FAIL: "GENERIC_FAIL"
+}
+
+export const statusMassivoFail = {
+  FAIL_MONGO: "FAIL_MONGO", 
+  FAIL_S3_API: "FAIL_S3_API",
+  FAIL_S3_UPLOAD: "FAIL_S3_UPLOAD", 
+  GENERIC_FAIL: "GENERIC_FAIL"
+}

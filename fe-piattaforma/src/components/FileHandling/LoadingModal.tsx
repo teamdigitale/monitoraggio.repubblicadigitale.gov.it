@@ -7,6 +7,7 @@ import uploadIcon from '../../../public/assets/img/it-upload-primary.png';
 import errorIcon from '../../../public/assets/img/it-report.png';
 import { downloadResume } from '../../utils/csvUtils';
 import { checkActivityReportStatus } from '../../services/activityReportService';
+import { statusMassivoFail } from '../../pages/administrator/AdministrativeArea/Entities/utils';
 
 export default function LoadingModal(props: {
   handleCloseModal: () => void;
@@ -39,6 +40,10 @@ export default function LoadingModal(props: {
           if (result.data && result.data.jobStatus === 'SUCCESS') {
             setSavedActivityReport(result.data);
             props.triggerSearch();
+          }
+          if(result.data && Object.values(statusMassivoFail).includes(result.data.jobStatus)){
+            setSavedActivityReport(null);
+            props.handleCloseModal()
           }
         })
         .catch(() => {
