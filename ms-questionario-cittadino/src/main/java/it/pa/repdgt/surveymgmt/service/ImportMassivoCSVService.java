@@ -81,7 +81,8 @@ public class ImportMassivoCSVService {
 
 
     @Async
-    public void process(ElaboratoCSVRequest csvRequest, String uuid) throws IOException {
+    @Transactional
+    public void process(ElaboratoCSVRequest csvRequest, String uuid, PolicyEnum policy, String estensioneInput) throws IOException {
         List<ServiziElaboratiDTO> serviziValidati = csvRequest.getServiziValidati();
         List<ServiziElaboratiDTO> serviziScartati = csvRequest.getServiziScartati();
         String UUID = replaceUUID(uuid);
@@ -919,7 +920,6 @@ public class ImportMassivoCSVService {
 
     }
 
-    @Transactional
     private void rollbackCaricamentoMassivo(Long idRegistroAttivita) throws Exception {
 
         servizioXCittadinoRepository.deleteAllByCodInserimento(idRegistroAttivita.toString());
