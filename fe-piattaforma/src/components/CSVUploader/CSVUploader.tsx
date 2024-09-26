@@ -23,6 +23,15 @@ function showErrorFormatCSV() {
     duration: 'slow',
   });
 }
+function showErrorFormatEXCEL() {
+  dispatchNotify({
+    title: 'Caricamento file',
+    status: 'error',
+    message: `Il file contenente i dati da caricare deve essere in formato EXCEL. Il sistema non accetta altri tipi di estensione.`,
+    closable: true,
+    duration: 'slow',
+  });
+}
 type CSVUploaderProps = {
   file: File | undefined;
   saveFile: (file: File) => Promise<void>;
@@ -82,7 +91,10 @@ export default function CSVUploader({
           showError();
         });
       } else {
-        showErrorFormatCSV();
+          if(fileInputConsentito === 'CSV')
+            showErrorFormatCSV();
+          else
+            showErrorFormatEXCEL();
       }
     },
     [file, saveFile]
@@ -141,9 +153,10 @@ export default function CSVUploader({
   const handleDrop = useCallback(
     async (event) => {
       event.preventDefault();
+      const files = event.dataTransfer.files;           
       const canProceed = await checkTable();
       if (canProceed) {
-        showConfirmDialog(event.dataTransfer.files);
+        showConfirmDialog(files);          
       } 
     },
     [handleFileInput, showConfirmDialog]
