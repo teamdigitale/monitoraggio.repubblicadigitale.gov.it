@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.345](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.344...1.0.0-test.345) (2024-09-26)
+
+
+### Bug Fixes
+
+* **upgrade-massivo): fix(upgrade-massivo:** fix rollback massivo3 20240926 ([83c9d5d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/83c9d5dadb484efdcc4afea3ecd4cd7834ef8b7e))
+
 ## [1.0.0-test.344](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.343...1.0.0-test.344) (2024-09-26)
 
 
