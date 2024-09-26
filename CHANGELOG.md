@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.341](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.340...1.0.0-test.341) (2024-09-26)
+
+
+### Bug Fixes
+
+* **upgrade-caricamento:** fix polling 20240926 ([750df1e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/750df1e081f216273f6712a20c5a5567e7c354f0))
+* **ms-questionario-cittadino:** errore gestito2 20240926 ([f184ae3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f184ae3dd93f64535c8d08f29b1580600e942b0d))
+
 ## [1.0.0-test.340](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.339...1.0.0-test.340) (2024-09-26)
 
 
