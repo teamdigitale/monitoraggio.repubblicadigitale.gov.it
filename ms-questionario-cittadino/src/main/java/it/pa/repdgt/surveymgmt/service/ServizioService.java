@@ -619,7 +619,7 @@ public class ServizioService {
 	public void eliminaServiziByListaServizi(List<ServizioEntity> listaServizi){
 
 		for(ServizioEntity servizio : listaServizi){
-			servizioSqlRepository.delete(servizio);
+			servizioSqlRepository.deleteServizioByIdServizioNative(servizio.getId());
 		}
 
 	}
