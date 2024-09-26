@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.342](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.341...1.0.0-test.342) (2024-09-26)
+
+
+### Bug Fixes
+
+* **upgrade-massivo:** fix chiusura modale caricamento 20240926 ([577359e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/577359e5468939d5afdfc6a5eac0ee9e9254435c))
+* **upgrade-massivo:** fix query rollback 20240926 ([d2454a1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d2454a13ae601ba785bd00bcc3d3f458ee8dcb4c))
+
 ## [1.0.0-test.341](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.340...1.0.0-test.341) (2024-09-26)
 
 
