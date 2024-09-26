@@ -55,10 +55,10 @@ public interface QuestionarioCompilatoRepository extends JpaRepository<Questiona
 	@Query(value = "SELECT qce FROM QuestionarioCompilatoEntity qce WHERE qce.idServizio  = :idServizio ")
 	List<QuestionarioCompilatoEntity> findByIdServizioJPA(@Param(value = "idServizio") Long idServizio);
 
-	@Query(value = "SELECT qce.* FROM QuestionarioCompilatoEntity qce WHERE qce.codInserimento = :codInserimento ", nativeQuery = true)
+	@Query(value = "SELECT qce.* FROM questionario_compilato qce WHERE qce.cod_inserimento = :codInserimento ", nativeQuery = true)
 	List<QuestionarioCompilatoEntity> findByCodInserimento(String codInserimento);
 
 	@Modifying
-	@Query(value = "DELETE FROM QuestionarioCompilatoEntity qce WHERE qce.codInserimento = :codInserimento ", nativeQuery = true)
+	@Query(value = "DELETE FROM questionario_compilato qce WHERE qce.cod_inserimento = :codInserimento ", nativeQuery = true)
 	void deleteAllByCodInserimento(String codInserimento);
 }

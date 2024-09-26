@@ -75,6 +75,6 @@ public interface ServizioXCittadinoRepository extends JpaRepository<ServizioXCit
 	List<ServizioXCittadinoEntity> findById_IdCittadino(@Param("idCittadino") Long idCittadino);
 
 	@Modifying
-	@Query(value = "DELETE FROM ServizioXCittadinoEntity sxc WHERE sxc.codInserimento = :codInserimento", nativeQuery = true)
+	@Query(value = "DELETE FROM servizio_x_cittadino sxc WHERE sxc.cod_inserimento = :codInserimento", nativeQuery = true)
 	void deleteAllByCodInserimento(String codInserimento);
 }

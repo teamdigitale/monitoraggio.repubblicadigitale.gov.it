@@ -351,7 +351,7 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 	@Query(value = "SELECT s.*\n" +
 			"FROM servizio s\n" +
 			"LEFT JOIN servizio_x_cittadino sxc ON sxc.id_servizio = s.id \n" +
-			"WHERE s.codInserimento = :codInserimento\n" +
-			"AND sxc.idServizio IS NULL\n", nativeQuery = true)
+			"WHERE s.cod_inserimento = :codInserimento\n" +
+			"AND sxc.id_servizio IS NULL\n", nativeQuery = true)
 	List<ServizioEntity> findAllByCodInserimentoWithoutSXC(String codInserimento);
 }
