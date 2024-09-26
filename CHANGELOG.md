@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.347](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.346...1.0.0-test.347) (2024-09-26)
+
+
+### Bug Fixes
+
+* **ms-questionario-cittadino:** tolta exception gestita 20240926 ([a8f6bfa](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a8f6bfa9ec0dabbda9d8ac9c6cf01fb2dad473b1))
+
 ## [1.0.0-test.346](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.345...1.0.0-test.346) (2024-09-26)
 
 
