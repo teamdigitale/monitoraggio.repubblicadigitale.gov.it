@@ -1,5 +1,18 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.340](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.339...1.0.0-test.340) (2024-09-26)
+
+
+### Features
+
+* **upgrade-massivo:** gestione rollback inserimento massivo 20240926 ([9bee87c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9bee87c7ffb5eb1f0bcf85563122d381c1ec949e))
+
+
+### Bug Fixes
+
+* **ms-questionario-cittadino:** errore gestito 20240926 ([3a43aa2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3a43aa2587c06e545425990618b0a5cfc806415a))
+* **fe-piattaforma:** fix drag and drop caricamento massivo 20240926 ([deb0ce7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/deb0ce702a3639629646fc6701b1bc78eadc160e))
+
 ## [1.0.0-test.339](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.338...1.0.0-test.339) (2024-09-25)
 
 
