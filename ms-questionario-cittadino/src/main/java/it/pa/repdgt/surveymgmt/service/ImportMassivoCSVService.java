@@ -919,20 +919,9 @@ public class ImportMassivoCSVService {
 
     }
 
+    @Transactional
     private void rollbackCaricamentoMassivo(Long idRegistroAttivita) throws Exception {
-        // prendo idRegistroAttività
-        // cancello tutti i servizio_x_cittadino per cod_caricamento uguale a idRegistroAttività
-        // cerco tutti i servizi tramite codInserimento e senza associazione su servizio_x_cittadino  
-        // cerco tutti i questionari tramite codInserimento
-        
-        // cancello da mongoDb tutti i servizi con id trovati dalla lista (id di mongo)
-        // cancello da mongoDb tutti i questionari con id trovati dalla lista (id di mongo)
-        
-        // cancello tutti i questionario_compilato per cod_caricamento uguale a idRegistroAttività
-        // cancell tutti i tipologia_servizio per ogni servizio
-        // cancello tutti i servizi per cod_caricamento uguale a idRegistroAttivita
 
-        // try catch + aggiornamento registro attivita
         servizioXCittadinoRepository.deleteAllByCodInserimento(idRegistroAttivita.toString());
 
         List<ServizioEntity> listaServizi = servizioSqlRepository.findAllByCodInserimentoWithoutSXC(idRegistroAttivita.toString());
