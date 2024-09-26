@@ -129,9 +129,10 @@ public class ImportMassivoCSVService {
                     registroAttivitaRepository.save(registroAttivitaEntity);
                 }
             }
-            aggiornaRegistroAttivita(totaleRighe, serviziScartati.size(), serviziValidati.size(),
-                    registroAttivitaEntity,
-                    response.getResponse(), response.getFileName());
+            throw new Exception();
+            // aggiornaRegistroAttivita(totaleRighe, serviziScartati.size(), serviziValidati.size(),
+            //         registroAttivitaEntity,
+            //         response.getResponse(), response.getFileName());
         } catch (Exception e) {
 
             log.info("-XXX- Errore generico durante l'elaborazione del file, id RegistroAttivitaEntity: {} -XXX-",
