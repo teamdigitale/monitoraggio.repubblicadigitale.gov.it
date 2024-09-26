@@ -21,12 +21,12 @@ import it.pa.repdgt.surveymgmt.exception.ServizioException;
 import it.pa.repdgt.surveymgmt.exception.ValidationException;
 import it.pa.repdgt.surveymgmt.model.ElaboratoCSVRequest;
 import it.pa.repdgt.surveymgmt.model.ElaboratoCSVResponse;
-import it.pa.repdgt.surveymgmt.mongo.repository.QuestionarioCompilatoMongoRepository;
 import it.pa.repdgt.surveymgmt.mongo.repository.SezioneQ3Respository;
 import it.pa.repdgt.surveymgmt.repository.*;
 import it.pa.repdgt.surveymgmt.request.QuestionarioCompilatoRequest;
 import it.pa.repdgt.surveymgmt.request.ServizioRequest;
 import it.pa.repdgt.surveymgmt.restapi.ServizioCittadinoRestApi;
+import it.pa.repdgt.surveymgmt.service.utils.ImportMassivoCSVServiceUtils;
 import it.pa.repdgt.surveymgmt.util.CSVMapUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -76,13 +76,12 @@ public class ImportMassivoCSVService {
     private static final String FILE_NAME = "%s_righe_scartate_%s_%s.csv";
     @Autowired
 	private ProgettoService progettoService;
-    @Autowired
-    private QuestionarioCompilatoRepository questionarioCompilatoRepository;
     private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH-mm", Locale.ITALIAN);
+    @Autowired
+    private ImportMassivoCSVServiceUtils importMassivoCSVServiceUtils;
 
 
     @Async
-    @Transactional
     public void process(ElaboratoCSVRequest csvRequest, String uuid, PolicyEnum policy, String estensioneInput) throws IOException {
         List<ServiziElaboratiDTO> serviziValidati = csvRequest.getServiziValidati();
         List<ServiziElaboratiDTO> serviziScartati = csvRequest.getServiziScartati();
@@ -114,7 +113,7 @@ public class ImportMassivoCSVService {
                         registroAttivitaEntity.getId());
                 e.printStackTrace();
                 try {
-                    rollbackCaricamentoMassivo(registroAttivitaEntity.getId());
+                    importMassivoCSVServiceUtils.rollbackCaricamentoMassivo(registroAttivitaEntity.getId());
                     registroAttivitaEntity.setJobStatus(JobStatusEnum.FAIL_S3_UPLOAD);
                     registroAttivitaEntity.setNote("Upload del file su s3 Fallito");
                     registroAttivitaEntity.setDataFineInserimento(new Date());
@@ -140,7 +139,7 @@ public class ImportMassivoCSVService {
                     registroAttivitaEntity.getId());
             e.printStackTrace();
             try {
-                rollbackCaricamentoMassivo(registroAttivitaEntity.getId());
+                importMassivoCSVServiceUtils.rollbackCaricamentoMassivo(registroAttivitaEntity.getId());
                 registroAttivitaEntity.setJobStatus(JobStatusEnum.GENERIC_FAIL);
                 registroAttivitaEntity.setNote("Caricamento fallito");
                 registroAttivitaEntity.setDataFineInserimento(new Date());
@@ -969,24 +968,6 @@ public class ImportMassivoCSVService {
         }
 
         return true;
-
-    }
-
-    private void rollbackCaricamentoMassivo(Long idRegistroAttivita) throws Exception {
-
-        servizioXCittadinoRepository.deleteAllByCodInserimento(idRegistroAttivita.toString());
-
-        List<ServizioEntity> listaServizi = servizioSqlRepository.findAllByCodInserimentoWithoutSXC(idRegistroAttivita.toString());
-        List<QuestionarioCompilatoEntity> listaQuestionari = questionarioCompilatoRepository.findByCodInserimento(idRegistroAttivita.toString());
-
-        servizioService.eliminaQuestionariMongoByListaQuestionari(listaQuestionari);
-        servizioService.eliminaServiziMongoByListaServizi(listaServizi);
-
-        questionarioCompilatoRepository.deleteAllByCodInserimento(idRegistroAttivita.toString());
-
-        servizioService.eliminaTipologiaServizioByListaServizi(listaServizi);
-
-        servizioService.eliminaServiziByListaServizi(listaServizi);
 
     }
 }
