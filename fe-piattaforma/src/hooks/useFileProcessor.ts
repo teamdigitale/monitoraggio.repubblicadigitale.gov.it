@@ -208,8 +208,8 @@ export function useFileProcessor(file: File | undefined, removeFile: () => void)
 
                     const cfData: IPersonalInfo =
                       CodiceFiscaleUtils.Parser.cfDecode(filteredRecord.AN3);
-
-                    if (!getAgeGroupCodeByYear(cfData.date)) {
+  
+                    if ( filteredRecord.AN3 && !getAgeGroupCodeByYear(cfData.date)) {
                       errors.push('Il cittadino deve essere maggiorenne.');
                     }
 
@@ -294,8 +294,8 @@ export function useFileProcessor(file: File | undefined, removeFile: () => void)
   
                   const cfData: IPersonalInfo =
                     CodiceFiscaleUtils.Parser.cfDecode(filteredRecord.AN3);
-  
-                  if (!getAgeGroupCodeByYear(cfData.date)) {
+
+                if ( filteredRecord.AN3 && !getAgeGroupCodeByYear(cfData.date)) {
                     errors.push('Il cittadino deve essere maggiorenne.');
                   }
   
