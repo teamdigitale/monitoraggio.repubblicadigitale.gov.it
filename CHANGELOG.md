@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.348](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.347...1.0.0-test.348) (2024-09-30)
+
+
+### Bug Fixes
+
+* **caricamento-excel:** fix controllo formato data template excel 20240930 ([71f7dcb](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/71f7dcbfbd930f45af914c2b1cb4366976bb364e))
+* **fe-piattaforma:** fix check codice fiscale caricamento massivo 20240930 ([3095f5b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3095f5b3cca95e03e0dd1207e6eca57d49cab13f))
+
 ## [1.0.0-test.347](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.346...1.0.0-test.347) (2024-09-26)
 
 
