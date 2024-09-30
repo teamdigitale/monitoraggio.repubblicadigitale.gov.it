@@ -68,7 +68,7 @@ const TableMobile: React.FC<MobileTableI> = ({
           clickDeleteAction: onActionClick?.[CRUDActionTypes.DELETE]
             ? () => onActionClick?.[CRUDActionTypes.DELETE](item)
             : undefined,
-          clickDownloadAction: onActionClick?.[CRUDActionTypes.DOWNLOAD] && item.jobStatus === 'SUCCESS'
+          clickDownloadAction: onActionClick?.[CRUDActionTypes.DOWNLOAD] && item.jobStatus !== 'GENERIC_FAIL' && item.jobStatus !== 'FAIL_MONGO' && item.jobStatus !== 'FAIL_S3_API'
             ? () => {onActionClick?.[CRUDActionTypes.DOWNLOAD](item)}
             : undefined,
           innerInfo: isEmpty(rest) ? undefined : { id, ...rest },

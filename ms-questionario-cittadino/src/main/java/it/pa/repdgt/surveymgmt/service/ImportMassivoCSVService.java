@@ -26,6 +26,7 @@ import it.pa.repdgt.surveymgmt.repository.*;
 import it.pa.repdgt.surveymgmt.request.QuestionarioCompilatoRequest;
 import it.pa.repdgt.surveymgmt.request.ServizioRequest;
 import it.pa.repdgt.surveymgmt.restapi.ServizioCittadinoRestApi;
+import it.pa.repdgt.surveymgmt.service.utils.ImportMassivoCSVServiceUtils;
 import it.pa.repdgt.surveymgmt.util.CSVMapUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -75,8 +76,10 @@ public class ImportMassivoCSVService {
     private static final String FILE_NAME = "%s_righe_scartate_%s_%s.csv";
     @Autowired
 	private ProgettoService progettoService;
-
     private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH-mm", Locale.ITALIAN);
+    @Autowired
+    private ImportMassivoCSVServiceUtils importMassivoCSVServiceUtils;
+
 
     @Async
     public void process(ElaboratoCSVRequest csvRequest, String uuid, PolicyEnum policy, String estensioneInput) throws IOException {
@@ -106,22 +109,50 @@ public class ImportMassivoCSVService {
             try {
                 uploadFile(response, registroAttivitaEntity.getId());
             } catch (IOException e) {
-                log.error(e.getMessage());
-                registroAttivitaEntity.setJobStatus(JobStatusEnum.FAIL_S3_UPLOAD);
-                registroAttivitaEntity.setNote("Upload del file su s3 Fallito");
-                registroAttivitaEntity.setDataFineInserimento(new Date());
-                registroAttivitaService.saveRegistroAttivita(registroAttivitaEntity);
-                return;
+                log.info("-XXX- Errore durante il salvataggio del file scarti, id RegistroAttivitaEntity: {} -XXX",
+                        registroAttivitaEntity.getId());
+                e.printStackTrace();
+                try {
+                    importMassivoCSVServiceUtils.rollbackCaricamentoMassivo(registroAttivitaEntity.getId());
+                    registroAttivitaEntity.setJobStatus(JobStatusEnum.FAIL_S3_UPLOAD);
+                    registroAttivitaEntity.setNote("Upload del file su s3 Fallito");
+                    registroAttivitaEntity.setDataFineInserimento(new Date());
+                    registroAttivitaRepository.save(registroAttivitaEntity);
+                } catch (Exception e2) {
+                    log.info(
+                            "-XXX- Errore durante il rollback del caricamento massivo, id RegistroAttivitaEntity: {} -XXX",
+                            registroAttivitaEntity.getId());
+                    e2.printStackTrace();
+                    registroAttivitaEntity.setJobStatus(JobStatusEnum.FAIL_S3_UPLOAD);
+                    registroAttivitaEntity.setNote("Upload del file su s3 Fallito, rollback fallito");
+                    registroAttivitaEntity.setDataFineInserimento(new Date());
+                    registroAttivitaRepository.save(registroAttivitaEntity);
+                }
             }
             aggiornaRegistroAttivita(totaleRighe, serviziScartati.size(), serviziValidati.size(),
                     registroAttivitaEntity,
                     response.getResponse(), response.getFileName());
         } catch (Exception e) {
-            registroAttivitaEntity.setJobStatus(JobStatusEnum.GENERIC_FAIL);
-            registroAttivitaEntity.setDataFineInserimento(new Date());
-            registroAttivitaService.saveRegistroAttivita(registroAttivitaEntity);
-            log.info("Errore generico durante l'elaborazione del file, id RegistroAttivitaEntity: {}", registroAttivitaEntity.getId());
-            e.printStackTrace();        
+
+            log.info("-XXX- Errore generico durante l'elaborazione del file, id RegistroAttivitaEntity: {} -XXX-",
+                    registroAttivitaEntity.getId());
+            e.printStackTrace();
+            try {
+                importMassivoCSVServiceUtils.rollbackCaricamentoMassivo(registroAttivitaEntity.getId());
+                registroAttivitaEntity.setJobStatus(JobStatusEnum.GENERIC_FAIL);
+                registroAttivitaEntity.setNote("Caricamento fallito");
+                registroAttivitaEntity.setDataFineInserimento(new Date());
+                registroAttivitaRepository.save(registroAttivitaEntity);
+            } catch (Exception e2) {
+                log.info("-XXX- Errore durante il rollback del caricamento massivo, id RegistroAttivitaEntity: {} -XXX",
+                        registroAttivitaEntity.getId());
+                e2.printStackTrace();
+                registroAttivitaEntity.setJobStatus(JobStatusEnum.GENERIC_FAIL);
+                registroAttivitaEntity.setNote("Caricamento fallito, rollback fallito");
+                registroAttivitaEntity.setDataFineInserimento(new Date());
+                registroAttivitaRepository.save(registroAttivitaEntity);
+
+            }
         }
     }
 
@@ -146,7 +177,7 @@ public class ImportMassivoCSVService {
         registroAttivitaEntity.setFileName(fileName);
         registroAttivitaEntity.setJobStatus(JobStatusEnum.SUCCESS);
         registroAttivitaEntity.setDataFineInserimento(new Date());
-        registroAttivitaService.saveRegistroAttivita(registroAttivitaEntity);
+        registroAttivitaRepository.save(registroAttivitaEntity);
     }
 
     private String replaceUUID(String uuid) {
@@ -938,5 +969,4 @@ public class ImportMassivoCSVService {
         return true;
 
     }
-
 }

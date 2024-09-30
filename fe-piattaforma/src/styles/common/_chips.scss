@@ -1,6 +1,7 @@
 .chip {
   border: none !important;
   cursor: default;
+  pointer-events: none;
   white-space: nowrap;
   @media screen and (min-width: 320px) {
     height: auto !important;

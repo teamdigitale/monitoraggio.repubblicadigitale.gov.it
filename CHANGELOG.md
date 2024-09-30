@@ -1,5 +1,92 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.347](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.346...1.0.0-test.347) (2024-09-26)
+
+
+### Bug Fixes
+
+* **ms-questionario-cittadino:** tolta exception gestita 20240926 ([a8f6bfa](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a8f6bfa9ec0dabbda9d8ac9c6cf01fb2dad473b1))
+
+## [1.0.0-test.346](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.345...1.0.0-test.346) (2024-09-26)
+
+
+### Bug Fixes
+
+* **upgrade-massivo): fix(upgrade-massivo:** fix rollback massivo4 20240926 ([21adad4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/21adad443029a2237e45b235948e21aa3f816bae))
+
+## [1.0.0-test.345](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.344...1.0.0-test.345) (2024-09-26)
+
+
+### Bug Fixes
+
+* **upgrade-massivo): fix(upgrade-massivo:** fix rollback massivo3 20240926 ([83c9d5d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/83c9d5dadb484efdcc4afea3ecd4cd7834ef8b7e))
+
+## [1.0.0-test.344](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.343...1.0.0-test.344) (2024-09-26)
+
+
+### Bug Fixes
+
+* **upgrade-massivo): fix(upgrade-massivo:** fix rollback massivo2 20240926 ([b86183e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b86183e4ee0d0d9535b0a7932d57133900f468c4))
+
+## [1.0.0-test.343](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.342...1.0.0-test.343) (2024-09-26)
+
+
+### Bug Fixes
+
+* **upgrade-massivo:** fix rollback massivo 20240926 ([c8c8a0f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c8c8a0f826f12d72adec264b791cc4dc794c8102))
+
+## [1.0.0-test.342](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.341...1.0.0-test.342) (2024-09-26)
+
+
+### Bug Fixes
+
+* **upgrade-massivo:** fix chiusura modale caricamento 20240926 ([577359e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/577359e5468939d5afdfc6a5eac0ee9e9254435c))
+* **upgrade-massivo:** fix query rollback 20240926 ([d2454a1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d2454a13ae601ba785bd00bcc3d3f458ee8dcb4c))
+
+## [1.0.0-test.341](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.340...1.0.0-test.341) (2024-09-26)
+
+
+### Bug Fixes
+
+* **upgrade-caricamento:** fix polling 20240926 ([750df1e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/750df1e081f216273f6712a20c5a5567e7c354f0))
+* **ms-questionario-cittadino:** errore gestito2 20240926 ([f184ae3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f184ae3dd93f64535c8d08f29b1580600e942b0d))
+
+## [1.0.0-test.340](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.339...1.0.0-test.340) (2024-09-26)
+
+
+### Features
+
+* **upgrade-massivo:** gestione rollback inserimento massivo 20240926 ([9bee87c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9bee87c7ffb5eb1f0bcf85563122d381c1ec949e))
+
+
+### Bug Fixes
+
+* **ms-questionario-cittadino:** errore gestito 20240926 ([3a43aa2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3a43aa2587c06e545425990618b0a5cfc806415a))
+* **fe-piattaforma:** fix drag and drop caricamento massivo 20240926 ([deb0ce7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/deb0ce702a3639629646fc6701b1bc78eadc160e))
+
+## [1.0.0-test.339](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.338...1.0.0-test.339) (2024-09-25)
+
+
+### Bug Fixes
+
+* **caricamento-excel:** fix caricamento excel be 20240925 ([ce54cdd](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ce54cdd9b5eb4bfe40689f871246ee55e371d034))
+
+## [1.0.0-test.338](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.337...1.0.0-test.338) (2024-09-25)
+
+
+### Features
+
+* **fe-piattaforma:** rimozione file formato errato 20240925 ([bcdbb90](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/bcdbb907b6f5593045014dc5df945a24dfa1058c))
+* **fe-piattaforma:** aggiornamento gestione scd rfd per caricamento massivo 20240925 ([b895af2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b895af21901521f10c9a7b955478116477b7fce4))
+* **fe-piattaforma:** sblocco sezione caricamento massivo per progetti SCD 20240925 ([6f80033](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6f800338833a11219db3ff06c150a7e292bff6a4))
+* **fe-piattaforma:** icona info tabella caricamento massivo 20240925 ([969ff80](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/969ff80adbb54c58c8f64b31c3b1e51072616194))
+
+
+### Bug Fixes
+
+* **ms-questionario-cittadino:** fix salvataggio record registro attivita 20240925 ([f566905](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f566905172a9b97d2595a495afbb49f210eca95b))
+* **caricamento-excel:** gestione migliorata controllo unicita servizio cittadino 20240925 ([5e9c02b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5e9c02b073ce5008644176350c5327677ae7bcba))
+
 ## [1.0.0-test.337](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.336...1.0.0-test.337) (2024-09-25)
 
 
