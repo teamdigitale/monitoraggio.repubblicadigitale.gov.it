@@ -103,6 +103,7 @@ export function useFileProcessor(file: File | undefined, removeFile: () => void)
             header: 1,
             defval: '',
             blankrows: false,
+            raw: false
           });
 
           const mappedData: CSVRecord[] = jsonData.slice(3).map((row: any) => {
@@ -271,8 +272,6 @@ export function useFileProcessor(file: File | undefined, removeFile: () => void)
                   sanitizeFields(record);
                   const { AN14: _AN14, AN17: _AN17, ...filteredRecord } = record;
                   filteredRecord.AN3 = filteredRecord.AN3.trim();
-                  filteredRecord.SE1 = excelSerialDateToJSDate(Number(filteredRecord.SE1));
-                  //filteredRecord.SE2 = excelSerialTimeToHHMM(filteredRecord.SE2);
                   const { rejectedTypes } = generateServiceName(filteredRecord.SE3);
                   const errors = validateFields(
                     filteredRecord,
