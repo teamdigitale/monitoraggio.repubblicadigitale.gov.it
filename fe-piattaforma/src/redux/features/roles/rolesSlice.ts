@@ -25,6 +25,7 @@ export type RolePermissionI =
   | 'upd.enti.gest.prgm'
   | 'add.ref_del.gest.prgm'
   | 'del.ref_del.gest.prgm'
+  | 'vis.mntr'
   // Surveys
   | 'subtab.quest'
   | 'upd.rel.quest_prgm'

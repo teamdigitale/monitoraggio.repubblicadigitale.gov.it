@@ -35,7 +35,7 @@ export const PageTitleMock: PageTitleMockI = {
 
 const tabs = [
   {
-    label: 'Programmi',
+    label: 'Monitoraggio dei caricamenti massivi',
     path: '/report-dati/monitoraggio-caricamenti-massivi',
     id: 'tab-dashboard',
   }
