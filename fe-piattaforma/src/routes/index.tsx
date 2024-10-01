@@ -312,6 +312,14 @@ const AppRoutes: React.FC = () => {
                 }
               />
               <Route
+                path='/report-dati'
+                element={
+                  <ProtectedComponent visibleTo={['tab.dshb', 'view.dshb']}>
+                    <Dashboard />
+                  </ProtectedComponent>
+                }
+              />
+              <Route
                 path='/area-amministrativa/*'
                 element={
                   <ProtectedComponent visibleTo={['tab.am']}>
