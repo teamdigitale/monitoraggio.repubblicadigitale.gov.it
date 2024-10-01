@@ -19,6 +19,7 @@ import UserPublishedContentsPage from '../pages/common/UserPublishedContentsPage
 import { selectModalState } from '../redux/features/modal/modalSlice';
 import { PrivacyDisclaimer } from '../pages/common/Privacy/PrivacyDisclaimer';
 import Authicon from '/public/assets/img/auth-box-icon.png';
+import DataReports from '../pages/administrator/MonitoraggioCaricamenti/dataReports';
 
 const AuthRedirect = lazy(() => import('../pages/common/Auth/authRedirect'));
 
@@ -303,10 +304,10 @@ const AppRoutes: React.FC = () => {
                 }
               />
               <Route
-                path='/report-dati'
+                path='/report-dati/*'
                 element={
                   <ProtectedComponent visibleTo={['tab.dshb', 'view.dshb']}>
-                    <Dashboard />
+                    <DataReports />
                   </ProtectedComponent>
                 }
               />

@@ -37,8 +37,7 @@ const HeaderMenu: React.FC<HeaderMenuI> = (props) => {
 
   const [activeTab, setActiveTab] = useState(updateActiveTab());
   const { t } = useTranslation();
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [dropdownEventsOpen, setDropdownEventsOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -48,10 +47,9 @@ const HeaderMenu: React.FC<HeaderMenuI> = (props) => {
 
   const navDropDown: React.FC<MenuItem> = (li) => {
     const toggle = (dropdown: string) => {
-      dropdown.toLowerCase() !== 'area cittadini'
-        ? setDropdownOpen((prevState) => !prevState)
-        : setDropdownEventsOpen((prevState) => !prevState);
+      setActiveDropdown((prev) => (prev === dropdown ? null : dropdown));
     };
+
     const onLinkClick = () => {
       setActiveTab(li.id || li.label);
       toggle(li.label);
@@ -61,11 +59,7 @@ const HeaderMenu: React.FC<HeaderMenuI> = (props) => {
       <>
         <UncontrolledDropdown
           inNavbar
-          isOpen={
-            li.label.toLowerCase() === 'area cittadini'
-              ? dropdownEventsOpen
-              : dropdownOpen
-          }
+          isOpen={activeDropdown === li.label}
           toggle={() => toggle(li.label)}
         >
           <DropdownToggle
@@ -77,11 +71,7 @@ const HeaderMenu: React.FC<HeaderMenuI> = (props) => {
               'pb-0',
               'mb-1'
             )}
-            aria-expanded={
-              li.label.toLowerCase() === 'area cittadini'
-                ? dropdownEventsOpen
-                : dropdownOpen
-            }
+            aria-expanded={activeDropdown === li.label}
           >
             {li.label}
             <Icon

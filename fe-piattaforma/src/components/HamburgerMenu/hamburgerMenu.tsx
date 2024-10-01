@@ -1,7 +1,3 @@
-/* TODO fix this file!! */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/anchor-is-valid */
-
 import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { Button, Collapse, Icon, LinkList } from 'design-react-kit';
@@ -22,10 +18,10 @@ const HamburgerMenu: React.FC<HBMenuProps> = (props) => {
   const { open, setOpen, menuRoutes = [] } = props;
   const { hasUserPermission } = useGuard();
 
-  const [collapseOpen, setCollapseOpen] = useState(false);
+  const [collapseOpen, setCollapseOpen] = useState<string | null>(null);
 
-  const expanded = {
-    'aria-expanded': true,
+  const toggleCollapse = (menuId: string) => {
+    setCollapseOpen((prev) => (prev === menuId ? null : menuId));
   };
 
   useEffect(() => {
@@ -60,7 +56,7 @@ const HamburgerMenu: React.FC<HBMenuProps> = (props) => {
                           'pr-3',
                           'flex-column'
                         )}
-                        {...(collapseOpen ? expanded : {})}
+                        aria-expanded={collapseOpen === link.id}
                         id={link.id}
                       >
                         <Button
@@ -71,7 +67,7 @@ const HamburgerMenu: React.FC<HBMenuProps> = (props) => {
                             'align-items-center',
                             'anchor-button'
                           )}
-                          onClick={() => setCollapseOpen(!collapseOpen)}
+                          onClick={() => toggleCollapse(link.id ?? '')}
                         >
                           {link.label}
                           <Icon
@@ -85,11 +81,11 @@ const HamburgerMenu: React.FC<HBMenuProps> = (props) => {
                       </li>
                       <li
                         className={clsx(
-                          !collapseOpen && 'd-none',
+                          collapseOpen !== link.id && 'd-none',
                           'sublist-container'
                         )}
                       >
-                        <Collapse isOpen={collapseOpen}>
+                        <Collapse isOpen={collapseOpen === link.id}>
                           <LinkList sublist>
                             {link.subRoutes
                               .filter(({ visible = ['hidden'] }) =>
@@ -102,7 +98,7 @@ const HamburgerMenu: React.FC<HBMenuProps> = (props) => {
                                     to={sub.path}
                                     onClick={() => {
                                       setOpen(false);
-                                      setCollapseOpen(false);
+                                      setCollapseOpen(null);
                                     }}
                                   >
                                     {sub.label}
@@ -119,7 +115,7 @@ const HamburgerMenu: React.FC<HBMenuProps> = (props) => {
                         to={link.path}
                         onClick={() => {
                           setOpen(false);
-                          setCollapseOpen(false);
+                          setCollapseOpen(null);
                         }}
                       >
                         {link.label}
