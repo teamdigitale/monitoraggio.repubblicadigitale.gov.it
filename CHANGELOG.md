@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.35.2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.35.1...1.35.2) (2024-10-01)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** update data limite inserimento massivo servizi 20241001 ([4906b2d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4906b2d1a2ea7f80c9591d45f661d2abd4f342fc))
+
 ## [1.35.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.35.0...1.35.1) (2024-09-24)
 
 
