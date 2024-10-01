@@ -231,6 +231,18 @@ export const MenuRoutes = [
     path: '/report-dati',
     id: 'tab-dashboard',
     visible: ['tab.dshb'],
+    subRoutes: [
+      newMenuItem({
+        label: 'Report dati',
+        path: '/report-dati',
+        visible: ['tab.dshb'],
+      }),
+      newMenuItem({
+        label: 'Monitoraggio dei caricamenti massivi',
+        path: '/report-dati/monitoraggio-caricamenti-massivi',
+        visible: ['tab.dshb', 'visible'],
+      })
+    ],
   }),
   newMenuItem({
     label: 'Bacheca',

@@ -32,6 +32,8 @@
 .dropdown-menu.show {
   height: auto;
   margin-top: 6px;
+  width: auto;
+  min-width: 215px;
 }
 
 @media screen and (max-width: 1000px) {
