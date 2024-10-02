@@ -26,6 +26,7 @@ import useGuard from '../../../hooks/guard';
 import IconNote from '/public/assets/img/it-note-primary.png';
 import MonitoringSearchFilters from './monitoringSearchFilters';
 import './monitoring.scss';
+import { selectPermissions } from '../../../redux/features/user/userSlice';
 
 const entity = 'programma';
 
@@ -34,7 +35,7 @@ const Monitoring = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { hasUserPermission } = useGuard();
-  const { programmi: programmiList = [] } = useAppSelector(selectEntityList);
+  const { programmi: caricamentiList = [] } = useAppSelector(selectEntityList);
   const filtersList = useAppSelector(selectEntityFilters);
   const pagination = useAppSelector(selectEntityPagination);
   const { filtroCriterioRicerca, filtroPolicies, filtroStati } = filtersList;
@@ -47,16 +48,25 @@ const Monitoring = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const permissions = useAppSelector(selectPermissions);
+  // const filteredPermissions = permissions.filter((permission: string) => permission.startsWith('vis'));
+  
+  console.log("filteredPermissions", permissions);
+  console.log("hasPermission", hasUserPermission(['vis.mntr']));
+  
   const updateTableValues = () => {
     const table = newTable(
       TableHeading,
-      programmiList.map((td: any) => {
+      caricamentiList.map((td: any) => {
         return {
-          label: td.nomeBreve || td.nome,
-          id: td.codice || td.id,
-          policy: td.policy,
-          enteGestore: td.enteGestore || td.nomeEnteGestore,
-          status: <StatusChip status={td.stato} rowTableId={td.id} />,
+          data: "",
+          ente: "",
+          intervento: "",
+          progetto: "",
+          programma: "",
+          caricamenti: "",
+          serviziCaricati: "",
+          cittadiniCaricati: ""
         };
       })
     );
@@ -67,10 +77,10 @@ const Monitoring = () => {
   const [numeroRisultati, setNumeroRisultati] = useState(pagination.totalElements);
   
   useEffect(() => {
-    if (Array.isArray(programmiList) && programmiList.length)
+    if (Array.isArray(caricamentiList) && caricamentiList.length)
       setTableValues(updateTableValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [programmiList]);
+  }, [caricamentiList]);
 
   const getProgramsList = () => {    
     dispatch(GetEntityValues({ entity }));
@@ -101,7 +111,7 @@ const Monitoring = () => {
     ? {
         [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
           if (typeof td !== 'string') {
-            const programId = programmiList.filter(
+            const programId = caricamentiList.filter(
               (program: any) =>
                 program?.codice?.toString().toLowerCase() ===
                 td.id.toString().toLowerCase()
