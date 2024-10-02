@@ -27,11 +27,27 @@ import IconNote from '/public/assets/img/it-note-primary.png';
 import MonitoringSearchFilters from './monitoringSearchFilters';
 import './monitoring.scss';
 import { selectPermissions } from '../../../redux/features/user/userSlice';
+import { formFieldI } from '../../../utils/formHelper';
+import { withFormHandlerProps } from '../../../hoc/withFormHandler';
 
 const entity = 'programma';
 
+interface MonitoringFormI {
+  formDisabled?: boolean;
+  creation?: boolean;
+}
 
-const Monitoring = () => {
+interface MonitoringI extends withFormHandlerProps, MonitoringFormI {}
+
+const Monitoring: React.FC<MonitoringI> = ({
+  formDisabled,
+  creation = false,
+  clearForm = () => {},
+}) => {
+  const [newFormValues, setNewFormValues] = useState<{
+    [key: string]: formFieldI['value'];
+  }>({});
+  const [isFormValid, setIsFormValid] = useState<boolean>(true);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { hasUserPermission } = useGuard();
@@ -46,6 +62,12 @@ const Monitoring = () => {
     dispatch(setEntityPagination({ pageSize: 8 }));
     dispatch(resetProgramDetails());
     // eslint-disable-next-line react-hooks/exhaustive-deps
+    setNewFormValues({
+      ...newFormValues,
+      dataInizio: new Date().toISOString().split('T')[0],
+      dataFine: new Date().toISOString().split('T')[0],
+    });
+    console.log('newFormValues', newFormValues);
   }, []);
 
   const permissions = useAppSelector(selectPermissions);
@@ -128,7 +150,14 @@ const Monitoring = () => {
 
       <div style={{ margin: '50px' }} />
       <Accordion title={'Ricerca avanzata'} className="custom-accordion">
-        <MonitoringSearchFilters/>
+        <MonitoringSearchFilters
+          newFormValues={newFormValues}
+          creation={creation}
+          clearForm={clearForm}
+          formDisabled={!!formDisabled}
+          sendNewValues={(newData) => setNewFormValues({ ...newData })}
+          setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}       
+          />
       </Accordion>
       <div style={{ margin: '50px' }} />
       
@@ -177,8 +206,7 @@ const Monitoring = () => {
           </>
         ) : (
           <EmptySection
-            title='Non sono stati effettuati'
-            subtitle='caricamenti massivi'
+            title='Non sono stati effettuati caricamenti massivi'
             icon={IconNote}
             withIcon
           />
