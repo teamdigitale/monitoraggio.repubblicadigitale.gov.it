@@ -1,11 +1,10 @@
-import React, { ReactElement, useEffect, useState } from 'react';
-import { Button, Chip, ChipLabel, Icon } from 'design-react-kit';
-import { useDispatch } from 'react-redux';
-//import Sidebar, { SidebarI } from './sidebar';
-import clsx from 'clsx';
-import { NavLink } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Button } from 'design-react-kit';
 import { useTranslation } from 'react-i18next';
-import Sticky from 'react-sticky-el';
+import { Form, Input, Select } from '../../../components';
+import { formFieldI, FormHelper, newForm, newFormField } from '../../../utils/formHelper';
+import withFormHandler, { withFormHandlerProps } from '../../../hoc/withFormHandler';
+import { set } from 'react-hook-form';
 
 export interface SearchInformationI {
   onHandleSearch?: (searchValue: string) => void;
@@ -16,174 +15,247 @@ export interface SearchInformationI {
   onReset?: () => void;
 }
 
-interface GenericSearchFilterTableLayoutI {
-  searchInformation?: SearchInformationI;
-  Sidebar?: ReactElement;
-  showButtons?: boolean;
-  filtersList?: any;
-  cta?: (() => void) | undefined;
-  ctaHref?: string;
-  textCta?: string | undefined;
-  iconCta?: string;
-  ctaPrintText?: string;
-  ctaPrint?: () => void;
-  ctaDownload?: (() => void) | undefined;
-  resetFilterDropdownSelected?: (filterKey: string) => void;
-  citizen?: boolean;
-  isDetail?: boolean;
-  citizenList?: boolean;
-  tooltip?: boolean;
-  tooltiptext?: string;
-  minLength?: number;
+interface GenericSearchFilterTableLayoutI extends withFormHandlerProps{
+  formDisabled?: boolean;
+  newFormValues: { [key: string]: any };
+  sendNewValues?: (param?: { [key: string]: formFieldI['value'] }) => void;
+  setIsFormValid?: (param: boolean | undefined) => void;
+  creation?: boolean;
 }
 
-const monitoringSearchFilters = () => {
-
-
-
-  const getFilterLabel = (key: string) => {
-    // TODO update keys when API integration is done
-    switch (key) {
-      case 'filtroCriterioRicerca':
-      case 'filtroNomeRuolo':
-      case 'criterioRicerca':
-      case 'searchValue':
-        return 'Ricerca';
-      case 'filtroPolicies':
-      case 'policies':
-        return 'Intervento';
-      case 'filtroStati':
-      case 'stati':
-      case 'statiQuestionario':
-      case 'stato':
-        return 'Stato';
-      case 'filtroIdsProgrammi':
-      case 'idsProgrammi':
-      case 'programmi':
-        return 'Programma';
-      case 'filtroIdsProgetti':
-      case 'idsProgetti':
-      case 'progetti':
-        return 'Progetto';
-      case 'profili':
-        return 'Profilo';
-      case 'ruoli':
-        return 'Ruolo';
-      case 'idsSedi':
-      case 'sedi':
-        return 'Sede';
-      case 'tipologiaServizio':
-        return 'Tipo di servizio prenotato';
-      case 'categorySections':
-        return 'Sezione';
-      default:
-        key;
-    }
-  };
-
-  
-
-  
-
-
-
+const monitoringSearchFilters: React.FC<GenericSearchFilterTableLayoutI> = (
+  props
+) => {
+  console.log('props', props);
+  const {
+    form,
+    newFormValues,
+    onInputChange = () => ({}),
+    getFormValues = () => ({}),
+    sendNewValues = () => ({}),
+    clearForm = () => ({}),
+    setFormValues = () => ({}),
+    updateForm = () => ({}),
+  } = props;
   const { t } = useTranslation();
+  const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
 
-  const [ente, setEnte] = useState<string>('');
-  const [intervento, setIntervento] = useState<string>('');
-  const [dataInizio, setDataInizio] = useState<string>('2024-09-13');
-  const [dataFine, setDataFine] = useState<string>('2024-09-13');
-  const [progetto, setProgetto] = useState<string>('');
-  const [programma, setProgramma] = useState<string>('');
-
-  // Funzione per applicare i filtri (simulata)
+  useEffect(() => {
+    // Verifica se le date sono state passate tramite i props
+    if (newFormValues.dataInizio && newFormValues.dataFine) {
+      let newForm = { ...form };
+      const dataInizio = new Date(newFormValues.dataInizio);
+      const dataFine = new Date(newFormValues.dataFine);
+      // Imposta il minimo per dataFine basato su dataInizio
+      if (dataInizio && (!newForm.dataFine.minimum || new Date(newForm.dataFine.minimum) < dataInizio)) {
+        newForm.dataFine.minimum = formatDate(dataInizio.toISOString());
+      }
+      // Imposta il massimo per dataInizio basato su dataFine
+      if (dataFine && (!newForm.dataInizio.maximum || new Date(newForm.dataInizio.maximum) > dataFine)) {
+        newForm.dataInizio.maximum = formatDate(dataFine.toISOString());
+      }
+      updateForm(newForm); // Aggiorna il form con i valori min/max impostati
+      setFormValues(newFormValues); // Imposta i valori del form
+    }
+    
+  }, [newFormValues]); 
+  
   const applicaFiltri = () => {
-    console.log({
-      ente,
-      intervento,
-      dataInizio,
-      dataFine,
-      progetto,
-      programma,
-    });
+    console.log("applica");
   };
 
-  // Funzione per cancellare i filtri
   const cancellaFiltri = () => {
-    setEnte('');
-    setIntervento('');
-    setDataInizio('2024-09-13');
-    setDataFine('2024-09-13');
-    setProgetto('');
-    setProgramma('');
+    clearForm(); // Resetta il form
+  };
+
+  const onInputDataChange = (
+    value: formFieldI['value'],
+    field?: formFieldI['field']
+  ) => {
+    onInputChange(value, field);
+  };
+
+ const onDateChange = (
+  value: formFieldI['value'],
+  field?: formFieldI['field']
+) => {
+  if (value && field && form) {
+    // Verifica se il valore è una stringa o un numero prima di usarlo in new Date()
+    const isValidDateValue =
+      typeof value === 'string' || typeof value === 'number' || value instanceof Date;
+
+    if (!isValidDateValue) {
+      console.error('Valore non valido per la data:', value);
+      return; // Interrompe l'esecuzione se il valore non è valido
+    }
+    const formattedDate = formatDate(value as string); // Converti la data in formato YYYY-MM-DD
+    let newForm = { ...form};
+
+    if (field === 'dataInizio') {
+      // Controlla se dataFine è inferiore a dataInizio
+      if (newForm.dataFine.value && (typeof newForm.dataFine.value === 'string' || typeof newForm.dataFine.value === 'number' || newForm.dataFine.value instanceof Date) && new Date(newForm.dataFine.value) < new Date(formattedDate)) {
+        newForm.dataFine.value = ''; // Resetta dataFine se è inferiore a dataInizio
+      }
+      newForm = {
+        ...newForm,
+        dataInizio: {
+          ...form.dataInizio,
+          value: formattedDate,
+        },
+        dataFine: {
+          ...form.dataFine,
+          minimum: formattedDate,
+        },
+      };
+    } else if (field === 'dataFine') {
+      // Controlla se dataFine è inferiore a dataInizio
+      if (newForm.dataInizio.value && new Date(formattedDate) < new Date(newForm.dataInizio.value as string | number | Date)) {
+        console.error('La data di fine non può essere inferiore alla data di inizio');
+        return;
+      }
+      newForm = {
+        ...newForm,
+        dataFine: {
+          ...form.dataFine,
+          value: formattedDate,
+        },
+        dataInizio: {
+          ...form.dataInizio,
+          maximum: formattedDate,
+        },
+      };
+    }
+    updateForm(newForm);
+  }
+};
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   };
 
   return (
-    <div className="ricerca-avanzata">
-      <div className="form-group">
-        <label>Ente</label>
-        <input
-          type="text"
-          value={ente}
-          onChange={(e) => setEnte(e.target.value)}
+    <Form
+      id='form-categories'
+      className='mt-3 mb-5 pb-5'
+      customMargin='mb-3 pb-3'
+    >
+      <Form.Row className={bootClass}>
+        <Input
+          {...form?.ente}
+          col='col-12 col-lg-6'
+          label='Ente'
+          onInputChange={onInputDataChange}
           placeholder="Inizia a scrivere il nome dell'ente"
         />
-      </div>
-
-      <div className="form-group">
-        <label>Intervento</label>
-        <select value={intervento} onChange={(e) => setIntervento(e.target.value)}>
-          <option value="">Seleziona</option>
-          {/* Opzioni esempio */}
-          <option value="intervento1">Intervento 1</option>
-          <option value="intervento2">Intervento 2</option>
-        </select>
-      </div>
-
-      <div className="form-group">
-        <label>Data inizio</label>
-        <input
-          type="date"
-          value={dataInizio}
-          onChange={(e) => setDataInizio(e.target.value)}
+        <Select
+          {...form?.intervento}
+          col='col-12 col-lg-6'
+          label='Intervento'
+          onInputChange={onInputDataChange}
+          options={[
+            { value: '', label: 'Seleziona' },
+            { value: 'rfd', label: 'RFD' },
+            { value: 'scd', label: 'SCD' },
+          ]}
+          >
+        </Select>
+      </Form.Row>
+      <Form.Row className={bootClass}>
+        <Input
+          {...form?.dataInizio}
+          type='date'
+          col='col-12 col-lg-6'
+          label='Data inizio'
+          min={form?.dataInizio?.minimum}
+          max={form?.dataInizio?.maximum}
+          onInputChange={onDateChange}
         />
-      </div>
-
-      <div className="form-group">
-        <label>Data fine</label>
-        <input
-          type="date"
-          value={dataFine}
-          onChange={(e) => setDataFine(e.target.value)}
+        <Input
+          {...form?.dataFine}
+          type='date'
+          col='col-12 col-lg-6'
+          label='Data fine'
+          min={form?.dataFine?.minimum}
+          max={form?.dataFine?.maximum}
+          onInputChange={onDateChange}
         />
-      </div>
+      </Form.Row>
+      <Form.Row className={bootClass}>
+        <Select
+          {...form?.progetto}
+          col='col-12 col-lg-6'
+          label='Progetto'
+          onInputChange={onInputDataChange}
+          options={[
+            { value: '', label: 'Seleziona' },
+            { value: 'progetto1', label: 'Progetto 1' },
+            { value: 'progetto2', label: 'Progetto 2' },
+          ]}
 
-      <div className="form-group">
-        <label>Progetto</label>
-        <select value={progetto} onChange={(e) => setProgetto(e.target.value)}>
-          <option value="">Seleziona</option>
-          {/* Opzioni esempio */}
-          <option value="progetto1">Progetto 1</option>
-          <option value="progetto2">Progetto 2</option>
-        </select>
-      </div>
-
-      <div className="form-group">
-        <label>Programma</label>
-        <select value={programma} onChange={(e) => setProgramma(e.target.value)}>
-          <option value="">Seleziona</option>
-          {/* Opzioni esempio */}
-          <option value="programma1">Programma 1</option>
-          <option value="programma2">Programma 2</option>
-        </select>
-      </div>
-
-      <div className="form-actions">
-        <button onClick={cancellaFiltri}>Cancella filtri</button>
-        <button onClick={applicaFiltri}>Applica filtri</button>
-      </div>
-    </div>
+        />
+        <Select
+          {...form?.programma}
+          col='col-12 col-lg-6'
+          label='Programma'
+          onInputChange={onInputDataChange}
+          options={[
+            { value: '', label: 'Seleziona' },
+            { value: 'programma1', label: 'Programma 1' },
+            { value: 'programma2', label: 'Programma 2' },
+          ]}
+          >
+        </Select>
+      </Form.Row>
+      <Form.Row className='justify-content-end'>
+        <Button color='secondary' className='mr-2' onClick={cancellaFiltri}>Cancella filtri</Button>
+        <Button color='primary' onClick={applicaFiltri}>Applica filtri</Button>
+      </Form.Row>
+    </Form>
   );
 };
 
-export default monitoringSearchFilters;
+const form = newForm([
+  newFormField({
+    field: 'ente',
+    id: 'ente',
+    required: false,
+    maximum: 55,
+    minimum: 2,
+  }),
+  newFormField({
+    field: 'intervento',
+    id: 'intervento',
+    type: 'select',
+    required: false,
+  }),
+  newFormField({
+    field: 'programma',
+    id: 'programma',
+    type: 'select',
+    required: false,
+  }),
+  newFormField({
+    field: 'progetto',
+    id: 'progetto',
+    type: 'select',
+    required: false,
+  }),
+  newFormField({
+    field: 'dataInizio',
+    id: 'dataInizio',
+    type: 'date',
+    required: false,
+  }),
+  newFormField({
+    field: 'dataFine',
+    id: 'dataFine',
+    type: 'date',
+    required: false,
+  }),
+]);
+
+export default withFormHandler({ form }, monitoringSearchFilters);
