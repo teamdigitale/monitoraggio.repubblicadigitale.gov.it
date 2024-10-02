@@ -1,5 +1,5 @@
-import { TableHeadingI, TableRowI } from '../../../../components/Table/table';
-import { CRUDActionsI } from '../../../../utils/common';
+import { TableHeadingI, TableRowI } from '../../../components/Table/table';
+import { CRUDActionsI } from '../../../utils/common';
 
 export const dayOfWeek = [
   'Lunedì',
@@ -15,31 +15,47 @@ export const dayCode = ['lun', 'mar', 'mer', 'gio', 'ven', 'sab', 'dom'];
 
 export const TableHeading: TableHeadingI[] = [
   {
-    label: 'Nome',
-    field: 'label',
-    size: 'medium',
-  },
-  {
-    label: 'ID',
-    field: 'id',
-    size: 'medium',
-  },
-  {
-    field: 'policy',
-    label: 'Intervento',
+    label: 'Data',
+    field: 'data',
     size: 'small',
   },
   {
-    field: 'enteGestore',
-    label: 'Ente gestore',
+    label: 'Ente',
+    field: 'ente',
     size: 'medium',
   },
   {
-    label: 'Stato',
-    field: 'status',
+    label: 'Intervento',
+    field: 'intervento',
+    size: 'small',
+  },
+  {
+    label: 'Progetto',
+    field: 'progetto',
+    size: 'medium',
+  },
+  {
+    label: 'Programma',
+    field: 'programma',
+    size: 'medium',
+  },
+  {
+    label: 'Caricamenti',
+    field: 'caricamenti',
+    size: 'small',
+  },
+  {
+    label: 'Servizi Caricati',
+    field: 'serviziCaricati',
+    size: 'medium',
+  },
+  {
+    label: 'Cittadini Caricati',
+    field: 'cittadiniCaricati',
     size: 'medium',
   },
 ];
+
 
 export const TableCategories: TableHeadingI[] = [
   {
