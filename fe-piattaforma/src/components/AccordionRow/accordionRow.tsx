@@ -169,7 +169,7 @@ const AccordionRow: React.FC<AccordionRowI> = ({
               placement='top'
               target='icon-info'
             >
-              Caricamento fallito
+              Per un problema tecnico imprevisto l'elaborazione non è stata portata a termine, ti invitiamo a caricare nuovamente il file
             </UncontrolledTooltip>
           </div>}
         </div>
