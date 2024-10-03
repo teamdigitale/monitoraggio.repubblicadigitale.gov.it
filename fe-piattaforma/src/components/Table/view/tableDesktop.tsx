@@ -307,7 +307,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
                           placement='top'
                           target='icon-info'
                         >
-                          Caricamento fallito
+                          Per un problema tecnico imprevisto l'elaborazione non è stata portata a termine, ti invitiamo a caricare nuovamente il file
                         </UncontrolledTooltip>
                       </div>
                     ) : null
