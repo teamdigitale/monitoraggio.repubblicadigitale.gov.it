@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.350](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.349...1.0.0-test.350) (2024-10-03)
+
+
+### Bug Fixes
+
+* **upgrade-caricamento:** aggiornato tooltip di caricamento fallito 20241003 ([e2b9efb](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e2b9efbd8f765b94a4d47f20caa08f4df70a5fb2))
+* **fe-piattaforma:** fix grafico card documenti 20241003 ([dd59132](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/dd59132fabbbb0a86c4be0bdd3b707caa2eb491b))
+
 ## [1.0.0-test.349](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.348...1.0.0-test.349) (2024-10-01)
 
 
