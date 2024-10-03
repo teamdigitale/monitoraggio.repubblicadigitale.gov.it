@@ -14,7 +14,7 @@
   }
 
   &__page-document-card {
-    height: 261px;
+    height: 300px;
   }
 
   &__pre-title {
@@ -37,6 +37,7 @@
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     white-space: normal;
+    min-height: calc(2 * 40px);
   }
   &__description {
     color: #455b71;
