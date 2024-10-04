@@ -374,7 +374,7 @@ public class EnteServiceTest {
 				filtro.getIdsProgrammi(),
 				filtro.getIdsProgetti(),
 				filtro.getProfili(),
-				PolicyEnum.SCD.toString());
+				filtro.getPolicies());
 	}
 	
 	@Test

@@ -377,8 +377,7 @@ public class EnteService {
 				.map(profilo -> profilo.toUpperCase())
 				.collect(Collectors.toList());
 		}
-		String policy = null;
-		return this.enteRepository.findAllProgettiFiltrati(criterioRicerca, "%" + criterioRicerca + "%", idsProgrammi, idsProgetti, profiliEnteUpperCase, policy);
+		return this.enteRepository.findAllProgettiFiltrati(criterioRicerca, "%" + criterioRicerca + "%", idsProgrammi, idsProgetti, profiliEnteUpperCase, filtro.getPolicies());
 	}
 	
 	private List<AllEntiProjection> getAllEntiPerDSCUFiltrati(FiltroRequest filtro) {
@@ -426,8 +425,8 @@ public class EnteService {
 				.map(profilo -> profilo.toUpperCase())
 				.collect(Collectors.toList());
 		}
-		String policy = PolicyEnum.SCD.toString();
-		return this.enteRepository.findAllProgettiFiltrati(criterioRicerca, "%" + criterioRicerca + "%", idsProgrammi, idsProgetti, profiliEnteUpperCase, policy);
+		List<String> policies = Arrays.asList(PolicyEnum.SCD.toString());
+		return this.enteRepository.findAllProgettiFiltrati(criterioRicerca, "%" + criterioRicerca + "%", idsProgrammi, idsProgetti, profiliEnteUpperCase, policies);
 	}
 	
 	@LogMethod
@@ -460,8 +459,8 @@ public class EnteService {
 				.map(profilo -> profilo.toUpperCase())
 				.collect(Collectors.toList());
 		}
-		String policy = null;
-		return this.enteRepository.findAllProgettiFiltrati(criterioRicerca, "%" + criterioRicerca + "%", idsProgrammi, idsProgetti, profiliEnteUpperCase, policy);
+		List<String> policies = null;
+		return this.enteRepository.findAllProgettiFiltrati(criterioRicerca, "%" + criterioRicerca + "%", idsProgrammi, idsProgetti, profiliEnteUpperCase, policies);
 	}
 	
 	private List<AllEntiProjection> getAllEntiGestoreProgetto(EntiPaginatiParam entiPaginatiParam) {
@@ -492,8 +491,8 @@ public class EnteService {
 				.map(profilo -> profilo.toUpperCase())
 				.collect(Collectors.toList());	
 		}
-		String policy = null;
-		return this.enteRepository.findAllProgettiFiltrati(criterioRicerca, "%" + criterioRicerca + "%", idsProgrammi, idsProgetti, profiliEnteUpperCase, policy);
+		List<String> policies = null;
+		return this.enteRepository.findAllProgettiFiltrati(criterioRicerca, "%" + criterioRicerca + "%", idsProgrammi, idsProgetti, profiliEnteUpperCase, policies);
 	}
 	
 	private List<AllEntiProjection> getAllEntiPartnerProgetto(EntiPaginatiParam entiPaginatiParam) {
@@ -526,8 +525,8 @@ public class EnteService {
 				.map(profilo -> profilo.toUpperCase())
 				.collect(Collectors.toList());	
 		}
-		String policy = null;
-		return this.enteRepository.findAllProgettiFiltrati(criterioRicerca, "%" + criterioRicerca + "%", idsProgrammi, idsProgetti, profiliEnteUpperCase, policy);
+		List<String> policies = null;
+		return this.enteRepository.findAllProgettiFiltrati(criterioRicerca, "%" + criterioRicerca + "%", idsProgrammi, idsProgetti, profiliEnteUpperCase, policies);
 	}
 	
 	private List<Map<String, String>> getProgrammaById(Long idProgramma) {
