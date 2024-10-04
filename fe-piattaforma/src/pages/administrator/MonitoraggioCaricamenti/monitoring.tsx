@@ -39,15 +39,10 @@ interface MonitoringFormI {
 
 interface MonitoringI extends withFormHandlerProps, MonitoringFormI {}
 
+// Definizione dell'oggetto initialFormValues all'esterno del componente Monitoring
+
 const Monitoring: React.FC<MonitoringI> = ({
-  formDisabled,
-  creation = false,
-  clearForm = () => {},
 }) => {
-  const [newFormValues, setNewFormValues] = useState<{
-    [key: string]: formFieldI['value'];
-  }>({});
-  const [isFormValid, setIsFormValid] = useState<boolean>(true);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { hasUserPermission } = useGuard();
@@ -56,26 +51,23 @@ const Monitoring: React.FC<MonitoringI> = ({
   const pagination = useAppSelector(selectEntityPagination);
   const { filtroCriterioRicerca, filtroPolicies, filtroStati } = filtersList;
   const numbers = [46, 112, 47259, 53293];
-  const [statisticheElaborate, setStatisticheElaborate] = useState<any[]>([numbers[0].toLocaleString('it-IT'),numbers[1].toLocaleString('it-IT'),numbers[2].toLocaleString('it-IT'),numbers[3].toLocaleString('it-IT')]);
+  const [statisticheElaborate, setStatisticheElaborate] = useState<any[]>([
+    numbers[0].toLocaleString('it-IT'),
+    numbers[1].toLocaleString('it-IT'),
+    numbers[2].toLocaleString('it-IT'),
+    numbers[3].toLocaleString('it-IT'),
+  ]);
   const { pageNumber } = pagination;
+
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 8 }));
-    dispatch(resetProgramDetails());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    setNewFormValues({
-      ...newFormValues,
-      dataInizio: new Date().toISOString().split('T')[0],
-      dataFine: new Date().toISOString().split('T')[0],
-    });
-    console.log('newFormValues', newFormValues);
+    // dispatch(resetProgramDetails());
   }, []);
 
   const permissions = useAppSelector(selectPermissions);
-  // const filteredPermissions = permissions.filter((permission: string) => permission.startsWith('vis'));
-  
-  console.log("filteredPermissions", permissions);
-  console.log("hasPermission", hasUserPermission(['vis.mntr']));
-  
+  // console.log("filteredPermissions", permissions);
+  // console.log("hasPermission", hasUserPermission(['vis.mntr']));
+
   const updateTableValues = () => {
     const table = newTable(
       TableHeading,
@@ -94,17 +86,16 @@ const Monitoring: React.FC<MonitoringI> = ({
     );
     return table;
   };
-  
-  const [tableValues, setTableValues] = useState(updateTableValues());  
+
+  const [tableValues, setTableValues] = useState(updateTableValues());
   const [numeroRisultati, setNumeroRisultati] = useState(pagination.totalElements);
-  
+
   useEffect(() => {
     if (Array.isArray(caricamentiList) && caricamentiList.length)
       setTableValues(updateTableValues());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [caricamentiList]);
 
-  const getProgramsList = () => {    
+  const getProgramsList = () => {
     dispatch(GetEntityValues({ entity }));
   };
 
@@ -122,7 +113,6 @@ const Monitoring: React.FC<MonitoringI> = ({
   useEffect(() => {
     getProgramsList();
     setNumeroRisultati(pagination.totalElements);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filtroCriterioRicerca, filtroPolicies, filtroStati, pageNumber]);
 
   const handleOnChangePage = (pageNumber: number = pagination?.pageNumber) => {
@@ -142,7 +132,26 @@ const Monitoring: React.FC<MonitoringI> = ({
           }
         },
       }
-    : {};    
+    : {};
+
+
+    const handleSearch = (searchParams: { [key: string]: formFieldI['value'] }) => {
+      console.log("searchParams", searchParams);
+    };
+
+  // const handleClearForm = () => {
+  //   console.log("formValues", newFormValues);
+  //   console.log("initialFormValues", initialFormValues);
+  //   setNewFormValues(initialFormValues);
+  //   clearForm();
+  // };
+
+  // const onInputDataChange = (value: formFieldI['value'], field?: formFieldI['field']) => {
+  //   if (field) {
+  //     setNewFormValues((prevValues) => ({ ...prevValues, [field]: value }));
+  //   }
+  // };
+
   return (
     <div>
       Monitora l'avanzamento dei caricamenti massivi dei dati degli enti. La visualizzazione di base è preimpostata in <br />
@@ -150,17 +159,11 @@ const Monitoring: React.FC<MonitoringI> = ({
 
       <div style={{ margin: '50px' }} />
       <Accordion title={'Ricerca avanzata'} className="custom-accordion">
-        <MonitoringSearchFilters
-          newFormValues={newFormValues}
-          creation={creation}
-          clearForm={clearForm}
-          formDisabled={!!formDisabled}
-          sendNewValues={(newData) => setNewFormValues({ ...newData })}
-          setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}       
-          />
+        <MonitoringSearchFilters onSearch={handleSearch}
+        />
       </Accordion>
       <div style={{ margin: '50px' }} />
-      
+
       <span className="results"><b>Risultati</b> ({numeroRisultati})</span>
 
       <div className="square-container">
@@ -182,37 +185,35 @@ const Monitoring: React.FC<MonitoringI> = ({
         </div>
       </div>
 
-        {tableValues?.values?.length ? (
-          <>
-            <Table
-              {...tableValues}
-              id='table'
-              onActionClick={onActionClick}
-              onCellClick={(field, row) => console.log(field, row)}
-              //onRowClick={row => console.log(row)}
-              withActions
-              totalCounter={pagination?.totalElements}
-            />
-            {pagination?.pageNumber ? (
-              <Paginator
-                activePage={pagination?.pageNumber}
-                center
-                refID='#table'
-                pageSize={pagination?.pageSize}
-                total={pagination?.totalPages}
-                onChange={handleOnChangePage}
-              />
-            ) : null}
-          </>
-        ) : (
-          <EmptySection
-            title='Non sono stati effettuati caricamenti massivi'
-            icon={IconNote}
-            withIcon
+      {tableValues?.values?.length ? (
+        <>
+          <Table
+            {...tableValues}
+            id='table'
+            onActionClick={onActionClick}
+            onCellClick={(field, row) => console.log(field, row)}
+            withActions
+            totalCounter={pagination?.totalElements}
           />
-        )}
+          {pagination?.pageNumber ? (
+            <Paginator
+              activePage={pagination?.pageNumber}
+              center
+              refID='#table'
+              pageSize={pagination?.pageSize}
+              total={pagination?.totalPages}
+              onChange={handleOnChangePage}
+            />
+          ) : null}
+        </>
+      ) : (
+        <EmptySection
+          title='Non sono stati effettuati caricamenti massivi'
+          icon={IconNote}
+          withIcon
+        />
+      )}
     </div>
-    
   );
 };
 
