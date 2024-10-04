@@ -26,4 +26,7 @@ public class FiltroRequest implements Serializable {
 	
 	@JsonProperty(value = "idsProgetti")
 	private List<String> idsProgetti;
+
+	@JsonProperty(value = "filtroPolicies")
+	private List<String> policies;
 }
