@@ -264,7 +264,7 @@ public interface EnteRepository extends JpaRepository<EnteEntity, Long> {
 			+"  		AND ( COALESCE(:idsProgetti)  IS NULL  OR prgt.ID IN (:idsProgetti) )"
 			+" ) AS progetti "
 			+" WHERE 1=1 "
-			+"		AND	 ( :policy IS NULL  OR  progetti.POLICY = :policy ) "
+			+"		AND  ( COALESCE(:policies) IS NULL  OR  progetti.POLICY IN (:policies) ) "
 			+" 		AND	 (     :criterioRicerca IS NULL  "
 	        +"			    OR CONVERT( progetti.ID_ENTE, CHAR ) = :criterioRicerca "
 	        +"	    		OR UPPER( progetti.NOME_ENTE ) LIKE UPPER( :criterioRicercaLike ) "
@@ -278,7 +278,7 @@ public interface EnteRepository extends JpaRepository<EnteEntity, Long> {
 		@Param("idsProgrammi") List<String> idsProgrammi,
 		@Param("idsProgetti")  List<String> idsProgetti,
 		@Param("profiliEnte")  List<String> profiliEnte,
-		@Param("policy") String policy
+		@Param("policies") List<String> policies
 	);
 	
 	
