@@ -240,7 +240,7 @@ export const MenuRoutes = [
       newMenuItem({
         label: 'Monitoraggio dei caricamenti massivi',
         path: '/report-dati/monitoraggio-caricamenti-massivi',
-        visible: ['tab.dshb', 'visible'],
+        visible: ['tab.dshb', 'vis.mntr'],
       })
     ],
   }),
