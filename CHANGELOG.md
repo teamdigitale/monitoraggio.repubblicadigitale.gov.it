@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.351](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.350...1.0.0-test.351) (2024-10-07)
+
+
+### Bug Fixes
+
+* **caricamento-excel:** fix localizzazione policy 20241007 ([2356c33](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2356c33081746f21dc3459a88c63b208d62d2b6d))
+* **caricamento-excel:** fix localizzazione policy 20241007 ([c25349a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c25349abaf964deb9ab84d791cdcbc8035c665c3))
+
 ## [1.0.0-test.350](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.349...1.0.0-test.350) (2024-10-03)
 
 
