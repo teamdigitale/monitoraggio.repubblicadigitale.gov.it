@@ -286,6 +286,7 @@ public class EnteServiceTest {
 		filtro.setIdsProgrammi(idsProgrammi);
 		filtro.setIdsProgetti(idsProgetti);
 		filtro.setProfili(profili);
+		filtro.setPolicies(new ArrayList<>());
 		entiPaginatiParam = new EntiPaginatiParam();
 		entiPaginatiParam.setCfUtenteLoggato("ABCABC12A12A123A");
 		entiPaginatiParam.setCodiceRuoloUtenteLoggato("DTD");
@@ -338,7 +339,7 @@ public class EnteServiceTest {
 				filtro.getIdsProgrammi(),
 				filtro.getIdsProgetti(),
 				filtro.getProfili(),
-				null);
+				filtro.getPolicies());
 	}
 	
 	@Test
@@ -374,7 +375,7 @@ public class EnteServiceTest {
 				filtro.getIdsProgrammi(),
 				filtro.getIdsProgetti(),
 				filtro.getProfili(),
-				filtro.getPolicies());
+				Arrays.asList(PolicyEnum.SCD.toString()));
 	}
 	
 	@Test
@@ -411,7 +412,7 @@ public class EnteServiceTest {
 				filtro.getIdsProgrammi(),
 				filtro.getIdsProgetti(),
 				filtro.getProfili(),
-				null);
+				filtro.getPolicies());
 	}
 	
 	@Test
@@ -443,7 +444,7 @@ public class EnteServiceTest {
 				filtro.getIdsProgrammi(),
 				filtro.getIdsProgetti(),
 				filtro.getProfili(),
-				null);
+				filtro.getPolicies());
 	}
 	
 	@Test
@@ -475,7 +476,7 @@ public class EnteServiceTest {
 				filtro.getIdsProgrammi(),
 				filtro.getIdsProgetti(),
 				filtro.getProfili(),
-				null);
+				filtro.getPolicies());
 	}
 	
 	@Test
@@ -519,7 +520,7 @@ public class EnteServiceTest {
 				filtro.getIdsProgrammi(),
 				filtro.getIdsProgetti(),
 				filtro.getProfili(),
-				null);
+				filtro.getPolicies());
 	}
 	
 	@Test
