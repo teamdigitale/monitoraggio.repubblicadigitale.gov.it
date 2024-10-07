@@ -6,7 +6,7 @@ import { Accordion } from '../../../../components/index';
 import { selectPrograms } from '../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { useAppSelector } from '../../../../redux/hooks';
 import FormGeneralInfo from '../formGeneralInfo';
-import { policy } from '../../../administrator/MonitoraggioCaricamenti/utils';
+import { policy } from '../../../administrator/AdministrativeArea/Entities/utils';
 
 interface ProgramInfoAccordionFormI {
   legend?: string | undefined;
