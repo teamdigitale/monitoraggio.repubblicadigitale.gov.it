@@ -223,7 +223,11 @@ public class ImportMassivoCSVService {
                         servizioElaborato.getCampiAggiuntiviCSV().getIdFacilitatore(),
                         servizioElaborato.getCampiAggiuntiviCSV().getNominativoFacilitatore());
                 if (!utenteFacilitatoreDellaRichiesta.isPresent()) {
-                    throw new ResourceNotFoundException(NoteCSV.NOTE_FACILITATORE_NON_PRESENTE, CodiceErroreEnum.C01);
+                    if(policy.equals(PolicyEnum.RFD)){
+                        throw new ResourceNotFoundException(NoteCSV.NOTE_FACILITATORE_NON_PRESENTE, CodiceErroreEnum.C01);
+                    }else{
+                        throw new ResourceNotFoundException(NoteCSV.NOTE_VOLONTARIO_NON_PRESENTE, CodiceErroreEnum.C01);
+                    }
                 }
                 String nominativoSedeModified = servizioElaborato.getCampiAggiuntiviCSV().getNominativoSede().replace(" ", "").toUpperCase();
                 Optional<SedeEntity> optSedeRecuperata = recuperaSedeDaRichiesta(nominativoSedeModified);
@@ -242,8 +246,13 @@ public class ImportMassivoCSVService {
                                 servizioRequest.getIdProgetto(),
                                 servizioRequest.getIdSedeServizio());
                 if (enteSedeProgettoFacilitatore == null) {
-                    throw new ResourceNotFoundException(NoteCSV.NOTE_UTENTE_SEDE_NON_ASSOCIATI_AL_PROGETTO,
+                    if(policy.equals(PolicyEnum.RFD)){
+                        throw new ResourceNotFoundException(NoteCSV.NOTE_UTENTE_SEDE_NON_ASSOCIATI_AL_PROGETTO_RFD,
                             CodiceErroreEnum.C01);
+                    }else{
+                        throw new ResourceNotFoundException(NoteCSV.NOTE_UTENTE_SEDE_NON_ASSOCIATI_AL_PROGETTO_SCD,
+                        CodiceErroreEnum.C01);
+                    }
                 }
                 if(policy.equals(PolicyEnum.RFD)){ // Per SCD dovrò sempre inserire un nuovo servizio, il controllo sarà sulla coppia servizio_x_cittadino
                 servizioOpt = getServizioDaListaAggiunti(serviziAggiuntiList, servizioElaborato);  // Recupero servizio uguale da quelli della stessa istanza di caricamento massivo

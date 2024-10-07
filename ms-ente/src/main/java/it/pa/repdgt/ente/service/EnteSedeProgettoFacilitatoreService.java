@@ -79,7 +79,7 @@ public class EnteSedeProgettoFacilitatoreService {
 		boolean esisteUtente = this.utenteService.esisteUtenteByCodiceFiscale(codiceFiscaleUtente);
 		if(!esisteUtente) {
 			throw new EnteSedeProgettoFacilitatoreException(
-					String.format("Impossibile associare facilitatore. Utente non trovato", codiceFiscaleUtente),
+					String.format(CodiceErroreEnum.EN07.getDescrizioneErrore(), codiceFiscaleUtente),
 					CodiceErroreEnum.EN07);
 		}
 		

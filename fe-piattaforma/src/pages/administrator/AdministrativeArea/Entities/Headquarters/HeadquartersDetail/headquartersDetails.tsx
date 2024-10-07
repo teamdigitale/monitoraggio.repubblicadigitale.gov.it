@@ -47,6 +47,7 @@ import {
 } from '../../../../../../components';
 import { GetProgramDetail } from '../../../../../../redux/features/administrativeArea/programs/programsThunk';
 import IconNote from '/public/assets/img/it-note-primary.png';
+import { policy } from '../../utils';
 
 const HeadquartersDetails = () => {
   const { mediaIsPhone } = useAppSelector(selectDevice);
@@ -105,7 +106,7 @@ const HeadquartersDetails = () => {
           id: 'delete-entity',
           payload: {
             userCF: td,
-            text: 'Confermi di voler disassociare questo facilitatore?',
+            text: programPolicy == policy.SCD ? 'Confermi di voler disassociare questo volontario?':'Confermi di voler disassociare questo facilitatore?',
             entity: 'facilitator',
           },
         })
