@@ -9,6 +9,7 @@ import { selectProjects } from '../../../../redux/features/administrativeArea/ad
 import { useAppSelector } from '../../../../redux/hooks';
 import FormProjectGeneralInfo from '../formProjectGeneralInfo';
 import { GetProjectDetail } from '../../../../redux/features/administrativeArea/projects/projectsThunk';
+import { policy } from '../../../administrator/AdministrativeArea/Entities/utils';
 
 interface ProjectAccordionFormI {
   legend?: string | undefined;
@@ -36,7 +37,7 @@ const ProjectAccordionForm: React.FC<ProjectAccordionFormI> = (props) => {
       </h2>
       {accordions.map((accordion, index) => (
         <Accordion
-          title={accordion.title}
+          title={accordion.title == 'Numero facilitatori' && projectDetails?.policy == policy.SCD ? 'Numero volontari' : accordion.title}
           key={index}
           className='general-info-accordion-container-project'
           detailAccordion

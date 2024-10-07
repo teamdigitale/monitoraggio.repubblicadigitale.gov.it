@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
-import { formTypes } from '../utils';
+import { formTypes, policy } from '../utils';
 import { formFieldI } from '../../../../../utils/formHelper';
 import {
   closeModal,
@@ -359,7 +359,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
             'font-weight-semibold'
           )}
         >
-          {steps[currentStep].title}
+          {steps[currentStep].title == 'Numero facilitatori' && projectDetails?.policy == policy.SCD ? 'Numero volontari' : steps[currentStep].title}
         </p>
       )}
       <div

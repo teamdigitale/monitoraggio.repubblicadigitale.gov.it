@@ -27,6 +27,7 @@ import {
 import clsx from 'clsx';
 import { useNavigate, useParams } from 'react-router-dom';
 import TargetsForm from '../../../../../components/AdministrativeArea/Entities/General/TargetForm/TargetsForm';
+import { policy } from '../utils';
 interface ProgramInformationI {
   formDisabled?: boolean;
   creation?: boolean;
@@ -393,7 +394,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
     if (creation) dispatch(resetProgramDetails());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [creation]);
-
+  
   return (
     <GenericModal
       id={id}
@@ -428,7 +429,7 @@ const ManageProgram: React.FC<FormEnteGestoreProgettoFullInterface> = ({
             'font-weight-semibold'
           )}
         >
-          {steps[currentStep].title}
+          {steps[currentStep].title == 'Numero facilitatori' && programDetails?.policy == policy.SCD ? 'Numero volontari' : steps[currentStep].title}
         </p>
       )}
 
