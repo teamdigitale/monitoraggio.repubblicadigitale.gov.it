@@ -174,11 +174,11 @@
     },
     "S05": {
       "titolo": "",
-      "descrizione": "Errore creazione servizio. Utente non ha ruolo FACILITATORE"
+      "descrizione": "Errore creazione servizio. Utente non ha ruolo FACILITATORE o VOLONTARIO"
     },
     "S06": {
       "titolo": "",
-      "descrizione": "Errore aggiornare servizio. Utente non ha ruolo FACILITATORE"
+      "descrizione": "Errore aggiornare servizio. Utente non ha ruolo FACILITATORE o VOLONTARIO"
     },
     "S07": {
       "titolo": "",

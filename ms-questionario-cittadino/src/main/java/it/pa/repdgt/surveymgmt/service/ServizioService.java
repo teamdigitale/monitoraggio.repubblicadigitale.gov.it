@@ -241,7 +241,7 @@ public class ServizioService {
 
 		if (!this.utenteService.isUtenteFacilitatore(codiceFiscaletenteLoggato, ruoloUtenteLoggato)) {
 			final String messaggioErrore = String.format(
-					"Impossibile creare servizio. Utente con codice fiscale '%s' non ha ruolo FACILITATORE",
+					"Impossibile creare servizio. Utente con codice fiscale '%s' non ha ruolo FACILITATORE o VOLONTARIO",
 					codiceFiscaletenteLoggato);
 			throw new ServizioException(messaggioErrore, CodiceErroreEnum.S05);
 		}
@@ -277,7 +277,7 @@ public class ServizioService {
 						servizioRequest.getIdProgetto(),
 						servizioRequest.getIdSedeServizio());
 		if (enteSedeProgettoFacilitatore == null) {
-			throw new ResourceNotFoundException(NoteCSV.NOTE_UTENTE_SEDE_NON_ASSOCIATI_AL_PROGETTO,
+			throw new ResourceNotFoundException(CodiceErroreEnum.C01.getDescrizioneErrore(),
 					CodiceErroreEnum.C01);
 		}
 
@@ -364,7 +364,7 @@ public class ServizioService {
 
 		if (!this.utenteService.isUtenteFacilitatore(codiceFiscaletenteLoggato, ruoloUtenteLoggato)) {
 			final String messaggioErrore = String.format(
-					"Impossibile aggiornare servizio. Utente con codice fiscale '%s' non ha ruolo FACILITATORE",
+					"Impossibile aggiornare servizio. Utente con codice fiscale '%s' non ha ruolo FACILITATORE o VOLONTARIO",
 					codiceFiscaletenteLoggato);
 			throw new ServizioException(messaggioErrore, CodiceErroreEnum.S05);
 		}

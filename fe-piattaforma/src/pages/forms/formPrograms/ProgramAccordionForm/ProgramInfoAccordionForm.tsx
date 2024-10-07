@@ -6,6 +6,7 @@ import { Accordion } from '../../../../components/index';
 import { selectPrograms } from '../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { useAppSelector } from '../../../../redux/hooks';
 import FormGeneralInfo from '../formGeneralInfo';
+import { policy } from '../../../administrator/MonitoraggioCaricamenti/utils';
 
 interface ProgramInfoAccordionFormI {
   legend?: string | undefined;
@@ -17,7 +18,7 @@ const ProgramInfoAccordionForm: React.FC<ProgramInfoAccordionFormI> = (
   const { legend = '' } = props;
   const programDetails =
     useAppSelector(selectPrograms).detail.dettagliInfoProgramma;
-
+console.log("programDetails.policy", programDetails)
   return (
     <>
       <FormGeneralInfo legend={legend} formDisabled edit />
@@ -26,7 +27,7 @@ const ProgramInfoAccordionForm: React.FC<ProgramInfoAccordionFormI> = (
       </h2>
       {accordions.map((accordion, index) => (
         <Accordion
-          title={accordion.title}
+          title={accordion.title == 'Numero facilitatori' && programDetails?.policy == policy.SCD ? 'Numero volontari' : accordion.title}
           key={index}
           className='general-info-accordion-container'
           detailAccordion

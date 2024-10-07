@@ -41,7 +41,6 @@ import it.pa.repdgt.surveymgmt.request.CittadinoRequest;
 @Service
 public class CittadinoService {
 
-	private static final String UTENTE_NON_FACILITATORE = "ERRORE: L'utente non è un facilitatore";
 	@Autowired
 	private CittadinoRepository cittadinoRepository;
 	@Autowired
@@ -75,7 +74,7 @@ public class CittadinoService {
 
 		if (!RuoloUtenteEnum.FAC.toString().equals(codiceRuoloUtente)
 				&& !RuoloUtenteEnum.VOL.toString().equals(codiceRuoloUtente)) {
-			throw new CittadinoException(UTENTE_NON_FACILITATORE, CodiceErroreEnum.U06);
+			throw new CittadinoException(CodiceErroreEnum.U06.getDescrizioneErrore(), CodiceErroreEnum.U06);
 		}
 
 		List<CittadinoProjection> cittadiniProjection = this
@@ -164,7 +163,7 @@ public class CittadinoService {
 
 		if (!RuoloUtenteEnum.FAC.toString().equals(codiceRuoloUtente)
 				&& !RuoloUtenteEnum.VOL.toString().equals(codiceRuoloUtente)) {
-			throw new CittadinoException(UTENTE_NON_FACILITATORE, CodiceErroreEnum.U06);
+			throw new CittadinoException(CodiceErroreEnum.U06.getDescrizioneErrore(), CodiceErroreEnum.U06);
 		}
 
 		List<SedeProjection> listaSediProjection = this.sedeService
