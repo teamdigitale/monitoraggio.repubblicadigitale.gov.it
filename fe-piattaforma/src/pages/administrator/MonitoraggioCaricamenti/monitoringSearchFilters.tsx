@@ -52,6 +52,9 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
   const withLabel = true;
   const required = false;
   const [formValues, setFormValues] = useState<typeof initialFormValues>(initialFormValues);
+  const [isDateValid, setIsDateValid] = useState<{ dataInizio?: boolean; dataFine?: boolean }>({});
+
+  console.log('isDateValid', isDateValid);
 
   useEffect(() => {
     const today = new Date().toISOString().split('T')[0];
@@ -75,6 +78,8 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
   
     setFormValues((prevValues) => {
       let newForm = { ...prevValues };
+      let newDateValid = { ...isDateValid };
+      console.log('newDateValid', newDateValid);
 
       if (field === 'dataInizio') {
         newForm = {
@@ -84,11 +89,17 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
         };
         if (new Date(prevValues.dataFine.value) < new Date(formattedDate)) {
           newForm.dataFine.value = '';
+          newDateValid.dataFine = true;
+        } else {
+          newDateValid.dataFine = false;
         }
       } else if (field === 'dataFine') {
         if (new Date(formattedDate) < new Date(prevValues.dataInizio.value)) {
           console.error('La data di fine non può essere inferiore alla data di inizio');
+          newDateValid.dataFine = true
           return prevValues;
+        } else {
+          newDateValid.dataFine = false;
         }
         newForm = {
           ...newForm,
@@ -96,6 +107,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
           dataInizio: { ...prevValues.dataInizio, maximum: formattedDate },
         };
       }
+      setIsDateValid(newDateValid);
       return newForm;
     });
   };
@@ -164,6 +176,8 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
           label='Ente'
           onInputChange={(value) => handleInputChange(value, 'ente')}
           placeholder="Inizia a scrivere il nome dell'ente"
+          // isAutocomplete={true} // Attiva l'autocompletamento
+          // options={[]} // Passa le opzioni di autocompletamento
         />
         {renderSelect('intervento', 'Intervento', [
           { value: 'rfd', label: 'RFD' },
@@ -180,6 +194,9 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
           onInputChange={(value) => handleDateInputChange(value, 'dataInizio')}
           minimum={formValues.dataInizio.minimum}
           maximum={formValues.dataInizio.maximum}
+          // className={isDateValid.dataInizio ? 'is-invalid' : 'is-valid'}
+          // valid = {isDateValid?.dataInizio}
+          {...(isDateValid.dataInizio ? { valid: false } : { valid: true })}
         />
         <Input
           value={formValues.dataFine.value}
@@ -189,6 +206,9 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
           onInputChange={(value) => handleDateInputChange(value, 'dataFine')}
           minimum={formValues.dataFine.minimum}
           maximum={formValues.dataFine.maximum}
+          {...(isDateValid.dataFine ? { valid: false } : { valid: true })}
+          // className= 'is-invalid'
+          // valid = {isDateValid?.dataFine}
         />
       </Form.Row>
 
