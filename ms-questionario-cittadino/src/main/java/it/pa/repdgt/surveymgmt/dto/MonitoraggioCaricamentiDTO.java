@@ -2,6 +2,7 @@ package it.pa.repdgt.surveymgmt.dto;
 
 import java.util.List;
 
+
 import it.pa.repdgt.shared.entity.VMonitoraggioCaricamentiEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,5 +24,9 @@ public class MonitoraggioCaricamentiDTO {
     private Long serviziCaricati;
 
     private Long cittadiniCaricati;
+
+    private Integer numeroPagine;
+
+    private Long numeroTotaleElementi;
     
 }
