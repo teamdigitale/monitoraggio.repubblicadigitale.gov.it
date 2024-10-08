@@ -31,4 +31,10 @@ public class MonitoraggioCaricamentiRequest {
 
 	@JsonProperty("dataFine")
 	private Date dataFine;
+
+	@JsonProperty("currPage")
+	private Integer currPage;
+
+	@JsonProperty("pageSize")
+	private Integer pageSize;
 }
