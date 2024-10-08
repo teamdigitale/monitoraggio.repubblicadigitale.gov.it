@@ -4,6 +4,7 @@ import { Form, Input } from '../../../components';
 import { formFieldI } from '../../../utils/formHelper';
 import { Select as SelectKit } from 'design-react-kit';
 import clsx from 'clsx';
+import AutocompleteComponent from '../../../components/Form/autocomplete';
 
 export type OptionType = {
   value: string | number;
@@ -53,6 +54,11 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
   const required = false;
   const [formValues, setFormValues] = useState<typeof initialFormValues>(initialFormValues);
   const [isDateValid, setIsDateValid] = useState<{ dataInizio?: boolean; dataFine?: boolean }>({});
+  const [multiOptions, setMultiOptions] = useState<OptionType[]>([
+    { value: 'option1', label: 'Option 1' },
+    { value: 'option2', label: 'Option 2' },
+    // Add more options as needed
+  ]);
 
   console.log('isDateValid', isDateValid);
 
@@ -64,14 +70,6 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
       dataFine: { value: today, minimum: today },
     }));
   }, []);
-
-  const handleInputChange = (value: formFieldI['value'], field: string) => {
-    setFormValues((prevValues) => {
-      const newValues = { ...prevValues, [field]: value as string | number | boolean | Date | OptionType };
-      return newValues;
-    });
-
-  };
 
     const handleDateInputChange = (value: any, field: string) => {
     const formattedDate = typeof value === 'string' ? value : new Date(value).toISOString().split('T')[0];
@@ -113,6 +111,15 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
   
   const handleSelectChange = (option: OptionType, name: any) => {
     setFormValues((prevValues) => ({ ...prevValues, [name?.name]: option }));
+  };
+
+
+  const suggest = (query: any, populateResults: any) => {
+    const filteredResults = multiOptions.filter((i) => i.label.toLowerCase().includes(query.toLowerCase()));
+    let data = filteredResults.map((item) => {
+      return item.label;
+    });
+    populateResults(data);
   };
 
   const handleClearForm = () => {
@@ -170,15 +177,17 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
   return (
     <Form id='form-categories' className='mt-3 mb-5 pb-5'>
       <Form.Row className='justify-content-between px-0 px-lg-5 mx-2'>
-        <Input
-          value={formValues.ente}
-          col='col-12 col-lg-6'
+        <AutocompleteComponent
           label='Ente'
-          onInputChange={(value) => handleInputChange(value, 'ente')}
           placeholder="Inizia a scrivere il nome dell'ente"
-          // isAutocomplete={true} // Attiva l'autocompletamento
-          // options={[]} // Passa le opzioni di autocompletamento
-        />
+          col='col-12 col-lg-6'
+          source={suggest}
+          id='autocomplete'
+          defaultValue={''}
+          displayMenu={'inline'}
+          tNoResults={() => 'Nessun risultato'}
+          // inputClasses={"form-group "}         
+          />
         {renderSelect('intervento', 'Intervento', [
           { value: 'rfd', label: 'RFD' },
           { value: 'scd', label: 'SCD' },
