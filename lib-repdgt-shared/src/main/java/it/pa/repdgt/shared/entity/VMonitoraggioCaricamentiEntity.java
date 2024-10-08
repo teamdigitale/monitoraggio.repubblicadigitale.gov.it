@@ -47,7 +47,7 @@ public class VMonitoraggioCaricamentiEntity implements Serializable{
 
     @Column(name = "data_caricamenti")
     @Temporal(TemporalType.DATE)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Europe/Rome")
     private Date dataCaricamenti;
 
     @Column(name = "num_caricamenti", nullable = false)
