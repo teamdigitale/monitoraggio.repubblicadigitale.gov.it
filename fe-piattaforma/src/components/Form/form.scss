@@ -341,6 +341,76 @@ input > span {
   }
 }
 
+.autocomplete {
+  &__input {
+    color: color('dark-blue') !important;
+    font-weight: 600 !important;
+    border-bottom: 1px solid color('progress-bar-line') !important;
+
+    &:focus {
+      border-bottom: 2px solid color('progress-bar-line') !important;
+    }
+
+    &:disabled {
+      border-bottom: 1px solid color('grey-input') !important;
+      background: color('grey-150') !important;
+    }
+
+    &[value=''] {
+      border-bottom: 1px solid color('progress-bar-line');
+    }
+
+    &[value]:not([value='']) {
+      border-bottom: 2px solid color('progress-bar-line');
+    }
+
+    &.is-valid {
+      border-bottom: 2px solid color('progress-bar-line');
+    }
+
+    &.is-invalid {
+      border-bottom: 1px solid color('danger') !important;
+    }
+
+    &.is-invalid:focus {
+      border-bottom: 2px solid color('danger');
+    }
+  }
+
+  &__menu {
+    margin-top: 0 !important;
+    z-index: 1050 !important;
+  }
+
+  &__control {
+    border-bottom: 1px solid color('progress-bar-line') !important;
+
+    &--menu-is-open {
+      border-bottom: 2px solid color('progress-bar-line') !important;
+    }
+
+    &--is-focused {
+      border-color: color('accessibility-orange') !important;
+      box-shadow: 0 0 0 2px color('accessibility-orange') !important;
+      outline: 0 !important;
+    }
+
+    &--is-disabled {
+      border-bottom: 1px solid color('grey-input') !important;
+      background: color('grey-150') !important;
+    }
+  }
+
+  &__single-value {
+    color: color('dark-blue') !important;
+    font-weight: 600 !important;
+
+    &--is-disabled {
+      color: color('dark-blue') !important;
+    }
+  }
+}
+
 @media screen and (min-width: 992px) {
   .collapse-body {
     padding-top: 50px !important;
