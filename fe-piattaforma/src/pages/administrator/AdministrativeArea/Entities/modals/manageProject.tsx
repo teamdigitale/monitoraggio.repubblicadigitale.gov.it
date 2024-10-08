@@ -359,7 +359,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
             'font-weight-semibold'
           )}
         >
-          {steps[currentStep].title == 'Numero facilitatori' && projectDetails?.policy == policy.SCD ? 'Numero volontari' : steps[currentStep].title}
+          {steps[currentStep].title == 'Numero facilitatori' && programDetails?.policy == policy.SCD ? 'Numero volontari' : steps[currentStep].title}
         </p>
       )}
       <div
