@@ -1,5 +1,6 @@
 package it.pa.repdgt.shared.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -18,9 +19,11 @@ import lombok.Setter;
 @Table(name = "v_monitoraggio_caricamenti")
 @Setter
 @Getter
-public class VMonitoraggioCaricamentiEntity {
+public class VMonitoraggioCaricamentiEntity implements Serializable{
 
     @Id
+    private Long id;
+
     @Column(name = "id_programma", nullable = false)
     private Long idProgramma;
 

@@ -1,8 +1,9 @@
 package it.pa.repdgt.surveymgmt.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import it.pa.repdgt.shared.entity.VMonitoraggioCaricamentiEntity;
@@ -18,16 +19,18 @@ public class VMonitoraggioCaricamentiService {
 
     public MonitoraggioCaricamentiDTO findAllByFilters(MonitoraggioCaricamentiRequest request) {
         
-        List<VMonitoraggioCaricamentiEntity> result = this.vMonitoraggioCaricamentiRepository.findAll(request.getIntervento(), request.getIdProgetto(),
-        request.getIdProgramma(), request.getIdEnti(), request.getDataInizio(), request.getDataFine());
+        Pageable paginazione = PageRequest.of(request.getCurrPage(), request.getPageSize());
+        Page<VMonitoraggioCaricamentiEntity> result = this.vMonitoraggioCaricamentiRepository.findAll(request.getIntervento(), request.getIdProgetto(),
+        request.getIdProgramma(), request.getIdEnti(), request.getDataInizio(), request.getDataFine(), paginazione);
         
         MonitoraggioCaricamentiDTO monitoraggioCaricamentiDTO = new MonitoraggioCaricamentiDTO();
-        monitoraggioCaricamentiDTO.setMonitoraggioCaricamentiEntity(result);
+        monitoraggioCaricamentiDTO.setMonitoraggioCaricamentiEntity(result.getContent());
         monitoraggioCaricamentiDTO.setNumeroEnti(result.stream().map(VMonitoraggioCaricamentiEntity::getIdEnte).distinct().count());
         monitoraggioCaricamentiDTO.setNumeroCaricamenti(result.stream().mapToLong(VMonitoraggioCaricamentiEntity::getNumCaricamenti).sum());
         monitoraggioCaricamentiDTO.setServiziCaricati(result.stream().mapToLong(VMonitoraggioCaricamentiEntity::getServiziAggiunti).sum());
         monitoraggioCaricamentiDTO.setCittadiniCaricati(result.stream().mapToLong(VMonitoraggioCaricamentiEntity::getCittadiniAssociati).sum());
-        
+        monitoraggioCaricamentiDTO.setNumeroPagine(result.getTotalPages());
+        monitoraggioCaricamentiDTO.setNumeroTotaleElementi(result.getTotalElements());
         
         return monitoraggioCaricamentiDTO;
     }
