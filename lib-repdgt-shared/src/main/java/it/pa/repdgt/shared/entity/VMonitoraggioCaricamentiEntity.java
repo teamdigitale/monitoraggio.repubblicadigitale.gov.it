@@ -22,7 +22,7 @@ import lombok.Setter;
 public class VMonitoraggioCaricamentiEntity implements Serializable{
 
     @Id
-    private Long id;
+    private String id;
 
     @Column(name = "id_programma", nullable = false)
     private Long idProgramma;
