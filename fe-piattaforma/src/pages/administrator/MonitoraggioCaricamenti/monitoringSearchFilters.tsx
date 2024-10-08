@@ -88,18 +88,18 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
           dataFine: { ...prevValues.dataFine, minimum: formattedDate },
         };
         if (new Date(prevValues.dataFine.value) < new Date(formattedDate)) {
-          newForm.dataFine.value = '';
-          newDateValid.dataFine = true;
+          setIsDateValid(() => ({ dataInizio: false, dataFine: false }));
+          return prevValues;
         } else {
-          newDateValid.dataFine = false;
+          setIsDateValid(() => ({ dataInizio: true, dataFine: true }));
         }
       } else if (field === 'dataFine') {
         if (new Date(formattedDate) < new Date(prevValues.dataInizio.value)) {
           console.error('La data di fine non può essere inferiore alla data di inizio');
-          newDateValid.dataFine = true
+          setIsDateValid(() => ({ dataFine: false, dataInizio: false }));
           return prevValues;
         } else {
-          newDateValid.dataFine = false;
+          setIsDateValid(() => ({ dataFine: true, dataInizio: true }));
         }
         newForm = {
           ...newForm,
@@ -107,7 +107,6 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
           dataInizio: { ...prevValues.dataInizio, maximum: formattedDate },
         };
       }
-      setIsDateValid(newDateValid);
       return newForm;
     });
   };
@@ -118,6 +117,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
 
   const handleClearForm = () => {
     setFormValues(initialFormValues);
+    setIsDateValid({});
   };
 
   const renderSelect = (
@@ -194,9 +194,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
           onInputChange={(value) => handleDateInputChange(value, 'dataInizio')}
           minimum={formValues.dataInizio.minimum}
           maximum={formValues.dataInizio.maximum}
-          // className={isDateValid.dataInizio ? 'is-invalid' : 'is-valid'}
-          // valid = {isDateValid?.dataInizio}
-          {...(isDateValid.dataInizio ? { valid: false } : { valid: true })}
+          {...(isDateValid.dataInizio !== undefined ? { valid: isDateValid.dataInizio } : {})}
         />
         <Input
           value={formValues.dataFine.value}
@@ -206,9 +204,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
           onInputChange={(value) => handleDateInputChange(value, 'dataFine')}
           minimum={formValues.dataFine.minimum}
           maximum={formValues.dataFine.maximum}
-          {...(isDateValid.dataFine ? { valid: false } : { valid: true })}
-          // className= 'is-invalid'
-          // valid = {isDateValid?.dataFine}
+          {...(isDateValid.dataFine !== undefined ? { valid: isDateValid.dataFine } : {})}
         />
       </Form.Row>
 
