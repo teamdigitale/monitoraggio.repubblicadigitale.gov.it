@@ -158,7 +158,7 @@ const Monitoring: React.FC<MonitoringI> = ({
       automatico sulla data odierna. Utilizza i filtri per effettuare una ricerca avanzata.
 
       <div style={{ margin: '50px' }} />
-      <Accordion title={'Ricerca avanzata'} className="custom-accordion">
+      <Accordion title={'Ricerca avanzata'} className="custom-accordion" opened={true}>
         <MonitoringSearchFilters onSearch={handleSearch}
         />
       </Accordion>

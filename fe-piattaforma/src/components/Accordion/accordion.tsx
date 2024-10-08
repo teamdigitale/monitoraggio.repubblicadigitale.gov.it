@@ -31,6 +31,7 @@ interface AccordionI {
   roleList?: boolean;
   index?: number;
   userPublishedContent?: boolean;
+  opened?: boolean;
 }
 
 const Accordion: React.FC<AccordionI> = (props) => {
@@ -52,8 +53,9 @@ const Accordion: React.FC<AccordionI> = (props) => {
     roleList = false,
     index = 0,
     userPublishedContent = false,
+    opened = false,
   } = props;
-  const [collapseOpen, setCollapseOpen] = useState(false);
+  const [collapseOpen, setCollapseOpen] = useState(opened);
   const device = useAppSelector(selectDevice);
   useEffect(() => {
     if (handleOnToggle) handleOnToggle(collapseOpen);
