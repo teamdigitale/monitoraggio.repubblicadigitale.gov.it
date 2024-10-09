@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button } from 'design-react-kit';
+import { Button, Chip, ChipLabel } from 'design-react-kit';
 import { Form, Input } from '../../../components';
 import { formFieldI } from '../../../utils/formHelper';
 import { Select as SelectKit } from 'design-react-kit';
@@ -52,6 +52,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
   const isSearchable = false;
   const withLabel = true;
   const required = false;
+  const [chips, setChips] = useState<string[]>([]);
   const [formValues, setFormValues] = useState<typeof initialFormValues>(initialFormValues);
   const [isDateValid, setIsDateValid] = useState<{ dataInizio?: boolean; dataFine?: boolean }>({});
   const [multiOptions, setMultiOptions] = useState<OptionType[]>([
@@ -71,9 +72,9 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
     }));
   }, []);
 
-    const handleDateInputChange = (value: any, field: string) => {
+  const handleDateInputChange = (value: any, field: string) => {
     const formattedDate = typeof value === 'string' ? value : new Date(value).toISOString().split('T')[0];
-  
+
     setFormValues((prevValues) => {
       let newForm = { ...prevValues };
       let newDateValid = { ...isDateValid };
@@ -108,7 +109,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
       return newForm;
     });
   };
-  
+
   const handleSelectChange = (option: OptionType, name: any) => {
     setFormValues((prevValues) => ({ ...prevValues, [name?.name]: option }));
   };
@@ -125,6 +126,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
   const handleClearForm = () => {
     setFormValues(initialFormValues);
     setIsDateValid({});
+    setChips([]);
   };
 
   const renderSelect = (
@@ -162,7 +164,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
         // color='primary'
         className={clsx(
           (formValues[field] && !isDisabled ? 'border-select-value' : '') ||
-            (isDisabled ? 'deleteArrowInSelect' : '')
+          (isDisabled ? 'deleteArrowInSelect' : '')
         )}
         classNamePrefix={clsx(
           shortDropdownMenu ? 'bootstrap-select-short' : 'bootstrap-select'
@@ -174,8 +176,32 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
     </div>
   );
 
+  useEffect(() => {
+    const newChips: string[] = [];
+    if (formValues.programma.value) {
+      newChips.push(`Programma: ${formValues.programma.label}`);
+    }
+    if (formValues.intervento.value) {
+      newChips.push(`Intervento: ${formValues.intervento.label}`);
+    }
+    if (formValues.progetto.value) {
+      newChips.push(`Progetto: ${formValues.progetto.label}`);
+    }
+    if (formValues.dataInizio.value) {
+      console.log("TIPO DELLA DATA: ", typeof(formValues.dataInizio.value));
+      const dataInizioFormattata = formValues.dataInizio.value.split('-').reverse().join('/');
+      newChips.push(`Data Inizio: ${dataInizioFormattata}`);
+    }
+    if (formValues.dataFine.value) {
+      const dataFineFormattata = formValues.dataFine.value.split('-').reverse().join('/');
+      newChips.push(`Data Fine: ${dataFineFormattata}`);
+    }
+    setChips(newChips);
+  }, [formValues]);
+
+
   return (
-    <Form id='form-categories' className='mt-3 mb-5 pb-5'>
+    <Form id='form-categories' className='mt-3 pb-5'>
       <Form.Row className='justify-content-between px-0 px-lg-5 mx-2'>
         <AutocompleteComponent
           label='Ente'
@@ -186,8 +212,8 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
           defaultValue={''}
           displayMenu={'inline'}
           tNoResults={() => 'Nessun risultato'}
-          // inputClasses={"form-group "}         
-          />
+        // inputClasses={"form-group "}         
+        />
         {renderSelect('intervento', 'Intervento', [
           { value: 'rfd', label: 'RFD' },
           { value: 'scd', label: 'SCD' },
@@ -236,8 +262,19 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
           Applica filtri
         </Button>
       </Form.Row>
+
+      <Form.Row className='justify-content-start mt-5'>
+        {chips.map((chip, index) => (
+          <Chip key={index} className='mr-2 rounded-pill'>
+            <ChipLabel className='mx-1 my-1'>
+              {chip}
+            </ChipLabel>
+          </Chip>
+        ))}
+      </Form.Row>
+
     </Form>
   );
 };
 
-export default  MonitoringSearchFilters;
+export default MonitoringSearchFilters;
