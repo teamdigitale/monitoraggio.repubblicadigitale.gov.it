@@ -116,7 +116,7 @@ const ActivityReportTable = forwardRef(function ActivityReportTable(
             }
             return updatedItem;
           });
-          setPagination({ ...res.data, content: updatedContent });
+          setPagination({ ...res.data, content: updatedContent, number: newPage });
         })
           .catch(() => {
             setPagination(null);
@@ -129,13 +129,19 @@ const ActivityReportTable = forwardRef(function ActivityReportTable(
 
   useEffect(() => {
     searchReports(1);
-  
+  }, [projectId]);
+
+  useEffect(() => {
     const interval = setInterval(() => {
-      searchReports(1, false);
+      setPagination((prev) => {
+        const number = prev?.number || 1; // Usa il valore aggiornato
+        searchReports(number, false);
+        return prev; // Restituisci il valore precedente per evitare di sovrascrivere
+      });
     }, 30000);
   
     return () => clearInterval(interval);
-  }, [projectId]);
+  }, [searchReports]);
 
   useImperativeHandle(
     ref,
@@ -148,7 +154,6 @@ const ActivityReportTable = forwardRef(function ActivityReportTable(
     },
     [searchReports, pagination]
   );
-
   return (
     <>
       <div className='row'>
