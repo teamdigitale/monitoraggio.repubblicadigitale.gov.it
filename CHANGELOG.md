@@ -1,5 +1,62 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.36.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.35.2...1.36.0) (2024-10-09)
+
+
+### Features
+
+* **fe-piattaforma:** rimozione file formato errato 20240925 ([aa3e36a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/aa3e36a03a38b98afd96f80078cdd185a390511c))
+* **fe-piattaforma:** aggiornamento gestione scd rfd per caricamento massivo 20240925 ([55a48c5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/55a48c55d3243a5c743c7bed4ab09f79e8fc7ba0))
+* **fe-piattaforma:** sblocco sezione caricamento massivo per progetti SCD 20240925 ([f564c1e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f564c1e3480a389d7e5f3d5818f58d2fdfa00e2b))
+* **caricamento-excel:** gestione rollback per caricamento SCD 20240923 ([f756ed4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f756ed4a8068695d6cf437ac3bc5681e92a8ae6a))
+* **caricamento-massivo-excel:** aggiunta estensione file caricamento in registro attivita 20240919 ([ad1c13e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ad1c13ebc723d3c867b80f0e2d8ae613cc1d7b0c))
+* **caricamento-excel:** WIP controlli BE unicita servizio cittadino 20240919 ([e3dd168](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e3dd168881b22836f7ac9a7536ad9cb4a8248b7b))
+* **fe-piattaforma:** caricamento massivo excel 20240918 ([8aaa859](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8aaa859ea13a7955ac8906ddb946f6bc9cfba5f8))
+* **fe-piattaforma:** WIP caricamento massivo EXCEL 20240913 ([98d3c5c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/98d3c5c0c9535caed5bde1efe397549155e909ed))
+* **upgrade-massivo:** gestione rollback inserimento massivo 20240926 ([2e91f07](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2e91f072037daf66de9f95aa2e51ab26c433bdf2))
+* **fe-piattaforma:** icona info tabella caricamento massivo 20240925 ([b4610d0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b4610d00e5e881991b48284766a7658ebe7324ba))
+* **fe-piattaforma:** aggiunta tooltip in caso di caricamento fallito 20240925 ([9820fdc](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9820fdc467a7df09bedca41ec330f2bf5991b2d4))
+* **fe-piattaforma:** polling tabella registro attivita ([ba1d05a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ba1d05a03722ed9d97b792ef3a1598588ac18df5))
+* **fe-piattaforma:** update tabella caricamento massivo ([678c755](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/678c75519bd3d8a9ae408108c79bea84401d9b3e))
+* **upgrade-caricamento-massivo:** upgrade caricamento massivo 20240913 ([0324b55](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0324b5555cbda2db356908c6f851db6c2f36bd0f))
+* **ms-questionario-cittadino:** aggiornata tabella registro attivita ([eaa457b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/eaa457b463c9951e2fd7d9a39d1e8bec942b47f5))
+* **fe-piattaforma:** aggiornata tabella registro attivita ([1c6e4fe](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1c6e4fe27d789bfd64716780967e43bd8ea40dea))
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** inibizione caricamento massivo SCD 20241009 ([d85908b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d85908b880233c5915b97bd0e1df523dc78efd1c))
+* **caricamento-excel:** fix localizzazione policy 20241008 ([a06a5aa](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a06a5aab9932186f4b1b28f1e1ae187980f841ac))
+* **caricamento-excel:** fix localizzazione policy 20241007 ([3ed1a4a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3ed1a4aa875430d468a27b2f939f6633efd194b8))
+* **caricamento-excel:** fix localizzazione policy 20241007 ([751bb08](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/751bb08f5ea548682836b17b11f195602a7cd1c8))
+* **caricamento-excel:** fix controllo formato data template excel 20240930 ([fb908d5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fb908d5c7f5536989672ab2ba41122141233530e))
+* **fe-piattaforma:** fix check codice fiscale caricamento massivo 20240930 ([1d5a07f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1d5a07f8aa53bd7e9173e073315f591e3c709f27))
+* **fe-piattaforma:** fix drag and drop caricamento massivo 20240926 ([93c486c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/93c486ccd6b1dab87edfea9258e663d9bb8dc750))
+* **caricamento-excel:** fix caricamento excel be 20240925 ([6772396](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6772396ab43198a35f50678f2df8d784cd0cffe4))
+* **caricamento-excel:** gestione migliorata controllo unicita servizio cittadino 20240925 ([1e30ce2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1e30ce2dcc388939c15e7ec2b615b64c786f718c))
+* **caricamento-excel:** fix controllo uguaglianza servizio cittadino SCD 20240925 ([f6ec201](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f6ec2012c6312b0b367cb3b0a38cfcb5556a1a79))
+* **caricamento-excel:** fix rollback su uguaglianza servizio cittadino 20240925 ([cbe5c25](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/cbe5c2541dff1ab544da9d870a7029cc246c5a45))
+* **upgrade-caricamento:** aggiornato tooltip di caricamento fallito 20241003 ([063adf5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/063adf5df1c8756774f7ea2d890b3101f534ac6f))
+* **upgrade-massivo): fix(upgrade-massivo:** fix rollback massivo4 20240926 ([dbd7057](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/dbd7057753a1f9bc23ee48c3d25f798a2d95bb81))
+* **upgrade-massivo): fix(upgrade-massivo:** fix rollback massivo3 20240926 ([d45d893](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d45d893bb0bea77911d86eb18a66945edaf5970d))
+* **upgrade-massivo): fix(upgrade-massivo:** fix rollback massivo2 20240926 ([2546ca1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2546ca192de01a4d8ac576c8a1f3aefdee9042f0))
+* **upgrade-massivo:** fix rollback massivo 20240926 ([265509d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/265509df3eb81a273e2404d36fb2235ab37cc6b2))
+* **upgrade-massivo:** fix chiusura modale caricamento 20240926 ([7fb9a6a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7fb9a6a1a87b03a7d683795d1d516a8b8426d5b9))
+* **upgrade-massivo:** fix query rollback 20240926 ([8eead8d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8eead8db514165d0eb6fdd6b52b756c1982ccc01))
+* **upgrade-caricamento:** fix polling 20240926 ([c4a4d3b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c4a4d3bd2eda9cb72c2ab7d4c9fafc9536723ac0))
+* **ms-questionario-cittadino:** fix salvataggio record registro attivita 20240925 ([13baa7a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/13baa7a2550eb70767ad9d1eb4b4131ef71faa6e))
+* **ms-questionario-cittadino:** fix ricerca registro attivita 20240925 ([4e23d44](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4e23d44c49b095494e609dd94561093fd759d27b))
+* **ms-questionario-cittadino:** fix salvataggio registro attivita 20240925 ([03f70ad](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/03f70ad68eea9e7891fd49791f7fa054fccc264e))
+* **fe-piattaforma:** nascosto caricamento massivo SCD 20240906 ([3b6f8ba](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3b6f8ba208c90ae39338505826019230538660c7))
+* **fe-piattaforma:** update descrizioni errori 20240923 ([f7dad09](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f7dad09b26ced6438bcb0196dcc9aab1252940ee))
+* **fe-piattaforma:** rimozione colore background searchbar 20240919 ([3d5901a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3d5901af1756bb5c9d5d4d20ad6c475269c85892))
+* **fe-piattaforma:** allineamento modale aggiungi cittadino a figma 20240918 ([c0d028d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c0d028d75cef839140ad13ca5eed63530f07589d))
+* **ms-questionario-cittadino:** fix query syntax ([4f61e6b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4f61e6b1f4d6aed49d3be1c6dea4fac08990d27b))
+* **fe-piattaforma:** remove numero documento ricerca 20240808 ([6ceb2e4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6ceb2e4fffb6c42ae83bef3a2a84ea2ec517b369))
+* **fe-piattaforma:** remove field numero documento 20240808 ([d678ea2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d678ea2469eba60792f0cd3794b4e01bed000a66))
+* **fe-piattaforma:** WIP rimozione riferimenti numero documenti 20240808 ([f2d6107](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f2d6107392573bcdb8cf9ad58d2a51b46515e4fa))
+* **rimozione_numero_documento:** wip rimozione numero documento 20240805 ([6cef6e2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6cef6e289f60b6cea9550f6dff3fbace18f3e44c))
+
 ## [1.35.2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.35.1...1.35.2) (2024-10-01)
 
 
