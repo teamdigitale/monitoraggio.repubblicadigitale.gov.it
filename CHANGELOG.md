@@ -1,5 +1,21 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.353](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.352...1.0.0-test.353) (2024-10-09)
+
+
+### Features
+
+* **monitoraggio-caricamenti:** aggiunta timezone data 20241008 ([f6e02ce](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f6e02ce1bad8e85d03c3d2ada7e78429cb208e73))
+* **monitoraggio-caricamenti:** aggiunta paginazione risultati tabella 20241008 ([acd1cfb](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/acd1cfbdd6f4e7aa686d98507ed9e2426e37de67))
+* **monitoraggio-caricamenti:** creazione endpoint BE recupero dati tabella 20241007 ([e6c7540](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e6c75408bccdc15203c7f67c4f28c526c4e87ea1))
+* **monitoraggio-caricamenti:** aggiornamento endpoint /ente/progetti/dropdown 20241004 ([878e2aa](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/878e2aaa7f2e0a19767a2d9b6edaea3669991448))
+
+
+### Bug Fixes
+
+* **monitoraggio-caricamenti:** fix id vista monitoraggio 20241008 ([c958d70](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c958d705122c05b805160c46c7d73bb9c7e28308))
+* **monitoraggio-caricamenti:** fix unit testing 20241007 ([1fd205b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1fd205b6fabc46c8b9cb01a8d07520fe4183fe08))
+
 ## [1.0.0-test.352](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.351...1.0.0-test.352) (2024-10-08)
 
 
