@@ -4,7 +4,10 @@ import { Form, Input } from '../../../components';
 import { formFieldI } from '../../../utils/formHelper';
 import { Select as SelectKit } from 'design-react-kit';
 import clsx from 'clsx';
-import AutocompleteComponent from '../../../components/Form/autocomplete';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectEntityFiltersOptions, selectEntityList } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
+import { GetEntityFilterValues, GetEntitySearchValues } from '../../../redux/features/administrativeArea/administrativeAreaThunk';
+import { useAppSelector } from '../../../redux/hooks';
 
 export type OptionType = {
   value: string | number;
@@ -55,13 +58,32 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
   const [chips, setChips] = useState<string[]>([]);
   const [formValues, setFormValues] = useState<typeof initialFormValues>(initialFormValues);
   const [isDateValid, setIsDateValid] = useState<{ dataInizio?: boolean; dataFine?: boolean }>({});
-  const [multiOptions, setMultiOptions] = useState<OptionType[]>([
-    { value: 'option1', label: 'Option 1' },
-    { value: 'option2', label: 'Option 2' },
-    // Add more options as needed
-  ]);
+  const dispatch = useDispatch();
+  const dropdownFilterOptions = useSelector(selectEntityFiltersOptions);
+  const entiList = useAppSelector(selectEntityList);
+  // const autocompleteElement = document.getElementById('autocomplete') as HTMLInputElement;
 
-  console.log('isDateValid', isDateValid);
+  useEffect(() => {
+    dispatch(GetEntityFilterValues({ entity: 'ente', dropdownType: 'programmi' }));
+    dispatch(GetEntityFilterValues({ entity: 'ente', dropdownType: 'progetti' }));
+    dispatch(GetEntitySearchValues({ entity: 'ente', criterioRicerca: "%" }));
+  }, [dispatch]);
+
+  const [multiOptions, setMultiOptions] = useState<OptionType[]>([]);
+
+  useEffect(() => {
+    if (entiList.length > 0) {
+      const mappedOptions = entiList.map((ente: { id: any; nome: any; }) => ({
+        value: ente.id,
+        label: ente.nome,
+      }));
+      setMultiOptions(mappedOptions);
+    }
+  }, [entiList]);
+
+
+  const programTypes = dropdownFilterOptions['programmi'] || [];
+  const projectTypes = dropdownFilterOptions['progetti'] || [];
 
   useEffect(() => {
     const today = new Date().toISOString().split('T')[0];
@@ -110,12 +132,21 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
     });
   };
 
+  function handleConfirmAutocomplete(value: string) { 
+    if(formValues.ente.length === 0 && value != undefined){
+      setFormValues((prevValues) => ({ ...prevValues, ente: value })); 
+    }  
+    // }else if(formValues.ente.length > 0 && autocompleteElement.value.length === 0){
+    //   setFormValues((prevValues) => ({ ...prevValues, ente: '' }));
+    // }
+  }
+
   const handleSelectChange = (option: OptionType, name: any) => {
     setFormValues((prevValues) => ({ ...prevValues, [name?.name]: option }));
   };
 
 
-  const suggest = (query: any, populateResults: any) => {
+  const suggest = (query: any, populateResults: any) => {    
     const filteredResults = multiOptions.filter((i) => i.label.toLowerCase().includes(query.toLowerCase()));
     let data = filteredResults.map((item) => {
       return item.label;
@@ -170,7 +201,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
           shortDropdownMenu ? 'bootstrap-select-short' : 'bootstrap-select'
         )}
         aria-labelledby={`${(label || 'label select').replace(/\s/g, '-')}`}
-        isDisabled={isDisabled}
+        isDisabled={formValues?.ente?.length > 0 || isDisabled}
         isSearchable={isSearchable}
       />
     </div>
@@ -199,17 +230,18 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
   return (
     <Form id='form-categories' className='mt-3 pb-5'>
       <Form.Row className='justify-content-between px-0 px-lg-5 mx-2'>
-        <AutocompleteComponent
-          label='Ente'
-          placeholder="Inizia a scrivere il nome dell'ente"
-          col='col-12 col-lg-6'
-          source={suggest}
-          id='autocomplete'
-          defaultValue={''}
-          displayMenu={'inline'}
-          tNoResults={() => 'Nessun risultato'}
-        // inputClasses={"form-group "}         
-        />
+          {/* <AutocompleteComponent
+            label='Ente'
+            placeholder="Inizia a scrivere il nome dell'ente"
+            col='col-12 col-lg-6'
+            source={suggest}
+            id='autocomplete'
+            defaultValue={''}
+            displayMenu={'inline'}
+            tNoResults={() => 'Nessun risultato'}
+            onConfirm={(value) => handleConfirmAutocomplete(value)}
+          // inputClasses={"form-group "}         
+          /> */}
         {renderSelect('intervento', 'Intervento', [
           { value: 'rfd', label: 'RFD' },
           { value: 'scd', label: 'SCD' },
@@ -240,14 +272,14 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
       </Form.Row>
 
       <Form.Row className='justify-content-between px-0 px-lg-5 mx-2'>
-        {renderSelect('progetto', 'Progetto', [
-          { value: 'progetto1', label: 'Progetto 1' },
-          { value: 'progetto2', label: 'Progetto 2' },
-        ])}
-        {renderSelect('programma', 'Programma', [
-          { value: 'programma1', label: 'Programma 1' },
-          { value: 'programma2', label: 'Programma 2' },
-        ])}
+        {renderSelect('progetto', 'Progetto', projectTypes.map((type: any) => ({
+          value: type.value,
+          label: type.label,
+        })))}
+        {renderSelect('programma', 'Programma', programTypes.map((type: any) => ({
+          value: type.value,
+          label: type.label,
+        })))}
       </Form.Row>
 
       <Form.Row className='justify-content-end'>
