@@ -263,7 +263,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
         </Button>
       </Form.Row>
 
-      <Form.Row className='justify-content-start mt-5'>
+      <Form.Row className='justify-content-start mt-5 chipsRow'>
         {chips.map((chip, index) => (
           <Chip key={index} className='mr-2 rounded-pill'>
             <ChipLabel className='mx-1 my-1'>
