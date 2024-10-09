@@ -6,13 +6,13 @@ input {
   &[type='password'],
   &[type='file'],
   &[type='url'] {
-    color: color('dark-blue') !important;
+    color: #0066CC !important;
     font-weight: 600 !important;
   }
 }
 
 textarea {
-  color: color('dark-blue') !important;
+  color: #0066CC !important;
   font-weight: 600 !important;
 }
 
@@ -133,11 +133,11 @@ input > span {
   }
 
   &__single-value {
-    color: color('dark-blue') !important;
+    color: #0066CC !important;
     font-weight: 600 !important;
 
     &--is-disabled {
-      color: color('dark-blue') !important;
+      color: #0066CC !important;
     }
   }
 }
@@ -173,11 +173,11 @@ input > span {
   }
 
   &__single-value {
-    color: color('dark-blue') !important;
+    color: #0066CC !important;
     font-weight: 600 !important;
 
     &--is-disabled {
-      color: color('dark-blue') !important;
+      color: #0066CC !important;
     }
   }
 }
@@ -343,7 +343,7 @@ input > span {
 
 .autocomplete {
   &__input {
-    color: color('dark-blue') !important;
+    color: #0066CC !important;
     font-weight: 600 !important;
     border-bottom: 1px solid color('progress-bar-line') !important;
 
@@ -402,11 +402,11 @@ input > span {
   }
 
   &__single-value {
-    color: color('dark-blue') !important;
+    color: #0066CC !important;
     font-weight: 600 !important;
 
     &--is-disabled {
-      color: color('dark-blue') !important;
+      color: #0066CC !important;
     }
   }
 }
@@ -454,7 +454,7 @@ input > span {
 
 
 .public-DraftEditor-content {
-  color: color('dark-blue') !important;
+  color: #0066CC !important;
   font-weight: 400 !important;
 }
 
