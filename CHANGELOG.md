@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.354](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.353...1.0.0-test.354) (2024-10-09)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** fix polling registro attivita 20241009 ([5c11eee](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5c11eeee2820e1bd8762144bbce360ab0631f154))
+
 ## [1.0.0-test.353](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.352...1.0.0-test.353) (2024-10-09)
 
 
