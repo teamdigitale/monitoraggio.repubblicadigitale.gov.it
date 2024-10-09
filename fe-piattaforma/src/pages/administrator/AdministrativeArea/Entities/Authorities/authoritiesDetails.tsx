@@ -599,12 +599,13 @@ const AuthoritiesDetails = () => {
               {projectId &&
                 (userHeaders.codiceRuoloUtenteLoggato === 'REPP' ||
                   userHeaders.codiceRuoloUtenteLoggato === 'DTD') && (
+                    projectDetail?.policy == policy.RFD && (
                   <div>
                     <CSVUploadBanner
                       onPrimaryButtonClick={handleNavigateToCaricamentoDati}
                     />
                   </div>
-                )}
+                ))}
               <ManageGenericAuthority legend="form modifica ente, i campi con l'asterisco sono obbligatori" />
               <ManagePartnerAuthority legend="form modifica ente partner, i campi con l'asterisco sono obbligatori" />
               <ManageDelegate
