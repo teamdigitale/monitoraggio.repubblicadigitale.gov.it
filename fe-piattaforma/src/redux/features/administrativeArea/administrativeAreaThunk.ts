@@ -88,6 +88,29 @@ export const GetEntityValues =
     }
   };
 
+  export const GetEntitySearchValues =
+  (payload?: any) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...GetValuesAction, payload }); // TODO manage dispatch for dev env only
+
+      const entityEndpoint = `/ente/cerca`;
+
+      const params = {
+        criterioRicerca: payload.criterioRicerca
+      };
+
+      const res = await API.get(entityEndpoint, { params });      
+      if (res?.data) {
+        dispatch(setEntityValues({ entity: payload.entity, data: res.data }));
+      }
+    } catch (error) {
+      console.log('GetEntityValues error', error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
 const GetFilterValuesAction = {
   type: 'administrativeArea/GetEntityFilterValues',
 };
