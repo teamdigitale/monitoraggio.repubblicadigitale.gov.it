@@ -187,14 +187,10 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
     if (formValues.progetto.value) {
       newChips.push(`Progetto: ${formValues.progetto.label}`);
     }
-    if (formValues.dataInizio.value) {
-      console.log("TIPO DELLA DATA: ", typeof(formValues.dataInizio.value));
+    if (formValues.dataInizio.value && formValues.dataFine.value) {
       const dataInizioFormattata = formValues.dataInizio.value.split('-').reverse().join('/');
-      newChips.push(`Data Inizio: ${dataInizioFormattata}`);
-    }
-    if (formValues.dataFine.value) {
       const dataFineFormattata = formValues.dataFine.value.split('-').reverse().join('/');
-      newChips.push(`Data Fine: ${dataFineFormattata}`);
+      newChips.push(`Periodo: ${dataInizioFormattata} - ${dataFineFormattata}`);
     }
     setChips(newChips);
   }, [formValues]);
