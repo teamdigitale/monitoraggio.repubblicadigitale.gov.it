@@ -63,7 +63,13 @@
 }
 
 .chipsRow{
+    row-gap: 10px;
     .chip{
         border: 1px solid #dfe4f2 !important;
     }
+}
+
+.autocomplete__option{
+    color: #06c;
+    cursor: pointer;
 }
