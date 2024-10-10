@@ -1,5 +1,5 @@
 import { Dispatch, Selector } from '@reduxjs/toolkit';
-import API, { createPath } from '../../../utils/apiHelper';
+import API from '../../../utils/apiHelper';
 import { hideLoader, showLoader } from '../app/appSlice';
 import {
   setEntityDetail,
@@ -110,6 +110,89 @@ export const GetEntityValues =
       dispatch(hideLoader());
     }
   };
+
+  export const GetMonitoraggioCaricamentiValues = 
+  () => async (dispatch: Dispatch) => {
+    try {
+      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
+        getUserHeaders();
+      const payload = {
+        intervento: 'RFD',
+        dataInizio: '2023-01-01', // Formattato come stringa data ISO
+        dataFine: '2023-12-31',   // Formattato come stringa data ISO
+        currPage: 1,
+        pageSize: 20,
+        idProgramma,
+        idProgetto,
+        idEnte,
+        cfUtente: codiceFiscale,
+        codiceRuolo
+      };  
+      
+      dispatch(showLoader());
+      dispatch({ ...GetValuesAction, payload }); // TODO manage dispatch for dev env only
+      const endpoint = `/monitoraggiocaricamenti/all`; 
+      
+      const res = await API.post(endpoint, payload, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }); 
+      if (res?.data) {
+        // dispatch(setDataValues({ entity: payload.entity, data: res.data }));
+        return res.data;
+      }
+    } catch (error) {
+      console.log('GetMonitoraggioCaricamentiValues error', error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+
+  export const GetProgrammiDropdownList = 
+  (payload?: any) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...GetValuesAction, payload });
+      const endpoint = `/progetto/programmi/dropdown`; 
+      const res = await API.post(endpoint, payload, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }); 
+      if (res?.data) {
+        return res.data;
+      }
+    } catch (error) {
+      console.log('GetProgrammiDropdownList error', error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+  export const GetProgettiDropdownList = 
+  (payload?: any) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      dispatch({ ...GetValuesAction, payload });
+      const endpoint = `/ente/progetti/dropdown`; 
+      const res = await API.post(endpoint, payload, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }); 
+      if (res?.data) {
+        return res.data;
+      }
+    } catch (error) {
+      console.log('GetProgettiDropdownList error', error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+
 
 const GetFilterValuesAction = {
   type: 'administrativeArea/GetEntityFilterValues',
