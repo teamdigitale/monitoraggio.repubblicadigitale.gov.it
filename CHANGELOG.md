@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.36.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.36.0...1.36.1) (2024-10-10)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** fix polling registro attivita 20241009 ([b64a55f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b64a55fd92cda12c1bca04797227fc4830b1b5bb))
+* **fe-piattaforma:** fix modale aggiungi cittadino 20240913 ([2de6dc3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2de6dc316712b06168bbb81aa5fb1c0527cd31b4))
+
 ## [1.36.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.35.2...1.36.0) (2024-10-09)
 
 
