@@ -112,34 +112,17 @@ export const GetEntityValues =
   };
 
   export const GetMonitoraggioCaricamentiValues = 
-  () => async (dispatch: Dispatch) => {
-    try {
-      const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
-        getUserHeaders();
-      const payload = {
-        intervento: 'RFD',
-        dataInizio: '2023-01-01', // Formattato come stringa data ISO
-        dataFine: '2023-12-31',   // Formattato come stringa data ISO
-        currPage: 1,
-        pageSize: 20,
-        idProgramma,
-        idProgetto,
-        idEnte,
-        cfUtente: codiceFiscale,
-        codiceRuolo
-      };  
-      
+  (payload: any) => async (dispatch: Dispatch) => {
+    try {      
       dispatch(showLoader());
       dispatch({ ...GetValuesAction, payload }); // TODO manage dispatch for dev env only
       const endpoint = `/monitoraggiocaricamenti/all`; 
       
-      const res = await API.post(endpoint, payload, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }); 
+      const res = await API.post(endpoint, payload); 
       if (res?.data) {
         // dispatch(setDataValues({ entity: payload.entity, data: res.data }));
+        console.log();
+        
         return res.data;
       }
     } catch (error) {
