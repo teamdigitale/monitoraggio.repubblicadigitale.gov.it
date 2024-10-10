@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Chip, ChipLabel } from 'design-react-kit';
 import { Form, Input } from '../../../components';
-import { formFieldI } from '../../../utils/formHelper';
 import { Select as SelectKit } from 'design-react-kit';
 import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectEntityFiltersOptions, selectEntityList } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
-import { GetEntityFilterValues, GetEntitySearchValues, GetMonitoraggioCaricamentiValues, GetProgettiDropdownList, GetProgrammiDropdownList } from '../../../redux/features/administrativeArea/administrativeAreaThunk';
+import { GetEntityFilterValues, GetEntitySearchValues, GetProgettiDropdownList, GetProgrammiDropdownList } from '../../../redux/features/administrativeArea/administrativeAreaThunk';
 import { useAppSelector } from '../../../redux/hooks';
 
 export type OptionType = {
@@ -16,9 +15,9 @@ export type OptionType = {
 
 interface MonitoringSearchFilterI {
   formDisabled?: boolean;
-  sendNewValues?: (param: { [key: string]: formFieldI['value'] }) => void;
-  onSearch?: (param: { [key: string]: formFieldI['value'] }) => void;
-  clearForm?: () => void;
+  onSearch: () => void;
+  formValues: {ente: OptionType; programma: OptionType; intervento: OptionType; progetto: OptionType; dataInizio: DateField; dataFine: DateField; };
+  setFormValues: (formValues: any) => void;
 }
 
 type DateField = {
@@ -27,7 +26,7 @@ type DateField = {
   maximum?: string;
 };
 
-const initialFormValues = {
+export const initialFormValues = {
   ente: {
     value: '',
     label: 'Inizia a scrivere il nome dell\'ente',
@@ -52,28 +51,13 @@ const initialFormValues = {
   } as DateField,
 };
 
-const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
+const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({formValues, setFormValues, onSearch}) => {
   const [chips, setChips] = useState<string[]>([]);
-  const [formValues, setFormValues] = useState<typeof initialFormValues>(initialFormValues);
   const [isDateValid, setIsDateValid] = useState<{ dataInizio?: boolean; dataFine?: boolean }>({});
   const dispatch = useDispatch();
   const dropdownFilterOptions = useSelector(selectEntityFiltersOptions);
   const entiList = useAppSelector(selectEntityList);
-  
-  
-  const fetchData = async () => { 
-     
-    try {
-      const tableValues = await GetMonitoraggioCaricamentiValues()(dispatch);
-      console.log("tableValues", tableValues); // Ora tableValues contiene i dati
-    } catch (error) {
-      console.error("Network error:", error);
-    }
-  };
 
-  useEffect(() => {
-    fetchData();    
-  }, []);
 
 
   const [programTypes, setProgramTypes] = useState<OptionType[]>();
@@ -115,7 +99,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
   }, [entiList]);
 
 
-  const retriveProgrammaByPolicy = async (policy: string) => { 
+  const retriveProgramma = async (policy: string) => { 
     const payload ={
        filtroRequest: {
          filtroPolicies: [policy]
@@ -133,12 +117,14 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
    }
   };
 
-  const retriveProgettoByPolicy = async (policy: string) => { 
-    const payload ={
+  const retriveProgetto = async (policy: string, idProgramma: number) => { 
+    const payload = {
        filtroRequest: {
-         filtroPolicies: [policy]
-       }
-    }
+       ...(policy && { filtroPolicies: [policy] }),
+       ...(idProgramma !== 0 && { idsProgrammi: [idProgramma] })
+       },
+       ...(idProgramma !== 0 && { idProgramma })
+    };
    try {
     const response = await GetProgettiDropdownList(payload)(dispatch);
     const mappedProjectTypes = response.map((program: any) => ({
@@ -153,8 +139,8 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
 
   useEffect(() => {
     const today = new Date().toISOString().split('T')[0];
-    setFormValues((prevValues) => ({
-      ...prevValues,
+    setFormValues(() => ({
+      ...formValues,
       dataInizio: { value: today, maximum: today },
       dataFine: { value: today, minimum: today },
     }));
@@ -163,35 +149,35 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
   const handleDateInputChange = (value: any, field: string) => {
     const formattedDate = typeof value === 'string' ? value : new Date(value).toISOString().split('T')[0];
 
-    setFormValues((prevValues) => {
-      let newForm = { ...prevValues };
+    setFormValues(() => {
+      let newForm = { ...formValues };
       let newDateValid = { ...isDateValid };
       console.log('newDateValid', newDateValid);
 
       if (field === 'dataInizio') {
         newForm = {
           ...newForm,
-          dataInizio: { ...prevValues.dataInizio, value: formattedDate },
-          dataFine: { ...prevValues.dataFine, minimum: formattedDate },
+          dataInizio: { ...formValues.dataInizio, value: formattedDate },
+          dataFine: { ...formValues.dataFine, minimum: formattedDate },
         };
-        if (new Date(prevValues.dataFine.value) < new Date(formattedDate)) {
+        if (new Date(formValues.dataFine.value) < new Date(formattedDate)) {
           setIsDateValid(() => ({ dataInizio: false, dataFine: false }));
-          return prevValues;
+          return formValues;
         } else {
           setIsDateValid(() => ({ dataInizio: true, dataFine: true }));
         }
       } else if (field === 'dataFine') {
-        if (new Date(formattedDate) < new Date(prevValues.dataInizio.value)) {
+        if (new Date(formattedDate) < new Date(formValues.dataInizio.value)) {
           console.error('La data di fine non può essere inferiore alla data di inizio');
           setIsDateValid(() => ({ dataFine: false, dataInizio: false }));
-          return prevValues;
+          return formValues;
         } else {
           setIsDateValid(() => ({ dataFine: true, dataInizio: true }));
         }
         newForm = {
           ...newForm,
-          dataFine: { ...prevValues.dataFine, value: formattedDate },
-          dataInizio: { ...prevValues.dataInizio, maximum: formattedDate },
+          dataFine: { ...formValues.dataFine, value: formattedDate },
+          dataInizio: { ...formValues.dataInizio, maximum: formattedDate },
         };
       }
       return newForm;
@@ -199,14 +185,18 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
   };
 
   const handleSelectChange = (option: OptionType, name: any) => {
-    setFormValues((prevValues) => ({ ...prevValues, [name?.name]: option }));
+    setFormValues(() => ({ ...formValues, [name?.name]: option }));
     if(name?.name === 'intervento'){
-      retriveProgrammaByPolicy(option.value);
-      retriveProgettoByPolicy(option.value);
-      setFormValues((prevValues) => ({ ...prevValues, programma: { value: '', label: 'Seleziona' }, progetto: { value: '', label: 'Seleziona' } }));
+      retriveProgramma(option.value);
+      retriveProgetto(option.value, 0);
+      setFormValues(() => ({ ...formValues, programma: { value: '', label: 'Seleziona' }, progetto: { value: '', label: 'Seleziona' }, intervento: option }));
     }
     if(name?.name === 'programma'){
-      setFormValues((prevValues) => ({ ...prevValues, progetto: { value: '', label: 'Seleziona' }}));
+      setFormValues(() => ({ ...formValues, progetto: { value: '', label: 'Seleziona' }, programma: option }));
+      if(formValues.intervento.value.length > 0)
+        retriveProgetto(formValues.intervento.value, Number(option.value));
+      else
+        retriveProgetto('', Number(option.value));
     }
   };
 
@@ -214,6 +204,9 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
     setFormValues(initialFormValues);
     setIsDateValid({});
     setChips([]);
+    dispatch(GetEntityFilterValues({ entity: 'ente', dropdownType: 'programmi' }));
+    dispatch(GetEntityFilterValues({ entity: 'ente', dropdownType: 'progetti' }));
+    dispatch(GetEntitySearchValues({ entity: 'ente', criterioRicerca: "%" }));
   };
 
   const renderSelect = (
@@ -258,6 +251,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
       //onMenuScrollToBottom={onMenuScrollToBottom}
       // color='primary'
       className={clsx(
+        'custom-dropdown-indicator',  // Aggiungi questa classe
         (formValues[field] && !isDisabled ? 'border-select-value' : '') ||
         (isDisabled ? 'deleteArrowInSelect' : '')
       )}
@@ -295,6 +289,10 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
   }, [formValues]);
 
 
+  function handleSubmitFiltri(): void {
+    onSearch();
+  }
+
   return (
     <Form id='form-categories' className='mt-3 pb-5'>
       <Form.Row className='justify-content-between px-0 px-lg-5 mx-2'>
@@ -310,7 +308,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
             onConfirm={(value) => handleConfirmAutocomplete(value)}
           // inputClasses={"form-group "}         
           /> */}      
-        {renderSelect('ente', 'Ente', multiOptions, true, handleSelectChange, "Inizia a scrivere il nome dell'ente...", formValues?.intervento?.value?.length > 0)}    
+        {renderSelect('ente', 'Ente', multiOptions, true, handleSelectChange, "Inizia a scrivere il nome dell'ente...", formValues?.intervento?.value?.length > 0 || formValues?.programma?.value?.length > 0 || formValues?.progetto?.value?.length > 0)}    
         {renderSelect('intervento', 'Intervento', [
           { value: 'rfd', label: 'RFD' },
           { value: 'scd', label: 'SCD' },
@@ -355,7 +353,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = () => {
         <Button color='secondary' className='mr-2' onClick={handleClearForm}>
           Cancella filtri
         </Button>
-        <Button color='primary' /*onClick={handleSubmit}*/>
+        <Button color='primary' onClick={handleSubmitFiltri}>
           Applica filtri
         </Button>
       </Form.Row>

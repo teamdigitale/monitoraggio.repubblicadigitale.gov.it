@@ -4,15 +4,12 @@ import {
   Accordion,
   EmptySection,
   Paginator,
-  StatusChip,
   Table,
 } from '../../../components';
 import { newTable, TableRowI } from '../../../components/Table/table';
 import { useAppSelector } from '../../../redux/hooks';
 import {
-  resetProgramDetails,
   selectEntityFilters,
-  selectEntityList,
   selectEntityPagination,
   setEntityPagination,
 } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
@@ -20,14 +17,13 @@ import { TableHeading } from './utils';
 import { CRUDActionsI, CRUDActionTypes } from '../../../utils/common';
 import { useNavigate } from 'react-router-dom';
 import {
-  GetEntityValues
+  GetMonitoraggioCaricamentiValues
 } from '../../../redux/features/administrativeArea/administrativeAreaThunk';
 import useGuard from '../../../hooks/guard';
 import IconNote from '/public/assets/img/it-note-primary.png';
-import MonitoringSearchFilters from './monitoringSearchFilters';
+import MonitoringSearchFilters, { initialFormValues } from './monitoringSearchFilters';
 import './monitoring.scss';
 import { selectPermissions } from '../../../redux/features/user/userSlice';
-import { formFieldI } from '../../../utils/formHelper';
 import { withFormHandlerProps } from '../../../hoc/withFormHandler';
 
 const entity = 'programma';
@@ -39,48 +35,80 @@ interface MonitoringFormI {
 
 interface MonitoringI extends withFormHandlerProps, MonitoringFormI {}
 
-// Definizione dell'oggetto initialFormValues all'esterno del componente Monitoring
+interface CaricamentiResponse {
+  cittadiniCaricati: number;
+  monitoraggioCaricamentiEntity: []; // Array di oggetti di tipo MonitoraggioCaricamentoEntity
+  numeroCaricamenti: number;
+  numeroEnti: number;
+  numeroPagine: number;
+  numeroTotaleElementi: number;
+  serviziCaricati: number;
+}
 
 const Monitoring: React.FC<MonitoringI> = ({
 }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { hasUserPermission } = useGuard();
-  const { programmi: caricamentiList = [] } = useAppSelector(selectEntityList);
+  const [caricamentiList, setCaricamentiList] = useState<any[]>([]);
   const filtersList = useAppSelector(selectEntityFilters);
   const pagination = useAppSelector(selectEntityPagination);
-  const { filtroCriterioRicerca, filtroPolicies, filtroStati } = filtersList;
-  const numbers = [46, 112, 47259, 53293];
-  const [statisticheElaborate, setStatisticheElaborate] = useState<any[]>([
-    numbers[0].toLocaleString('it-IT'),
-    numbers[1].toLocaleString('it-IT'),
-    numbers[2].toLocaleString('it-IT'),
-    numbers[3].toLocaleString('it-IT'),
-  ]);
-  const { pageNumber } = pagination;
+  // const { filtroCriterioRicerca, filtroPolicies, filtroStati } = filtersList;
+  const [statisticheElaborate, setStatisticheElaborate] = useState<any[]>([]);
+  const [formValues, setFormValues] = useState<typeof initialFormValues>(initialFormValues);
 
   useEffect(() => {
-    dispatch(setEntityPagination({ pageSize: 8 }));
-    // dispatch(resetProgramDetails());
+    dispatch(setEntityPagination({ pageSize: 10}));
   }, []);
 
+  // const handleTableValuesChange = (newTableValues: CaricamentiResponse) => {
+  //     setCaricamentiList(newTableValues.monitoraggioCaricamentiEntity);
+  //     setNumeroRisultati(newTableValues.numeroTotaleElementi);
+  //     setStatistiche([newTableValues.numeroEnti, newTableValues.numeroCaricamenti, newTableValues.serviziCaricati, newTableValues.cittadiniCaricati]);
+  // };
+
+
+  const fetchData = async (currPage: number = 1) => { 
+    try {
+      const payload: any = {
+        ...(Number(formValues.programma.value) !== 0 && { idProgramma: Number(formValues.programma.value) }),
+        ...(Number(formValues.progetto.value) !== 0 && { idProgetto: Number(formValues.progetto.value) }),
+        ...(Number(formValues.ente.value) !== 0 && { idEnti: [Number(formValues.ente.value)] }),
+        ...(formValues.intervento.value !== '' && { intervento: formValues.intervento.value }),
+        ...(formValues.dataFine.value && { dataFine: new Date(formValues.dataFine.value) }),
+        ...(formValues.dataInizio.value && { dataInizio: new Date(formValues.dataInizio.value) }),
+        pageSize: 10,
+        currPage: currPage - 1,
+      };
+      const newTableValues = await GetMonitoraggioCaricamentiValues(payload)(dispatch);
+      setCaricamentiList(newTableValues.monitoraggioCaricamentiEntity);
+      setNumeroRisultati(newTableValues.numeroTotaleElementi);
+      setStatistiche([newTableValues.numeroEnti, newTableValues.numeroCaricamenti, newTableValues.serviziCaricati, newTableValues.cittadiniCaricati]);
+      dispatch(setEntityPagination({ pageNumber: currPage, pageSize: 10, totalElements: newTableValues.numeroTotaleElementi, totalPages: newTableValues.numeroPagine }));
+    } catch (error) {
+      console.error("Network error:", error);
+    }
+  };
+
+  useEffect(() => {
+    setTableValues(updateTableValues());
+  }, [caricamentiList]);
+
   const permissions = useAppSelector(selectPermissions);
-  // console.log("filteredPermissions", permissions);
-  // console.log("hasPermission", hasUserPermission(['vis.mntr']));
 
   const updateTableValues = () => {
     const table = newTable(
       TableHeading,
       caricamentiList.map((td: any) => {
         return {
-          data: "",
-          ente: "",
-          intervento: "",
-          progetto: "",
-          programma: "",
-          caricamenti: "",
-          serviziCaricati: "",
-          cittadiniCaricati: ""
+          data: td.dataCaricamenti,
+          ente: td.nomeEnte,
+          intervento: td.intervento,
+          progetto: td.nomeProgetto,
+          programma: td.nomeProgramma,
+          caricamenti: td.numCaricamenti,
+          serviziCaricati: td.serviziAggiunti,
+          cittadiniCaricati: td.cittadiniAssociati
         };
       })
     );
@@ -88,36 +116,26 @@ const Monitoring: React.FC<MonitoringI> = ({
   };
 
   const [tableValues, setTableValues] = useState(updateTableValues());
-  const [numeroRisultati, setNumeroRisultati] = useState(pagination.totalElements);
+  const [numeroRisultati, setNumeroRisultati] = useState(0);
 
   useEffect(() => {
     if (Array.isArray(caricamentiList) && caricamentiList.length)
       setTableValues(updateTableValues());
   }, [caricamentiList]);
 
-  const getProgramsList = () => {
-    dispatch(GetEntityValues({ entity }));
-  };
-
-  useEffect(() => {
-    if (pagination.totalElements !== 0) {
-      setNumeroRisultati(pagination.totalElements);
-    }
-  }, [pagination.totalElements]);
+  // const getProgramsList = () => {
+  //   dispatch(GetEntityValues({ entity }));
+  // };
 
   const setStatistiche = (numbers: number[]) => {
     const formattedNumbers = numbers.map(num => num.toLocaleString('it-IT'));
     setStatisticheElaborate(formattedNumbers);
   }
 
-  useEffect(() => {
-    getProgramsList();
-    setNumeroRisultati(pagination.totalElements);
-  }, [filtroCriterioRicerca, filtroPolicies, filtroStati, pageNumber]);
-
-  const handleOnChangePage = (pageNumber: number = pagination?.pageNumber) => {
-    dispatch(setEntityPagination({ pageNumber }));
-  };
+  // useEffect(() => {
+  //   getProgramsList();
+  //   setNumeroRisultati(pagination.totalElements);
+  // }, [filtroCriterioRicerca, filtroPolicies, filtroStati, pageNumber]);
 
   const onActionClick: CRUDActionsI = hasUserPermission(['view.card.prgm.full'])
     ? {
@@ -135,22 +153,9 @@ const Monitoring: React.FC<MonitoringI> = ({
     : {};
 
 
-    const handleSearch = (searchParams: { [key: string]: formFieldI['value'] }) => {
-      console.log("searchParams", searchParams);
-    };
-
-  // const handleClearForm = () => {
-  //   console.log("formValues", newFormValues);
-  //   console.log("initialFormValues", initialFormValues);
-  //   setNewFormValues(initialFormValues);
-  //   clearForm();
-  // };
-
-  // const onInputDataChange = (value: formFieldI['value'], field?: formFieldI['field']) => {
-  //   if (field) {
-  //     setNewFormValues((prevValues) => ({ ...prevValues, [field]: value }));
-  //   }
-  // };
+    const setFormValuesFunction = (formValues : any) => {
+      setFormValues(formValues);
+    }
 
   return (
     <div>
@@ -159,8 +164,7 @@ const Monitoring: React.FC<MonitoringI> = ({
 
       <div style={{ margin: '50px' }} />
       <Accordion title={'Ricerca avanzata'} className="custom-accordion" opened={true}>
-        <MonitoringSearchFilters onSearch={handleSearch}
-        />
+        <MonitoringSearchFilters onSearch={fetchData} formValues={formValues} setFormValues={setFormValuesFunction}/>
       </Accordion>
       <div style={{ margin: '50px' }} />
 
@@ -191,18 +195,18 @@ const Monitoring: React.FC<MonitoringI> = ({
             {...tableValues}
             id='table'
             onActionClick={onActionClick}
-            onCellClick={(field, row) => console.log(field, row)}
+            onCellClick={() => navigate('/')}
             withActions
             totalCounter={pagination?.totalElements}
           />
           {pagination?.pageNumber ? (
             <Paginator
-              activePage={pagination?.pageNumber}
-              center
-              refID='#table'
+              // activePage={pagination?.pageNumber}
+              // center
+              // // refID='#table'
               pageSize={pagination?.pageSize}
               total={pagination?.totalPages}
-              onChange={handleOnChangePage}
+              onChange={fetchData}
             />
           ) : null}
         </>
