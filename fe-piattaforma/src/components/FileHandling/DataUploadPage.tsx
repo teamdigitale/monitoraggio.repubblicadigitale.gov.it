@@ -11,6 +11,8 @@ import { useDispatch } from 'react-redux';
 import { selectUser } from '../../redux/features/user/userSlice';
 import { cleanDrupalFileURL } from '../../utils/common';
 import { ManageItemEvent, ActionTracker } from '../../redux/features/forum/forumThunk';
+import { selectProjects } from '../../redux/features/administrativeArea/administrativeAreaSlice';
+import { policy } from '../../pages/administrator/AdministrativeArea/Entities/utils';
 
 
 interface GuidaOperativaI {
@@ -23,6 +25,7 @@ interface GuidaOperativaI {
 export default function DataUploadPage() {
   const searchRef = useRef<{ search: () => void }>(null);
   const { codiceRuolo: userRole } = useAppSelector(selectProfile) || {};
+  const policyDetail = useAppSelector(selectProjects).detail.dettagliInfoProgetto.policy;
   const [elaboratedCSV, setElaboratedCSV] = useState<ElaboratoCsvRequest | undefined>(undefined);
   const [guidaOpearativa, setGuidaOperativa] = useState<GuidaOperativaI>({
     external_link: "",
@@ -30,11 +33,9 @@ export default function DataUploadPage() {
     category_label: "",
     category: ""
   })
-
   const dispatch = useDispatch();
   const userId = useAppSelector(selectUser)?.id ?? "";
-  const idGuida = '97';    // 97 per produzione, 178 per test
-  
+  const idGuida = policyDetail == policy.RFD ? '97' : '225';    // 97 per produzione RFD, 225 per SCD
   const getItemDetails = async () => {
       const res = await dispatch(GetItemDetail(idGuida, userId, 'document'));
       setGuidaOperativa(res?.data?.data?.items?.[0])
