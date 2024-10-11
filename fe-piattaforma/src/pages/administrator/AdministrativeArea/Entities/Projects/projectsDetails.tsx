@@ -1431,12 +1431,11 @@ const ProjectsDetails = () => {
               parseInt(projectId) &&
               activeTab === tabs.ENTE_GESTORE &&
               (userHeaders.codiceRuoloUtenteLoggato === 'REGP' ||
-                userHeaders.codiceRuoloUtenteLoggato === 'DTD') && (
-                projectDetails?.policy == policy.RFD ? (
+                userHeaders.codiceRuoloUtenteLoggato === 'DTD') ? (
                 <CSVUploadBanner
                   onPrimaryButtonClick={handleNavigateToCaricamentoDati}
                 ></CSVUploadBanner>
-              ) : null)}
+              ) : null}
             </div>
           </div>
         </div>
