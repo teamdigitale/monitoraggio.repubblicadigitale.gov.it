@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Chip, ChipLabel } from 'design-react-kit';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Button, Chip, ChipLabel, Icon } from 'design-react-kit';
 import { Form, Input } from '../../../components';
 import { Select as SelectKit } from 'design-react-kit';
 import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectEntityFiltersOptions, selectEntityList } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
-import { GetEntityFilterValues, GetEntitySearchValues, GetProgettiDropdownList, GetProgrammiDropdownList } from '../../../redux/features/administrativeArea/administrativeAreaThunk';
+import { GetEntitySearchValues, GetProgettiDropdownList, GetProgrammiDropdownList } from '../../../redux/features/administrativeArea/administrativeAreaThunk';
 import { useAppSelector } from '../../../redux/hooks';
 
 export type OptionType = {
@@ -64,8 +64,8 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({formValues,
   const [projectTypes, setProjectTypes] = useState<OptionType[]>();
 
   useEffect(() => {
-    dispatch(GetEntityFilterValues({ entity: 'ente', dropdownType: 'programmi' }));
-    dispatch(GetEntityFilterValues({ entity: 'ente', dropdownType: 'progetti' }));
+    dispatch(retriveProgramma);
+    dispatch(retriveProgetto);
     dispatch(GetEntitySearchValues({ entity: 'ente', criterioRicerca: "%" }));
   }, [dispatch]);
 
@@ -102,7 +102,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({formValues,
   const retriveProgramma = async (policy: string) => { 
     const payload ={
        filtroRequest: {
-         filtroPolicies: [policy]
+        ...(policy && { filtroPolicies: [policy] }),
        }
     }
    try {
@@ -204,8 +204,8 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({formValues,
     setFormValues(initialFormValues);
     setIsDateValid({});
     setChips([]);
-    dispatch(GetEntityFilterValues({ entity: 'ente', dropdownType: 'programmi' }));
-    dispatch(GetEntityFilterValues({ entity: 'ente', dropdownType: 'progetti' }));
+    dispatch(retriveProgramma);
+    dispatch(retriveProgetto);
     dispatch(GetEntitySearchValues({ entity: 'ente', criterioRicerca: "%" }));
   };
 
@@ -220,12 +220,16 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({formValues,
     required = false,
     withLabel = true,
     shortDropdownMenu = false,
-  ) => (
+  ) => { console.log("isSearchable", isSearchable, placeholder);
+   return (   
     <div
       className={clsx(
-      'bootstrap-select-wrapper',
-      'form-group',
-      'col-12 col-lg-6',
+        {
+          'd-flex flex-row': isSearchable 
+        },
+        'col-12 col-lg-6',
+        'form-group',
+        'bootstrap-select-wrapper'
       )}
     >
       {withLabel ? (
@@ -251,9 +255,11 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({formValues,
       //onMenuScrollToBottom={onMenuScrollToBottom}
       // color='primary'
       className={clsx(
-        'custom-dropdown-indicator',  // Aggiungi questa classe
-        (formValues[field] && !isDisabled ? 'border-select-value' : '') ||
-        (isDisabled ? 'deleteArrowInSelect' : '')
+        {
+          'col-11 pl-0': isSearchable,
+          //'border-select-value': formValues[field] && !isDisabled,
+          'deleteArrowInSelect': isDisabled || isSearchable
+        }
       )}
       classNamePrefix={clsx(
         shortDropdownMenu ? 'bootstrap-select-short' : 'bootstrap-select'
@@ -263,8 +269,21 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({formValues,
       isSearchable={isSearchable}
       openMenuOnClick={!isSearchable}
       />
+      {isSearchable &&
+        <Icon
+        color='primary'
+        icon='it-search'
+        size=''
+        id='search-icon'
+        aria-label='Cerca'
+        aria-hidden
+        className={clsx(
+          'align-self-center'
+        )}
+      />
+      }
     </div>
-  );
+  )};
 
   useEffect(() => {
     const newChips: string[] = [];
@@ -325,6 +344,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({formValues,
           minimum={formValues.dataInizio.minimum}
           maximum={formValues.dataInizio.maximum}
           {...(isDateValid.dataInizio !== undefined ? { valid: isDateValid.dataInizio } : {})}
+          id='dateInputDataInizio'
         />
         <Input
           value={formValues.dataFine.value}
@@ -335,6 +355,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({formValues,
           minimum={formValues.dataFine.minimum}
           maximum={formValues.dataFine.maximum}
           {...(isDateValid.dataFine !== undefined ? { valid: isDateValid.dataFine } : {})}
+          id='dateInputDataFine'
         />
       </Form.Row>
 
