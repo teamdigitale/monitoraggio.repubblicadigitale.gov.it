@@ -101,22 +101,27 @@ const Monitoring: React.FC<MonitoringI> = ({
   const permissions = useAppSelector(selectPermissions);
 
   const updateTableValues = () => {
-    const table = newTable(
-      TableHeading,
-      caricamentiList.map((td: any) => {
-      return {
-        idProgetto: td.idProgetto,
-        data: <span id='dataColumn'><b>{td.dataCaricamenti}</b></span>,
-        ente: <span id='enteColumn'>{td.nomeEnte}</span>,
-        intervento: <span id='interventoColumn'>{td.intervento}</span>,
-        progetto: <span id='progettoColumn'>{td.nomeProgetto}</span>,
-        programma: <span id='programmaColumn'>{td.nomeProgramma}</span>,
-        caricamenti: <span id='caricamentiColumn'>{td.numCaricamenti}</span>,
-        serviziCaricati: <span id='serviziColumn'>{td.serviziAggiunti}</span>,
-        cittadiniCaricati: <span id='cittadiniColumn'>{td.cittadiniAssociati}</span>
-      };
-      })
-    );
+    let table;
+    if(caricamentiList.length > 0) {
+      table = newTable(
+        TableHeading,
+        caricamentiList.map((td: any) => {
+        return {
+          idProgetto: td.idProgetto,
+          data: <span id='dataColumn'><b>{td.dataCaricamenti}</b></span>,
+          ente: <span id='enteColumn'>{td.nomeEnte}</span>,
+          intervento: <span id='interventoColumn'>{td.intervento}</span>,
+          progetto: <span id='progettoColumn'>{td.nomeProgetto}</span>,
+          programma: <span id='programmaColumn'>{td.nomeProgramma}</span>,
+          caricamenti: <span id='caricamentiColumn'>{td.numCaricamenti}</span>,
+          serviziCaricati: <span id='serviziColumn'>{td.serviziAggiunti}</span>,
+          cittadiniCaricati: <span id='cittadiniColumn'>{td.cittadiniAssociati}</span>
+        };
+        })
+      );
+    }else
+      table = newTable(TableHeading,[]);
+    
     return table;
   };
 
@@ -211,7 +216,7 @@ const Monitoring: React.FC<MonitoringI> = ({
           />
           {pagination?.pageNumber ? (
             <Paginator
-              // activePage={pagination?.pageNumber}
+              activePage={pagination?.pageNumber}
               // center
               // // refID='#table'
               pageSize={pagination?.pageSize}
