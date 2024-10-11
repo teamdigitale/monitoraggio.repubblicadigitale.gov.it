@@ -9,7 +9,6 @@ import {
 import { newTable, TableRowI } from '../../../components/Table/table';
 import { useAppSelector } from '../../../redux/hooks';
 import {
-  selectEntityFilters,
   selectEntityPagination,
   setEntityPagination,
 } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
@@ -51,7 +50,7 @@ const Monitoring: React.FC<MonitoringI> = ({
   const dispatch = useDispatch();
   const { hasUserPermission } = useGuard();
   const [caricamentiList, setCaricamentiList] = useState<any[]>([]);
-  const filtersList = useAppSelector(selectEntityFilters);
+  // const filtersList = useAppSelector(selectEntityFilters);
   const pagination = useAppSelector(selectEntityPagination);
   // const { filtroCriterioRicerca, filtroPolicies, filtroStati } = filtersList;
   const [statisticheElaborate, setStatisticheElaborate] = useState<any[]>([]);
@@ -60,6 +59,16 @@ const Monitoring: React.FC<MonitoringI> = ({
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 10}));
   }, []);
+
+  // useEffect(() => {
+  //   // setFormValues({
+  //   //   ...formValues,
+  //   //   dataInizio: { ...formValues.dataInizio, value: null },
+  //   //   dataFine: { ...formValues.dataFine, value: null }
+  //   // });
+  //   fetchData();
+  //   setFormValues(initialFormValues);
+  // }, [dispatch]);
 
   // const handleTableValuesChange = (newTableValues: CaricamentiResponse) => {
   //     setCaricamentiList(newTableValues.monitoraggioCaricamentiEntity);
@@ -100,16 +109,16 @@ const Monitoring: React.FC<MonitoringI> = ({
     const table = newTable(
       TableHeading,
       caricamentiList.map((td: any) => {
-        return {
-          data: td.dataCaricamenti,
-          ente: td.nomeEnte,
-          intervento: td.intervento,
-          progetto: td.nomeProgetto,
-          programma: td.nomeProgramma,
-          caricamenti: td.numCaricamenti,
-          serviziCaricati: td.serviziAggiunti,
-          cittadiniCaricati: td.cittadiniAssociati
-        };
+      return {
+        data: <span id='dataColumn'>{td.dataCaricamenti}</span>,
+        ente: <span id='enteColumn'>{td.nomeEnte}</span>,
+        intervento: <span id='interventoColumn'>{td.intervento}</span>,
+        progetto: <span id='progettoColumn'>{td.nomeProgetto}</span>,
+        programma: <span id='programmaColumn'>{td.nomeProgramma}</span>,
+        caricamenti: <span id='caricamentiColumn'>{td.numCaricamenti}</span>,
+        serviziCaricati: <span id='serviziColumn'>{td.serviziAggiunti}</span>,
+        cittadiniCaricati: <span id='cittadiniColumn'>{td.cittadiniAssociati}</span>
+      };
       })
     );
     return table;
@@ -196,6 +205,7 @@ const Monitoring: React.FC<MonitoringI> = ({
             id='table'
             onActionClick={onActionClick}
             onCellClick={() => navigate('/')}
+            className='table-compact'
             withActions
             totalCounter={pagination?.totalElements}
           />
