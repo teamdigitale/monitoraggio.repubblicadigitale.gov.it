@@ -73,3 +73,25 @@
     color: #06c;
     cursor: pointer;
 }
+
+.table-compact{
+    font-family: Titillium Web;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 28px;
+    td{
+        padding: 20px 15px;
+    }
+    span#enteColumn, span#progettoColumn, span#programmaColumn {
+        width: 40px;
+        word-break: break-word;
+    }
+    span#dataColumn{
+        color: blue;
+        white-space: nowrap;
+    }
+    span#cittadiniColumn, span#serviziColumn{
+        width: 5px;
+        word-break: break-word;
+    }
+}
