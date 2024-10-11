@@ -37,4 +37,10 @@ public class MonitoraggioCaricamentiRequest {
 
 	@JsonProperty("pageSize")
 	private Integer pageSize;
+
+	@JsonProperty("orderBy")
+	private String orderBy;
+
+	@JsonProperty("direction")
+	private String direction;
 }

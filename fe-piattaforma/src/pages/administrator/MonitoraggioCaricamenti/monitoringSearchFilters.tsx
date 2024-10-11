@@ -223,7 +223,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({formValues,
     required = false,
     withLabel = true,
     shortDropdownMenu = false,
-  ) => { 
+  ) => {
    return (   
     <div
       className={clsx(
@@ -319,19 +319,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({formValues,
 
   return (
     <Form id='form-categories' className='mt-3 pb-5'>
-      <Form.Row className='justify-content-between px-0 px-lg-5 mx-2'>
-          {/* <AutocompleteComponent
-            label='Ente'
-            placeholder="Inizia a scrivere il nome dell'ente"
-            col='col-12 col-lg-6'
-            source={suggest}
-            id='autocomplete'
-            defaultValue={''}
-            displayMenu={'inline'}
-            tNoResults={() => 'Nessun risultato'}
-            onConfirm={(value) => handleConfirmAutocomplete(value)}
-          // inputClasses={"form-group "}         
-          /> */}      
+      <Form.Row className='justify-content-between px-0 px-lg-5 mx-2'>  
         {renderSelect('ente', 'Ente', multiOptions, true, handleSelectChange, "Inizia a scrivere il nome dell'ente...", formValues?.intervento?.value?.length > 0 || formValues?.programma?.value?.length > 0 || formValues?.progetto?.value?.length > 0)}    
         {renderSelect('intervento', 'Intervento', [
           { value: 'rfd', label: 'RFD' },
