@@ -15,17 +15,11 @@ import {
 import { TableHeading } from './utils';
 import { CRUDActionsI, CRUDActionTypes } from '../../../utils/common';
 import { useNavigate } from 'react-router-dom';
-import {
-  GetMonitoraggioCaricamentiValues
-} from '../../../redux/features/administrativeArea/administrativeAreaThunk';
-import useGuard from '../../../hooks/guard';
+import { GetMonitoraggioCaricamentiValues } from '../../../redux/features/administrativeArea/administrativeAreaThunk';
 import IconNote from '/public/assets/img/it-note-primary.png';
 import MonitoringSearchFilters, { initialFormValues } from './monitoringSearchFilters';
 import './monitoring.scss';
-import { selectPermissions } from '../../../redux/features/user/userSlice';
 import { withFormHandlerProps } from '../../../hoc/withFormHandler';
-
-const entity = 'programma';
 
 interface MonitoringFormI {
   formDisabled?: boolean;
@@ -48,7 +42,6 @@ const Monitoring: React.FC<MonitoringI> = ({
 }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { hasUserPermission } = useGuard();
   const [caricamentiList, setCaricamentiList] = useState<any[]>([]);
   // const filtersList = useAppSelector(selectEntityFilters);
   const pagination = useAppSelector(selectEntityPagination);
@@ -71,7 +64,7 @@ const Monitoring: React.FC<MonitoringI> = ({
   // };
 
 
-  const fetchData = async (currPage: number = 1) => { 
+  const fetchData = async (currPage: number = 1, orderBy: string = "data_caricamenti", direction: string = "asc" ) => { 
     try {
       const payload: any = {
         ...(Number(formValues.programma.value) !== 0 && { idProgramma: Number(formValues.programma.value) }),
@@ -82,6 +75,8 @@ const Monitoring: React.FC<MonitoringI> = ({
         ...(formValues.dataInizio.value && { dataInizio: new Date(formValues.dataInizio.value) }),
         pageSize: 10,
         currPage: currPage - 1,
+        orderBy,
+        direction
       };
       const newTableValues = await GetMonitoraggioCaricamentiValues(payload)(dispatch);
       
@@ -98,7 +93,6 @@ const Monitoring: React.FC<MonitoringI> = ({
     setTableValues(updateTableValues());
   }, [caricamentiList]);
 
-  const permissions = useAppSelector(selectPermissions);
 
   const updateTableValues = () => {
     let table;
@@ -162,15 +156,10 @@ const Monitoring: React.FC<MonitoringI> = ({
       }
     },
   };
-  
 
-
-    const setFormValuesFunction = (formValues : any) => {
-      setFormValues(formValues);
-    }
-
-    
-    
+  const setFormValuesFunction = (formValues : any) => {
+    setFormValues(formValues);
+  }
 
   return (
     <div>
@@ -213,6 +202,8 @@ const Monitoring: React.FC<MonitoringI> = ({
             className='table-compact'
             withActions
             totalCounter={pagination?.totalElements}
+            onSort={(orderBy: string, direction: string) => fetchData(pagination?.pageNumber, orderBy, direction)}
+            canSort
           />
           {pagination?.pageNumber ? (
             <Paginator
