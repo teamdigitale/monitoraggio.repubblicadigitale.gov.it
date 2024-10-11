@@ -11,6 +11,8 @@ import { useDispatch } from 'react-redux';
 import { selectUser } from '../../redux/features/user/userSlice';
 import { cleanDrupalFileURL } from '../../utils/common';
 import { ManageItemEvent, ActionTracker } from '../../redux/features/forum/forumThunk';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Button, Icon } from 'design-react-kit';
 
 
 interface GuidaOperativaI {
@@ -34,14 +36,14 @@ export default function DataUploadPage() {
   const dispatch = useDispatch();
   const userId = useAppSelector(selectUser)?.id ?? "";
   const idGuida = '178';    // 97 per produzione, 178 per test
-  
+
   const getItemDetails = async () => {
-      const res = await dispatch(GetItemDetail(idGuida, userId, 'document'));
-      setGuidaOperativa(res?.data?.data?.items?.[0])
+    const res = await dispatch(GetItemDetail(idGuida, userId, 'document'));
+    setGuidaOperativa(res?.data?.data?.items?.[0])
   };
 
   const trackDownload = async () => {
-    if(guidaOpearativa.attachment != ""){
+    if (guidaOpearativa.attachment != "") {
       await dispatch(ManageItemEvent(idGuida, 'downloaded'));
       await dispatch(
         ActionTracker({
@@ -51,8 +53,8 @@ export default function DataUploadPage() {
           category: guidaOpearativa.category_label || guidaOpearativa.category,
         })
       );
-    
-    window.open(cleanDrupalFileURL(guidaOpearativa.attachment), '_blank');
+
+      window.open(cleanDrupalFileURL(guidaOpearativa.attachment), '_blank');
     }
   };
 
@@ -80,8 +82,31 @@ export default function DataUploadPage() {
     setParsedData: setParsedData,
   };
 
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const isMonitoringPage = location.search.includes('monitoring');
+
+  const handleButtonClick = () => {
+    navigate('/report-dati/monitoraggio-caricamenti-massivi');
+  };
+
   return (
     <DataUploadContext.Provider value={contextValue}>
+      {isMonitoringPage && (
+        <Button
+        onClick={handleButtonClick}
+        aria-label='torna indietro'
+      >
+        <Icon
+          icon='it-chevron-left'
+          color='primary'
+          aria-label='torna indietro'
+          aria-hidden
+        />
+        <span className='primary-color'>Torna a Monitoraggio</span>
+      </Button>
+      )}
       <div className='row my-4'>
         <div className='col'>
           <h1 className='text-primary csv-title-page-size '>
