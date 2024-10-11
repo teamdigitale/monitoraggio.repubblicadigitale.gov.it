@@ -87,11 +87,27 @@
         word-break: break-word;
     }
     span#dataColumn{
-        color: blue;
+        color: #0073e5;
         white-space: nowrap;
     }
     span#cittadiniColumn, span#serviziColumn{
         width: 5px;
         word-break: break-word;
     }
+}
+
+input#dateInputDataInizio, input#dateInputDataFine {
+    border-bottom: 1px solid #0073e5; 
+}
+
+#search-icon {
+    border-bottom: 1px solid #0073e5 !important;
+    margin-top: 13px;
+    margin-left: 0px;
+    padding-left: 0px;
+}
+
+#ente{
+    margin-right: 0px;
+    padding-right: 0px;
 }
