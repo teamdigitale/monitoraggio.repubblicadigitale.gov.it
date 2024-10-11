@@ -60,15 +60,9 @@ const Monitoring: React.FC<MonitoringI> = ({
     dispatch(setEntityPagination({ pageSize: 10}));
   }, []);
 
-  // useEffect(() => {
-  //   // setFormValues({
-  //   //   ...formValues,
-  //   //   dataInizio: { ...formValues.dataInizio, value: null },
-  //   //   dataFine: { ...formValues.dataFine, value: null }
-  //   // });
-  //   fetchData();
-  //   setFormValues(initialFormValues);
-  // }, [dispatch]);
+  useEffect(() => {
+    fetchData();
+  }, [dispatch]);
 
   // const handleTableValuesChange = (newTableValues: CaricamentiResponse) => {
   //     setCaricamentiList(newTableValues.monitoraggioCaricamentiEntity);
@@ -112,7 +106,7 @@ const Monitoring: React.FC<MonitoringI> = ({
       caricamentiList.map((td: any) => {
       return {
         idProgetto: td.idProgetto,
-        data: <span id='dataColumn'>{td.dataCaricamenti}</span>,
+        data: <span id='dataColumn'><b>{td.dataCaricamenti}</b></span>,
         ente: <span id='enteColumn'>{td.nomeEnte}</span>,
         intervento: <span id='interventoColumn'>{td.intervento}</span>,
         progetto: <span id='progettoColumn'>{td.nomeProgetto}</span>,

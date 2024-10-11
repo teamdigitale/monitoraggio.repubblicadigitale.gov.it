@@ -91,7 +91,7 @@ export const GetEntityValues =
   export const GetEntitySearchValues =
   (payload?: any) => async (dispatch: Dispatch) => {
     try {
-      dispatch(showLoader());
+      //dispatch(showLoader());
       dispatch({ ...GetValuesAction, payload }); // TODO manage dispatch for dev env only
 
       const entityEndpoint = `/ente/cerca`;
@@ -107,7 +107,7 @@ export const GetEntityValues =
     } catch (error) {
       console.log('GetEntityValues error', error);
     } finally {
-      dispatch(hideLoader());
+      //dispatch(hideLoader());
     }
   };
 
@@ -136,7 +136,7 @@ export const GetEntityValues =
   export const GetProgrammiDropdownList = 
   (payload?: any) => async (dispatch: Dispatch) => {
     try {
-      dispatch(showLoader());
+      //dispatch(showLoader());
       dispatch({ ...GetValuesAction, payload });
       const endpoint = `/progetto/programmi/dropdown`; 
       const res = await API.post(endpoint, payload, {
@@ -150,14 +150,14 @@ export const GetEntityValues =
     } catch (error) {
       console.log('GetProgrammiDropdownList error', error);
     } finally {
-      dispatch(hideLoader());
+      //dispatch(hideLoader());
     }
   };
 
   export const GetProgettiDropdownList = 
   (payload?: any) => async (dispatch: Dispatch) => {
     try {
-      dispatch(showLoader());
+      //dispatch(showLoader());
       dispatch({ ...GetValuesAction, payload });
       const endpoint = `/ente/progetti/dropdown`; 
       const res = await API.post(endpoint, payload, {
@@ -171,7 +171,7 @@ export const GetEntityValues =
     } catch (error) {
       console.log('GetProgettiDropdownList error', error);
     } finally {
-      dispatch(hideLoader());
+      //dispatch(hideLoader());
     }
   };
 
