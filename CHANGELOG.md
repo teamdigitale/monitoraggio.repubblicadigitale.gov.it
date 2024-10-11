@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.356](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.355...1.0.0-test.356) (2024-10-11)
+
+
+### Bug Fixes
+
+* **monitoraggio-caricamenti:** fix vari monitoraggio caricamenti 20241011 ([892919d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/892919d6c7bd0cbdf972c2845228fc5758736f83))
+* **monitoraggio-caricamenti:** fix generali monitoraggio caricamenti 20241011 ([c57af03](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c57af03ced618317552f68752dbc73d86540b72a))
+
 ## [1.0.0-test.355](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.354...1.0.0-test.355) (2024-10-11)
 
 
