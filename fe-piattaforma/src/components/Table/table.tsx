@@ -10,6 +10,8 @@ export interface TableHeadingI {
   field: string;
   size?: 'small' | 'medium' | 'large' | 'auto';
   classNames?: string;
+  sort?: string,
+  direction?: string
 }
 
 export interface TableRowI {
@@ -35,6 +37,8 @@ export interface TableI {
   pageNumber?: number;
   pageSize?: number;
   actionHeadingLabel?: string;
+  canSort?: boolean,
+  onSort?: (orderBy: string, direction: string) => void
 }
 
 const Table: React.FC<TableI> = (props) => {

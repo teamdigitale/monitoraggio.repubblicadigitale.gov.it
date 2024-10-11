@@ -33,6 +33,8 @@ const TableDesktop: React.FC<TableI> = (props) => {
     pageSize,
     succesCSV,
     actionHeadingLabel,
+    canSort,
+    onSort
   } = props;
   const [rowChecked, setRowChecked] = useState<string>('');
   const { displayItem } = calculatePaginationBounds(
@@ -40,6 +42,29 @@ const TableDesktop: React.FC<TableI> = (props) => {
     pageSize,
     totalCounter
   );
+  const [sortState, setSortState] = useState(heading);
+
+  const handleSort = (field: string) => {
+    let newSortState = sortState
+    const existingSort = newSortState.find((element) => element.field === field);
+    // Se la colonna è già ordinata, alterna la direzione
+    if (existingSort) {
+      existingSort.direction = existingSort.direction == 'asc' ? 'desc' : 'asc'
+      setSortState([...newSortState, existingSort])
+    if (onSort) {
+      onSort(existingSort.sort || '', existingSort.direction || 'asc');
+    }
+    }
+
+  };
+
+    // TODO Funzione per ottenere la direzione dell'icona per una colonna specifica
+    // const getSortDirection = (field: string) => {
+    //   const sort = sortState.find((s) => s.field === field);
+    //   if (!sort) return 'none';
+    //   console.log("sort.direction",sort.direction, field)
+    //   return sort.direction;
+    // };
 
   return values?.length ? (
     <>
@@ -67,11 +92,14 @@ const TableDesktop: React.FC<TableI> = (props) => {
                   )}
                 >
                   <span>{th.label.toUpperCase()}</span>
-                  {/* <Icon           // TODO: decommentare quando aggiungono il sort
-                  icon='it-arrow-down-triangle'
-                  color='secondary'
-                  className='mb-2'
-                /> */}
+                  {canSort && onSort ? (
+                    <Icon
+                      icon="it-arrow-down-triangle"
+                      color='secondary'
+                      className='mb-2'
+                      onClick={() => handleSort(th.field || '')}
+                    />
+                    ) : null}
                 </th>
               ))}
               {withActions && (
