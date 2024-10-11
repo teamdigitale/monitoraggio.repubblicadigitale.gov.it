@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.36.2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.36.1...1.36.2) (2024-10-11)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** sblocco caricamento massivo SCD 20241011 ([b2371c4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b2371c4740f6700a918747ddf6a78fbd2d4361d8))
+
 ## [1.36.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.36.0...1.36.1) (2024-10-10)
 
 
