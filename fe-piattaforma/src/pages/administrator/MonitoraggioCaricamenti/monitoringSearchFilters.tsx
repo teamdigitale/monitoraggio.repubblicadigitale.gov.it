@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Chip, ChipLabel, Icon } from 'design-react-kit';
 import { Form, Input } from '../../../components';
 import { Select as SelectKit } from 'design-react-kit';
@@ -45,15 +45,19 @@ export const initialFormValues = {
   } as OptionType,
   dataInizio: {
     value: '',
+    minimum: '0001-01-01',
+    maximum: '9999-12-31'
   } as DateField,
   dataFine: {
     value: '',
+    minimum: '0001-01-01',
+    maximum: '9999-12-31',
   } as DateField,
 };
 
 const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({formValues, setFormValues, onSearch}) => {
   const [chips, setChips] = useState<string[]>([]);
-  const [isDateValid, setIsDateValid] = useState<{ dataInizio?: boolean; dataFine?: boolean }>({});
+  const [isDateValid, setIsDateValid] = useState<{ dataInizio?: boolean; dataFine?: boolean }>({dataInizio: true, dataFine: true});
   const dispatch = useDispatch();
   const dropdownFilterOptions = useSelector(selectEntityFiltersOptions);
   const entiList = useAppSelector(selectEntityList);
@@ -152,7 +156,6 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({formValues,
     setFormValues(() => {
       let newForm = { ...formValues };
       let newDateValid = { ...isDateValid };
-      console.log('newDateValid', newDateValid);
 
       if (field === 'dataInizio') {
         newForm = {
@@ -162,7 +165,6 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({formValues,
         };
         if (new Date(formValues.dataFine.value) < new Date(formattedDate)) {
           setIsDateValid(() => ({ dataInizio: false, dataFine: false }));
-          return formValues;
         } else {
           setIsDateValid(() => ({ dataInizio: true, dataFine: true }));
         }
@@ -170,7 +172,6 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({formValues,
         if (new Date(formattedDate) < new Date(formValues.dataInizio.value)) {
           console.error('La data di fine non può essere inferiore alla data di inizio');
           setIsDateValid(() => ({ dataFine: false, dataInizio: false }));
-          return formValues;
         } else {
           setIsDateValid(() => ({ dataFine: true, dataInizio: true }));
         }
@@ -202,12 +203,14 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({formValues,
 
   const handleClearForm = () => {
     setFormValues(initialFormValues);
-    setIsDateValid({});
+    setIsDateValid({dataInizio: true, dataFine: true});
     setChips([]);
     dispatch(retriveProgramma);
     dispatch(retriveProgetto);
     dispatch(GetEntitySearchValues({ entity: 'ente', criterioRicerca: "%" }));
   };
+
+  const [enteInputValue, setEnteInputValue] = useState('');
 
   const renderSelect = (
     field: keyof typeof initialFormValues,
@@ -220,7 +223,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({formValues,
     required = false,
     withLabel = true,
     shortDropdownMenu = false,
-  ) => { console.log("isSearchable", isSearchable, placeholder);
+  ) => { 
    return (   
     <div
       className={clsx(
@@ -256,7 +259,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({formValues,
       // color='primary'
       className={clsx(
         {
-          'col-11 pl-0': isSearchable,
+          'col-11 pl-0 ': isSearchable,
           //'border-select-value': formValues[field] && !isDisabled,
           'deleteArrowInSelect': isDisabled || isSearchable
         }
@@ -268,6 +271,8 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({formValues,
       isDisabled={isDisabled}
       isSearchable={isSearchable}
       openMenuOnClick={!isSearchable}
+      {...(isSearchable && { menuIsOpen: enteInputValue.length > 3})}
+      onInputChange={(value) => setEnteInputValue(value)}
       />
       {isSearchable &&
         <Icon
@@ -374,7 +379,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({formValues,
         <Button color='secondary' className='mr-2' onClick={handleClearForm}>
           Cancella filtri
         </Button>
-        <Button color='primary' onClick={handleSubmitFiltri}>
+        <Button color='primary' onClick={handleSubmitFiltri} disabled={!isDateValid.dataInizio || !isDateValid.dataFine}>
           Applica filtri
         </Button>
       </Form.Row>
