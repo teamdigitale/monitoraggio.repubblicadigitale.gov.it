@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.36.3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.36.2...1.36.3) (2024-10-11)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** fix guida operativa SCD 20241011 ([bfb983f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/bfb983fae6e90761c2cab563360136139e7b3e43))
+
 ## [1.36.2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.36.1...1.36.2) (2024-10-11)
 
 
