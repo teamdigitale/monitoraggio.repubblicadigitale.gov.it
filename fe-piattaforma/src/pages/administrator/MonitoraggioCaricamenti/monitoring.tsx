@@ -90,6 +90,7 @@ const Monitoring: React.FC<MonitoringI> = ({
         currPage: currPage - 1,
       };
       const newTableValues = await GetMonitoraggioCaricamentiValues(payload)(dispatch);
+      
       setCaricamentiList(newTableValues.monitoraggioCaricamentiEntity);
       setNumeroRisultati(newTableValues.numeroTotaleElementi);
       setStatistiche([newTableValues.numeroEnti, newTableValues.numeroCaricamenti, newTableValues.serviziCaricati, newTableValues.cittadiniCaricati]);
@@ -110,6 +111,7 @@ const Monitoring: React.FC<MonitoringI> = ({
       TableHeading,
       caricamentiList.map((td: any) => {
       return {
+        idProgetto: td.idProgetto,
         data: <span id='dataColumn'>{td.dataCaricamenti}</span>,
         ente: <span id='enteColumn'>{td.nomeEnte}</span>,
         intervento: <span id='interventoColumn'>{td.intervento}</span>,
@@ -126,6 +128,9 @@ const Monitoring: React.FC<MonitoringI> = ({
 
   const [tableValues, setTableValues] = useState(updateTableValues());
   const [numeroRisultati, setNumeroRisultati] = useState(0);
+  
+  
+  
 
   useEffect(() => {
     if (Array.isArray(caricamentiList) && caricamentiList.length)
@@ -146,25 +151,27 @@ const Monitoring: React.FC<MonitoringI> = ({
   //   setNumeroRisultati(pagination.totalElements);
   // }, [filtroCriterioRicerca, filtroPolicies, filtroStati, pageNumber]);
 
-  const onActionClick: CRUDActionsI = hasUserPermission(['view.card.prgm.full'])
-    ? {
-        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-          if (typeof td !== 'string') {
-            const programId = caricamentiList.filter(
-              (program: any) =>
-                program?.codice?.toString().toLowerCase() ===
-                td.id.toString().toLowerCase()
-            )[0].id;
-            navigate(`${programId}/info`);
-          }
-        },
+  const onActionClick: CRUDActionsI = {
+    [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+      if (typeof td !== 'string') {
+        const selectedRow = caricamentiList.find(
+          (item: any) => item.idProgetto === td.idProgetto
+        );
+        if (selectedRow) {
+          navigate(`/area-amministrativa/progetti/${selectedRow.idProgetto}/caricamento-dati?monitoring`);
+        }
       }
-    : {};
+    },
+  };
+  
 
 
     const setFormValuesFunction = (formValues : any) => {
       setFormValues(formValues);
     }
+
+    
+    
 
   return (
     <div>
@@ -204,7 +211,6 @@ const Monitoring: React.FC<MonitoringI> = ({
             {...tableValues}
             id='table'
             onActionClick={onActionClick}
-            onCellClick={() => navigate('/')}
             className='table-compact'
             withActions
             totalCounter={pagination?.totalElements}
