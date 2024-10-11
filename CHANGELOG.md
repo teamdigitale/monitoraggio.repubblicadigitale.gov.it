@@ -1,5 +1,32 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.355](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.354...1.0.0-test.355) (2024-10-11)
+
+
+### Features
+
+* **monitoraggio-caricamenti:** modifiche tabella e filtri 20241011 ([45fc846](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/45fc8467b07fb97f72897a7c29f8c440aad8e563))
+* **monitoraggio-caricamenti:** link da tabella verso dettaglio caricamento e link goBack ([af43ec7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/af43ec750f47236c559900494e7f38251140203e))
+* **monitoraggio-caricamenti:** modifiche grafiche tabella 20241011 ([5410a67](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5410a67597d88eb962c0112d42e1c86cd2f722b2))
+* **monitoraggio-caricamenti:** gestione tabella con filtri 20241010 ([ee2945f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ee2945f1d96282b5e4e1da31f2e78dcd97685b13))
+* **monitoraggio-caricamenti:** WIP gestione values filtri 20241010 ([2cfd810](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2cfd810d286778291dfd4e501e5b7c32fa6bc203))
+* **monitoraggio-caricamenti:** WIP gestione filtri 20241009 ([0c270ed](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0c270ed775c648d49f047f330223cd8eedd0c003))
+* **monitoraggio-caricamenti:** WIP aggiunto autocomplete per campo ente 20241008 ([9758d5e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9758d5e1d9849cfcb27108a74ab86ebfed95da0f))
+* **monitoraggio-caricamenti:** WIP validazione date 20241008 ([16feb98](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/16feb984e312b3eace432776344cc1d638d9efcd))
+* **monitoraggio-caricamenti:** WIP valid date filtri ([4264393](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/426439356dd5e168914d53932f05a5a39d8848c6))
+* **monitoraggio-caricamenti:** WIP gestione filtri select e date 20241007 ([72a02b3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/72a02b344368b00d00c63ecf78758c6210046c9c))
+* **monitoraggio-caricamenti:** WIP form filtri 20241004 ([ac19310](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ac193109902f8a42c1be67aac919f342068c1950))
+* **monitoraggio-caricamenti:** WIP filtri monitoraggio 20241002 ([4f0826a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4f0826a0672766fec271543870a76fa8455b6476))
+* **monitoraggio-caricamenti:** WIP modifiche tabella 20241002 ([2940ed7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2940ed7f3fc24fe1680e9961377b6ea8f82d48e4))
+* **monitoraggio-caricamenti:** WIP fix redirect report-dati 20241001 ([c8cfa9e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c8cfa9e47efa52f43aa3b4989742f0787ff4ce6f))
+* **monitoraggio-caricamenti:** WIP page monitoraggio caricamenti 20241001 ([a5ccd33](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a5ccd33ff84a9a076e706dc6a9c591fb47830c74))
+
+
+### Bug Fixes
+
+* **monitoraggio-caricamenti:** fix colori form 20241009 ([cb4e10a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/cb4e10a5eb1b71a096e44f0666e728069a0f84b9))
+* **monitoraggio-caricamenti:** WIP gestione select filtri 20241004 ([1d5dbaa](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1d5dbaa3b649f6c5b087ec65e1d624d470c3c1ec))
+
 ## [1.0.0-test.354](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.353...1.0.0-test.354) (2024-10-09)
 
 
