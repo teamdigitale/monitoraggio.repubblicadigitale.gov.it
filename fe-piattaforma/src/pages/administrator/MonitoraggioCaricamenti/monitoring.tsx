@@ -10,7 +10,7 @@ import { newTable, TableRowI } from '../../../components/Table/table';
 import { useAppSelector } from '../../../redux/hooks';
 import {
   selectEntityPagination,
-  setEntityPagination,
+  setEntityPagination
 } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { TableHeading } from './utils';
 import { CRUDActionsI, CRUDActionTypes } from '../../../utils/common';
@@ -20,7 +20,9 @@ import IconNote from '/public/assets/img/it-note-primary.png';
 import MonitoringSearchFilters, { initialFormValues } from './monitoringSearchFilters';
 import './monitoring.scss';
 import { withFormHandlerProps } from '../../../hoc/withFormHandler';
-
+import {
+  setHeadquarterDetails,resetProjectDetails
+} from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 interface MonitoringFormI {
   formDisabled?: boolean;
   creation?: boolean;
@@ -28,15 +30,15 @@ interface MonitoringFormI {
 
 interface MonitoringI extends withFormHandlerProps, MonitoringFormI {}
 
-interface CaricamentiResponse {
-  cittadiniCaricati: number;
-  monitoraggioCaricamentiEntity: []; // Array di oggetti di tipo MonitoraggioCaricamentoEntity
-  numeroCaricamenti: number;
-  numeroEnti: number;
-  numeroPagine: number;
-  numeroTotaleElementi: number;
-  serviziCaricati: number;
-}
+// interface CaricamentiResponse {
+//   cittadiniCaricati: number;
+//   monitoraggioCaricamentiEntity: []; // Array di oggetti di tipo MonitoraggioCaricamentoEntity
+//   numeroCaricamenti: number;
+//   numeroEnti: number;
+//   numeroPagine: number;
+//   numeroTotaleElementi: number;
+//   serviziCaricati: number;
+// }
 
 const Monitoring: React.FC<MonitoringI> = ({
 }) => {
@@ -150,8 +152,11 @@ const Monitoring: React.FC<MonitoringI> = ({
         const selectedRow = caricamentiList.find(
           (item: any) => item.idProgetto === td.idProgetto
         );
+
         if (selectedRow) {
-          navigate(`/area-amministrativa/progetti/${selectedRow.idProgetto}/caricamento-dati?monitoring`);
+          dispatch(setHeadquarterDetails(null));
+          dispatch(resetProjectDetails());
+          navigate(`/area-amministrativa/programmi/${selectedRow.idProgramma}/progetti/${selectedRow.idProgetto}/enti/${selectedRow.idEnte}/caricamento-dati?monitoring`);
         }
       }
     },

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Icon, Nav, Tooltip } from 'design-react-kit';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { entityStatus, formTypes, userRoles, policy } from '../utils';
+import { entityStatus, formTypes, userRoles } from '../utils';
 import {
   CRUDActionsI,
   CRUDActionTypes,
