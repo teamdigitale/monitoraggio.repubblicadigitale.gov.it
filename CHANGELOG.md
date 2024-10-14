@@ -1,5 +1,19 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.357](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.356...1.0.0-test.357) (2024-10-14)
+
+
+### Features
+
+* **monitoraggi-caricamenti:** chiusura chip filtri 20241014 ([a9588a9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a9588a92e63ab0360fcdaac425eea3759e6a5552))
+
+
+### Bug Fixes
+
+* **monitoraggio-caricamenti:** fix generali ordinamento e grafica 20241014 ([602f964](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/602f964392ed81204888f39dd546ab9687ef2c4f))
+* **monitoraggio-caricamenti:** fix redirect verso pagina caricamento massivo 20241014 ([5d192ea](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5d192ea32afe2a32ff41ac28d2afbf0d1a397ba3))
+* **monitoraggio-caricamenti:** fix focus cursore campo ente 20241014 ([c886e3e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c886e3e3e85b7c35385bcbdec7187d6330d1d8e4))
+
 ## [1.0.0-test.356](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.355...1.0.0-test.356) (2024-10-11)
 
 
