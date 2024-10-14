@@ -473,3 +473,10 @@ input > span {
 .deleteArrowInSelect .bootstrap-select__indicators {
   display: none;
 }
+
+.bootstrap-select__control--is-focused {
+  border-color: #0066CC !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+ 
