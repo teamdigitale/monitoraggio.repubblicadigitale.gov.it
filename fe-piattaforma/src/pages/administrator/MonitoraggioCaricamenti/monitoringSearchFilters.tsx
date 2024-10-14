@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectEntityFiltersOptions, selectEntityList } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { GetEntitySearchValues, GetProgettiDropdownList, GetProgrammiDropdownList } from '../../../redux/features/administrativeArea/administrativeAreaThunk';
 import { useAppSelector } from '../../../redux/hooks';
+import './monitoring.scss';
 
 export type OptionType = {
   value: string;
