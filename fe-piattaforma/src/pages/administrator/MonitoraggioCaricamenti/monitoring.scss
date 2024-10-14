@@ -52,7 +52,7 @@
 .square-container {
     display: flex;
     justify-content: space-between;
-    width: Fixed (1,184px)px;
+    width: Fixed (1, 184px)px;
     height: Hug (80px)px;
     top: 1167px;
     left: 50px;
@@ -62,42 +62,54 @@
     margin-top: 20px;
 }
 
-.chipsRow{
+.chipsRow {
     row-gap: 10px;
-    .chip{
+
+    .chip {
         border: 1px solid #dfe4f2 !important;
+        .icon{
+            fill:#5C6F81;
+        }
     }
 }
 
-.autocomplete__option{
+.autocomplete__option {
     color: #06c;
     cursor: pointer;
 }
 
-.table-compact{
+.table-compact {
     font-family: Titillium Web;
     font-size: 18px;
     font-weight: 400;
     line-height: 28px;
-    td{
+
+    td {
         padding: 20px 15px;
     }
-    span#enteColumn, span#progettoColumn, span#programmaColumn {
+
+    span#enteColumn,
+    span#progettoColumn,
+    span#programmaColumn {
         width: 40px;
         word-break: break-word;
     }
-    span#dataColumn{
+
+    span#dataColumn {
         color: #0073e5;
         white-space: nowrap;
     }
-    span#cittadiniColumn, span#serviziColumn{
+
+    span#cittadiniColumn,
+    span#serviziColumn {
         width: 5px;
         word-break: break-word;
     }
 }
 
-input#dateInputDataInizio, input#dateInputDataFine {
-    border-bottom: 1px solid #0073e5; 
+input#dateInputDataInizio,
+input#dateInputDataFine {
+    border-bottom: 1px solid #0073e5;
 }
 
 #search-icon {
@@ -107,11 +119,39 @@ input#dateInputDataInizio, input#dateInputDataFine {
     padding-left: 0px;
 }
 
-#ente{
+#ente {
     margin-right: 0px;
     padding-right: 0px;
 }
 
-#react-select-2-input{
+#react-select-2-input {
     box-shadow: none !important;
+}
+
+.chipRemove {
+    position: relative;
+    pointer-events: none;
+    display: inline-block;
+}
+
+.chipRemove .clickable-area {
+    pointer-events: auto;
+    cursor: pointer !important;
+    :hover{
+        background-color: transparent !important;
+    }
+    
+}
+
+.chip:hover:not(.chip-disabled){
+    fill: #06c !important;
+    background-color: #fcfdff;
+}
+
+.chip-label{
+    color: #5C6F81 !important;
+}
+
+.chip:hover:not(.chip-disabled) button .icon, .chip:hover:not(.chip-disabled)>.icon{
+    fill: #5C6F81
 }
