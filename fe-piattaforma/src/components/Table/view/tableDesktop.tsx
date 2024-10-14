@@ -91,15 +91,18 @@ const TableDesktop: React.FC<TableI> = (props) => {
                     'table-container__intestazione'
                   )}
                 >
-                  <span>{th.label.toUpperCase()}</span>
-                  {canSort && onSort ? (
-                    <Icon
-                      icon="it-arrow-down-triangle"
-                      color='secondary'
-                      className='mb-2'
-                      onClick={() => handleSort(th.field || '')}
-                    />
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <span>{th.label.toUpperCase()}</span>
+                    {canSort && onSort ? (
+                      <Icon
+                        icon="it-arrow-down-triangle"
+                        color='secondary'
+                        className='mb-2'
+                        onClick={() => handleSort(th.field || '')}
+                        style={{ flexShrink: 0 }}
+                      />
                     ) : null}
+                  </div>
                 </th>
               ))}
               {withActions && (
