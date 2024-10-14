@@ -19,7 +19,7 @@ export const TableHeading: TableHeadingI[] = [
     field: 'data',
     size: 'small',
     sort: 'data_caricamenti',
-    direction: 'asc',
+    direction: 'desc',
   },
   {
     label: 'Ente',
