@@ -17,7 +17,7 @@ export type OptionType = {
 interface MonitoringSearchFilterI {
   formDisabled?: boolean;
   onSearch: () => void;
-  formValues: {ente: OptionType; programma: OptionType; intervento: OptionType; progetto: OptionType; dataInizio: DateField; dataFine: DateField; };
+  formValues: { ente: OptionType; programma: OptionType; intervento: OptionType; progetto: OptionType; dataInizio: DateField; dataFine: DateField; };
   setFormValues: (formValues: any) => void;
 }
 
@@ -56,9 +56,9 @@ export const initialFormValues = {
   } as DateField,
 };
 
-const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({formValues, setFormValues, onSearch}) => {
+const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues, setFormValues, onSearch }) => {
   const [chips, setChips] = useState<string[]>([]);
-  const [isDateValid, setIsDateValid] = useState<{ dataInizio?: boolean; dataFine?: boolean }>({dataInizio: true, dataFine: true});
+  const [isDateValid, setIsDateValid] = useState<{ dataInizio?: boolean; dataFine?: boolean }>({ dataInizio: true, dataFine: true });
   const dispatch = useDispatch();
   const dropdownFilterOptions = useSelector(selectEntityFiltersOptions);
   const entiList = useAppSelector(selectEntityList);
@@ -73,6 +73,32 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({formValues,
     dispatch(retriveProgetto);
     dispatch(GetEntitySearchValues({ entity: 'ente', criterioRicerca: "%" }));
   }, [dispatch]);
+
+  const removeChip = (chip: string) => {
+    console.log("Sono in removeChip");
+    // Identifica quale valore deve essere cancellato in base al chip selezionato
+    const newFormValues = { ...formValues };
+
+    if (chip.includes('Programma')) {
+      newFormValues.programma = initialFormValues.programma;
+    } else if (chip.includes('Intervento')) {
+      newFormValues.intervento = initialFormValues.intervento;
+    } else if (chip.includes('Progetto')) {
+      newFormValues.progetto = initialFormValues.progetto;
+    } else if (chip.includes('Periodo')) {
+      newFormValues.dataInizio = initialFormValues.dataInizio;
+      newFormValues.dataFine = initialFormValues.dataFine;
+    } else if (chip.includes('Ente')) {
+      newFormValues.ente = initialFormValues.ente;
+    }
+
+    // Aggiorna i valori del form
+    setFormValues(newFormValues);
+
+    // Rimuove la chip e aggiorna lo stato
+    setChips((prevChips) => prevChips.filter((c) => c !== chip));
+  };
+
 
   useEffect(() => {
     if (dropdownFilterOptions['programmi']) {
@@ -104,42 +130,42 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({formValues,
   }, [entiList]);
 
 
-  const retriveProgramma = async (policy: string) => { 
-    const payload ={
-       filtroRequest: {
+  const retriveProgramma = async (policy: string) => {
+    const payload = {
+      filtroRequest: {
         ...(policy && { filtroPolicies: [policy] }),
-       }
+      }
     }
-   try {
-    const response = await GetProgrammiDropdownList(payload)(dispatch);
-    const mappedProgramTypes = response.map((program: any) => ({
-      value: program.id,
-      label: program.nome,
-    }));
-    setProgramTypes(mappedProgramTypes);
-   } catch (error) {
-     console.error("Network error:", error);
-   }
+    try {
+      const response = await GetProgrammiDropdownList(payload)(dispatch);
+      const mappedProgramTypes = response.map((program: any) => ({
+        value: program.id,
+        label: program.nome,
+      }));
+      setProgramTypes(mappedProgramTypes);
+    } catch (error) {
+      console.error("Network error:", error);
+    }
   };
 
-  const retriveProgetto = async (policy: string, idProgramma: number) => { 
+  const retriveProgetto = async (policy: string, idProgramma: number) => {
     const payload = {
-       filtroRequest: {
-       ...(policy && { filtroPolicies: [policy] }),
-       ...(idProgramma !== 0 && { idsProgrammi: [idProgramma] })
-       },
-       ...(idProgramma !== 0 && { idProgramma })
+      filtroRequest: {
+        ...(policy && { filtroPolicies: [policy] }),
+        ...(idProgramma !== 0 && { idsProgrammi: [idProgramma] })
+      },
+      ...(idProgramma !== 0 && { idProgramma })
     };
-   try {
-    const response = await GetProgettiDropdownList(payload)(dispatch);
-    const mappedProjectTypes = response.map((program: any) => ({
-      value: program.id,
-      label: program.nome,
-    }));
-    setProjectTypes(mappedProjectTypes);
-   } catch (error) {
-     console.error("Network error:", error);
-   }
+    try {
+      const response = await GetProgettiDropdownList(payload)(dispatch);
+      const mappedProjectTypes = response.map((program: any) => ({
+        value: program.id,
+        label: program.nome,
+      }));
+      setProjectTypes(mappedProjectTypes);
+    } catch (error) {
+      console.error("Network error:", error);
+    }
   };
 
   useEffect(() => {
@@ -188,14 +214,14 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({formValues,
 
   const handleSelectChange = (option: OptionType, name: any) => {
     setFormValues(() => ({ ...formValues, [name?.name]: option }));
-    if(name?.name === 'intervento'){
+    if (name?.name === 'intervento') {
       retriveProgramma(option.value);
       retriveProgetto(option.value, 0);
       setFormValues(() => ({ ...formValues, programma: { value: '', label: 'Seleziona' }, progetto: { value: '', label: 'Seleziona' }, intervento: option }));
     }
-    if(name?.name === 'programma'){
+    if (name?.name === 'programma') {
       setFormValues(() => ({ ...formValues, progetto: { value: '', label: 'Seleziona' }, programma: option }));
-      if(formValues.intervento.value.length > 0)
+      if (formValues.intervento.value.length > 0)
         retriveProgetto(formValues.intervento.value, Number(option.value));
       else
         retriveProgetto('', Number(option.value));
@@ -204,7 +230,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({formValues,
 
   const handleClearForm = () => {
     setFormValues(initialFormValues);
-    setIsDateValid({dataInizio: true, dataFine: true});
+    setIsDateValid({ dataInizio: true, dataFine: true });
     setChips([]);
     dispatch(retriveProgramma);
     dispatch(retriveProgetto);
@@ -225,75 +251,76 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({formValues,
     withLabel = true,
     shortDropdownMenu = false,
   ) => {
-   return (   
-    <div
-      className={clsx(
-        {
-          'd-flex flex-row': isSearchable 
-        },
-        'col-12 col-lg-6',
-        'form-group',
-        'bootstrap-select-wrapper'
-      )}
-    >
-      {withLabel ? (
-      <label
-        id={`${(label || 'label select').replace(/\s/g, '-')}`}
-        className='text-decoration-none'
+    return (
+      <div
+        className={clsx(
+          {
+            'd-flex flex-row': isSearchable
+          },
+          'col-12 col-lg-6',
+          'form-group',
+          'bootstrap-select-wrapper'
+        )}
       >
-        {label}
-        {required && !isDisabled ? ' *' : ''}
-      </label>
-      ) : null}
-      <SelectKit
-      // {...BaseProps}
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      onChange={onChange || handleSelectChange}
-      name={field}
-      id={field}
-      options={options}
-      value={formValues[field]}
-      menuPlacement={'auto'}
-      placeholder={placeholder}
-      //onMenuScrollToBottom={onMenuScrollToBottom}
-      // color='primary'
-      className={clsx(
-        {
-          'col-11 pl-0 ': isSearchable,
-          'deleteArrowInSelect': isDisabled || isSearchable
+        {withLabel ? (
+          <label
+            id={`${(label || 'label select').replace(/\s/g, '-')}`}
+            className='text-decoration-none'
+          >
+            {label}
+            {required && !isDisabled ? ' *' : ''}
+          </label>
+        ) : null}
+        <SelectKit
+          // {...BaseProps}
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          onChange={onChange || handleSelectChange}
+          name={field}
+          id={field}
+          options={options}
+          value={formValues[field]}
+          menuPlacement={'auto'}
+          placeholder={placeholder}
+          //onMenuScrollToBottom={onMenuScrollToBottom}
+          // color='primary'
+          className={clsx(
+            {
+              'col-11 pl-0 ': isSearchable,
+              'deleteArrowInSelect': isDisabled || isSearchable
+            }
+          )}
+          classNamePrefix={clsx(
+            shortDropdownMenu ? 'bootstrap-select-short' : 'bootstrap-select'
+          )}
+          aria-labelledby={`${(label || 'label select').replace(/\s/g, '-')}`}
+          isDisabled={isDisabled}
+          isSearchable={isSearchable}
+          openMenuOnClick={!isSearchable}
+          {...(isSearchable && { menuIsOpen: enteInputValue.length > 3 })}
+          onInputChange={(value) => setEnteInputValue(value)}
+          onFocus={() => {
+            console.log('focus');
+          }}
+        />
+        {isSearchable &&
+          <div style={{
+            backgroundColor: (formValues?.intervento?.value != '' || formValues?.programma?.value != '' || formValues?.progetto?.value != '') ? '#e6e9f2' : 'transparent',
+            height: '45px',
+          }}>
+            <Icon
+              color='primary'
+              icon='it-search'
+              size=''
+              id='search-icon'
+              aria-label='Cerca'
+              aria-hidden
+            />
+          </div>
         }
-      )}
-      classNamePrefix={clsx(
-        shortDropdownMenu ? 'bootstrap-select-short' : 'bootstrap-select'
-      )}
-      aria-labelledby={`${(label || 'label select').replace(/\s/g, '-')}`}
-      isDisabled={isDisabled}
-      isSearchable={isSearchable}
-      openMenuOnClick={!isSearchable}
-      {...(isSearchable && { menuIsOpen: enteInputValue.length > 3})}
-      onInputChange={(value) => setEnteInputValue(value)}
-      onFocus={() => {
-        console.log('focus');
-      }}
-      />
-      {isSearchable &&
-        <div style={{
-          backgroundColor: (formValues?.intervento?.value != '' || formValues?.programma?.value != '' || formValues?.progetto?.value != '') ? '#e6e9f2' : 'transparent',
-          height: '45px',
-        }}>
-          <Icon
-            color='primary'
-            icon='it-search'
-            size=''
-            id='search-icon'
-            aria-label='Cerca'
-            aria-hidden
-          />
-        </div>
-      }
-    </div>
-  )};
+      </div>
+    )
+  };
 
   useEffect(() => {
     const newChips: string[] = [];
@@ -311,7 +338,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({formValues,
       const dataFineFormattata = formValues.dataFine.value.split('-').reverse().join('/');
       newChips.push(`Periodo: ${dataInizioFormattata} - ${dataFineFormattata}`);
     }
-    if(formValues.ente.value){
+    if (formValues.ente.value) {
       newChips.push(`Ente: ${formValues.ente.label}`);
     }
     setChips(newChips);
@@ -324,8 +351,8 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({formValues,
 
   return (
     <Form id='form-categories' className='mt-3 pb-5'>
-      <Form.Row className='justify-content-between px-0 px-lg-5 mx-2'>  
-        {renderSelect('ente', 'Ente', multiOptions, true, handleSelectChange, "Inizia a scrivere il nome dell'ente...", formValues?.intervento?.value != '' || formValues?.programma?.value != '' || formValues?.progetto?.value != '')}    
+      <Form.Row className='justify-content-between px-0 px-lg-5 mx-2'>
+        {renderSelect('ente', 'Ente', multiOptions, true, handleSelectChange, "Inizia a scrivere il nome dell'ente...", formValues?.intervento?.value != '' || formValues?.programma?.value != '' || formValues?.progetto?.value != '')}
         {renderSelect('intervento', 'Intervento', [
           { value: 'rfd', label: 'RFD' },
           { value: 'scd', label: 'SCD' },
@@ -379,11 +406,18 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({formValues,
 
       <Form.Row className='justify-content-start mt-5 chipsRow'>
         {chips.map((chip, index) => (
-          <Chip key={index} className='mr-2 rounded-pill'>
-            <ChipLabel className='mx-1 my-1'>
-              {chip}
-            </ChipLabel>
-          </Chip>
+          <Button className='chipRemove' onClick={() => removeChip(chip)}>
+            <Chip key={index} className='mr-2 rounded-pill'>
+              <ChipLabel className='mx-1 my-1'>
+                {chip}
+              </ChipLabel>
+              <Icon
+                icon='it-close'
+                className='ml-2 cursor-pointer clickable-area'
+                aria-label='Remove filter'
+              />
+            </Chip>
+          </Button>
         ))}
       </Form.Row>
 
