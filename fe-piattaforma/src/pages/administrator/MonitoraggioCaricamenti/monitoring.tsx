@@ -66,7 +66,7 @@ const Monitoring: React.FC<MonitoringI> = ({
   // };
 
 
-  const fetchData = async (currPage: number = 1, orderBy: string = "data_caricamenti", direction: string = "asc" ) => { 
+  const fetchData = async (currPage: number = 1, orderBy: string = "data_caricamenti", direction: string = "desc" ) => { 
     try {
       const payload: any = {
         ...(Number(formValues.programma.value) !== 0 && { idProgramma: Number(formValues.programma.value) }),
