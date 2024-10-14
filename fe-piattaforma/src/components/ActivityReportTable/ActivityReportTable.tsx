@@ -79,18 +79,18 @@ const ActivityReportTable = forwardRef(function ActivityReportTable(
   const [pagination, setPagination] = useState<Page<RegistroAttivita> | null>();
   const dispatch = useAppDispatch();
   const projectContext = useContext<ProjectInfo | undefined>(ProjectContext);
-  const { projectId, enteId } = useParams();
+  const { projectId, authorityId } = useParams();
 
   const searchReports = useCallback(
     (newPage: number, showLoaderFlag = true) => {
-      if (projectId && (enteId || projectContext)) {
+      if (projectId && (authorityId || projectContext)) {
         if(showLoaderFlag)
           dispatch(showLoader());
         searchActivityReport(
           newPage - 1,
           10,
           parseInt(projectId),
-          enteId ? parseInt(enteId) : projectContext!.idEnte
+          authorityId ? parseInt(authorityId) : projectContext!.idEnte
         )
         .then((res) => {
           // mappo gli stati per inserirli in tabella in modo semplificato ('IN CORSO', 'COMPLETATO', 'FALLITO')
@@ -124,7 +124,7 @@ const ActivityReportTable = forwardRef(function ActivityReportTable(
           .finally(() => dispatch(hideLoader()));
       }
     },
-    [dispatch, projectContext, projectId, enteId]
+    [dispatch, projectContext, projectId, authorityId]
   );
 
   useEffect(() => {

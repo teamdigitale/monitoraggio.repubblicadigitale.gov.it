@@ -556,4 +556,9 @@ const AreaAmministrativaRoutes = [
     path='*'
     element={<Navigate replace to={defaultRedirectUrl} />}
   />,
+  <Route
+  key='programmi-dettaglio-progetti-dettaglio-enti-dettaglio-caricamento-dati'
+  path='programmi/:entityId/progetti/:projectId/enti/:authorityId/caricamento-dati'
+  element={<ProjectsDetails />}
+  />,
 ];
