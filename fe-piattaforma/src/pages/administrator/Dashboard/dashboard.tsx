@@ -57,6 +57,9 @@ const dashboardRoles: {
   DSCU: {
     endpoint: 'vw-monitoraggio-dscu',
   },
+  "Profilo UDM":{
+    endpoint: 'vw-monitoraggio',
+  },
   REG: {
     rfd: 'vw-ente-gestore-programma-rfd',
     scd: 'ente-gest-programma-scd',
@@ -96,6 +99,11 @@ const iframeHeightByRole = {
     tablet: '1480px',
     desktop: '5370px',
   },
+  "Profilo UDM": {
+    mobile: '960px',
+    tablet: '1480px',
+    desktop: '5370px',
+  },
   DSCU: {
     mobile: '860px',
     tablet: '1220px',
@@ -107,6 +115,11 @@ const iframeHeightByRole = {
     desktop: '2140px',
   },
   REGP: {
+    mobile: '860px',
+    tablet: '1200px',
+    desktop: '2140px',
+  },
+  REPP: {
     mobile: '860px',
     tablet: '1200px',
     desktop: '2140px',
@@ -132,8 +145,10 @@ const Dashboard = () => {
 
   const calcEndpoint = () => {
     let requestURL = dashboardBaseURL;
+
     switch (user?.codiceRuolo) {
       case userRoles.DTD:
+      case userRoles['Profilo UDM']:
       case userRoles.DSCU: {
         requestURL = `${requestURL}/${
           dashboardRoles[user.codiceRuolo].endpoint
@@ -219,6 +234,10 @@ const Dashboard = () => {
     switch (user?.codiceRuolo) {
       case userRoles.DTD: {
         heightToSet = iframeHeightByRole.DTD[getMediaQueryDevice(device)];
+        break;
+      }
+      case userRoles['Profilo UDM']: {
+        heightToSet = iframeHeightByRole['Profilo UDM'][getMediaQueryDevice(device)];
         break;
       }
       case userRoles.DSCU: {
