@@ -1,5 +1,14 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.360](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.359...1.0.0-test.360) (2024-10-15)
+
+
+### Bug Fixes
+
+* **monitoraggio-caricamenti:** fix chip color 20241015 ([008c18a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/008c18aa394d4c82a7468972020cc3f6fffe9e09))
+* **monitoraggio-caricamenti:** fix colori form 20241015 ([6485b9e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6485b9e3c47cdca95dfd375f61e9d7392e937240))
+* **monitoraggio-caricamenti:** fix visualizzazione cursore ente 20241015 ([19926b8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/19926b83ddd47e8bcc2b4c2deb455ac02175aab4))
+
 ## [1.0.0-test.359](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.358...1.0.0-test.359) (2024-10-15)
 
 
