@@ -179,7 +179,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
 
   const handleDateInputChange = (value: any, field: string) => {
     const formattedDate = typeof value === 'string' ? value : new Date(value).toISOString().split('T')[0];
-
+    
     setFormValues(() => {
       let newForm = { ...formValues };
       let newDateValid = { ...isDateValid };
@@ -407,7 +407,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
       <Form.Row className='justify-content-start mt-5 chipsRow'>
         {chips.map((chip, index) => (
           <Button className='chipRemove' onClick={() => removeChip(chip)}>
-            <Chip key={index} className='mr-2 rounded-pill'>
+            <Chip key={index} className='mr-1 ml-0 rounded-pill'>
               <ChipLabel className='mx-1 my-1'>
                 {chip}
               </ChipLabel>
