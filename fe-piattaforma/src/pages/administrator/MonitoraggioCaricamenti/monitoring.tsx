@@ -95,7 +95,11 @@ const Monitoring: React.FC<MonitoringI> = ({
     setTableValues(updateTableValues());
   }, [caricamentiList]);
 
-
+  const formatDate = (dateString: string) => {
+    const options: Intl.DateTimeFormatOptions = { day: '2-digit', month: '2-digit', year: 'numeric' };
+    return new Date(dateString).toLocaleDateString('it-IT', options);
+  };
+  
   const updateTableValues = () => {
     let table;
     if(caricamentiList.length > 0) {
@@ -104,7 +108,7 @@ const Monitoring: React.FC<MonitoringI> = ({
         caricamentiList.map((td: any) => {
         return {
           idProgetto: td.idProgetto,
-          data: <span id='dataColumn'><b>{td.dataCaricamenti}</b></span>,
+          data: <span id='dataColumn'><b>{formatDate(td.dataCaricamenti)}</b></span>,
           ente: <span id='enteColumn'>{td.nomeEnte}</span>,
           intervento: <span id='interventoColumn'>{td.intervento}</span>,
           progetto: <span id='progettoColumn'>{td.nomeProgetto}</span>,
