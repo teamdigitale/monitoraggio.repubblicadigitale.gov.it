@@ -152,12 +152,17 @@ input#dateInputDataFine {
 }
 
 .chip-label{
-    color: #5C6F81 !important;
+    color: #5C6F81;
+}
+
+.chip:hover:not(.chip-disabled) .chip-label{
+    color: #5C6F81;
 }
 
 .chip:hover:not(.chip-disabled) button .icon, .chip:hover:not(.chip-disabled)>.icon{
     fill: #5C6F81
 }
+
 
 .bootstrap-select {
     &__single-value {
