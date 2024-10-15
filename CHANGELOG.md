@@ -1,5 +1,17 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.359](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.358...1.0.0-test.359) (2024-10-15)
+
+
+### Features
+
+* **fe-piattaforma:** aggiunta dashboard per ruolo UDM 20241015 ([6f3228e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6f3228eecf91aaa289cf386fe1765293f94edd6a))
+
+
+### Bug Fixes
+
+* **monitoraggio-caricamenti:** fix impaginazione tabella e chips 20241015 ([47da0d3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/47da0d307fd21defba9577209e6fc82f87af78ec))
+
 ## [1.0.0-test.358](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.357...1.0.0-test.358) (2024-10-15)
 
 
