@@ -218,6 +218,7 @@ export const userRoles = {
   REPP: 'REPP',
   DEPP: 'DEPP',
   USR: 'utenti',
+  "Profilo UDM": 'Profilo UDM'
 };
 
 export const contractTypes = [
