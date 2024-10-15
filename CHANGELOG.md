@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.358](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.357...1.0.0-test.358) (2024-10-15)
+
+
+### Bug Fixes
+
+* **monitoraggio-caricamenti:** fix redirect table 20241015 ([76d3176](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/76d3176dc2664d35b2735f18ae9f45270651280f))
+
 ## [1.0.0-test.357](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.356...1.0.0-test.357) (2024-10-14)
 
 
