@@ -299,9 +299,6 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
           openMenuOnClick={!isSearchable}
           {...(isSearchable && { menuIsOpen: enteInputValue.length > 3 })}
           onInputChange={(value) => setEnteInputValue(value)}
-          onFocus={() => {
-            console.log('focus');
-          }}
         />
         {isSearchable &&
           <div style={{

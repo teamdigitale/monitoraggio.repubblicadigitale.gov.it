@@ -126,6 +126,7 @@ input#dateInputDataFine {
 
 #react-select-2-input {
     box-shadow: none !important;
+    opacity: 1 !important;
 }
 
 .chipRemove {
@@ -156,3 +157,12 @@ input#dateInputDataFine {
 .chip:hover:not(.chip-disabled) button .icon, .chip:hover:not(.chip-disabled)>.icon{
     fill: #5C6F81
 }
+
+// .bootstrap-select__input {
+//     border: 1px solid #0073e5;
+//     position: absolute;
+//     z-index: 1;
+//     cursor: pointer !important;
+//     padding: 10px;
+//     caret-color: black; // Ensures the cursor is always visible
+// }
