@@ -91,7 +91,8 @@ const TableDesktop: React.FC<TableI> = (props) => {
                     'table-container__intestazione'
                   )}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                  {/* <div > style={{ display: 'flex', alignItems: 'center' }}> */}
+                  <div>
                     <span>{th.label.toUpperCase()}</span>
                     {canSort && onSort ? (
                       <Icon
