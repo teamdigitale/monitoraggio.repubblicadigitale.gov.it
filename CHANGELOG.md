@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.37.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.36.3...1.37.0) (2024-10-15)
+
+
+### Features
+
+* **fe-piattaforma:** aggiunta dashboard per ruolo UDM 20241015 ([538f020](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/538f0201f1ea5b47908fd95ffb62a42811e59a7d))
+
 ## [1.36.3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.36.2...1.36.3) (2024-10-11)
 
 
