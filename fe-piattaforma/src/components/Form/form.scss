@@ -6,13 +6,13 @@ input {
   &[type='password'],
   &[type='file'],
   &[type='url'] {
-    color: #0066CC !important;
+    color: color('dark-blue') !important;
     font-weight: 600 !important;
   }
 }
 
 textarea {
-  color: #0066CC !important;
+  color: color('dark-blue') !important;
   font-weight: 600 !important;
 }
 
@@ -133,11 +133,11 @@ input > span {
   }
 
   &__single-value {
-    color: #0066CC !important;
+    color: color('dark-blue') !important;
     font-weight: 600 !important;
 
     &--is-disabled {
-      color: #0066CC !important;
+      color: color('dark-blue') !important;
     }
   }
 }
@@ -173,11 +173,11 @@ input > span {
   }
 
   &__single-value {
-    color: #0066CC !important;
+    color: color('dark-blue') !important;
     font-weight: 600 !important;
 
     &--is-disabled {
-      color: #0066CC !important;
+      color: color('dark-blue') !important;
     }
   }
 }
@@ -343,7 +343,7 @@ input > span {
 
 .autocomplete {
   &__input {
-    color: #0066CC !important;
+    color: color('dark-blue') !important;
     font-weight: 600 !important;
     border-bottom: 1px solid color('progress-bar-line') !important;
 
@@ -402,11 +402,11 @@ input > span {
   }
 
   &__single-value {
-    color: #0066CC !important;
+    color: color('dark-blue') !important;
     font-weight: 600 !important;
 
     &--is-disabled {
-      color: #0066CC !important;
+      color: color('dark-blue') !important;
     }
   }
 }
@@ -454,7 +454,7 @@ input > span {
 
 
 .public-DraftEditor-content {
-  color: #0066CC !important;
+  color: color('dark-blue') !important;
   font-weight: 400 !important;
 }
 
@@ -473,10 +473,4 @@ input > span {
 .deleteArrowInSelect .bootstrap-select__indicators {
   display: none;
 }
-
-// .bootstrap-select__control--is-focused {
-//   border-color: #0066CC !important;
-//   box-shadow: none !important;
-//   outline: none !important;
-// }
  
