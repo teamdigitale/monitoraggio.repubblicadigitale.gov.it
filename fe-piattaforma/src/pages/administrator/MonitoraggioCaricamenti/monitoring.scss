@@ -110,6 +110,7 @@
 input#dateInputDataInizio,
 input#dateInputDataFine {
     border-bottom: 1px solid #0073e5;
+    color: #0066CC !important;
 }
 
 #search-icon {
@@ -158,11 +159,13 @@ input#dateInputDataFine {
     fill: #5C6F81
 }
 
-// .bootstrap-select__input {
-//     border: 1px solid #0073e5;
-//     position: absolute;
-//     z-index: 1;
-//     cursor: pointer !important;
-//     padding: 10px;
-//     caret-color: black; // Ensures the cursor is always visible
-// }
+.bootstrap-select {
+    &__single-value {
+        color: #0066CC !important;
+        font-weight: 600 !important;
+    
+        &--is-disabled {
+          color: #0066CC !important;
+        }
+      }
+}
