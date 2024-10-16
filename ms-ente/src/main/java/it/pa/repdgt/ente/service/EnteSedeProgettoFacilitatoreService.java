@@ -126,19 +126,19 @@ public class EnteSedeProgettoFacilitatoreService {
 			String errorMessage = "Impossibile associare facilitatore/volontario alla sede. L'utente non possiede il ruolo corretto per effettuare l'operazione";
 			throw new EnteSedeProgettoFacilitatoreException(errorMessage, CodiceErroreEnum.EN07);
 		}
-		final UtenteEntity utenteDBFetch = this.utenteService.getUtenteByCodiceFiscale(codiceFiscaleUtente);
-		final RuoloEntity ruoloFacilitatore = this.ruoloService.getRuoloByCodiceRuolo(RuoloUtenteEnum.FAC.toString());
-		final RuoloEntity ruoloVolontario = this.ruoloService.getRuoloByCodiceRuolo(RuoloUtenteEnum.VOL.toString());
+		// final UtenteEntity utenteDBFetch = this.utenteService.getUtenteByCodiceFiscale(codiceFiscaleUtente);
+		// final RuoloEntity ruoloFacilitatore = this.ruoloService.getRuoloByCodiceRuolo(RuoloUtenteEnum.FAC.toString());
+		// final RuoloEntity ruoloVolontario = this.ruoloService.getRuoloByCodiceRuolo(RuoloUtenteEnum.VOL.toString());
 		
 		if(PolicyEnum.RFD.getValue().equals(progettoDBFEtch.getProgramma().getPolicy().getValue())) {
-			if(utenteDBFetch.getRuoli().contains(ruoloVolontario)) {
+			if(enteSedeProgettoFacilitatoreRepository.hasRuoloVolontarioValido(codiceFiscaleUtente)) { //SE L'UTENTE HA RUOLO VOL
 				String errorMessage = String.format("Impossibile associare facilitatore con codiceFiscale=%s alla sede con id=%s per l'ente con id=%s sul progetto con id=%s, l'utente è già un volontario",
 						codiceFiscaleUtente, idSede, idEnte, idProgetto);
 				throw new EnteSedeProgettoFacilitatoreException(errorMessage, CodiceErroreEnum.EN07);
 			}
 			codiceRuolo = RuoloUtenteEnum.FAC.toString();
 		} else {
-			if(utenteDBFetch.getRuoli().contains(ruoloFacilitatore)) {
+			if(enteSedeProgettoFacilitatoreRepository.hasRuoloFacilitatoreValido(codiceFiscaleUtente)) { //SE L'UTENTE HA RUOLO FAC
 				String errorMessage = String.format("Impossibile associare volontario con codiceFiscale=%s alla sede con id=%s per l'ente con id=%s sul progetto con id=%s, l'utente è già un facilitatore",
 						codiceFiscaleUtente, idSede, idEnte, idProgetto);
 				throw new EnteSedeProgettoFacilitatoreException(errorMessage, CodiceErroreEnum.EN07);
