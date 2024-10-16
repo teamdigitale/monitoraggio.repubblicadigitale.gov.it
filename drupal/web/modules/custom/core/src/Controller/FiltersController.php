@@ -17,7 +17,7 @@ class FiltersController
    * @param $interventions
    * @return array
    */
-  public static function checkFilters($bundle, $categories, $programs = null, $interventions = null)
+  public static function checkFilters($bundle, $categories, $programs = null, $interventions = null, $program_intervention = null)
   {
     $possibleCategories = [];
     $possiblePrograms = [];
@@ -32,10 +32,12 @@ class FiltersController
       $query->fields('nfp', ['field_program_value']);
       $query->fields('nfpl', ['field_program_label_value']);
       $query->fields('nfi', ['field_intervention_value']);
+      $query->fields('nfpi', ['field_program_intervention_value']);
 
       $query->join('node__field_program', 'nfp', 'n.nid = nfp.entity_id ');
       $query->join('node__field_program_label', 'nfpl', 'n.nid = nfpl.entity_id ');
       $query->join('node__field_intervention', 'nfi', 'n.nid = nfi.entity_id ');
+      $query->join('node__field_program_intervention', 'nfpi', 'n.nid = nfpi.entity_id ');
     }
 
     $query->join('taxonomy_index', 'ti', 'n.nid = ti.nid ');
@@ -57,6 +59,10 @@ class FiltersController
 
     if (!empty($interventions)) {
       $query->condition('nfi.field_intervention_value', $interventions, 'IN');
+    }
+
+    if (!empty($program_intervention)) {
+      $query->condition('nfpi.field_program_intervention_value', $program_intervention, 'IN');
     }
 
     $query->orderBy('nfd.changed');

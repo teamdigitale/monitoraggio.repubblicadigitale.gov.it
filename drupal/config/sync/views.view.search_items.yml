@@ -1,6 +1,6 @@
 uuid: 72233346-b602-49a5-a9d5-5e515d8dd8c7
 langcode: en
-status: true
+status: false
 dependencies:
   config:
     - field.storage.media.field_media_image
@@ -1447,17 +1447,6 @@ display:
           group_type: group
           admin_label: 'Cover: Media'
           entity_type: node
-          plugin_id: search_api
-          required: false
-          skip_access: false
-        flagged_entity:
-          id: flagged_entity
-          table: search_api_datasource_default_index_entity_flagging
-          field: flagged_entity
-          relationship: none
-          group_type: group
-          admin_label: 'Entity: Content'
-          entity_type: flagging
           plugin_id: search_api
           required: false
           skip_access: false

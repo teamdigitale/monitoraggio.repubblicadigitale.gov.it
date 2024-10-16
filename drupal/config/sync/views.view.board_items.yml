@@ -1164,8 +1164,8 @@ display:
           path_case: none
           transform_dash: false
           break_phrase: true
-        field_program_value:
-          id: field_program_value
+        field_program_value_1:
+          id: field_program_value_1
           table: node__field_program
           field: field_program_value
           relationship: none
@@ -1182,6 +1182,47 @@ display:
           default_argument_type: query_parameter
           default_argument_options:
             query_param: programs
+            fallback: ''
+            multiple: or
+          default_argument_skip_url: false
+          summary_options:
+            base_path: ''
+            count: true
+            override: false
+            items_per_page: 25
+          summary:
+            sort_order: asc
+            number_of_records: 0
+            format: default_summary
+          specify_validation: true
+          validate:
+            type: none
+            fail: empty
+          validate_options: {  }
+          glossary: false
+          limit: 0
+          case: none
+          path_case: none
+          transform_dash: false
+          break_phrase: true
+        field_program_intervention_value:
+          id: field_program_intervention_value
+          table: node__field_program_intervention
+          field: field_program_intervention_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: string
+          default_action: default
+          exception:
+            value: all
+            title_enable: false
+            title: All
+          title_enable: false
+          title: ''
+          default_argument_type: query_parameter
+          default_argument_options:
+            query_param: program_intervention
             fallback: ''
             multiple: or
           default_argument_skip_url: false

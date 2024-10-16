@@ -1,23 +1,20 @@
-uuid: 49b05dce-f1c7-4158-b802-942caac81949
+uuid: 0cc4f053-7268-4a61-acb0-f9d34c3812be
 langcode: en
-status: false
+status: true
 dependencies:
   config:
     - field.storage.node.field_category
     - field.storage.node.field_comments
     - field.storage.node.field_description
-    - field.storage.node.field_program
-    - field.storage.node.field_tags
+    - field.storage.node.field_program_intervention
     - search_api.server.default_server
   module:
-    - taxonomy
     - node
+    - taxonomy
     - search_api
-_core:
-  default_config_hash: 3aiqici40Ky7H7_FK6JBlEawsJtrD7MGX3dQh3xgqoc
-id: default_index
-name: 'Default content index'
-description: 'Default content index created by the Database Search Defaults module'
+id: document_index
+name: 'Document Index'
+description: "Document index for search\r\n"
 read_only: false
 field_settings:
   category_label:
@@ -54,40 +51,22 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_description
-  field_program:
-    label: Program
+  field_program_intervention:
+    label: 'Program Intervention'
     datasource_id: 'entity:node'
-    property_path: field_program
+    property_path: field_program_intervention
     type: string
     dependencies:
       config:
-        - field.storage.node.field_program
+        - field.storage.node.field_program_intervention
   status:
-    label: 'Publishing status'
+    label: Published
     datasource_id: 'entity:node'
     property_path: status
     type: boolean
     dependencies:
       module:
         - node
-  sticky:
-    label: 'Sticky at top of lists'
-    datasource_id: 'entity:node'
-    property_path: sticky
-    type: boolean
-    dependencies:
-      module:
-        - node
-  tag_label:
-    label: 'Tags » Taxonomy term » Name'
-    datasource_id: 'entity:node'
-    property_path: 'field_tags:entity:name'
-    type: text
-    dependencies:
-      config:
-        - field.storage.node.field_tags
-      module:
-        - taxonomy
   title:
     label: Title
     datasource_id: 'entity:node'
@@ -105,7 +84,7 @@ field_settings:
       module:
         - node
   uid:
-    label: 'Author ID'
+    label: 'Authored by'
     datasource_id: 'entity:node'
     property_path: uid
     type: integer
@@ -117,19 +96,13 @@ datasource_settings:
     bundles:
       default: false
       selected:
-        - board_item
-        - community_item
         - document_item
     languages:
       default: true
       selected: {  }
 processor_settings:
-  add_url:
-    weights:
-      preprocess_index: -30
-  aggregated_field:
-    weights:
-      add_properties: 20
+  add_url: {  }
+  aggregated_field: {  }
   entity_status: {  }
   entity_type: {  }
   html_filter:
@@ -140,18 +113,19 @@ processor_settings:
     fields:
       - category_label
       - field_description
-      - field_program
-      - tag_label
+      - field_program_intervention
       - title
       - type
     title: true
     alt: true
     tags:
       b: 2
+      em: 1
       h1: 5
       h2: 3
       h3: 2
       strong: 2
+      u: 1
   ignorecase:
     weights:
       preprocess_index: -20
@@ -160,15 +134,11 @@ processor_settings:
     fields:
       - category_label
       - field_description
-      - field_program
-      - tag_label
+      - field_program_intervention
       - title
       - type
   language_with_fallback: {  }
-  rendered_item:
-    weights:
-      add_properties: 0
-      pre_index_save: -10
+  rendered_item: {  }
   tokenizer:
     weights:
       preprocess_index: -6
@@ -177,7 +147,6 @@ processor_settings:
     fields:
       - category_label
       - field_description
-      - tag_label
       - title
     spaces: ''
     ignored: ._-

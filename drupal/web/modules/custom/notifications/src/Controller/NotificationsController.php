@@ -30,7 +30,7 @@ class NotificationsController
   {
     $messages = Drupal::config('notifications.messages');
 
-    if (empty($messages)) {
+    if (empty($messages->getRawData())) {
       throw new Exception('NC01: Notification messages are not set', 400);
     }
 

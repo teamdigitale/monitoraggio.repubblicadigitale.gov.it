@@ -13,6 +13,7 @@ dependencies:
     - field.field.node.document_item.field_external_link
     - field.field.node.document_item.field_intervention
     - field.field.node.document_item.field_program
+    - field.field.node.document_item.field_program_intervention
     - field.field.node.document_item.field_program_label
     - node.type.document_item
   module:
@@ -40,7 +41,7 @@ content:
     third_party_settings: {  }
   field_comments:
     type: comment_default
-    weight: 10
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -54,7 +55,7 @@ content:
     third_party_settings: {  }
   field_enable_comments:
     type: boolean_checkbox
-    weight: 13
+    weight: 14
     region: content
     settings:
       display_label: true
@@ -77,7 +78,7 @@ content:
     third_party_settings: {  }
   field_external_link:
     type: link_default
-    weight: 9
+    weight: 10
     region: content
     settings:
       placeholder_url: ''
@@ -99,6 +100,14 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_program_intervention:
+    type: string_textfield
+    weight: 9
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_program_label:
     type: string_textfield
     weight: 7
@@ -109,14 +118,14 @@ content:
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 12
+    weight: 13
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
-    weight: 11
+    weight: 12
     region: content
     settings:
       display_label: true

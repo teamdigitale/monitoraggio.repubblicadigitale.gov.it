@@ -24,8 +24,9 @@ class FlagController
    * @return mixed
    * @throws InvalidPluginDefinitionException
    * @throws PluginNotFoundException
+   * @throws Exception
    */
-  public static function flag($flagMachineName, $entityObj, $userObj)
+  public static function flag($flagMachineName, $entityObj, $userObj): mixed
   {
     $flagService = Drupal::service('flag');
     $flag = $flagService->getFlagById($flagMachineName);
@@ -33,42 +34,45 @@ class FlagController
     $flaggingStatus = $flagService->getFlagging($flag, $entityObj, $userObj);
     if (!$flaggingStatus) {
       $flaggingStatus = $flagService->flag($flag, $entityObj, $userObj);
-    }
 
-    if ($flagMachineName == 'like' || $flagMachineName == 'like_comment') {
-      $type = 'comment_like';
-      $notificationUserIds[] = $entityObj->getOwnerId();
-      $bundle = $entityObj->bundle();
+      if ($flagMachineName == 'like' || $flagMachineName == 'like_comment') {
+        $type = 'comment_like';
+        $notificationUserIds[] = $entityObj->getOwnerId();
+        $bundle = $entityObj->bundle();
 
-      if ($entityObj->bundle() != 'comment') {
-        $notificationUserIds = array_unique(
-          array_merge(
-            $notificationUserIds,
-            CommentController::getCommentators($entityObj->id())
-          )
-        );
-        $type = str_replace('item', 'like', $bundle);
-      }
-
-      if ($entityObj->bundle() == 'comment') {
-        $node = Node::load($entityObj->getCommentedEntityId());
-        if (empty($node)) {
-          throw new Exception('FLC01: Error in load node in comment create', 400);
+        if ($entityObj->bundle() != 'comment') {
+          $notificationUserIds = array_unique(
+            array_merge(
+              $notificationUserIds,
+              CommentController::getCommentators($entityObj->id())
+            )
+          );
+          $type = str_replace('item', 'like', $bundle);
         }
 
-        $entityObj = $node;
+        if ($entityObj->bundle() == 'comment') {
+          $node = Node::load($entityObj->getCommentedEntityId());
+          if (empty($node)) {
+            throw new Exception('FLC01: Error in load node in comment create', 400);
+          }
+
+          $entityObj = $node;
+        }
+
+        $notificationUserIds = array_diff($notificationUserIds, [$userObj->id()]);
+
+        if (!empty($notificationUserIds)) {
+          NotificationsController::sendMultipleNotifications($entityObj, $userObj->id(), $notificationUserIds, $type);
+        }
       }
 
-      $notificationUserIds = array_diff($notificationUserIds, [$userObj->id()]);
-
-      if (!empty($notificationUserIds)) {
-        NotificationsController::sendMultipleNotifications($entityObj, $userObj->id(), $notificationUserIds, $type);
+      $FLAG_ID_TO_VIEW_ID = (array)EnvController::getValues('FLAG_ID_TO_VIEW_ID');
+      if (array_key_exists($flagMachineName, $FLAG_ID_TO_VIEW_ID)) {
+        $viewsToInvalid = (array)$FLAG_ID_TO_VIEW_ID[$flagMachineName];
+        foreach($viewsToInvalid as $viewId){
+          CacheController::resetViewCache($viewId);
+        }
       }
-    }
-
-    $FLAG_ID_TO_VIEW_ID = (array)EnvController::getValues('FLAG_ID_TO_VIEW_ID');
-    if (in_array($flagMachineName, $FLAG_ID_TO_VIEW_ID)) {
-      CacheController::resetViewCache($FLAG_ID_TO_VIEW_ID[$flagMachineName]);
     }
 
     return $flaggingStatus;
@@ -90,11 +94,15 @@ class FlagController
     $flaggingStatus = $flagService->getFlagging($flag, $entityObj, $userObj);
     if ($flaggingStatus) {
       $flagService->unflag($flag, $entityObj, $userObj);
-    }
 
-    $FLAG_ID_TO_VIEW_ID = (array)EnvController::getValues('FLAG_ID_TO_VIEW_ID');
-    if (in_array($flagMachineName, $FLAG_ID_TO_VIEW_ID)) {
-      CacheController::resetViewCache($FLAG_ID_TO_VIEW_ID[$flagMachineName]);
+      $FLAG_ID_TO_VIEW_ID = (array)EnvController::getValues('FLAG_ID_TO_VIEW_ID');
+      if (array_key_exists($flagMachineName, $FLAG_ID_TO_VIEW_ID)) {
+        $viewsToInvalid = (array)$FLAG_ID_TO_VIEW_ID[$flagMachineName];
+        foreach($viewsToInvalid as $viewId){
+          CacheController::resetViewCache($viewId);
+        }
+      }
+
     }
 
     return true;

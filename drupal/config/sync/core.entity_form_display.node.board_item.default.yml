@@ -13,6 +13,7 @@ dependencies:
     - field.field.node.board_item.field_entity_type
     - field.field.node.board_item.field_intervention
     - field.field.node.board_item.field_program
+    - field.field.node.board_item.field_program_intervention
     - field.field.node.board_item.field_program_label
     - node.type.board_item
   module:
@@ -26,7 +27,7 @@ mode: default
 content:
   field_attachment:
     type: media_library_widget
-    weight: 26
+    weight: 15
     region: content
     settings:
       media_types: {  }
@@ -60,7 +61,7 @@ content:
     third_party_settings: {  }
   field_enable_comments:
     type: boolean_checkbox
-    weight: 12
+    weight: 13
     region: content
     settings:
       display_label: true
@@ -92,6 +93,14 @@ content:
   field_program:
     type: string_textfield
     weight: 9
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_program_intervention:
+    type: string_textfield
+    weight: 12
     region: content
     settings:
       size: 60

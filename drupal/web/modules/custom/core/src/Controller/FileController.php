@@ -80,7 +80,7 @@ class FileController
     }
 
     $fileExtension = pathinfo($fileName)['extension'];
-    $fileName = (int)(microtime(true)) . rand(1111111111, 9999999999) . '.' . $fileExtension;
+    $fileName = (pathinfo($fileName)['filename'] ?? '') . '_' . (int)(microtime(true)) . rand(1111111111, 9999999999) . '.' . $fileExtension;
 
     $mediaInfo = match ($fileType) {
       'image' => self::createImageInfo($fileName),

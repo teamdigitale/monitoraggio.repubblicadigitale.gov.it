@@ -19,6 +19,7 @@
         "composer/installers": "^2.2",
         "cweagans/composer-patches": "^1.7",
         "drupal/admin_toolbar": "^3.1",
+        "drupal/config_delete": "^1.17",
         "drupal/config_ignore": "^3.0@beta",
         "drupal/core-composer-scaffold": "^9.4",
         "drupal/core-project-message": "^9.4",

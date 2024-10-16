@@ -42,7 +42,8 @@ class DocumentController
       'field_program_label' => $programLabel,
       'field_category' => $category,
       'field_description' => $description,
-      'field_external_link' => $externalLink
+      'field_external_link' => $externalLink,
+      'field_program_intervention' => $program . '-' . $intervention
     ]);
     $node->setPublished();
 
@@ -78,6 +79,7 @@ class DocumentController
     $node->set('field_category', $category);
     $node->set('field_description', $description);
     $node->set('field_external_link', $externalLink);
+    $node->set('field_program_intervention', $program . '-' . $intervention);
 
     $node->setNewRevision();
     $node->setRevisionCreationTime(Drupal::time()->getCurrentTime());

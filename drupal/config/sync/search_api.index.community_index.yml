@@ -1,23 +1,20 @@
-uuid: 49b05dce-f1c7-4158-b802-942caac81949
+uuid: a39f4f4c-46a6-4202-80d8-7c74df7ef759
 langcode: en
-status: false
+status: true
 dependencies:
   config:
     - field.storage.node.field_category
     - field.storage.node.field_comments
     - field.storage.node.field_description
-    - field.storage.node.field_program
     - field.storage.node.field_tags
     - search_api.server.default_server
   module:
     - taxonomy
     - node
     - search_api
-_core:
-  default_config_hash: 3aiqici40Ky7H7_FK6JBlEawsJtrD7MGX3dQh3xgqoc
-id: default_index
-name: 'Default content index'
-description: 'Default content index created by the Database Search Defaults module'
+id: community_index
+name: 'Community Index'
+description: 'Community Index for Search'
 read_only: false
 field_settings:
   category_label:
@@ -54,26 +51,10 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_description
-  field_program:
-    label: Program
-    datasource_id: 'entity:node'
-    property_path: field_program
-    type: string
-    dependencies:
-      config:
-        - field.storage.node.field_program
   status:
-    label: 'Publishing status'
+    label: Published
     datasource_id: 'entity:node'
     property_path: status
-    type: boolean
-    dependencies:
-      module:
-        - node
-  sticky:
-    label: 'Sticky at top of lists'
-    datasource_id: 'entity:node'
-    property_path: sticky
     type: boolean
     dependencies:
       module:
@@ -105,7 +86,7 @@ field_settings:
       module:
         - node
   uid:
-    label: 'Author ID'
+    label: 'Authored by'
     datasource_id: 'entity:node'
     property_path: uid
     type: integer
@@ -117,19 +98,13 @@ datasource_settings:
     bundles:
       default: false
       selected:
-        - board_item
         - community_item
-        - document_item
     languages:
       default: true
       selected: {  }
 processor_settings:
-  add_url:
-    weights:
-      preprocess_index: -30
-  aggregated_field:
-    weights:
-      add_properties: 20
+  add_url: {  }
+  aggregated_field: {  }
   entity_status: {  }
   entity_type: {  }
   html_filter:
@@ -140,7 +115,6 @@ processor_settings:
     fields:
       - category_label
       - field_description
-      - field_program
       - tag_label
       - title
       - type
@@ -148,10 +122,12 @@ processor_settings:
     alt: true
     tags:
       b: 2
+      em: 1
       h1: 5
       h2: 3
       h3: 2
       strong: 2
+      u: 1
   ignorecase:
     weights:
       preprocess_index: -20
@@ -160,15 +136,11 @@ processor_settings:
     fields:
       - category_label
       - field_description
-      - field_program
       - tag_label
       - title
       - type
   language_with_fallback: {  }
-  rendered_item:
-    weights:
-      add_properties: 0
-      pre_index_save: -10
+  rendered_item: {  }
   tokenizer:
     weights:
       preprocess_index: -6

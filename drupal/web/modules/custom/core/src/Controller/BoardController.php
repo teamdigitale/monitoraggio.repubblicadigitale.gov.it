@@ -42,7 +42,8 @@ class BoardController
       'field_program_label' => $programLabel,
       'field_category' => $category,
       'field_description' => $description,
-      'field_enable_comments' => $enableComments
+      'field_enable_comments' => $enableComments,
+      'field_program_intervention' => $program . '-' . $intervention
     ]);
     $node->setSticky($highlighted);
     $node->setPublished();
@@ -80,6 +81,7 @@ class BoardController
     $node->set('field_category', $category);
     $node->set('field_description', $description);
     $node->set('field_enable_comments', $enableComments);
+    $node->set('field_program_intervention', $program . '-' . $intervention);
     $node->setSticky($highlighted);
 
     $node->setNewRevision();

@@ -33,7 +33,13 @@ class SingleValueSerializer extends Serializer
 
     $content_type = !empty($this->options['formats']) ? reset($this->options['formats']) : 'json';
 
-    $returnValue = Json::decode($rows[0]['value'] ?? '0');
+    if(empty($rows[0]['value'])){
+      $returnValue = 0;
+    }else if(!empty(Json::decode($rows[0]['value']))){
+      $returnValue = Json::decode($rows[0]['value']);
+    } else {
+      $returnValue = html_entity_decode($rows[0]['value']);
+    }
 
     return $this->serializer->serialize($returnValue, $content_type, ['views_style_plugin' => $this]);
   }

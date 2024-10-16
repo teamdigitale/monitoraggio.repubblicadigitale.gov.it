@@ -25,12 +25,22 @@ class RequestEventSubscriber implements EventSubscriberInterface
   }
 
   /**
+   * @throws Exception
+   */
+  private static function checkQueryParam($req, $queryParamId){
+    if(empty($req->query->get($queryParamId))){
+      throw new Exception('RES01: Missing query params in route');
+    }
+  }
+
+  /**
    * @param RequestEvent $event
    */
   public function onRequest(RequestEvent $event)
   {
     try {
       $req = $event->getRequest() ?? '';
+
       $route = $req->get('_route');
       if (!str_starts_with($req->getRequestUri(), '/api')) {
         return;
@@ -40,6 +50,10 @@ class RequestEventSubscriber implements EventSubscriberInterface
 
       if (in_array($route, (array)EnvController::getValues('CHECK_PATH_PARAMETER_ROUTE'))) {
         UserController::checkRouteParams($req);
+      }
+
+      if (in_array($route, (array)EnvController::getValues('CHECK_QUERY_PARAMETER_ROUTE'))) {
+        self::checkQueryParam($req, 'program_intervention');
       }
 
       $drupalUserId = UserController::getOrCreate($req->headers->get('user-id'));

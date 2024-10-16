@@ -14,6 +14,7 @@ dependencies:
     - field.field.node.document_item.field_external_link
     - field.field.node.document_item.field_intervention
     - field.field.node.document_item.field_program
+    - field.field.node.document_item.field_program_intervention
     - field.field.node.document_item.field_program_label
     - node.type.document_item
   module:
@@ -33,7 +34,7 @@ content:
       view_mode: default
       link: true
     third_party_settings: {  }
-    weight: 7
+    weight: 8
     region: content
   field_category:
     type: entity_reference_label
@@ -50,7 +51,7 @@ content:
       view_mode: default
       pager_id: 0
     third_party_settings: {  }
-    weight: 9
+    weight: 10
     region: content
   field_description:
     type: text_default
@@ -67,7 +68,7 @@ content:
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    weight: 10
+    weight: 11
     region: content
   field_entity:
     type: string
@@ -95,7 +96,7 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    weight: 8
+    weight: 9
     region: content
   field_intervention:
     type: string
@@ -113,6 +114,14 @@ content:
     third_party_settings: {  }
     weight: 4
     region: content
+  field_program_intervention:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 7
+    region: content
   field_program_label:
     type: string
     label: above
@@ -124,7 +133,7 @@ content:
   flag_download:
     settings: {  }
     third_party_settings: {  }
-    weight: 11
+    weight: 12
     region: content
   flag_downloaded:
     settings: {  }
@@ -134,7 +143,7 @@ content:
   flag_usefull:
     settings: {  }
     third_party_settings: {  }
-    weight: 12
+    weight: 13
     region: content
 hidden:
   links: true

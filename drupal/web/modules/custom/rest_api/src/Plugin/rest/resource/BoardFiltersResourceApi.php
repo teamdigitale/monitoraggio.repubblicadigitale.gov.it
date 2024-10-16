@@ -89,15 +89,19 @@ class BoardFiltersResourceApi extends ResourceBase
       $programs = $req->get('programs') ?? '';
       $interventions = $req->get('interventions') ?? '';
 
-      $categories = $categories !== '' ? explode(',', $categories) : $categories;
-      $programs = $programs !== '' ? explode(',', $programs) : $programs;
-      $interventions = $interventions !== '' ? explode(',', $interventions) : $interventions;
+      $categories = $categories !== '' ? explode(',', $categories) : [];
+      $programs = $programs !== '' ? explode(',', $programs) : [];
+      $interventions = $interventions !== '' ? explode(',', $interventions) : [];
+
+      $program_intervention = $req->get('program_intervention') ?? '';
+      $program_intervention = $program_intervention !== '' ? explode(' ', $program_intervention) : $program_intervention;
 
       $data = FiltersController::checkFilters(
         'board_item',
         $categories,
         $programs,
-        $interventions
+        $interventions,
+        $program_intervention
       );
 
       return ResponseFormatterController::success($data, 200, 'board_item_cache');

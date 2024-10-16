@@ -160,5 +160,4 @@ class UserController
       throw new Exception('UC06: User id in path param is different from the user id in headers', 400);
     }
   }
-
 }
