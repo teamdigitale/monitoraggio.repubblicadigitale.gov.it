@@ -324,7 +324,7 @@ public class EnteSedeProgettoFacilitatoreService {
 		this.enteSedeProgettoFacilitatoreRepository.deleteById(id);	
 		
 		//Controllo se l'utente è FAC o VOL(a seconda del codiceRuolo che mi viene passato) su altri gestori progetto oltre a questo
-		boolean unicaAssociazione = this.enteSedeProgettoFacilitatoreRepository.findAltreAssociazioni(idProgetto, codiceFiscaleUtente, codiceRuolo).isEmpty();
+		boolean unicaAssociazione = this.enteSedeProgettoFacilitatoreRepository.findAltreAssociazioni(idProgetto,idEnte, idSede, codiceFiscaleUtente, codiceRuolo).isEmpty();
 		
 		/*Se la condizione sopra è vera allora insieme all'associazione del referente al gestore progetto
 		 * imposterò a cancellato anche l'associazione dell'utente al ruolo
