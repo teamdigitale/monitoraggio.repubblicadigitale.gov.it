@@ -37,7 +37,7 @@ RUN docker-php-ext-install ldap  && docker-php-ext-enable ldap
 RUN apt-get install memcached libmemcached-tools libmemcached-dev -y
 RUN pecl install memcached   && docker-php-ext-enable memcached
 
-RUN echo 'memory_limit = 256M' >> /usr/local/etc/php/conf.d/docker-php-memlimit.ini
+RUN echo 'memory_limit = 1024M' >> /usr/local/etc/php/conf.d/docker-php-memlimit.ini
 
 RUN a2enmod rewrite
 
