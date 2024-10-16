@@ -27,18 +27,14 @@ public interface EnteSedeProgettoFacilitatoreRepository extends JpaRepository<En
 			nativeQuery = true)
 	List<EnteSedeProgettoFacilitatoreEntity> findAltriFacilitatoriAttivi(String codiceFiscaleUtente, Long idProgetto, String codiceRuolo);
 
-	@Query(value = "SELECT * "
-			+ " FROM "
-			+ " ente_sede_progetto_facilitatore "
-			+ " WHERE 1=1 "
-			+ " AND "
-			+ " ID_PROGETTO != :idProgetto "
-			+ " AND "
-			+ " RUOLO_UTENTE = :codiceRuolo "
-			+ " AND "
-			+ " ID_FACILITATORE = :codiceFiscaleUtente",
+	@Query(value = "SELECT *\n" + 
+					"FROM ente_sede_progetto_facilitatore\n" + 
+					"WHERE 1 = 1\n" + 
+					"AND (ID_PROGETTO,ID_ENTE,ID_SEDE) <> (:idProgetto, :idEnte, :idSede)\n" + 
+					"AND RUOLO_UTENTE = :codiceRuolo\n" + 
+					"AND id_facilitatore = :codiceFiscaleUtente\n",
 			nativeQuery = true)
-	List<EnteSedeProgettoFacilitatoreEntity> findAltreAssociazioni(Long idProgetto, String codiceFiscaleUtente, String codiceRuolo);
+	List<EnteSedeProgettoFacilitatoreEntity> findAltreAssociazioni(Long idProgetto, Long idEnte, Long idSede, String codiceFiscaleUtente, String codiceRuolo);
 
 	@Query(value = " SELECT * FROM "
 			 + "	ente_sede_progetto_facilitatore espf"
