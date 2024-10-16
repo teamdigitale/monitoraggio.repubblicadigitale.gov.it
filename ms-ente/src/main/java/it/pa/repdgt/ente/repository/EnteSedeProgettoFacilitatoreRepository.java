@@ -75,4 +75,19 @@ public interface EnteSedeProgettoFacilitatoreRepository extends JpaRepository<En
 			+ "		AND espf.RUOLO_UTENTE = :codiceRuolo ", 
 			nativeQuery = true)
 	int countAssociazioniFacilitatoreAndVolontario(String facilitatore, String codiceRuolo);
+
+	@Query(value = "SELECT COUNT(*) > 0 "
+    + "FROM ente_sede_progetto_facilitatore espf "
+    + "WHERE espf.id_facilitatore = :codiceFiscale "
+    + "AND espf.ruolo_utente = 'VOL' AND espf.stato_utente IN ('ATTIVO','NON ATTIVO')",
+    nativeQuery = true)
+	boolean hasRuoloVolontarioValido(String codiceFiscale);
+
+
+	@Query(value = "SELECT COUNT(*) > 0 "
+    + "FROM ente_sede_progetto_facilitatore espf "
+    + "WHERE espf.id_facilitatore = :codiceFiscale "
+    + "AND espf.ruolo_utente = 'FAC' AND espf.stato_utente IN ('ATTIVO','NON ATTIVO')",
+    nativeQuery = true)
+	boolean hasRuoloFacilitatoreValido(String codiceFiscale);
 }
