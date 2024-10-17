@@ -136,7 +136,6 @@ public class EnteSedeProgettoFacilitatoreServiceTest {
 		when(this.progettoService.getProgettoById(progetto1.getId())).thenReturn(progetto1);
 		when(this.utenteService.getUtenteByCodiceFiscale(utente1.getCodiceFiscale())).thenReturn(utente1);
 		when(this.ruoloService.getRuoloByCodiceRuolo(RuoloUtenteEnum.FAC.toString())).thenReturn(ruoloFAC);
-		when(this.ruoloService.getRuoloByCodiceRuolo(RuoloUtenteEnum.VOL.toString())).thenReturn(ruoloVOL);
 		when(this.enteSedeProgettoFacilitatoreRepository.existsById(Mockito.any(EnteSedeProgettoFacilitatoreKey.class))).thenReturn(false);
 		when(enteSedeProgettoService.getAssociazioneEnteSedeProgetto(sede1.getId(), ente1.getId(), progetto1.getId())).thenReturn(enteSedeProgetto);
 		when(this.ruoloService.getRuoloByCodiceRuolo(ruoloFAC.getCodice())).thenReturn(ruoloFAC);
@@ -159,7 +158,6 @@ public class EnteSedeProgettoFacilitatoreServiceTest {
 		when(this.progettoService.esisteProgettoById(progetto1.getId())).thenReturn(true);
 		when(this.progettoService.getProgettoById(progetto1.getId())).thenReturn(progetto1);
 		when(this.utenteService.getUtenteByCodiceFiscale(utente1.getCodiceFiscale())).thenReturn(utente1);
-		when(this.ruoloService.getRuoloByCodiceRuolo(RuoloUtenteEnum.FAC.toString())).thenReturn(ruoloFAC);
 		when(this.ruoloService.getRuoloByCodiceRuolo(RuoloUtenteEnum.VOL.toString())).thenReturn(ruoloVOL);
 		when(this.enteSedeProgettoFacilitatoreRepository.existsById(Mockito.any(EnteSedeProgettoFacilitatoreKey.class))).thenReturn(false);
 		when(enteSedeProgettoService.getAssociazioneEnteSedeProgetto(sede1.getId(), ente1.getId(), progetto1.getId())).thenReturn(enteSedeProgetto);
@@ -192,9 +190,7 @@ public class EnteSedeProgettoFacilitatoreServiceTest {
 		when(this.sedeService.esisteSedeById(sede1.getId())).thenReturn(true);
 		when(this.progettoService.esisteProgettoById(progetto1.getId())).thenReturn(true);
 		when(this.progettoService.getProgettoById(progetto1.getId())).thenReturn(progetto1);
-		when(this.utenteService.getUtenteByCodiceFiscale(utente1.getCodiceFiscale())).thenReturn(utente1);
-		when(this.ruoloService.getRuoloByCodiceRuolo(RuoloUtenteEnum.FAC.toString())).thenReturn(ruoloFAC);
-		when(this.ruoloService.getRuoloByCodiceRuolo(RuoloUtenteEnum.VOL.toString())).thenReturn(ruoloVOL);
+		when(this.enteSedeProgettoFacilitatoreRepository.hasRuoloVolontarioValido(utente1.getCodiceFiscale())).thenReturn(true);
 		Assertions.assertThrows(EnteSedeProgettoFacilitatoreException.class, () -> enteSedeProgettoFacilitatoreService.associaFacilitatoreAEnteSedeProgetto(enteSedeProgettoFacilitatoreRequest));
 		assertThatExceptionOfType(EnteSedeProgettoFacilitatoreException.class);
 		
@@ -208,9 +204,7 @@ public class EnteSedeProgettoFacilitatoreServiceTest {
 		when(this.sedeService.esisteSedeById(sede1.getId())).thenReturn(true);
 		when(this.progettoService.esisteProgettoById(progetto1.getId())).thenReturn(true);
 		when(this.progettoService.getProgettoById(progetto1.getId())).thenReturn(progetto1);
-		when(this.utenteService.getUtenteByCodiceFiscale(utente1.getCodiceFiscale())).thenReturn(utente1);
-		when(this.ruoloService.getRuoloByCodiceRuolo(RuoloUtenteEnum.FAC.toString())).thenReturn(ruoloFAC);
-		when(this.ruoloService.getRuoloByCodiceRuolo(RuoloUtenteEnum.VOL.toString())).thenReturn(ruoloVOL);
+		when(this.enteSedeProgettoFacilitatoreRepository.hasRuoloFacilitatoreValido(utente1.getCodiceFiscale())).thenReturn(true);
 		Assertions.assertThrows(EnteSedeProgettoFacilitatoreException.class, () -> enteSedeProgettoFacilitatoreService.associaFacilitatoreAEnteSedeProgetto(enteSedeProgettoFacilitatoreRequest));
 		assertThatExceptionOfType(EnteSedeProgettoFacilitatoreException.class);
 	}
@@ -223,9 +217,9 @@ public class EnteSedeProgettoFacilitatoreServiceTest {
 		when(this.sedeService.esisteSedeById(sede1.getId())).thenReturn(true);
 		when(this.progettoService.esisteProgettoById(progetto1.getId())).thenReturn(true);
 		when(this.progettoService.getProgettoById(progetto1.getId())).thenReturn(progetto1);
-		when(this.utenteService.getUtenteByCodiceFiscale(utente1.getCodiceFiscale())).thenReturn(utente1);
-		when(this.ruoloService.getRuoloByCodiceRuolo(RuoloUtenteEnum.FAC.toString())).thenReturn(ruoloFAC);
-		when(this.ruoloService.getRuoloByCodiceRuolo(RuoloUtenteEnum.VOL.toString())).thenReturn(ruoloVOL);
+		//when(this.utenteService.getUtenteByCodiceFiscale(utente1.getCodiceFiscale())).thenReturn(utente1);
+		//when(this.ruoloService.getRuoloByCodiceRuolo(RuoloUtenteEnum.FAC.toString())).thenReturn(ruoloFAC);
+		//when(this.ruoloService.getRuoloByCodiceRuolo(RuoloUtenteEnum.VOL.toString())).thenReturn(ruoloVOL);
 		when(this.enteSedeProgettoFacilitatoreRepository.existsById(Mockito.any(EnteSedeProgettoFacilitatoreKey.class))).thenReturn(true);
 		Assertions.assertThrows(EnteSedeProgettoFacilitatoreException.class, () -> enteSedeProgettoFacilitatoreService.associaFacilitatoreAEnteSedeProgetto(enteSedeProgettoFacilitatoreRequest));
 		assertThatExceptionOfType(EnteSedeProgettoFacilitatoreException.class);
