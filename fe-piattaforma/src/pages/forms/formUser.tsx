@@ -274,7 +274,7 @@ const form = newForm([
     field: 'ruolo',
     id: 'ruolo',
     type: 'select',
-    //required: true,
+    required: true,
   }),
   newFormField({
     field: 'id',
