@@ -190,7 +190,7 @@ public class EnteSedeProgettoFacilitatoreServiceTest {
 		when(this.sedeService.esisteSedeById(sede1.getId())).thenReturn(true);
 		when(this.progettoService.esisteProgettoById(progetto1.getId())).thenReturn(true);
 		when(this.progettoService.getProgettoById(progetto1.getId())).thenReturn(progetto1);
-		when(this.enteSedeProgettoFacilitatoreRepository.hasRuoloVolontarioValido(utente1.getCodiceFiscale())).thenReturn(true);
+		when(this.enteSedeProgettoFacilitatoreRepository.hasRuoloVolontarioValido(utente1.getCodiceFiscale())).thenReturn(1);
 		Assertions.assertThrows(EnteSedeProgettoFacilitatoreException.class, () -> enteSedeProgettoFacilitatoreService.associaFacilitatoreAEnteSedeProgetto(enteSedeProgettoFacilitatoreRequest));
 		assertThatExceptionOfType(EnteSedeProgettoFacilitatoreException.class);
 		
@@ -204,7 +204,7 @@ public class EnteSedeProgettoFacilitatoreServiceTest {
 		when(this.sedeService.esisteSedeById(sede1.getId())).thenReturn(true);
 		when(this.progettoService.esisteProgettoById(progetto1.getId())).thenReturn(true);
 		when(this.progettoService.getProgettoById(progetto1.getId())).thenReturn(progetto1);
-		when(this.enteSedeProgettoFacilitatoreRepository.hasRuoloFacilitatoreValido(utente1.getCodiceFiscale())).thenReturn(true);
+		when(this.enteSedeProgettoFacilitatoreRepository.hasRuoloFacilitatoreValido(utente1.getCodiceFiscale())).thenReturn(1);
 		Assertions.assertThrows(EnteSedeProgettoFacilitatoreException.class, () -> enteSedeProgettoFacilitatoreService.associaFacilitatoreAEnteSedeProgetto(enteSedeProgettoFacilitatoreRequest));
 		assertThatExceptionOfType(EnteSedeProgettoFacilitatoreException.class);
 	}
