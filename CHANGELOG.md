@@ -1,5 +1,14 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.361](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.360...1.0.0-test.361) (2024-10-17)
+
+
+### Bug Fixes
+
+* **T212:** fix test 20241017 ([d11e31c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d11e31c0a2f9b4ec3989a0034822258d2590dff6))
+* **T212:** fix controllo ruolo utente 20241016 ([14993b1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/14993b14cdbdff37bac5587d6df3c77d231033e5))
+* **ms-ente:** fix cancellazione vol fac su terminazione sede 20241016 ([e7513ea](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e7513eadb87e6a6abd47afcc529e3fa269f01525))
+
 ## [1.0.0-test.360](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.359...1.0.0-test.360) (2024-10-15)
 
 
