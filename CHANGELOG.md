@@ -1,5 +1,15 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.362](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.361...1.0.0-test.362) (2024-10-17)
+
+
+### Bug Fixes
+
+* **T212:** fix query e test hasRuolo 20241017 ([40ee863](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/40ee863f1353930ebb2f1967ce5b765999cea2e9))
+* **T212:** fix query e test hasRuolo 20241017 ([a325514](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a325514df75625c4cab690bf89b593a5372ebacb))
+* **T212:** fix test 20241017 ([3fc584d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3fc584de6c19fec067df837529bdbb517b690e9a))
+* **T212:** fix controllo ruolo utente 20241016 ([c8eead1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c8eead1a0094f14980ee6f823427a0a7dec1d58c))
+
 ## [1.0.0-test.361](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.360...1.0.0-test.361) (2024-10-17)
 
 
