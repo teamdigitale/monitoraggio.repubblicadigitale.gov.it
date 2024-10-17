@@ -148,7 +148,7 @@ const ActivityReportTable = forwardRef(function ActivityReportTable(
     () => {
       return {
         search() {
-          if (pagination) searchReports(pagination.number + 1);
+          if (pagination) searchReports(pagination.number);
         },
       };
     },
