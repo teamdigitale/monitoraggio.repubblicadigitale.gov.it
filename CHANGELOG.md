@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.363](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.362...1.0.0-test.363) (2024-10-17)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** fix paginazione registro caricamenti massivi 20241017 ([59341f1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/59341f1acd55387568e8e6c6f358385202a95189))
+
 ## [1.0.0-test.362](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.361...1.0.0-test.362) (2024-10-17)
 
 
