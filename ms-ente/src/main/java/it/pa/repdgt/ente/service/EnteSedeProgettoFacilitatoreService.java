@@ -131,14 +131,14 @@ public class EnteSedeProgettoFacilitatoreService {
 		// final RuoloEntity ruoloVolontario = this.ruoloService.getRuoloByCodiceRuolo(RuoloUtenteEnum.VOL.toString());
 		
 		if(PolicyEnum.RFD.getValue().equals(progettoDBFEtch.getProgramma().getPolicy().getValue())) {
-			if(enteSedeProgettoFacilitatoreRepository.hasRuoloVolontarioValido(codiceFiscaleUtente)) { //SE L'UTENTE HA RUOLO VOL
+			if(enteSedeProgettoFacilitatoreRepository.hasRuoloVolontarioValido(codiceFiscaleUtente)>0) { //SE L'UTENTE HA RUOLO VOL
 				String errorMessage = String.format("Impossibile associare facilitatore con codiceFiscale=%s alla sede con id=%s per l'ente con id=%s sul progetto con id=%s, l'utente è già un volontario",
 						codiceFiscaleUtente, idSede, idEnte, idProgetto);
 				throw new EnteSedeProgettoFacilitatoreException(errorMessage, CodiceErroreEnum.EN07);
 			}
 			codiceRuolo = RuoloUtenteEnum.FAC.toString();
 		} else {
-			if(enteSedeProgettoFacilitatoreRepository.hasRuoloFacilitatoreValido(codiceFiscaleUtente)) { //SE L'UTENTE HA RUOLO FAC
+			if(enteSedeProgettoFacilitatoreRepository.hasRuoloFacilitatoreValido(codiceFiscaleUtente)>0) { //SE L'UTENTE HA RUOLO FAC
 				String errorMessage = String.format("Impossibile associare volontario con codiceFiscale=%s alla sede con id=%s per l'ente con id=%s sul progetto con id=%s, l'utente è già un facilitatore",
 						codiceFiscaleUtente, idSede, idEnte, idProgetto);
 				throw new EnteSedeProgettoFacilitatoreException(errorMessage, CodiceErroreEnum.EN07);
