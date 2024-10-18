@@ -67,8 +67,9 @@
 
     .chip {
         border: 1px solid #dfe4f2 !important;
-        .icon{
-            fill:#5C6F81;
+
+        .icon {
+            fill: #5C6F81;
         }
     }
 }
@@ -140,26 +141,28 @@ input#dateInputDataFine {
 .chipRemove .clickable-area {
     pointer-events: auto;
     cursor: pointer !important;
-    :hover{
+
+    :hover {
         background-color: transparent !important;
     }
-    
+
 }
 
-.chip:hover:not(.chip-disabled){
+.chip:hover:not(.chip-disabled) {
     fill: #06c !important;
     background-color: #fcfdff;
 }
 
-.chip-label{
+.chip-label {
     color: #5C6F81;
 }
 
-.chip:hover:not(.chip-disabled) .chip-label{
+.chip:hover:not(.chip-disabled) .chip-label {
     color: #5C6F81;
 }
 
-.chip:hover:not(.chip-disabled) button .icon, .chip:hover:not(.chip-disabled)>.icon{
+.chip:hover:not(.chip-disabled) button .icon,
+.chip:hover:not(.chip-disabled)>.icon {
     fill: #5C6F81
 }
 
@@ -168,9 +171,58 @@ input#dateInputDataFine {
     &__single-value {
         color: #0066CC !important;
         font-weight: 600 !important;
-    
+
         &--is-disabled {
-          color: #0066CC !important;
+            color: #0066CC !important;
         }
-      }
+    }
+}
+
+.customArrowSelect {
+    position: relative;
+    /* Per consentire al ::after di posizionarsi rispetto al contenitore */
+}
+
+.customArrowSelect::after {
+    content: '';
+    background-image: url('../../../../public/assets/img/it-expand-primary.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: inline-block;
+    width: 30px;
+    /* Regola la dimensione secondo necessità */
+    height: 30px;
+    /* Regola la dimensione secondo necessità */
+    position: absolute;
+    right: 10px;
+    /* Regola la distanza dal bordo destro */
+    top: 50%;
+    transform: translateY(-50%);
+    /* Per centrare verticalmente */
+    pointer-events: none;
+    fill: #0066CC;
+}
+
+.collapse-header {
+    display: inline !important;
+
+    button::before {
+        line-height: 2rem !important;
+    }
+}
+
+.collapse-body{
+    box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.08);
+}
+
+// .collapsed::before{
+//     line-height: 2rem !important;
+// }
+
+.custom-accordion {
+    span {
+        font-size: 24px;
+        font-weight: 600px;
+    }
+
 }
