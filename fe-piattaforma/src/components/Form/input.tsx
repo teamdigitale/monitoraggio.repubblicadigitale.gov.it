@@ -51,6 +51,7 @@ export interface InputI extends Omit<InputProps, 'value'> {
   withLabel?: boolean;
   className?: string;
   touched?: boolean;
+  validationText?: string
 }
 
 const Input: React.FC<InputI> = (props) => {
@@ -74,6 +75,7 @@ const Input: React.FC<InputI> = (props) => {
     withLabel = props.type !== 'radio',
     className = '',
     onClick,
+    validationText
   } = props;
 
   const [val, setVal] = useState<formFieldI['value']>(value);
@@ -144,6 +146,7 @@ const Input: React.FC<InputI> = (props) => {
     required,
     type,
     wrapperClassName: col,
+    infoText: !valid && validationText ? validationText : '',
   };
 
   if (valid !== undefined) {

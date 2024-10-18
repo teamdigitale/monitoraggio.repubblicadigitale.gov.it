@@ -110,8 +110,13 @@
 
 input#dateInputDataInizio,
 input#dateInputDataFine {
-    border-bottom: 1px solid #0073e5;
+    border-bottom: 1px solid #5A6772;
     color: #0066CC !important;
+}
+
+.dateInputDataInizio--isNotValid::-webkit-datetime-edit,
+.dateInputDataFine--isNotValid::-webkit-datetime-edit {
+    color: red !important; 
 }
 
 #search-icon {
@@ -169,13 +174,21 @@ input#dateInputDataFine {
 
 .bootstrap-select {
     &__single-value {
-        color: #0066CC !important;
+        color: #5A6772 !important;
         font-weight: 600 !important;
 
         &--is-disabled {
-            color: #0066CC !important;
+          color: #5A6772 !important;
         }
-    }
+      }
+}
+
+.bootstrap-select__control {
+    border-bottom: 1px solid #5A6772 !important;
+}
+
+.dateInputDataFineDescription {
+    color: red !important;
 }
 
 .customArrowSelect {
@@ -225,4 +238,8 @@ input#dateInputDataFine {
         font-weight: 600px;
     }
 
+}
+
+#dateInputDataFineDescription {
+    color: red !important;
 }
