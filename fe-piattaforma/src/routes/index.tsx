@@ -304,7 +304,7 @@ const AppRoutes: React.FC = () => {
                 }
               />
               <Route
-                path='/report-dati/*'
+                path='/area-dati/*'
                 element={
                   <ProtectedComponent visibleTo={['tab.dshb', 'view.dshb']}>
                     <DataReports />
@@ -312,7 +312,7 @@ const AppRoutes: React.FC = () => {
                 }
               />
               <Route
-                path='/report-dati'
+                path='/area-dati/report-dati'
                 element={
                   <ProtectedComponent visibleTo={['tab.dshb', 'view.dshb']}>
                     <Dashboard />
@@ -349,7 +349,7 @@ const AppRoutes: React.FC = () => {
           <>
             <Route path='/auth/:token' element={<Auth />} />
             <Route path='/auth' element={<Auth />} />
-            <Route path='/report-dati' element={<Dashboard />} />
+            <Route path='/area-dati/report-dati' element={<Dashboard />} />
             <Route path='/' element={<FullLayout />}>
               {/* Public Paths */}
               <Route path='/registrazione' element={<Registrazione />} />
