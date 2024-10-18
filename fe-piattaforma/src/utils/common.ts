@@ -227,19 +227,19 @@ export const MenuRoutes = [
     visible: ['tab.citt'],
   }),
   newMenuItem({
-    label: 'Report dati',
-    path: '/report-dati',
+    label: 'Area dati',
+    path: '/area-dati',
     id: 'tab-dashboard',
     visible: ['tab.dshb'],
     subRoutes: [
       newMenuItem({
         label: 'Report dati',
-        path: '/report-dati',
+        path: '/area-dati/report-dati',
         visible: ['tab.dshb'],
       }),
       newMenuItem({
         label: 'Monitoraggio dei caricamenti massivi',
-        path: '/report-dati/monitoraggio-caricamenti-massivi',
+        path: '/area-dati/monitoraggio-caricamenti-massivi',
         visible: ['tab.dshb', 'vis.mntr'],
       })
     ],

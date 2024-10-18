@@ -26,7 +26,7 @@ interface PageTitleMockI {
 }
 
 export const PageTitleMock: PageTitleMockI = {
-  '/report-dati/monitoraggio-caricamenti-massivi': {
+  '/area-dati/monitoraggio-caricamenti-massivi': {
     title: 'Monitoraggio dei caricamenti massivi',
     textCta: 'Monitoraggio dei caricamenti massivi',
     iconCta: 'it-plus',
@@ -36,7 +36,7 @@ export const PageTitleMock: PageTitleMockI = {
 const tabs = [
   {
     label: 'Monitoraggio dei caricamenti massivi',
-    path: '/report-dati/monitoraggio-caricamenti-massivi',
+    path: '/area-dati/monitoraggio-caricamenti-massivi',
     id: 'tab-dashboard',
   }
 ];

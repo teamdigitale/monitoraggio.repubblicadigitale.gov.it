@@ -87,8 +87,12 @@
 
     td {
         padding: 20px 10px;
+        vertical-align: middle;
     }
 
+    thead th {
+        vertical-align: middle;
+    }
     span#enteColumn,
     span#progettoColumn,
     span#programmaColumn {
