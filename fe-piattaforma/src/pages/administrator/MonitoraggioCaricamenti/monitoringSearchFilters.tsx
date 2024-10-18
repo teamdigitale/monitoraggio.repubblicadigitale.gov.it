@@ -182,7 +182,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
     
     setFormValues(() => {
       let newForm = { ...formValues };
-      let newDateValid = { ...isDateValid };
+      // let newDateValid = { ...isDateValid };
 
       if (field === 'dataInizio') {
         newForm = {
@@ -346,31 +346,6 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
       </Form.Row>
 
       <Form.Row className='justify-content-between px-0 px-lg-5 mx-2'>
-        <Input
-          value={formValues.dataInizio.value}
-          type='date'
-          col='col-12 col-lg-6'
-          label='Data inizio'
-          onInputChange={(value) => handleDateInputChange(value, 'dataInizio')}
-          minimum={formValues.dataInizio.minimum}
-          maximum={formValues.dataInizio.maximum}
-          {...(isDateValid.dataInizio !== undefined ? { valid: isDateValid.dataInizio } : {})}
-          id='dateInputDataInizio'
-        />
-        <Input
-          value={formValues.dataFine.value}
-          type='date'
-          col='col-12 col-lg-6'
-          label='Data fine'
-          onInputChange={(value) => handleDateInputChange(value, 'dataFine')}
-          minimum={formValues.dataFine.minimum}
-          maximum={formValues.dataFine.maximum}
-          {...(isDateValid.dataFine !== undefined ? { valid: isDateValid.dataFine } : {})}
-          id='dateInputDataFine'
-        />
-      </Form.Row>
-
-      <Form.Row className='justify-content-between px-0 px-lg-5 mx-2'>
         {renderSelect('progetto', 'Progetto', (projectTypes || []).map((type: any) => ({
           value: type.value,
           label: type.label,
@@ -379,6 +354,34 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
           value: type.value,
           label: type.label,
         })), false, handleSelectChange, "Seleziona", formValues?.ente?.value?.length > 0)}
+      </Form.Row>
+
+      <Form.Row className='justify-content-between px-0 px-lg-5 mx-2'>
+          <Input
+            value={formValues.dataInizio.value}
+            type='date'
+            label='Data inizio'
+            col='col-12 col-lg-6'
+            onInputChange={(value) => handleDateInputChange(value, 'dataInizio')}
+            minimum={formValues.dataInizio.minimum}
+            maximum={formValues.dataInizio.maximum}
+            {...(isDateValid.dataInizio !== undefined ? { valid: isDateValid.dataInizio } : {})}
+            id='dateInputDataInizio'
+            className={isDateValid.dataInizio === false ? 'dateInputDataInizio--isNotValid' : 'dateInputDataInizio'}
+          />
+          <Input
+            value={formValues.dataFine.value}
+            type='date'
+            label='Data fine'
+            col='col-12 col-lg-6'
+            onInputChange={(value) => handleDateInputChange(value, 'dataFine')}
+            minimum={formValues.dataFine.minimum}
+            maximum={formValues.dataFine.maximum}
+            {...(isDateValid.dataFine !== undefined ? { valid: isDateValid.dataFine } : {})}
+            id='dateInputDataFine'
+            className={isDateValid.dataFine === false ? 'dateInputDataFine--isNotValid' : 'dateInputDataFine mb-2'}
+            validationText='La data di fine non può essere antecendente alla data di inizio'
+            />
       </Form.Row>
 
       <Form.Row className='justify-content-end'>
