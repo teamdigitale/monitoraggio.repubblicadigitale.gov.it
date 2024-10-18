@@ -179,7 +179,7 @@ const Monitoring: React.FC<MonitoringI> = ({
       <Accordion title={'Ricerca avanzata'} className="custom-accordion" opened={true}>
         <MonitoringSearchFilters onSearch={fetchData} formValues={formValues} setFormValues={setFormValuesFunction}/>
       </Accordion>
-      <div style={{ margin: '50px' }} />
+      <div style={{ margin: '50px'}} />
 
       <span className="results"><b>Risultati</b> ({numeroRisultati})</span>
 

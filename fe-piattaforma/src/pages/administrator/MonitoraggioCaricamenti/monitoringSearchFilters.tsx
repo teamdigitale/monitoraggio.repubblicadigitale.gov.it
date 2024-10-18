@@ -255,7 +255,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
       <div
         className={clsx(
           {
-            'd-flex flex-row': isSearchable
+            'd-flex flex-row': !isSearchable
           },
           'col-12 col-lg-6',
           'form-group',
@@ -286,8 +286,10 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
           // color='primary'
           className={clsx(
             {
-              'col-11 pl-0 ': isSearchable,
-              'deleteArrowInSelect': isDisabled || isSearchable
+              'col-12 pl-0 ': isSearchable,
+              'col-12 pl-0  ': !isSearchable,
+              'deleteArrowInSelect': isDisabled || isSearchable || !isSearchable,
+              'customArrowSelect': !isSearchable && !isDisabled
             }
           )}
           classNamePrefix={clsx(
@@ -300,21 +302,6 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
           {...(isSearchable && { menuIsOpen: enteInputValue.length > 3 })}
           onInputChange={(value) => setEnteInputValue(value)}
         />
-        {isSearchable &&
-          <div style={{
-            backgroundColor: (formValues?.intervento?.value != '' || formValues?.programma?.value != '' || formValues?.progetto?.value != '') ? '#e6e9f2' : 'transparent',
-            height: '45px',
-          }}>
-            <Icon
-              color='primary'
-              icon='it-search'
-              size=''
-              id='search-icon'
-              aria-label='Cerca'
-              aria-hidden
-            />
-          </div>
-        }
       </div>
     )
   };
@@ -349,7 +336,9 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
   return (
     <Form id='form-categories' className='mt-3 pb-5'>
       <Form.Row className='justify-content-between px-0 px-lg-5 mx-2'>
-        {renderSelect('ente', 'Ente', multiOptions, true, handleSelectChange, "Inizia a scrivere il nome dell'ente...", formValues?.intervento?.value != '' || formValues?.programma?.value != '' || formValues?.progetto?.value != '')}
+        {renderSelect('ente', 'Ente', multiOptions, true, handleSelectChange,
+           "Inizia a scrivere il nome dell'ente...",
+            formValues?.intervento?.value != '' || formValues?.programma?.value != '' || formValues?.progetto?.value != '')}
         {renderSelect('intervento', 'Intervento', [
           { value: 'rfd', label: 'RFD' },
           { value: 'scd', label: 'SCD' },
