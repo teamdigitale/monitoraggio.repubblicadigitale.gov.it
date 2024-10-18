@@ -76,7 +76,7 @@ const PageTitle: React.FC<PageTitleI> = (props) => {
     switch (location.pathname) {
       case '/area-amministrativa/questionari':
         return surveyBody;
-      case '/report-dati':
+      case '/area-dati':
         return 'Per una consultazione ottimale dei grafici si consiglia di visualizzare la pagina da desktop';
       case '/documenti':
         return documentsBody;

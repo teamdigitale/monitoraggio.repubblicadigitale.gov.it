@@ -89,7 +89,7 @@ export default function DataUploadPage() {
   const isMonitoringPage = location.search.includes('monitoring');
 
   const handleButtonClick = () => {
-    navigate('/report-dati/monitoraggio-caricamenti-massivi');
+    navigate('/area-dati/monitoraggio-caricamenti-massivi');
   };
 
   return (
