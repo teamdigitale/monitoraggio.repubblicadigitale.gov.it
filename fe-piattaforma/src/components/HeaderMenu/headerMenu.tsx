@@ -117,6 +117,10 @@ const HeaderMenu: React.FC<HeaderMenuI> = (props) => {
     );
   };
 
+const filteredMenuRoutes = menuRoutes.filter(({ visible = [] }) => hasUserPermission(visible)).some(route => route.path === '/area-dati') 
+  ? menuRoutes.filter(route => route.path !== '/area-dati/report-dati')
+  : menuRoutes;
+
   return (
     <nav
       className={clsx(
@@ -130,7 +134,7 @@ const HeaderMenu: React.FC<HeaderMenuI> = (props) => {
       tabIndex={-1}
     >
       <ul className='d-flex align-items-end mb-0' role='menu'>
-        {menuRoutes
+        {filteredMenuRoutes
           .filter(({ visible = [] }) => hasUserPermission(visible))
           .map((li) => (
             <li
