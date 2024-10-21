@@ -21,7 +21,7 @@ import MonitoringSearchFilters, { initialFormValues } from './monitoringSearchFi
 import './monitoring.scss';
 import { withFormHandlerProps } from '../../../hoc/withFormHandler';
 import {
-  setHeadquarterDetails,resetProjectDetails
+  setHeadquarterDetails, resetProjectDetails
 } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { Button, Chip, ChipLabel, Icon } from 'design-react-kit';
 interface MonitoringFormI {
@@ -29,7 +29,7 @@ interface MonitoringFormI {
   creation?: boolean;
 }
 
-interface MonitoringI extends withFormHandlerProps, MonitoringFormI {}
+interface MonitoringI extends withFormHandlerProps, MonitoringFormI { }
 
 // interface CaricamentiResponse {
 //   cittadiniCaricati: number;
@@ -52,9 +52,10 @@ const Monitoring: React.FC<MonitoringI> = ({
   const [statisticheElaborate, setStatisticheElaborate] = useState<any[]>([]);
   const [formValues, setFormValues] = useState<typeof initialFormValues>(initialFormValues);
   const [chips, setChips] = useState<string[]>([]);
+  const [areChipsVisible, setChipsVisible] = useState(false);
 
   useEffect(() => {
-    dispatch(setEntityPagination({ pageSize: 10}));
+    dispatch(setEntityPagination({ pageSize: 10 }));
   }, []);
 
   useEffect(() => {
@@ -62,7 +63,6 @@ const Monitoring: React.FC<MonitoringI> = ({
   }, [dispatch]);
 
   const removeChip = (chip: string) => {
-    console.log("Sono in removeChip");
     // Identifica quale valore deve essere cancellato in base al chip selezionato
     const newFormValues = { ...formValues };
 
@@ -84,10 +84,33 @@ const Monitoring: React.FC<MonitoringI> = ({
 
     // Rimuove la chip e aggiorna lo stato
     setChips((prevChips) => prevChips.filter((c) => c !== chip));
+
+
+    //Aspette 1ms e clicca il bottone #applicaFiltri
+    setTimeout(() => {
+      handleSingleChipRemoveClick();
+    }, 1);
+  };
+
+  const handleClearAllClick = () => {
+    const targetElement = document.querySelector('#cancellaFiltri') as HTMLButtonElement;
+    if (targetElement) {
+      targetElement.click();
+    }
+    setChipsVisible(false);
+  };
+
+  const handleSingleChipRemoveClick = () => {
+    const targetElement = document.querySelector('#applicaFiltri') as HTMLButtonElement;
+    if (targetElement) {
+      targetElement.click();
+    }
   };
 
 
-  const fetchData = async (currPage: number = 1, orderBy: string = "data_caricamenti", direction: string = "desc" ) => { 
+
+  const fetchData = async (currPage: number = 1, orderBy: string = "data_caricamenti", direction: string = "desc") => {
+
     try {
       const payload: any = {
         ...(Number(formValues.programma.value) !== 0 && { idProgramma: Number(formValues.programma.value) }),
@@ -102,7 +125,7 @@ const Monitoring: React.FC<MonitoringI> = ({
         direction
       };
       const newTableValues = await GetMonitoraggioCaricamentiValues(payload)(dispatch);
-      
+
       setCaricamentiList(newTableValues.monitoraggioCaricamentiEntity);
       setNumeroRisultati(newTableValues.numeroTotaleElementi);
       setStatistiche([newTableValues.numeroEnti, newTableValues.numeroCaricamenti, newTableValues.serviziCaricati, newTableValues.cittadiniCaricati]);
@@ -120,37 +143,37 @@ const Monitoring: React.FC<MonitoringI> = ({
     const options: Intl.DateTimeFormatOptions = { day: '2-digit', month: '2-digit', year: 'numeric' };
     return new Date(dateString).toLocaleDateString('it-IT', options);
   };
-  
+
   const updateTableValues = () => {
     let table;
-    if(caricamentiList.length > 0) {
+    if (caricamentiList.length > 0) {
       table = newTable(
         TableHeading,
         caricamentiList.map((td: any) => {
-        return {
-          idProgetto: td.idProgetto,
-          data: <span id='dataColumn'><b>{formatDate(td.dataCaricamenti)}</b></span>,
-          ente: <span id='enteColumn'>{td.nomeEnte}</span>,
-          intervento: <span id='interventoColumn'>{td.intervento}</span>,
-          progetto: <span id='progettoColumn'>{td.nomeProgetto}</span>,
-          programma: <span id='programmaColumn'>{td.nomeProgramma}</span>,
-          caricamenti: <span id='caricamentiColumn'>{td.numCaricamenti}</span>,
-          serviziCaricati: <span id='serviziColumn'>{td.serviziAggiunti}</span>,
-          cittadiniCaricati: <span id='cittadiniColumn'>{td.cittadiniAssociati}</span>
-        };
+          return {
+            idProgetto: td.idProgetto,
+            data: <span id='dataColumn'><b>{formatDate(td.dataCaricamenti)}</b></span>,
+            ente: <span id='enteColumn'>{td.nomeEnte}</span>,
+            intervento: <span id='interventoColumn'>{td.intervento}</span>,
+            progetto: <span id='progettoColumn'>{td.nomeProgetto}</span>,
+            programma: <span id='programmaColumn'>{td.nomeProgramma}</span>,
+            caricamenti: <span id='caricamentiColumn'>{td.numCaricamenti}</span>,
+            serviziCaricati: <span id='serviziColumn'>{td.serviziAggiunti}</span>,
+            cittadiniCaricati: <span id='cittadiniColumn'>{td.cittadiniAssociati}</span>
+          };
         })
       );
-    }else
-      table = newTable(TableHeading,[]);
-    
+    } else
+      table = newTable(TableHeading, []);
+
     return table;
   };
 
   const [tableValues, setTableValues] = useState(updateTableValues());
   const [numeroRisultati, setNumeroRisultati] = useState(0);
-  
-  
-  
+
+
+
 
   useEffect(() => {
     if (Array.isArray(caricamentiList) && caricamentiList.length)
@@ -187,12 +210,16 @@ const Monitoring: React.FC<MonitoringI> = ({
     },
   };
 
-  const setFormValuesFunction = (formValues : any) => {
+  const setFormValuesFunction = (formValues: any) => {
     setFormValues(formValues);
   }
 
   const setChipsFunction = (chips: string[]) => {
     setChips(chips);
+  }
+
+  const setChipVisibility = (value: boolean) => {
+    setChipsVisible(value);
   }
 
   return (
@@ -202,24 +229,35 @@ const Monitoring: React.FC<MonitoringI> = ({
 
       <div style={{ margin: '50px' }} />
       <Accordion title={'Ricerca avanzata'} className="custom-accordion" opened={true}>
-        <MonitoringSearchFilters onSearch={fetchData} formValues={formValues} setFormValues={setFormValuesFunction} chips={chips} setChips={setChipsFunction}/>
+        <MonitoringSearchFilters onSearch={fetchData} formValues={formValues} setFormValues={setFormValuesFunction} chips={chips} setChips={setChipsFunction} setChipsVisible={setChipVisibility} />
       </Accordion>
-      <div style={{ marginBottom: '50px'}} className='justify-content-start mt-5 chipsRow'>
-        {chips.map((chip, index) => (
-            <Button className='chipRemove' onClick={() => removeChip(chip)}>
-              <Chip key={index} className='mr-1 ml-0 rounded-pill'>
-                <ChipLabel className='mx-1 my-1'>
-                  {chip}
-                </ChipLabel>
-                <Icon
-                  icon='it-close'
-                  className='ml-2 cursor-pointer clickable-area'
-                  aria-label='Remove filter'
-                />
-              </Chip>
-            </Button>
-          ))}
+      <div style={{ marginBottom: '50px' }} className='justify-content-start mt-5 chipsRow'>
+        {areChipsVisible && (
+          <>
+            {chips.map((chip, index) => (
+              <Button key={index} className='chipRemove' onClick={() => removeChip(chip)}>
+                <Chip className='mr-1 ml-0 rounded-pill'>
+                  <ChipLabel className='mx-1 my-1'>
+                    {chip}
+                  </ChipLabel>
+                  <Icon
+                    icon='it-close'
+                    className='ml-2 cursor-pointer clickable-area'
+                    aria-label='Remove filter'
+                  />
+                </Chip>
+              </Button>
+            ))}
+            {chips.length > 0 && (
+              <Button className='clearAllChips' onClick={handleClearAllClick}>
+                Cancella tutti
+              </Button>
+            )}
+          </>
+        )}
       </div>
+
+
 
 
       <span className="results"><b>Risultati</b> ({numeroRisultati})</span>
