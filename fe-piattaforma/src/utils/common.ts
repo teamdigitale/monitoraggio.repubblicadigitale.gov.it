@@ -230,7 +230,7 @@ export const MenuRoutes = [
     label: 'Area dati',
     path: '/area-dati',
     id: 'tab-dashboard',
-    visible: ['tab.dshb'],
+    visible: ['vis.mntr'],
     subRoutes: [
       newMenuItem({
         label: 'Report dati',
@@ -243,6 +243,12 @@ export const MenuRoutes = [
         visible: ['tab.dshb', 'vis.mntr'],
       })
     ],
+  }),
+  newMenuItem({
+    label: 'Report dati',
+    path: '/area-dati/report-dati',
+    id: 'tab-report',
+    visible: ['tab.dshb'],
   }),
   newMenuItem({
     label: 'Bacheca',
