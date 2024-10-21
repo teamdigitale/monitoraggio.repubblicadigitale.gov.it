@@ -88,7 +88,7 @@ const Monitoring: React.FC<MonitoringI> = ({
 
     //Aspette 1ms e clicca il bottone #applicaFiltri
     setTimeout(() => {
-      handleSingleChipRemoveClick();
+      handleSearchAfterSingleChipRemoveClick();
     }, 1);
   };
 
@@ -98,9 +98,12 @@ const Monitoring: React.FC<MonitoringI> = ({
       targetElement.click();
     }
     setChipsVisible(false);
+    setTimeout(() => {
+      handleSearchAfterSingleChipRemoveClick();
+    }, 1);
   };
 
-  const handleSingleChipRemoveClick = () => {
+  const handleSearchAfterSingleChipRemoveClick = () => {
     const targetElement = document.querySelector('#applicaFiltri') as HTMLButtonElement;
     if (targetElement) {
       targetElement.click();
