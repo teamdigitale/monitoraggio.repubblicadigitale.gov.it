@@ -21,6 +21,8 @@ interface MonitoringSearchFilterI {
   setFormValues: (formValues: any) => void;
   chips: string[];
   setChips: (chips: string[]) => void;
+  areChipsVisible?: boolean;
+  setChipsVisible: (areChipVisible: boolean) => void;
 }
 
 type DateField = {
@@ -58,12 +60,11 @@ export const initialFormValues = {
   } as DateField,
 };
 
-const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues, setFormValues, onSearch, chips, setChips }) => {
+const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues, setFormValues, onSearch, chips, setChips, areChipsVisible, setChipsVisible}) => {
   const [isDateValid, setIsDateValid] = useState<{ dataInizio?: boolean; dataFine?: boolean }>({ dataInizio: true, dataFine: true });
   const dispatch = useDispatch();
   const dropdownFilterOptions = useSelector(selectEntityFiltersOptions);
   const entiList = useAppSelector(selectEntityList);
-
 
 
   const [programTypes, setProgramTypes] = useState<OptionType[]>();
@@ -211,6 +212,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
     dispatch(retriveProgramma);
     dispatch(retriveProgetto);
     dispatch(GetEntitySearchValues({ entity: 'ente', criterioRicerca: "%" }));
+    setChipsVisible(false);
   };
 
   const [enteInputValue, setEnteInputValue] = useState('');
@@ -307,6 +309,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
 
   function handleSubmitFiltri(): void {
     onSearch();
+    setChipsVisible(true);
   }
 
   return (
@@ -361,10 +364,10 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
       </Form.Row>
 
       <Form.Row className='justify-content-end'>
-        <Button color='secondary' className='mr-2' onClick={handleClearForm}>
+        <Button color='secondary' className='mr-2' id='cancellaFiltri' onClick={handleClearForm}>
           Cancella filtri
         </Button>
-        <Button color='primary' onClick={handleSubmitFiltri} disabled={!isDateValid.dataInizio || !isDateValid.dataFine}>
+        <Button color='primary' id='applicaFiltri' onClick={handleSubmitFiltri} disabled={!isDateValid.dataInizio || !isDateValid.dataFine}>
           Applica filtri
         </Button>
       </Form.Row>
