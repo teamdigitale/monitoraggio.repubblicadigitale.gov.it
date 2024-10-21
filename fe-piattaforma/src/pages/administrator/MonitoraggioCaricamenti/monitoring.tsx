@@ -23,6 +23,7 @@ import { withFormHandlerProps } from '../../../hoc/withFormHandler';
 import {
   setHeadquarterDetails,resetProjectDetails
 } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
+import { Button, Chip, ChipLabel, Icon } from 'design-react-kit';
 interface MonitoringFormI {
   formDisabled?: boolean;
   creation?: boolean;
@@ -50,6 +51,7 @@ const Monitoring: React.FC<MonitoringI> = ({
   // const { filtroCriterioRicerca, filtroPolicies, filtroStati } = filtersList;
   const [statisticheElaborate, setStatisticheElaborate] = useState<any[]>([]);
   const [formValues, setFormValues] = useState<typeof initialFormValues>(initialFormValues);
+  const [chips, setChips] = useState<string[]>([]);
 
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 10}));
@@ -59,11 +61,30 @@ const Monitoring: React.FC<MonitoringI> = ({
     fetchData();
   }, [dispatch]);
 
-  // const handleTableValuesChange = (newTableValues: CaricamentiResponse) => {
-  //     setCaricamentiList(newTableValues.monitoraggioCaricamentiEntity);
-  //     setNumeroRisultati(newTableValues.numeroTotaleElementi);
-  //     setStatistiche([newTableValues.numeroEnti, newTableValues.numeroCaricamenti, newTableValues.serviziCaricati, newTableValues.cittadiniCaricati]);
-  // };
+  const removeChip = (chip: string) => {
+    console.log("Sono in removeChip");
+    // Identifica quale valore deve essere cancellato in base al chip selezionato
+    const newFormValues = { ...formValues };
+
+    if (chip.includes('Programma')) {
+      newFormValues.programma = initialFormValues.programma;
+    } else if (chip.includes('Intervento')) {
+      newFormValues.intervento = initialFormValues.intervento;
+    } else if (chip.includes('Progetto')) {
+      newFormValues.progetto = initialFormValues.progetto;
+    } else if (chip.includes('Periodo')) {
+      newFormValues.dataInizio = initialFormValues.dataInizio;
+      newFormValues.dataFine = initialFormValues.dataFine;
+    } else if (chip.includes('Ente')) {
+      newFormValues.ente = initialFormValues.ente;
+    }
+
+    // Aggiorna i valori del form
+    setFormValues(newFormValues);
+
+    // Rimuove la chip e aggiorna lo stato
+    setChips((prevChips) => prevChips.filter((c) => c !== chip));
+  };
 
 
   const fetchData = async (currPage: number = 1, orderBy: string = "data_caricamenti", direction: string = "desc" ) => { 
@@ -170,6 +191,10 @@ const Monitoring: React.FC<MonitoringI> = ({
     setFormValues(formValues);
   }
 
+  const setChipsFunction = (chips: string[]) => {
+    setChips(chips);
+  }
+
   return (
     <div>
       Monitora l'avanzamento dei caricamenti massivi dei dati degli enti. La visualizzazione di base è preimpostata in <br />
@@ -177,9 +202,25 @@ const Monitoring: React.FC<MonitoringI> = ({
 
       <div style={{ margin: '50px' }} />
       <Accordion title={'Ricerca avanzata'} className="custom-accordion" opened={true}>
-        <MonitoringSearchFilters onSearch={fetchData} formValues={formValues} setFormValues={setFormValuesFunction}/>
+        <MonitoringSearchFilters onSearch={fetchData} formValues={formValues} setFormValues={setFormValuesFunction} chips={chips} setChips={setChipsFunction}/>
       </Accordion>
-      <div style={{ margin: '50px'}} />
+      <div style={{ marginBottom: '50px'}} className='justify-content-start mt-5 chipsRow'>
+        {chips.map((chip, index) => (
+            <Button className='chipRemove' onClick={() => removeChip(chip)}>
+              <Chip key={index} className='mr-1 ml-0 rounded-pill'>
+                <ChipLabel className='mx-1 my-1'>
+                  {chip}
+                </ChipLabel>
+                <Icon
+                  icon='it-close'
+                  className='ml-2 cursor-pointer clickable-area'
+                  aria-label='Remove filter'
+                />
+              </Chip>
+            </Button>
+          ))}
+      </div>
+
 
       <span className="results"><b>Risultati</b> ({numeroRisultati})</span>
 

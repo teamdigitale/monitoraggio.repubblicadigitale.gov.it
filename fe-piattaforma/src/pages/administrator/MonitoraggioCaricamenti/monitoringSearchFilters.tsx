@@ -19,6 +19,8 @@ interface MonitoringSearchFilterI {
   onSearch: () => void;
   formValues: { ente: OptionType; programma: OptionType; intervento: OptionType; progetto: OptionType; dataInizio: DateField; dataFine: DateField; };
   setFormValues: (formValues: any) => void;
+  chips: string[];
+  setChips: (chips: string[]) => void;
 }
 
 type DateField = {
@@ -56,8 +58,7 @@ export const initialFormValues = {
   } as DateField,
 };
 
-const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues, setFormValues, onSearch }) => {
-  const [chips, setChips] = useState<string[]>([]);
+const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues, setFormValues, onSearch, chips, setChips }) => {
   const [isDateValid, setIsDateValid] = useState<{ dataInizio?: boolean; dataFine?: boolean }>({ dataInizio: true, dataFine: true });
   const dispatch = useDispatch();
   const dropdownFilterOptions = useSelector(selectEntityFiltersOptions);
@@ -73,31 +74,6 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
     dispatch(retriveProgetto);
     dispatch(GetEntitySearchValues({ entity: 'ente', criterioRicerca: "%" }));
   }, [dispatch]);
-
-  const removeChip = (chip: string) => {
-    console.log("Sono in removeChip");
-    // Identifica quale valore deve essere cancellato in base al chip selezionato
-    const newFormValues = { ...formValues };
-
-    if (chip.includes('Programma')) {
-      newFormValues.programma = initialFormValues.programma;
-    } else if (chip.includes('Intervento')) {
-      newFormValues.intervento = initialFormValues.intervento;
-    } else if (chip.includes('Progetto')) {
-      newFormValues.progetto = initialFormValues.progetto;
-    } else if (chip.includes('Periodo')) {
-      newFormValues.dataInizio = initialFormValues.dataInizio;
-      newFormValues.dataFine = initialFormValues.dataFine;
-    } else if (chip.includes('Ente')) {
-      newFormValues.ente = initialFormValues.ente;
-    }
-
-    // Aggiorna i valori del form
-    setFormValues(newFormValues);
-
-    // Rimuove la chip e aggiorna lo stato
-    setChips((prevChips) => prevChips.filter((c) => c !== chip));
-  };
 
 
   useEffect(() => {
@@ -393,22 +369,6 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
         </Button>
       </Form.Row>
 
-      <Form.Row className='justify-content-start mt-5 chipsRow'>
-        {chips.map((chip, index) => (
-          <Button className='chipRemove' onClick={() => removeChip(chip)}>
-            <Chip key={index} className='mr-1 ml-0 rounded-pill'>
-              <ChipLabel className='mx-1 my-1'>
-                {chip}
-              </ChipLabel>
-              <Icon
-                icon='it-close'
-                className='ml-2 cursor-pointer clickable-area'
-                aria-label='Remove filter'
-              />
-            </Chip>
-          </Button>
-        ))}
-      </Form.Row>
 
     </Form>
   );
