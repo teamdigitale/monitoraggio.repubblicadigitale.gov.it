@@ -1,5 +1,21 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.364](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.363...1.0.0-test.364) (2024-10-21)
+
+
+### Features
+
+* **monitoraggio-caricamenti:** cambiato comportamento chip 20241021 ([5848255](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/584825525838881eeb2f2f858cc6e8a9c3e4523b))
+* **monitoraggio-caricamenti:** modifica visiibilita opzioni menu header 20241021 ([ff40a02](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ff40a0212d8c7b36f72b345684cd2bfc1383bd1b))
+* **monitoraggio-caricamenti:** modifica menu report e dettagli tabella 20241018 ([606a72c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/606a72c27a68399a5be2130870633b45057be8d8))
+* **monitoraggio-caricamenti:** modifiche grafiche filtri 20241018 ([0f0c69b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0f0c69b6f5bf73937928184f602cb387feaab542))
+
+
+### Bug Fixes
+
+* **monitoraggio-caricamenti:** fix CTA chips 20241021 ([af9426a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/af9426ad7448b0c680187f6193aa5e120a5f0798))
+* **monitoraggio-caricamenti:** spostata sezione chips fuori sezione ricerca 20241021 ([2013bd5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2013bd5ed01db6c9a2087982a0f610cd24f0d16a))
+
 ## [1.0.0-test.363](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.362...1.0.0-test.363) (2024-10-17)
 
 
