@@ -135,7 +135,12 @@ input#dateInputDataFine {
     padding-right: 0px;
 }
 
-#react-select-2-input {
+input[id^="react-select-"] {
+    box-shadow: none !important;
+    opacity: 1 !important;
+}
+
+.form-check [type=checkbox]:focus+label, .form-check [type=radio]:focus+label, .toggles label input[type=checkbox]:focus+.lever, :focus:not(.focus--mouse):not([data-focus-mouse=true]) {
     box-shadow: none !important;
     opacity: 1 !important;
 }
