@@ -257,3 +257,42 @@ input[id^="react-select-"] {
     color: #0066CC !important;
     text-decoration: underline !important;
 }
+
+.customCrossSelect {
+    position: relative;
+    /* Per consentire al ::after di posizionarsi rispetto al contenitore */
+}
+
+.customCrossSelect::after {
+    content: '';
+    background-image: url('../../../../public/assets/img/it-close.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    fill: #0066CC;
+}
+
+.clickable-cross-area {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 30px;
+    background-color: transparent;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.bootstrap-select__control--is-focused{
+    .bootstrap-select__placeholder.css-zsohrp-placeholder {
+        opacity: 0;
+    }
+}
