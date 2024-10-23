@@ -60,7 +60,7 @@ export const initialFormValues = {
   } as DateField,
 };
 
-const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues, setFormValues, onSearch, chips, setChips, areChipsVisible, setChipsVisible}) => {
+const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues, setFormValues, onSearch, chips, setChips, areChipsVisible, setChipsVisible }) => {
   const [isDateValid, setIsDateValid] = useState<{ dataInizio?: boolean; dataFine?: boolean }>({ dataInizio: true, dataFine: true });
   const dispatch = useDispatch();
   const dropdownFilterOptions = useSelector(selectEntityFiltersOptions);
@@ -156,7 +156,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
 
   const handleDateInputChange = (value: any, field: string) => {
     const formattedDate = typeof value === 'string' ? value : new Date(value).toISOString().split('T')[0];
-    
+
     setFormValues(() => {
       let newForm = { ...formValues };
       // let newDateValid = { ...isDateValid };
@@ -316,8 +316,8 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
     <Form id='form-categories' className='mt-3 pb-5'>
       <Form.Row className='justify-content-between px-0 px-lg-5 mx-2'>
         {renderSelect('ente', 'Ente', multiOptions, true, handleSelectChange,
-           "Inizia a scrivere il nome dell'ente...",
-            formValues?.intervento?.value != '' || formValues?.programma?.value != '' || formValues?.progetto?.value != '')}
+          "Inizia a scrivere il nome dell'ente...",
+          formValues?.intervento?.value != '' || formValues?.programma?.value != '' || formValues?.progetto?.value != '')}
         {renderSelect('intervento', 'Intervento', [
           { value: 'rfd', label: 'RFD' },
           { value: 'scd', label: 'SCD' },
@@ -336,31 +336,32 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
       </Form.Row>
 
       <Form.Row className='justify-content-between px-0 px-lg-5 mx-2'>
-          <Input
-            value={formValues.dataInizio.value}
-            type='date'
-            label='Data inizio'
-            col='col-12 col-lg-6'
-            onInputChange={(value) => handleDateInputChange(value, 'dataInizio')}
-            minimum={formValues.dataInizio.minimum}
-            maximum={formValues.dataInizio.maximum}
-            {...(isDateValid.dataInizio !== undefined ? { valid: isDateValid.dataInizio } : {})}
-            id='dateInputDataInizio'
-            className={isDateValid.dataInizio === false ? 'dateInputDataInizio--isNotValid' : 'dateInputDataInizio'}
-          />
-          <Input
-            value={formValues.dataFine.value}
-            type='date'
-            label='Data fine'
-            col='col-12 col-lg-6'
-            onInputChange={(value) => handleDateInputChange(value, 'dataFine')}
-            minimum={formValues.dataFine.minimum}
-            maximum={formValues.dataFine.maximum}
-            {...(isDateValid.dataFine !== undefined ? { valid: isDateValid.dataFine } : {})}
-            id='dateInputDataFine'
-            className={isDateValid.dataFine === false ? 'dateInputDataFine--isNotValid' : 'dateInputDataFine mb-2'}
-            validationText='La data di fine non può essere antecendente alla data di inizio'
-            />
+        <Input
+          value={formValues.dataInizio.value}
+          type='date'
+          label='Data inizio'
+          col='col-12 col-lg-6'
+          onInputChange={(value) => handleDateInputChange(value, 'dataInizio')}
+          minimum={formValues.dataInizio.minimum}
+          maximum={formValues.dataInizio.maximum}
+          id='dateInputDataInizio'
+          className={isDateValid.dataInizio === false ? 'dateInputDataInizio--isNotValid' : 'dateInputDataInizio'}
+          invalid={isDateValid.dataInizio === false}
+        />
+        <Input
+          value={formValues.dataFine.value}
+          type='date'
+          label='Data fine'
+          col='col-12 col-lg-6'
+          onInputChange={(value) => handleDateInputChange(value, 'dataFine')}
+          minimum={formValues.dataFine.minimum}
+          maximum={formValues.dataFine.maximum}
+          id='dateInputDataFine'
+          className={isDateValid.dataFine === false ? 'dateInputDataFine--isNotValid' : 'dateInputDataFine mb-2'}
+          invalid={isDateValid.dataFine === false}
+          validationText={formValues.dataFine.value !== '' && formValues.dataFine.value < formValues.dataInizio.value ? 'La data di fine non può essere antecedente alla data di inizio' : ''}
+        />
+
       </Form.Row>
 
       <Form.Row className='justify-content-end'>
