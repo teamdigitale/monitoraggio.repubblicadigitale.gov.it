@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Chip, ChipLabel, Icon } from 'design-react-kit';
+import { Button } from 'design-react-kit';
 import { Form, Input } from '../../../components';
 import { Select as SelectKit } from 'design-react-kit';
 import clsx from 'clsx';
@@ -8,6 +8,7 @@ import { selectEntityFiltersOptions, selectEntityList } from '../../../redux/fea
 import { GetEntitySearchValues, GetProgettiDropdownList, GetProgrammiDropdownList } from '../../../redux/features/administrativeArea/administrativeAreaThunk';
 import { useAppSelector } from '../../../redux/hooks';
 import './monitoring.scss';
+import { t } from 'i18next';
 
 export type OptionType = {
   value: string;
@@ -217,6 +218,11 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
 
   const [enteInputValue, setEnteInputValue] = useState('');
 
+  const handleCrossButtonClick = () => {
+    setFormValues(() => ({ ...formValues, ente: { value: '', label: 'Inizia a scrivere il nome dell\'ente' } }));
+    setEnteInputValue('');
+  };
+
   const renderSelect = (
     field: keyof typeof initialFormValues,
     label: string,
@@ -257,18 +263,18 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
           name={field}
           id={field}
           options={options}
-          value={formValues[field]}
+          value={formValues[field].value !== '' ? formValues[field] : null}
           menuPlacement={'auto'}
           placeholder={placeholder}
           //onMenuScrollToBottom={onMenuScrollToBottom}
           // color='primary'
           className={clsx(
             {
-              'col-12 pl-0 ': isSearchable,
-              'col-12 pl-0  ': !isSearchable,
               'deleteArrowInSelect': isDisabled || isSearchable || !isSearchable,
-              'customArrowSelect': !isSearchable && !isDisabled
-            }
+              'customArrowSelect': !isSearchable && !isDisabled,
+              'customCrossSelect': isSearchable
+            },
+            'col-12 pl-0'
           )}
           classNamePrefix={clsx(
             shortDropdownMenu ? 'bootstrap-select-short' : 'bootstrap-select'
@@ -278,8 +284,16 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
           isSearchable={isSearchable}
           openMenuOnClick={!isSearchable}
           {...(isSearchable && { menuIsOpen: enteInputValue.length > 3 })}
+          onFocus={() => {}}
+          onBlur={() => {}}
           onInputChange={(value) => setEnteInputValue(value)}
         />
+        {isSearchable && (
+          <div 
+            className="clickable-cross-area"
+            onClick={handleCrossButtonClick}
+          />
+        )}
       </div>
     )
   };
