@@ -281,7 +281,11 @@ export const GetNotificationsByUser =
     updateCount = false
   ) =>
   async (dispatch: Dispatch, select: Selector) => {
+    const state = select((state: RootState) => state.user.permissions) as { user: { permissions: any } };    
     try {
+      if(!state.user.permissions.includes('list.ntf.nr')) {
+        return;
+      }      
       dispatch(showLoader());
       dispatch({ ...GetNotificationsByUserAction });
       const {
