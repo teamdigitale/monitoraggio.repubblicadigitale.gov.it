@@ -123,6 +123,11 @@ input#dateInputDataFine {
     color: red !important; 
 }
 
+.dateInputDataInizio--empty::-webkit-datetime-edit,
+.dateInputDataFine--empty::-webkit-datetime-edit {
+    color: #5A6772 !important;
+}
+
 #search-icon {
     border-bottom: 1px solid #0073e5 !important;
     margin-top: 13px;
@@ -260,7 +265,6 @@ input[id^="react-select-"] {
 
 .customCrossSelect {
     position: relative;
-    /* Per consentire al ::after di posizionarsi rispetto al contenitore */
 }
 
 .customCrossSelect::after {
@@ -277,6 +281,10 @@ input[id^="react-select-"] {
     transform: translateY(-50%);
     pointer-events: none;
     fill: #0066CC;
+}
+
+.customCrossSelectDisabled::after {
+    background-image: url('../../../../public/assets/img/it-close-grey.png'); 
 }
 
 .clickable-cross-area {
