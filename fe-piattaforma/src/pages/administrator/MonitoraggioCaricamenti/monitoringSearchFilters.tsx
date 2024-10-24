@@ -8,7 +8,6 @@ import { selectEntityFiltersOptions, selectEntityList } from '../../../redux/fea
 import { GetEntitySearchValues, GetProgettiDropdownList, GetProgrammiDropdownList } from '../../../redux/features/administrativeArea/administrativeAreaThunk';
 import { useAppSelector } from '../../../redux/hooks';
 import './monitoring.scss';
-import { t } from 'i18next';
 
 export type OptionType = {
   value: string;
@@ -22,8 +21,6 @@ interface MonitoringSearchFilterI {
   setFormValues: (formValues: any) => void;
   chips: string[];
   setChips: (chips: string[]) => void;
-  areChipsVisible?: boolean;
-  setChipsVisible: (areChipVisible: boolean) => void;
 }
 
 type DateField = {
@@ -61,8 +58,10 @@ export const initialFormValues = {
   } as DateField,
 };
 
-const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues, setFormValues, onSearch, chips, setChips, areChipsVisible, setChipsVisible }) => {
+const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues, setFormValues, onSearch, chips, setChips }) => {
   const [isDateValid, setIsDateValid] = useState<{ dataInizio?: boolean; dataFine?: boolean }>({ dataInizio: true, dataFine: true });
+  const [isFiltersChanged, setIsFiltersChanged] = useState(false); // Nuovo stato per monitorare le modifiche
+  const [shouldSearch, setShouldSearch] = useState(false);
   const dispatch = useDispatch();
   const dropdownFilterOptions = useSelector(selectEntityFiltersOptions);
   const entiList = useAppSelector(selectEntityList);
@@ -148,12 +147,13 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
 
   useEffect(() => {
     const today = new Date().toISOString().split('T')[0];
-    setFormValues(() => ({
-      ...formValues,
+    setFormValues((prev: any) => ({
+      ...prev,
       dataInizio: { value: today, maximum: today },
       dataFine: { value: today, minimum: today },
     }));
   }, []);
+  
 
   const handleDateInputChange = (value: any, field: string) => {
     const formattedDate = typeof value === 'string' ? value : new Date(value).toISOString().split('T')[0];
@@ -186,12 +186,15 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
           dataInizio: { ...formValues.dataInizio, maximum: formattedDate },
         };
       }
+      setIsFiltersChanged(true); // Imposta a true quando l'utente cambia i filtri
       return newForm;
     });
   };
 
   const handleSelectChange = (option: OptionType, name: any) => {
     setFormValues(() => ({ ...formValues, [name?.name]: option }));
+    // Abilita il bottone quando si cambia un filtro diverso dalle date
+    setIsFiltersChanged(true);
     if (name?.name === 'intervento') {
       retriveProgramma(option.value);
       retriveProgetto(option.value, 0);
@@ -210,11 +213,19 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
     setFormValues(initialFormValues);
     setIsDateValid({ dataInizio: true, dataFine: true });
     setChips([]);
+    setIsFiltersChanged(false);
     dispatch(retriveProgramma);
     dispatch(retriveProgetto);
     dispatch(GetEntitySearchValues({ entity: 'ente', criterioRicerca: "%" }));
-    setChipsVisible(false);
+    setShouldSearch(true);
   };
+
+  useEffect(() => {
+    if (shouldSearch) {
+      onSearch();
+      setShouldSearch(false); // Resetta il trigger dopo la ricerca
+    }
+  }, [shouldSearch, onSearch]);
 
   const [enteInputValue, setEnteInputValue] = useState('');
 
@@ -299,6 +310,17 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
   };
 
   useEffect(() => {
+    if (formValues.dataInizio.value && formValues.dataFine.value) {
+      const dataInizioFormattata = formValues.dataInizio.value.split('-').reverse().join('/');
+      const dataFineFormattata = formValues.dataFine.value.split('-').reverse().join('/');
+      setChips([`Periodo: ${dataInizioFormattata} - ${dataFineFormattata}`]);
+    } else {
+      setChips([]);
+    }
+  }, [formValues.dataInizio.value, formValues.dataFine.value]);
+  
+
+  function handleSubmitFiltri(): void {
     const newChips: string[] = [];
     if (formValues.programma.value) {
       newChips.push(`Programma: ${formValues.programma.label}`);
@@ -317,14 +339,11 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
     if (formValues.ente.value) {
       newChips.push(`Ente: ${formValues.ente.label}`);
     }
+  
     setChips(newChips);
-  }, [formValues]);
-
-
-  function handleSubmitFiltri(): void {
     onSearch();
-    setChipsVisible(true);
   }
+  
 
   return (
     <Form id='form-categories' className='mt-3 pb-5'>
@@ -339,11 +358,11 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
       </Form.Row>
 
       <Form.Row className='justify-content-between px-0 px-lg-5 mx-2'>
-        {renderSelect('progetto', 'Progetto', (projectTypes || []).map((type: any) => ({
+      {renderSelect('programma', 'Programma', (programTypes || []).map((type: any) => ({
           value: type.value,
           label: type.label,
         })), false, handleSelectChange, "Seleziona", formValues?.ente?.value?.length > 0)}
-        {renderSelect('programma', 'Programma', (programTypes || []).map((type: any) => ({
+        {renderSelect('progetto', 'Progetto', (projectTypes || []).map((type: any) => ({
           value: type.value,
           label: type.label,
         })), false, handleSelectChange, "Seleziona", formValues?.ente?.value?.length > 0)}
@@ -382,7 +401,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
         <Button color='secondary' className='mr-2' id='cancellaFiltri' onClick={handleClearForm}>
           Cancella filtri
         </Button>
-        <Button color='primary' id='applicaFiltri' onClick={handleSubmitFiltri} disabled={!isDateValid.dataInizio || !isDateValid.dataFine}>
+        <Button color='primary' id='applicaFiltri' onClick={handleSubmitFiltri} disabled={!isDateValid.dataInizio || !isDateValid.dataFine || !isFiltersChanged}>
           Applica filtri
         </Button>
       </Form.Row>
