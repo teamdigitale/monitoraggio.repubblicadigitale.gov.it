@@ -226,7 +226,7 @@ const Monitoring: React.FC<MonitoringI> = ({
       automatico sulla data odierna. Utilizza i filtri per effettuare una ricerca avanzata.
 
       <div style={{ margin: '50px' }} />
-      <Accordion title={'Ricerca avanzata'} className="custom-accordion" opened={true}>
+      <Accordion title={'Ricerca avanzata'} className="custom-accordion" opened={false}>
         <MonitoringSearchFilters onSearch={fetchData} formValues={formValues} setFormValues={setFormValuesFunction} chips={chips} setChips={setChipsFunction} />
       </Accordion>
       <div style={{ marginBottom: '50px' }} className='justify-content-start mt-5 chipsRow'>

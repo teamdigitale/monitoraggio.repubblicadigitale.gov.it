@@ -65,7 +65,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
   const dispatch = useDispatch();
   const dropdownFilterOptions = useSelector(selectEntityFiltersOptions);
   const entiList = useAppSelector(selectEntityList);
-
+  
 
   const [programTypes, setProgramTypes] = useState<OptionType[]>();
   const [projectTypes, setProjectTypes] = useState<OptionType[]>();
@@ -276,14 +276,15 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
           options={options}
           value={formValues[field].value !== '' ? formValues[field] : null}
           menuPlacement={'auto'}
-          placeholder={placeholder}
+          placeholder={isDisabled ? '-' : placeholder}
           //onMenuScrollToBottom={onMenuScrollToBottom}
           // color='primary'
           className={clsx(
             {
               'deleteArrowInSelect': isDisabled || isSearchable || !isSearchable,
               'customArrowSelect': !isSearchable && !isDisabled,
-              'customCrossSelect': isSearchable
+              'customCrossSelect': isSearchable,
+              'customCrossSelectDisabled': isSearchable && isDisabled
             },
             'col-12 pl-0'
           )}
@@ -295,8 +296,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
           isSearchable={isSearchable}
           openMenuOnClick={!isSearchable}
           {...(isSearchable && { menuIsOpen: enteInputValue.length > 3 })}
-          onFocus={() => {}}
-          onBlur={() => {}}
+          {...(isSearchable && { noOptionsMessage: () => 'Non ci sono opzioni per questo filtro'})}
           onInputChange={(value) => setEnteInputValue(value)}
         />
         {isSearchable && (
@@ -378,7 +378,13 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
           minimum={formValues.dataInizio.minimum}
           maximum={formValues.dataInizio.maximum}
           id='dateInputDataInizio'
-          className={isDateValid.dataInizio === false ? 'dateInputDataInizio--isNotValid' : 'dateInputDataInizio'}
+          className={
+            isDateValid.dataInizio === false 
+              ? 'dateInputDataInizio--isNotValid' 
+              : formValues.dataInizio.value !== '' 
+                ? 'dateInputDataInizio' 
+                : 'dateInputDataInizio--empty'
+          }
           invalid={isDateValid.dataInizio === false}
         />
         <Input
@@ -390,7 +396,13 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
           minimum={formValues.dataFine.minimum}
           maximum={formValues.dataFine.maximum}
           id='dateInputDataFine'
-          className={isDateValid.dataFine === false ? 'dateInputDataFine--isNotValid' : 'dateInputDataFine mb-2'}
+          className={
+            isDateValid.dataFine === false 
+              ? 'dateInputDataFine--isNotValid' 
+              : formValues.dataFine.value !== '' 
+                ? 'dateInputDataFine' 
+                : 'dateInputDataFine--empty'
+          }          
           invalid={isDateValid.dataFine === false}
           validationText={formValues.dataFine.value !== '' && formValues.dataFine.value < formValues.dataInizio.value ? 'La data di fine non può essere antecedente alla data di inizio' : ''}
         />
