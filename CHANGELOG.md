@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.365](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.364...1.0.0-test.365) (2024-10-24)
+
+
+### Bug Fixes
+
+* **montioraggio-caricamenti:** fix cancella e placeholder campo ente 20241023 ([01181de](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/01181de4f6de5b7f4f9cc3e73171b918ac00e1c5))
+* **monitoraggio-caricamenti:** risolto focus cursore campo ente e check conferma data 20241023 ([827d4fe](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/827d4fe79e355c834204b07688d8a6d3b4f0be29))
+
 ## [1.0.0-test.364](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.363...1.0.0-test.364) (2024-10-21)
 
 
