@@ -52,7 +52,6 @@ const Monitoring: React.FC<MonitoringI> = ({
   const [statisticheElaborate, setStatisticheElaborate] = useState<any[]>([]);
   const [formValues, setFormValues] = useState<typeof initialFormValues>(initialFormValues);
   const [chips, setChips] = useState<string[]>([]);
-  const [areChipsVisible, setChipsVisible] = useState(false);
 
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 10 }));
@@ -97,7 +96,6 @@ const Monitoring: React.FC<MonitoringI> = ({
     if (targetElement) {
       targetElement.click();
     }
-    setChipsVisible(false);
     setTimeout(() => {
       handleSearchAfterSingleChipRemoveClick();
     }, 1);
@@ -158,8 +156,8 @@ const Monitoring: React.FC<MonitoringI> = ({
             data: <span id='dataColumn'><b>{formatDate(td.dataCaricamenti)}</b></span>,
             ente: <span id='enteColumn'>{td.nomeEnte}</span>,
             intervento: <span id='interventoColumn'>{td.intervento}</span>,
-            progetto: <span id='progettoColumn'>{td.nomeProgetto}</span>,
             programma: <span id='programmaColumn'>{td.nomeProgramma}</span>,
+            progetto: <span id='progettoColumn'>{td.nomeProgetto}</span>,
             caricamenti: <span id='caricamentiColumn'>{td.numCaricamenti}</span>,
             serviziCaricati: <span id='serviziColumn'>{td.serviziAggiunti}</span>,
             cittadiniCaricati: <span id='cittadiniColumn'>{td.cittadiniAssociati}</span>
@@ -221,9 +219,6 @@ const Monitoring: React.FC<MonitoringI> = ({
     setChips(chips);
   }
 
-  const setChipVisibility = (value: boolean) => {
-    setChipsVisible(value);
-  }
 
   return (
     <div>
@@ -232,11 +227,10 @@ const Monitoring: React.FC<MonitoringI> = ({
 
       <div style={{ margin: '50px' }} />
       <Accordion title={'Ricerca avanzata'} className="custom-accordion" opened={true}>
-        <MonitoringSearchFilters onSearch={fetchData} formValues={formValues} setFormValues={setFormValuesFunction} chips={chips} setChips={setChipsFunction} setChipsVisible={setChipVisibility} />
+        <MonitoringSearchFilters onSearch={fetchData} formValues={formValues} setFormValues={setFormValuesFunction} chips={chips} setChips={setChipsFunction} />
       </Accordion>
       <div style={{ marginBottom: '50px' }} className='justify-content-start mt-5 chipsRow'>
-        {areChipsVisible && (
-          <>
+
             {chips.map((chip, index) => (
               <Button key={index} className='chipRemove' onClick={() => removeChip(chip)}>
                 <Chip className='mr-1 ml-0 rounded-pill'>
@@ -256,8 +250,6 @@ const Monitoring: React.FC<MonitoringI> = ({
                 Cancella tutti
               </Button>
             )}
-          </>
-        )}
       </div>
 
 

@@ -36,17 +36,17 @@ export const TableHeading: TableHeadingI[] = [
     direction: 'asc',
   },
   {
-    label: 'Progetto',
-    field: 'progetto',
-    size: 'medium',
-    sort: 'id_programma',
-    direction: 'asc',
-  },
-  {
     label: 'Programma',
     field: 'programma',
     size: 'medium',
     sort: 'id_progetto',
+    direction: 'asc',
+  },
+  {
+    label: 'Progetto',
+    field: 'progetto',
+    size: 'medium',
+    sort: 'id_programma',
     direction: 'asc',
   },
   {
