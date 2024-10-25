@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum PolicyEnum {
 	 SCD("Servizio Civile Digitale")
-	,RFD("Rete dei serivizi di Facilitazione Digitale")
+	,RFD("Rete dei servizi di Facilitazione Digitale")
 	;
 	
 	private String value;
