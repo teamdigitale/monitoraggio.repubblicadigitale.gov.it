@@ -77,6 +77,7 @@ public class EnteService {
 	private static final String NOME_PROGRAMMA = "NOME_PROGRAMMA";
 	private static final String ID_PROGETTO = "ID_PROGETTO";
 	private static final String NOME_PROGETTO = "NOME_PROGETTO";
+	private static final String POLICY = "POLICY";
 
 	@Autowired
 	private StoricoService storicoService;
@@ -323,6 +324,8 @@ public class EnteService {
 				ProgettoDto progettoDto = new ProgettoDto();
 				progettoDto.setId(String.valueOf(record.get(ID_PROGETTO)));
 				progettoDto.setNome(record.get(NOME_PROGETTO));
+				progettoDto.setPolicy(record.get(POLICY));
+				progettoDto.setIdProgramma(String.valueOf(record.get(ID_PROGRAMMA)));
 				return progettoDto;
 		})
 		.collect(Collectors.toList());
