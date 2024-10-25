@@ -9,5 +9,7 @@ public class ProgettoDto {
 
 	private String id;
 	private String nome;
+	private String policy;
+	private String idProgramma;
 	
 }
