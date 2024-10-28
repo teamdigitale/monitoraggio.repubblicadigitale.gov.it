@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.367](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.366...1.0.0-test.367) (2024-10-28)
+
+
+### Features
+
+* **monitoraggio-caricamenti:** gestione popolamento filtri 20241028 ([7db572e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7db572eacb5878cd77cf406559f8d1d3a6f6177f))
+
 ## [1.0.0-test.366](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.365...1.0.0-test.366) (2024-10-28)
 
 
