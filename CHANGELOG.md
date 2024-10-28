@@ -1,5 +1,14 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.366](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.365...1.0.0-test.366) (2024-10-28)
+
+
+### Features
+
+* **monitoraggio-caricamenti:** modifiche metodi BE recupero progetti e programmi 20241025 ([82fb93f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/82fb93f06a50ab472d32995f2f17836c776738c9))
+* **monitoraggio-caricamenti:** modifiche grafiche sezione filtri 20241024 ([06731e9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/06731e9bb811078e9d1c2a1552160a41a6667d48))
+* **monitoraggio-caricamenti:** adeguato comportamento Applica filtri / Cancella filtri / chips 20241024 ([5f58db4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5f58db45396c1393f65c3f9aec198b3275853f2f))
+
 ## [1.0.0-test.365](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.364...1.0.0-test.365) (2024-10-24)
 
 
