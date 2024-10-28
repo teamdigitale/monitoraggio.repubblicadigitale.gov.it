@@ -1,5 +1,14 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.368](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.367...1.0.0-test.368) (2024-10-28)
+
+
+### Features
+
+* **monitoraggio-caricamenti:** WIP modifiche recupero valori filtri FE 20241028 ([b7348c7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b7348c75b3945d7fb4b7cadfc5ecee0223eea0a1))
+* **monitoraggio-caricamenti:** modifica metodo BE per recupero ente con policy 20241028 ([b97c7f3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b97c7f31e7b4f5b1034c5a84447e4ac7f5ccb072))
+* **monitoraggio-caricamenti:** modifica EP recupero programmi e progetti via ente 20241028 ([b768709](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b76870953222446f2aebcd413a5617ae57fe6ef8))
+
 ## [1.0.0-test.367](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.366...1.0.0-test.367) (2024-10-28)
 
 
