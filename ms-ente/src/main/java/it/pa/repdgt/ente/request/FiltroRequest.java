@@ -29,4 +29,7 @@ public class FiltroRequest implements Serializable {
 
 	@JsonProperty(value = "filtroPolicies")
 	private List<String> policies;
+
+	@JsonProperty(value = "idEnte")
+	private String idEnte;
 }

@@ -339,7 +339,8 @@ public class EnteServiceTest {
 				filtro.getIdsProgrammi(),
 				filtro.getIdsProgetti(),
 				filtro.getProfili(),
-				filtro.getPolicies());
+				filtro.getPolicies(),
+				filtro.getIdEnte());
 	}
 	
 	@Test
@@ -375,7 +376,8 @@ public class EnteServiceTest {
 				filtro.getIdsProgrammi(),
 				filtro.getIdsProgetti(),
 				filtro.getProfili(),
-				Arrays.asList(PolicyEnum.SCD.toString()));
+				Arrays.asList(PolicyEnum.SCD.toString()),
+				filtro.getIdEnte());
 	}
 	
 	@Test
@@ -412,7 +414,8 @@ public class EnteServiceTest {
 				filtro.getIdsProgrammi(),
 				filtro.getIdsProgetti(),
 				filtro.getProfili(),
-				filtro.getPolicies());
+				filtro.getPolicies(),
+				filtro.getIdEnte());
 	}
 	
 	@Test
@@ -444,7 +447,8 @@ public class EnteServiceTest {
 				filtro.getIdsProgrammi(),
 				filtro.getIdsProgetti(),
 				filtro.getProfili(),
-				filtro.getPolicies());
+				filtro.getPolicies(),
+				filtro.getIdEnte());
 	}
 	
 	@Test
@@ -476,7 +480,8 @@ public class EnteServiceTest {
 				filtro.getIdsProgrammi(),
 				filtro.getIdsProgetti(),
 				filtro.getProfili(),
-				filtro.getPolicies());
+				filtro.getPolicies(),
+				filtro.getIdEnte());
 	}
 	
 	@Test
@@ -520,7 +525,8 @@ public class EnteServiceTest {
 				filtro.getIdsProgrammi(),
 				filtro.getIdsProgetti(),
 				filtro.getProfili(),
-				filtro.getPolicies());
+				filtro.getPolicies(),
+				filtro.getIdEnte());
 	}
 	
 	@Test
