@@ -12,6 +12,8 @@ import './monitoring.scss';
 export type OptionType = {
   value: string;
   label: string;
+  policy: string;
+  idProgramma?: string;
 };
 
 interface MonitoringSearchFilterI {
@@ -82,6 +84,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
       const mappedProgramTypes = dropdownFilterOptions['programmi'].map((program: any) => ({
         value: program.value,
         label: program.label,
+        policy: program.policy,
       }));
       setProgramTypes(mappedProgramTypes);
     }
@@ -89,6 +92,8 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
       const mappedProjectTypes = dropdownFilterOptions['progetti'].map((project: any) => ({
         value: project.value,
         label: project.label,
+        policy: project.policy,
+        idProgramma: project.idProgramma,
       }));
       setProjectTypes(mappedProjectTypes);
     }
@@ -114,10 +119,11 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
       }
     }
     try {
-      const response = await GetProgrammiDropdownList(payload)(dispatch);
+      const response = await GetProgrammiDropdownList(payload)(dispatch);      
       const mappedProgramTypes = response.map((program: any) => ({
         value: program.id,
         label: program.nome,
+        policy: program.policy,
       }));
       setProgramTypes(mappedProgramTypes);
     } catch (error) {
@@ -135,9 +141,11 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
     };
     try {
       const response = await GetProgettiDropdownList(payload)(dispatch);
-      const mappedProjectTypes = response.map((program: any) => ({
-        value: program.id,
-        label: program.nome,
+      const mappedProjectTypes = response.map((project: any) => ({
+        value: project.id,
+        label: project.nome,
+        policy: project.policy,
+        idProgramma: project.idProgramma,
       }));
       setProjectTypes(mappedProjectTypes);
     } catch (error) {
@@ -191,9 +199,16 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
     });
   };
 
+  const RFD = "Rete dei servizi di Facilitazione Digitale";
+  const SCD = "Servizio Civile Digitale";
+
+  const getProgramLabelById = (idProgramma: string): string => {
+    const program = programTypes?.find((program) => program.value.toString() === idProgramma.toString());
+    return program ? program.label : 'Seleziona';
+  };
+
   const handleSelectChange = (option: OptionType, name: any) => {
     setFormValues(() => ({ ...formValues, [name?.name]: option }));
-    // Abilita il bottone quando si cambia un filtro diverso dalle date
     setIsFiltersChanged(true);
     if (name?.name === 'intervento') {
       retriveProgramma(option.value);
@@ -201,11 +216,16 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
       setFormValues(() => ({ ...formValues, programma: { value: '', label: 'Seleziona' }, progetto: { value: '', label: 'Seleziona' }, intervento: option }));
     }
     if (name?.name === 'programma') {
-      setFormValues(() => ({ ...formValues, progetto: { value: '', label: 'Seleziona' }, programma: option }));
+      setFormValues(() => ({ ...formValues, progetto: { value: '', label: 'Seleziona' }, programma: option, intervento: { value: option.policy === RFD ? "RFD": "SCD", label: option.policy === RFD ? "RFD": "SCD" } }));
       if (formValues.intervento.value.length > 0)
         retriveProgetto(formValues.intervento.value, Number(option.value));
       else
         retriveProgetto('', Number(option.value));
+    }
+    if(name?.name === 'progetto'){
+      const programLabel = option.idProgramma ? getProgramLabelById(option.idProgramma) : 'Seleziona';
+      setFormValues(() => ({ ...formValues, progetto: option, intervento: { value: option.policy, label: option.policy},
+        programma: { value: option.idProgramma, label: programLabel } }));
     }
   };
 
@@ -361,10 +381,13 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
       {renderSelect('programma', 'Programma', (programTypes || []).map((type: any) => ({
           value: type.value,
           label: type.label,
+          policy: type.policy,
         })), false, handleSelectChange, "Seleziona", formValues?.ente?.value?.length > 0)}
         {renderSelect('progetto', 'Progetto', (projectTypes || []).map((type: any) => ({
           value: type.value,
           label: type.label,
+          policy: type.policy,
+          idProgramma: type.idProgramma
         })), false, handleSelectChange, "Seleziona", formValues?.ente?.value?.length > 0)}
       </Form.Row>
 
