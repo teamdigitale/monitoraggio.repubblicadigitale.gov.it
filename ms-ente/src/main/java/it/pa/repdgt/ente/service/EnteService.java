@@ -346,7 +346,8 @@ public class EnteService {
 				.map(profilo -> profilo.toUpperCase())
 				.collect(Collectors.toList());
 		}
-		String policy = null;
+		String policy;
+		policy = (filtro.getPolicies() != null && !filtro.getPolicies().isEmpty()) ? filtro.getPolicies().get(0) : null;
 		return this.enteRepository.findAllEntiFiltrati(criterioRicerca, "%" + criterioRicerca + "%", idsProgrammi, idsProgetti, profiliEnteUpperCase, policy);
 	}
 	
