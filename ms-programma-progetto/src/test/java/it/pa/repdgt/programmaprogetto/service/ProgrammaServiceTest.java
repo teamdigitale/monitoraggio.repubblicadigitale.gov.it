@@ -235,11 +235,11 @@ public class ProgrammaServiceTest {
 	// Test di getAllProgrammi(ProgettoFiltroRequest filtroRequest)
 	// @Test
 	public void getAllProgrammiConProgettoFiltroRequestTest() {
-		when(programmaRepository.findAllByProgettoFiltro(progettoFiltro.getCriterioRicerca(), "%" + progettoFiltro.getCriterioRicerca() + "%", progettoFiltro.getPolicies(), progettoFiltro.getStati(), progettoFiltro.getIdsProgrammi())).thenReturn(listaProgrammi);
+		when(programmaRepository.findAllByProgettoFiltro(progettoFiltro.getCriterioRicerca(), "%" + progettoFiltro.getCriterioRicerca() + "%", progettoFiltro.getPolicies(), progettoFiltro.getStati(), progettoFiltro.getIdsProgrammi(), progettoFiltro.getIdEnte())).thenReturn(listaProgrammi);
 		List<ProgrammaEntity> programmi = programmaService.getAllProgrammi(progettoFiltro);
 		assertThat(programmi).isNotEmpty();
 		assertThat(programmi.size()).isEqualTo(2);
-		verify(programmaRepository, times(1)).findAllByProgettoFiltro(progettoFiltro.getCriterioRicerca(), "%" + progettoFiltro.getCriterioRicerca() + "%", progettoFiltro.getPolicies(), progettoFiltro.getStati(), progettoFiltro.getIdsProgrammi());
+		verify(programmaRepository, times(1)).findAllByProgettoFiltro(progettoFiltro.getCriterioRicerca(), "%" + progettoFiltro.getCriterioRicerca() + "%", progettoFiltro.getPolicies(), progettoFiltro.getStati(), progettoFiltro.getIdsProgrammi(), progettoFiltro.getIdEnte());
 	}
 
 	// @Test
@@ -919,7 +919,7 @@ public class ProgrammaServiceTest {
 		assertThat(listaProgrammi.size()).isEqualTo(2);
 		verify(programmaRepository, atLeastOnce()).findAllByProgettoFiltro(progettoFiltro.getCriterioRicerca(),
 				"%" + progettoFiltro.getCriterioRicerca() + "%", progettoFiltro.getPolicies(),
-				progettoFiltro.getStati(), progettoFiltro.getIdsProgrammi());
+				progettoFiltro.getStati(), progettoFiltro.getIdsProgrammi(), progettoFiltro.getIdEnte());
 	}
 
 	// lista programmi nella dropdown (tab Progetti) per utente DSCU
@@ -976,7 +976,7 @@ public class ProgrammaServiceTest {
 		assertThat(listaProgrammi.size()).isEqualTo(2);
 		verify(programmaRepository, atLeastOnce()).findAllByProgettoFiltro(progettoFiltro.getCriterioRicerca(),
 				"%" + progettoFiltro.getCriterioRicerca() + "%", progettoFiltro.getPolicies(),
-				progettoFiltro.getStati(), progettoFiltro.getIdsProgrammi());
+				progettoFiltro.getStati(), progettoFiltro.getIdsProgrammi(), progettoFiltro.getIdEnte());
 	}
 
 	// @Test

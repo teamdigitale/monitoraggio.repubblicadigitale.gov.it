@@ -15,4 +15,7 @@ public class ProgettoFiltroRequest extends FiltroRequest implements Serializable
 
 	@JsonProperty(value = "filtroIdsProgrammi")
 	private List<String> idsProgrammi;
+
+	@JsonProperty(value = "idEnte")
+	private String idEnte;
 }
