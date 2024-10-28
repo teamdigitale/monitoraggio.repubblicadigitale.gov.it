@@ -4,15 +4,14 @@ import { Form, Input } from '../../../components';
 import { Select as SelectKit } from 'design-react-kit';
 import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectEntityFiltersOptions, selectEntityList } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
-import { GetEntitySearchValues, GetProgettiDropdownList, GetProgrammiDropdownList } from '../../../redux/features/administrativeArea/administrativeAreaThunk';
-import { useAppSelector } from '../../../redux/hooks';
+import { selectEntityFiltersOptions } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
+import { GetAllEntityValues, GetProgettiDropdownList, GetProgrammiDropdownList } from '../../../redux/features/administrativeArea/administrativeAreaThunk';
 import './monitoring.scss';
 
 export type OptionType = {
   value: string;
   label: string;
-  policy: string;
+  policy?: string;
   idProgramma?: string;
 };
 
@@ -66,16 +65,15 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
   const [shouldSearch, setShouldSearch] = useState(false);
   const dispatch = useDispatch();
   const dropdownFilterOptions = useSelector(selectEntityFiltersOptions);
-  const entiList = useAppSelector(selectEntityList);
   
 
   const [programTypes, setProgramTypes] = useState<OptionType[]>();
   const [projectTypes, setProjectTypes] = useState<OptionType[]>();
 
   useEffect(() => {
-    dispatch(retriveProgramma);
-    dispatch(retriveProgetto);
-    dispatch(GetEntitySearchValues({ entity: 'ente', criterioRicerca: "%" }));
+    dispatch(retrieveProgramma);
+    dispatch(retrieveProgetto);
+    dispatch(retrieveEnte);
   }, [dispatch]);
 
 
@@ -99,20 +97,10 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
     }
   }, [dropdownFilterOptions]);
 
-  const [multiOptions, setMultiOptions] = useState<OptionType[]>([]);
-
-  useEffect(() => {
-    if (entiList.length > 0) {
-      const mappedOptions = entiList.map((ente: { id: any; nome: any; }) => ({
-        value: ente.id.toString(),
-        label: ente.nome,
-      }));
-      setMultiOptions(mappedOptions);
-    }
-  }, [entiList]);
+  const [enteMultiOptions, setEnteMultiOptions] = useState<OptionType[]>([]);
 
 
-  const retriveProgramma = async (policy: string) => {
+  const retrieveProgramma = async (policy: string) => {
     const payload = {
       filtroRequest: {
         ...(policy && { filtroPolicies: [policy] }),
@@ -131,7 +119,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
     }
   };
 
-  const retriveProgetto = async (policy: string, idProgramma: number) => {
+  const retrieveProgetto = async (policy: string, idProgramma?: number) => {
     const payload = {
       filtroRequest: {
         ...(policy && { filtroPolicies: [policy] }),
@@ -152,6 +140,29 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
       console.error("Network error:", error);
     }
   };
+
+  const retrieveEnte = async () => {  
+    const payload = {
+      filtroRequest: {
+      ...(formValues.intervento.value != '' && { filtroPolicies: [formValues.intervento.value] }),
+      ...(formValues.programma.value != '' && { idsProgrammi: [formValues.programma.value] }),
+      ...(formValues.progetto.value != '' && { idsProgetti: [formValues.progetto.value] }),
+      }
+    }
+    try{      
+      const response = await GetAllEntityValues(payload)(dispatch); 
+      if(response != undefined){
+        const mappedEnteOptions = response.map((ente: any) => ({
+          value: ente.id.toString(),
+          label: ente.nome,
+        }));      
+        setEnteMultiOptions(mappedEnteOptions);
+      }
+    }catch(error){
+      console.error("Error:", error);
+    }
+    
+  }
 
   useEffect(() => {
     const today = new Date().toISOString().split('T')[0];
@@ -211,21 +222,25 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
     setFormValues(() => ({ ...formValues, [name?.name]: option }));
     setIsFiltersChanged(true);
     if (name?.name === 'intervento') {
-      retriveProgramma(option.value);
-      retriveProgetto(option.value, 0);
+      retrieveProgramma(option.value);
+      retrieveProgetto(option.value, 0);
       setFormValues(() => ({ ...formValues, programma: { value: '', label: 'Seleziona' }, progetto: { value: '', label: 'Seleziona' }, intervento: option }));
     }
     if (name?.name === 'programma') {
       setFormValues(() => ({ ...formValues, progetto: { value: '', label: 'Seleziona' }, programma: option, intervento: { value: option.policy === RFD ? "RFD": "SCD", label: option.policy === RFD ? "RFD": "SCD" } }));
       if (formValues.intervento.value.length > 0)
-        retriveProgetto(formValues.intervento.value, Number(option.value));
+        retrieveProgetto(formValues.intervento.value, Number(option.value));
       else
-        retriveProgetto('', Number(option.value));
+        retrieveProgetto('', Number(option.value));
     }
     if(name?.name === 'progetto'){
       const programLabel = option.idProgramma ? getProgramLabelById(option.idProgramma) : 'Seleziona';
       setFormValues(() => ({ ...formValues, progetto: option, intervento: { value: option.policy, label: option.policy},
         programma: { value: option.idProgramma, label: programLabel } }));
+    }
+    if(name?.name === 'ente'){
+      //richiamare gli EP che popolano Intervento,Programma,Progetto inviando anche idEnte,
+      //questi restituiranno i valori filtrati ANCHE per idEnte
     }
   };
 
@@ -234,9 +249,9 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
     setIsDateValid({ dataInizio: true, dataFine: true });
     setChips([]);
     setIsFiltersChanged(false);
-    dispatch(retriveProgramma);
-    dispatch(retriveProgetto);
-    dispatch(GetEntitySearchValues({ entity: 'ente', criterioRicerca: "%" }));
+    dispatch(retrieveProgramma);
+    dispatch(retrieveProgetto);
+    dispatch(retrieveEnte);
     setShouldSearch(true);
   };
 
@@ -359,6 +374,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
     if (formValues.ente.value) {
       newChips.push(`Ente: ${formValues.ente.label}`);
     }
+  console.log("formValues", formValues);
   
     setChips(newChips);
     onSearch();
@@ -368,13 +384,13 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
   return (
     <Form id='form-categories' className='mt-3 pb-5'>
       <Form.Row className='justify-content-between px-0 px-lg-5 mx-2'>
-        {renderSelect('ente', 'Ente', multiOptions, true, handleSelectChange,
+        {renderSelect('ente', 'Ente', enteMultiOptions, true, handleSelectChange,
           "Inizia a scrivere il nome dell'ente...",
-          formValues?.intervento?.value != '' || formValues?.programma?.value != '' || formValues?.progetto?.value != '')}
+          false)}
         {renderSelect('intervento', 'Intervento', [
           { value: 'rfd', label: 'RFD' },
           { value: 'scd', label: 'SCD' },
-        ], false, handleSelectChange, "Seleziona", formValues?.ente?.value?.length > 0)}
+        ], false, handleSelectChange, "Seleziona", false)}
       </Form.Row>
 
       <Form.Row className='justify-content-between px-0 px-lg-5 mx-2'>
@@ -382,13 +398,13 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
           value: type.value,
           label: type.label,
           policy: type.policy,
-        })), false, handleSelectChange, "Seleziona", formValues?.ente?.value?.length > 0)}
+        })), false, handleSelectChange, "Seleziona", programTypes?.length === 0)}
         {renderSelect('progetto', 'Progetto', (projectTypes || []).map((type: any) => ({
           value: type.value,
           label: type.label,
           policy: type.policy,
           idProgramma: type.idProgramma
-        })), false, handleSelectChange, "Seleziona", formValues?.ente?.value?.length > 0)}
+        })), false, handleSelectChange, "Seleziona", projectTypes?.length === 0)}
       </Form.Row>
 
       <Form.Row className='justify-content-between px-0 px-lg-5 mx-2'>
