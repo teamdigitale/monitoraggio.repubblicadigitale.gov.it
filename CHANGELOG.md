@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.370](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.369...1.0.0-test.370) (2024-10-29)
+
+
+### Bug Fixes
+
+* **monitoraggio-caricamenti:** fix filtraggio progetto 20241029 ([5277d60](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5277d6036bb786fac6f35c7715f3385d710a6b9d))
+
 ## [1.0.0-test.369](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.368...1.0.0-test.369) (2024-10-29)
 
 
