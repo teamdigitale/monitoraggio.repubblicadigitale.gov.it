@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.369](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.368...1.0.0-test.369) (2024-10-29)
+
+
+### Features
+
+* **monitoraggio-caricamenti:** logica recupero combolist filtri 20241029 ([8a32a54](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8a32a5418b6d389a268e6bd026ddeb3eea719728))
+
 ## [1.0.0-test.368](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.367...1.0.0-test.368) (2024-10-28)
 
 
