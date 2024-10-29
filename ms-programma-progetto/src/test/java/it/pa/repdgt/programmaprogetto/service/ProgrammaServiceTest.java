@@ -879,9 +879,7 @@ public class ProgrammaServiceTest {
 		when(programmaService.getAllPolicies(progettoFiltro)).thenReturn(listaPolicies);
 		programmaService.getAllPoliciesDropdownPerProgetti(progettiParam, progettoFiltro);
 		assertThat(listaPolicies.size()).isEqualTo(2);
-		verify(programmaRepository, atLeastOnce()).findAllPoliciesByProgettoFiltro(progettoFiltro.getCriterioRicerca(),
-				"%" + progettoFiltro.getCriterioRicerca() + "%", progettoFiltro.getPolicies(),
-				progettoFiltro.getStati(), progettoFiltro.getIdsProgrammi());
+		verify(programmaRepository, atLeastOnce()).findAllPoliciesByProgettoFiltro(progettoFiltro.getCriterioRicerca(), "%" + progettoFiltro.getCriterioRicerca() + "%", progettoFiltro.getPolicies(), progettoFiltro.getStati(), progettoFiltro.getIdsProgrammi(), progettoFiltro.getIdEnte());
 	}
 
 	// lista policies per DSCU con ProgettoFiltroRequest (dropdown nella tab
@@ -924,7 +922,7 @@ public class ProgrammaServiceTest {
 		assertThat(listaPolicies.size()).isEqualTo(2);
 		verify(programmaRepository, atLeastOnce()).findAllPoliciesByProgettoFiltro(progettoFiltro.getCriterioRicerca(),
 				"%" + progettoFiltro.getCriterioRicerca() + "%", progettoFiltro.getPolicies(),
-				progettoFiltro.getStati(), progettoFiltro.getIdsProgrammi());
+				progettoFiltro.getStati(), progettoFiltro.getIdsProgrammi(), progettoFiltro.getIdEnte());
 	}
 
 	// lista programmi nella dropdown (tab Progetti) per utente DTD
