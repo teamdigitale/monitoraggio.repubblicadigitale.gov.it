@@ -437,7 +437,8 @@ public class ProgrammaService {
 				"%" + filtroRequest.getCriterioRicerca() + "%",
 				filtroRequest.getPolicies(),
 				filtroRequest.getStati(),
-				filtroRequest.getIdsProgrammi()
+				filtroRequest.getIdsProgrammi(),
+				filtroRequest.getIdEnte()
 				);
 	}
 
