@@ -1,5 +1,67 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.38.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.37.1...1.38.0) (2024-10-29)
+
+
+### Features
+
+* **monitoraggio-caricamenti:** logica recupero combolist filtri 20241029 ([8e456fb](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8e456fb070f70f2eb20db30ecf090ff33f1aac60))
+* **monitoraggio-caricamenti:** WIP modifiche recupero valori filtri FE 20241028 ([5713e92](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5713e92140e7ebd4d91520faaf984297aeb0070f))
+* **monitoraggio-caricamenti:** modifica metodo BE per recupero ente con policy 20241028 ([937c831](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/937c831b97a1c9a23fd63bc7414538f8ab3fb813))
+* **monitoraggio-caricamenti:** modifica EP recupero programmi e progetti via ente 20241028 ([33e68d2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/33e68d248a52d4abd7466f15fe51a660feb01a99))
+* **monitoraggio-caricamenti:** gestione popolamento filtri 20241028 ([37835d9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/37835d915568801bc8b1f0b172857555ff49a65a))
+* **monitoraggio-caricamenti:** modifiche metodi BE recupero progetti e programmi 20241025 ([bad0a3c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/bad0a3c4f8fc9b1ab2a60687f80d696b39d84c9c))
+* **monitoraggio-caricamenti:** modifiche grafiche sezione filtri 20241024 ([38da07d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/38da07d326e430374cdaa5ef56bf4df9c814e965))
+* **monitoraggio-caricamenti:** adeguato comportamento Applica filtri / Cancella filtri / chips 20241024 ([f10a82c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f10a82cf93a124c4cfb7c8cc3f68f26686548982))
+* **monitoraggio-caricamenti:** cambiato comportamento chip 20241021 ([24e104f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/24e104fcd930d6acfc150354dcf1e7b3f8487e85))
+* **monitoraggio-caricamenti:** modifica visiibilita opzioni menu header 20241021 ([df94842](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/df94842729179b1f8a5f7272735edee3da909e50))
+* **monitoraggio-caricamenti:** modifica menu report e dettagli tabella 20241018 ([9fe0529](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9fe0529fc38e996f9233015cb5f1dce86f7c936c))
+* **monitoraggio-caricamenti:** modifiche grafiche filtri 20241018 ([fc28147](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fc281477b133688804c7144bcc12ead3f2f9e890))
+* **monitoraggi-caricamenti:** chiusura chip filtri 20241014 ([69c12d4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/69c12d4fb3bf7d4de89b5b2127d6fcd5ab5d8152))
+* **monitoraggio-caricamenti:** modifiche tabella e filtri 20241011 ([a0a6eaa](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a0a6eaa7f18e43310f21a343cf3fa3548cf7a946))
+* **monitoraggio-caricamenti:** link da tabella verso dettaglio caricamento e link goBack ([ed3ac17](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ed3ac175843cd00a410f3f685701ec5490c71156))
+* **monitoraggio-caricamenti:** modifiche grafiche tabella 20241011 ([0a1a999](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0a1a999c5f0fd9331797f9b3a4c9128903fa72ca))
+* **monitoraggio-caricamenti:** gestione tabella con filtri 20241010 ([b301108](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b3011082f53141c86e0ff48a8601abf8711c04d8))
+* **monitoraggio-caricamenti:** WIP gestione values filtri 20241010 ([a97eef0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a97eef0b2ce4b0a9beb1b8e99337a8737fe560d7))
+* **monitoraggio-caricamenti:** WIP gestione filtri 20241009 ([a3c7e77](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a3c7e77d6270475e97234f059a04d2867d10ce12))
+* **monitoraggio-caricamenti:** WIP aggiunto autocomplete per campo ente 20241008 ([97e96fe](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/97e96fe4e2933a4e6d47cac0397741b6398bfdcc))
+* **monitoraggio-caricamenti:** WIP validazione date 20241008 ([c4ad06c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c4ad06c78c8a49b1d6fecf1ab6f87be9f6da7e39))
+* **monitoraggio-caricamenti:** WIP valid date filtri ([b728265](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b7282658cadce2fb80fd7fcf08fe02f8bf9aef23))
+* **monitoraggio-caricamenti:** WIP gestione filtri select e date 20241007 ([3944666](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3944666d481dc87778b64838e0c41d5b4d3a7999))
+* **monitoraggio-caricamenti:** WIP form filtri 20241004 ([4eca908](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4eca90824735553f2d3bc81848dfff65176155a5))
+* **monitoraggio-caricamenti:** WIP filtri monitoraggio 20241002 ([9992fa8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9992fa8af7dfff8c9224b595820b6285b3a2eb23))
+* **monitoraggio-caricamenti:** WIP modifiche tabella 20241002 ([4ba051c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4ba051c755c9655d311c4ce661ccd2ccd2c580c8))
+* **monitoraggio-caricamenti:** WIP fix redirect report-dati 20241001 ([574b4d6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/574b4d65b5a043d14aa8846bb060fe078863d48e))
+* **monitoraggio-caricamenti:** WIP page monitoraggio caricamenti 20241001 ([60d8e65](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/60d8e651b12faf9772e331812f3b31614c7954b8))
+* **monitoraggio-caricamenti:** aggiunta timezone data 20241008 ([0a965d9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0a965d9980a3383d12135c9e61d362f673dd2998))
+* **monitoraggio-caricamenti:** aggiunta paginazione risultati tabella 20241008 ([f728c7c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f728c7cf6f542ffbe089807ad302b08a955059c8))
+* **monitoraggio-caricamenti:** creazione endpoint BE recupero dati tabella 20241007 ([d4151bd](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d4151bd0054c8a06b8bd3fdd3738a88321e4d492))
+* **monitoraggio-caricamenti:** aggiornamento endpoint /ente/progetti/dropdown 20241004 ([1f7cfdf](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1f7cfdf677015ba1d72babb8cc2767c774b9ce65))
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** fix grafico card documenti 20241003 ([8f3590c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8f3590c52ed7918106e554f2f61beee0db2c5e65))
+* **monitoraggio-caricamenti:** fix filtraggio progetto 20241029 ([1d95f1a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1d95f1a66aba0b4c522c17eae6d16ac4f4ecb44d))
+* **montioraggio-caricamenti:** fix cancella e placeholder campo ente 20241023 ([b3677a9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b3677a9b64bc8a71c5569e130651c73b04a7a8f9))
+* **monitoraggio-caricamenti:** risolto focus cursore campo ente e check conferma data 20241023 ([904d7e7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/904d7e7937d05d04a995d53ba469b6fba8cfc040))
+* **monitoraggio-caricamenti:** fix CTA chips 20241021 ([7f417cb](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7f417cbbbe0b3bbaaebd28c8a7beef76a02cd2fb))
+* **monitoraggio-caricamenti:** spostata sezione chips fuori sezione ricerca 20241021 ([6c42fa6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6c42fa68934ecfd806de9aa0b3fa22c860f402a5))
+* **monitoraggio-caricamenti:** fix chip color 20241015 ([4c6a1f1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4c6a1f127222fab5c6089d5f6b65da531c96df68))
+* **monitoraggio-caricamenti:** fix colori form 20241015 ([16b6a0e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/16b6a0ed78eb8fbe257c46f1624c2bc90beff842))
+* **monitoraggio-caricamenti:** fix visualizzazione cursore ente 20241015 ([4c82ff6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4c82ff6078544d6ec127c6290f6b39144e0477a5))
+* **monitoraggio-caricamenti:** fix impaginazione tabella e chips 20241015 ([ccb9aae](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ccb9aae9b00a425320c374448efa9af2cb1d82bf))
+* **monitoraggio-caricamenti:** fix redirect table 20241015 ([175eac3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/175eac3501b8a4a0785d961690d9c27b67ed60cf))
+* **monitoraggio-caricamenti:** fix generali ordinamento e grafica 20241014 ([9dec279](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9dec279545364d49e7913512377a2a7728c1c22d))
+* **monitoraggio-caricamenti:** fix redirect verso pagina caricamento massivo 20241014 ([a3eacf2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a3eacf2c1bbb612ee1d0ff509c4d1ad1cf5e32d2))
+* **monitoraggio-caricamenti:** fix focus cursore campo ente 20241014 ([861e49e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/861e49e82a27ab0d8fb3590f379991e950f4c4cd))
+* **monitoraggio-caricamenti:** fix vari monitoraggio caricamenti 20241011 ([6616610](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/661661068873d5d8508b3b0732e15a702880d823))
+* **monitoraggio-caricamenti:** fix generali monitoraggio caricamenti 20241011 ([dc8801e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/dc8801e11471e979807caa291c58f03dbd02bf54))
+* **monitoraggio-caricamenti:** fix colori form 20241009 ([a07b462](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a07b4629fe557d381235008f66a33e6e113ff6ee))
+* **monitoraggio-caricamenti:** WIP gestione select filtri 20241004 ([8bd726a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8bd726ac01ffefc526c9b61e7ba60860356d153b))
+* **monitoraggio-caricamenti:** fix id vista monitoraggio 20241008 ([1b9f427](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1b9f42772c571acd9a32d7ad5d09749104a2aa60))
+* **monitoraggio-caricamenti:** fix unit testing 20241007 ([c50427c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c50427cde7df8f8c53a0d1e44af9a8f030defdaa))
+
 ## [1.37.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.37.0...1.37.1) (2024-10-17)
 
 
