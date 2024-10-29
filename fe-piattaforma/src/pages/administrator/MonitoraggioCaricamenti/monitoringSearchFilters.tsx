@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button } from 'design-react-kit';
 import { Form, Input } from '../../../components';
 import { Select as SelectKit } from 'design-react-kit';
@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectEntityFiltersOptions } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { GetAllEntityValues, GetProgettiDropdownList, GetProgrammiDropdownList } from '../../../redux/features/administrativeArea/administrativeAreaThunk';
 import './monitoring.scss';
+import { use } from 'i18next';
 
 export type OptionType = {
   value: string;
@@ -63,12 +64,17 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
   const [isDateValid, setIsDateValid] = useState<{ dataInizio?: boolean; dataFine?: boolean }>({ dataInizio: true, dataFine: true });
   const [isFiltersChanged, setIsFiltersChanged] = useState(false); // Nuovo stato per monitorare le modifiche
   const [shouldSearch, setShouldSearch] = useState(false);
+  const isCrossButtonClickedRef = useRef(false);
   const dispatch = useDispatch();
   const dropdownFilterOptions = useSelector(selectEntityFiltersOptions);
   
 
   const [programTypes, setProgramTypes] = useState<OptionType[]>();
   const [projectTypes, setProjectTypes] = useState<OptionType[]>();
+  const [interventoTypes, setInterventoTypes] = useState<OptionType[]>([
+    { value: 'rfd', label: 'RFD' },
+    { value: 'scd', label: 'SCD' },
+  ]);
 
   useEffect(() => {
     dispatch(retrieveProgramma);
@@ -100,10 +106,11 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
   const [enteMultiOptions, setEnteMultiOptions] = useState<OptionType[]>([]);
 
 
-  const retrieveProgramma = async (policy: string) => {
+  const retrieveProgramma = async (policy?: string, idEnte?: string) => {
     const payload = {
       filtroRequest: {
         ...(policy && { filtroPolicies: [policy] }),
+        ...(idEnte != '' && { idEnte: idEnte }),
       }
     }
     try {
@@ -119,11 +126,12 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
     }
   };
 
-  const retrieveProgetto = async (policy: string, idProgramma?: number) => {
+  const retrieveProgetto = async (policy?: string, idProgramma?: number, idEnte?: string) => {
     const payload = {
       filtroRequest: {
         ...(policy && { filtroPolicies: [policy] }),
-        ...(idProgramma !== 0 && { idsProgrammi: [idProgramma] })
+        ...(idProgramma !== 0 && { idsProgrammi: [idProgramma] }),
+        ...(idEnte && { idEnte: idEnte })
       },
       ...(idProgramma !== 0 && { idProgramma })
     };
@@ -215,34 +223,88 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
 
   const getProgramLabelById = (idProgramma: string): string => {
     const program = programTypes?.find((program) => program.value.toString() === idProgramma.toString());
-    return program ? program.label : 'Seleziona';
+    return program ? program.label : '-';
   };
 
   const handleSelectChange = (option: OptionType, name: any) => {
     setFormValues(() => ({ ...formValues, [name?.name]: option }));
     setIsFiltersChanged(true);
     if (name?.name === 'intervento') {
-      retrieveProgramma(option.value);
-      retrieveProgetto(option.value, 0);
-      setFormValues(() => ({ ...formValues, programma: { value: '', label: 'Seleziona' }, progetto: { value: '', label: 'Seleziona' }, intervento: option }));
+      retrieveProgramma(option.value, formValues.ente.value !== '' ? formValues.ente.value : undefined);
+      retrieveProgetto(option.value, 0, formValues.ente.value !== '' ? formValues.ente.value : undefined);
+      setFormValues(() => ({ ...formValues, programma: { value: '' }, progetto: { value: '' }, intervento: option }));
     }
     if (name?.name === 'programma') {
       setFormValues(() => ({ ...formValues, progetto: { value: '', label: 'Seleziona' }, programma: option, intervento: { value: option.policy === RFD ? "RFD": "SCD", label: option.policy === RFD ? "RFD": "SCD" } }));
       if (formValues.intervento.value.length > 0)
-        retrieveProgetto(formValues.intervento.value, Number(option.value));
+        retrieveProgetto(formValues.intervento.value, Number(option.value), formValues.ente.value !== '' ? formValues.ente.value : undefined);
       else
-        retrieveProgetto('', Number(option.value));
+        retrieveProgetto('', Number(option.value), formValues.ente.value !== '' ? formValues.ente.value : undefined);
     }
     if(name?.name === 'progetto'){
-      const programLabel = option.idProgramma ? getProgramLabelById(option.idProgramma) : 'Seleziona';
-      setFormValues(() => ({ ...formValues, progetto: option, intervento: { value: option.policy, label: option.policy},
-        programma: { value: option.idProgramma, label: programLabel } }));
+      const programLabel = option.idProgramma ? getProgramLabelById(option.idProgramma) : '-';
+      if(programLabel !== '-'){
+        setFormValues(() => ({ ...formValues, progetto: option, intervento: { value: option.policy, label: option.policy},
+          programma: { value: option.idProgramma, label: programLabel } }));
+      }
     }
     if(name?.name === 'ente'){
-      //richiamare gli EP che popolano Intervento,Programma,Progetto inviando anche idEnte,
-      //questi restituiranno i valori filtrati ANCHE per idEnte
+      retrieveProgramma(formValues.intervento.value, option.value);
+      retrieveProgetto(formValues.intervento.value, 0, option.value);      
     }
   };
+
+  const getPolicyProgrammi = () => {
+    const policiesProgrammi = Array.from(new Set(programTypes?.map((program: OptionType) => program.policy)));
+    const policiesProgetti = Array.from(new Set(projectTypes?.map((project: OptionType) => project.policy)));
+    let interventi = policiesProgrammi.map((policy) => ({
+      value: policy === "Rete dei servizi di Facilitazione Digitale" ? "RFD" : policy === "Servizio Civile Digitale" ? "SCD" : policy || '',
+      label: policy === "Rete dei servizi di Facilitazione Digitale" ? "RFD" : policy === "Servizio Civile Digitale" ? "SCD" : policy || '',
+    }));
+    interventi = interventi.concat(
+      policiesProgetti.map((policy) => ({
+      value: policy || '',
+      label: policy || '',
+      }))
+    );
+
+    // Remove duplicates
+    interventi = interventi.filter((intervento, index, self) =>
+      index === self.findIndex((i) => i.value === intervento.value)
+    );
+    setInterventoTypes(interventi);
+  };
+
+  useEffect(() => {
+    getPolicyProgrammi();
+  },[programTypes, projectTypes]);
+
+  useEffect(() => {
+    retrieveEnte();
+  }, [formValues.intervento, formValues.programma, formValues.progetto]);
+
+  // useEffect(() => {    
+  //   const updatedFormValues = { ...formValues };
+    
+  //   if (isCrossButtonClickedRef.current) {
+  //     isCrossButtonClickedRef.current = false;
+  //     return;
+  //   }
+
+  //   if(isFiltersChanged){
+  //     if (programTypes?.length === 1) {
+  //       updatedFormValues.programma = programTypes[0];
+  //     }
+  //     if (projectTypes?.length === 1) {
+  //       updatedFormValues.progetto = projectTypes[0];
+  //     }
+  //     if (interventoTypes?.length === 1) {
+  //       updatedFormValues.intervento = interventoTypes[0];
+  //     }
+  //   }
+    
+  //   setFormValues(updatedFormValues);
+  // }, [programTypes, projectTypes, interventoTypes]);
 
   const handleClearForm = () => {
     setFormValues(initialFormValues);
@@ -265,8 +327,13 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
   const [enteInputValue, setEnteInputValue] = useState('');
 
   const handleCrossButtonClick = () => {
-    setFormValues(() => ({ ...formValues, ente: { value: '', label: 'Inizia a scrivere il nome dell\'ente' } }));
-    setEnteInputValue('');
+    if(formValues.ente.value !== ''){
+      setFormValues(() => ({ ...formValues, ente: { value: '', label: 'Inizia a scrivere il nome dell\'ente' }, intervento: { value: '', label: 'Seleziona' }, programma: { value: '', label: 'Seleziona' }, progetto: { value: '', label: 'Seleziona' } }));
+      setEnteInputValue('');
+      dispatch(retrieveProgramma);
+      dispatch(retrieveProgetto);
+      isCrossButtonClickedRef.current = true;
+    }
   };
 
   const renderSelect = (
@@ -387,10 +454,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
         {renderSelect('ente', 'Ente', enteMultiOptions, true, handleSelectChange,
           "Inizia a scrivere il nome dell'ente...",
           false)}
-        {renderSelect('intervento', 'Intervento', [
-          { value: 'rfd', label: 'RFD' },
-          { value: 'scd', label: 'SCD' },
-        ], false, handleSelectChange, "Seleziona", false)}
+        {renderSelect('intervento', 'Intervento', interventoTypes, false, handleSelectChange, "Seleziona", interventoTypes.length === 0)}
       </Form.Row>
 
       <Form.Row className='justify-content-between px-0 px-lg-5 mx-2'>
