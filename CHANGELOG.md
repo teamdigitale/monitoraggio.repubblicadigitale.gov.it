@@ -1,5 +1,17 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.371](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.370...1.0.0-test.371) (2024-10-30)
+
+
+### Features
+
+* **monitoraggio-caricamenti:** modifica EP recupero policy 20241029 ([f8afa66](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f8afa66e26cd524b43e4e35620002c32ed397d87))
+
+
+### Bug Fixes
+
+* **T242:** fix titolo cards annunci 20241029 ([71f3ed6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/71f3ed6e5425a6827c7e0c826692947274dad9f2))
+
 ## [1.0.0-test.370](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.369...1.0.0-test.370) (2024-10-29)
 
 
