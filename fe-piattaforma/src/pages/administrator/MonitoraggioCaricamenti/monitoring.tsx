@@ -106,12 +106,14 @@ const Monitoring: React.FC<MonitoringI> = ({
       handleSearchAfterSingleChipRemoveClick();
     }, 1);
   };
+  
+  const [removeChipCount, setRemoveChipCount] = useState(0);
+  useEffect(() => {
+    fetchData();
+  }, [removeChipCount]);
 
   const handleSearchAfterSingleChipRemoveClick = () => {
-    const targetElement = document.querySelector('#applicaFiltri') as HTMLButtonElement;
-    if (targetElement) {
-      targetElement.click();
-    }
+    setRemoveChipCount(removeChipCount + 1);
   };
 
 
