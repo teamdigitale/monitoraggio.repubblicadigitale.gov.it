@@ -52,6 +52,7 @@ const Monitoring: React.FC<MonitoringI> = ({
   const [statisticheElaborate, setStatisticheElaborate] = useState<any[]>([]);
   const [formValues, setFormValues] = useState<typeof initialFormValues>(initialFormValues);
   const [chips, setChips] = useState<string[]>([]);
+  const [isDisabled, setIsDisabled] = useState(true);
 
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 10 }));
@@ -88,8 +89,13 @@ const Monitoring: React.FC<MonitoringI> = ({
     //Aspette 1ms e clicca il bottone #applicaFiltri
     setTimeout(() => {
       handleSearchAfterSingleChipRemoveClick();
+      setIsDisabled(true);
     }, 1);
   };
+
+  const changeIsDisabled = (value: boolean) => {
+    setIsDisabled(value);
+  }
 
   const handleClearAllClick = () => {
     const targetElement = document.querySelector('#cancellaFiltri') as HTMLButtonElement;
@@ -227,7 +233,7 @@ const Monitoring: React.FC<MonitoringI> = ({
 
       <div style={{ margin: '50px' }} />
       <Accordion title={'Ricerca avanzata'} className="custom-accordion" opened={false}>
-        <MonitoringSearchFilters onSearch={fetchData} formValues={formValues} setFormValues={setFormValuesFunction} chips={chips} setChips={setChipsFunction} />
+        <MonitoringSearchFilters onSearch={fetchData} formValues={formValues} setFormValues={setFormValuesFunction} chips={chips} setChips={setChipsFunction} isDisabled={isDisabled} setIsDisabled={changeIsDisabled}/>
       </Accordion>
       <div style={{ marginBottom: '50px' }} className='justify-content-start mt-5 chipsRow'>
 
