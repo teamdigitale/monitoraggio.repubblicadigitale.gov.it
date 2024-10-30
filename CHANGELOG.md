@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.372](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.371...1.0.0-test.372) (2024-10-30)
+
+
+### Bug Fixes
+
+* **monitoraggio-caricamenti:** recupero intervento BE con autoselezionamento e modifiche comportamento chips 20241030 ([4a881dd](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4a881dd3ec2a7722145fed3c365dea343625cce8))
+* **monitoraggio-caricamenti:** aggiornato comportamento sezione filtri 20241030 ([e92a58b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e92a58b22076fcf808986e726e87e90db16b3e59))
+
 ## [1.0.0-test.371](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.370...1.0.0-test.371) (2024-10-30)
 
 
