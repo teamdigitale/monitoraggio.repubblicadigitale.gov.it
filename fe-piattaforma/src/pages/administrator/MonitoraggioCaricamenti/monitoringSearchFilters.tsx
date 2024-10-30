@@ -23,6 +23,8 @@ interface MonitoringSearchFilterI {
   setFormValues: (formValues: any) => void;
   chips: string[];
   setChips: (chips: string[]) => void;
+  isDisabled: boolean;
+  setIsDisabled: (isDisabled: boolean) => void;
 }
 
 type DateField = {
@@ -60,14 +62,13 @@ export const initialFormValues = {
   } as DateField,
 };
 
-const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues, setFormValues, onSearch, chips, setChips }) => {
+const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues, setFormValues, onSearch, chips, setChips, isDisabled, setIsDisabled }) => {
   const [isDateValid, setIsDateValid] = useState<{ dataInizio?: boolean; dataFine?: boolean }>({ dataInizio: true, dataFine: true });
-  const [isFiltersChanged, setIsFiltersChanged] = useState(false); // Nuovo stato per monitorare le modifiche
   const [shouldSearch, setShouldSearch] = useState(false);
   const isCrossButtonClickedRef = useRef(false);
   const dispatch = useDispatch();
   const dropdownFilterOptions = useSelector(selectEntityFiltersOptions);
-  
+
 
   const [programTypes, setProgramTypes] = useState<OptionType[]>();
   const [projectTypes, setProjectTypes] = useState<OptionType[]>();
@@ -114,7 +115,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
       }
     }
     try {
-      const response = await GetProgrammiDropdownList(payload)(dispatch);      
+      const response = await GetProgrammiDropdownList(payload)(dispatch);
       const mappedProgramTypes = response.map((program: any) => ({
         value: program.id,
         label: program.nome,
@@ -149,27 +150,27 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
     }
   };
 
-  const retrieveEnte = async () => {  
+  const retrieveEnte = async () => {
     const payload = {
       filtroRequest: {
-      ...(formValues.intervento.value != '' && { filtroPolicies: [formValues.intervento.value] }),
-      ...(formValues.programma.value != '' && { idsProgrammi: [formValues.programma.value] }),
-      ...(formValues.progetto.value != '' && { idsProgetti: [formValues.progetto.value] }),
+        ...(formValues.intervento.value != '' && { filtroPolicies: [formValues.intervento.value] }),
+        ...(formValues.programma.value != '' && { idsProgrammi: [formValues.programma.value] }),
+        ...(formValues.progetto.value != '' && { idsProgetti: [formValues.progetto.value] }),
       }
     }
-    try{      
-      const response = await GetAllEntityValues(payload)(dispatch); 
-      if(response != undefined){
+    try {
+      const response = await GetAllEntityValues(payload)(dispatch);
+      if (response != undefined) {
         const mappedEnteOptions = response.map((ente: any) => ({
           value: ente.id.toString(),
           label: ente.nome,
-        }));      
+        }));
         setEnteMultiOptions(mappedEnteOptions);
       }
-    }catch(error){
+    } catch (error) {
       console.error("Error:", error);
     }
-    
+
   }
 
   useEffect(() => {
@@ -180,7 +181,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
       dataFine: { value: today, minimum: today },
     }));
   }, []);
-  
+
 
   const handleDateInputChange = (value: any, field: string) => {
     const formattedDate = typeof value === 'string' ? value : new Date(value).toISOString().split('T')[0];
@@ -213,7 +214,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
           dataInizio: { ...formValues.dataInizio, maximum: formattedDate },
         };
       }
-      setIsFiltersChanged(true); // Imposta a true quando l'utente cambia i filtri
+      setIsDisabled(false); // Imposta a true quando l'utente cambia i filtri
       return newForm;
     });
   };
@@ -228,29 +229,31 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
 
   const handleSelectChange = (option: OptionType, name: any) => {
     setFormValues(() => ({ ...formValues, [name?.name]: option }));
-    setIsFiltersChanged(true);
+    setIsDisabled(false);
     if (name?.name === 'intervento') {
       retrieveProgramma(option.value, formValues.ente.value !== '' ? formValues.ente.value : undefined);
       retrieveProgetto(option.value, 0, formValues.ente.value !== '' ? formValues.ente.value : undefined);
       setFormValues(() => ({ ...formValues, programma: { value: '' }, progetto: { value: '' }, intervento: option }));
     }
     if (name?.name === 'programma') {
-      setFormValues(() => ({ ...formValues, progetto: { value: '', label: 'Seleziona' }, programma: option, intervento: { value: option.policy === RFD ? "RFD": "SCD", label: option.policy === RFD ? "RFD": "SCD" } }));
+      setFormValues(() => ({ ...formValues, progetto: { value: '', label: 'Seleziona' }, programma: option, intervento: { value: option.policy === RFD ? "RFD" : "SCD", label: option.policy === RFD ? "RFD" : "SCD" } }));
       if (formValues.intervento.value.length > 0)
         retrieveProgetto(formValues.intervento.value, Number(option.value), formValues.ente.value !== '' ? formValues.ente.value : undefined);
       else
         retrieveProgetto('', Number(option.value), formValues.ente.value !== '' ? formValues.ente.value : undefined);
     }
-    if(name?.name === 'progetto'){
+    if (name?.name === 'progetto') {
       const programLabel = option.idProgramma ? getProgramLabelById(option.idProgramma) : '-';
-      if(programLabel !== '-'){
-        setFormValues(() => ({ ...formValues, progetto: option, intervento: { value: option.policy, label: option.policy},
-          programma: { value: option.idProgramma, label: programLabel } }));
+      if (programLabel !== '-') {
+        setFormValues(() => ({
+          ...formValues, progetto: option, intervento: { value: option.policy, label: option.policy },
+          programma: { value: option.idProgramma, label: programLabel }
+        }));
       }
     }
-    if(name?.name === 'ente'){
+    if (name?.name === 'ente') {
       retrieveProgramma(formValues.intervento.value, option.value);
-      retrieveProgetto(formValues.intervento.value, 0, option.value);      
+      retrieveProgetto(formValues.intervento.value, 0, option.value);
     }
   };
 
@@ -263,8 +266,8 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
     }));
     interventi = interventi.concat(
       policiesProgetti.map((policy) => ({
-      value: policy || '',
-      label: policy || '',
+        value: policy || '',
+        label: policy || '',
       }))
     );
 
@@ -277,7 +280,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
 
   useEffect(() => {
     getPolicyProgrammi();
-  },[programTypes, projectTypes]);
+  }, [programTypes, projectTypes]);
 
   useEffect(() => {
     retrieveEnte();
@@ -285,7 +288,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
 
   // useEffect(() => {    
   //   const updatedFormValues = { ...formValues };
-    
+
   //   if (isCrossButtonClickedRef.current) {
   //     isCrossButtonClickedRef.current = false;
   //     return;
@@ -302,7 +305,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
   //       updatedFormValues.intervento = interventoTypes[0];
   //     }
   //   }
-    
+
   //   setFormValues(updatedFormValues);
   // }, [programTypes, projectTypes, interventoTypes]);
 
@@ -310,7 +313,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
     setFormValues(initialFormValues);
     setIsDateValid({ dataInizio: true, dataFine: true });
     setChips([]);
-    setIsFiltersChanged(false);
+    setIsDisabled(true);
     dispatch(retrieveProgramma);
     dispatch(retrieveProgetto);
     dispatch(retrieveEnte);
@@ -327,7 +330,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
   const [enteInputValue, setEnteInputValue] = useState('');
 
   const handleCrossButtonClick = () => {
-    if(formValues.ente.value !== ''){
+    if (formValues.ente.value !== '') {
       setFormValues(() => ({ ...formValues, ente: { value: '', label: 'Inizia a scrivere il nome dell\'ente' }, intervento: { value: '', label: 'Seleziona' }, programma: { value: '', label: 'Seleziona' }, progetto: { value: '', label: 'Seleziona' } }));
       setEnteInputValue('');
       dispatch(retrieveProgramma);
@@ -385,8 +388,8 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
             {
               'deleteArrowInSelect': isDisabled || isSearchable || !isSearchable,
               'customArrowSelect': !isSearchable && !isDisabled,
-              'customCrossSelect': isSearchable,
-              'customCrossSelectDisabled': isSearchable && isDisabled
+              'customCrossSelect': isSearchable && formValues.ente.value !== '',
+              'customCrossSelectDisabled': isSearchable && formValues.ente.value === ''
             },
             'col-12 pl-0'
           )}
@@ -398,11 +401,11 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
           isSearchable={isSearchable}
           openMenuOnClick={!isSearchable}
           {...(isSearchable && { menuIsOpen: enteInputValue.length > 3 })}
-          {...(isSearchable && { noOptionsMessage: () => 'Non ci sono opzioni per questo filtro'})}
+          {...(isSearchable && { noOptionsMessage: () => 'Non ci sono opzioni per questo filtro' })}
           onInputChange={(value) => setEnteInputValue(value)}
         />
-        {isSearchable && (
-          <div 
+        {isSearchable && formValues.ente.value !== '' && (
+          <div
             className="clickable-cross-area"
             onClick={handleCrossButtonClick}
           />
@@ -420,7 +423,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
       setChips([]);
     }
   }, [formValues.dataInizio.value, formValues.dataFine.value]);
-  
+
 
   function handleSubmitFiltri(): void {
     const newChips: string[] = [];
@@ -441,12 +444,12 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
     if (formValues.ente.value) {
       newChips.push(`Ente: ${formValues.ente.label}`);
     }
-  console.log("formValues", formValues);
-  
+    console.log("formValues", formValues);
+
     setChips(newChips);
     onSearch();
   }
-  
+
 
   return (
     <Form id='form-categories' className='mt-3 pb-5'>
@@ -458,7 +461,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
       </Form.Row>
 
       <Form.Row className='justify-content-between px-0 px-lg-5 mx-2'>
-      {renderSelect('programma', 'Programma', (programTypes || []).map((type: any) => ({
+        {renderSelect('programma', 'Programma', (programTypes || []).map((type: any) => ({
           value: type.value,
           label: type.label,
           policy: type.policy,
@@ -482,10 +485,10 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
           maximum={formValues.dataInizio.maximum}
           id='dateInputDataInizio'
           className={
-            isDateValid.dataInizio === false 
-              ? 'dateInputDataInizio--isNotValid' 
-              : formValues.dataInizio.value !== '' 
-                ? 'dateInputDataInizio' 
+            isDateValid.dataInizio === false
+              ? 'dateInputDataInizio--isNotValid'
+              : formValues.dataInizio.value !== ''
+                ? 'dateInputDataInizio'
                 : 'dateInputDataInizio--empty'
           }
           invalid={isDateValid.dataInizio === false}
@@ -500,12 +503,12 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
           maximum={formValues.dataFine.maximum}
           id='dateInputDataFine'
           className={
-            isDateValid.dataFine === false 
-              ? 'dateInputDataFine--isNotValid' 
-              : formValues.dataFine.value !== '' 
-                ? 'dateInputDataFine' 
+            isDateValid.dataFine === false
+              ? 'dateInputDataFine--isNotValid'
+              : formValues.dataFine.value !== ''
+                ? 'dateInputDataFine'
                 : 'dateInputDataFine--empty'
-          }          
+          }
           invalid={isDateValid.dataFine === false}
           validationText={formValues.dataFine.value !== '' && formValues.dataFine.value < formValues.dataInizio.value ? 'La data di fine non può essere antecedente alla data di inizio' : ''}
         />
@@ -516,7 +519,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
         <Button color='secondary' className='mr-2' id='cancellaFiltri' onClick={handleClearForm}>
           Cancella filtri
         </Button>
-        <Button color='primary' id='applicaFiltri' onClick={handleSubmitFiltri} disabled={!isDateValid.dataInizio || !isDateValid.dataFine || !isFiltersChanged}>
+        <Button color='primary' id='applicaFiltri' onClick={handleSubmitFiltri} disabled={!isDateValid.dataInizio || !isDateValid.dataFine || isDisabled}>
           Applica filtri
         </Button>
       </Form.Row>
