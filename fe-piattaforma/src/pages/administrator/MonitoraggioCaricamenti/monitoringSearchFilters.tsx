@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectEntityFiltersOptions } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { GetAllEntityValues, GetProgettiDropdownList, GetProgrammiDropdownList } from '../../../redux/features/administrativeArea/administrativeAreaThunk';
 import './monitoring.scss';
-import { use } from 'i18next';
 
 export type OptionType = {
   value: string;
@@ -253,7 +252,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
     }
     if (name?.name === 'ente') {
       retrieveProgramma(formValues.intervento.value, option.value);
-      retrieveProgetto(formValues.intervento.value, 0, option.value);
+      retrieveProgetto(formValues.intervento.value, Number(formValues.programma.value), option.value);      
     }
   };
 
