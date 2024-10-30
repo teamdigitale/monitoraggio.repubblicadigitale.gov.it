@@ -165,6 +165,27 @@ export const GetEntityValues =
     }
   };
 
+  export const GetInterventiDropdownList = 
+  (payload?: any) => async (dispatch: Dispatch) => {
+    try {
+      //dispatch(showLoader());
+      dispatch({ ...GetValuesAction, payload });
+      const endpoint = `/progetto/policies/programmi/dropdown`; 
+      const res = await API.post(endpoint, payload, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }); 
+      if (res?.data) {
+        return res.data;
+      }
+    } catch (error) {
+      console.log('GetInterventiDropdownList error', error);
+    } finally {
+      //dispatch(hideLoader());
+    }
+  };
+
 
   export const GetProgrammiDropdownList = 
   (payload?: any) => async (dispatch: Dispatch) => {
