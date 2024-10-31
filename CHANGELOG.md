@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.373](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.372...1.0.0-test.373) (2024-10-31)
+
+
+### Bug Fixes
+
+* **T242:** fix altezza minima titolo card 20241030 ([b64c899](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b64c899f0f2cf8399c84830fb71973da90d27749))
+
 ## [1.0.0-test.372](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.371...1.0.0-test.372) (2024-10-30)
 
 
