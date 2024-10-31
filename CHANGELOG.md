@@ -1,5 +1,22 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.39.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.38.0...1.39.0) (2024-10-31)
+
+
+### Features
+
+* **monitoraggio-caricamenti:** modifica EP recupero policy 20241029 ([a25b1e9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a25b1e94bd4b4bfe0cf8d0965fac212bac22abd2))
+* **fe-piattaforma:** nuova data limite inserimento massivo servizi 20241031 ([2626f19](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2626f19dae93b5ba2d90703a69fc181fd54e3d44))
+
+
+### Bug Fixes
+
+* **T212:** fix query e test hasRuolo 20241017 ([b4945a4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b4945a43121f1a1764e188992120ef97d9315479))
+* **T212:** fix test 20241017 ([91d1cd4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/91d1cd467fb39affa0c37808a2821055ca47473e))
+* **T212:** fix controllo ruolo utente 20241016 ([ceec346](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ceec34621d667c65b2816680010efd1d8ac41fa2))
+* **monitoraggio-caricamenti:** recupero intervento BE con autoselezionamento e modifiche comportamento chips 20241030 ([37fdbfd](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/37fdbfde9f94fadf5f084f40d2ca976dd5647a02))
+* **monitoraggio-caricamenti:** aggiornato comportamento sezione filtri 20241030 ([dea6dde](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/dea6ddebb4aed746e7e56a5747160eb59071782f))
+
 ## [1.38.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.37.1...1.38.0) (2024-10-29)
 
 
