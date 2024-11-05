@@ -17,7 +17,7 @@ import { CRUDActionsI, CRUDActionTypes } from '../../../utils/common';
 import { useNavigate } from 'react-router-dom';
 import { GetMonitoraggioCaricamentiValues } from '../../../redux/features/administrativeArea/administrativeAreaThunk';
 import IconNote from '/public/assets/img/it-note-primary.png';
-import MonitoringSearchFilters, { initialFormValues } from './monitoringSearchFilters';
+import MonitoringSearchFilters, { initialFormValues, startFormValues } from './monitoringSearchFilters';
 import './monitoring.scss';
 import { withFormHandlerProps } from '../../../hoc/withFormHandler';
 import {
@@ -50,7 +50,7 @@ const Monitoring: React.FC<MonitoringI> = ({
   const pagination = useAppSelector(selectEntityPagination);
   // const { filtroCriterioRicerca, filtroPolicies, filtroStati } = filtersList;
   const [statisticheElaborate, setStatisticheElaborate] = useState<any[]>([]);
-  const [formValues, setFormValues] = useState<typeof initialFormValues>(initialFormValues);
+  const [formValues, setFormValues] = useState<typeof startFormValues>(startFormValues);
   const [chips, setChips] = useState<string[]>([]);
   const [isDisabled, setIsDisabled] = useState(true);
 

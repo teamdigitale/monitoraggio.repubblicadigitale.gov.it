@@ -61,6 +61,20 @@ export const initialFormValues = {
   } as DateField,
 };
 
+export const startFormValues = {
+  ...initialFormValues,
+  dataInizio: {
+    value: new Date().toISOString().split('T')[0],
+    minimum: '0001-01-01',
+    maximum: '9999-12-31'
+  } as DateField,
+  dataFine: {
+    value: new Date().toISOString().split('T')[0],
+    minimum: '0001-01-01',
+    maximum: '9999-12-31',
+  } as DateField,
+};
+
 const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues, setFormValues, onSearch, chips, setChips, isDisabled, setIsDisabled }) => {
   const [isDateValid, setIsDateValid] = useState<{ dataInizio?: boolean; dataFine?: boolean }>({ dataInizio: true, dataFine: true });
   const [shouldSearch, setShouldSearch] = useState(false);
@@ -190,14 +204,6 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
 
   }
 
-  useEffect(() => {
-    const today = new Date().toISOString().split('T')[0];
-    setFormValues((prev: any) => ({
-      ...prev,
-      dataInizio: { value: today, maximum: today },
-      dataFine: { value: today, minimum: today },
-    }));
-  }, []);
 
 
   const handleDateInputChange = (value: any, field: string) => {
