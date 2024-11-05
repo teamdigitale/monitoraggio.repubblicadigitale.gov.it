@@ -1,5 +1,17 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.374](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.373...1.0.0-test.374) (2024-11-05)
+
+
+### Features
+
+* **fe-piattaforma:** nuova data limite inserimento massivo servizi 20241031 ([6271e9e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6271e9e2d75b336cfdc80a31b25bbcc23e9c7f78))
+
+
+### Bug Fixes
+
+* **monitoraggio-caricamenti:** fix hamburgerMenu ricerca iniziale e grafica contatori 20241105 ([d51cc48](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d51cc48c63ba838e3ee6c4c38ff521b89b57e1db))
+
 ## [1.0.0-test.373](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.372...1.0.0-test.373) (2024-10-31)
 
 
