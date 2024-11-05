@@ -26,6 +26,7 @@
     padding-left: 15px;
     position: relative;
     top: -2px; // Adjust this value as needed to move it upwards
+    margin-left: -5px;
 }
 
 .statisticheDescrizione {
@@ -37,6 +38,8 @@
     padding-left: 10px;
     position: relative;
     top: -2px; // Adjust this value as needed to move it upwards
+    white-space: nowrap; // Prevent text from wrapping
+    margin-right: 10px;
 }
 
 .square {
