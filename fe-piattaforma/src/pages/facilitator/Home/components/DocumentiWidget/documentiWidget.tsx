@@ -49,7 +49,7 @@ const DocumentsWidget = () => {
   useEffect(() => {
     docsWidgetSet();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [device]);
+  }, []);
 
   const cardArray: any[] = [
     docsList.slice(0, docsPagination[getMediaQueryDevice(device)]),

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { CardProps, CardText, CardTitle, Col, Icon } from 'design-react-kit';
 import Heart from '/public/assets/img/hollow-blue-heart.png';
@@ -59,9 +59,23 @@ const CardShowcase: React.FC<ForumCardsI> = (props) => {
     highlighted,
   } = props;
 
+  const [imageSrc, setImageSrc] = useState<string>(coverPlaceholder);
   const device = useAppSelector(selectDevice);
   const isMobile = device.mediaIsPhone;
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const loadImage = async () => {
+      if (cover) {
+        const cleanedUrl = cleanDrupalFileURL(cover);
+        const img = new Image();
+        img.src = cleanedUrl;
+        img.onload = () => setImageSrc(cleanedUrl);
+      }
+    };
+    loadImage();
+  }, [cover]);
+
   const navigateTo = () => {
     navigate(`/bacheca/${id}`);
   };
@@ -95,7 +109,7 @@ const CardShowcase: React.FC<ForumCardsI> = (props) => {
       <div className='position-relative img-height-placeholder'>
         <div className='w-100'>
           <img
-            src={cover ? cleanDrupalFileURL(cover) : coverPlaceholder}
+            src={imageSrc}
             title='img title'
             alt={`anteprima ${title}`}
             aria-hidden
