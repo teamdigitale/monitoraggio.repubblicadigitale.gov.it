@@ -256,7 +256,7 @@ const MonitoringSearchFilters: React.FC<MonitoringSearchFilterI> = ({ formValues
     if (name?.name === 'intervento') {
       setFormValues(() => ({ ...formValues, programma: { value: '' }, progetto: { value: '' }, intervento: option }));
       retrieveProgramma(option.value, formValues.ente.value !== '' ? formValues.ente.value : undefined);
-      retrieveProgetto(option.value, Number(formValues.programma.value), formValues.ente.value !== '' ? formValues.ente.value : undefined);
+      retrieveProgetto(option.value, 0, formValues.ente.value !== '' ? formValues.ente.value : undefined);
     }
     if (name?.name === 'programma') {
       setFormValues(() => ({ ...formValues, progetto: { value: '', label: 'Seleziona' }, programma: option, intervento: { value: option.policy === RFD ? "RFD" : "SCD", label: option.policy === RFD ? "RFD" : "SCD" } }));
