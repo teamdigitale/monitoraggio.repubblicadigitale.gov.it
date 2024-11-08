@@ -49,7 +49,7 @@ const BachecaDigitaleWidget = () => {
   useEffect(() => {
     newsWidgetSet();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [device]);
+  }, []);
 
   return (
     <div className='py-5'>
