@@ -49,7 +49,7 @@ const CommunityWidget = () => {
   useEffect(() => {
     topicWidgetSet();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [device]);
+  }, []);
 
   const cardArray: any[] = [
     topicsList.slice(0, communityPagination[getMediaQueryDevice(device)]),
