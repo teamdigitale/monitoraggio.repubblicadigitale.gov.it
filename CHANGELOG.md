@@ -1,5 +1,15 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.375](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.374...1.0.0-test.375) (2024-11-08)
+
+
+### Bug Fixes
+
+* **analisi-drupal:** rimozione chiamata notifiche per utenti non autorizzati 20241023 ([be2f5d6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/be2f5d621d21354720329db97bc6069e57595d9f))
+* **analisi-drupal:** modifiche chiamate EP durante resize pagina e gestione recupero img card 20241108 ([e08eec8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e08eec89dc8c13f894c675878229bf9c2c5526d1))
+* **sezione-ricerca-enti:** fix ricerca progetto dropdown 20241031 ([6c50066](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6c500661082e10e27d3ff72fec84e9d9d9617fc1))
+* **creazione-utente:** aggiunta ruolo required 20241017 ([cfcc8c0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/cfcc8c0198a3a7c589d93b5ce00c7ddc9adac192))
+
 ## [1.0.0-test.374](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.373...1.0.0-test.374) (2024-11-05)
 
 
