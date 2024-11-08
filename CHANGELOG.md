@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.376](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.375...1.0.0-test.376) (2024-11-08)
+
+
+### Bug Fixes
+
+* **monitoraggio-caricamenti:** rimozione parametro per recupero lista progetti 20241108 ([a1520af](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a1520afe88ebc32aa1341321f81f2a472d1b9455))
+* **monitoraggio-caricamenti:** fix ep filtri ricerca 20241108 ([09d5645](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/09d564552d6850000c474b638c8318573800ff35))
+
 ## [1.0.0-test.375](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.374...1.0.0-test.375) (2024-11-08)
 
 
