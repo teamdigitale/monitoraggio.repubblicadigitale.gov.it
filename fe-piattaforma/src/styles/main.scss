@@ -68,5 +68,6 @@ select:-webkit-autofill:focus {
 input[type="date"]::-webkit-calendar-picker-indicator {
   content: url('../../public/assets/img/it-calendar-primary.png');
   background: none;
+  margin-right: -13px;
   transform: scale(1.2);
 }

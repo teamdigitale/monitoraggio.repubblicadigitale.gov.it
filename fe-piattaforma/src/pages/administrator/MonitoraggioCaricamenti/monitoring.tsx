@@ -17,7 +17,7 @@ import { CRUDActionsI, CRUDActionTypes } from '../../../utils/common';
 import { useNavigate } from 'react-router-dom';
 import { GetMonitoraggioCaricamentiValues } from '../../../redux/features/administrativeArea/administrativeAreaThunk';
 import IconNote from '/public/assets/img/it-note-primary.png';
-import MonitoringSearchFilters, { initialFormValues } from './monitoringSearchFilters';
+import MonitoringSearchFilters, { initialFormValues, startFormValues } from './monitoringSearchFilters';
 import './monitoring.scss';
 import { withFormHandlerProps } from '../../../hoc/withFormHandler';
 import {
@@ -50,9 +50,9 @@ const Monitoring: React.FC<MonitoringI> = ({
   const pagination = useAppSelector(selectEntityPagination);
   // const { filtroCriterioRicerca, filtroPolicies, filtroStati } = filtersList;
   const [statisticheElaborate, setStatisticheElaborate] = useState<any[]>([]);
-  const [formValues, setFormValues] = useState<typeof initialFormValues>(initialFormValues);
+  const [formValues, setFormValues] = useState<typeof startFormValues>(startFormValues);
   const [chips, setChips] = useState<string[]>([]);
-  const [areChipsVisible, setChipsVisible] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(true);
 
   useEffect(() => {
     dispatch(setEntityPagination({ pageSize: 10 }));
@@ -89,25 +89,31 @@ const Monitoring: React.FC<MonitoringI> = ({
     //Aspette 1ms e clicca il bottone #applicaFiltri
     setTimeout(() => {
       handleSearchAfterSingleChipRemoveClick();
+      setIsDisabled(true);
     }, 1);
   };
+
+  const changeIsDisabled = (value: boolean) => {
+    setIsDisabled(value);
+  }
 
   const handleClearAllClick = () => {
     const targetElement = document.querySelector('#cancellaFiltri') as HTMLButtonElement;
     if (targetElement) {
       targetElement.click();
     }
-    setChipsVisible(false);
     setTimeout(() => {
       handleSearchAfterSingleChipRemoveClick();
     }, 1);
   };
+  
+  const [removeChipCount, setRemoveChipCount] = useState(0);
+  useEffect(() => {
+    fetchData();
+  }, [removeChipCount]);
 
   const handleSearchAfterSingleChipRemoveClick = () => {
-    const targetElement = document.querySelector('#applicaFiltri') as HTMLButtonElement;
-    if (targetElement) {
-      targetElement.click();
-    }
+    setRemoveChipCount(removeChipCount + 1);
   };
 
 
@@ -158,8 +164,8 @@ const Monitoring: React.FC<MonitoringI> = ({
             data: <span id='dataColumn'><b>{formatDate(td.dataCaricamenti)}</b></span>,
             ente: <span id='enteColumn'>{td.nomeEnte}</span>,
             intervento: <span id='interventoColumn'>{td.intervento}</span>,
-            progetto: <span id='progettoColumn'>{td.nomeProgetto}</span>,
             programma: <span id='programmaColumn'>{td.nomeProgramma}</span>,
+            progetto: <span id='progettoColumn'>{td.nomeProgetto}</span>,
             caricamenti: <span id='caricamentiColumn'>{td.numCaricamenti}</span>,
             serviziCaricati: <span id='serviziColumn'>{td.serviziAggiunti}</span>,
             cittadiniCaricati: <span id='cittadiniColumn'>{td.cittadiniAssociati}</span>
@@ -221,9 +227,6 @@ const Monitoring: React.FC<MonitoringI> = ({
     setChips(chips);
   }
 
-  const setChipVisibility = (value: boolean) => {
-    setChipsVisible(value);
-  }
 
   return (
     <div>
@@ -231,12 +234,11 @@ const Monitoring: React.FC<MonitoringI> = ({
       automatico sulla data odierna. Utilizza i filtri per effettuare una ricerca avanzata.
 
       <div style={{ margin: '50px' }} />
-      <Accordion title={'Ricerca avanzata'} className="custom-accordion" opened={true}>
-        <MonitoringSearchFilters onSearch={fetchData} formValues={formValues} setFormValues={setFormValuesFunction} chips={chips} setChips={setChipsFunction} setChipsVisible={setChipVisibility} />
+      <Accordion title={'Ricerca avanzata'} className="custom-accordion" opened={false}>
+        <MonitoringSearchFilters onSearch={fetchData} formValues={formValues} setFormValues={setFormValuesFunction} chips={chips} setChips={setChipsFunction} isDisabled={isDisabled} setIsDisabled={changeIsDisabled}/>
       </Accordion>
       <div style={{ marginBottom: '50px' }} className='justify-content-start mt-5 chipsRow'>
-        {areChipsVisible && (
-          <>
+
             {chips.map((chip, index) => (
               <Button key={index} className='chipRemove' onClick={() => removeChip(chip)}>
                 <Chip className='mr-1 ml-0 rounded-pill'>
@@ -256,8 +258,6 @@ const Monitoring: React.FC<MonitoringI> = ({
                 Cancella tutti
               </Button>
             )}
-          </>
-        )}
       </div>
 
 

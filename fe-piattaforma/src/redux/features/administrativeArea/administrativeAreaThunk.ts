@@ -88,6 +88,39 @@ export const GetEntityValues =
     }
   };
 
+  export const GetAllEntityValues = (payload?: any) => async (dispatch: Dispatch) => {
+    try {      
+      const entityEndpoint = `/ente/all`;
+      dispatch({ ...GetValuesAction, payload });
+  
+      let currentPage = 0;
+      let totalPages = 1;
+      let allData: any[] = [];
+
+      while (currentPage < totalPages) {  //necessario per utilizzare il metodo già esistente
+        const res = await API.post(entityEndpoint, payload, {
+          params: {
+            currPage: currentPage,
+            pageSize: 100,
+          },
+        });
+  
+        if (res?.data) {
+          totalPages = res.data.numeroPagine;
+          currentPage++;
+          allData = [...allData, ...res.data.enti];
+        } else {
+          break;
+        }
+      }     
+      return allData;
+      
+    } catch (error) {
+      console.log('GetAllEntityValues error', error);
+    } finally {
+    }
+  };
+
   export const GetEntitySearchValues =
   (payload?: any) => async (dispatch: Dispatch) => {
     try {
@@ -129,6 +162,27 @@ export const GetEntityValues =
       console.log('GetMonitoraggioCaricamentiValues error', error);
     } finally {
       dispatch(hideLoader());
+    }
+  };
+
+  export const GetInterventiDropdownList = 
+  (payload?: any) => async (dispatch: Dispatch) => {
+    try {
+      //dispatch(showLoader());
+      dispatch({ ...GetValuesAction, payload });
+      const endpoint = `/progetto/policies/programmi/dropdown`; 
+      const res = await API.post(endpoint, payload, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }); 
+      if (res?.data) {
+        return res.data;
+      }
+    } catch (error) {
+      console.log('GetInterventiDropdownList error', error);
+    } finally {
+      //dispatch(hideLoader());
     }
   };
 

@@ -34,6 +34,10 @@ const HamburgerMenu: React.FC<HBMenuProps> = (props) => {
     }
   }, [open]);
 
+  const filteredMenuRoutes = menuRoutes.filter(({ visible = [] }) => hasUserPermission(visible)).some(route => route.path === '/area-dati') 
+  ? menuRoutes.filter(route => route.path !== '/area-dati/report-dati')
+  : menuRoutes;
+
   return (
     <ClickOutside callback={() => setOpen(false)}>
       <div className={clsx('hamburger_nav', 'mr-2', !open && 'invisible')}>
@@ -43,7 +47,7 @@ const HamburgerMenu: React.FC<HBMenuProps> = (props) => {
             id='hamburger'
           >
             <ul>
-              {menuRoutes
+              {filteredMenuRoutes
                 .filter(({ visible = [] }) => hasUserPermission(visible))
                 .map((link, index: number) => {
                   return link.subRoutes?.length ? (

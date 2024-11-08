@@ -26,6 +26,7 @@
     padding-left: 15px;
     position: relative;
     top: -2px; // Adjust this value as needed to move it upwards
+    margin-left: -5px;
 }
 
 .statisticheDescrizione {
@@ -37,6 +38,8 @@
     padding-left: 10px;
     position: relative;
     top: -2px; // Adjust this value as needed to move it upwards
+    white-space: nowrap; // Prevent text from wrapping
+    margin-right: 10px;
 }
 
 .square {
@@ -123,6 +126,11 @@ input#dateInputDataFine {
     color: red !important; 
 }
 
+.dateInputDataInizio--empty::-webkit-datetime-edit,
+.dateInputDataFine--empty::-webkit-datetime-edit {
+    color: #5A6772 !important;
+}
+
 #search-icon {
     border-bottom: 1px solid #0073e5 !important;
     margin-top: 13px;
@@ -135,7 +143,12 @@ input#dateInputDataFine {
     padding-right: 0px;
 }
 
-#react-select-2-input {
+input[id^="react-select-"] {
+    box-shadow: none !important;
+    opacity: 1 !important;
+}
+
+.form-check [type=checkbox]:focus+label, .form-check [type=radio]:focus+label, .toggles label input[type=checkbox]:focus+.lever, :focus:not(.focus--mouse):not([data-focus-mouse=true]) {
     box-shadow: none !important;
     opacity: 1 !important;
 }
@@ -251,4 +264,50 @@ input#dateInputDataFine {
 .clearAllChips{
     color: #0066CC !important;
     text-decoration: underline !important;
+}
+
+.customCrossSelect {
+    position: relative;
+}
+
+.customCrossSelect::after {
+    content: '';
+    background-image: url('../../../../public/assets/img/it-close.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    fill: #0066CC;
+}
+
+.customCrossSelectDisabled::after {
+    background-image: url('../../../../public/assets/img/it-close-grey.png'); 
+}
+
+.clickable-cross-area {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 30px;
+    background-color: transparent;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.bootstrap-select__control--is-focused{
+    .bootstrap-select__placeholder.css-zsohrp-placeholder {
+        opacity: 0;
+    }
+}
+
+.bootstrap-select__single-value{
+    color:#0066CC !important
 }

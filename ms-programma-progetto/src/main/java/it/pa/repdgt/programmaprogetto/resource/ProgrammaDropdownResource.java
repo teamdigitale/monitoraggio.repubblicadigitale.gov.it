@@ -20,4 +20,7 @@ public class ProgrammaDropdownResource implements Serializable {
 	
 	@JsonProperty(value = "nome")
 	private String nome;
+
+	@JsonProperty(value = "policy")
+	private String policy;
 }

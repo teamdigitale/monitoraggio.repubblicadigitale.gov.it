@@ -106,14 +106,16 @@ public interface ProgrammaRepository extends JpaRepository<ProgrammaEntity, Long
 		    + "			OR UPPER( ente.NOME ) LIKE UPPER( :criterioRicercaLike ) ) "
 			+ " 	AND  ( COALESCE(:policies) IS NULL 	OR   programma.POLICY IN (:policies) )"
 			+ " 	AND  ( COALESCE(:stati) IS NULL  	OR progetto.STATO IN (:stati) )"
-			+ "		AND  ( COALESCE(:idsProgrammi) IS NULL OR progetto.ID_PROGRAMMA IN (:idsProgrammi) )",
+			+ "		AND  ( COALESCE(:idsProgrammi) IS NULL OR progetto.ID_PROGRAMMA IN (:idsProgrammi) )"
+			+ " 	AND ( :idEnte IS NULL OR progetto.ID_ENTE_GESTORE_PROGETTO = :idEnte )",
 		  nativeQuery = true)
 	public List<ProgrammaEntity> findAllByProgettoFiltro(
 			@Param(value = "criterioRicerca") String criterioRicerca,
 			@Param(value = "criterioRicercaLike") String criterioRicercaLike, 
 			@Param(value = "policies") List<String> policies, 
 			@Param(value = "stati") List<String> stati,
-			@Param(value = "idsProgrammi") List<String> idsProgrammi
+			@Param(value = "idsProgrammi") List<String> idsProgrammi,
+			@Param(value = "idEnte") String idEnte
 		);
 	
 	@Query(value = "SELECT *"
@@ -291,14 +293,16 @@ public interface ProgrammaRepository extends JpaRepository<ProgrammaEntity, Long
 	        + "			OR UPPER( ente.NOME ) LIKE UPPER( :criterioRicercaLike ) ) "
 			+ " 	AND  ( COALESCE(:policies) IS NULL 	OR   programma.POLICY IN (:policies) )"
 			+ " 	AND  ( COALESCE(:stati) IS NULL  	OR progetto.STATO IN (:stati) )"
-			+ "		AND  ( COALESCE(:idsProgrammi) IS NULL OR progetto.ID_PROGRAMMA IN (:idsProgrammi) )",
+			+ "		AND  ( COALESCE(:idsProgrammi) IS NULL OR progetto.ID_PROGRAMMA IN (:idsProgrammi) )"
+			+ " 	AND  ( :idEnte IS NULL OR progetto.id_ente_gestore_progetto = :idEnte )",
 		  nativeQuery = true)
 	public List<String> findAllPoliciesByProgettoFiltro(
 			@Param(value = "criterioRicerca") String criterioRicerca,
 			@Param(value = "criterioRicercaLike") String criterioRicercaLike, 
 			@Param(value = "policies") List<String> policies, 
 			@Param(value = "stati") List<String> stati,
-			@Param(value = "idsProgrammi") List<String> idsProgrammi
+			@Param(value = "idsProgrammi") List<String> idsProgrammi,
+			@Param(value = "idEnte") String idEnte
 		);
 	
 	@Query(value = "SELECT DISTINCT programma.STATO"

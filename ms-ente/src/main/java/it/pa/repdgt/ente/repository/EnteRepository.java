@@ -202,6 +202,8 @@ public interface EnteRepository extends JpaRepository<EnteEntity, Long> {
 			+ " SELECT DISTINCT"
 			+"	  progetti.ID_PROGETTO "
 			+"	 ,progetti.NOME_PROGETTO "
+			+"   ,progetti.POLICY"
+			+"   ,progetti.ID_PROGRAMMA"
 			+" FROM ( "
 			+" 		SELECT DISTINCT    "
 			+"		   e.ID as ID_ENTE "
@@ -210,7 +212,8 @@ public interface EnteRepository extends JpaRepository<EnteEntity, Long> {
 			+" 		  ,prgt.NOME_BREVE as NOME_PROGETTO "	
 			+" 	      ,e.NOME as NOME_ENTE "
 			+" 		  ,'ENTE GESTORE DI PROGRAMMA' AS PROFILO_ENTE "
-			+" 		  ,prgm.POLICY "				
+			+" 		  ,prgm.POLICY "
+			+"		  ,prgm.ID AS ID_PROGRAMMA"				
 			+" 	 	FROM "
 			+" 			ente e "
 			+" 			INNER JOIN programma prgm "
@@ -231,6 +234,7 @@ public interface EnteRepository extends JpaRepository<EnteEntity, Long> {
 			+" 	      ,e.NOME as NOME_ENTE "
 			+" 		  ,'ENTE GESTORE DI PROGETTO' AS PROFILO_ENTE "
 			+" 		  ,prgm.POLICY "
+			+"		  ,prgm.ID AS ID_PROGRAMMA"
 			+" 		FROM "
 			+" 			ente e "
 			+" 			INNER JOIN progetto prgt "
@@ -251,6 +255,7 @@ public interface EnteRepository extends JpaRepository<EnteEntity, Long> {
 			+" 	      ,e.NOME as NOME_ENTE "
 			+" 		  ,'ENTE PARTNER' AS PROFILO_ENTE "
 			+" 		  ,prgm.POLICY "
+			+"		  ,prgm.ID AS ID_PROGRAMMA"
 			+" 		FROM "
 			+" 			ente_partner ep "
 			+" 			INNER JOIN ente e "
@@ -270,7 +275,8 @@ public interface EnteRepository extends JpaRepository<EnteEntity, Long> {
 	        +"	    		OR UPPER( progetti.NOME_ENTE ) LIKE UPPER( :criterioRicercaLike ) "
             +"				OR UPPER( progetti.PARTITA_IVA_ENTE ) LIKE UPPER( :criterioRicercaLike ) "
             +"		) "
-			+" 		AND  ( COALESCE(:profiliEnte) IS NULL  OR  progetti.PROFILO_ENTE IN (:profiliEnte) ) ",
+			+" 		AND  ( COALESCE(:profiliEnte) IS NULL  OR  progetti.PROFILO_ENTE IN (:profiliEnte) ) "
+			+ " 	AND  ( :idEnte IS NULL OR progetti.ID_ENTE = :idEnte ) ",
 			nativeQuery = true)
 	public List<Map<String, String>> findAllProgettiFiltrati(
 		@Param("criterioRicerca") String criterioRicerca,
@@ -278,7 +284,8 @@ public interface EnteRepository extends JpaRepository<EnteEntity, Long> {
 		@Param("idsProgrammi") List<String> idsProgrammi,
 		@Param("idsProgetti")  List<String> idsProgetti,
 		@Param("profiliEnte")  List<String> profiliEnte,
-		@Param("policies") List<String> policies
+		@Param("policies") List<String> policies,
+		@Param("idEnte") String idEnte
 	);
 	
 	

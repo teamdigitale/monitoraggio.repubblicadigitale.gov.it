@@ -1,5 +1,91 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.374](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.373...1.0.0-test.374) (2024-11-05)
+
+
+### Features
+
+* **fe-piattaforma:** nuova data limite inserimento massivo servizi 20241031 ([6271e9e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6271e9e2d75b336cfdc80a31b25bbcc23e9c7f78))
+
+
+### Bug Fixes
+
+* **monitoraggio-caricamenti:** fix hamburgerMenu ricerca iniziale e grafica contatori 20241105 ([d51cc48](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d51cc48c63ba838e3ee6c4c38ff521b89b57e1db))
+
+## [1.0.0-test.373](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.372...1.0.0-test.373) (2024-10-31)
+
+
+### Bug Fixes
+
+* **T242:** fix altezza minima titolo card 20241030 ([b64c899](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b64c899f0f2cf8399c84830fb71973da90d27749))
+
+## [1.0.0-test.372](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.371...1.0.0-test.372) (2024-10-30)
+
+
+### Bug Fixes
+
+* **monitoraggio-caricamenti:** recupero intervento BE con autoselezionamento e modifiche comportamento chips 20241030 ([4a881dd](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4a881dd3ec2a7722145fed3c365dea343625cce8))
+* **monitoraggio-caricamenti:** aggiornato comportamento sezione filtri 20241030 ([e92a58b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e92a58b22076fcf808986e726e87e90db16b3e59))
+
+## [1.0.0-test.371](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.370...1.0.0-test.371) (2024-10-30)
+
+
+### Features
+
+* **monitoraggio-caricamenti:** modifica EP recupero policy 20241029 ([f8afa66](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f8afa66e26cd524b43e4e35620002c32ed397d87))
+
+
+### Bug Fixes
+
+* **T242:** fix titolo cards annunci 20241029 ([71f3ed6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/71f3ed6e5425a6827c7e0c826692947274dad9f2))
+
+## [1.0.0-test.370](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.369...1.0.0-test.370) (2024-10-29)
+
+
+### Bug Fixes
+
+* **monitoraggio-caricamenti:** fix filtraggio progetto 20241029 ([5277d60](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5277d6036bb786fac6f35c7715f3385d710a6b9d))
+
+## [1.0.0-test.369](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.368...1.0.0-test.369) (2024-10-29)
+
+
+### Features
+
+* **monitoraggio-caricamenti:** logica recupero combolist filtri 20241029 ([8a32a54](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8a32a5418b6d389a268e6bd026ddeb3eea719728))
+
+## [1.0.0-test.368](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.367...1.0.0-test.368) (2024-10-28)
+
+
+### Features
+
+* **monitoraggio-caricamenti:** WIP modifiche recupero valori filtri FE 20241028 ([b7348c7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b7348c75b3945d7fb4b7cadfc5ecee0223eea0a1))
+* **monitoraggio-caricamenti:** modifica metodo BE per recupero ente con policy 20241028 ([b97c7f3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b97c7f31e7b4f5b1034c5a84447e4ac7f5ccb072))
+* **monitoraggio-caricamenti:** modifica EP recupero programmi e progetti via ente 20241028 ([b768709](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b76870953222446f2aebcd413a5617ae57fe6ef8))
+
+## [1.0.0-test.367](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.366...1.0.0-test.367) (2024-10-28)
+
+
+### Features
+
+* **monitoraggio-caricamenti:** gestione popolamento filtri 20241028 ([7db572e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7db572eacb5878cd77cf406559f8d1d3a6f6177f))
+
+## [1.0.0-test.366](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.365...1.0.0-test.366) (2024-10-28)
+
+
+### Features
+
+* **monitoraggio-caricamenti:** modifiche metodi BE recupero progetti e programmi 20241025 ([82fb93f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/82fb93f06a50ab472d32995f2f17836c776738c9))
+* **monitoraggio-caricamenti:** modifiche grafiche sezione filtri 20241024 ([06731e9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/06731e9bb811078e9d1c2a1552160a41a6667d48))
+* **monitoraggio-caricamenti:** adeguato comportamento Applica filtri / Cancella filtri / chips 20241024 ([5f58db4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5f58db45396c1393f65c3f9aec198b3275853f2f))
+
+## [1.0.0-test.365](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.364...1.0.0-test.365) (2024-10-24)
+
+
+### Bug Fixes
+
+* **montioraggio-caricamenti:** fix cancella e placeholder campo ente 20241023 ([01181de](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/01181de4f6de5b7f4f9cc3e73171b918ac00e1c5))
+* **monitoraggio-caricamenti:** risolto focus cursore campo ente e check conferma data 20241023 ([827d4fe](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/827d4fe79e355c834204b07688d8a6d3b4f0be29))
+
 ## [1.0.0-test.364](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.363...1.0.0-test.364) (2024-10-21)
 
 
