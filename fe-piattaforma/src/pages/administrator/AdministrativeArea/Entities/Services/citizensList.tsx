@@ -84,7 +84,7 @@ const CitizenListTableHeading: TableHeadingI[] = [
   },
 ];
 
-const CitizensList: React.FC = () => {
+const CitizensList: React.FC<{ dataServizio: Date }> = ({ dataServizio }) => {
   const { serviceId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -245,6 +245,7 @@ const CitizensList: React.FC = () => {
     {
       text: 'Aggiungi cittadino',
       color: 'primary',
+      disabled: moment().isBefore(moment(dataServizio)),
       onClick: () => {
         dispatch(openModal({ id: 'search-citizen-modal' }));
       },
