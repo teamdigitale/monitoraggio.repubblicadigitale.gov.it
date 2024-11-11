@@ -30,6 +30,7 @@ export interface AccordionRowI {
   StatusElement?: ReactElement | undefined;
   onTooltipInfo?: string;
   onActionRadio?: CRUDActionsI | undefined;
+  idTable?: string;
 }
 
 const AccordionRow: React.FC<AccordionRowI> = ({
@@ -44,6 +45,7 @@ const AccordionRow: React.FC<AccordionRowI> = ({
   StatusElement,
   onTooltipInfo = '',
   onActionRadio,
+  idTable
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { t } = useTranslation();
@@ -151,7 +153,8 @@ const AccordionRow: React.FC<AccordionRowI> = ({
                 color='primary'
               />
             </Button>
-          ) : <div className='mr-2'>
+          ) : idTable === 'table-caricamento-massivo' && ( 
+          <div className='mr-2'>
             <Button
               className='p-0'
               aria-label='Informazioni'
@@ -171,7 +174,7 @@ const AccordionRow: React.FC<AccordionRowI> = ({
             >
               Per un problema tecnico imprevisto l'elaborazione non è stata portata a termine, ti invitiamo a caricare nuovamente il file
             </UncontrolledTooltip>
-          </div>}
+          </div>)}
         </div>
         {((onTooltipInfo || innerInfo?.onTooltipInfo) &&
           innerInfo?.isPresentInList) ||
