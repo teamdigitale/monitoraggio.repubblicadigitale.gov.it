@@ -112,6 +112,7 @@ export function encryptDocumentAndDetermineType(
 
 export const validateFields = (
   record: CSVRecord,
+  extension: string,
   validateFiscalCode: (fiscalCode: string) => boolean
 ): string[] => {
   const errors: string[] = [];
@@ -142,7 +143,7 @@ export const validateFields = (
     const parsedDate = new Date(record.SE1);
     if(!isValidDateFormat(record.SE1) || !isValidDate(record.SE1)){ //valido tramite regex
       errors.push("La data inserita per il servizio non e' valida.");
-    } else if (parsedDate > maxDate) {
+    } else if (parsedDate > maxDate && extension === 'csv') {
       errors.push("La data del servizio e' successiva al 31 Ottobre 2024.");
     }
   }
