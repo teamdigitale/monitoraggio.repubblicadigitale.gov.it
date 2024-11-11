@@ -8,6 +8,7 @@ import clsx from 'clsx';
 import { calculatePaginationBounds } from '../../../utils/pagination.utils';
 
 interface MobileTableI {
+  id?: string;
   onActionClick?: CRUDActionsI;
   onTooltipInfo?: string;
   values?: TableRowI[];
@@ -18,6 +19,7 @@ interface MobileTableI {
 }
 
 const TableMobile: React.FC<MobileTableI> = ({
+  id,
   onActionClick,
   onTooltipInfo = '',
   values = [],
@@ -91,6 +93,7 @@ const TableMobile: React.FC<MobileTableI> = ({
             key={index}
             onTooltipInfo={onTooltipInfo}
             onActionRadio={onActionRadio}
+            idTable={id || ''}
           />
         ))
       ) : (

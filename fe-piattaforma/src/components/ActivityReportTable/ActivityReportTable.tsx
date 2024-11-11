@@ -173,7 +173,7 @@ const ActivityReportTable = forwardRef(function ActivityReportTable(
       <div className='row my-4'>
         <div className='col'>
           <Table
-            id='table'
+            id='table-caricamento-massivo'
             heading={tableHeading}
             values={pagination?.content ?? []}
             totalCounter={pagination?.totalElements ?? -1}
