@@ -1,5 +1,14 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.377](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.376...1.0.0-test.377) (2024-11-12)
+
+
+### Bug Fixes
+
+* **T247:** Rimozione limite data SCD 20241111 ([5445129](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5445129d03a347b439bcad334e6eb1403003e80c))
+* **T246:** inibizione aggiunta cittadini per servizi con data futura 20241111 ([51ccf58](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/51ccf5807583a6b0253a61268cdd5a40411f9a7a))
+* **Z1328:** fix errata visualizzazione mobile info tooltip 20241111 ([1e11239](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1e112394b3bbecc26d7bf43a2a536a4c4233022b))
+
 ## [1.0.0-test.376](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.375...1.0.0-test.376) (2024-11-08)
 
 
