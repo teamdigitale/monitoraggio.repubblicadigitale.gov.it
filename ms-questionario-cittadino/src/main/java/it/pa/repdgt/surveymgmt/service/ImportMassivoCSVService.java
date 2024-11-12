@@ -229,7 +229,7 @@ public class ImportMassivoCSVService {
                         throw new ResourceNotFoundException(NoteCSV.NOTE_VOLONTARIO_NON_PRESENTE, CodiceErroreEnum.C01);
                     }
                 }
-                String nominativoSedeModified = servizioElaborato.getCampiAggiuntiviCSV().getNominativoSede().replace(" ", "").toUpperCase();
+                String nominativoSedeModified = servizioElaborato.getCampiAggiuntiviCSV().getNominativoSede().replace(" ", "").replace("'","").toUpperCase();
                 Optional<SedeEntity> optSedeRecuperata = recuperaSedeDaRichiesta(nominativoSedeModified);
                 if (!optSedeRecuperata.isPresent()) {
                     throw new ResourceNotFoundException(NoteCSV.NOTE_SEDE_NON_PRESENTE, CodiceErroreEnum.C01);
