@@ -322,12 +322,20 @@ const CitizensList: React.FC<{ dataServizio: Date }> = ({ dataServizio }) => {
           )}
         </GenericSearchFilterTableLayout>
       ) : (
-        <EmptySection
-          title='Questa sezione è ancora vuota'
-          subtitle='Aggiungi i cittadini'
-          buttons={buttons}
-        />
-      )}
+        moment().isBefore(moment(dataServizio)) ? (
+          <EmptySection
+            title='La data del servizio è impostata nel futuro'
+            subtitle='Sarà possibile aggiungere i cittadini a questo servizio a partire dalla data indicata'
+            buttons={buttons}
+          />
+          ) : (
+          <EmptySection
+            title='Questa sezione è ancora vuota'
+            subtitle='Aggiungi i cittadini'
+            buttons={buttons}
+          />
+          )
+        )}
       <ManageCitizenInService />
       <ConfirmSentSurveyModal />
       <UploadCSVModal
