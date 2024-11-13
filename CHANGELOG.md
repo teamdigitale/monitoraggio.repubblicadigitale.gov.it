@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.378](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.377...1.0.0-test.378) (2024-11-13)
+
+
+### Bug Fixes
+
+* **massivo-controllosede:** fix controllo validita sede ins massivo 20241112 ([1906ae9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1906ae9ded8594790353529dd7180a028bfe2594))
+* **T246:** modifica testo aggiunta cittadini a servizio con data futura 20241112 ([bba12fb](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/bba12fb0ab86d464394bed388c4182dc8f4abc2c))
+
 ## [1.0.0-test.377](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.376...1.0.0-test.377) (2024-11-12)
 
 
