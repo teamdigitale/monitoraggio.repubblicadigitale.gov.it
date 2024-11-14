@@ -289,7 +289,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
             throw new CittadinoException(messaggioErrore, CodiceErroreEnum.U23);
         }
         cittadino.setDataOraAggiornamento(new Date());
-        cittadino = cittadinoRepository.save(cittadino);
+        cittadino = cittadinoRepository.saveAndFlush(cittadino);
         // associo il cittadino al servizio
         this.associaCittadinoAServizio(idServizio, cittadino, null);
 
@@ -365,7 +365,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
             throw new CittadinoException(messaggioErrore, CodiceErroreEnum.U23);
         }
         cittadino.setDataOraAggiornamento(new Date());
-        cittadino = cittadinoRepository.save(cittadino);
+        cittadino = cittadinoRepository.saveAndFlush(cittadino);
         // associo il cittadino al servizio
         this.associaCittadinoAServizio(idServizio, cittadino, idRegistroAttivita);
 
