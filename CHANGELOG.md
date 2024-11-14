@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.382](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.381...1.0.0-test.382) (2024-11-14)
+
+
+### Bug Fixes
+
+* **inserimento-cittadino:** controlli + stringenti inserimento cittadino 20241114 ([d0c5494](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d0c54946d007591a6ead9f2b66563edfa5db99e9))
+
 ## [1.0.0-test.381](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.380...1.0.0-test.381) (2024-11-14)
 
 
