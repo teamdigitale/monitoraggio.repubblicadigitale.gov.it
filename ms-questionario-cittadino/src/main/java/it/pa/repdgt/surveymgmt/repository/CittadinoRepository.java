@@ -59,7 +59,8 @@ public interface CittadinoRepository extends JpaRepository<CittadinoEntity, Long
 
 	Optional<CittadinoEntity> findByCodiceFiscale(String codiceFiscale);
 
-	List<CittadinoEntity> findAllByCodiceFiscale(String codiceFiscale);
+	@Query(value = "SELECT cit.* FROM CITTADINO cit WHERE cit.codice_fiscale = :codiceFiscale", nativeQuery= true)
+	List<CittadinoEntity> findAllByCodiceFiscale(@Param(value="codiceFiscale") String codiceFiscale);
 
 	@Query(value = " "
 			+ " SELECT "
