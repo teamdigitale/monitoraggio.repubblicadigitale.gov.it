@@ -148,7 +148,7 @@ export const validateFields = (
   }
 
   if (record.SE2) {
-    if (record.SE2.length = 5) {
+    if (record.SE2.length == 5) {
       const valoreDurataServizio = record.SE2.trim().substring(0, 5);
       if (
         !containsOnlyNumber(valoreDurataServizio.substring(0, 1)) ||
