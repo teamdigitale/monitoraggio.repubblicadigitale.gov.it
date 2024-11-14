@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.381](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.380...1.0.0-test.381) (2024-11-14)
+
+
+### Features
+
+* **T247:** rimozione grafica data massima inserimento per SCD e aggiunta banner per RFD 20241114 ([eb89c2c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/eb89c2c1989a8d6879f10341ff6ce22d7d85b2b9))
+
 ## [1.0.0-test.380](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.379...1.0.0-test.380) (2024-11-14)
 
 
