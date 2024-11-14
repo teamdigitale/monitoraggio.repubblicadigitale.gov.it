@@ -1434,6 +1434,7 @@ const ProjectsDetails = () => {
                 userHeaders.codiceRuoloUtenteLoggato === 'DTD') ? (
                 <CSVUploadBanner
                   onPrimaryButtonClick={handleNavigateToCaricamentoDati}
+                  policy={projectDetails?.policy}
                 ></CSVUploadBanner>
               ) : null}
             </div>
