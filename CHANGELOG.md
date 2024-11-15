@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.39.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.39.0...1.39.1) (2024-11-15)
+
+
+### Bug Fixes
+
+* **inserimento-massivo:** controllo stringente formato durata servizio 20241114 ([4b40826](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4b40826a01439f97865c318eb1d9936920cd8406))
+* **inserimento-massivo:** controllo stringente formato durata servizio 20241114 ([d1900f3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d1900f38d94e6e97eeb54cea22a103567debfce6))
+
 ## [1.39.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.38.0...1.39.0) (2024-10-31)
 
 
