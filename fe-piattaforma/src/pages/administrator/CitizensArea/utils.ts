@@ -11,11 +11,11 @@ export const TableHeading: TableHeadingI[] = [
     size: 'small',
   },
   {
-    label: 'N. servizi utilizzati',
+    label: 'Numero servizi',
     field: 'numeroServizi',
   },
   {
-    label: 'N. questionari compilati',
+    label: 'Numero questionari compilati',
     field: 'numeroQuestionariCompilati',
   },
   {
