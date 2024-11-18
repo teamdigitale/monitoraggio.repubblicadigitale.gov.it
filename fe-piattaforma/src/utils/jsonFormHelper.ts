@@ -285,13 +285,15 @@ const getSchemaRequired = (
   }
 };
 
+const KEY_BE_TO_EXCLUDE = ["codiceFiscaleNonDisponibile","tipoDocumento","numeroDocumento"]
+
 export const generateForm: (schema: SchemaI, compile?: boolean) => FormI = (
   schema,
   compile = false
 ) => {
   if (Object.keys(schema)?.length)
     return newForm(
-      Object.keys(schema.properties).map((field) =>
+      Object.keys(schema.properties).filter((field) => !KEY_BE_TO_EXCLUDE.includes(schema.properties[field].keyBE || "")).map((field) => 
         newFormField({
           ...getTypeReverse(schema.properties[field]),
           field,
