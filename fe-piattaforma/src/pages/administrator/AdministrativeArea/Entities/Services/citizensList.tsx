@@ -38,6 +38,7 @@ import ConfirmSentSurveyModal from '../modals/confirmSentSurveyModal';
 import { resetCompilingSurveyForm } from '../../../../../redux/features/administrativeArea/surveys/surveysSlice';
 import UploadCSVModal from '../../../../../components/AdministrativeArea/Entities/General/UploadCSVModal/UploadCSVModal';
 import moment from 'moment';
+import IconNote from '/public/assets/img/it-note-primary.png';
 
 const CitizenTemplate = '/assets/entity_templates/template_cittadino.xlsx';
 
@@ -327,6 +328,8 @@ const CitizensList: React.FC<{ dataServizio: Date }> = ({ dataServizio }) => {
             title='La data del servizio è impostata nel futuro'
             subtitle='Sarà possibile aggiungere i cittadini a questo servizio a partire dalla data indicata'
             buttons={buttons}
+            withIcon={true}
+            icon={IconNote}
           />
           ) : (
           <EmptySection
