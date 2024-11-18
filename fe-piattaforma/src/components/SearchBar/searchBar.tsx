@@ -252,7 +252,7 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
                 )}
                 field={id}
                 onInputChange={onInputQueryChange}
-                placeholder={device.mediaIsPhone ? '' : placeholder}
+                placeholder={placeholder}
                 value={searchValue}
                 maximum={
                   searchType === selectedSteps.FISCAL_CODE ? 16 : undefined
@@ -290,7 +290,6 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
                       }
                     }}
                   >
-                    {!searchValue && title}
                   </span>
                   {/* {tooltip && (
                     <div id='search-tooltip'>

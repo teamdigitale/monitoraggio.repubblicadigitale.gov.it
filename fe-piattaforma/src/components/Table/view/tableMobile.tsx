@@ -88,13 +88,15 @@ const TableMobile: React.FC<MobileTableI> = ({
     <div>
       {valuesForMobile ? (
         valuesForMobile.map((item, index: number) => (
-          <AccordionRow
-            {...item}
-            key={index}
-            onTooltipInfo={onTooltipInfo}
-            onActionRadio={onActionRadio}
-            idTable={id || ''}
-          />
+          <React.Fragment key={index}>
+            <AccordionRow
+              {...item}
+              onTooltipInfo={onTooltipInfo}
+              onActionRadio={onActionRadio}
+              idTable={id || ''}
+            />
+            <hr />
+          </React.Fragment>
         ))
       ) : (
         <div className='my-3'>
