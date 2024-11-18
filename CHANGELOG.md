@@ -1,5 +1,18 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.383](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.382...1.0.0-test.383) (2024-11-18)
+
+
+### Bug Fixes
+
+* **T254:** rimosso testo tra parentesi placeholder Titolo di studio form cittadino 20241118 ([388e60f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/388e60fb12d768278a5d39b69e8a4cfee826c524))
+* **T254:** fix q1 20241118 ([043574e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/043574e0d37fd011d9fc4bb73b063a7c866fdb77))
+* **Z1328:** fix varie tabella cittadini mobile 20241118 ([e2f1f57](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e2f1f571b99b463a887ff2a822e7c6d1cc8da802))
+* **T247:** visualizza finestra di caricamento anche per SCD 20241118 ([85f4a17](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/85f4a1758f780fb9a01c815597f8adaddd56314a))
+* **T246:** aggiunta icon a schermata impossibile aggiungere cittadini causa data futura 20241118 ([1b1cdf6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1b1cdf69b543ad2c5e116305c913f216b65bddf0))
+* **T260:** fix gestione recupero ruoli utente 20241118 ([743f21a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/743f21a1caac842656824d1412fcd09afb8519d0))
+* **inserimento-cittadini:** fix query check esistenza cittadino 20241118 ([74b6be1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/74b6be1ea212499c4af34ff8b29ce7a678347d19))
+
 ## [1.0.0-test.382](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.381...1.0.0-test.382) (2024-11-14)
 
 
