@@ -193,7 +193,10 @@ export default function CSVUploader({
           <h5 style={{ color: '#0066cc', marginBottom:'10px', fontWeight:'600' }}>Finestra di caricamento</h5>
           <div className='text-secondary'>
             Nell'attuale finestra di caricamento è possibile inserire tutti i<br />
-            servizi erogati <strong>fino al 31 ottobre 2024</strong>.
+            servizi erogati 
+            {projectDetail?.policy === policy.RFD && (
+              <strong> fino al 31 ottobre 2024</strong>
+            )}.
           </div>
         </div>
       </div>
@@ -288,7 +291,7 @@ export default function CSVUploader({
             )}
           </div>
         </div>
-        {projectDetail?.policy === policy.RFD && <InfoWindow />}
+        {<InfoWindow />}
       </div>
     </>
   );
