@@ -238,7 +238,7 @@ const AccordionRow: React.FC<AccordionRowI> = ({
               .map((x, index) => (
                 <div className='info-row' key={index}>
                   <span className='text-uppercase font-weight-semibold info-title'>
-                    {t(x)}:{' '}
+                    {t(x.replace(/([a-z])([A-Z])/g, '$1 $2'))}:{' '}
                   </span>
                   <span>{innerInfo[x]}</span>
                 </div>
