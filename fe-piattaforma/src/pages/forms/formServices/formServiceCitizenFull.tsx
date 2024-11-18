@@ -297,6 +297,24 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
           );
         }
 
+        if (field.keyBE === 'titoloStudio') {
+          return (
+            <Select
+              {...field}
+              id={`input-${field}`}
+              field={field.field}
+              label={field.label || ''}
+              col={'col-12 col-lg-6'}
+              onInputChange={onInputDataChange}
+              placeholder={`Seleziona ${field.label?.replace(/\s*\(.*?\)\s*/g, '').toLowerCase()}`}
+              options={field.options}
+              isDisabled={formDisabled || searchValue?.type === 'titoloStudio'}
+              value={field.value}
+              wrapperClassName='mb-5 pr-lg-3'
+            />
+          );
+        }
+
         return (
           <Select
             {...field}
