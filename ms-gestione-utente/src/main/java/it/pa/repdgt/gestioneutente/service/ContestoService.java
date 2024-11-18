@@ -71,8 +71,8 @@ public class ContestoService implements RuoliUtentiConstants{
 				case DEG:
 					descrizioneRuolo = codiceRuolo.equalsIgnoreCase(RuoliUtentiConstants.REG)? "REFERENTE": "DELEGATO";
 					for( ProfiloProjection profilo : this.contestoRepository.findProgrammiREGDEG(codiceFiscale, codiceRuolo)) {
-						boolean utenteTerminatoSingolarmente = StatoEnum.ATTIVO.toString().equals(profilo.getStatoP()) &&
-								StatoEnum.TERMINATO.toString().equals(profilo.getStatoUtente());
+						//boolean utenteTerminatoSingolarmente = StatoEnum.ATTIVO.toString().equals(profilo.getStatoP()) && StatoEnum.TERMINATO.toString().equals(profilo.getStatoUtente());
+						boolean utenteTerminatoSingolarmente = StatoEnum.TERMINATO.toString().equals(profilo.getStatoUtente());
 						if(!utenteTerminatoSingolarmente)
 							profili.add(new RuoloProgrammaResource(ruolo.getCodice(), descrizioneRuolo, ruolo.getNome(), profilo.getIdProgramma(), profilo.getNomeProgramma(), profilo.getNomeEnte(), profilo.getIdEnte(), profilo.getPolicy()));
 					}
@@ -81,8 +81,8 @@ public class ContestoService implements RuoliUtentiConstants{
 				case DEGP:
 					descrizioneRuolo = codiceRuolo.equalsIgnoreCase(RuoliUtentiConstants.REGP)? "REFERENTE": "DELEGATO";
 					for( ProfiloProjection profilo : this.contestoRepository.findProgrammiProgettiREGPDEGP(codiceFiscale, codiceRuolo)) {
-						boolean utenteTerminatoSingolarmente = StatoEnum.ATTIVO.toString().equals(profilo.getStatoP()) &&
-								StatoEnum.TERMINATO.toString().equals(profilo.getStatoUtente());
+						//boolean utenteTerminatoSingolarmente = StatoEnum.ATTIVO.toString().equals(profilo.getStatoP()) && StatoEnum.TERMINATO.toString().equals(profilo.getStatoUtente());
+						boolean utenteTerminatoSingolarmente = StatoEnum.TERMINATO.toString().equals(profilo.getStatoUtente());
 						if(!utenteTerminatoSingolarmente)
 							profili.add(new RuoloProgrammaResource(ruolo.getCodice(), descrizioneRuolo, ruolo.getNome(), profilo.getIdProgramma(), profilo.getNomeProgramma(), profilo.getIdProgetto(), profilo.getNomeBreveProgetto(), profilo.getNomeEnte(), profilo.getIdEnte(), profilo.getPolicy()));
 					}
