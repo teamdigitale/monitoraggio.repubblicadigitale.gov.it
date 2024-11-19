@@ -28,6 +28,7 @@ const CommunityWidget = () => {
   const dispatch = useDispatch();
   const device = useAppSelector(selectDevice);
   const [topicsList, setTopicsList] = useState([]);
+  const [titleEmptySection, setTitleEmptySection] = useState<string>('Caricamento in corso');
 
   const topicWidgetSet = async () => {
     const itemPerPage =
@@ -43,7 +44,11 @@ const CommunityWidget = () => {
     );
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    setTopicsList(res?.data?.data?.items || []);
+    const communityItems = res?.data?.data?.items || [];
+    setTopicsList(communityItems);
+    if (communityItems.length === 0) {
+      setTitleEmptySection('Non ci sono argomenti');
+    }
   };
 
   useEffect(() => {
@@ -129,7 +134,7 @@ const CommunityWidget = () => {
             </Slider>
           )
         ) : (
-          <EmptySection title='Non ci sono argomenti' />
+          <EmptySection title={titleEmptySection} />
         )}
       </div>
       {device.mediaIsPhone && (

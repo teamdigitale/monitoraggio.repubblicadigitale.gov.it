@@ -172,9 +172,9 @@ export const GetNewsList =
           },
         ],
         page: [{ value: Math.max(0, pagination.pageNumber - 1) }],
-        items_per_page: [{ value: pagination.pageSize }],
-        //sort: [{ value: filters.sort }],
         ...forcedFilters,
+        items_per_page: [{ label:'6', value: '6' }],
+        //sort: [{ value: filters.sort }],
       };
       const queryParamFilters = transformFiltersToQueryParams(body).replace(
         'sort',
