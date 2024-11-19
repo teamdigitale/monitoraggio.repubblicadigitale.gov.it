@@ -47,6 +47,7 @@ const Community = () => {
   const [popularTopics, setPopularTopics] = useState([]);
   const dispatch = useDispatch();
   const { hasUserPermission } = useGuard();
+  const [titleEmptySection, setTitleEmptySection] = useState<string>('Caricamento in corso');
 
   const { categories, sort } = filtersList;
   const { pageNumber } = pagination;
@@ -80,6 +81,8 @@ const Community = () => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       setPopularTopics(res?.data?.data?.items);
+    }else{
+      setTitleEmptySection("Non ci sono argomenti");
     }
   };
 
@@ -192,7 +195,7 @@ const Community = () => {
                   </div>
                 ))
               ) : (
-                <EmptySection title='Non ci sono argomenti' />
+                <EmptySection title={titleEmptySection} />
               )}
             </div>
           </Container>

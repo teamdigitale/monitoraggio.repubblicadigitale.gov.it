@@ -29,6 +29,7 @@ const DocumentsWidget = () => {
   const dispatch = useDispatch();
   const device = useAppSelector(selectDevice);
   const [docsList, setDocsList] = useState([]);
+  const [titleEmptySection, setTitleEmptySection] = useState<string>('Caricamento in corso');
 
   const docsWidgetSet = async () => {
     const itemsPerPage = docsPagination[getMediaQueryDevice(device)].toString();
@@ -43,7 +44,11 @@ const DocumentsWidget = () => {
     );
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    setDocsList(res?.data?.data?.items || []);
+    const docItems = res?.data?.data?.items || [];
+    setDocsList(docItems);
+    if (docItems.length === 0) {
+      setTitleEmptySection('Non ci sono documenti');
+    }
   };
 
   useEffect(() => {
@@ -132,7 +137,7 @@ const DocumentsWidget = () => {
               </Slider>
             )
           ) : (
-            <EmptySection title='Non ci sono documenti' />
+            <EmptySection title={titleEmptySection} />
           )}
         </div>
       </div>

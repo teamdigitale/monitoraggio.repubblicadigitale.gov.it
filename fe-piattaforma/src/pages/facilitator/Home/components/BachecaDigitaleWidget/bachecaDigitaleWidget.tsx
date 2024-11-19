@@ -6,7 +6,7 @@ import CardShowcase from '../../../../../components/CardShowcase/cardShowcase';
 import { useAppSelector } from '../../../../../redux/hooks';
 import { selectDevice } from '../../../../../redux/features/app/appSlice';
 import { GetNewsList } from '../../../../../redux/features/forum/forumThunk';
-import Slider, {
+import {
   formatSlides,
 } from '../../../../../components/General/Slider/Slider';
 import { getMediaQueryDevice } from '../../../../../utils/common';
@@ -29,6 +29,7 @@ const BachecaDigitaleWidget = () => {
   const device = useAppSelector(selectDevice);
   const dispatch = useDispatch();
   const [newsList, setNewsList] = useState([]);
+  const [titleEmptySection, setTitleEmptySection] = useState<string>('Caricamento in corso');
 
   const newsWidgetSet = async () => {
     const itemPerPage = newsPagination[getMediaQueryDevice(device)].toString();
@@ -43,7 +44,11 @@ const BachecaDigitaleWidget = () => {
     );
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    setNewsList(res?.data?.data?.items || []);
+    const newsItems = res?.data?.data?.items || [];
+    setNewsList(newsItems);
+    if (newsItems.length === 0) {
+      setTitleEmptySection('Non ci sono annunci');
+    }
   };
 
   useEffect(() => {
@@ -84,28 +89,22 @@ const BachecaDigitaleWidget = () => {
           {'La bacheca presenta ' + (newsList?.length || 0) + ' annunci'}
         </span>
         {newsList?.length ? (
-          <Slider isItemsHome={!device.mediaIsPhone} widgetType='news'>
+          <div className='d-flex flex-wrap align-cards w-100'>
             {formatSlides(
               newsList.slice(0, newsPagination[getMediaQueryDevice(device)]),
               carouselPagination[getMediaQueryDevice(device)]
             ).map((el, i) => (
-              <div
-                key={`slide-${i}`}
-                className='d-flex flex-wrap align-cards w-100'
-              >
+              <div key={`slide-${i}`} className='d-flex flex-wrap align-cards w-100'>
                 {el.map((e: any, index: any) => (
-                  <div
-                    key={`card-${i}-${index}`}
-                    className='flex-grow-0 mt-2 mb-3 mr-2'
-                  >
+                  <div key={`card-${i}-${index}`} className='flex-grow-0 mt-2 mb-3 mr-2'>
                     <CardShowcase {...e}></CardShowcase>
                   </div>
                 ))}
               </div>
             ))}
-          </Slider>
+          </div>
         ) : (
-          <EmptySection title='Non ci sono annunci' />
+          <EmptySection title={titleEmptySection} />
         )}
       </div>
       {device.mediaIsPhone && (

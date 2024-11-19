@@ -64,6 +64,7 @@ const Documents = () => {
   const [popularDocuments, setPopularDocuments] = useState([]);
   const dispatch = useDispatch();
   const { hasUserPermission } = useGuard();
+  const [titleEmptySection, setTitleEmptySection] = useState<string>('Caricamento in corso');
 
   const { interventions, programs, categories, sort } = filtersList;
   const { pageNumber } = pagination;
@@ -97,6 +98,8 @@ const Documents = () => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       setPopularDocuments(res?.data?.data?.items);
+    }else{
+      setTitleEmptySection("Non ci sono documenti")
     }
   };
 
@@ -284,7 +287,7 @@ const Documents = () => {
                   </div>
                 ))
               ) : (
-                <EmptySection title='Non ci sono documenti' />
+                <EmptySection title={titleEmptySection} />
               )}
             </div>
           </Container>

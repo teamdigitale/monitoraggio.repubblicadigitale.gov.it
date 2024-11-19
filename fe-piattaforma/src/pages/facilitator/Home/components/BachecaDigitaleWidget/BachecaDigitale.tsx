@@ -57,6 +57,7 @@ const BachecaDigitale = () => {
   const [popularNews, setPopularNews] = useState<ForumCardsI[]>([]);
   const dispatch = useDispatch();
   const { hasUserPermission } = useGuard();
+  const [titleEmptySection, setTitleEmptySection] = useState<string>('Caricamento in corso');
 
   const { interventions, programs, categories, sort } = filtersList;
   const { pageNumber, pageSize } = pagination;
@@ -90,6 +91,8 @@ const BachecaDigitale = () => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       setPopularNews(res?.data?.data?.items);
+    }else{
+      setTitleEmptySection("Non ci sono annunci")
     }
   };
 
@@ -262,7 +265,7 @@ const BachecaDigitale = () => {
                   </div>
                 ))
               ) : (
-                <EmptySection title='Non ci sono annunci' />
+                <EmptySection title={titleEmptySection} />
               )}
             </div>
           </Container>
