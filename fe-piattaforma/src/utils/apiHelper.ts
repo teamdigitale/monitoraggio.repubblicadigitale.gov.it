@@ -43,17 +43,21 @@ API.interceptors.request.use((req) => {
 API.interceptors.response.use(
   (res) => res,
   (error) => {
-    try {
-      if (error.response && Number(error.response.status) === 403) {
-        // TODO manage unauthorized
+    if (error.config.data != null) {
+      let json = JSON.parse(error.config.data)
+      if (!json.url.includes("notifications")) {
+        try {
+          if (error.response && Number(error.response.status) === 403) {
+            // TODO manage unauthorized
+          }
+        } catch (err) {
+          errorHandler(err);
+        } finally {
+          errorHandler(error);
+        }
       }
-    } catch (err) {
-      errorHandler(err);
-    } finally {
-      errorHandler(error);
+      return Promise.reject(error);
     }
-
-    return Promise.reject(error);
   }
 );
 
