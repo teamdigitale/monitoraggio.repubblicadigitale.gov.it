@@ -1,5 +1,14 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.384](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.383...1.0.0-test.384) (2024-11-19)
+
+
+### Bug Fixes
+
+* **analisi-drupal:** nuova immagine placeholder 20241119 ([d0fa292](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d0fa292b866240878270286b8a884ffe6e766aa4))
+* **analisi-drupal:** rimozione carosello e aggiunta label caricamento in corso 20241119 ([b96b452](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b96b4528a5216246fd101002bcbeb2bea19fc828))
+* **analisi-drupal:** rimosso errore per api notifiche 20241119 ([3b2d8da](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3b2d8da585bc68fd3ec9332eafcbc86f14143fc8))
+
 ## [1.0.0-test.383](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.382...1.0.0-test.383) (2024-11-18)
 
 
