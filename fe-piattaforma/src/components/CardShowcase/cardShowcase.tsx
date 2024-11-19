@@ -10,6 +10,7 @@ import PublishingAuthority from '../CardDocument/PublishingAuthority';
 import { useNavigate } from 'react-router-dom';
 import HTMLParser from '../General/HTMLParser/HTMLParse';
 import coverPlaceholder from '/public/assets/img/placeholder-news.png';
+import placeholder_1200x650 from '/public/assets/img/placeholder_1200x650.jpeg'
 import { cleanDrupalFileURL } from '../../utils/common';
 import { formatDate } from '../../utils/datesHelper';
 
@@ -59,7 +60,7 @@ const CardShowcase: React.FC<ForumCardsI> = (props) => {
     highlighted,
   } = props;
 
-  const [imageSrc, setImageSrc] = useState<string>(coverPlaceholder);
+  const [imageSrc, setImageSrc] = useState<string>(placeholder_1200x650);
   const device = useAppSelector(selectDevice);
   const isMobile = device.mediaIsPhone;
   const navigate = useNavigate();
@@ -71,6 +72,8 @@ const CardShowcase: React.FC<ForumCardsI> = (props) => {
         const img = new Image();
         img.src = cleanedUrl;
         img.onload = () => setImageSrc(cleanedUrl);
+      } else{
+        setImageSrc(coverPlaceholder)
       }
     };
     loadImage();
