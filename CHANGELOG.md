@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.386](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.385...1.0.0-test.386) (2024-11-21)
+
+
+### Bug Fixes
+
+* **analisi-drupal:** ripristino slider e aggiunta pagina finale 20241121 ([a933a33](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a933a33e5f86c18853bf11b98063b053df524465))
+
 ## [1.0.0-test.385](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.384...1.0.0-test.385) (2024-11-21)
 
 
