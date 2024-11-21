@@ -6,7 +6,7 @@ import CardShowcase from '../../../../../components/CardShowcase/cardShowcase';
 import { useAppSelector } from '../../../../../redux/hooks';
 import { selectDevice } from '../../../../../redux/features/app/appSlice';
 import { GetNewsList } from '../../../../../redux/features/forum/forumThunk';
-import {
+import Slider, {
   formatSlides,
 } from '../../../../../components/General/Slider/Slider';
 import { getMediaQueryDevice } from '../../../../../utils/common';
@@ -89,7 +89,7 @@ const BachecaDigitaleWidget = () => {
           {'La bacheca presenta ' + (newsList?.length || 0) + ' annunci'}
         </span>
         {newsList?.length ? (
-          <div className='d-flex flex-wrap align-cards w-100'>
+          <Slider isItemsHome={!device.mediaIsPhone} widgetType='news'>
             {formatSlides(
               newsList.slice(0, newsPagination[getMediaQueryDevice(device)]),
               carouselPagination[getMediaQueryDevice(device)]
@@ -102,7 +102,7 @@ const BachecaDigitaleWidget = () => {
                 ))}
               </div>
             ))}
-          </div>
+          </Slider>
         ) : (
           <EmptySection title={titleEmptySection} />
         )}
