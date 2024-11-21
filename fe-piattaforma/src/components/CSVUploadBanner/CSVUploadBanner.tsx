@@ -34,7 +34,6 @@ export default function CSVUploadBanner(props: {
                         le sedi del tuo ente e{' '}
                         <strong>
                           acquisiti al di fuori dalla piattaforma 
-                          {props.policy === 'RFD' && " prima del 31 ottobre 2024"}
                         </strong>
                         . Inoltre, puoi consultare il{' '}
                         <strong>registro dei caricamenti massivi</strong> già
