@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.385](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.384...1.0.0-test.385) (2024-11-21)
+
+
+### Bug Fixes
+
+* **T247:** rimozione data banner verso caricamento massivo 20241121 ([f2c81d5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f2c81d5b5ce0135ae997fc363dbb5327bcb35ee6))
+* **creazione-utente:** fix form valido se user selezionato 20241121 ([ae49dcd](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ae49dcd5e72de94f164b5f031c03c5b2defebd48))
+
 ## [1.0.0-test.384](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.383...1.0.0-test.384) (2024-11-19)
 
 
