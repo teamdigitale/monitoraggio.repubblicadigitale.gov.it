@@ -3,7 +3,7 @@ import { Icon } from 'design-react-kit';
 import React, { useState } from 'react';
 import './slider.scss';
 
-export const formatSlides = (list: any[], slideLength: number) => {
+export const formatSlides = (list: any[], slideLength: number, widgetType?: string) => {
   const slides = [];
   const slidesNumb = Math.ceil(list.length / slideLength);
   for (let i = 0; i < slidesNumb; i++) {
@@ -47,11 +47,9 @@ const Slider = ({
     const container = document.getElementById(
       `widget${widgetType ? '-' + widgetType : ''}`
     );
-    // const nextSlide = document.querySelector(`slide-${i}`);
     if (container) {
-      container.scrollLeft += (i - currentSlide) * container.clientWidth;
+      container.scrollLeft = i * container.clientWidth; // Sposta direttamente al punto giusto
     }
-    // setCurrentSlide(i);
   };
 
   return (
@@ -70,7 +68,7 @@ const Slider = ({
           )}
         />
       )}
-      {currentSlide < children.length - 1 && !isItemsHome && (
+      {currentSlide < children.length && !isItemsHome && (
         <Icon
           aria-label='Freccia Destra'
           onClick={() => scrollTo(currentSlide + 1)}
@@ -98,10 +96,28 @@ const Slider = ({
             {slide}
           </div>
         ))}
+        {widgetType === 'news' && (
+          <div
+            id={`slide-final${widgetType ? '-' + widgetType : ''}`}
+            className='slide final-slide'
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '250px',
+              backgroundColor: '#fff',
+            }}
+          >
+            <div>
+              <h2 className='h3 no-results-found__title'>
+                Per visualizzare tutti i contenuti, accedi alla sezione Bacheca
+              </h2>
+            </div>
+          </div>
+        )}
       </div>
 
-      {children.map((_slide, i) => (
-        // eslint-disable-next-line jsx-a11y/anchor-has-content
+      {[...children, ''].map((_slide, i) => (
         <button
           onClick={(e) => {
             e.preventDefault();
