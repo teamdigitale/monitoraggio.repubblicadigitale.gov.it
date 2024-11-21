@@ -157,6 +157,7 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
       }
       setShowForm(true);
       setIsUserSelected(true);
+      setIsFormValid(true);
     },
   };
 
@@ -170,7 +171,7 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
         sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
           setNewFormValues({ ...newData })
         }
-        setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
+        setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value || isUserSelected)}
         fieldsToHide={['ruolo', 'tipoContratto']}
         legend={legend}
       />
