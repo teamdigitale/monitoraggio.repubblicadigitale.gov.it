@@ -179,6 +179,7 @@ const ManageReferal: React.FC<ManageReferalI> = ({
       }
       setShowForm(true);
       setIsUserSelected(true);
+      setIsFormValid(true);
     },
   };
 
@@ -192,7 +193,7 @@ const ManageReferal: React.FC<ManageReferalI> = ({
         sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
           setNewFormValues({ ...newData })
         }
-        setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
+        setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value || isUserSelected)}
         fieldsToHide={['ruolo', 'tipoContratto']}
         legend={legend}
       />
