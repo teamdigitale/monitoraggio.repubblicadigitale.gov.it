@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.387](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.386...1.0.0-test.387) (2024-11-27)
+
+
+### Bug Fixes
+
+* **T247:** modifica dimensioni testo banner caricamento massivo 20241127 ([4c27f8a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4c27f8a0fa1f4780bfe0d16017a2dd7fded8268a))
+* **T247:** centrato verticalmente banner in box caricamento massivo 20241122 ([e322df2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e322df2d51b5f7af4891e4da6b6fbad39c7293c2))
+
 ## [1.0.0-test.386](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.385...1.0.0-test.386) (2024-11-21)
 
 
