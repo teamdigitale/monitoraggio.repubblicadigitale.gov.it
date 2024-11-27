@@ -190,8 +190,8 @@ export default function CSVUploader({
     return (
       <div className='mx-3' style={{ backgroundColor: 'white', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', marginTop:'13%', marginBottom:'10px', height: '150px' }}>
         <div style={{ paddingTop: '4%', marginLeft: '20px' }}>
-          <h5 style={{ color: '#0066cc', marginBottom:'10px', fontWeight:'600' }}>Finestra di caricamento</h5>
-          <div className='text-secondary'>
+          <p style={{ color: '#0066cc', marginBottom:'10px', fontWeight:'600', fontSize: '20px' }}>Finestra di caricamento</p>
+          <div className='text-secondary' style={{fontSize: '16px'}}>
             Nell'attuale finestra di caricamento è possibile inserire tutti i<br />
             servizi erogati 
             {projectDetail?.policy === policy.RFD && (
