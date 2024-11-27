@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.388](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.387...1.0.0-test.388) (2024-11-27)
+
+
+### Bug Fixes
+
+* **test:** fix typoe 20241127 ([16e0f5a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/16e0f5ab39eda701de38b97bfa7e15da2392b9cf))
+
 ## [1.0.0-test.387](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.386...1.0.0-test.387) (2024-11-27)
 
 
