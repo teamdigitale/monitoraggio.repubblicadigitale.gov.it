@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.389](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.388...1.0.0-test.389) (2024-11-27)
+
+
+### Bug Fixes
+
+* **T247:** fix margini banner finestra caricamento 20241127 ([89d25f3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/89d25f3ebc6bdbd93ebe49d440b34311caa450ec))
+
 ## [1.0.0-test.388](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.387...1.0.0-test.388) (2024-11-27)
 
 
