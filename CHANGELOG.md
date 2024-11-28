@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.390](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.389...1.0.0-test.390) (2024-11-28)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** aggiornamento data limite ins massivo 20241128 ([53b6c2a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/53b6c2a096bd076f58e94a391c5d806f38ad44d9))
+
 ## [1.0.0-test.389](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.388...1.0.0-test.389) (2024-11-27)
 
 
