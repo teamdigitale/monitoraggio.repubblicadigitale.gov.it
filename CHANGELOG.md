@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.391](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.390...1.0.0-test.391) (2024-11-28)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** fix typo 20241128 ([9446402](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9446402f160f12c550bfce24153d4cba4d2a16ed))
+
 ## [1.0.0-test.390](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.389...1.0.0-test.390) (2024-11-28)
 
 
