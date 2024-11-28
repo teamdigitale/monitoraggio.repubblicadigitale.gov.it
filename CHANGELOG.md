@@ -1,5 +1,38 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.40.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.39.1...1.40.0) (2024-11-28)
+
+
+### Features
+
+* **T247:** rimozione grafica data massima inserimento per SCD e aggiunta banner per RFD 20241114 ([6430681](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6430681ddd6645e474e300258ad8c53a9acfeff2))
+
+
+### Bug Fixes
+
+* **inserimento-cittadini:** fix query check esistenza cittadino 20241118 ([4d7dc14](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4d7dc149e8b91a9c3799a618420bc30a12115094))
+* **inserimento-cittadino:** controlli + stringenti inserimento cittadino 20241114 ([2c607fa](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2c607faca687b0e5e0a121f6a36dc4f9a5715ea2))
+* **T247:** fix margini banner finestra caricamento 20241127 ([709b4ef](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/709b4ef7dcea16c7389433c88f9ead194757fc88))
+* **T247:** modifica dimensioni testo banner caricamento massivo 20241127 ([c8c225b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c8c225bb93f728e68289ddc93eea1b5366e75895))
+* **T247:** centrato verticalmente banner in box caricamento massivo 20241122 ([0877af6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0877af66dd86a87563a7cc7675408445c8427715))
+* **T247:** rimozione data banner verso caricamento massivo 20241121 ([6dd5797](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6dd5797ad50d45c118912a8dcae98a9413fc8fd3))
+* **T247:** visualizza finestra di caricamento anche per SCD 20241118 ([704c807](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/704c8075dff048fe74d775d18938d0bc1f01da40))
+* **T247:** Rimozione limite data SCD 20241111 ([b24259a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b24259a8f5799d89765863226e4203a4903949a2))
+* **massivo-controllosede:** fix controllo validita sede ins massivo 20241112 ([6e30ff2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6e30ff21ef4a29c34086ccce1dd0a8b7e46e30ab))
+* **creazione-utente:** fix form valido se user selezionato 20241121 ([acb0a9f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/acb0a9fd045c8b357d8a68eee8da2c3fb0fc92ca))
+* **creazione-utente:** aggiunta ruolo required 20241017 ([0681bcd](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0681bcd2edef22e2c5a9605d91a1fcaa9728dbdd))
+* **sezione-ricerca-enti:** fix ricerca progetto dropdown 20241031 ([8ee0485](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8ee0485db6b5159e3a9c97c4b7cd8172877a6967))
+* **monitoraggio-caricamenti:** rimozione parametro per recupero lista progetti 20241108 ([7986ac0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7986ac0183b596a589525a4994371435e7844468))
+* **monitoraggio-caricamenti:** fix ep filtri ricerca 20241108 ([913bc98](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/913bc98555d65e9b4d5c301982059662f96425f4))
+* **monitoraggio-caricamenti:** fix hamburgerMenu ricerca iniziale e grafica contatori 20241105 ([8bf5979](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8bf59796fbe7ee0adf4b0a5ae1c33667564dfe27))
+* **Z1328:** fix varie tabella cittadini mobile 20241118 ([b6b332d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b6b332d122ab5fdfa52870499adece0b45783969))
+* **Z1328:** fix errata visualizzazione mobile info tooltip 20241111 ([8f30e65](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8f30e65ebd49df42ca030f508e890877bcf0212f))
+* **T246:** aggiunta icon a schermata impossibile aggiungere cittadini causa data futura 20241118 ([9a879a3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9a879a3c0b977841d3ba6066e0e829a043563494))
+* **T246:** modifica testo aggiunta cittadini a servizio con data futura 20241112 ([c7de34c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c7de34c3196beebef5f4553681b6539e261d4093))
+* **T246:** inibizione aggiunta cittadini per servizi con data futura 20241111 ([8bfabe2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8bfabe2857944f6aa1b977984528b714e1f040df))
+* **T242:** fix altezza minima titolo card 20241030 ([6b80ede](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6b80edef59c86cad3454509738b876dca3666ccd))
+* **T242:** fix titolo cards annunci 20241029 ([dc96986](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/dc96986fa557fb8aa070d667c12a55685a6fb99b))
+
 ## [1.39.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.39.0...1.39.1) (2024-11-15)
 
 
