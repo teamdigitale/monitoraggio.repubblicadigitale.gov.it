@@ -194,7 +194,7 @@ export default function CSVUploader({
           <div className='text-secondary' style={{fontSize: '16px'}}>
             Nell'attuale finestra di caricamento è possibile inserire tutti i servizi erogati 
             {projectDetail?.policy === policy.RFD && (
-              <strong> fino al 31 ottobre 2024</strong>
+              <strong> fino al 30 novembre 2024</strong>
             )}.
           </div>
         </div>
