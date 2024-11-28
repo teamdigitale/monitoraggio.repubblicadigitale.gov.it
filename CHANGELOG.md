@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.392](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.391...1.0.0-test.392) (2024-11-28)
+
+
+### Bug Fixes
+
+* **T264:** sanificazione forward 20241128 ([e5bf3ee](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e5bf3ee80d36c857a5f522a54c8d914a177f7c83))
+* **T263:** aggiunta controllo modifica nome ente gia esistente 20241127 ([f210548](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f21054801a4bee77e29df0ab5684f7854d27d9de))
+
 ## [1.0.0-test.391](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.390...1.0.0-test.391) (2024-11-28)
 
 
