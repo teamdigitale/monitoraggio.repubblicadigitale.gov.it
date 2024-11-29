@@ -1,5 +1,21 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.40.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.40.0...1.40.1) (2024-11-29)
+
+
+### Bug Fixes
+
+* **T254:** fix q1 20241118 ([5d80ab4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5d80ab42d5685d9a711832f32bc6aeb2bed304a9))
+* **T254:** rimosso testo tra parentesi placeholder Titolo di studio form cittadino 20241118 ([970cb94](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/970cb94173dad582070671d4b09546e13ab6560f))
+* **fe-piattaforma:** fix typo 20241128 ([188e2d1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/188e2d180deb63935c8dab0b107cc272e6e9997f))
+* **fe-piattaforma:** aggiornamento data limite ins massivo 20241128 ([fa19704](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fa197045cccec69b0c2e6bf21ab837a2647f8a10))
+* **analisi-drupal:** ripristino slider e aggiunta pagina finale 20241121 ([081341a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/081341aab5704791778164d90e4d981d78d391f5))
+* **analisi-drupal:** nuova immagine placeholder 20241119 ([ef8009b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ef8009bc038b5d05e2f2a10dd0ee960c48360925))
+* **analisi-drupal:** rimozione carosello e aggiunta label caricamento in corso 20241119 ([fcb5553](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fcb555302fad68e5fb76733261b2d6cfe449b57c))
+* **analisi-drupal:** rimosso errore per api notifiche 20241119 ([8802ff6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8802ff6f5427ef8b0f29da2a5a03a9afd53e14d6))
+* **analisi-drupal:** modifiche chiamate EP durante resize pagina e gestione recupero img card 20241108 ([0e03da0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0e03da0b1c54edbe8dea69f0ba351b0ce1e43892))
+* **analisi-drupal:** rimozione chiamata notifiche per utenti non autorizzati 20241023 ([ab8e74a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ab8e74af972ec58d44ff423335ce8b0f0d9c41c1))
+
 ## [1.40.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.39.1...1.40.0) (2024-11-28)
 
 
