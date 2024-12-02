@@ -29,7 +29,6 @@ export const proxyCall = async (
   const { idProgramma, idProgetto, idEnte } = getUserHeaders();
   const codiceFiscale = JSON.parse(getSessionValues('user')).codiceFiscale;
   const codiceRuolo = JSON.parse(getSessionValues('profile')).codiceRuolo;
-  url = url.replace(/,/g, "");
   return await API.post(`${process?.env?.NOTIFICHE}drupal/forward`, {
     url: `/api${url}`,
     metodoHttp: httpMethod,

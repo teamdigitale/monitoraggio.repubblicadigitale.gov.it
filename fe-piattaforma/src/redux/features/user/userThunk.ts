@@ -335,6 +335,15 @@ export const GetNotificationsByUser =
           }
         }*/
         if (res) {
+          //sanificazione id notifiche
+          if (res.data.data.items?.length > 0) {
+            console.log("sanifico")
+            res.data.data.items = res.data.data.items.map((item: any) => ({
+              ...item,
+              id: typeof item.id === 'string' ? item.id.replace(/,/g, '') : item.id,
+            }));
+          }
+          
           if (updateCount) {
             dispatch(
               setUserNotificationsToRead(res.data.data.pager?.total_items || 0)
