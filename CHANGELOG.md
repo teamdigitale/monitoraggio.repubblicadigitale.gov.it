@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.393](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.392...1.0.0-test.393) (2024-12-02)
+
+
+### Bug Fixes
+
+* **T264:** fix gestione sanificazione notifiche 20241202 ([7e5c0a5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7e5c0a53390c3ba12e8421cadedc5338d60a7ca9))
+
 ## [1.0.0-test.392](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.391...1.0.0-test.392) (2024-11-28)
 
 
