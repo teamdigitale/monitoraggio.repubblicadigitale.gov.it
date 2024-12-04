@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.394](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.393...1.0.0-test.394) (2024-12-04)
+
+
+### Bug Fixes
+
+* **U250:** fix form ruolo disabilita salvataggio 20241203 ([1c698f2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1c698f27cbd92f1d2ab8d4a586611a2b2ce2a1d3))
+
 ## [1.0.0-test.393](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.392...1.0.0-test.393) (2024-12-02)
 
 
