@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
-import { headings } from '../../../../../pages/administrator/AdministrativeArea/Entities/modals/manageReferal';
 import { formTypes } from '../../../../../pages/administrator/AdministrativeArea/Entities/utils';
 import {
   resetUserDetails,
@@ -26,14 +25,13 @@ import {
   selectModalState,
 } from '../../../../../redux/features/modal/modalSlice';
 import { useAppSelector } from '../../../../../redux/hooks';
-import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
 import { formFieldI } from '../../../../../utils/formHelper';
-import EmptySection from '../../../../EmptySection/emptySection';
 import SearchBar from '../../../../SearchBar/searchBar';
-import Table, { TableRowI } from '../../../../Table/table';
 import FormFacilitator from '../FormFacilitator/FormFacilitator';
 import { selectedSteps } from '../../../../../pages/administrator/CitizensArea/Entities/SearchCitizenModal/searchCitizenModal';
 import { useFiscalCodeValidation } from '../../../../../hooks/useFiscalCodeValidation';
+import ExistingCitizenInfo from '../../../../../pages/forms/formServices/ExistingCitizenInfo';
+import NoResultsFoundCitizen from '../../../../NoResultsFoundCitizen/noResultsFoundCitizen';
 
 const id = formTypes.FACILITATORE;
 
@@ -65,6 +63,10 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
     useAppSelector(selectHeadquarters).detail?.programmaPolicy;
   const open = useAppSelector(selectModalState);
   const [isUserSelected, setIsUserSelected] = useState(false);
+  const [showForm, setShowForm] = useState<boolean>(false);
+  const [firstOpen, setFirstOpen] = useState<boolean>(true);
+  const [searchedFiscalCode, setSearchedFiscalCode] = useState<string>('');
+  const [alreadySearched, setAlreadySearched] = useState<boolean>(false);
   const { canSubmit, onQueryChange, setCanSubmit } = useFiscalCodeValidation();
 
   useEffect(() => {
@@ -116,61 +118,67 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
 
         dispatch(GetUserDetails(userId));
       }
-      if (!res?.errorCode) dispatch(closeModal());
+      if (!res?.errorCode){
+        dispatch(closeModal());
+        handleCancel();
+      } 
     }
     setIsUserSelected(false);
   };
 
-  const handleSelectUser: CRUDActionsI = {
-    [CRUDActionTypes.SELECT]: (td: TableRowI | string) => {
-      if (typeof td !== 'string') {
-        dispatch(GetUserDetails(td.id as string, true));
-        dispatch(setUsersList(null));
-        setIsUserSelected(true);
-        setIsFormValid(true)
-      }
-    },
+  // const handleSelectUser: CRUDActionsI = {
+  //   [CRUDActionTypes.SELECT]: (td: TableRowI | string) => {
+  //     if (typeof td !== 'string') {
+  //       dispatch(GetUserDetails(td.id as string, true));
+  //       dispatch(setUsersList(null));
+  //       setIsUserSelected(true);
+  //       setIsFormValid(true)
+  //     }
+  //   },
+  // };
+
+  const handleSearchUser = async (search: string) => {
+    setSearchedFiscalCode(search);
+    const result = await dispatch(GetUsersBySearch(search)) as any;
+    setAlreadySearched(true);
+    if (result?.data[0]) { //!
+      dispatch(GetUserDetails(result?.data[0].id as string, true));
+      setShowForm(true);
+      setFirstOpen(false);
+      setIsUserSelected(true);
+      setIsFormValid(true);
+    }
   };
 
-  const handleSearchUser = (search: string) => {
-    if (search) dispatch(GetUsersBySearch(search));
+  const addNewCitizen = () => {
+    setAlreadySearched(false);
+    setShowForm(true);
+    setFirstOpen(false);
   };
 
-  let content = (
-    <FormFacilitator
-      formDisabled={isUserSelected}
-      sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
-        setNewFormValues({ ...newData })
-      }
-      setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value || isUserSelected)}
-      creation={creation}
-      legend={legend}
-    />
-  );
+  let content;
 
-  if (usersList && usersList.length) {
+  if (showForm && !firstOpen) {
     content = (
-      <Table
-        heading={headings}
-        values={usersList.map((item) => ({
-          id: item.id || item.codiceFiscale,
-          codiceFiscale: item.codiceFiscale,
-          nome: item.nome,
-          cognome: item.cognome,
-        }))}
-        onActionRadio={handleSelectUser}
-        id='table'
-      />
+      <div>
+        { usersList && usersList.length > 0 && <ExistingCitizenInfo/>}
+        <FormFacilitator
+          formDisabled={isUserSelected}
+          sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
+            setNewFormValues({ ...newData })
+          }
+          setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value || isUserSelected)}
+          creation={creation}
+          legend={legend}
+          initialFiscalCode={searchedFiscalCode}
+        />
+      </div>
     );
-  }
-
-  if (noResult) {
+  } else if (noResult && !showForm ) {
     content = (
-      <EmptySection
-        withIcon
-        title='Nessun risultato'
-        subtitle='Inserisci nuovamente i dati richiesti'
-      />
+    <div style={{ margin: '50px 0' }}>
+      <NoResultsFoundCitizen onClickCta={addNewCitizen} />
+    </div>
     );
   }
 
@@ -178,6 +186,11 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
     setIsUserSelected(false);
     clearForm();
     dispatch(closeModal());
+    setShowForm(false);
+    setAlreadySearched(false);
+    setIsUserSelected(false);
+    setFirstOpen(true);
+    dispatch(setUsersList(null));
   };
 
   return (
@@ -193,6 +206,12 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
         onClick: () => handleCancel(),
       }}
       centerButtons
+      subtitle={<>
+        Inserisci il <strong>codice fiscale</strong> dell'utente e verifica che
+        sia già registrato sulla piattaforma.
+        <br />
+        Se non è presente, compila la sua scheda.
+      </>}
     >
       <div>
         {creation ? (
@@ -201,8 +220,8 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
               'w-100',
               'py-4',
               'px-5',
-              'search-bar-borders',
-              'search-bar-bg'
+              // 'search-bar-borders',
+              // 'search-bar-bg'
             )}
             searchType={selectedSteps.FISCAL_CODE}
             onQueryChange={onQueryChange}
@@ -214,11 +233,8 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
               dispatch(resetUserDetails());
               setCanSubmit(false);
             }}
-            title='Cerca'
+            title=''
             search
-            infoText={
-              usersList?.length ? `${usersList?.length} risultati trovati` : ''
-            }
           />
         ) : null}
         <div className='mx-5'>{content}</div>
