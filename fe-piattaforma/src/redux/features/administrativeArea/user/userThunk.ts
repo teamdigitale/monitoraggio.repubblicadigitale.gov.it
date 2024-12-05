@@ -156,6 +156,7 @@ export const GetUsersBySearch =
 
       if (Array.isArray(res.data)) {
         dispatch(setUsersList(res.data));
+        return res;
       } else {
         dispatch(setUsersList(null));
       }

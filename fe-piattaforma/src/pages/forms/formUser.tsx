@@ -40,6 +40,7 @@ interface UserInformationI {
   creation?: boolean;
   fieldsToHide?: ('ruolo' | 'mansione' | 'tipoContratto')[];
   legend?: string | undefined;
+  initialFiscalCode?: string;
 }
 
 interface UserFormI extends withFormHandlerProps, UserInformationI {}
@@ -59,6 +60,7 @@ const FormUser: React.FC<UserFormI> = (props) => {
     fieldsToHide = [],
     children,
     legend = '',
+    initialFiscalCode = ''
   } = props;
 
   const dispatch = useDispatch();
@@ -135,6 +137,10 @@ const FormUser: React.FC<UserFormI> = (props) => {
     if (fieldsToHide.includes('ruolo') && form?.ruolo?.value === '') {
       updateFormField('ruolo', 'remove');
     }
+    if (initialFiscalCode !== '' && form?.codiceFiscale?.value === '') {
+      setFormValues({ ...getFormValues(), codiceFiscale: initialFiscalCode });
+    }
+    
     setIsFormValid(isValidForm);
     sendNewValues(getFormValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -193,6 +199,7 @@ const FormUser: React.FC<UserFormI> = (props) => {
             required
             label='Codice fiscale'
             col='col-12 col-lg-6'
+            disabled={initialFiscalCode !== ''}
             // placeholder='Inserisci codice fiscale'
             onInputChange={onInputChange}
           />

@@ -20,6 +20,7 @@ interface FacilitatorI {
   sendNewValues?: (param?: { [key: string]: formFieldI['value'] }) => void;
   setIsFormValid?: (param: boolean | undefined) => void;
   legend?: string | undefined;
+  initialFiscalCode?: string;
 }
 
 interface FacilitatorFormI extends FacilitatorI, withFormHandlerProps {}
@@ -36,6 +37,7 @@ const FormFacilitator: React.FC<FacilitatorFormI> = (props) => {
     creation = false,
     formDisabled = false,
     legend = '',
+    initialFiscalCode = '',
   } = props;
 
   const [newFormValues, setNewFormValues] = useState<{
@@ -78,6 +80,7 @@ const FormFacilitator: React.FC<FacilitatorFormI> = (props) => {
       }
       fieldsToHide={['ruolo', 'mansione', 'tipoContratto']}
       legend={legend}
+      initialFiscalCode={initialFiscalCode}
     >
       {formDisabled ? (
         <Input
