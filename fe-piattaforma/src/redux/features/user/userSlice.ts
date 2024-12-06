@@ -54,6 +54,7 @@ export interface UserProfileI {
   nomeEnte?: string;
   nomeProgramma?: string;
   nomeProgettoBreve?: string;
+  descrizioneEstesaEnte?: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

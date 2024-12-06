@@ -59,19 +59,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
   ];
 
   console.log('USER PROFILE: ', userProfile);
-  const [profile, setProfile] = useState<any>(null);
-
-  useEffect(() => {
-    const fetchProfile = async () => {
-      if (userProfile?.idEnte) {
-        const response = await API.get(`/ente/${userProfile?.idEnte}`);
-        setProfile(response);
-        console.log('PROFILE: ', response);
-      }
-    };
-    fetchProfile();
-  }, [userProfile]);
-  
+  console.log("profilo esteso: ", userProfile?.descrizioneEstesaEnte);
   
   
   const userDropDown = () => (
@@ -124,12 +112,13 @@ const HeaderDesktop: React.FC<HeaderI> = ({
           {/* <span className='h6 m-0 text-sans-serif'>
             {user?.cognome}&nbsp;{user?.nome}
           </span> */}
-          <span className='h6 font-weight-light text-nowrap pr-1'>
+          <span className='h6 font-weight-light text-nowrap pr-1 mb-0'>
             {/*<em>{getRoleLabel(userProfile?.codiceRuolo)}</em>*/}
             <b>{`${userProfile?.descrizioneRuolo}`}</b><em>{`${
               userProfile?.nomeEnte ? ` ${userProfile.nomeEnte}` : ''
             }`}</em>
           </span>
+          <span>{userProfile?.descrizioneEstesaEnte}</span>
         </div>
         <div className='ml-2'>
           <Icon
