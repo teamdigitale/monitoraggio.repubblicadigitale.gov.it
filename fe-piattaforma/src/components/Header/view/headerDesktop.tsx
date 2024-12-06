@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
@@ -25,6 +25,7 @@ import { defaultRedirectUrl } from '../../../routes';
 import { NotificationsPreview } from '../../index';
 import UserAvatar from '../../Avatar/UserAvatar/UserAvatar';
 import { LogoutRedirect } from '../../../redux/features/user/userThunk';
+import API from '../../../utils/apiHelper';
 
 const HeaderDesktop: React.FC<HeaderI> = ({
   isHeaderFull = true,
@@ -57,7 +58,24 @@ const HeaderDesktop: React.FC<HeaderI> = ({
     },
   ];
 
+  console.log('USER PROFILE: ', userProfile);
+  const [profile, setProfile] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (userProfile?.idEnte) {
+        const response = await API.get(`/ente/${userProfile?.idEnte}`);
+        setProfile(response);
+        console.log('PROFILE: ', response);
+      }
+    };
+    fetchProfile();
+  }, [userProfile]);
+  
+  
+  
   const userDropDown = () => (
+    
     <Dropdown
       className='p-0 header-container__top__user-dropdown position-relative'
       isOpen={openUser}
@@ -103,12 +121,12 @@ const HeaderDesktop: React.FC<HeaderI> = ({
             'user-description'
           )}
         >
-          <span className='h6 m-0 text-sans-serif'>
+          {/* <span className='h6 m-0 text-sans-serif'>
             {user?.cognome}&nbsp;{user?.nome}
-          </span>
+          </span> */}
           <span className='h6 font-weight-light text-nowrap pr-1'>
             {/*<em>{getRoleLabel(userProfile?.codiceRuolo)}</em>*/}
-            <em>{`${userProfile?.descrizioneRuolo}${
+            <b>{`${userProfile?.descrizioneRuolo}`}</b><em>{`${
               userProfile?.nomeEnte ? ` ${userProfile.nomeEnte}` : ''
             }`}</em>
           </span>
