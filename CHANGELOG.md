@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.395](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.394...1.0.0-test.395) (2024-12-06)
+
+
+### Bug Fixes
+
+* **U250:** fix modifica Scheda Utente 20241205 ([27b2604](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/27b2604d71a8b64387f6a3873301ef7d9df99d48))
+
 ## [1.0.0-test.394](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.393...1.0.0-test.394) (2024-12-04)
 
 
