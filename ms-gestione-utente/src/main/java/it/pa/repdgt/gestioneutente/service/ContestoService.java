@@ -74,7 +74,7 @@ public class ContestoService implements RuoliUtentiConstants{
 						boolean utenteTerminatoSingolarmente = StatoEnum.ATTIVO.toString().equals(profilo.getStatoP()) &&
 								StatoEnum.TERMINATO.toString().equals(profilo.getStatoUtente());
 						if(!utenteTerminatoSingolarmente)
-							profili.add(new RuoloProgrammaResource(ruolo.getCodice(), descrizioneRuolo, ruolo.getNome(), profilo.getIdProgramma(), profilo.getNomeProgramma(), profilo.getNomeEnte(), profilo.getIdEnte(), profilo.getPolicy()));
+							profili.add(new RuoloProgrammaResource(ruolo.getCodice(), descrizioneRuolo, ruolo.getNome(), profilo.getIdProgramma(), profilo.getNomeProgramma(), profilo.getNomeEnte(), profilo.getIdEnte(), profilo.getPolicy(), profilo.getProfiloEnte()));
 					}
 					break;
 				case REGP:
@@ -84,7 +84,7 @@ public class ContestoService implements RuoliUtentiConstants{
 						boolean utenteTerminatoSingolarmente = StatoEnum.ATTIVO.toString().equals(profilo.getStatoP()) &&
 								StatoEnum.TERMINATO.toString().equals(profilo.getStatoUtente());
 						if(!utenteTerminatoSingolarmente)
-							profili.add(new RuoloProgrammaResource(ruolo.getCodice(), descrizioneRuolo, ruolo.getNome(), profilo.getIdProgramma(), profilo.getNomeProgramma(), profilo.getIdProgetto(), profilo.getNomeBreveProgetto(), profilo.getNomeEnte(), profilo.getIdEnte(), profilo.getPolicy()));
+							profili.add(new RuoloProgrammaResource(ruolo.getCodice(), descrizioneRuolo, ruolo.getNome(), profilo.getIdProgramma(), profilo.getNomeProgramma(), profilo.getIdProgetto(), profilo.getNomeBreveProgetto(), profilo.getNomeEnte(), profilo.getIdEnte(), profilo.getPolicy(), profilo.getProfiloEnte()));
 					}
 					break;
 				case REPP:
@@ -92,7 +92,7 @@ public class ContestoService implements RuoliUtentiConstants{
 					descrizioneRuolo = codiceRuolo.equalsIgnoreCase(RuoliUtentiConstants.REPP)? "REFERENTE": "DELEGATO";
 					for( ProfiloProjection profilo : this.contestoRepository.findProgrammiProgettiREPPDEPP(codiceFiscale, codiceRuolo)) {
 						String idEnte = profilo.getIdEnte();
-						profili.add(new RuoloProgrammaResource(ruolo.getCodice(), descrizioneRuolo, ruolo.getNome(), profilo.getIdProgramma(), profilo.getNomeProgramma(), profilo.getIdProgetto(), profilo.getNomeBreveProgetto(), profilo.getNomeEnte(), profilo.getIdEnte(), profilo.getPolicy()));
+						profili.add(new RuoloProgrammaResource(ruolo.getCodice(), descrizioneRuolo, ruolo.getNome(), profilo.getIdProgramma(), profilo.getNomeProgramma(), profilo.getIdProgetto(), profilo.getNomeBreveProgetto(), profilo.getNomeEnte(), profilo.getIdEnte(), profilo.getPolicy(), profilo.getProfiloEnte()));
 					}
 					break;
 				case FACILITATORE:
@@ -100,7 +100,7 @@ public class ContestoService implements RuoliUtentiConstants{
 					//List<Long> listaProgettiPerFacilitatore = espfRepository.findDistinctProgettiByIdFacilitatoreNonTerminato(codiceFiscale, "FAC");
 					for( ProfiloProjection profilo : this.contestoRepository.findProgrammiProgettiFacVol(codiceFiscale, codiceRuolo)) {
 						String idEnte = profilo.getIdEnte();
-						profili.add(new RuoloProgrammaResource(ruolo.getCodice(), ruolo.getNome(), ruolo.getNome(), profilo.getIdProgramma(), profilo.getNomeProgramma(), profilo.getIdProgetto(), profilo.getNomeBreveProgetto(), profilo.getNomeEnte(), profilo.getIdEnte(), profilo.getPolicy()));
+						profili.add(new RuoloProgrammaResource(ruolo.getCodice(), ruolo.getNome(), ruolo.getNome(), profilo.getIdProgramma(), profilo.getNomeProgramma(), profilo.getIdProgetto(), profilo.getNomeBreveProgetto(), profilo.getNomeEnte(), profilo.getIdEnte(), profilo.getPolicy(), profilo.getProfiloEnte()));
 					}
 					break;
 				case DSCU:

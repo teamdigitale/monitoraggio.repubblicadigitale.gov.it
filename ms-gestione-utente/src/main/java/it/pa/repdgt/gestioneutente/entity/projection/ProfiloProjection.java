@@ -18,4 +18,6 @@ public interface ProfiloProjection {
 	String getStatoUtente();
 	
 	String getPolicy();
+
+	String getProfiloEnte();
 }
