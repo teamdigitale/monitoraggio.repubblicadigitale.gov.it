@@ -68,15 +68,17 @@ const CardProfile: React.FC<CardProfileI> = (props) => {
                 !activeProfile && 'card-profile-container__opacity'
               )}
             >
-              {/* <UserAvatar
+              <UserAvatar
                 avatarImage={profilePicture}
                 user={{ uSurname: user?.cognome, uName: user?.nome }}
                 size={AvatarSizes.Small}
                 font={AvatarTextSizes.Small}
                 lightColor={device.mediaIsPhone}
-              /> */}
+              />
             </div>
-          ) : null}
+          ) : (
+            <div className='spacing' />
+          )}
           <div>
             <CardTitle className='mb-1 primary-color-a12 '>
               <span
@@ -85,25 +87,22 @@ const CardProfile: React.FC<CardProfileI> = (props) => {
                   'switch-profile-titles'
                 )}
               >
-                <b>{profile?.descrizioneRuolo}</b>
+                {profile?.descrizioneRuolo}
                 {device.mediaIsPhone && <br />}
                 {profile?.nomeEnte ? (
-                  <div className='switch-profile-subs pr-1'>
-                    {`Ente`} <em><b>{`${profile?.nomeEnte} `}</b></em>
-                  </div>
+                  <em className='switch-profile-subs pr-1'>
+                    {` "${profile?.nomeEnte}" `}
+                  </em>
                 ) : null}
               </span>
             </CardTitle>
-            <CardText 
+            <CardText
               className={clsx(
                 activeProfile && 'primary-color-b7',
                 !activeProfile && 'neutral-2-color-a5',
                 'switch-profile-subs'
               )}
             >
-
-              {/* QUI VA PROGETTO O PROGRAMMA */}
-
               {profile?.nomeProgramma}
               {profile?.nomeProgettoBreve
                 ? `, ${profile?.nomeProgettoBreve}`
