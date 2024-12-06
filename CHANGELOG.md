@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.397](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.396...1.0.0-test.397) (2024-12-06)
+
+
+### Bug Fixes
+
+* **U257:** fix wip da rimuovere 20241206 ([3945359](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/39453596c84080ef1d968ed9b950ad0843ad83c6))
+
 ## [1.0.0-test.396](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.395...1.0.0-test.396) (2024-12-06)
 
 
