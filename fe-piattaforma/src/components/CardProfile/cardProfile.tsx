@@ -30,6 +30,7 @@ const CardProfile: React.FC<CardProfileI> = (props) => {
   } = props;
 
   const device = useAppSelector(selectDevice);
+  const descrizioneEstesaUpperCase = profile?.descrizioneEstesaEnte?.toUpperCase();
 
   return (
     <div
@@ -85,7 +86,10 @@ const CardProfile: React.FC<CardProfileI> = (props) => {
                   'switch-profile-titles'
                 )}
               >
-                <b>{profile?.descrizioneRuolo}</b>
+                <b>
+                  {profile?.descrizioneRuolo} 
+                  {profile?.descrizioneRuolo !== 'FACILITATORE' && descrizioneEstesaUpperCase ? ` ${descrizioneEstesaUpperCase}` : ''}
+                </b>
                 {device.mediaIsPhone && <br />}
                 {profile?.nomeEnte ? (
                   <div className='switch-profile-subs pr-1'>
@@ -95,19 +99,29 @@ const CardProfile: React.FC<CardProfileI> = (props) => {
               </span>
             </CardTitle>
             <CardText 
-              className={clsx(
-                activeProfile && 'primary-color-b7',
-                !activeProfile && 'neutral-2-color-a5',
+              className={clsx( 
+                'primary-color-a12',
                 'switch-profile-subs'
               )}
             >
 
-              {/* QUI VA PROGETTO O PROGRAMMA */}
-
-              {profile?.nomeProgramma}
-              {profile?.nomeProgettoBreve
-                ? `, ${profile?.nomeProgettoBreve}`
-                : ''}
+                  {profile?.codiceRuolo !== 'DSCU' &&
+                  profile?.codiceRuolo !== 'DTD' &&
+                  profile?.codiceRuolo !== 'gestore community' &&
+                  profile?.codiceRuolo !== 'MOD' &&
+                  profile?.codiceRuolo !== 'Profilo UDM' && (
+                    <>
+                    {profile?.codiceRuolo === 'DEG' || profile?.codiceRuolo === 'REG' ? (
+                      <>
+                      Programma <em><b>{profile?.nomeProgramma}</b></em>
+                      </>
+                    ) : (
+                      <>
+                      Progetto <em><b>{profile?.nomeProgettoBreve}</b></em>
+                      </>
+                    )}
+                    </>
+                  )}
             </CardText>
           </div>
         </div>
