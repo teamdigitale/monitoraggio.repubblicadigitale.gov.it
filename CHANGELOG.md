@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.396](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.395...1.0.0-test.396) (2024-12-06)
+
+
+### Features
+
+* **U257:** recupero info ente scelto 20241206 ([ca00da4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ca00da4de1fe8b066021da6aafd4c95b05eb9571))
+* **U257:** chg header e role picker 20241206 ([324acc8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/324acc8813a44889ecf980e5016858f1c754b6a2))
+
 ## [1.0.0-test.395](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.394...1.0.0-test.395) (2024-12-06)
 
 
