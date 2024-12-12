@@ -38,6 +38,7 @@ import ConfirmSentSurveyModal from '../modals/confirmSentSurveyModal';
 import { resetCompilingSurveyForm } from '../../../../../redux/features/administrativeArea/surveys/surveysSlice';
 import UploadCSVModal from '../../../../../components/AdministrativeArea/Entities/General/UploadCSVModal/UploadCSVModal';
 import moment from 'moment';
+import IconNote from '/public/assets/img/it-note-primary.png';
 
 const CitizenTemplate = '/assets/entity_templates/template_cittadino.xlsx';
 
@@ -84,7 +85,7 @@ const CitizenListTableHeading: TableHeadingI[] = [
   },
 ];
 
-const CitizensList: React.FC = () => {
+const CitizensList: React.FC<{ dataServizio: Date }> = ({ dataServizio }) => {
   const { serviceId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -245,6 +246,7 @@ const CitizensList: React.FC = () => {
     {
       text: 'Aggiungi cittadino',
       color: 'primary',
+      disabled: moment().isBefore(moment(dataServizio)),
       onClick: () => {
         dispatch(openModal({ id: 'search-citizen-modal' }));
       },
@@ -321,12 +323,22 @@ const CitizensList: React.FC = () => {
           )}
         </GenericSearchFilterTableLayout>
       ) : (
-        <EmptySection
-          title='Questa sezione è ancora vuota'
-          subtitle='Aggiungi i cittadini'
-          buttons={buttons}
-        />
-      )}
+        moment().isBefore(moment(dataServizio)) ? (
+          <EmptySection
+            title='La data del servizio è impostata nel futuro'
+            subtitle='Sarà possibile aggiungere i cittadini a questo servizio a partire dalla data indicata'
+            buttons={buttons}
+            withIcon={true}
+            icon={IconNote}
+          />
+          ) : (
+          <EmptySection
+            title='Questa sezione è ancora vuota'
+            subtitle='Aggiungi i cittadini'
+            buttons={buttons}
+          />
+          )
+        )}
       <ManageCitizenInService />
       <ConfirmSentSurveyModal />
       <UploadCSVModal

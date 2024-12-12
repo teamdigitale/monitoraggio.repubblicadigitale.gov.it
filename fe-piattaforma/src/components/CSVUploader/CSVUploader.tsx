@@ -186,6 +186,22 @@ export default function CSVUploader({
     setSelectedFile(null);
   }, []);
 
+  function InfoWindow() {
+    return (
+      <div className='mx-3' style={{ backgroundColor: 'white', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', marginTop:'5%', marginBottom:'30px', height: '150px' }}>
+        <div style={{ paddingTop: '4%', paddingLeft:'20px', paddingRight:'20px' }}>
+          <p style={{ color: '#0066cc', marginBottom:'10px', fontWeight:'600', fontSize: '20px' }}>Finestra di caricamento</p>
+          <div className='text-secondary' style={{fontSize: '16px'}}>
+            Nell'attuale finestra di caricamento è possibile inserire tutti i servizi erogati 
+            {projectDetail?.policy === policy.RFD && (
+              <strong> fino al 30 Novembre 2024</strong>
+            )}.
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <WarningModal
@@ -214,7 +230,7 @@ export default function CSVUploader({
           </div>
         </div>
       </WarningModal>
-      <div className={`flex-column min-width-50 ${file ? 'h-auto' : 'h-100'}`}>
+      <div className={`flex-column min-width-50 ${file ? 'h-auto' : ''}`}>
         <div
           className={`upload-dragdrop ${
             file ? 'success' : ''
@@ -274,6 +290,7 @@ export default function CSVUploader({
             )}
           </div>
         </div>
+        {<InfoWindow />}
       </div>
     </>
   );

@@ -257,8 +257,7 @@ const GenericSearchFilterTableLayout: React.FC<
               <SearchBar
                 autocomplete={searchInformation.autocomplete}
                 onSubmit={searchInformation.onHandleSearch}
-                placeholder={
-                  device.mediaIsPhone ? '' : searchInformation.placeholder
+                placeholder={searchInformation.placeholder
                 }
                 isClearable={searchInformation.isClearable}
                 title={searchInformation.title}

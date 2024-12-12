@@ -1,5 +1,185 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.397](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.396...1.0.0-test.397) (2024-12-06)
+
+
+### Bug Fixes
+
+* **U257:** fix wip da rimuovere 20241206 ([3945359](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/39453596c84080ef1d968ed9b950ad0843ad83c6))
+
+## [1.0.0-test.396](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.395...1.0.0-test.396) (2024-12-06)
+
+
+### Features
+
+* **U257:** recupero info ente scelto 20241206 ([ca00da4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ca00da4de1fe8b066021da6aafd4c95b05eb9571))
+* **U257:** chg header e role picker 20241206 ([324acc8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/324acc8813a44889ecf980e5016858f1c754b6a2))
+
+## [1.0.0-test.395](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.394...1.0.0-test.395) (2024-12-06)
+
+
+### Bug Fixes
+
+* **U250:** fix modifica Scheda Utente 20241205 ([27b2604](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/27b2604d71a8b64387f6a3873301ef7d9df99d48))
+
+## [1.0.0-test.394](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.393...1.0.0-test.394) (2024-12-04)
+
+
+### Bug Fixes
+
+* **U250:** fix form ruolo disabilita salvataggio 20241203 ([1c698f2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1c698f27cbd92f1d2ab8d4a586611a2b2ce2a1d3))
+
+## [1.0.0-test.393](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.392...1.0.0-test.393) (2024-12-02)
+
+
+### Bug Fixes
+
+* **T264:** fix gestione sanificazione notifiche 20241202 ([7e5c0a5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7e5c0a53390c3ba12e8421cadedc5338d60a7ca9))
+
+## [1.0.0-test.392](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.391...1.0.0-test.392) (2024-11-28)
+
+
+### Bug Fixes
+
+* **T264:** sanificazione forward 20241128 ([e5bf3ee](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e5bf3ee80d36c857a5f522a54c8d914a177f7c83))
+* **T263:** aggiunta controllo modifica nome ente gia esistente 20241127 ([f210548](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f21054801a4bee77e29df0ab5684f7854d27d9de))
+
+## [1.0.0-test.391](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.390...1.0.0-test.391) (2024-11-28)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** fix typo 20241128 ([9446402](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9446402f160f12c550bfce24153d4cba4d2a16ed))
+
+## [1.0.0-test.390](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.389...1.0.0-test.390) (2024-11-28)
+
+
+### Bug Fixes
+
+* **fe-piattaforma:** aggiornamento data limite ins massivo 20241128 ([53b6c2a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/53b6c2a096bd076f58e94a391c5d806f38ad44d9))
+
+## [1.0.0-test.389](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.388...1.0.0-test.389) (2024-11-27)
+
+
+### Bug Fixes
+
+* **T247:** fix margini banner finestra caricamento 20241127 ([89d25f3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/89d25f3ebc6bdbd93ebe49d440b34311caa450ec))
+
+## [1.0.0-test.388](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.387...1.0.0-test.388) (2024-11-27)
+
+
+### Bug Fixes
+
+* **test:** fix typoe 20241127 ([16e0f5a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/16e0f5ab39eda701de38b97bfa7e15da2392b9cf))
+
+## [1.0.0-test.387](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.386...1.0.0-test.387) (2024-11-27)
+
+
+### Bug Fixes
+
+* **T247:** modifica dimensioni testo banner caricamento massivo 20241127 ([4c27f8a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4c27f8a0fa1f4780bfe0d16017a2dd7fded8268a))
+* **T247:** centrato verticalmente banner in box caricamento massivo 20241122 ([e322df2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e322df2d51b5f7af4891e4da6b6fbad39c7293c2))
+
+## [1.0.0-test.386](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.385...1.0.0-test.386) (2024-11-21)
+
+
+### Bug Fixes
+
+* **analisi-drupal:** ripristino slider e aggiunta pagina finale 20241121 ([a933a33](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a933a33e5f86c18853bf11b98063b053df524465))
+
+## [1.0.0-test.385](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.384...1.0.0-test.385) (2024-11-21)
+
+
+### Bug Fixes
+
+* **T247:** rimozione data banner verso caricamento massivo 20241121 ([f2c81d5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f2c81d5b5ce0135ae997fc363dbb5327bcb35ee6))
+* **creazione-utente:** fix form valido se user selezionato 20241121 ([ae49dcd](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ae49dcd5e72de94f164b5f031c03c5b2defebd48))
+
+## [1.0.0-test.384](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.383...1.0.0-test.384) (2024-11-19)
+
+
+### Bug Fixes
+
+* **analisi-drupal:** nuova immagine placeholder 20241119 ([d0fa292](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d0fa292b866240878270286b8a884ffe6e766aa4))
+* **analisi-drupal:** rimozione carosello e aggiunta label caricamento in corso 20241119 ([b96b452](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b96b4528a5216246fd101002bcbeb2bea19fc828))
+* **analisi-drupal:** rimosso errore per api notifiche 20241119 ([3b2d8da](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3b2d8da585bc68fd3ec9332eafcbc86f14143fc8))
+
+## [1.0.0-test.383](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.382...1.0.0-test.383) (2024-11-18)
+
+
+### Bug Fixes
+
+* **T254:** rimosso testo tra parentesi placeholder Titolo di studio form cittadino 20241118 ([388e60f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/388e60fb12d768278a5d39b69e8a4cfee826c524))
+* **T254:** fix q1 20241118 ([043574e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/043574e0d37fd011d9fc4bb73b063a7c866fdb77))
+* **Z1328:** fix varie tabella cittadini mobile 20241118 ([e2f1f57](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e2f1f571b99b463a887ff2a822e7c6d1cc8da802))
+* **T247:** visualizza finestra di caricamento anche per SCD 20241118 ([85f4a17](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/85f4a1758f780fb9a01c815597f8adaddd56314a))
+* **T246:** aggiunta icon a schermata impossibile aggiungere cittadini causa data futura 20241118 ([1b1cdf6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1b1cdf69b543ad2c5e116305c913f216b65bddf0))
+* **T260:** fix gestione recupero ruoli utente 20241118 ([743f21a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/743f21a1caac842656824d1412fcd09afb8519d0))
+* **inserimento-cittadini:** fix query check esistenza cittadino 20241118 ([74b6be1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/74b6be1ea212499c4af34ff8b29ce7a678347d19))
+
+## [1.0.0-test.382](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.381...1.0.0-test.382) (2024-11-14)
+
+
+### Bug Fixes
+
+* **inserimento-cittadino:** controlli + stringenti inserimento cittadino 20241114 ([d0c5494](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d0c54946d007591a6ead9f2b66563edfa5db99e9))
+
+## [1.0.0-test.381](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.380...1.0.0-test.381) (2024-11-14)
+
+
+### Features
+
+* **T247:** rimozione grafica data massima inserimento per SCD e aggiunta banner per RFD 20241114 ([eb89c2c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/eb89c2c1989a8d6879f10341ff6ce22d7d85b2b9))
+
+## [1.0.0-test.380](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.379...1.0.0-test.380) (2024-11-14)
+
+
+### Bug Fixes
+
+* **inserimento-massivo:** controllo stringente formato durata servizio 20241114 ([11abc84](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/11abc848e349a42939b47bf8157b0dad750ec882))
+
+## [1.0.0-test.379](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.378...1.0.0-test.379) (2024-11-14)
+
+
+### Bug Fixes
+
+* **inserimento-massivo:** controllo stringente formato durata servizio 20241114 ([8767a66](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8767a66f044b4720a0728e459041676f64af188b))
+
+## [1.0.0-test.378](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.377...1.0.0-test.378) (2024-11-13)
+
+
+### Bug Fixes
+
+* **massivo-controllosede:** fix controllo validita sede ins massivo 20241112 ([1906ae9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1906ae9ded8594790353529dd7180a028bfe2594))
+* **T246:** modifica testo aggiunta cittadini a servizio con data futura 20241112 ([bba12fb](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/bba12fb0ab86d464394bed388c4182dc8f4abc2c))
+
+## [1.0.0-test.377](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.376...1.0.0-test.377) (2024-11-12)
+
+
+### Bug Fixes
+
+* **T247:** Rimozione limite data SCD 20241111 ([5445129](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5445129d03a347b439bcad334e6eb1403003e80c))
+* **T246:** inibizione aggiunta cittadini per servizi con data futura 20241111 ([51ccf58](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/51ccf5807583a6b0253a61268cdd5a40411f9a7a))
+* **Z1328:** fix errata visualizzazione mobile info tooltip 20241111 ([1e11239](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1e112394b3bbecc26d7bf43a2a536a4c4233022b))
+
+## [1.0.0-test.376](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.375...1.0.0-test.376) (2024-11-08)
+
+
+### Bug Fixes
+
+* **monitoraggio-caricamenti:** rimozione parametro per recupero lista progetti 20241108 ([a1520af](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a1520afe88ebc32aa1341321f81f2a472d1b9455))
+* **monitoraggio-caricamenti:** fix ep filtri ricerca 20241108 ([09d5645](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/09d564552d6850000c474b638c8318573800ff35))
+
+## [1.0.0-test.375](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.374...1.0.0-test.375) (2024-11-08)
+
+
+### Bug Fixes
+
+* **analisi-drupal:** rimozione chiamata notifiche per utenti non autorizzati 20241023 ([be2f5d6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/be2f5d621d21354720329db97bc6069e57595d9f))
+* **analisi-drupal:** modifiche chiamate EP durante resize pagina e gestione recupero img card 20241108 ([e08eec8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e08eec89dc8c13f894c675878229bf9c2c5526d1))
+* **sezione-ricerca-enti:** fix ricerca progetto dropdown 20241031 ([6c50066](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6c500661082e10e27d3ff72fec84e9d9d9617fc1))
+* **creazione-utente:** aggiunta ruolo required 20241017 ([cfcc8c0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/cfcc8c0198a3a7c589d93b5ce00c7ddc9adac192))
+
 ## [1.0.0-test.374](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.373...1.0.0-test.374) (2024-11-05)
 
 

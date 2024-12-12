@@ -80,7 +80,7 @@ export const mandatoryFields: (keyof CSVRecord)[] = [
   'SE6',
 ];
 
-const maxDate = new Date('2024-10-31')
+const maxDate = new Date('2024-11-30')
 
 export function encryptFiscalCode(filteredRecord: CSVRecord) {
   return filteredRecord.AN3
@@ -112,6 +112,7 @@ export function encryptDocumentAndDetermineType(
 
 export const validateFields = (
   record: CSVRecord,
+  extension: string,
   validateFiscalCode: (fiscalCode: string) => boolean
 ): string[] => {
   const errors: string[] = [];
@@ -142,13 +143,13 @@ export const validateFields = (
     const parsedDate = new Date(record.SE1);
     if(!isValidDateFormat(record.SE1) || !isValidDate(record.SE1)){ //valido tramite regex
       errors.push("La data inserita per il servizio non e' valida.");
-    } else if (parsedDate > maxDate) {
-      errors.push("La data del servizio e' successiva al 31 Ottobre 2024.");
+    } else if (parsedDate > maxDate && extension === 'csv') {
+      errors.push("La data del servizio e' successiva al 30 Novembre 2024.");
     }
   }
 
   if (record.SE2) {
-    if (record.SE2.length >= 5) {
+    if (record.SE2.length == 5) {
       const valoreDurataServizio = record.SE2.trim().substring(0, 5);
       if (
         !containsOnlyNumber(valoreDurataServizio.substring(0, 1)) ||

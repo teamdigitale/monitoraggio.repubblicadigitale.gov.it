@@ -951,6 +951,10 @@ public class EnteService {
 			String errorMessage = String.format("Impossibile aggiornare l'ente con id=%s. Ente non presente", idEnte);
 			throw new EnteException(errorMessage, CodiceErroreEnum.EN13);
 		}
+		if(this.enteRepository.findByNome(enteEntity.getNome()).isPresent()){
+			String errorMessage = String.format("Errore: Ente con stesso nome già esistente", enteEntity.getNome());
+			throw new EnteException(errorMessage, CodiceErroreEnum.EN25);
+		}
 		final String partitaIva = enteEntity.getPiva();
 		if (this.enteRepository.findByPartitaIvaAndIdDiverso(partitaIva, idEnte).isPresent()) {
 			String errorMessage = String.format("Impossibile aggiornare l'ente con codice fiscale=%s. Ente con codice fiscale inserito già presente", partitaIva);

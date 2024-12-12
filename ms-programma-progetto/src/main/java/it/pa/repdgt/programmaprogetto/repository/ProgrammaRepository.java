@@ -99,6 +99,7 @@ public interface ProgrammaRepository extends JpaRepository<ProgrammaEntity, Long
 			+ "		programma.ID = progetto.ID_PROGRAMMA"
 			+ "	LEFT JOIN ente ente "
 			+ "		ON progetto.ID_ENTE_GESTORE_PROGETTO = ente.ID "
+			+ " LEFT JOIN ente_partner entep ON progetto.id = entep.id_progetto\n"
 			+ " WHERE  1=1"
 			+ " 	AND	 ( :criterioRicerca IS NULL  "
 		    + "			OR CONVERT(progetto.ID, CHAR) = :criterioRicerca "
@@ -107,7 +108,7 @@ public interface ProgrammaRepository extends JpaRepository<ProgrammaEntity, Long
 			+ " 	AND  ( COALESCE(:policies) IS NULL 	OR   programma.POLICY IN (:policies) )"
 			+ " 	AND  ( COALESCE(:stati) IS NULL  	OR progetto.STATO IN (:stati) )"
 			+ "		AND  ( COALESCE(:idsProgrammi) IS NULL OR progetto.ID_PROGRAMMA IN (:idsProgrammi) )"
-			+ " 	AND ( :idEnte IS NULL OR progetto.ID_ENTE_GESTORE_PROGETTO = :idEnte )",
+			+ " 	AND ( :idEnte IS NULL OR progetto.ID_ENTE_GESTORE_PROGETTO = :idEnte OR entep.id_ente = :idEnte)",
 		  nativeQuery = true)
 	public List<ProgrammaEntity> findAllByProgettoFiltro(
 			@Param(value = "criterioRicerca") String criterioRicerca,
@@ -286,6 +287,7 @@ public interface ProgrammaRepository extends JpaRepository<ProgrammaEntity, Long
 			+ "		programma.ID = progetto.ID_PROGRAMMA"
 			+ "	LEFT JOIN ente ente "
 			+ "		ON progetto.ID_ENTE_GESTORE_PROGETTO = ente.ID "
+			+ " LEFT JOIN ente_partner entep on entep.id_progetto = progetto.id\n"
 			+ " WHERE  1=1 "
 		    + " 	AND	 ( :criterioRicerca IS NULL  "
 		    + "			OR CONVERT(progetto.ID, CHAR) = :criterioRicerca "
@@ -294,7 +296,7 @@ public interface ProgrammaRepository extends JpaRepository<ProgrammaEntity, Long
 			+ " 	AND  ( COALESCE(:policies) IS NULL 	OR   programma.POLICY IN (:policies) )"
 			+ " 	AND  ( COALESCE(:stati) IS NULL  	OR progetto.STATO IN (:stati) )"
 			+ "		AND  ( COALESCE(:idsProgrammi) IS NULL OR progetto.ID_PROGRAMMA IN (:idsProgrammi) )"
-			+ " 	AND  ( :idEnte IS NULL OR progetto.id_ente_gestore_progetto = :idEnte )",
+			+ " 	AND  ( :idEnte IS NULL OR progetto.id_ente_gestore_progetto = :idEnte OR entep.id_ente = :idEnte)",
 		  nativeQuery = true)
 	public List<String> findAllPoliciesByProgettoFiltro(
 			@Param(value = "criterioRicerca") String criterioRicerca,

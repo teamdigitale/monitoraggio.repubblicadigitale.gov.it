@@ -127,6 +127,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
         dispatch(GetUserDetails(td.id as string, true));
         dispatch(setUsersList(null));
         setIsUserSelected(true);
+        setIsFormValid(true)
       }
     },
   };
@@ -141,7 +142,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
       sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
         setNewFormValues({ ...newData })
       }
-      setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
+      setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value || isUserSelected)}
       creation={creation}
       legend={legend}
     />

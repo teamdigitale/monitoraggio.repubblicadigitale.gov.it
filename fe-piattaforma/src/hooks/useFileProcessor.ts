@@ -191,6 +191,7 @@ export function useFileProcessor(file: File | undefined, removeFile: () => void)
                     );
                     const errors = validateFields(
                       filteredRecord,
+                      'csv',
                       isValidFiscalCode
                     );
                     checkMapValues(record, errors);
@@ -275,6 +276,7 @@ export function useFileProcessor(file: File | undefined, removeFile: () => void)
                   const { rejectedTypes } = generateServiceName(filteredRecord.SE3);
                   const errors = validateFields(
                     filteredRecord,
+                    'xlsx',
                     isValidFiscalCode
                   );
                   checkMapValues(record, errors);

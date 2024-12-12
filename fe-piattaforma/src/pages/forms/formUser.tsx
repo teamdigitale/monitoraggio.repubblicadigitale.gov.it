@@ -53,6 +53,7 @@ const FormUser: React.FC<UserFormI> = (props) => {
     setIsFormValid = () => ({}),
     getFormValues = () => ({}),
     updateForm = () => ({}),
+    updateFormField = () => ({}),
     clearForm = () => ({}),
     creation = false,
     fieldsToHide = [],
@@ -131,6 +132,9 @@ const FormUser: React.FC<UserFormI> = (props) => {
   }, [userDetails, fieldsToHide.length, creation]);
 
   useEffect(() => {
+    if (fieldsToHide.includes('ruolo') && form?.ruolo?.value === '') {
+      updateFormField('ruolo', 'remove');
+    }
     setIsFormValid(isValidForm);
     sendNewValues(getFormValues());
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -274,7 +278,7 @@ const form = newForm([
     field: 'ruolo',
     id: 'ruolo',
     type: 'select',
-    //required: true,
+    required: true,
   }),
   newFormField({
     field: 'id',
