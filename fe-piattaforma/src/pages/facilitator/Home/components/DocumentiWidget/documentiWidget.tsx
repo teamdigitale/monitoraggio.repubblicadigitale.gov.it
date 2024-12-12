@@ -46,8 +46,10 @@ const DocumentsWidget = () => {
     // @ts-ignore
     const docItems = res?.data?.data?.items || [];
     setDocsList(docItems);
-    if (docItems.length === 0) {
+    if (docItems.length === 0 && !!res) {
       setTitleEmptySection('Non ci sono documenti');
+    }else if (!res) {
+      setTitleEmptySection("Non è stato possibile accedere ai contenuti. Accedi alla sezione Documenti");
     }
   };
 

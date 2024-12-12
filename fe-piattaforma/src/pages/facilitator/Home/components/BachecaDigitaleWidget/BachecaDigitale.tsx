@@ -91,7 +91,9 @@ const BachecaDigitale = () => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       setPopularNews(res?.data?.data?.items);
-    }else{
+    } else if (!res) {
+      setTitleEmptySection("Non è stato possibile accedere ai contenuti. Riprovare più tardi");
+    } else {
       setTitleEmptySection("Non ci sono annunci")
     }
   };
@@ -126,6 +128,7 @@ const BachecaDigitale = () => {
 
   const handleDropdownFilters = (values: FilterI[], filterKey: string) => {
     dispatch(setForumFilters({ [filterKey]: [...values] }));
+    dispatch(setEntityPagination({ pageNumber: 1, pageSize: pagination.pageSize }));
   };
 
   const handleOnSearchDropdownOptions = (
