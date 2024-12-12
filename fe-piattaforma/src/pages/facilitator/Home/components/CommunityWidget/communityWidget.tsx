@@ -46,8 +46,10 @@ const CommunityWidget = () => {
     // @ts-ignore
     const communityItems = res?.data?.data?.items || [];
     setTopicsList(communityItems);
-    if (communityItems.length === 0) {
+    if (communityItems.length === 0 && !!res) {
       setTitleEmptySection('Non ci sono argomenti');
+    }else if (!res) {
+      setTitleEmptySection("Non è stato possibile accedere ai contenuti. Accedi alla sezione Forum");
     }
   };
 
