@@ -65,7 +65,7 @@ interface ManageHeadquarterFormI {
 
 interface ManageHeadquarterI
   extends withFormHandlerProps,
-    ManageHeadquarterFormI {}
+  ManageHeadquarterFormI { }
 
 const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
   formDisabled,
@@ -151,30 +151,39 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
   }, [headquartersList]);
 
   useEffect(() => {
-    if (movingHeadquarter) {
-      const newAddressList = [...addressList];
-      while (
-        newAddressList.filter((address) => !address.indirizzoSede?.cancellato)
-          .length < 2
-      ) {
-        newAddressList.push({
-          indirizzoSede: {
-            via: '',
-            civico: '',
-            comune: '',
-            provincia: '',
-            cap: '',
-            regione: '',
-            nazione: '',
-          },
-          fasceOrarieAperturaIndirizzoSede: {},
-        });
-      }
+  const isAddressFilled = (address: AddressInfoI) => {
+    return Object.values(address.indirizzoSede).some(value => value !== '');
+  };
 
-      setAddressList([...newAddressList]);
+  if (movingHeadquarter) {
+    const newAddressList = [...addressList];
+    while (
+      newAddressList.filter((address) => !address.indirizzoSede?.cancellato)
+        .length < 2
+    ) {
+      newAddressList.push({
+        indirizzoSede: {
+          via: '',
+          civico: '',
+          comune: '',
+          provincia: '',
+          cap: '',
+          regione: '',
+          nazione: '',
+        },
+        fasceOrarieAperturaIndirizzoSede: {},
+      });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [movingHeadquarter]);
+    setAddressList([...newAddressList]);
+  } else {
+    // Rimuovi gli indirizzi aggiuntivi quando movingHeadquarter è false
+    const newAddressList = addressList.filter((address, index) => {
+      return index === 0 || isAddressFilled(address);
+    });
+    setAddressList([...newAddressList]);
+  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [movingHeadquarter]);
 
   const handleSelectHeadquarter: CRUDActionsI = {
     [CRUDActionTypes.SELECT]: (td: TableRowI | string) => {
