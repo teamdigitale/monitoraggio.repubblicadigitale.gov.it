@@ -81,7 +81,9 @@ const Community = () => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       setPopularTopics(res?.data?.data?.items);
-    }else{
+    } else if (!res) {
+      setTitleEmptySection("Non è stato possibile accedere ai contenuti. Riprovare più tardi");
+    } else {
       setTitleEmptySection("Non ci sono argomenti");
     }
   };
@@ -109,6 +111,7 @@ const Community = () => {
 
   const handleDropdownFilters = (values: FilterI[], filterKey: string) => {
     dispatch(setForumFilters({ [filterKey]: [...values] }));
+    dispatch(setEntityPagination({ pageNumber: 1, pageSize: pagination.pageSize }));
   };
 
   const handleOnSearchDropdownOptions = (

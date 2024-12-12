@@ -69,7 +69,7 @@ export const getErrorMessage = async (
         console.log('Errore A02');
         window.location.replace('/auth-redirect');
       } else if (errorCode === 'D01') {
-        return getDrupalErrorMessage(errorsList, message);
+        // return getDrupalErrorMessage(errorsList, message);
       } else if (errorsList[errorCode]) {
         return {
           message: `${errorsList[errorCode]?.descrizione} (errore ${errorCode})`,
@@ -114,16 +114,14 @@ export const errorHandler = async (error: unknown) => {
       errorData = await getErrorMessage(error?.response?.data);
     }
 
-    dispatchNotify({
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      title: errorData.title,
-      status: 'error',
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      message: errorData.message,
-      closable: true,
-      duration: 'slow',
-    });
+    if (errorData) {
+      dispatchNotify({
+        title: errorData.title,
+        status: 'error',
+        message: errorData.message,
+        closable: true,
+        duration: 'slow',
+      });
+    }
   }
 };
