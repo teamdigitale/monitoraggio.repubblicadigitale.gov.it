@@ -244,7 +244,7 @@ const ForumLayout: React.FC<ForumLayoutI> = (props) => {
               device.mediaIsTablet && 'flex-column-reverse'
             )}
           >
-            {hasUserPermission(['acc.clb']) &&
+            {/* {hasUserPermission(['acc.clb']) &&
             ctaToolCollaboration &&
             !device.mediaIsPhone ? (
               <Button
@@ -270,7 +270,7 @@ const ForumLayout: React.FC<ForumLayoutI> = (props) => {
                 ) : null}
                 <span className='text-nowrap'>{textCtaToolCollaboration}</span>
               </Button>
-            ) : null}
+            ) : null} */}
 
             {cta && !device.mediaIsPhone ? (
               <Button
@@ -494,16 +494,16 @@ const ForumLayout: React.FC<ForumLayoutI> = (props) => {
                     onClick: cta,
                     className: 'align-self-end',
                   },
-                  {
-                    size: 'xs',
-                    outline: true,
-                    color: 'primary',
-                    iconForButton: iconCtaToolCollaboration || '',
-                    iconColor: 'primary',
-                    text: textCtaToolCollaboration || '',
-                    onClick: ctaToolCollaboration,
-                    className: 'align-self-end',
-                  },
+                  // {
+                  //   size: 'xs',
+                  //   outline: true,
+                  //   color: 'primary',
+                  //   iconForButton: iconCtaToolCollaboration || '',
+                  //   iconColor: 'primary',
+                  //   text: textCtaToolCollaboration || '',
+                  //   onClick: ctaToolCollaboration,
+                  //   className: 'align-self-end',
+                  // },
                 ]}
               />
             </div>
