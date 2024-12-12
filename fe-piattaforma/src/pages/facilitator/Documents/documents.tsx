@@ -249,7 +249,7 @@ const Documents = () => {
           sectionInfo
           dropdowns={dropdowns}
           filtersList={filtersList}
-          {...toolCollaborationCta}
+          // {...toolCollaborationCta}
           {...documentCta}
           sortFilter
           cta={
