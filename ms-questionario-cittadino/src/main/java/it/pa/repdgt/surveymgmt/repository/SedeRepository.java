@@ -54,9 +54,6 @@ public interface SedeRepository extends JpaRepository<SedeEntity, Long> {
 
 	Optional<SedeEntity> findByNomeIgnoreCase(String nominativoSede);
 
-	@Query(value = "SELECT s " +
-               "FROM SedeEntity s " +
-               "WHERE REPLACE(REPLACE(TRIM(BOTH '''' FROM s.nome), ' ', ''), '\"', '') = :nomeSedeModified",
-       nativeQuery = false)
-Optional<SedeEntity> findSedeByNomeSedeModified(@Param(value = "nomeSedeModified") String nomeSedeModified);
+	@Query(value = "SELECT s.* FROM sede s WHERE UPPER(REPLACE(REPLACE(s.nome, ' ', ''), '''', '')) = :nomeSedeModified\n", nativeQuery = true)
+	Optional<SedeEntity> findSedeByNomeSedeModified(@Param("nomeSedeModified") String nomeSedeModified);
 }
