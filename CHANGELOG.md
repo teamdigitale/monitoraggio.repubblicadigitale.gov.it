@@ -1,5 +1,14 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.398](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.397...1.0.0-test.398) (2024-12-13)
+
+
+### Bug Fixes
+
+* **T298:** Rimosso bottone "Vai all'area di collaborazione" 20241212 ([14a431e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/14a431ebf403d07be0bd653f931ccb6928804d02))
+* **T297:** modifiche gestione errori drupal e fix paginazione con filtri 20241212 ([c118eac](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c118eac337b4825b015ea8865f379beb5ecd10ad))
+* **Z1621:** controllo presenza sede x massivo 20241213 ([706b358](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/706b3587d047cc7cd3b153f1cb81ef9f38ccdd46))
+
 ## [1.0.0-test.397](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.396...1.0.0-test.397) (2024-12-06)
 
 
