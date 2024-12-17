@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.399](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.398...1.0.0-test.399) (2024-12-17)
+
+
+### Features
+
+* **U250:** modifiche grafiche aggiungi facilitatori referenti e delegati 20241205 ([7a3c616](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7a3c616250ff810b1200e3a16d3b7001ca1aa85a))
+
 ## [1.0.0-test.398](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.397...1.0.0-test.398) (2024-12-13)
 
 
