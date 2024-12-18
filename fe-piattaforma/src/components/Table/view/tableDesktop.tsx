@@ -154,7 +154,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
               {heading.map((th, j) => (
                 <td
                   key={`td-${i}-${j}`}
-                  className={`py-4 ${th.classNames ?? ''}`}
+                  className={`py-4 ${th.classNames ?? ''} ${th.label === 'Cognome e Nome' ? 'tableNomeUtente' : ''}`}
                 >
                   {td[th.field] || '-'}
                 </td>

@@ -88,7 +88,7 @@ export const TableCategories: TableHeadingI[] = [
 
 export const TableHeadingUsers: TableHeadingI[] = [
   {
-    label: 'Nome',
+    label: 'Cognome e Nome',
     field: 'label',
     size: 'medium',
   },
