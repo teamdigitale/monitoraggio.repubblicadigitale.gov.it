@@ -14,7 +14,7 @@
 
 	<groupId>it.pa.repdgt</groupId>
 	<artifactId>ms-questionario-cittadino</artifactId>
-	<version>1.0.0-test.399</version>
+	<version>1.0.0-test.400</version>
 	<packaging>jar</packaging>
 
 	<properties>
