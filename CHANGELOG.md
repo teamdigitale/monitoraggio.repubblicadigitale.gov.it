@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.400](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.399...1.0.0-test.400) (2024-12-18)
+
+
+### Bug Fixes
+
+* **test:** test satosa 20241218 ([5c2aa97](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5c2aa97891d474861710e762d189c67d0b2b2419))
+
 ## [1.0.0-test.399](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.398...1.0.0-test.399) (2024-12-17)
 
 
