@@ -57,6 +57,7 @@ import ManageDelegate from '../modals/manageDelegate';
 import ManageReferal from '../modals/manageReferal';
 import FormFacilitator from '../../../../../components/AdministrativeArea/Entities/Headquarters/FormFacilitator/FormFacilitator';
 import { GetProjectDetail } from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
+import { selectProfile } from '../../../../../redux/features/user/userSlice';
 
 const UsersDetails = () => {
   const [currentForm, setCurrentForm] = useState<React.ReactElement>();
@@ -64,6 +65,7 @@ const UsersDetails = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userDetails = useAppSelector(selectUsers)?.detail;
+  const profile = useAppSelector(selectProfile);
   const {
     dettaglioUtente: userInfo = {},
     dettaglioRuolo: userRoleList = [],
@@ -581,7 +583,7 @@ const UsersDetails = () => {
           {!(entityId || projectId) && userRole === userRoles.USR ? (
             <div className={clsx('my-5')}>
               <div className={clsx('w-100', 'position-relative')}>
-                <h5 className={clsx('primary-color', 'mb-4')}>Ruoli</h5>
+                <h5 className={clsx('primary-color', 'mx-3 mb-4')} style={{ fontWeight: 600 }}>Ruoli</h5>
                 {hasUserPermission(['add.del.ruolo.utente']) ? (
                   <div className='d-flex cta-buttons'>
                     <Button
@@ -654,8 +656,10 @@ const UsersDetails = () => {
                           }
                         : {};
                     }
+                    
                     return (
                       <CardStatusAction
+                        showArrow = {false}
                         key={role.id}
                         id={role.id || role.codiceRuolo || role.nome}
                         status={role.statoP}
