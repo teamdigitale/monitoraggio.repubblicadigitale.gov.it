@@ -56,7 +56,7 @@ export const TableCategories: TableHeadingI[] = [
 
 export const TableHeadingUsers: TableHeadingI[] = [
   {
-    label: 'Nome',
+    label: 'Cognome e Nome',
     field: 'label',
     size: 'medium',
   },
@@ -66,13 +66,13 @@ export const TableHeadingUsers: TableHeadingI[] = [
     size: 'medium',
   },
   {
-    label: 'Ruolo',
-    field: 'role',
+    label: 'Stato Utente',
+    field: 'status',
     size: 'medium',
   },
   {
-    label: 'Stato',
-    field: 'status',
+    label: 'Ruolo',
+    field: 'role',
     size: 'medium',
   },
 ];

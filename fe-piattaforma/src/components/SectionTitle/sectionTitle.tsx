@@ -86,6 +86,22 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
           >
             {upperTitle.text}
           </p>
+          {status ? (
+          <div className={clsx(!device.mediaIsPhone && 'ml-2')}>
+            <StatusChip
+              className={clsx(
+                'table-container__status-label',
+                'primary-bg-a9',
+                'ml-4',
+                'section-chip',
+                'no-border',
+                device.mediaIsPhone ? 'mx-0 ml-2 my-3' : 'mx-3'
+              )}
+              status={status}
+              rowTableId={name?.replace(/\s/g, '') || new Date().getTime()}
+            />
+          </div>
+        ) : null}
         </div>
       ) : null}
 
@@ -138,22 +154,6 @@ const SectionTitle: React.FC<SectionTitleI> = (props) => {
             {/* </span> */}
           </div>
         </div>
-        {status ? (
-          <div className={clsx(!device.mediaIsPhone && 'ml-2')}>
-            <StatusChip
-              className={clsx(
-                'table-container__status-label',
-                'primary-bg-a9',
-                'ml-4',
-                'section-chip',
-                'no-border',
-                device.mediaIsPhone ? 'mx-0 ml-2 my-3' : 'mx-3'
-              )}
-              status={status}
-              rowTableId={name?.replace(/\s/g, '') || new Date().getTime()}
-            />
-          </div>
-        ) : null}
       </div>
       {subTitle ? (
         <div className='d-flex w-100 justify-content-center'>
