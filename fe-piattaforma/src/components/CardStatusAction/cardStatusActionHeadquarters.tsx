@@ -35,10 +35,12 @@ interface CardStatusActionI {
   id?: string | undefined;
   moreThanOneSurvey?: boolean;
   onCheckedChange?: (checked: string) => void;
+  showPencil?: boolean;
+  showEye?: boolean;
 }
 
 const CardStatusActionHeadquarters: React.FC<CardStatusActionI> = (props) => {
-  const { title, subtitle, status, actionView, fullInfo, onActionClick, id } =
+  const { title, subtitle, status, actionView, fullInfo, onActionClick, id, showEye= false, showPencil=false } =
     props;
   const device = useAppSelector(selectDevice);
 
@@ -151,12 +153,41 @@ const CardStatusActionHeadquarters: React.FC<CardStatusActionI> = (props) => {
                   }}
                   className={clsx(device.mediaIsPhone ? 'px-0' : 'px-4')}
                 >
-                  <Icon
-                    color='primary'
-                    icon='it-chevron-right'
-                    size='sm'
-                    aria-label={`Vai al dettaglio di ${title}`}
-                  />
+                  {showPencil ? 
+                  <div>
+                    <Icon
+                      color='primary'
+                      icon='it-pencil'
+                      size='sm'
+                      aria-label={`Vai al dettaglio di ${title || fullInfo?.programma
+                        }`}
+                    />
+                    <span className='neutral-1-color-a8 weight-600 text-wrap ml-1'>
+                      Modifica
+                    </span>
+                  </div>
+                    
+                    :
+                    showEye ?
+                      <div>
+                        <Icon
+                          color='primary'
+                          icon='it-password-visible'
+                          size='sm'
+                          aria-label={`Vai al dettaglio di ${title || fullInfo?.programma
+                            }`}
+                        />
+                        <span className='neutral-1-color-a8 weight-600 text-wrap ml-1'>
+                          Visualizza
+                        </span>
+                      </div>
+                      : <Icon
+                        color='primary'
+                        icon='it-chevron-right'
+                        size='sm'
+                        aria-label={`Vai al dettaglio di ${title || fullInfo?.programma
+                          }`}
+                      />}
                 </Button>
               ) : null}
               {onActionClick[CRUDActionTypes.PREVIEW] ? (
