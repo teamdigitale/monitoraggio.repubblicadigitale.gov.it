@@ -790,7 +790,7 @@ const ProjectsDetails = () => {
           active={activeTab === tabs.ENTI_PARTNER}
           role='menuitem'
         >
-          <span> Enti partner </span>
+          <span> Enti partner ({project?.entiPartner?.length || '-'}) </span>
         </NavLink>
       </li>
       <li ref={sediRef} role='none'>
@@ -799,7 +799,7 @@ const ProjectsDetails = () => {
           active={activeTab === tabs.SEDI}
           role='menuitem'
         >
-          Sedi
+          Sedi del progetto ({project?.sedi?.length || '-'})
         </NavLink>
       </li>
     </Nav>

@@ -1,7 +1,7 @@
-import React, { ReactElement } from 'react';
-import { ItemsListI } from '../../utils/common';
+import React, { ReactElement, useEffect, useState } from 'react';
+import { ItemListElemI, ItemsListI } from '../../utils/common';
 import Sticky from 'react-sticky-el';
-import { Accordion, ButtonsBar } from '../index';
+import { Accordion, ButtonsBar, Paginator } from '../index';
 import { ButtonInButtonsBar } from '../ButtonsBar/buttonsBar';
 import CardStatusAction from '../CardStatusAction/cardStatusAction';
 import SectionTitle from '../SectionTitle/sectionTitle';
@@ -19,6 +19,8 @@ import CardStatusActionSurveys from '../CardStatusAction/cardStatusActionSurveys
 import CardStatusActionPartnerAuthority from '../CardStatusAction/cardStatusActionPartnerAuthority';
 import EmptySection from '../EmptySection/emptySection';
 import IconNote from '/public/assets/img/it-note-primary.png';
+import useGuard from '../../hooks/guard';
+import { selectEntityPagination, setEntityPagination } from '../../redux/features/administrativeArea/administrativeAreaSlice';
 
 interface DetailLayoutI {
   nav?: ReactElement;
@@ -87,6 +89,30 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
   const navigate = useNavigate();
   const device = useAppSelector(selectDevice);
   const dispatch = useDispatch();
+  const { hasUserPermission } = useGuard();
+  const canModify = hasUserPermission(['upd.sede.gest.prgt','upd.sede.partner']);
+  const pagination = useAppSelector(selectEntityPagination);
+
+  const handleOnChangePage = (
+      pageNumber: number = pagination?.pageNumber,
+      pageSize = 4
+    ) => {
+      dispatch(setEntityPagination({ pageNumber, pageSize }));
+  };
+  const [currentItems, setCurrentItems] = useState<ItemListElemI[]>([]);
+
+  useEffect(() => {
+    const start = (pagination.pageNumber - 1) * pagination.pageSize;
+    const end = pagination.pageNumber * pagination.pageSize;
+    setCurrentItems([]);
+    setTimeout(() => {
+      setCurrentItems(itemsList?.items.slice(start, end) || []);
+    }, 0);
+  }, [pagination.pageNumber, pagination.pageSize, itemsList]);
+
+  useEffect(() => {
+    dispatch(setEntityPagination({ pageNumber: 1, pageSize: 4 }));
+  }, []);
 
   return (
     <>
@@ -131,6 +157,14 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
           </div>
         )}
         <div id='content-tab'>{children}</div>
+        {currentTab === 'sedi' ? (
+          <div className={clsx('text-center', 'mb-5')}>
+          {<>
+            Questa sezione riporta le sedi associate al progetto.
+          </>}
+          </div>
+
+        ) : null}
         {itemsAccordionList?.length
           ? itemsAccordionList.map((singleItem, index) => (
               <Accordion
@@ -263,20 +297,33 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
               );
             })
           : null}
-        {currentTab === 'sedi' && showItemsList && itemsList?.items?.length
-          ? itemsList.items.map((item) => {
-              return (
-                <CardStatusActionHeadquarters
-                  title={item.nome}
-                  status={item.stato}
-                  key={item.id}
-                  id={item.id}
-                  fullInfo={item.fullInfo}
-                  onActionClick={item.actions}
-                />
-              );
-            })
-          : null}
+            {currentTab === 'sedi' && showItemsList && itemsList?.items?.length
+            ? currentItems
+                .map((item) => {
+                  return (
+              <CardStatusActionHeadquarters
+                title={item.nome}
+                status={item.stato}
+                key={item.id}
+                id={item.id}
+                fullInfo={item.fullInfo}
+                onActionClick={item.actions}
+                showPencil={canModify ? true : false}
+                showEye={!canModify ? true : false}
+              />
+                  );
+                })
+            : null}
+          {pagination?.totalPages && (
+            <div className='pb-5'>
+              <Paginator
+                activePage={pagination.pageNumber}
+                pageSize={pagination.pageSize}
+                total={itemsList?.items ? Math.ceil(itemsList.items.length / pagination.pageSize) : 0}
+                onChange={handleOnChangePage}
+              />
+            </div>
+          )}
         {showItemsList && itemsList?.items?.length && currentTab === 'info' ? (
           <>
             {itemsList.title && (
