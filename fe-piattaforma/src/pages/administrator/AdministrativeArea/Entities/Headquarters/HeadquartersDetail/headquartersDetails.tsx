@@ -17,6 +17,7 @@ import {
 import DetailLayout from '../../../../../../components/DetailLayout/detailLayout';
 import { useAppSelector } from '../../../../../../redux/hooks';
 import {
+  resetInfoIdsBreadcrumb,
   selectDevice,
   setInfoIdsBreadcrumb,
 } from '../../../../../../redux/features/app/appSlice';
@@ -123,6 +124,7 @@ const HeadquartersDetails = () => {
 
   useEffect(() => {
     // For breadcrumb
+    dispatch(resetInfoIdsBreadcrumb());
     if (entityId && programDetails?.nomeBreve) {
       dispatch(
         setInfoIdsBreadcrumb({
@@ -359,6 +361,42 @@ const HeadquartersDetails = () => {
       default:
         break;
     }
+  } else {
+    buttons = hasUserPermission(['upd.sede.gest.prgt','upd.sede.partner'])
+      ? [
+        {
+          size: 'xs',
+          outline: true,
+          color: 'primary',
+          text: 'Elimina',
+          buttonClass: 'btn-secondary',
+          disabled: headquarterDetails?.stato !== entityStatus.NON_ATTIVO,
+          onClick: () =>
+            dispatch(
+              openModal({
+                id: 'delete-entity',
+                payload: {
+                  entity: 'headquarter',
+                  text: 'Confermi di volere eliminare questa sede?',
+                },
+              })
+            ),
+        },
+        {
+          size: 'xs',
+          color: 'primary',
+          text: 'Modifica',
+          disabled: headquarterDetails?.stato === entityStatus.TERMINATO,
+          onClick: () =>
+            dispatch(
+              openModal({
+                id: formTypes.SEDE,
+                payload: { title: 'Modifica Sede' },
+              })
+            ),
+        },
+      ]
+      : [];
   }
 
   const removeFacilitator = async (userCF: string) => {
