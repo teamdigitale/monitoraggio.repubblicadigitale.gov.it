@@ -89,8 +89,8 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
   const navigate = useNavigate();
   const device = useAppSelector(selectDevice);
   const dispatch = useDispatch();
-  const { hasUserPermission } = useGuard();
-  const canModify = hasUserPermission(['upd.sede.gest.prgt','upd.sede.partner']);
+  const { hasUserPermissionAny } = useGuard();
+  const canModify = hasUserPermissionAny(['upd.sede.gest.prgt','upd.sede.partner']);
   const pagination = useAppSelector(selectEntityPagination);
 
   const handleOnChangePage = (
@@ -102,17 +102,24 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
   const [currentItems, setCurrentItems] = useState<ItemListElemI[]>([]);
 
   useEffect(() => {
-    const start = (pagination.pageNumber - 1) * pagination.pageSize;
-    const end = pagination.pageNumber * pagination.pageSize;
-    setCurrentItems([]);
-    setTimeout(() => {
-      setCurrentItems(itemsList?.items.slice(start, end) || []);
-    }, 0);
-  }, [pagination.pageNumber, pagination.pageSize, itemsList]);
+    if (currentTab === 'sedi' && itemsList?.items) {
+      const start = (pagination.pageNumber - 1) * pagination.pageSize;
+      const end = pagination.pageNumber * pagination.pageSize;
+  
+      setCurrentItems([]);
+      setTimeout(() => {
+        setCurrentItems(itemsList.items.slice(start, end) || []);
+      }, 0); 
+    }
+  }, [currentTab, pagination.pageNumber, pagination.pageSize, itemsList]);
 
   useEffect(() => {
-    dispatch(setEntityPagination({ pageNumber: 1, pageSize: 4 }));
-  }, []);
+    if (currentTab === 'sedi') {
+      dispatch(setEntityPagination({ pageNumber: 1, pageSize: 4 }));
+    }else{
+      setCurrentItems([]);
+    }
+  }, [currentTab]);
 
   return (
     <>
@@ -284,20 +291,22 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
         {currentTab === 'enti-partner' &&
         showItemsList &&
         itemsList?.items?.length
-          ? itemsList.items.map((item) => {
-              return (
-                <CardStatusActionPartnerAuthority
-                  title={item.nome}
-                  status={item.stato}
-                  key={item.id}
-                  id={item.id}
-                  fullInfo={item.fullInfo}
-                  onActionClick={item.actions}
-                />
-              );
-            })
+          ? itemsList.items
+              .filter(item => !item.enteDiRiferimento)
+              .map((item) => {
+                return (
+                  <CardStatusActionPartnerAuthority
+                    title={item.nome}
+                    status={item.stato}
+                    key={item.id}
+                    id={item.id}
+                    fullInfo={item.fullInfo}
+                    onActionClick={item.actions}
+                  />
+                );
+              })
           : null}
-            {currentTab === 'sedi' && showItemsList && itemsList?.items?.length
+          {currentTab === 'sedi' && showItemsList && currentItems?.length
             ? currentItems
                 .map((item) => {
                   return (
@@ -314,7 +323,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                   );
                 })
             : null}
-          {pagination?.totalPages && (
+          {pagination?.totalPages && currentTab === 'sedi' &&(
             <div className='pb-5'>
               <Paginator
                 activePage={pagination.pageNumber}
