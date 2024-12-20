@@ -109,7 +109,7 @@ const ProjectsDetails = () => {
   const projectDetails = project.dettagliInfoProgetto;
   const programDetails = project.dettagliInfoProgramma;
   const managingAuthorityID = project.idEnteGestoreProgetto;
-  const partnerAuthoritiesList = project.entiPartner;
+  const [partnerAuthoritiesList, setPartnerAuthoritiesList] = useState(project?.entiPartner);
   const headquarterList = project?.sedi;
   const authorityInfo = useAppSelector(selectAuthorities).detail;
   const [activeTab, setActiveTab] = useState<string>(tabs.INFO);
@@ -209,6 +209,13 @@ const ProjectsDetails = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectId, projectDetails, activeTab]);
 
+  useEffect(() => {
+    setPartnerAuthoritiesList(project.entiPartner?.filter(
+      (entePartner: { associatoAUtente: boolean }) =>
+        entePartner.associatoAUtente === true
+    )); 
+  },[project.entiPartner])
+  
   useEffect(() => {
     /*  scrollTo(0, 0); */
     centerActiveItem();
@@ -581,10 +588,7 @@ const ProjectsDetails = () => {
   const PartnerAuthoritySection = () => {
     setCorrectModal(<ManagePartnerAuthority creation />);
     if (
-      partnerAuthoritiesList?.filter(
-        (entePartner: { associatoAUtente: boolean }) =>
-          entePartner.associatoAUtente
-      )?.length
+      partnerAuthoritiesList?.length
     ) {
       setButtonsPosition('BOTTOM');
       setCurrentForm(undefined);
@@ -790,7 +794,7 @@ const ProjectsDetails = () => {
           active={activeTab === tabs.ENTI_PARTNER}
           role='menuitem'
         >
-          <span> Enti partner ({project?.entiPartner?.length || '-'}) </span>
+          <span> Enti partner ({partnerAuthoritiesList?.length || '-'}) </span>
         </NavLink>
       </li>
       <li ref={sediRef} role='none'>

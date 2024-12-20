@@ -56,7 +56,7 @@ const HeadquartersDetails = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const device = useAppSelector(selectDevice);
-  const { hasUserPermission } = useGuard();
+  const { hasUserPermission, hasUserPermissionAny } = useGuard();
   const {
     headquarterId,
     projectId,
@@ -362,7 +362,7 @@ const HeadquartersDetails = () => {
         break;
     }
   } else {
-    buttons = hasUserPermission(['upd.sede.gest.prgt','upd.sede.partner'])
+    buttons = hasUserPermissionAny(['upd.sede.gest.prgt','upd.sede.partner'])
       ? [
         {
           size: 'xs',
@@ -430,9 +430,9 @@ const HeadquartersDetails = () => {
   const getAccordionCTA = (title?: string) => {
     switch (title) {
       case 'Facilitatori':
-        return authorityType &&
+        return (authorityType || identeDiRiferimento) &&
           (((authorityType === formTypes.ENTE_GESTORE_PROGRAMMA ||
-            authorityType === formTypes.ENTE_GESTORE_PROGETTO) &&
+            authorityType === formTypes.ENTE_GESTORE_PROGETTO || identeDiRiferimento) &&
             hasUserPermission(['add.fac'])) ||
             (authorityType === formTypes.ENTI_PARTNER &&
               hasUserPermission(['add.fac.partner']))) &&
@@ -494,7 +494,7 @@ const HeadquartersDetails = () => {
                     (programPolicy !== 'SCD' ? item.title : 'Volontari') || ''
                   }
                   totElem={item.items.length}
-                  cta={authorityId ? getAccordionCTA(item.title).cta : null}
+                  cta={authorityId || identeDiRiferimento ? getAccordionCTA(item.title).cta : null}
                   onClickCta={getAccordionCTA(item.title)?.ctaAction}
                   lastBottom={index === itemAccordionList.length - 1}
                   detailAccordion

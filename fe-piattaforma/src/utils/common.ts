@@ -156,6 +156,7 @@ export interface ItemListElemI {
   };
   default?: boolean;
   codiceFiscale?: string;
+  enteDiRiferimento?: string;
 }
 
 export interface ItemsListI {
