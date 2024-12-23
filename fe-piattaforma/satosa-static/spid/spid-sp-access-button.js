@@ -1,13 +1,89 @@
-jQuery&&function(t){function i(i,n){var d=i?t(this):n,o=t(d.attr("spid-idp-button")),r=d.hasClass("spid-idp-button-open")
-if(i){if(t(i.target).hasClass("spid-idp-button-ignore"))return
-i.preventDefault(),i.stopPropagation()}else if(d!==n.target&&t(n.target).hasClass("spid-idp-button-ignore"))return
-s(),r||d.hasClass("spid-idp-button-disabled")||(d.addClass("spid-idp-button-open"),o.data("spid-idp-button-trigger",d).show(),e(),o.trigger("show",{spidIDPButton:o,trigger:d}))}function s(i){var s=i?t(i.target).parents().addBack():null
-if(s&&s.is(".spid-idp-button")){if(!s.is(".spid-idp-button-menu"))return
-if(!s.is("A"))return}t(document).find(".spid-idp-button:visible").each(function(){var i=t(this)
-i.hide().removeData("spid-idp-button-trigger").trigger("hide",{spidIDPButton:i})}),t(document).find(".spid-idp-button-open").removeClass("spid-idp-button-open")}function e(){var i=t(".spid-idp-button:visible").eq(0),s=i.data("spid-idp-button-trigger"),e=s?parseInt(s.attr("data-horizontal-offset")||0,10):null,n=s?parseInt(s.attr("data-vertical-offset")||0,10):null
-0!==i.length&&s&&(i.hasClass("spid-idp-button-relative")?i.css({left:i.hasClass("spid-idp-button-anchor-right")?s.position().left-(i.outerWidth(!0)-s.outerWidth(!0))-parseInt(s.css("margin-right"),10)+e:s.position().left+parseInt(s.css("margin-left"),10)+e,top:s.position().top+s.outerHeight(!0)-parseInt(s.css("margin-top"),10)+n}):i.css({left:i.hasClass("spid-idp-button-anchor-right")?s.offset().left-(i.outerWidth()-s.outerWidth())+e:s.offset().left+e,top:s.offset().top+s.outerHeight()+n}))}t.extend(t.fn,{spidIDPButton:function(e,n){switch(e){case"show":return i(null,t(this)),t(this)
-case"hide":return s(),t(this)
-case"attach":return t(this).attr("spid-idp-button",n)
-case"detach":return s(),t(this).removeAttr("spid-idp-button")
-case"disable":return t(this).addClass("spid-idp-button-disabled")
-case"enable":return s(),t(this).removeClass("spid-idp-button-disabled")}}}),t(document).on("click.spid-idp-button","[spid-idp-button]",i),t(document).on("click.spid-idp-button",s),t(window).on("resize",e)}(jQuery)
+/*
+
+Questo file è un de-offuscamento / de-minificazione del file
+spid-sp-access-button.min.js. Non si tratta del file originale ma di un lavoro
+di reverse engineering, il cui obiettivo è comprendere cosa faccia questo
+codice (non volete certo inserire del codice nelle vostre applicazioni senza
+averlo prima letto, no?).
+
+Per poter arrivare allo stesso risultato potete usare CyberChef con la funzione
+"JavaScript beautify" e successivamente cercare il senso delle varie lettere.
+
+*/
+
+jQuery && function (jQuery) {
+    // Mostra il popup al click (evt è l'evento) oppure tramite chiamata
+    // manuale (in questo caso evt è NULL ed il secondo parametro è il
+    // bottone)
+    // Funzione minificata: i(i, n)
+    function show(evt, objButtonParam) {
+        var objButton = evt ? jQuery(this) : objButtonParam;
+        var spidButton = jQuery(objButton.attr('spid-idp-button'));
+        var spidButtonIsOpen = objButton.hasClass('spid-idp-button-open');
+        if (evt) {
+            if (jQuery(evt.target).hasClass('spid-idp-button-ignore'))
+                return;
+            evt.preventDefault(), evt.stopPropagation();
+        } else if (objButton !== objButtonParam.target && jQuery(objButtonParam.target).hasClass('spid-idp-button-ignore'))
+            return;
+        hide(), spidButtonIsOpen || objButton.hasClass('spid-idp-button-disabled') || (objButton.addClass('spid-idp-button-open'), spidButton.data('spid-idp-button-trigger', objButton).show(), redraw(), spidButton.trigger('show', {
+            spidIDPButton: spidButton,
+            trigger: objButton
+        }));
+    }
+
+    // Nasconde il popup. Funzione minificata: s(i)
+    function hide(objButtonParam) {
+        var objButton = objButtonParam ? jQuery(objButtonParam.target).parents().addBack() : null;
+        if (objButton && objButton.is('.spid-idp-button')) {
+            if (!objButton.is('.spid-idp-button-menu'))
+                return;
+            if (!objButton.is('A'))
+                return;
+        }
+        jQuery(document).find('.spid-idp-button:visible').each(function () {
+            var spidButton = jQuery(this);
+            spidButton.hide().removeData('spid-idp-button-trigger').trigger('hide', { spidIDPButton: spidButton });
+        }), jQuery(document).find('.spid-idp-button-open').removeClass('spid-idp-button-open');
+    }
+
+    // Ridisegna il CSS del popup adattandolo. Funzione minificata: e()
+    function redraw() {
+        var spidButton = jQuery('.spid-idp-button:visible').eq(0);
+        var spidTrigger = spidButton.data('spid-idp-button-trigger');
+        var xoffset = spidTrigger ? parseInt(spidTrigger.attr('data-horizontal-offset') || 0, 10) : null;
+        var yoffset = spidTrigger ? parseInt(spidTrigger.attr('data-vertical-offset') || 0, 10) : null;
+
+        if (0 !== spidButton.length && spidTrigger) {
+            if (spidButton.hasClass('spid-idp-button-relative')) {
+                spidButton.css({
+                    left: spidButton.hasClass('spid-idp-button-anchor-right') ? spidTrigger.position().left - (spidButton.outerWidth(!0) - spidTrigger.outerWidth(!0)) - parseInt(spidTrigger.css('margin-right'), 10) + xoffset : spidTrigger.position().left + parseInt(spidTrigger.css('margin-left'), 10) + xoffset,
+                    top: spidTrigger.position().top + spidTrigger.outerHeight(!0) - parseInt(spidTrigger.css('margin-top'), 10) + yoffset
+                });
+            } else {
+                spidButton.css({
+                    left: spidButton.hasClass('spid-idp-button-anchor-right') ? spidTrigger.offset().left - (spidButton.outerWidth() - spidTrigger.outerWidth()) + xoffset : spidTrigger.offset().left + xoffset,
+                    top: spidTrigger.offset().top + spidTrigger.outerHeight() + yoffset
+                });
+            }
+        }
+    }
+    jQuery.extend(jQuery.fn, {
+        spidIDPButton: function (action, n) {
+            switch (action) {
+            case 'show':
+                return show(null, jQuery(this)), jQuery(this);
+            case 'hide':
+                return hide(), jQuery(this);
+            case 'attach':
+                return jQuery(this).attr('spid-idp-button', n);
+            case 'detach':
+                return hide(), jQuery(this).removeAttr('spid-idp-button');
+            case 'disable':
+                return jQuery(this).addClass('spid-idp-button-disabled');
+            case 'enable':
+                return hide(), jQuery(this).removeClass('spid-idp-button-disabled');
+            }
+        }
+    }), jQuery(document).on('click.spid-idp-button', '[spid-idp-button]', show), jQuery(document).on('click.spid-idp-button', hide), jQuery(window).on('resize', redraw);
+}(jQuery);
