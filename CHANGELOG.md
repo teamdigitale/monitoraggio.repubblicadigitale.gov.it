@@ -1,5 +1,25 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.41.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.40.2...1.41.0) (2024-12-23)
+
+
+### Features
+
+* **SPID:** nuova versione tasto spid 20241223 ([91db89c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/91db89c78cd6f4019bbe74b591ab3db560306e79))
+
+
+### Bug Fixes
+
+* **drupal:** fix controllo 20241223 ([1aa4972](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1aa4972ff9e6ce5a150de68eba824684b1666516))
+* **prod:** fix pagina errore + errore caricamento massivo 20241223 ([524d27e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/524d27ee12bc23faa65d215ff8ee02ccca9b8ac0))
+* **T264:** fix gestione sanificazione notifiche 20241202 ([9948bbb](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9948bbba0ad89d5d5734f169c68e5ec178ccf9b5))
+* **T264:** sanificazione forward 20241128 ([f0badb1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f0badb1a46178965b04da91744f2a9501fd8ef0a))
+* **Z1621:** controllo presenza sede x massivo 20241213 ([abd526f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/abd526fca68d1156f2f7045bb545e8fd0b6c254f))
+* **T297:** modifiche gestione errori drupal e fix paginazione con filtri 20241212 ([2977dc8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2977dc87e6c7232b244151188d0e98c73bb209d8))
+* **T298:** Rimosso bottone "Vai all'area di collaborazione" 20241212 ([ad8b912](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ad8b9129acbe2927c888e9ba6b878f3d28ac2d22))
+* **U250:** fix modifica Scheda Utente 20241205 ([a21693c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a21693c3d6c63837a94e54369dda225ae72a3492))
+* **T263:** aggiunta controllo modifica nome ente gia esistente 20241127 ([b056682](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b0566825d400e70af91af2dea87103a04b03cc8e))
+
 ## [1.40.2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.40.1...1.40.2) (2024-12-04)
 
 
