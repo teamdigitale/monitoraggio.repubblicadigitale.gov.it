@@ -99,8 +99,10 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
           triggerSearch();
         }, 2000);
       })
-      .catch(() => 
-        showErrorUpload());
+      .catch(() => {
+        //showErrorUpload()
+        handleCloseModal()
+    });
   }
   }, [
     dataUploadContext?.parsedData,

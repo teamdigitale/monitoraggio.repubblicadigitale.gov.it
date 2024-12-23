@@ -50,6 +50,10 @@ const Registrazione: React.FC<RegistrazioneI> = (props) => {
 
   useEffect(() => {
     const userRuolo: any = user;
+    if(userRuolo.ruoli.length === 0) {
+      navigate('/errore/A03', {replace: true});
+      return;
+    }
     setRuolo(userRuolo.ruoli[0].nomeRuolo.toLowerCase() as string);
     if (user?.integrazione) {
       selectUserRole();
