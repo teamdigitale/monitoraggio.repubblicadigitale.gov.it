@@ -33,7 +33,7 @@ API.interceptors.response.use(
   (error) => {
     if (error.config.data != null) {
       let json = JSON.parse(error.config.data)
-      if (!json.url.includes("notifications")) {
+      if (!json?.url?.includes("notifications")) {
         try {
           if (error.response && Number(error.response.status) === 403) {
             // TODO manage unauthorized
