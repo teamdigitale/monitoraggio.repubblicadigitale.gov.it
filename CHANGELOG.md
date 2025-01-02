@@ -1,5 +1,18 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.401](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.400...1.0.0-test.401) (2025-01-02)
+
+
+### Features
+
+* **dataLimite:** aggiornamento data limite massivo Dicembre 20241223 ([6f1c380](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6f1c3806bdab0a07c6f7991dc705305ae34b4b10))
+* **SPID:** nuova versione tasto spid 20241223 ([6f52b3a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6f52b3aadda223003e0a903cb2568bd52d647bb6))
+
+
+### Bug Fixes
+
+* **test:** rm 20241223 ([9cf6ba9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9cf6ba93b421e98c6432853586eb7e47060f7662))
+
 ## [1.0.0-test.400](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.399...1.0.0-test.400) (2024-12-18)
 
 
