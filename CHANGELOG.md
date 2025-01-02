@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.42.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.41.0...1.42.0) (2025-01-02)
+
+
+### Features
+
+* **dataLimite:** aggiornamento data limite massivo Dicembre 20241223 ([5ac5de8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5ac5de8fdc828386da815b9a354497d8edb63652))
+
 ## [1.41.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.40.2...1.41.0) (2024-12-23)
 
 
