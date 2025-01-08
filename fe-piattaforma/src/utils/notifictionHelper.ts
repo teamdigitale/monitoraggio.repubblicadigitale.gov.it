@@ -70,6 +70,7 @@ export const getErrorMessage = async (
         window.location.replace('/auth-redirect');
       } else if (errorCode === 'D01') {
         // return getDrupalErrorMessage(errorsList, message);
+        return {title: '', message: ''};
       } else if (errorsList[errorCode]) {
         return {
           message: `${errorsList[errorCode]?.descrizione} (errore ${errorCode})`,
@@ -108,17 +109,30 @@ export const errorHandler = async (error: unknown) => {
       dispatchLogout();
     }
 
+    const urlForward = ['board', 'community', 'document'];
     if (!errorData) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      errorData = await getErrorMessage(error?.response?.data);
-    }
-
-    if (errorData) {
+      try {
+        errorData = await getErrorMessage({
+          errorCode: (error as any)?.response?.data?.errorCode,
+        });
+      } catch (error) {
+        console.error("Errore durante il recupero del messaggio:", error);
+      }
+      //aggiunto controllo per non mostrare messaggio di errore in caso di errore drupal forward 
+      if (errorData && !(urlForward.some(keyword => JSON.parse((error as any)?.config.data).url.includes(keyword)))) { 
+        dispatchNotify({
+          title: errorData.title,
+          status: 'error',
+          message: errorData.message,
+          closable: true,
+          duration: 'slow',
+        });
+      }
+    } else {  //dispatch notify network error
       dispatchNotify({
-        title: errorData.title,
+        title: networkErrorPayload.title,
         status: 'error',
-        message: errorData.message,
+        message: networkErrorPayload.message,
         closable: true,
         duration: 'slow',
       });
