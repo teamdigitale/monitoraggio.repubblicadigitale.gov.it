@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.402](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.401...1.0.0-test.402) (2025-01-08)
+
+
+### Bug Fixes
+
+* **T310:** fix controllo nome ente partner 20250108 ([6ef4313](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6ef43136e92bb1cb87b5ed9dcac07c877601006b))
+
 ## [1.0.0-test.401](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.400...1.0.0-test.401) (2025-01-02)
 
 
