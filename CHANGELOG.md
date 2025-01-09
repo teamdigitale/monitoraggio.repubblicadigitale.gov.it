@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.42.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.42.0...1.42.1) (2025-01-09)
+
+
+### Bug Fixes
+
+* **T310:** fix controllo nome ente partner 20250108 ([f8c28a8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f8c28a86af6cdebc198ef82d8997831d100018cb))
+
 ## [1.42.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.41.0...1.42.0) (2025-01-02)
 
 
