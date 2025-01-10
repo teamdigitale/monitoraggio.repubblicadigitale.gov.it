@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.403](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.402...1.0.0-test.403) (2025-01-10)
+
+
+### Features
+
+* **U251:** chg comportamento form indirizzi sede e salvataggio/aggiornamento indirizzi a DB 20241212 ([636e82f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/636e82f6604b48680e48d1d827f101f6d90fa79a))
+
 ## [1.0.0-test.402](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.401...1.0.0-test.402) (2025-01-08)
 
 
