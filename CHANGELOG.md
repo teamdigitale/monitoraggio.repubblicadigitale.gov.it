@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.42.2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.42.1...1.42.2) (2025-01-14)
+
+
+### Bug Fixes
+
+* **T317:** fix form creazione e modifica utente 20250114 ([b53fc61](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b53fc61e602a053d38f9296ae9f0a5acd6311f9c))
+
 ## [1.42.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.42.0...1.42.1) (2025-01-09)
 
 
