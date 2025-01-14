@@ -62,7 +62,7 @@ export const getErrorMessage = async (
   }
 ) => {
   try {
-    const res = await axios('/assets/errors/errors.json');
+    const res = await axios('/assets/errors/errors.json');    
     if (res?.data) {
       const errorsList = { ...res.data.errors };
       if (errorCode === 'A02') {
@@ -119,7 +119,7 @@ export const errorHandler = async (error: unknown) => {
         console.error("Errore durante il recupero del messaggio:", error);
       }
       //aggiunto controllo per non mostrare messaggio di errore in caso di errore drupal forward 
-      if (errorData && !(urlForward.some(keyword => JSON.parse((error as any)?.config.data).url.includes(keyword)))) { 
+      if (errorData && !(urlForward.some(keyword => JSON.parse((error as any)?.config.data).url?.includes(keyword)))) { 
         dispatchNotify({
           title: errorData.title,
           status: 'error',
