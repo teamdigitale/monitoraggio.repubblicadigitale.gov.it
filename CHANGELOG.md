@@ -1,5 +1,14 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.404](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.403...1.0.0-test.404) (2025-01-14)
+
+
+### Bug Fixes
+
+* **U250:** fix rimozione dati dopo cancellazione ricerca 20250114 ([32c857d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/32c857d77b96dbe2fe2ac5d31112dc01789b3704))
+* **T315:** allineamento pagina errore ad Header e Footer correnti 20250113 ([df5d6f2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/df5d6f2355cf8d264fc6088ee32bdf7e2d143350))
+* **T297:** fix nascosto messaggio per errori drupal 20250108 ([03c8444](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/03c8444d757514ac2445a9abeae4869ad21636ae))
+
 ## [1.0.0-test.403](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.402...1.0.0-test.403) (2025-01-10)
 
 
