@@ -81,6 +81,16 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [creation, open]);
 
+  const resetModal = (toClose = true) => {
+      clearForm();
+      setShowForm(false);
+      setAlreadySearched(false);
+      setIsUserSelected(false);
+      setFirstOpen(true);
+      dispatch(setUsersList(null));
+      if (toClose) dispatch(closeModal());
+  };
+
   useEffect(() => {
     if (usersList && usersList.length === 0) {
       setNoResult(true);
@@ -232,6 +242,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
               dispatch(setUsersList(null));
               dispatch(resetUserDetails());
               setCanSubmit(false);
+              resetModal(false);
             }}
             title=''
             search
