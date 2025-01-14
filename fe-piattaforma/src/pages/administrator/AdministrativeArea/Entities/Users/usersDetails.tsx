@@ -662,7 +662,7 @@ const UsersDetails = () => {
                         showArrow = {false}
                         key={role.id}
                         id={role.id || role.codiceRuolo || role.nome}
-                        status={role.statoP}
+                        status={role.stato}
                         //title={role.nome}
                         title={
                           role.codiceRuolo !== userRoles.REG &&
