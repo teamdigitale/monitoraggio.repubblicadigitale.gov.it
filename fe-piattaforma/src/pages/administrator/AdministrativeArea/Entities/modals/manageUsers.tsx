@@ -104,7 +104,7 @@ const ManageUsers: React.FC<ManageUsersI> = ({
         }
         setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
         legend={legend}
-        fieldsToHide={['ruolo']}
+        fieldsToHide={creation ? [] : ['ruolo']}
       />
     </GenericModal>
   );
