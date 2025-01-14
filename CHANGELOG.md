@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.405](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.404...1.0.0-test.405) (2025-01-14)
+
+
+### Bug Fixes
+
+* **T317:** fix form creazione e modifica utente 20250114 ([7163a59](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7163a59b431e7a54effcb81953d13156c26fe593))
+* **Z1743:** fix storicizzazione ente partner ([54ce5ac](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/54ce5ac122ccb909b3f5896efac175ae4fc4040e))
+
 ## [1.0.0-test.404](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.403...1.0.0-test.404) (2025-01-14)
 
 
