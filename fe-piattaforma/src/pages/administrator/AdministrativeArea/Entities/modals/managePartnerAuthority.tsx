@@ -10,6 +10,7 @@ import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
 import {
   // resetAuthorityDetails,
   selectAuthorities,
+  selectEnteGestoreProgetto,
   setAuthoritiesList,
   setAuthorityDetails,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
@@ -55,6 +56,7 @@ const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
   const dispatch = useDispatch();
   const { projectId, authorityId } = useParams();
   const authoritiesList = useAppSelector(selectAuthorities).list;
+  const idEnteGestoreProgetto = useAppSelector(selectEnteGestoreProgetto);      
 
   useEffect(() => {
     if (creation) dispatch(setAuthorityDetails({}));
@@ -67,6 +69,13 @@ const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
     // dispatch(resetAuthorityDetails());
     if (toClose) dispatch(closeModal());
   };
+
+  useEffect(() => {
+    const updatedAuthoritiesList = authoritiesList?.filter((item) => item.id !== idEnteGestoreProgetto);
+    if (JSON.stringify(updatedAuthoritiesList) !== JSON.stringify(authoritiesList)) {
+      dispatch(setAuthoritiesList(updatedAuthoritiesList));
+    }
+  }, [authoritiesList, dispatch])
 
   const handleSearchAuthority = (search: string) => {
     if (search) dispatch(GetAuthoritiesBySearch(search));

@@ -509,5 +509,7 @@ export const selectQuestionarioTemplateServiceCreation = (state: RootState) =>
   state.administrativeArea.services.dynamicSchemaFieldsCreation;
 export const selectServiceQuestionarioTemplateIstanze = (state: RootState) =>
   state.administrativeArea.services.detail.sezioniQuestionarioTemplateIstanze;
+export const selectEntiPartnerAssociatoAProgetto = (state: RootState) =>
+  state.administrativeArea.projects.detail.entiPartner;
 
 export default administrativeAreaSlice.reducer;

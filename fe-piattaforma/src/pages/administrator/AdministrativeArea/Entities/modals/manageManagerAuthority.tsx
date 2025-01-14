@@ -14,6 +14,7 @@ import {
   selectAuthorities,
   selectEnteGestoreProgetto,
   selectEnteGestoreProgramma,
+  selectEntiPartnerAssociatoAProgetto,
   setAuthoritiesList,
   setAuthorityDetails,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
@@ -79,6 +80,10 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
   const authoritiesList = useAppSelector(selectAuthorities).list;
   const enteGestoreProgettoId = useAppSelector(selectEnteGestoreProgetto);
   const enteGestoreProgrammaId = useAppSelector(selectEnteGestoreProgramma);
+  //enti partner associati a progetto con stato "attivo" o "non attivo"
+  const entiPartnerAssociati = useAppSelector(selectEntiPartnerAssociatoAProgetto)
+              .filter((ente: { stato: string }) => ente.stato === 'ATTIVO' || ente.stato === 'NON ATTIVO')
+              .map((ente: { id: any; }) => ente.id);
 
   useEffect(() => {
     dispatch(setAuthoritiesList(null));
@@ -92,6 +97,16 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
       setNoResult(false);
     }
   }, [authoritiesList]);
+
+  useEffect(() => {
+    const updatedAuthoritiesList = authoritiesList?.filter(
+      (authority) => !entiPartnerAssociati.includes(Number(authority.id))
+    );
+    
+    if (JSON.stringify(updatedAuthoritiesList) !== JSON.stringify(authoritiesList)) {
+      dispatch(setAuthoritiesList(updatedAuthoritiesList));
+    }
+  }, [authoritiesList, dispatch])
 
   const resetModal = () => {
     clearForm();
