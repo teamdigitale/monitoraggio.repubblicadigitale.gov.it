@@ -1,5 +1,14 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.42.3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.42.2...1.42.3) (2025-01-15)
+
+
+### Bug Fixes
+
+* **Z1934:** fix errore per utente non trovato 20240115 ([869b5ce](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/869b5ced99cc886e6d1ceb98c191dc14870cb654))
+* **Z1934:** fix regex CF creazione utente per omocodia 20250115 ([869c5f6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/869c5f66110fadcdb807be63755a293cc372b6de))
+* **T297:** fix nascosto messaggio per errori drupal 20250108 ([9e5a5e4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9e5a5e415a9b5f66aeabd33a8150a0ef726a2cda))
+
 ## [1.42.2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.42.1...1.42.2) (2025-01-14)
 
 
