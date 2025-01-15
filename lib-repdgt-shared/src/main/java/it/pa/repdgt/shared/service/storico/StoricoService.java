@@ -88,6 +88,7 @@ public class StoricoService {
 			storicoEntePartner.setStato(StatoEnum.TERMINATO.getValue());
 			storicoEntePartner.setDataOraTerminazione(new Date());
 		}else {
+			storicoEntePartner = storicoEntePartnerRepository.findStoricoEnteByIdProgrammaAndIdEnteAndIdProgetto(idProgramma, idEnte, idProgetto).orElse(storicoEntePartner);
 			storicoEntePartner.setDataAttivazioneEnte(new Date());
 			storicoEntePartner.setStato(StatoEnum.ATTIVO.getValue());
 			storicoEntePartner.setIdProgetto(entePartnerEntity.getId().getIdProgetto());

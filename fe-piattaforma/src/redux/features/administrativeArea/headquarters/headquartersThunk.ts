@@ -150,7 +150,7 @@ export const AssignAuthorityHeadquarter =
       const body = {
         ...headquarterDetails,
         indirizziSedeFasceOrarie: headquarterDetails.indirizziSedeFasceOrarie
-          .filter((address: AddressInfoI) => !address.indirizzoSede.cancellato)
+          // .filter((address: AddressInfoI) => !address.indirizzoSede.cancellato)
           .map((addressInfo: AddressInfoI) => ({
             ...addressInfo.indirizzoSede,
             fasceOrarieAperturaIndirizzoSede: {

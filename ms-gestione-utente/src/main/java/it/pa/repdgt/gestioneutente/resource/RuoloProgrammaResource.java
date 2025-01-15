@@ -34,6 +34,8 @@ public class RuoloProgrammaResource {
 	String idEnte;
 
 	String policy;
+
+	String descrizioneEstesaEnte;
 	
 	public RuoloProgrammaResource(String codiceRuolo, String descrizioneRuolo) {
 		this.codiceRuolo = codiceRuolo;
@@ -48,7 +50,7 @@ public class RuoloProgrammaResource {
 
 
 	public RuoloProgrammaResource(String codiceRuolo, String descrizioneRuolo, String descrizioneRuoloCompleta, String idProgramma, String nomeProgramma,
-			String nomeEnte, String idEnte, String policy) {
+			String nomeEnte, String idEnte, String policy, String descrizioneEstesaEnte) {
 		super();
 		this.codiceRuolo = codiceRuolo;
 		this.descrizioneRuolo = descrizioneRuolo;
@@ -58,5 +60,6 @@ public class RuoloProgrammaResource {
 		this.nomeEnte = nomeEnte;
 		this.idEnte = idEnte;
 		this.policy = policy;
+		this.descrizioneEstesaEnte = descrizioneEstesaEnte;
 	}
 }

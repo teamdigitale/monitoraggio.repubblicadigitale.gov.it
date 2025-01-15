@@ -46,8 +46,10 @@ const BachecaDigitaleWidget = () => {
     // @ts-ignore
     const newsItems = res?.data?.data?.items || [];
     setNewsList(newsItems);
-    if (newsItems.length === 0) {
+    if (newsItems.length === 0 && !!res) {
       setTitleEmptySection('Non ci sono annunci');
+    } else if (!res) {
+      setTitleEmptySection("Non è stato possibile accedere ai contenuti. Accedi alla sezione Bacheca");
     }
   };
 

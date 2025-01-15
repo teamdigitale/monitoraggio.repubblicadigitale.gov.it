@@ -98,7 +98,9 @@ const Documents = () => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       setPopularDocuments(res?.data?.data?.items);
-    }else{
+    } else if (!res) {
+      setTitleEmptySection("Non è stato possibile accedere ai contenuti. Riprovare più tardi");
+    } else {
       setTitleEmptySection("Non ci sono documenti")
     }
   };
@@ -126,6 +128,7 @@ const Documents = () => {
 
   const handleDropdownFilters = (values: FilterI[], filterKey: string) => {
     dispatch(setForumFilters({ [filterKey]: [...values] }));
+    dispatch(setEntityPagination({ pageNumber: 1, pageSize: pagination.pageSize }));
   };
 
   const handleOnSearchDropdownOptions = (
@@ -246,7 +249,7 @@ const Documents = () => {
           sectionInfo
           dropdowns={dropdowns}
           filtersList={filtersList}
-          {...toolCollaborationCta}
+          // {...toolCollaborationCta}
           {...documentCta}
           sortFilter
           cta={
