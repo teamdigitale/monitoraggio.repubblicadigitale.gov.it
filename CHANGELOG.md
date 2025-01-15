@@ -1,5 +1,14 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.406](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.405...1.0.0-test.406) (2025-01-15)
+
+
+### Bug Fixes
+
+* **Z1934:** fix errore per utente non trovato 20240115 ([d0abe9d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d0abe9df9f0023f2bf87a0f49d9078e8d65e6886))
+* **Z1934:** fix regex CF creazione utente per omocodia 20250115 ([f2fa886](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f2fa886e1f9dfaf2306fa5d8dcb10049c9030008))
+* **Z1648:** fix visualizzazione errore per creazione o modifica servizio 20250114 ([75786fe](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/75786fed23bb4c8f3d2bc888282012e9ff6e0ad5))
+
 ## [1.0.0-test.405](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.404...1.0.0-test.405) (2025-01-14)
 
 
