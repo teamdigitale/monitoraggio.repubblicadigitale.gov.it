@@ -79,8 +79,8 @@ public class EnteSedeProgettoFacilitatoreService {
 		boolean esisteUtente = this.utenteService.esisteUtenteByCodiceFiscale(codiceFiscaleUtente);
 		if(!esisteUtente) {
 			throw new EnteSedeProgettoFacilitatoreException(
-					String.format(CodiceErroreEnum.EN07.getDescrizioneErrore(), codiceFiscaleUtente),
-					CodiceErroreEnum.EN07);
+					String.format(CodiceErroreEnum.U20.getDescrizioneErrore(), codiceFiscaleUtente),
+					CodiceErroreEnum.U20);
 		}
 		
 		// verifico se ente, sede e progetto esistono
