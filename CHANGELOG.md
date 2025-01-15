@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.42.4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.42.3...1.42.4) (2025-01-15)
+
+
+### Bug Fixes
+
+* **Z1648:** fix visualizzazione errore per creazione o modifica servizio 20250114 ([087c6cf](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/087c6cf69410a8c6f102c4efc7718e0553cf6b84))
+
 ## [1.42.3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.42.2...1.42.3) (2025-01-15)
 
 
