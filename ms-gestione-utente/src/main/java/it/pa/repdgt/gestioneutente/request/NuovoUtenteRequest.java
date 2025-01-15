@@ -18,7 +18,7 @@ public class NuovoUtenteRequest implements Serializable {
 	private static final long serialVersionUID = -455726924198610378L;
 	
 	@NotNull(message = "Codice fiscale deve essere valorizzato")
-	@Pattern(regexp = "^[A-Z]{6}[0-9]{2}[A-Z]{1}[0-9]{2}[A-Z]{1}[0-9]{3}[A-Z]{1}$", message = "codice fiscale non valido")
+	@Pattern(regexp = "^[A-Z]{6}[0-9LMNPQRSTUV]{2}[A-Z]{1}[0-9LMNPQRSTUV]{2}[A-Z]{1}[0-9LMNPQRSTUV]{3}[A-Z]{1}$", message = "codice fiscale non valido")
 	@JsonProperty(value = "codiceFiscale")
 	private String codiceFiscale;
 	
