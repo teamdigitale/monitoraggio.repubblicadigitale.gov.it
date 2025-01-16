@@ -356,7 +356,7 @@ public class ImportMassivoCSVService {
                 try {
                     if (nuovoAggiunto && idServizio != null) {
                         servizioService.eliminaServizioForce(idServizio);
-                        removeFromList(serviziAggiuntiList, idServizio);
+                        serviziAggiuntiList = removeFromList(serviziAggiuntiList, idServizio);
                     }
                 } catch (Exception exc) {
                     log.info("-XXX- Exception eccezione bonifica record servizio: {} -XXX-", exc.getMessage());
@@ -374,7 +374,7 @@ public class ImportMassivoCSVService {
                 try {
                     if (nuovoAggiunto && idServizio != null) {
                         servizioService.eliminaServizioForce(idServizio);
-                        removeFromList(serviziAggiuntiList, idServizio);
+                        serviziAggiuntiList = removeFromList(serviziAggiuntiList, idServizio);
                     }
                 } catch (Exception exc) {
                     log.info("-XXX- Exception eccezione bonifica record servizio: {} -XXX-", exc.getMessage());
@@ -393,7 +393,7 @@ public class ImportMassivoCSVService {
                 try {
                     if (nuovoAggiunto && idServizio != null) {
                         servizioService.eliminaServizioForce(idServizio);
-                        removeFromList(serviziAggiuntiList, idServizio);
+                        serviziAggiuntiList = removeFromList(serviziAggiuntiList, idServizio);
                     }
                 } catch (Exception exc) {
                     log.info("-XXX- Exception eccezione bonifica record servizio: {} -XXX-", exc.getMessage());
@@ -449,7 +449,7 @@ public class ImportMassivoCSVService {
                     }
                     if (nuovoAggiunto) {
                         servizioService.eliminaServizioForce(idServizio);
-                        removeFromList(serviziAggiuntiList, idServizio);
+                        serviziAggiuntiList = removeFromList(serviziAggiuntiList, idServizio);
                         if (serviziAggiunti > 0)
                             serviziAggiunti--;
                     }
@@ -480,7 +480,7 @@ public class ImportMassivoCSVService {
                     }
                     if (nuovoAggiunto) {
                         servizioService.eliminaServizioForce(idServizio);
-                        removeFromList(serviziAggiuntiList, idServizio);
+                        serviziAggiuntiList = removeFromList(serviziAggiuntiList, idServizio);
                         if (serviziAggiunti > 0)
                             serviziAggiunti--;
                     }
@@ -511,7 +511,7 @@ public class ImportMassivoCSVService {
                     }
                     if (nuovoAggiunto) {
                         servizioService.eliminaServizioForce(idServizio);
-                        removeFromList(serviziAggiuntiList, idServizio);
+                        serviziAggiuntiList = removeFromList(serviziAggiuntiList, idServizio);
                         if (serviziAggiunti > 0)
                             serviziAggiunti--;
                     }
@@ -542,7 +542,7 @@ public class ImportMassivoCSVService {
                     }
                     if (nuovoAggiunto) {
                         servizioService.eliminaServizioForce(idServizio);
-                        removeFromList(serviziAggiuntiList, idServizio);
+                        serviziAggiuntiList = removeFromList(serviziAggiuntiList, idServizio);
                         if (serviziAggiunti > 0)
                             serviziAggiunti--;
                     }
@@ -574,7 +574,7 @@ public class ImportMassivoCSVService {
                     }
                     if (nuovoAggiunto) {
                         servizioService.eliminaServizioForce(idServizio);
-                        removeFromList(serviziAggiuntiList, idServizio);
+                        serviziAggiuntiList = removeFromList(serviziAggiuntiList, idServizio);
                         if (serviziAggiunti > 0)
                             serviziAggiunti--;
                     }
@@ -619,7 +619,7 @@ public class ImportMassivoCSVService {
                     }
                     if (nuovoAggiunto) {
                         servizioService.eliminaServizioForce(idServizio);
-                        removeFromList(serviziAggiuntiList, idServizio);
+                        serviziAggiuntiList = removeFromList(serviziAggiuntiList, idServizio);
                         if (serviziAggiunti > 0)
                             serviziAggiunti--;
                     }
@@ -655,7 +655,7 @@ public class ImportMassivoCSVService {
                     }
                     if (nuovoAggiunto) {
                         servizioService.eliminaServizioForce(idServizio);
-                        removeFromList(serviziAggiuntiList, idServizio);
+                        serviziAggiuntiList = removeFromList(serviziAggiuntiList, idServizio);
                         if (serviziAggiunti > 0)
                             serviziAggiunti--;
                     }
@@ -693,7 +693,7 @@ public class ImportMassivoCSVService {
                         if (serviziAggiunti > 0)
                             serviziAggiunti--;
                         servizioService.eliminaServizioForce(idServizio);
-                        removeFromList(serviziAggiuntiList, idServizio);
+                        serviziAggiuntiList = removeFromList(serviziAggiuntiList, idServizio);
                     }
                 } catch (Exception exc) {
                     log.info("-XXX- Exception eccezione bonifica record questionario: {} -XXX-", exc.getMessage());
