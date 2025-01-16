@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.407](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.406...1.0.0-test.407) (2025-01-16)
+
+
+### Bug Fixes
+
+* **Z1921:** fix gestione caricamento massivo 20240116 ([daa7c11](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/daa7c11e740d1b4b0e8c436b0d34e2a2b38844ac))
+
 ## [1.0.0-test.406](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.405...1.0.0-test.406) (2025-01-15)
 
 
