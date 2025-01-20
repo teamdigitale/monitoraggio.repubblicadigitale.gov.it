@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.408](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.407...1.0.0-test.408) (2025-01-20)
+
+
+### Bug Fixes
+
+* **T214:** gestione rimozione utente_x_ruolo 20250120 ([313f74d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/313f74d454aec844f0ef9c0ab98ed3b2b06ef922))
+* **U251:** rimozione indirizzi non memorizzati 20250120 ([db8bbf2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/db8bbf260d1932fe092e48dcf5945fecdd2add68))
+
 ## [1.0.0-test.407](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.406...1.0.0-test.407) (2025-01-16)
 
 
