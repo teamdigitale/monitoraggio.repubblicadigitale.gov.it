@@ -32,7 +32,8 @@ public interface EnteSedeProgettoFacilitatoreRepository extends JpaRepository<En
 					"WHERE 1 = 1\n" + 
 					"AND (ID_PROGETTO,ID_ENTE,ID_SEDE) <> (:idProgetto, :idEnte, :idSede)\n" + 
 					"AND RUOLO_UTENTE = :codiceRuolo\n" + 
-					"AND id_facilitatore = :codiceFiscaleUtente\n",
+					"AND id_facilitatore = :codiceFiscaleUtente\n" +
+					"AND stato_utente <> 'TERMINATO'",
 			nativeQuery = true)
 	List<EnteSedeProgettoFacilitatoreEntity> findAltreAssociazioni(Long idProgetto, Long idEnte, Long idSede, String codiceFiscaleUtente, String codiceRuolo);
 
