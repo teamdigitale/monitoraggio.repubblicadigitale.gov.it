@@ -26,12 +26,19 @@ const AccordionAddressList: React.FC<AccordionAddressListI> = ({
     changedAddressInfo: AddressInfoI,
     index: number
   ) => {
-    onSetAddressList &&
+    if(changedAddressInfo.indirizzoSede.cancellato === true && changedAddressInfo.indirizzoSede.id === undefined){
+      onSetAddressList &&
+      onSetAddressList(
+        addressList.filter((addressInfo: AddressInfoI, i: number) => i !== index)
+      );
+    }else{
+      onSetAddressList &&
       onSetAddressList(
         addressList.map((addressInfo: AddressInfoI, i: number) =>
           i === index ? { ...changedAddressInfo } : addressInfo
         )
       );
+    }      
   };
 
   const newAddressHandler = () => {
