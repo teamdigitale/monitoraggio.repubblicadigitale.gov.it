@@ -267,6 +267,23 @@ public class EnteSedeProgettoFacilitatoreService {
 					enteSedeProgettoFacilitatore.getRuoloUtente()
 					);
 		}
+
+		// Controllo se l'utente è FAC o VOL(a seconda del codiceRuolo che mi viene
+		// passato) su altri gestori progetto oltre a questo
+		boolean unicaAssociazione = this.enteSedeProgettoFacilitatoreRepository
+				.findAltreAssociazioni(enteSedeProgettoFacilitatore.getId().getIdProgetto(),
+						enteSedeProgettoFacilitatore.getId().getIdEnte(),
+						enteSedeProgettoFacilitatore.getId().getIdSede(),
+						enteSedeProgettoFacilitatore.getId().getIdFacilitatore(),
+						enteSedeProgettoFacilitatore.getRuoloUtente())
+				.isEmpty();
+		
+		/*Se la condizione sopra è vera allora insieme all'associazione del referente al gestore progetto
+		 * imposterò a cancellato anche l'associazione dell'utente al ruolo
+		 */
+		if(unicaAssociazione) {
+			this.ruoloService.cancellaRuoloUtente(enteSedeProgettoFacilitatore.getId().getIdFacilitatore(), enteSedeProgettoFacilitatore.getRuoloUtente());
+		}
 	}
 		
 
@@ -322,16 +339,6 @@ public class EnteSedeProgettoFacilitatoreService {
 	public void cancellaAssociazioneFacilitatore(Long idEnte, Long idSede, Long idProgetto, String codiceFiscaleUtente, String codiceRuolo) {
 		EnteSedeProgettoFacilitatoreKey id = new EnteSedeProgettoFacilitatoreKey(idEnte, idSede, idProgetto, codiceFiscaleUtente);
 		this.enteSedeProgettoFacilitatoreRepository.deleteById(id);	
-		
-		//Controllo se l'utente è FAC o VOL(a seconda del codiceRuolo che mi viene passato) su altri gestori progetto oltre a questo
-		boolean unicaAssociazione = this.enteSedeProgettoFacilitatoreRepository.findAltreAssociazioni(idProgetto,idEnte, idSede, codiceFiscaleUtente, codiceRuolo).isEmpty();
-		
-		/*Se la condizione sopra è vera allora insieme all'associazione del referente al gestore progetto
-		 * imposterò a cancellato anche l'associazione dell'utente al ruolo
-		 */
-		if(unicaAssociazione) {
-			this.ruoloService.cancellaRuoloUtente(codiceFiscaleUtente, codiceRuolo);
-		}
 	}
 	
 	@LogMethod
