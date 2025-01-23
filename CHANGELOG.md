@@ -1,5 +1,17 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.409](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.408...1.0.0-test.409) (2025-01-23)
+
+
+### Features
+
+* **U255:** modifiche tab sedi 20241219 ([e5aa289](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e5aa289e75f095474a72135453645a60f06c7859))
+
+
+### Bug Fixes
+
+* **U255:** fix visualizzazione componenti sede 20241220 ([caf3b6c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/caf3b6c53408379b3590023e5c27daf55e30b2c2))
+
 ## [1.0.0-test.408](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.407...1.0.0-test.408) (2025-01-20)
 
 
