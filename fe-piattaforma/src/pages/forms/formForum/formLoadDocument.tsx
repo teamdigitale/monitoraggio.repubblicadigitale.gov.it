@@ -125,6 +125,7 @@ const FormLoadDocument: React.FC<uploadDocumentI> = (props) => {
   }, [form?.program?.value]);
 
   useEffect(() => {
+    dispatch(setEntityFilters({ filtroIdsProgrammi: [] }));
     dispatch(GetEntityFilterValues({ entity, dropdownType: 'programmi' }));
     dispatch(GetCategoriesList({ type: 'document_categories' }));
     // eslint-disable-next-line react-hooks/exhaustive-deps

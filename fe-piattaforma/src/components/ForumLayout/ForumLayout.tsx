@@ -230,14 +230,14 @@ const ForumLayout: React.FC<ForumLayoutI> = (props) => {
           className={clsx(
             'd-flex',
             'flex-row',
-            'justify-content-between',
+            title !== 'Bacheca' ? 'justify-content-between': 'justify-content-end',
             'align-items-center',
             'container',
             'pt-3',
             'pb-5'
           )}
         >
-          <SectionTitle title={sectionTitle} isForumLayout />
+          {title !=='Bacheca' && <SectionTitle title={sectionTitle} isForumLayout />}
           <div
             className={clsx(
               ctaToolCollaboration && 'd-flex',
@@ -313,7 +313,7 @@ const ForumLayout: React.FC<ForumLayoutI> = (props) => {
           </div>
         </div>
         <div className='container'>
-          <Slider cardSlider isItemsHome={!device.mediaIsPhone}>
+          {title !=='Bacheca' && <Slider cardSlider isItemsHome={!device.mediaIsPhone}>
             {formatSlides(cards, numberOfSlides()).map(
               (el: ForumCardsI[], i: number) => (
                 <div
@@ -346,7 +346,7 @@ const ForumLayout: React.FC<ForumLayoutI> = (props) => {
                 </div>
               )
             )}
-          </Slider>
+          </Slider>}
         </div>
       </div>
       <div
