@@ -105,7 +105,7 @@ const BachecaDigitale = () => {
   useEffect(() => {
     handleOnChangePage(1, 9);
     dispatch(setPublishedContent(true));
-    getPopularNews();
+    // getPopularNews();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
