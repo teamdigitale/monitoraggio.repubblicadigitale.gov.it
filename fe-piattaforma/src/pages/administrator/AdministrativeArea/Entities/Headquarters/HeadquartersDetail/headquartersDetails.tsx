@@ -49,13 +49,14 @@ import {
 import { GetProgramDetail } from '../../../../../../redux/features/administrativeArea/programs/programsThunk';
 import IconNote from '/public/assets/img/it-note-primary.png';
 import { policy } from '../../utils';
+import { selectProfile } from '../../../../../../redux/features/user/userSlice';
 
 const HeadquartersDetails = () => {
   const { mediaIsPhone } = useAppSelector(selectDevice);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const device = useAppSelector(selectDevice);
-  const { hasUserPermission, hasUserPermissionAny } = useGuard();
+  const { hasUserPermission } = useGuard();
   const {
     headquarterId,
     projectId,
@@ -216,6 +217,34 @@ const HeadquartersDetails = () => {
     },
   ];
 
+  const ruolo = useAppSelector(selectProfile)?.codiceRuolo;
+  const idEnteRuolo = useAppSelector(selectProfile)?.idEnte;
+  const showIconBasedOnRole = () => {
+    // 1 MODIFICA
+    // 2 VISUALIZZA
+    // 3 -    
+    const params = useParams();
+    const idEnteDiRiferimento = params.identeDiRiferimento;
+    switch (ruolo) {
+      case 'DTD':
+        return 1;
+      case 'DEG':
+      case 'REG':
+        return 2;
+      case 'REGP':
+      case 'DEGP':
+      case 'REPP':
+      case 'DEPP':
+        if (idEnteRuolo == idEnteDiRiferimento) return 1;
+        else return 2;
+      case 'FAC':
+      case 'VOL':
+        if (idEnteRuolo == idEnteDiRiferimento) return 2;
+        else return 3;
+    }
+    return 3;
+  };
+
   let buttons: ButtonInButtonsBar[] = [];
 
   if (authorityType) {
@@ -299,7 +328,7 @@ const HeadquartersDetails = () => {
         break;
     }
   } else {
-    buttons = hasUserPermissionAny(['upd.sede.gest.prgt','upd.sede.partner'])
+    buttons = showIconBasedOnRole() === 1
       ? [
         {
           size: 'xs',
