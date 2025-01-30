@@ -1,5 +1,19 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.410](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.409...1.0.0-test.410) (2025-01-30)
+
+
+### Features
+
+* **U256:** visualizzazione stato ruolo corretto 20250114 ([800e1b0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/800e1b0bfc620de65c405fe8cecb13ab845d97d4))
+* **U256:** Visualizzare in maniera chiara e coerente lo stato utente/ruolo 20241218 ([92d4905](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/92d4905be21d0d4fd977c0306009dfe36e344e40))
+
+
+### Bug Fixes
+
+* **T343:** rimozione chiamata EP annunci popolari 20250128 ([5d28124](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5d28124c88d521891c89dd9ebded1627d8d7827c))
+* **T343:** fix bug modale aggiunta documento e rimozionesezione da bacheca 20250127 ([b061079](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b0610792ac8f3d1cb2b0765acb7d930a711fabc2))
+
 ## [1.0.0-test.409](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.408...1.0.0-test.409) (2025-01-23)
 
 
