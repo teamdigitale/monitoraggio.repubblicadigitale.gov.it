@@ -19,8 +19,8 @@ import CardStatusActionSurveys from '../CardStatusAction/cardStatusActionSurveys
 import CardStatusActionPartnerAuthority from '../CardStatusAction/cardStatusActionPartnerAuthority';
 import EmptySection from '../EmptySection/emptySection';
 import IconNote from '/public/assets/img/it-note-primary.png';
-import useGuard from '../../hooks/guard';
 import { selectEntityPagination, setEntityPagination } from '../../redux/features/administrativeArea/administrativeAreaSlice';
+import { selectProfile } from '../../redux/features/user/userSlice';
 
 interface DetailLayoutI {
   nav?: ReactElement;
@@ -89,9 +89,9 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
   const navigate = useNavigate();
   const device = useAppSelector(selectDevice);
   const dispatch = useDispatch();
-  const { hasUserPermissionAny } = useGuard();
-  const canModify = hasUserPermissionAny(['upd.sede.gest.prgt','upd.sede.partner']);
   const pagination = useAppSelector(selectEntityPagination);
+  const ruolo = useAppSelector(selectProfile)?.codiceRuolo;
+  const idEnteRuolo = useAppSelector(selectProfile)?.idEnte;
 
   const handleOnChangePage = (
       pageNumber: number = pagination?.pageNumber,
@@ -121,6 +121,31 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
     }
   }, [currentTab]);
 
+  const showIconBasedOnRole = (item: ItemListElemI) => {
+    // 1 MODIFICA
+    // 2 VISUALIZZA
+    // 3 -    
+  
+    switch (ruolo) {
+      case 'DTD':
+        return 1;
+      case 'DEG':
+      case 'REG':
+        return 2;
+      case 'REGP':
+      case 'DEGP':
+      case 'REPP':
+      case 'DEPP':
+        if(idEnteRuolo == item?.identeDiRiferimento) return 1;
+        else return 2;
+      case 'FAC':
+      case 'VOL':
+        if(idEnteRuolo == item?.identeDiRiferimento) return 2;
+        else return 3;
+    }
+    return 3;
+  };
+    
   return (
     <>
       <div>
@@ -309,6 +334,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
           {currentTab === 'sedi' && showItemsList && currentItems?.length
             ? currentItems
                 .map((item) => {
+                  const res = showIconBasedOnRole(item);
                   return (
               <CardStatusActionHeadquarters
                 title={item.nome}
@@ -317,8 +343,9 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                 id={item.id}
                 fullInfo={item.fullInfo}
                 onActionClick={item.actions}
-                showPencil={canModify ? true : false}
-                showEye={!canModify ? true : false}
+                showPencil={res === 1 ? true : false}
+                showEye={res === 2 ? true : false}
+                showBlank={res === 3 ? true : false}
               />
                   );
                 })

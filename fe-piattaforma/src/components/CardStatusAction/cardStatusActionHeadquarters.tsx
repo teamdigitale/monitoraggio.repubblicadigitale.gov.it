@@ -37,10 +37,11 @@ interface CardStatusActionI {
   onCheckedChange?: (checked: string) => void;
   showPencil?: boolean;
   showEye?: boolean;
+  showBlank?: boolean;
 }
 
 const CardStatusActionHeadquarters: React.FC<CardStatusActionI> = (props) => {
-  const { title, subtitle, status, actionView, fullInfo, onActionClick, id, showEye= false, showPencil=false } =
+  const { title, subtitle, status, actionView, fullInfo, onActionClick, id, showEye= false, showPencil=false, showBlank=false } =
     props;
   const device = useAppSelector(selectDevice);
 
@@ -147,48 +148,57 @@ const CardStatusActionHeadquarters: React.FC<CardStatusActionI> = (props) => {
                 )
               ) : null}
               {onActionClick[CRUDActionTypes.VIEW] ? (
-                <Button
-                  onClick={() => {
-                    onActionClick[CRUDActionTypes.VIEW](id);
-                  }}
-                  className={clsx(device.mediaIsPhone ? 'px-0' : 'px-4')}
-                >
-                  {showPencil ? 
-                  <div>
-                    <Icon
-                      color='primary'
-                      icon='it-pencil'
-                      size='sm'
-                      aria-label={`Vai al dettaglio di ${title || fullInfo?.programma
-                        }`}
-                    />
-                    <span className='neutral-1-color-a8 weight-600 text-wrap ml-1'>
-                      Modifica
-                    </span>
-                  </div>
-                    
-                    :
-                    showEye ?
+                !showBlank ? (
+                  <Button
+                    onClick={() => {
+                      onActionClick[CRUDActionTypes.VIEW](id);
+                    }}
+                    className={clsx(device.mediaIsPhone ? 'px-0' : 'px-4')}
+                  >
+                    {showPencil ? (
+                      <div>
+                        <Icon
+                          color='primary'
+                          icon='it-pencil'
+                          size='sm'
+                          aria-label={`Vai al dettaglio di ${title || fullInfo?.programma}`}
+                        />
+                        <span className='neutral-1-color-a8 weight-600 text-wrap ml-1'>
+                          Modifica
+                        </span>
+                      </div>
+                    ) : showEye ? (
                       <div>
                         <Icon
                           color='primary'
                           icon='it-password-visible'
                           size='sm'
-                          aria-label={`Vai al dettaglio di ${title || fullInfo?.programma
-                            }`}
+                          aria-label={`Vai al dettaglio di ${title || fullInfo?.programma}`}
                         />
                         <span className='neutral-1-color-a8 weight-600 text-wrap ml-1'>
                           Visualizza
                         </span>
                       </div>
-                      : <Icon
+                    ) : (
+                      <Icon
                         color='primary'
                         icon='it-chevron-right'
                         size='sm'
-                        aria-label={`Vai al dettaglio di ${title || fullInfo?.programma
-                          }`}
-                      />}
-                </Button>
+                        aria-label={`Vai al dettaglio di ${title || fullInfo?.programma}`}
+                      />
+                    )}
+                  </Button>
+                ) : <div style={{opacity:0, padding: '0px 20px'}}>
+                      <Icon
+                        color='primary'
+                        icon='it-password-visible'
+                        size='sm'
+                        aria-label={`Vai al dettaglio di ${title || fullInfo?.programma}`}
+                      />
+                      <span className='neutral-1-color-a8 weight-600 text-wrap ml-1'>
+                        Visualizza
+                      </span>
+                    </div>
               ) : null}
               {onActionClick[CRUDActionTypes.PREVIEW] ? (
                 <Button

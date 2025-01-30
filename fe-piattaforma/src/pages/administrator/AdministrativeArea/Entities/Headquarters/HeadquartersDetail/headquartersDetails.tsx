@@ -56,7 +56,7 @@ const HeadquartersDetails = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const device = useAppSelector(selectDevice);
-  const { hasUserPermission, hasUserPermissionAny } = useGuard();
+  const { hasUserPermission } = useGuard();
   const {
     headquarterId,
     projectId,
@@ -239,7 +239,8 @@ const HeadquartersDetails = () => {
         else return 2;
       case 'FAC':
       case 'VOL':
-        return 3;
+        if (idEnteRuolo == idEnteDiRiferimento) return 2;
+        else return 3;
     }
     return 3;
   };
@@ -362,7 +363,7 @@ const HeadquartersDetails = () => {
         break;
     }
   } else {
-    buttons = hasUserPermissionAny(['upd.sede.gest.prgt','upd.sede.partner'])
+    buttons = showIconBasedOnRole() === 1
       ? [
         {
           size: 'xs',
