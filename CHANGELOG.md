@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.411](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.410...1.0.0-test.411) (2025-01-31)
+
+
+### Bug Fixes
+
+* **test:** aggiornamento data limite ins massivo 20250131 ([270ff0f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/270ff0ffe32fc2bf364c1f03eeca912275f65456))
+
 ## [1.0.0-test.410](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.409...1.0.0-test.410) (2025-01-30)
 
 
