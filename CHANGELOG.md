@@ -1,5 +1,22 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.43.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.42.5...1.43.0) (2025-01-31)
+
+
+### Features
+
+* **U251:** chg comportamento form indirizzi sede e salvataggio/aggiornamento indirizzi a DB 20241212 ([5216c1b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5216c1b5089045598d012d1b60ca1d9328132acd))
+
+
+### Bug Fixes
+
+* **test:** aggiornamento data limite ins massivo 20250131 ([ef2b417](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ef2b4179cb4f9c08374c15b96d66c18f46c07ffc))
+* **U251:** rimozione indirizzi non memorizzati 20250120 ([d007541](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d007541a5530fbbae4b3385c2c77e8e09ca8ac40))
+* **T214:** gestione rimozione utente_x_ruolo 20250120 ([4a0ed32](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4a0ed32e2578d70810b66e2dca9aff0dd86f380e))
+* **ms-ente:** fix cancellazione vol fac su terminazione sede 20241016 ([ca92224](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ca92224f892252073428115707b1c33194c720ad))
+* **T315:** allineamento pagina errore ad Header e Footer correnti 20250113 ([eaadc19](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/eaadc198b0859760f658cfc296bfe5438b09cab4))
+* **Z1743:** fix storicizzazione ente partner ([0036122](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/00361223f60d7872f2c4f3e1dad19e4d7d0652f3))
+
 ## [1.42.5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.42.4...1.42.5) (2025-01-17)
 
 
