@@ -1,6 +1,6 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
-## [1.0.0-develop.412](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.411...1.0.0-develop.412) (2025-02-04)
+## [1.0.0-develop.420](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.411...1.0.0-develop.420) (2025-02-04)
 
 
 ### Features
@@ -1413,7 +1413,7 @@
 * **be:** fix servizio one-to-many tipologia_servizio ([fe14697](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fe1469716d13c6d76bf956ae8a4caa2bbe110a28))
 * **be:** allineamento test ([aee23ab](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/aee23ab34e6bcce1389dae3f3ed57a15feb4be20))
 
-## [1.0.0-develop.412](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.411...1.0.0-develop.412) (2025-02-04)
+## [1.0.0-develop.420](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.411...1.0.0-develop.420) (2025-02-04)
 
 
 ### Features
@@ -2118,7 +2118,7 @@
 * **be:** fix servizio one-to-many tipologia_servizio ([fe14697](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fe1469716d13c6d76bf956ae8a4caa2bbe110a28))
 * **be:** allineamento test ([aee23ab](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/aee23ab34e6bcce1389dae3f3ed57a15feb4be20))
 
-## [1.0.0-develop.412](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.411...1.0.0-develop.412) (2025-02-04)
+## [1.0.0-develop.420](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.411...1.0.0-develop.420) (2025-02-04)
 
 
 ### Features
