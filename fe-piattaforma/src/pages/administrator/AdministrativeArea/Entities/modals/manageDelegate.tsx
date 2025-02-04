@@ -43,7 +43,7 @@ interface ManageDelgateFormI {
   legend?: string | undefined;
 }
 
-interface ManageDelegateI extends withFormHandlerProps, ManageDelgateFormI {}
+interface ManageDelegateI extends withFormHandlerProps, ManageDelgateFormI { }
 
 const ManageDelegate: React.FC<ManageDelegateI> = ({
   clearForm = () => ({}),
@@ -147,6 +147,9 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
   };
 
   const handleSearchUser = async (search: string) => {
+    resetModal(false);
+    dispatch(resetUserDetails());
+    setCanSubmit(false);
     setSearchedFiscalCode(search);
     const result = await dispatch(GetUsersBySearch(search)) as any;
     setAlreadySearched(true);
@@ -181,7 +184,7 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
   if (showForm && !firstOpen) {
     content = (
       <div>
-        { usersList && usersList.length > 0 && <ExistingCitizenInfo/>}
+        {usersList && usersList.length > 0 && <ExistingCitizenInfo newVersion={true} />}
         <FormUser
           creation={creation}
           formDisabled={isUserSelected}
@@ -195,11 +198,11 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
         />
       </div>
     );
-  } else if (alreadySearched && (usersList?.length === 0 || !usersList) && !showForm ) {
+  } else if (alreadySearched && (usersList?.length === 0 || !usersList) && !showForm) {
     content = (
-    <div style={{ margin: '50px 0' }}>
-      <NoResultsFoundCitizen onClickCta={addNewCitizen} />
-    </div>
+      <div style={{ margin: '50px 0' }}>
+        <NoResultsFoundCitizen onClickCta={addNewCitizen} newVersion={true} />
+      </div>
     );
   }
 
