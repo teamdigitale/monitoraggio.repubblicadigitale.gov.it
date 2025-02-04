@@ -43,7 +43,7 @@ interface ManageFacilitatorFormI {
 
 interface ManageFacilitatorI
   extends withFormHandlerProps,
-    ManageFacilitatorFormI {}
+  ManageFacilitatorFormI { }
 
 const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
   clearForm = () => ({}),
@@ -82,13 +82,13 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
   }, [creation, open]);
 
   const resetModal = (toClose = true) => {
-      clearForm();
-      setShowForm(false);
-      setAlreadySearched(false);
-      setIsUserSelected(false);
-      setFirstOpen(true);
-      dispatch(setUsersList(null));
-      if (toClose) dispatch(closeModal());
+    clearForm();
+    setShowForm(false);
+    setAlreadySearched(false);
+    setIsUserSelected(false);
+    setFirstOpen(true);
+    dispatch(setUsersList(null));
+    if (toClose) dispatch(closeModal());
   };
 
   useEffect(() => {
@@ -128,10 +128,10 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
 
         dispatch(GetUserDetails(userId));
       }
-      if (!res?.errorCode){
+      if (!res?.errorCode) {
         dispatch(closeModal());
         handleCancel();
-      } 
+      }
     }
     setIsUserSelected(false);
   };
@@ -148,6 +148,9 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
   // };
 
   const handleSearchUser = async (search: string) => {
+    resetModal(false);
+    dispatch(resetUserDetails());
+    setCanSubmit(false);
     setSearchedFiscalCode(search);
     const result = await dispatch(GetUsersBySearch(search)) as any;
     setAlreadySearched(true);
@@ -171,7 +174,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
   if (showForm && !firstOpen) {
     content = (
       <div>
-        { usersList && usersList.length > 0 && <ExistingCitizenInfo/>}
+        {usersList && usersList.length > 0 && <ExistingCitizenInfo newVersion={true} />}
         <FormFacilitator
           formDisabled={isUserSelected}
           sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
@@ -184,11 +187,11 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
         />
       </div>
     );
-  } else if (noResult && !showForm ) {
+  } else if (noResult && !showForm) {
     content = (
-    <div style={{ margin: '50px 0' }}>
-      <NoResultsFoundCitizen onClickCta={addNewCitizen} />
-    </div>
+      <div style={{ margin: '50px 0' }}>
+        <NoResultsFoundCitizen onClickCta={addNewCitizen} newVersion={true} />
+      </div>
     );
   }
 

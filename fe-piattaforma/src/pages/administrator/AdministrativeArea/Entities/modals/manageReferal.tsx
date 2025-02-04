@@ -170,6 +170,9 @@ const ManageReferal: React.FC<ManageReferalI> = ({
   };
 
   const handleSearchUser = async (search: string) => {
+    resetModal(false);
+    dispatch(resetUserDetails());
+    setCanSubmit(false);
     setSearchedFiscalCode(search);
     const result = await dispatch(GetUsersBySearch(search)) as any;
     setAlreadySearched(true);
@@ -192,7 +195,7 @@ const ManageReferal: React.FC<ManageReferalI> = ({
   if (showForm && !firstOpen) {
     content = (
       <div>
-        { usersList && usersList.length > 0 && <ExistingCitizenInfo/>}
+        {usersList && usersList.length > 0 && <ExistingCitizenInfo newVersion = {true} />}
         <FormUser
           creation={creation}
           formDisabled={isUserSelected}
@@ -209,7 +212,7 @@ const ManageReferal: React.FC<ManageReferalI> = ({
   } else if (alreadySearched && (usersList?.length === 0 || !usersList) && !showForm ) {
     content = (
     <div style={{ margin: '50px 0' }}>
-      <NoResultsFoundCitizen onClickCta={addNewCitizen} />
+      <NoResultsFoundCitizen onClickCta={addNewCitizen} newVersion={true} />
     </div>
     );
   }
