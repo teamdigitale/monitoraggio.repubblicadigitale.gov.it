@@ -190,7 +190,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
         )}
         <div id='content-tab'>{children}</div>
         {currentTab === 'sedi' ? (
-          <div className={clsx('text-center', 'mb-5')}>
+          <div className={clsx('text-left', 'mb-5', 'mx-3')}>
           {<>
             Questa sezione riporta le sedi associate al progetto.
           </>}
