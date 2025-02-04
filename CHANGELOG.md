@@ -1,6 +1,6 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
-## [1.0.0-develop.412](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.411...1.0.0-develop.412) (2025-02-04)
+## [1.0.0-develop.420](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-develop.411...1.0.0-develop.420) (2025-02-04)
 
 
 ### Features
