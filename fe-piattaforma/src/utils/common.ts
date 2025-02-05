@@ -328,7 +328,7 @@ export const downloadBlob = (
 };
 
 const transformToCSV = (data: string) => {
-  const rows = data.split('\r\n').map((r) => r.split(','));
+  const rows = String(data).split('\r\n').map((r) => r.split(','));
   return rows.map((r) => r.join(';')).join('\r\n');
 };
 
