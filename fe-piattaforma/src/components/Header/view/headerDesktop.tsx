@@ -58,8 +58,18 @@ const HeaderDesktop: React.FC<HeaderI> = ({
     },
   ];
 
-  console.log('USER PROFILE: ', userProfile);
-  console.log("profilo esteso: ", userProfile?.descrizioneEstesaEnte);
+  const [profile, setProfile] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (userProfile?.idEnte) {
+        const response = await API.get(`/ente/${userProfile?.idEnte}`);
+        setProfile(response);
+        console.log('PROFILE: ', response);
+      }
+    };
+    fetchProfile();
+  }, [userProfile]);
   
   
   const userDropDown = () => (

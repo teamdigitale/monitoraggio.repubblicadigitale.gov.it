@@ -4,13 +4,8 @@ import React, { memo } from 'react';
 
 import { selectDevice } from '../../redux/features/app/appSlice';
 import { useAppSelector } from '../../redux/hooks';
-import {
-  AvatarSizes,
-  AvatarTextSizes,
-} from '../Avatar/AvatarInitials/avatarInitials';
 import './cardProfile.scss';
 import { UserStateI } from '../../redux/features/user/userSlice';
-import UserAvatar from '../Avatar/UserAvatar/UserAvatar';
 
 interface CardProfileI extends CardProps {
   className?: string;
@@ -24,9 +19,7 @@ const CardProfile: React.FC<CardProfileI> = (props) => {
   const {
     className,
     activeProfile,
-    user = {},
     profile = {},
-    profilePicture,
   } = props;
 
   const device = useAppSelector(selectDevice);
