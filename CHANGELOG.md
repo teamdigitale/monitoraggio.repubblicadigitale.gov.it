@@ -1,5 +1,23 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.412](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.411...1.0.0-test.412) (2025-02-06)
+
+
+### Features
+
+* **U257:** ultimate modifiche header e role picker 20241206 ([e988a80](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e988a80e4c66580c5c5d7147755c2f9c87d0521d))
+* **U257:** chg header e role picker 20241206 ([49acea7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/49acea7a81cd4da8e514375be9282b55d110074a))
+
+
+### Bug Fixes
+
+* **test:** aggiornata action release 20250206 ([4f8c78b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4f8c78b925044387de4b4604380aedfe8e03100f))
+* **T348:** fix download lista da elenco enti/utenti/programmi/progetti 20250205 ([1ef0abb](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1ef0abb11f7cddc0648261836811e3d1565b962b))
+* **U257:** fix merge da U257 20250206 ([81badb0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/81badb066135101b4071f6852ea84578bb4b0ccd))
+* **U255:** fix sottotitolo sezione sedi 20250204 ([17a1321](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/17a132187819e7e6857c7c2397db6e660b022b01))
+* **U255:** fix visualizzazione bottoni tramite ruoli ed enti 20250130 ([5784f14](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5784f1446b111ff574943c49fc7da59c4c57bf83))
+* **U250:** fix modali Referenti/Delegati/Facilitatori 20250204 ([c386008](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c386008b56dc512000a8edc69e0d91302d0d5b8c))
+
 ## [1.0.0-test.411](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.410...1.0.0-test.411) (2025-01-31)
 
 
