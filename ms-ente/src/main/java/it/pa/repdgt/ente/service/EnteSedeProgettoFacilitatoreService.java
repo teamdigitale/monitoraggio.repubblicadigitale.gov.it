@@ -222,10 +222,10 @@ public class EnteSedeProgettoFacilitatoreService {
 		}
 		
 		EnteSedeProgettoFacilitatoreKey id = new EnteSedeProgettoFacilitatoreKey(idEnte, idSede, idProgetto, codiceFiscaleUtente);
-		if(this.enteSedeProgettoFacilitatoreRepository.findById(id).get().getStatoUtente().equals(StatoEnum.NON_ATTIVO.getValue())) {
-			this.cancellaAssociazioneFacilitatore(idEnte, idSede, idProgetto, codiceFiscaleUtente, codiceRuolo);
-			return;
-		}
+		// if(this.enteSedeProgettoFacilitatoreRepository.findById(id).get().getStatoUtente().equals(StatoEnum.NON_ATTIVO.getValue())) {
+		// 	this.cancellaAssociazioneFacilitatore(idEnte, idSede, idProgetto, codiceFiscaleUtente, codiceRuolo);
+		// 	return;
+		// }
 		
 		/*Verifico se il Facilitatore al quale voglio cancellare l'associazione
 		 * è l'unico facilitatore del progetto. Se sì lancio eccezione
@@ -255,18 +255,19 @@ public class EnteSedeProgettoFacilitatoreService {
 		
 		EnteSedeProgettoFacilitatoreKey id = enteSedeProgettoFacilitatore.getId();
 		//quando lo stato del facilitatore è attivo dobbiamo terminarlo
-		if(this.enteSedeProgettoFacilitatoreRepository.findById(id).get().getStatoUtente().equals(StatoEnum.ATTIVO.getValue())) {
+		if(this.enteSedeProgettoFacilitatoreRepository.findById(id).get().getStatoUtente().equals(StatoEnum.ATTIVO.getValue())
+		|| this.enteSedeProgettoFacilitatoreRepository.findById(id).get().getStatoUtente().equals(StatoEnum.NON_ATTIVO.getValue())) {
 			this.terminaAssociazioneFacilitatoreOVolontario(id);
 		}
-		if(this.enteSedeProgettoFacilitatoreRepository.findById(id).get().getStatoUtente().equals(StatoEnum.NON_ATTIVO.getValue())) {
-			this.cancellaAssociazioneFacilitatore(
-					enteSedeProgettoFacilitatore.getId().getIdEnte(),
-					enteSedeProgettoFacilitatore.getId().getIdSede(),
-					enteSedeProgettoFacilitatore.getId().getIdProgetto(),
-					enteSedeProgettoFacilitatore.getId().getIdFacilitatore(),
-					enteSedeProgettoFacilitatore.getRuoloUtente()
-					);
-		}
+		// if(this.enteSedeProgettoFacilitatoreRepository.findById(id).get().getStatoUtente().equals(StatoEnum.NON_ATTIVO.getValue())) {
+		// 	this.cancellaAssociazioneFacilitatore(
+		// 			enteSedeProgettoFacilitatore.getId().getIdEnte(),
+		// 			enteSedeProgettoFacilitatore.getId().getIdSede(),
+		// 			enteSedeProgettoFacilitatore.getId().getIdProgetto(),
+		// 			enteSedeProgettoFacilitatore.getId().getIdFacilitatore(),
+		// 			enteSedeProgettoFacilitatore.getRuoloUtente()
+		// 			);
+		// }
 
 		// Controllo se l'utente è FAC o VOL(a seconda del codiceRuolo che mi viene
 		// passato) su altri gestori progetto oltre a questo
