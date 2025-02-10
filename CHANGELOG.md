@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.413](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.412...1.0.0-test.413) (2025-02-10)
+
+
+### Bug Fixes
+
+* **T352:** fix test 20250210 ([2e0a53a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2e0a53a78c98373f1fa5e07ee0fe29aa3005958a))
+* **T352:** gestione terminazione FAC non attivi 20250207 ([a56e672](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a56e6727a4a47977bde6eadb531d3c71f7ef0673))
+
 ## [1.0.0-test.412](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.411...1.0.0-test.412) (2025-02-06)
 
 
