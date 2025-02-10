@@ -299,7 +299,7 @@ public class EnteSedeProgettoFacilitatoreService {
 		
 		final String codiceFiscaleUtenteFacilitaore = id.getIdFacilitatore();
 		final UtenteEntity utenteDBFetch = this.utenteService.getUtenteByCodiceFiscale(codiceFiscaleUtenteFacilitaore);
-		if( utenteDBFetch.getIntegrazioneUtente() != null && utenteDBFetch.getIntegrazioneUtente().getIdUtenteWorkdocs() != null){
+		if( utenteDBFetch != null && utenteDBFetch.getIntegrazioneUtente() != null && utenteDBFetch.getIntegrazioneUtente().getIdUtenteWorkdocs() != null){
 			// Utente non presenta relazione su integrazione_utente da eliminare
 			String idUtenteWorkdocs = utenteDBFetch.getIntegrazioneUtente().getIdUtenteWorkdocs();
 			if(utenteDBFetch.getRuoli().size() == 1 && idUtenteWorkdocs != null) {
