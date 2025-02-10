@@ -244,15 +244,14 @@ public class EnteSedeProgettoFacilitatoreServiceTest {
 		programma1.setPolicy(PolicyEnum.SCD);
 		enteSedeProgettoFacilitatoreEntity.setStatoUtente("NON ATTIVO");
 		when(this.progettoService.getProgettoById(progetto1.getId())).thenReturn(progetto1);
-		when(this.enteSedeProgettoFacilitatoreRepository.findById(Mockito.any(EnteSedeProgettoFacilitatoreKey.class))).thenReturn(Optional.of(enteSedeProgettoFacilitatoreEntity));
-		enteSedeProgettoFacilitatoreService.cancellaOTerminaAssociazioneFacilitatoreAEnteSedeProgetto(enteSedeProgettoFacilitatoreRequest);
+		Assertions.assertThrows(EnteSedeProgettoFacilitatoreException.class, () -> enteSedeProgettoFacilitatoreService.cancellaOTerminaAssociazioneFacilitatoreAEnteSedeProgetto(enteSedeProgettoFacilitatoreRequest));
+		assertThatExceptionOfType(EnteSedeProgettoFacilitatoreException.class);
 	}
 	
 	@Test
 	public void cancellaOTerminaAssociazioneFacilitatoreAEnteSedeProgettoKOTest() {
 		//test KO per unico facilitatore
 		when(this.progettoService.getProgettoById(progetto1.getId())).thenReturn(progetto1);
-		when(this.enteSedeProgettoFacilitatoreRepository.findById(Mockito.any(EnteSedeProgettoFacilitatoreKey.class))).thenReturn(Optional.of(enteSedeProgettoFacilitatoreEntity));
 		when(this.enteSedeProgettoFacilitatoreRepository.findAltriFacilitatoriAttivi(enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleFacVol(), enteSedeProgettoFacilitatoreRequest.getIdProgettoFacVol(), ruoloFAC.getCodice())).thenReturn(new ArrayList<>());
 		Assertions.assertThrows(EnteSedeProgettoFacilitatoreException.class, () -> enteSedeProgettoFacilitatoreService.cancellaOTerminaAssociazioneFacilitatoreAEnteSedeProgetto(enteSedeProgettoFacilitatoreRequest));
 		assertThatExceptionOfType(EnteSedeProgettoFacilitatoreException.class);
@@ -260,7 +259,6 @@ public class EnteSedeProgettoFacilitatoreServiceTest {
 		//test KO per unico volontario
 		programma1.setPolicy(PolicyEnum.SCD);
 		when(this.progettoService.getProgettoById(progetto1.getId())).thenReturn(progetto1);
-		when(this.enteSedeProgettoFacilitatoreRepository.findById(Mockito.any(EnteSedeProgettoFacilitatoreKey.class))).thenReturn(Optional.of(enteSedeProgettoFacilitatoreEntity));
 		when(this.enteSedeProgettoFacilitatoreRepository.findAltriFacilitatoriAttivi(enteSedeProgettoFacilitatoreRequest.getCodiceFiscaleFacVol(), enteSedeProgettoFacilitatoreRequest.getIdProgettoFacVol(), ruoloVOL.getCodice())).thenReturn(new ArrayList<>());
 		Assertions.assertThrows(EnteSedeProgettoFacilitatoreException.class, () -> enteSedeProgettoFacilitatoreService.cancellaOTerminaAssociazioneFacilitatoreAEnteSedeProgetto(enteSedeProgettoFacilitatoreRequest));
 		assertThatExceptionOfType(EnteSedeProgettoFacilitatoreException.class);
