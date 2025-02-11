@@ -270,6 +270,7 @@ export const GetAuthoritiesBySearch =
 
       if (search && res?.data) {
         dispatch(setAuthoritiesList(res.data));
+        return res;
       } else {
         dispatch(setAuthoritiesList([]));
       }
