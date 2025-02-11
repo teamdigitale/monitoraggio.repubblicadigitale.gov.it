@@ -25,7 +25,7 @@ export default function ExistingCitizenInfo({ newVersion }: { newVersion?: boole
         />
       </div>
       <div>
-        <h3 className='h5 no-results-found__title'>
+        <h3 className='h5 no-results-found__title' style={{ marginTop: '15px' }}>
           {t('existing_citizen_form')}
         </h3>
         <h4 className='mt-0 no-results-found__subtitle'>
@@ -51,9 +51,12 @@ export default function ExistingCitizenInfo({ newVersion }: { newVersion?: boole
         />
       </div>
       <div>
-        <h3 className='h5 no-results-found__title'>
+        <h3 className='h5 no-results-found__title' style={{ marginTop: '15px' }}>
           {t('existing_citizen_registry')}
         </h3>
+        <h4 className='mt-0 no-results-found__subtitle'>
+          {t('existing_citizen_form_subtitle')}
+        </h4>
       </div>
     </div>
   ));
