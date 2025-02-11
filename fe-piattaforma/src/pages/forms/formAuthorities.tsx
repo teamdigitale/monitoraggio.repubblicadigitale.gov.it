@@ -47,6 +47,7 @@ interface EnteInformationI {
   noIdField?: boolean | undefined;
   enteType?: string;
   legend?: string;
+  initialFiscalCode?: string;
 }
 
 interface FormEnteGestoreProgettoFullInterface
@@ -71,6 +72,7 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
     updateForm = () => ({}),
     clearForm = () => ({}),
     legend,
+    initialFiscalCode = ''
   } = props;
 
   const { projectId, entityId, authorityId } = useParams();
@@ -105,6 +107,16 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData]);
+
+  useEffect(() => {
+    if (initialFiscalCode !== '' && form?.piva?.value === '') {
+      setFormValues({ ...getFormValues(), piva: initialFiscalCode });
+    }
+      
+    setIsFormValid(isValidForm);
+    sendNewValues(getFormValues());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form]);
 
   useEffect(() => {
     if (
@@ -273,6 +285,7 @@ const FormAuthorities: React.FC<FormEnteGestoreProgettoFullInterface> = (
               label='Codice Fiscale'
               col='col-12 col-lg-6'
               onInputChange={onInputChange}
+              disabled={initialFiscalCode !== ''}
             />
             <Input
               col='col-12 col-lg-6'
