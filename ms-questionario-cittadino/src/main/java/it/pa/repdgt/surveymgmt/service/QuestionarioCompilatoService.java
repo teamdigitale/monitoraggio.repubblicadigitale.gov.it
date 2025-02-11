@@ -118,13 +118,14 @@ public class QuestionarioCompilatoService {
 			this.verificaEseguiESalvaConsensoTrattamentoDati(codiceFiscaleCittadino);
 
 			// Recupero il cittadino e lo aggiorno i nuovi dati provenienti dalla request
-			Optional<CittadinoEntity> optionalCittadinoDBFetch = this.cittadinoService
-					.getCittadinoByCodiceFiscale(codiceFiscaleCittadino);
+			List<CittadinoEntity> optionalCittadinoDBFetch = this.cittadinoService
+					.getCittadinoByCodiceFiscaleList(codiceFiscaleCittadino);
 
-			optionalCittadinoDBFetch.ifPresent(cittadino -> {
+			if (!optionalCittadinoDBFetch.isEmpty()) {
+				CittadinoEntity cittadino = optionalCittadinoDBFetch.get(0);
 				cittadino.setDataOraAggiornamento(new Date());
 				this.cittadinoService.salvaCittadino(cittadino);
-			});
+			}
 		}
 		// Aggiorno questionarioCompilato MySQl
 		final QuestionarioCompilatoEntity questionarioCompilatoDBMySqlFetch = questionarioCompilatoEntity.get();
