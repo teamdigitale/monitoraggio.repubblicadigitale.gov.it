@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.414](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.413...1.0.0-test.414) (2025-02-12)
+
+
+### Bug Fixes
+
+* **test:** commento chiamate forward home 20250212 ([e539804](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e539804381100eeb582fe053a7b362a6fb9eb941))
+
 ## [1.0.0-test.413](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.412...1.0.0-test.413) (2025-02-10)
 
 
