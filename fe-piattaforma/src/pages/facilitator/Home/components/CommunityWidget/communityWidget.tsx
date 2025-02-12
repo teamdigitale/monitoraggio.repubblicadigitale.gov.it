@@ -33,15 +33,16 @@ const CommunityWidget = () => {
   const topicWidgetSet = async () => {
     const itemPerPage =
       communityPagination[getMediaQueryDevice(device)].toString();
-    const res = await dispatch(
-      GetTopicsList(
-        {
-          page: [{ label: '0', value: '0' }],
-          items_per_page: [{ label: itemPerPage, value: itemPerPage }],
-        },
-        false
-      )
-    );
+      const res = null;
+    // const res = await dispatch(
+    //   GetTopicsList(
+    //     {
+    //       page: [{ label: '0', value: '0' }],
+    //       items_per_page: [{ label: itemPerPage, value: itemPerPage }],
+    //     },
+    //     false
+    //   )
+    // );
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const communityItems = res?.data?.data?.items || [];

@@ -33,15 +33,16 @@ const BachecaDigitaleWidget = () => {
 
   const newsWidgetSet = async () => {
     const itemPerPage = newsPagination[getMediaQueryDevice(device)].toString();
-    const res = await dispatch(
-      GetNewsList(
-        {
-          page: [{ label: '0', value: '0' }],
-          items_per_page: [{ label: itemPerPage, value: itemPerPage }],
-        },
-        false
-      )
-    );
+    const res = null;
+    // const res = await dispatch(
+    //   GetNewsList(
+    //     {
+    //       page: [{ label: '0', value: '0' }],
+    //       items_per_page: [{ label: itemPerPage, value: itemPerPage }],
+    //     },
+    //     false
+    //   )
+    // );
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const newsItems = res?.data?.data?.items || [];
