@@ -33,15 +33,16 @@ const DocumentsWidget = () => {
 
   const docsWidgetSet = async () => {
     const itemsPerPage = docsPagination[getMediaQueryDevice(device)].toString();
-    const res = await dispatch(
-      GetDocumentsList(
-        {
-          page: [{ label: '0', value: '0' }],
-          items_per_page: [{ label: itemsPerPage, value: itemsPerPage }],
-        },
-        false
-      )
-    );
+    const res = null;
+    // const res = await dispatch(
+    //   GetDocumentsList(
+    //     {
+    //       page: [{ label: '0', value: '0' }],
+    //       items_per_page: [{ label: itemsPerPage, value: itemsPerPage }],
+    //     },
+    //     false
+    //   )
+    // );
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const docItems = res?.data?.data?.items || [];
