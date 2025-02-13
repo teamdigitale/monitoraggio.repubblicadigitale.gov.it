@@ -1,5 +1,14 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.43.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.43.0...1.43.1) (2025-02-13)
+
+
+### Bug Fixes
+
+* **main:** update action 20250213 ([ce63ec9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ce63ec932d161680ea54014236416e46f154a87f))
+* **test:** commento chiamate forward home 20250212 ([2768f74](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2768f743c45e863686a6469b6da06c58bd3a2eaa))
+* **semantic-release:** aggiornamento versione 20250204 ([d0b8886](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d0b8886030f382218b6cb6cd3e5435f8943c22a7))
+
 ## [1.43.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.42.5...1.43.0) (2025-01-31)
 
 
