@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.415](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.414...1.0.0-test.415) (2025-02-13)
+
+
+### Bug Fixes
+
+* **Z2072:** gestione possibile cittadino duplicato su salvataggio questionario 20250211 ([8241fe4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8241fe403ce9fb8b82eb7c20809792983c50ece3))
+
 ## [1.0.0-test.414](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.413...1.0.0-test.414) (2025-02-12)
 
 
