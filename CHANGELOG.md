@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.416](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.415...1.0.0-test.416) (2025-02-14)
+
+
+### Bug Fixes
+
+* **test:** riabilitazione chiamate drupal e cambio url per home 20250214 ([18fa3a3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/18fa3a355af6d2b28a902ce77cde028557b8c99c))
+
 ## [1.0.0-test.415](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.414...1.0.0-test.415) (2025-02-13)
 
 
