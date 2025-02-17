@@ -254,11 +254,20 @@ export const DownloadEntityValues =
       } = select((state: RootState) => state);
       const { codiceFiscale, codiceRuolo, idProgramma, idProgetto, idEnte } =
         getUserHeaders();
+      const transformedFilters = Object.fromEntries(
+        Object.entries(filters)
+          .map(([key, value]) => [
+            key,
+            Array.isArray(value) ? value.map((item) => item.value ?? item) : value
+          ])
+          .filter(([_, value]) => !(Array.isArray(value) && value.length === 0))
+      );
+
       const body = {
         cfUtenteLoggato: codiceFiscale,
         codiceRuoloUtenteLoggato: codiceRuolo,
         filtro: {
-          ...filters,
+          ...transformedFilters,
         },
         idProgetto,
         idProgramma,
