@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.417](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.416...1.0.0-test.417) (2025-02-17)
+
+
+### Bug Fixes
+
+* **T348:** fix download lista area cittadini 20250217 ([31c65c5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/31c65c594147527c1e7109408447fcfac739e0b9))
+
 ## [1.0.0-test.416](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.415...1.0.0-test.416) (2025-02-14)
 
 
