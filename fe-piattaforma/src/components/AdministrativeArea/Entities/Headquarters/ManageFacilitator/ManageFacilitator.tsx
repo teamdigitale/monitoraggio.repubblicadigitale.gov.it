@@ -54,7 +54,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
   const [newFormValues, setNewFormValues] = useState<{
     [key: string]: formFieldI['value'];
   }>({});
-  const [isFormValid, setIsFormValid] = useState<boolean>(true);
+  const [isFormValid, setIsFormValid] = useState<boolean>(false);
   const usersList = useAppSelector(selectUsers).list;
   const [noResult, setNoResult] = useState(false);
   const dispatch = useDispatch();
@@ -87,6 +87,8 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
     setAlreadySearched(false);
     setIsUserSelected(false);
     setFirstOpen(true);
+    setIsFormValid(false);
+    dispatch(resetUserDetails());
     dispatch(setUsersList(null));
     if (toClose) dispatch(closeModal());
   };
