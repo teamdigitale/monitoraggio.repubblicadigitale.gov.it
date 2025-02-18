@@ -75,8 +75,7 @@ const CardProfile: React.FC<CardProfileI> = (props) => {
             <CardTitle className='mb-1 primary-color-a12 '>
               <span
                 className={clsx(
-                  activeProfile && 'font-weight-semibold',
-                  'switch-profile-titles'
+                  activeProfile && 'switch-profile-titles'
                 )}
               >
                 <b>

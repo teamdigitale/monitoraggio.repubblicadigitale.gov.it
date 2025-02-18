@@ -75,12 +75,17 @@
     }
   }
 
+  .negative-margin-expand{
+    margin-left: -22px !important;
+  }
+
   .user-description {
+    margin-right: 29px;
    span {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    max-width: 260px;
+    max-width: 300px;
 
     @media screen and (max-width: 767px) {
       font-size: 14px !important;
