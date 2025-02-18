@@ -1,5 +1,18 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.418](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.417...1.0.0-test.418) (2025-02-18)
+
+
+### Features
+
+* **U255:** ordinamento card sedi progetto per modificabilità 20250218 ([9c948b9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9c948b9015e284b673af2bf7d50329708d754ebe))
+
+
+### Bug Fixes
+
+* **U250:** fix conferma modale enabled 20250218 ([85f6262](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/85f62622bf78bdbb12378d93c462a49782aa79eb))
+* **U257:** fix truncate nome progetto header e "Ente" bold selettore ruolo 20250218 ([f464523](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f4645234530959b30064c721d407993235215ae5))
+
 ## [1.0.0-test.417](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.416...1.0.0-test.417) (2025-02-17)
 
 
