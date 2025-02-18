@@ -97,6 +97,8 @@ const ManageReferal: React.FC<ManageReferalI> = ({
     setIsUserSelected(false);
     setFirstOpen(true);
     dispatch(setUsersList(null));
+    setIsFormValid(false);
+    dispatch(resetUserDetails());
     if (toClose) dispatch(closeModal());
   };
 
