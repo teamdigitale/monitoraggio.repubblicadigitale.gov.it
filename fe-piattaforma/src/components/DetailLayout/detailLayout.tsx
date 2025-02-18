@@ -333,22 +333,24 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
           : null}
           {currentTab === 'sedi' && showItemsList && currentItems?.length
             ? currentItems
-                .map((item) => {
-                  const res = showIconBasedOnRole(item);
-                  return (
-              <CardStatusActionHeadquarters
-                title={item.nome}
-                status={item.stato}
-                key={item.id}
-                id={item.id}
-                fullInfo={item.fullInfo}
-                onActionClick={item.actions}
-                showPencil={res === 1 ? true : false}
-                showEye={res === 2 ? true : false}
-                showBlank={res === 3 ? true : false}
-              />
-                  );
-                })
+                .map((item) => ({
+                  ...item,
+                  res: showIconBasedOnRole(item),
+                }))
+                .sort((a, b) => a.res - b.res) // Ordina per res (1 prima, poi 2, poi 3)
+                .map((item) => (
+                  <CardStatusActionHeadquarters
+                    title={item.nome}
+                    status={item.stato}
+                    key={item.id}
+                    id={item.id}
+                    fullInfo={item.fullInfo}
+                    onActionClick={item.actions}
+                    showPencil={item.res === 1}
+                    showEye={item.res === 2}
+                    showBlank={item.res === 3}
+                  />
+                ))
             : null}
           {pagination?.totalPages && currentTab === 'sedi' &&(
             <div className='pb-5'>
