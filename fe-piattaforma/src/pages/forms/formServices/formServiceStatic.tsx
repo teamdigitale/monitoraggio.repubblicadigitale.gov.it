@@ -15,6 +15,7 @@ import {
   newFormField,
 } from '../../../utils/formHelper';
 import { getSessionValues } from '../../../utils/sessionHelper';
+import { selectProfile } from '../../../redux/features/user/userSlice';
 
 interface FormServicesI {
   formDisabled?: boolean;
@@ -47,7 +48,8 @@ const FormServiceStatic: React.FC<FormEnteGestoreProgettoFullInterface> = (
   const formDisabled = !!props.formDisabled;
   const dispatch = useDispatch();
   const { idEnte, nomeEnte } = JSON.parse(getSessionValues('profile'));
-
+  const ruolo = useAppSelector(selectProfile)?.codiceRuolo;
+  
   useEffect(() => {
     if (form?.idEnte?.value) {
       dispatch(
@@ -64,6 +66,7 @@ const FormServiceStatic: React.FC<FormEnteGestoreProgettoFullInterface> = (
     if (formData && !creation) {
       const values = {
         nomeServizio: formData?.nomeServizio,
+        idServizio: formData?.idServizio,
         idEnte: dropdownOptions?.enti?.filter(
           (opt) => opt.label === formData?.nomeEnte
         )[0]?.value,
@@ -135,9 +138,16 @@ const FormServiceStatic: React.FC<FormEnteGestoreProgettoFullInterface> = (
       customMargin='mb-3 pb-3'
     >
       <Form.Row className={clsx(!formDisabled && 'mt-3')}>
+        {ruolo === "FAC" ?
+          <Input
+            {...form?.idServizio}
+            col= 'col-12 col-lg-6'
+            placeholder={`${form?.idServizio?.label}`}
+          /> : <></>
+        }
         <Input
           {...form?.nomeServizio}
-          col='col-12'
+          col= {ruolo === "FAC" ? 'col-12 col-lg-6': 'col-12'}
           placeholder={`${form?.nomeServizio?.label}`}
           onInputChange={onInputDataChange}
         />
@@ -163,6 +173,12 @@ const FormServiceStatic: React.FC<FormEnteGestoreProgettoFullInterface> = (
 };
 
 const form = newForm([
+  newFormField({
+    field: 'idServizio',
+    id: 'idServizio',
+    label: 'ID',
+    type: 'text',
+  }),
   newFormField({
     field: 'nomeServizio',
     id: 'nomeServizio',
