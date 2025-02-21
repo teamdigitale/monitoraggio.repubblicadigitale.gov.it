@@ -67,3 +67,31 @@ export const TableHeadingServicesList: TableHeadingI[] = [
     label: 'Stato',
   },
 ];
+
+export const TableHeadingServicesListFacilitator: TableHeadingI[] = [
+  {
+    field: 'nome',
+    label: 'Nome',
+  },
+  {
+    field: 'id',
+    label: 'ID',
+  },
+  {
+    field: 'tipologiaServizio',
+    label: 'Tipo di servizio prenotato',
+    size: 'medium',
+  },
+  {
+    field: 'data',
+    label: 'data creazione',
+  },
+  {
+    field: 'nomeSede',
+    label: 'Sede',
+  },
+  {
+    field: 'stato',
+    label: 'Stato',
+  },
+];
