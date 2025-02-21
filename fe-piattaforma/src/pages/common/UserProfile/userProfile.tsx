@@ -184,6 +184,7 @@ const UserProfile = () => {
                 }
                 onActionClick={roleActions}
                 activeRole={isActiveRole(role)}
+                showArrow={false}
               />
             );
           })}
