@@ -1,5 +1,19 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.419](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.418...1.0.0-test.419) (2025-02-24)
+
+
+### Features
+
+* **U319:** allineamento modali aggiunta ente e fix posizione alert utente presente 20250211 ([2f30063](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2f3006313cf659efaf4b7b4ed146e29e49dab80c))
+* **T364:** aggiunta id in scheda dettaglio e tabella servizi 20250221 ([557b95f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/557b95f121d1f2bf7ac301c50e0839672a94e149))
+
+
+### Bug Fixes
+
+* **U219:** fix test 20250224 ([9ef86b1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9ef86b17b09a5bd283fecc11cb2d292d7bfe3a80))
+* **U256:** visibilita freccia e link lista ruoli 20250221 ([067d8fd](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/067d8fd8a9d61e5fe646856634155f431ddf2d3f))
+
 ## [1.0.0-test.418](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.417...1.0.0-test.418) (2025-02-18)
 
 
