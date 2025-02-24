@@ -135,7 +135,7 @@ public class EnteService {
 	@LogMethod
 	@LogExecutionTime
 	public List<EnteEntity> getEntiByCriterioRicerca(String criterioRicerca) {
-		return this.enteRepository.findByCriterioRicerca(criterioRicerca,"%"+criterioRicerca+"%");
+		return this.enteRepository.findByCriterioRicerca(criterioRicerca);
 	}
 	
 	@LogMethod

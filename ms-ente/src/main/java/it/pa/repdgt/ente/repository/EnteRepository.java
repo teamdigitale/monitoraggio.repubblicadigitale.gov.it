@@ -386,7 +386,7 @@ public interface EnteRepository extends JpaRepository<EnteEntity, Long> {
 			+ "			UPPER( e.PARTITA_IVA ) = UPPER( :criterioRicerca ) "
 			+ "     ORDER BY nome",
 			nativeQuery = true)
-	public List<EnteEntity> findByCriterioRicerca(String criterioRicerca, String criterioRicercaLike);
+	public List<EnteEntity> findByCriterioRicerca(String criterioRicerca);
 
 	@Query(value = "SELECT * "
 			+ "			FROM ente e "
