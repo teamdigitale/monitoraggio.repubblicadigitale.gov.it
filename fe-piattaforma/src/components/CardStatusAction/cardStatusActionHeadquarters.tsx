@@ -232,7 +232,7 @@ const CardStatusActionHeadquarters: React.FC<CardStatusActionI> = (props) => {
                     device.mediaIsPhone ? 'px-1' : 'pr-5'
                   )}
                   key={index}
-                  style={{ minWidth: '120px' }}
+                  style={{ minWidth: key === 'ente_ref' ? '250px' : '120px' }}
                 >
                   <span className='primary-color-a12 mr-2 text-wrap'>
                     {t(fieldMappedForTranslations[key])}
