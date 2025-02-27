@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.421](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.420...1.0.0-test.421) (2025-02-27)
+
+
+### Bug Fixes
+
+* **T364:** fix visualizzazione id scheda Dettagli servizio 20250227 ([20f075b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/20f075b1e23a8cb63feb9673e63747b1e7d79e56))
+
 ## [1.0.0-test.420](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.419...1.0.0-test.420) (2025-02-27)
 
 
