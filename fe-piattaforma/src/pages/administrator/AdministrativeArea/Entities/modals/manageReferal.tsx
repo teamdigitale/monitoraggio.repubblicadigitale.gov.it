@@ -63,6 +63,8 @@ interface ManageReferalFormI {
   formDisabled?: boolean;
   creation?: boolean;
   legend?: string | undefined;
+  fromProject?: boolean;
+  authoritySection?: () => void;
 }
 
 interface ManageReferalI extends withFormHandlerProps, ManageReferalFormI {}
@@ -73,6 +75,8 @@ const ManageReferal: React.FC<ManageReferalI> = ({
   // formDisabled,
   creation = false,
   legend = '',
+  fromProject = false,
+  authoritySection,
 }) => {
   const [newFormValues, setNewFormValues] = useState<{
     [key: string]: formFieldI['value'];
@@ -167,7 +171,7 @@ const ManageReferal: React.FC<ManageReferalI> = ({
       }
       if (!res) {
         resetModal();
-      }
+      }else if(authoritySection) authoritySection();
     }
   };
 
@@ -224,7 +228,7 @@ const ManageReferal: React.FC<ManageReferalI> = ({
       id={id}
       primaryCTA={{
         disabled: !isFormValid,
-        label: 'Salva',
+        label: fromProject ? 'Aggiungi' : 'Salva',
         onClick: handleSaveReferal,
       }}
       secondaryCTA={{

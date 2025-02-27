@@ -48,6 +48,7 @@ import {
 import { GetProgramDetail } from '../../../../../../redux/features/administrativeArea/programs/programsThunk';
 import IconNote from '/public/assets/img/it-note-primary.png';
 import { policy } from '../../utils';
+import { selectProfile } from '../../../../../../redux/features/user/userSlice';
 
 const HeadquartersDetails = () => {
   const { mediaIsPhone } = useAppSelector(selectDevice);
@@ -181,7 +182,7 @@ const HeadquartersDetails = () => {
     }
   }, [headquarterId, projectId, authorityId]);
 
-  const itemAccordionList: ItemsListI[] = [
+  let itemAccordionList: ItemsListI[] = [
     {
       title: 'Facilitatori',
       items:
@@ -213,6 +214,68 @@ const HeadquartersDetails = () => {
         })) || [],
     },
   ];
+
+  const ruolo = useAppSelector(selectProfile)?.codiceRuolo;
+  const idEnteRuolo = useAppSelector(selectProfile)?.idEnte;
+  const showIconBasedOnRole = () => {
+    // 1 MODIFICA
+    // 2 VISUALIZZA
+    // 3 -    
+    const params = useParams();
+    const idEnteDiRiferimento = params.identeDiRiferimento;
+    switch (ruolo) {
+      case 'DTD':
+        return 1;
+      case 'DEG':
+      case 'REG':
+        return 2;
+      case 'REGP':
+      case 'DEGP':
+      case 'REPP':
+      case 'DEPP':
+        if (idEnteRuolo == idEnteDiRiferimento) return 1;
+        else return 2;
+      case 'FAC':
+      case 'VOL':
+        return 3;
+    }
+    return 3;
+  };
+
+  function updateFacilitators(){
+    itemAccordionList = [
+      {
+        title: 'Facilitatori',
+        items:
+          headquarterfacilitators?.map((facilitator: HeadquarterFacilitator) => ({
+            nome: `${facilitator.cognome} ${facilitator.nome} `,
+            stato: facilitator.stato,
+            actions: facilitator.associatoAUtente
+              ? facilitator.stato === entityStatus.ATTIVO &&
+                authorityType &&
+                (((authorityType === formTypes.ENTE_GESTORE_PROGRAMMA ||
+                  authorityType === formTypes.ENTE_GESTORE_PROGETTO) &&
+                  hasUserPermission(['add.fac'])) ||
+                  (authorityType === formTypes.ENTI_PARTNER &&
+                    hasUserPermission(['add.fac.partner'])))
+                ? onActionClick
+                : {
+                    [CRUDActionTypes.VIEW]:
+                      ((authorityType === formTypes.ENTE_GESTORE_PROGRAMMA ||
+                        authorityType === formTypes.ENTE_GESTORE_PROGETTO) &&
+                        hasUserPermission(['add.fac'])) ||
+                      (authorityType === formTypes.ENTI_PARTNER &&
+                        hasUserPermission(['add.fac.partner']))
+                        ? onActionClick[CRUDActionTypes.VIEW]
+                        : undefined,
+                  }
+              : {},
+            id: facilitator?.id,
+            codiceFiscale: facilitator?.codiceFiscale,
+          })) || [],
+      },
+    ];
+  }
 
   let buttons: ButtonInButtonsBar[] = [];
 
@@ -435,7 +498,7 @@ const HeadquartersDetails = () => {
             </div>
           </Sticky>
           <ManageHeadquarter />
-          <ManageFacilitator creation />
+          <ManageFacilitator creation fromProject={true} updateFacilitators={updateFacilitators}/>
           <DeleteEntityModal
             onClose={() => dispatch(closeModal())}
             onConfirm={(payload) => {
