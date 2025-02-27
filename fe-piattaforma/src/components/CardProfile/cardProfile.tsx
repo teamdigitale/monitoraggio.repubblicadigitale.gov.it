@@ -100,7 +100,8 @@ const CardProfile: React.FC<CardProfileI> = (props) => {
             <CardText 
               className={clsx( 
                 'primary-color-a12',
-                'switch-profile-subs'
+                'switch-profile-subs',
+                'card-text-padding'
               )}
             >
 
