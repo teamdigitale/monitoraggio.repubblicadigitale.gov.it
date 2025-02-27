@@ -239,8 +239,7 @@ const HeadquartersDetails = () => {
         else return 2;
       case 'FAC':
       case 'VOL':
-        if (idEnteRuolo == idEnteDiRiferimento) return 2;
-        else return 3;
+        return 3;
     }
     return 3;
   };
