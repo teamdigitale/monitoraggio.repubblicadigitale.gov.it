@@ -1,5 +1,19 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.420](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.419...1.0.0-test.420) (2025-02-27)
+
+
+### Features
+
+* **U250:** fix refresh liste e cambio label bottoni conferma 20250227 ([ace3a0d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ace3a0d1e4307fae07a067ec60ff13f0b43e5741))
+* **U320:** blocco aggiunta ente e controlli CUP 20250227 ([5a157ff](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5a157ff5f0c1c65eb82e22b949e5625828c7b39e))
+
+
+### Bug Fixes
+
+* **U257:** fix taglio ultimi caratteri role tile 20250227 ([798b408](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/798b408837fd2d57ef60a5dc76bb0942649191b0))
+* **test:** aggiornamento data limite 02/25 ([755fa50](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/755fa501fb28a1c91319b669573a033b94102c85))
+
 ## [1.0.0-test.419](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.418...1.0.0-test.419) (2025-02-24)
 
 
