@@ -184,7 +184,7 @@ const HeadquartersDetails = () => {
     }
   }, [headquarterId, projectId, authorityId]);
 
-  const itemAccordionList: ItemsListI[] = [
+  let itemAccordionList: ItemsListI[] = [
     {
       title: 'Facilitatori',
       items:
@@ -243,6 +243,41 @@ const HeadquartersDetails = () => {
     }
     return 3;
   };
+
+  function updateFacilitators(){
+    itemAccordionList = [
+      {
+        title: 'Facilitatori',
+        items:
+          headquarterfacilitators?.map((facilitator: HeadquarterFacilitator) => ({
+            nome: `${facilitator.cognome} ${facilitator.nome} `,
+            stato: facilitator.stato,
+            actions: facilitator.associatoAUtente
+              ? facilitator.stato === entityStatus.ATTIVO &&
+                authorityType &&
+                (((authorityType === formTypes.ENTE_GESTORE_PROGRAMMA ||
+                  authorityType === formTypes.ENTE_GESTORE_PROGETTO) &&
+                  hasUserPermission(['add.fac'])) ||
+                  (authorityType === formTypes.ENTI_PARTNER &&
+                    hasUserPermission(['add.fac.partner'])))
+                ? onActionClick
+                : {
+                    [CRUDActionTypes.VIEW]:
+                      ((authorityType === formTypes.ENTE_GESTORE_PROGRAMMA ||
+                        authorityType === formTypes.ENTE_GESTORE_PROGETTO) &&
+                        hasUserPermission(['add.fac'])) ||
+                      (authorityType === formTypes.ENTI_PARTNER &&
+                        hasUserPermission(['add.fac.partner']))
+                        ? onActionClick[CRUDActionTypes.VIEW]
+                        : undefined,
+                  }
+              : {},
+            id: facilitator?.id,
+            codiceFiscale: facilitator?.codiceFiscale,
+          })) || [],
+      },
+    ];
+  }
 
   let buttons: ButtonInButtonsBar[] = [];
 
@@ -501,7 +536,7 @@ const HeadquartersDetails = () => {
             </div>
           </Sticky>
           <ManageHeadquarter />
-          <ManageFacilitator creation />
+          <ManageFacilitator creation fromProject={true} updateFacilitators={updateFacilitators}/>
           <DeleteEntityModal
             onClose={() => dispatch(closeModal())}
             onConfirm={(payload) => {

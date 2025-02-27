@@ -39,6 +39,8 @@ interface ManageFacilitatorFormI {
   formDisabled?: boolean;
   creation?: boolean;
   legend?: string | undefined;
+  fromProject?: boolean;
+  updateFacilitators?: () => void;
 }
 
 interface ManageFacilitatorI
@@ -50,6 +52,8 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
   // formDisabled,
   creation = false,
   legend = '',
+  fromProject = false,
+  updateFacilitators
 }) => {
   const [newFormValues, setNewFormValues] = useState<{
     [key: string]: formFieldI['value'];
@@ -133,8 +137,11 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
       if (!res?.errorCode) {
         dispatch(closeModal());
         handleCancel();
+      }else if(updateFacilitators) {
+        updateFacilitators();
       }
     }
+    setIsFormValid(false);
     setIsUserSelected(false);
   };
 
@@ -204,6 +211,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
     setShowForm(false);
     setAlreadySearched(false);
     setIsUserSelected(false);
+    setIsFormValid(false);
     setFirstOpen(true);
     dispatch(setUsersList(null));
   };
@@ -213,7 +221,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
       id={id}
       primaryCTA={{
         disabled: !isFormValid,
-        label: 'Conferma',
+        label: fromProject ? 'Aggiungi' : 'Conferma',
         onClick: handleSaveEnte,
       }}
       secondaryCTA={{

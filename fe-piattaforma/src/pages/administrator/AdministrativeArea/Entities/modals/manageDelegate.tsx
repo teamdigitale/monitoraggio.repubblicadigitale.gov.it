@@ -41,6 +41,8 @@ interface ManageDelgateFormI {
   formDisabled?: boolean;
   creation?: boolean;
   legend?: string | undefined;
+  fromProject?: boolean;
+  authoritySection?: () => void;
 }
 
 interface ManageDelegateI extends withFormHandlerProps, ManageDelgateFormI { }
@@ -50,6 +52,8 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
   // formDisabled,
   creation = false,
   legend = '',
+  fromProject = false,
+  authoritySection
 }) => {
   const [newFormValues, setNewFormValues] = useState<{
     [key: string]: formFieldI['value'];
@@ -144,7 +148,7 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
       }
       if (!res) {
         resetModal();
-      }
+      }else if(authoritySection) authoritySection();
     }
   };
 
@@ -213,7 +217,7 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
       id={id}
       primaryCTA={{
         disabled: !isFormValid,
-        label: 'Salva',
+        label: fromProject ? 'Aggiungi' : 'Salva',
         onClick: handleSaveDelegate,
       }}
       secondaryCTA={{
