@@ -103,15 +103,23 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
 
   useEffect(() => {
     if (currentTab === 'sedi' && itemsList?.items) {
+      // 1. Ordina l'intera lista PRIMA di applicare la paginazione
+      const sortedItems = itemsList.items
+        .map((item) => ({
+          ...item,
+          res: showIconBasedOnRole(item),
+        }))
+        .sort((a, b) => a.res - b.res);
+  
+      // 2. Applica la paginazione DOPO l'ordinamento
       const start = (pagination.pageNumber - 1) * pagination.pageSize;
       const end = pagination.pageNumber * pagination.pageSize;
+      const paginatedItems = sortedItems.slice(start, end);
   
-      setCurrentItems([]);
-      setTimeout(() => {
-        setCurrentItems(itemsList.items.slice(start, end) || []);
-      }, 0); 
+      setCurrentItems(paginatedItems);
     }
   }, [currentTab, pagination.pageNumber, pagination.pageSize, itemsList]);
+  
 
   useEffect(() => {
     if (currentTab === 'sedi') {
@@ -140,8 +148,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
         else return 2;
       case 'FAC':
       case 'VOL':
-        if(idEnteRuolo == item?.identeDiRiferimento) return 2;
-        else return 3;
+        return 3;
     }
     return 3;
   };
