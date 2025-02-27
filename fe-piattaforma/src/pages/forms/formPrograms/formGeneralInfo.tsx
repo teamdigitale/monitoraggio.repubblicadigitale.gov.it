@@ -22,6 +22,7 @@ interface ProgramInformationI {
   creation?: boolean;
   edit?: boolean;
   legend?: string | undefined;
+  cupManipolato?: boolean;
 }
 
 interface FormEnteGestoreProgettoFullInterface
@@ -44,6 +45,7 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
     edit = false,
     formDisabled = false,
     legend = '',
+    cupManipolato = false,
   } = props;
   const programDetails: { [key: string]: string } | undefined =
     useAppSelector(selectPrograms).detail.dettagliInfoProgramma;
@@ -234,11 +236,18 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
         )}
         <Input
           {...form?.cup}
-          label='CUP - Codice Unico Progetto'
-          col='col-12 col-lg-6'
-          onInputChange={onInputDataChange}
-        />
-        <Input
+            label={cupManipolato ? 'CUP - Codice Unico Progetto(manipolato da sistema)' :'CUP - Codice Unico Progetto'}
+            col='col-12 col-lg-6'
+            onInputChange={(value, field) => {
+            if (typeof value === 'string') {
+              const formattedValue = value.trim().replace(/\s+/g, '').toUpperCase();              
+              onInputChange(formattedValue, field);
+            } else {
+              onInputChange(value, field);
+            }
+            }}
+          />
+          <Input
           {...form?.dataInizio}
           required
           label='Data inizio'

@@ -32,6 +32,7 @@ import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.awsintegration.service.EmailService;
 import it.pa.repdgt.shared.entity.EnteEntity;
 import it.pa.repdgt.shared.entity.EntePartnerEntity;
+import it.pa.repdgt.shared.entity.ProgettoEntity;
 import it.pa.repdgt.shared.entity.ReferentiDelegatiEntePartnerDiProgettoEntity;
 import it.pa.repdgt.shared.entity.RuoloEntity;
 import it.pa.repdgt.shared.entity.SedeEntity;
@@ -80,7 +81,18 @@ public class EntePartnerService {
 	@LogMethod
 	@LogExecutionTime
 	public void associaEntePartnerPerProgetto(Long idEntePartner, Long idProgetto) {
+		ProgettoEntity progettoEntity = progettoService.getProgettoById(idProgetto);
+		if(progettoEntity.getEnteGestoreProgetto() != null && 
+		   progettoEntity.getEnteGestoreProgetto().getId() != null && 
+		   progettoEntity.getEnteGestoreProgetto().getId().equals(idEntePartner)) {
+			String messaggioErrore = String.format("Impossibile associare ente partner perche l'ente con id=%s è già associato come ente gestore del progetto con id=%s", idEntePartner, idProgetto);
+			throw new EnteException(messaggioErrore, CodiceErroreEnum.EN26);
+		}
 		EntePartnerKey entePartnerKey = new EntePartnerKey(idProgetto, idEntePartner);
+		if(entePartnerRepository.findById(entePartnerKey).isPresent()){
+			String messaggioErrore = String.format("Impossibile associare ente partner perche l'ente con id=%s è già associato al progetto con id=%s come ente partner", idEntePartner, idProgetto);
+			throw new EnteException(messaggioErrore, CodiceErroreEnum.EN27);
+		}
 		EntePartnerEntity entePartnerEntity = new EntePartnerEntity();
 		entePartnerEntity.setId(entePartnerKey);
 		entePartnerEntity.setStatoEntePartner(StatoEnum.NON_ATTIVO.getValue());
