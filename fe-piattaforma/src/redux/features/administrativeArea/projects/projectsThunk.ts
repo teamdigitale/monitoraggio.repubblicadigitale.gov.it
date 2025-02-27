@@ -9,6 +9,7 @@ import {
 import { formFieldI } from '../../../../utils/formHelper';
 import { parseResult } from '../programs/programsThunk';
 import { getUserHeaders } from '../../user/userThunk';
+import { dispatchWarning } from '../../../../utils/notifictionHelper';
 
 export interface ProjectLightI {
   id: number;
@@ -90,6 +91,9 @@ export const createProject =
         const res = await API.post(`/progetto?idProgramma=${programId}`, {
           ...body,
         });
+        if(res?.data?.warning) {
+          dispatchWarning("CUP MANIPOLATO", res?.data?.warningMessage);
+        }
         console.log('createProjectDetails body', res);
       }
     } catch (error) {

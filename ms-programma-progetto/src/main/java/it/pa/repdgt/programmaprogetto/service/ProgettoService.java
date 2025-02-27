@@ -111,6 +111,16 @@ public class ProgettoService {
 		progettoEntity.setStato(StatoEnum.NON_ATTIVO.getValue());
 		progettoEntity.setDataOraCreazione(new Date());
 		progettoEntity.setDataOraAggiornamento(progettoEntity.getDataOraCreazione());
+		this.salvaProgetto(progettoEntity);
+		if(progettoEntity.getCup() == "" || progettoEntity.getCup() == null){
+			progettoEntity.setCup("cup_non_presente-"+ progettoEntity.getId());
+			progettoEntity.setCupManipolato(true);
+		}else if(progettoRepository.findAltroProgettoByCup(progettoEntity.getCup(), progettoEntity.getId()).isPresent()){			//query che verifica se cup è già associato a qualche progetto
+			progettoEntity.setCup(progettoEntity.getCup() + "-" + progettoEntity.getId());
+			progettoEntity.setCupManipolato(true);
+		}else{
+			progettoEntity.setCupManipolato(false);
+		}
 		return this.salvaProgetto(progettoEntity);
 	}
 
@@ -190,6 +200,11 @@ public class ProgettoService {
 			String errorMessage = String.format("Impossibile Assegnare gestore a progetto perchè progetto con id=%s non presente", idProgetto);
 			throw new ProgettoException(errorMessage, CodiceErroreEnum.PR05);
 		}
+		List<Long> listaIdEntiPartner = this.entePartnerService.getIdEntiPartnerByProgetto(idProgetto);
+		if(listaIdEntiPartner.contains(idEnteGestore)) {
+			String errorMessage = String.format("Impossibile associare ente gestore progetto perche l'ente con id=%s è già associato come ente partner del progetto con id=%s", idEnteGestore, idProgetto);
+			throw new ProgettoException(errorMessage, CodiceErroreEnum.EN27);
+		}
 		EnteEntity enteFetchDB = null;
 		try {
 			enteFetchDB = this.enteService.getEnteById(idEnteGestore);
@@ -218,7 +233,19 @@ public class ProgettoService {
 			String errorMessage = String.format("Impossibile aggiornare Progetto con id=%s perchè il suo stato è diverso da NON_ATTIVO, ATTIVABILE o ATTIVO", idProgetto);
 			throw new ProgettoException(errorMessage, CodiceErroreEnum.PR04);
 		}
+		boolean cupModificato = !progettoRequest.getCup().equals(progettoFetch.getCup());
 		this.progettoMapper.toEntityFrom(progettoRequest, progettoFetch);
+		if(cupModificato){
+			if(progettoFetch.getCup() == "" || progettoFetch.getCup() == null){
+				progettoFetch.setCup("cup_non_presente-"+ idProgetto);
+				progettoFetch.setCupManipolato(true);
+			}else if(progettoRepository.findAltroProgettoByCup(progettoFetch.getCup(), idProgetto).isPresent()){			//query che verifica se cup è già associato a qualche progetto
+				progettoFetch.setCup(progettoFetch.getCup() + "-" + idProgetto);
+				progettoFetch.setCupManipolato(true);
+			}else{
+				progettoFetch.setCupManipolato(false);
+			}
+		}
 		progettoFetch.setDataOraAggiornamento(new Date());
 		return this.progettoRepository.save(progettoFetch);
 	}

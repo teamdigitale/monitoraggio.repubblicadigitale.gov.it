@@ -268,7 +268,7 @@ export const GetAuthoritiesBySearch =
         `${process?.env?.ENTE}ente/cerca?criterioRicerca=${search}`
       );
 
-      if (search && res.data) {
+      if (search && res?.data) {
         dispatch(setAuthoritiesList(res.data));
         return res;
       } else {

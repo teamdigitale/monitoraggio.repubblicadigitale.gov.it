@@ -9,6 +9,7 @@ import {
 } from '../administrativeAreaSlice';
 import { formFieldI } from '../../../../utils/formHelper';
 import { getUserHeaders } from '../../user/userThunk';
+import { dispatchWarning } from '../../../../utils/notifictionHelper';
 
 export interface ProgramsLightI {
   id: number;
@@ -114,6 +115,9 @@ export const createProgram =
           ...body,
         });
         if (res) {
+          if (res.data?.warning) {
+            dispatchWarning("CUP MANIPOLATO", res.data?.warningMessage);
+          }
           return res;
         }
       }
