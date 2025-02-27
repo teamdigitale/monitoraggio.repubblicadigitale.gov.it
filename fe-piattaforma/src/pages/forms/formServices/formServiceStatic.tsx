@@ -138,7 +138,7 @@ const FormServiceStatic: React.FC<FormEnteGestoreProgettoFullInterface> = (
       customMargin='mb-3 pb-3'
     >
       <Form.Row className={clsx(!formDisabled && 'mt-3')}>
-        {ruolo === "FAC" ?
+        {ruolo === "FAC" && !creation ?
           <Input
             {...form?.idServizio}
             col= 'col-12 col-lg-6'
