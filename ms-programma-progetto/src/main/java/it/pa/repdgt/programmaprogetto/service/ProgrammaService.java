@@ -496,6 +496,15 @@ public class ProgrammaService {
 		if(questionarioTemplate == null) {
 			throw new ProgrammaException("Impossibile creare programma. Questionario template di default inesistente", CodiceErroreEnum.P02);
 		}
+		if(programma.getCup() == "" || programma.getCup() == null) {
+			programma.setCup("cup_non_presente-"+ programma.getCodice());
+			programma.setCupManipolato(true);
+		}else if(programmaRepository.findAltroProgrammaByCup(programma.getCup(), programma.getCodice()).isPresent()){			//query che verifica se cup è già associato a qualche programma
+			programma.setCup(programma.getCup() + "-" + programma.getCodice());
+			programma.setCupManipolato(true);
+		}else{
+			programma.setCupManipolato(false);
+		}
 		this.salvaProgramma(programma);
 		this.associaQuestionarioTemplateAProgramma(programma.getId(), questionarioTemplate.getId());
 		return programma;
@@ -590,7 +599,19 @@ public class ProgrammaService {
 			final String errorMessage = String.format("Impossibile aggiornare Programma con id=%s perchè stato=%s.", idProgramma, statoProgramma);
 			throw new ProgrammaException(errorMessage, CodiceErroreEnum.P06);
 		}
+		boolean cupModificato = !programmaRequest.getCup().equals(programmaFetch.getCup());
 		this.programmaMapper.toEntityFrom(programmaRequest, programmaFetch);
+		if(cupModificato){
+			if(programmaFetch.getCup() == "" || programmaFetch.getCup() == null) {
+				programmaFetch.setCup("cup_non_presente-"+ programmaFetch.getCodice());
+				programmaFetch.setCupManipolato(true);
+			}else if(programmaRepository.findAltroProgrammaByCup(programmaFetch.getCup(), programmaFetch.getCodice()).isPresent()){			//query che verifica se cup è già associato a qualche programma
+				programmaFetch.setCup(programmaFetch.getCup() + "-" + programmaFetch.getCodice());
+				programmaFetch.setCupManipolato(true);
+			}else{
+				programmaFetch.setCupManipolato(false);
+			}
+		}
 		programmaFetch.setDataOraAggiornamento(new Date());
 
 		return this.programmaRepository.save(programmaFetch);

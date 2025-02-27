@@ -1,6 +1,7 @@
 package it.pa.repdgt.programmaprogetto.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -339,4 +340,7 @@ public interface ProgettoRepository extends JpaRepository<ProgettoEntity, Long> 
 			@Param(value = "idsProgrammi") List<String> idsProgrammi,
 			@Param(value = "stati") List<String> stati
 		);
+
+	@Query(value = "SELECT p FROM ProgettoEntity p WHERE p.cup = :cup and (:idProgetto is null or p.id <> :idProgetto)")
+	public Optional<ProgettoEntity> findAltroProgettoByCup(@Param("cup") String cup, @Param("idProgetto") Long idProgetto); 	//ricerca di altri progetti con stesso CUP
 }

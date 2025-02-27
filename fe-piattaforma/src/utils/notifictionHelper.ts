@@ -8,6 +8,16 @@ export const dispatchNotify = (notify?: NotifyI) => {
   store.dispatch(NewNotify(notify) as any);
 };
 
+export const dispatchWarning = (title: string, message: string) => {
+  dispatchNotify({
+    title,
+    status: 'warning',
+    message,
+    closable: true,
+    duration: 'slow',
+  });
+};
+
 const dispatchLogout = () => {
   console.error('401 unauthorized detected, should redirect to logout');
   store.dispatch(LogoutRedirect() as any);
@@ -35,6 +45,7 @@ const networkErrorPayload = {
 const defaultErrorPayload = {
   title: 'SI È VERIFICATO UN ERRORE',
   message: defaultErrorMessage,
+  status: 'error',
 };
 const getDrupalErrorMessage = (errorsList: any, errorMessage: string) => {
   try {
@@ -75,6 +86,7 @@ export const getErrorMessage = async (
         return {
           message: `${errorsList[errorCode]?.descrizione} (errore ${errorCode})`,
           title: errorsList[errorCode]?.titolo || 'ERRORE',
+          status: errorsList[errorCode]?.status || 'error',
         };
       } else {
         return defaultErrorPayload;
@@ -122,7 +134,7 @@ export const errorHandler = async (error: unknown) => {
       if (errorData && !(urlForward.some(keyword => JSON.parse((error as any)?.config.data).url?.includes(keyword)))) { 
         dispatchNotify({
           title: errorData.title,
-          status: 'error',
+          status: errorData.status,
           message: errorData.message,
           closable: true,
           duration: 'slow',

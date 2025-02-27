@@ -41,6 +41,7 @@ import it.pa.repdgt.programmaprogetto.service.ProgrammaService;
 import it.pa.repdgt.programmaprogetto.util.CSVProgrammaUtil;
 import it.pa.repdgt.shared.entity.ProgrammaEntity;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
+import it.pa.repdgt.shared.resources.WarningResource;
 import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 
 @RestController
@@ -97,23 +98,33 @@ public class ProgrammaRestApi {
 		return this.programmaService.getSchedaProgrammaByIdAndSceltaProfilo(idProgramma, sceltaProfiloParam);
 	}
 	
-	// 2.5 - Creazione nuovo proramma
+	// 2.5 - Creazione nuovo programma
 	@PostMapping
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public CreaProgrammaResource creaNuovoProgramma(@RequestBody @Valid ProgrammaRequest nuovoProgrammaRequest) {
 		ProgrammaEntity programmaEntity = this.programmaMapper.toEntityFrom(nuovoProgrammaRequest);
-		return new CreaProgrammaResource(this.programmaService.creaNuovoProgramma(programmaEntity).getId());
+		ProgrammaEntity programmaEntityCreato = this.programmaService.creaNuovoProgramma(programmaEntity);
+		String warningMessage = "";
+		if(programmaEntityCreato.getCupManipolato()){
+			warningMessage = "Il CUP inserito è stato manipolato da sistema";
+		}
+		return new CreaProgrammaResource(programmaEntityCreato.getId(), programmaEntityCreato.getCupManipolato(), warningMessage);
 	}
 	
 	// 2.6 - Aggiornamento programma esistente
 	@PutMapping(path = "/{idProgramma}")
 	@ResponseStatus(value = HttpStatus.OK)
-	public void aggiornaProgramma(
+	public WarningResource aggiornaProgramma(
 			@PathVariable(value = "idProgramma") final Long idProgramma,
 			@RequestBody @Valid final ProgrammaRequest programmaRequest) {
 		if(!accessControServiceUtils.checkPermessoIdProgramma(programmaRequest, idProgramma))
 			throw new ProgrammaException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
-		this.programmaService.aggiornaProgramma(programmaRequest, idProgramma);
+		ProgrammaEntity programmaAggiornato = this.programmaService.aggiornaProgramma(programmaRequest, idProgramma);
+		String warningMessage = "";
+		if(programmaAggiornato.getCupManipolato()){
+			warningMessage = "Il CUP inserito è stato manipolato da sistema";
+		}
+		return new WarningResource(programmaAggiornato.getCupManipolato(), warningMessage);
 	}
 	
 	// 2.7 - associa Ente a programma come Gestore Programma 
