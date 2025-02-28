@@ -353,7 +353,10 @@ const ServicesDetails = () => {
         >
           <div className='mx-auto'>{content}</div>
         </DetailLayout>
-        <ManageServices legend="Form modifica servizio, i campi con l'asterisco sono obbligatori" />
+        <ManageServices 
+        legend="Form modifica servizio, i campi con l'asterisco sono obbligatori"
+        edit
+         />
         <SearchCitizenModal />
         <DeleteEntityModal
           onClose={() => dispatch(closeModal())}

@@ -28,6 +28,7 @@ interface ManageServicesFormI {
   formDisabled?: boolean;
   creation?: boolean;
   legend?: string | undefined;
+  edit?: boolean;
 }
 
 interface ManageServicesI extends withFormHandlerProps, ManageServicesFormI {}
@@ -37,6 +38,7 @@ const ManageServices: React.FC<ManageServicesI> = ({
   formDisabled,
   creation,
   legend = '',
+  edit,
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -135,6 +137,7 @@ const ManageServices: React.FC<ManageServicesI> = ({
       <div className='px-3'>
         <FormService
           creation={creation || false}
+          edit={edit || false}
           formDisabled={!!formDisabled}
           sendNewFormsValues={(newData?: {
             [key: string]: formFieldI['value'];
