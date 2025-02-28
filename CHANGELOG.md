@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.422](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.421...1.0.0-test.422) (2025-02-28)
+
+
+### Features
+
+* **T364:** fix modale modifica servizio 20250228 ([9e65e89](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9e65e89dbc99ea21c6e22632fbad6d84eefc1b5f))
+
 ## [1.0.0-test.421](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.420...1.0.0-test.421) (2025-02-27)
 
 
