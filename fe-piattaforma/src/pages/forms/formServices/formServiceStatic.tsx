@@ -23,6 +23,7 @@ interface FormServicesI {
   setIsFormValid?: (param: boolean) => void;
   creation?: boolean;
   legend?: string | undefined;
+  edit?: boolean;
 }
 
 interface FormEnteGestoreProgettoFullInterface
@@ -42,6 +43,7 @@ const FormServiceStatic: React.FC<FormEnteGestoreProgettoFullInterface> = (
     updateForm = () => ({}),
     creation = false,
     legend = '',
+    edit = false,
   } = props;
   const dropdownOptions = useAppSelector(selectServices)?.dropdownsCreation;
   const formData = useAppSelector(selectServices)?.detail?.dettaglioServizio;
@@ -138,7 +140,7 @@ const FormServiceStatic: React.FC<FormEnteGestoreProgettoFullInterface> = (
       customMargin='mb-3 pb-3'
     >
       <Form.Row className={clsx(!formDisabled && 'mt-3')}>
-        {ruolo === "FAC" && !creation ?
+        {["FAC", "VOL"].includes(ruolo ?? '') && !creation && !edit ?
           <Input
             {...form?.idServizio}
             col= 'col-12 col-lg-6'
