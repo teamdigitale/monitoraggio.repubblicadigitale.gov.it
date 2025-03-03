@@ -1,5 +1,26 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.44.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.43.1...1.44.0) (2025-03-03)
+
+
+### Features
+
+* **T364:** fix modale modifica servizio 20250228 ([5730397](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5730397c29b13cf7029e842f0ad7caf68e2fe70b))
+* **T364:** aggiunta id in scheda dettaglio e tabella servizi 20250221 ([5fa03a7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5fa03a7b2a001600f7b3c7a60192eb412fc4ac7a))
+
+
+### Bug Fixes
+
+* **test:** aggiornamento data limite 02/25 ([8daa97e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8daa97e4854d2a8504166ee59bc9d09fc9b4dcf3))
+* **T364:** fix visualizzazione id scheda Dettagli servizio 20250227 ([e4583aa](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e4583aa632ec009b37dcd15a67c66cc5304d4a93))
+* **T343:** rimozione chiamata EP annunci popolari 20250128 ([d2a0a21](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d2a0a215bf7327afe209f4e8895bef7b405c910d))
+* **T343:** fix bug modale aggiunta documento e rimozionesezione da bacheca 20250127 ([eafa1e9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/eafa1e92630058f701a4319dbf8f0b786160984e))
+* **T352:** fix test 20250210 ([9eb6ce6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9eb6ce622e2cb6594ca3d4cde4e1620c9cd3d1a7))
+* **T352:** gestione terminazione FAC non attivi 20250207 ([4c1ac8f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4c1ac8fffd4b6cd129e89fa3026705f06d79ff90))
+* **T348:** fix download lista area cittadini 20250217 ([1c7a789](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1c7a78966273322efc3e31317b716ab144252a9b))
+* **T348:** fix download lista da elenco enti/utenti/programmi/progetti 20250205 ([8230de3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8230de33b530aa46a9384262b2686c796ae9541b))
+* **Z2072:** gestione possibile cittadino duplicato su salvataggio questionario 20250211 ([d80847f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d80847fec4effa564b2bd3d2de0dbc3b59e6e0fc))
+
 ## [1.43.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.43.0...1.43.1) (2025-02-13)
 
 
