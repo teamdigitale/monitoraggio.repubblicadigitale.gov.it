@@ -20,8 +20,9 @@ public class DettaglioProgettoBean {
 	private Date dataFine;
 	private String stato;
 	private String policy;
-
-	// Numero Target Punti di Facilitazione
+	private Boolean cupManipolato;
+	
+	//Numero Target Punti di Facilitazione
 	private Integer nPuntiFacilitazioneTarget1;
 	private Integer nPuntiFacilitazioneTarget2;
 	private Integer nPuntiFacilitazioneTarget3;

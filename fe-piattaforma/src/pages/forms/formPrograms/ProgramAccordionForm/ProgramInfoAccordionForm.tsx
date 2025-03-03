@@ -18,10 +18,9 @@ const ProgramInfoAccordionForm: React.FC<ProgramInfoAccordionFormI> = (
   const { legend = '' } = props;
   const programDetails =
     useAppSelector(selectPrograms).detail.dettagliInfoProgramma;    
-console.log("programDetails.policy", programDetails)
   return (
     <>
-      <FormGeneralInfo legend={legend} formDisabled edit cupManipolato={programDetails?.cupManipolato}/>
+      <FormGeneralInfo legend={legend} formDisabled edit/>
       <h2 className='h5 mb-4' style={{ color: 'rgb(92, 111, 130)' }}>
         Obiettivi programma
       </h2>

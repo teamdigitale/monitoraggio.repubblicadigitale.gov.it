@@ -217,6 +217,7 @@ public class ProgrammaMapper {
 		dettaglioProgramma.setCodice(programmaFetchDB.getCodice());
 		dettaglioProgramma.setStato(programmaFetchDB.getStato());
 		dettaglioProgramma.setPolicy(programmaFetchDB.getPolicy().toString());
+		dettaglioProgramma.setCupManipolato(programmaFetchDB.getCupManipolato());
 		//Numero Target Punti di Facilitazione
 		dettaglioProgramma.setNPuntiFacilitazioneTarget1(programmaFetchDB.getNPuntiFacilitazioneTarget1());
 		dettaglioProgramma.setNPuntiFacilitazioneTarget2(programmaFetchDB.getNPuntiFacilitazioneTarget2());
