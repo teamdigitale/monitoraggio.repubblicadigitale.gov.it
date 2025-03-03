@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.423](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.422...1.0.0-test.423) (2025-03-03)
+
+
+### Bug Fixes
+
+* **test:** fix download lista enti 20250303 ([0165ec5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0165ec5ab4a58e3a9752362e26a1230b72eb05ec))
+
 ## [1.0.0-test.422](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.421...1.0.0-test.422) (2025-02-28)
 
 
