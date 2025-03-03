@@ -376,7 +376,7 @@ export const DownloadEntityValues =
         // @ts-ignore
         administrativeArea: { filters },
       } = select((state: RootState) => state);
-      const { codiceFiscale, codiceRuolo, idProgramma, idEnte } =
+      const { codiceFiscale, codiceRuolo, idProgramma, idEnte, idProgetto } =
         getUserHeaders();
       const transformedFilters = Object.fromEntries(
           Object.entries(filters).map(([key, value]) => [
@@ -390,6 +390,7 @@ export const DownloadEntityValues =
         },
         idProgramma,
         idEnte,
+        idProgetto,
         cfUtente: codiceFiscale,
         codiceRuolo,
       };
