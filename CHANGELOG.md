@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.44.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.44.0...1.44.1) (2025-03-03)
+
+
+### Bug Fixes
+
+* **test:** fix download lista enti 20250303 ([11ecfcd](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/11ecfcd989038ba7f1e6247527ebab4c44d6999c))
+
 ## [1.44.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.43.1...1.44.0) (2025-03-03)
 
 
