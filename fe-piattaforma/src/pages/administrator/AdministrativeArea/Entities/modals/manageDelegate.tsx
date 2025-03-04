@@ -154,7 +154,7 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
 
   const handleSearchUser = async (search: string) => {
     resetModal(false);
-    dispatch(resetUserDetails());
+    // dispatch(resetUserDetails());
     setCanSubmit(false);
     setSearchedFiscalCode(search);
     const result = await dispatch(GetUsersBySearch(search)) as any;
