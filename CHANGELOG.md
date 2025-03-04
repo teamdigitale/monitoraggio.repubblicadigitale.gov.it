@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.425](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.424...1.0.0-test.425) (2025-03-04)
+
+
+### Bug Fixes
+
+* **U250:** fix form svuotato utente 20250304 ([7a09377](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7a09377cb886ac3e21e9f3977bf902a2b39f396b))
+
 ## [1.0.0-test.424](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.423...1.0.0-test.424) (2025-03-04)
 
 
