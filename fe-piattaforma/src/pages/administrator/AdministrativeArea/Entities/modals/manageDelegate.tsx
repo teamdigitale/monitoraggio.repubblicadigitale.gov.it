@@ -78,7 +78,7 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
     setIsUserSelected(false);
     setFirstOpen(true);
     setIsFormValid(false);
-    dispatch(resetUserDetails());
+    // dispatch(resetUserDetails());
     dispatch(setUsersList(null));
     if (toClose) dispatch(closeModal());
   };
