@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.424](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.423...1.0.0-test.424) (2025-03-04)
+
+
+### Bug Fixes
+
+* **U320:** fix visualizzazione label cup 20250303 ([2e105b5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2e105b51a8f9bfcfbf2594bb7ae6f5ee796def95))
+* **U250:** rimozione resetUserDetails errato 20250304 ([963c85f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/963c85fb1b9b42e7620470ff02f7a99cac3057bd))
+
 ## [1.0.0-test.423](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.422...1.0.0-test.423) (2025-03-03)
 
 
