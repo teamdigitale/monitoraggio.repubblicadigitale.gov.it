@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.426](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.425...1.0.0-test.426) (2025-03-05)
+
+
+### Bug Fixes
+
+* **test:** fix typo 20250305 ([91d0a24](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/91d0a242b5d2a7ade5a4a6cae61a3443063b4ed8))
+
 ## [1.0.0-test.425](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.424...1.0.0-test.425) (2025-03-04)
 
 
