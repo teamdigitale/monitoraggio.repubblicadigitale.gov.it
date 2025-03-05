@@ -725,34 +725,6 @@ public class ImportMassivoCSVService {
         restTemplateS3Service.uploadDocument(presignedUrl, elaboratoCSVResponse.getFileContent());
     }
 
-    // private boolean controllaDataServizioProgettoValida(Optional<ServizioEntity> servizioOpt,
-    //         ServiziElaboratiDTO servizioElaborato, Optional<ProgettoEntity> progettoEntity) {
-    //     if (servizioOpt.isPresent()) {
-    //         ServizioEntity servizio = servizioOpt.get();
-    //         return servizio.getDataServizio().after(progettoEntity.get().getDataInizioProgetto()) &&
-    //                 servizio.getDataServizio().before(progettoEntity.get().getDataFineProgetto());
-    //     } else {
-    //         return servizioElaborato.getServizioRequest().getDataServizio()
-    //                 .after(progettoEntity.get().getDataInizioProgetto()) &&
-    //                 servizioElaborato.getServizioRequest().getDataServizio()
-    //                         .before(progettoEntity.get().getDataFineProgetto());
-    //     }
-    // }
-
-    // private String recuperaDescrizioneDaMongo(Optional<SezioneQ3Collection>
-    // optSezioneQ3Collection, int index) {
-    // SezioneQ3Collection sezioneQ3Collection = optSezioneQ3Collection.get();
-    // ObjectMapper objectMapper = new ObjectMapper();
-    // JsonNode rootNode =
-    // objectMapper.valueToTree(sezioneQ3Collection.getSezioneQ3Compilato());
-    // JsonNode pathJson = rootNode.path("json");
-    // JSONObject jsonObject = new JSONObject(pathJson.asText());
-    // JSONArray properties = jsonObject.getJSONArray("properties");
-    // JSONObject ultimoOggetto = properties.getJSONObject(index);
-    // String ultimaChiave = ultimoOggetto.keys().next();
-    // JSONArray ultimoValoreArray = ultimoOggetto.getJSONArray(ultimaChiave);
-    // return ultimoValoreArray.getString(0);
-    // }
 
     private String recuperaDescrizioneDaMongo(Optional<SezioneQ3Collection> optSezioneQ3Collection, int index,
             Map<String, String> map) {
