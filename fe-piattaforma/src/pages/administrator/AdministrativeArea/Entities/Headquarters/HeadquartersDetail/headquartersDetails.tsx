@@ -498,7 +498,7 @@ const HeadquartersDetails = () => {
             </div>
           </Sticky>
           <ManageHeadquarter />
-          <ManageFacilitator creation fromProject={true} updateFacilitators={updateFacilitators}/>
+          <ManageFacilitator creation updateFacilitators={updateFacilitators}/>
           <DeleteEntityModal
             onClose={() => dispatch(closeModal())}
             onConfirm={(payload) => {

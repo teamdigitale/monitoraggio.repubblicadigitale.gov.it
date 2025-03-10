@@ -1423,8 +1423,8 @@ const ProjectsDetails = () => {
                   id='table-ente-partner'
                 />
               </UploadCSVModal>
-              <ManageDelegate creation fromProject={true} authoritySection={AuthoritySection}/>
-              <ManageReferal creation fromProject={true} authoritySection={AuthoritySection}/>
+              <ManageDelegate creation authoritySection={AuthoritySection}/>
+              <ManageReferal creation authoritySection={AuthoritySection}/>
               <ManageHeadquarter creation />
 
               {projectId &&
