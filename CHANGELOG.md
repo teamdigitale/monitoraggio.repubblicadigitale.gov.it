@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.427](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.426...1.0.0-test.427) (2025-03-10)
+
+
+### Bug Fixes
+
+* **U250:** fix refresh liste ente partner 20250310 ([68f8a0e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/68f8a0e26d0a58de2f58bf3f2ee9c4340c8e5a6f))
+
 ## [1.0.0-test.426](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.425...1.0.0-test.426) (2025-03-05)
 
 
