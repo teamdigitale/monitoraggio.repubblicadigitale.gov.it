@@ -41,7 +41,6 @@ interface ManageDelgateFormI {
   formDisabled?: boolean;
   creation?: boolean;
   legend?: string | undefined;
-  fromProject?: boolean;
   authoritySection?: () => void;
 }
 
@@ -52,7 +51,6 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
   // formDisabled,
   creation = false,
   legend = '',
-  fromProject = false,
   authoritySection
 }) => {
   const [newFormValues, setNewFormValues] = useState<{
@@ -217,7 +215,7 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
       id={id}
       primaryCTA={{
         disabled: !isFormValid,
-        label: fromProject ? 'Aggiungi' : 'Salva',
+        label: creation ? 'Aggiungi' : 'Salva',
         onClick: handleSaveDelegate,
       }}
       secondaryCTA={{
