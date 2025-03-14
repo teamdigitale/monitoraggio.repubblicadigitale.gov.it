@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.428](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.427...1.0.0-test.428) (2025-03-14)
+
+
+### Bug Fixes
+
+* **U250:** fix modale modifica referente/delegato/facilitatore 20250314 ([e0e1654](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e0e16544d9cddb479afafa3dabc3fb759369b668))
+* **U250:** modifica label cta 20250314 ([96235b1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/96235b17d8cee877b964eefd4c975b7aea5df16d))
+
 ## [1.0.0-test.427](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.426...1.0.0-test.427) (2025-03-10)
 
 
