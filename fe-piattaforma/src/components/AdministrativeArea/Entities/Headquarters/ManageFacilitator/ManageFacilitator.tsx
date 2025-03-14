@@ -194,6 +194,22 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
         />
       </div>
     );
+  }else if(!creation){ //apro in modifica
+    content = (
+      <div>
+        {usersList && usersList.length > 0 && <ExistingCitizenInfo newVersion={true} />}
+        <FormFacilitator
+          formDisabled={false}
+          sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
+            setNewFormValues({ ...newData })
+          }
+          setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value || isUserSelected)}
+          creation={creation}
+          legend={legend}
+          initialFiscalCode={searchedFiscalCode}
+        />
+      </div>
+    );
   } else if (noResult && !showForm) {
     content = (
       <div style={{ margin: '50px 0' }}>
@@ -227,12 +243,16 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
         onClick: () => handleCancel(),
       }}
       centerButtons
-      subtitle={<>
-        Inserisci il <strong>codice fiscale</strong> dell'utente e verifica che
-        sia già registrato sulla piattaforma.
-        <br />
-        Se non è presente, compila la sua scheda.
-      </>}
+      {...(creation && {
+        subtitle: (
+          <>
+            Inserisci il <strong>codice fiscale</strong> dell'utente e verifica che
+            sia già registrato sulla piattaforma.
+            <br />
+            Se non è presente, compila la sua scheda.
+          </>
+        ),
+      })}
     >
       <div>
         {creation ? (
