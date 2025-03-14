@@ -219,7 +219,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
       id={id}
       primaryCTA={{
         disabled: !isFormValid,
-        label: creation ? 'Aggiungi' : 'Salva',
+        label: creation ? 'Aggiungi' : 'Modifica',
         onClick: handleSaveEnte,
       }}
       secondaryCTA={{

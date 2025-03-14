@@ -215,7 +215,7 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
       id={id}
       primaryCTA={{
         disabled: !isFormValid,
-        label: creation ? 'Aggiungi' : 'Salva',
+        label: creation ? 'Aggiungi' : 'Modifica',
         onClick: handleSaveDelegate,
       }}
       secondaryCTA={{

@@ -228,7 +228,7 @@ const ManageReferal: React.FC<ManageReferalI> = ({
       id={id}
       primaryCTA={{
         disabled: !isFormValid,
-        label: creation ? 'Aggiungi' : 'Salva',
+        label: creation ? 'Aggiungi' : 'Modifica',
         onClick: handleSaveReferal,
       }}
       secondaryCTA={{
