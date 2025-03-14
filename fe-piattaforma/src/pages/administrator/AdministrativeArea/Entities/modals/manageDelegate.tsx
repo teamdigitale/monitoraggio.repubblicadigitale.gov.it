@@ -202,7 +202,24 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
         />
       </div>
     );
-  } else if (alreadySearched && (usersList?.length === 0 || !usersList) && !showForm) {
+  }else if(!creation){ //apro in modifica
+      content = (
+        <div>
+          {usersList && usersList.length > 0 && <ExistingCitizenInfo newVersion = {true} />}
+          <FormUser
+            creation={creation}
+            formDisabled={false}
+            setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value || isUserSelected)}
+            sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
+              setNewFormValues({ ...newData })
+            }
+            fieldsToHide={['ruolo', 'tipoContratto']}
+            legend={legend}
+            initialFiscalCode={searchedFiscalCode}
+          />
+        </div>
+      );
+    } else if (alreadySearched && (usersList?.length === 0 || !usersList) && !showForm) {
     content = (
       <div style={{ margin: '50px 0' }}>
         <NoResultsFoundCitizen onClickCta={addNewCitizen} newVersion={true} />
@@ -223,12 +240,16 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
         onClick: resetModal,
       }}
       centerButtons
-      subtitle={<>
-        Inserisci il <strong>codice fiscale</strong> dell'utente e verifica che
-        sia già registrato sulla piattaforma.
-        <br />
-        Se non è presente, compila la sua scheda.
-      </>}
+      {...(creation && {
+        subtitle: (
+          <>
+            Inserisci il <strong>codice fiscale</strong> dell'utente e verifica che
+            sia già registrato sulla piattaforma.
+            <br />
+            Se non è presente, compila la sua scheda.
+          </>
+        ),
+      })}
     >
       <div>
         {creation ? (
