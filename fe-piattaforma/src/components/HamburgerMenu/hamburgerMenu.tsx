@@ -151,6 +151,14 @@ const HamburgerMenu: React.FC<HBMenuProps> = (props) => {
                             Gestione ruoli
                           </Link>
                         ) : null}
+                        {hasUserPermission(['btn.gest.ruoli']) ? (  //cambiare permission
+                          <Link
+                            to='/gestione-configurazioni'
+                            className='primary-color manage-profile font-weight-normal'
+                          >
+                            Gestione configurazioni
+                          </Link>
+                        ) : null}
                         {hasUserPermission(['btn.cat']) ? (
                           <Link
                             to='/area-gestionale/gestione-categorie'
