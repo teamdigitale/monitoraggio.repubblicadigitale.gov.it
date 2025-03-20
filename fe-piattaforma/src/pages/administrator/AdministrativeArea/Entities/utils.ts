@@ -156,6 +156,34 @@ export const TableHeadingEntities: TableHeadingI[] = [
   },
 ];
 
+export const TableHeadingMinorenni: TableHeadingI[] = [
+  {
+    label: 'Nome Programma',
+    field: 'nomeProgramma',
+    size: 'medium',
+  },
+  {
+    label: 'Intervento',
+    field: 'intervento',
+    size: 'medium',
+  },
+  {
+    label: 'Data di Abilitazione',
+    field: 'dataAbilitazione',
+    size: 'small',
+  },
+  {
+    label: 'Data di Decorrenza',
+    field: 'dataDecorrenza',
+    size: 'medium',
+  },
+  {
+    label: 'Stato abilitazione',
+    field: 'stato',
+    size: 'medium',
+  },
+];
+
 export const formTypes = {
   PROGETTI: 'progetti',
   PROGRAMMA: 'programmi',

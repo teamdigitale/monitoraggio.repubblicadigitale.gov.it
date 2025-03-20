@@ -36,6 +36,9 @@ const Documents = lazy(
 const RoleManagement = lazy(
   () => import('../pages/common/RoleManagement/roleManagement')
 );
+const ConfigManagement = lazy(
+  () => import('../pages/common/ConfigManagement/configManagement')
+);
 const RoleManagementDetails = lazy(
   () =>
     import(
@@ -287,6 +290,30 @@ const AppRoutes: React.FC = () => {
                   </ProtectedComponent>
                 }
               />
+              <Route      //cambiare visible
+                path='/gestione-configurazioni'
+                element={
+                  <ProtectedComponent visibleTo={['list.ruoli']}> 
+                    <ConfigManagement />
+                  </ProtectedComponent>
+                }
+              />
+              <Route      //cambiare visible
+                path='/gestione-configurazioni/minorenni'
+                element={
+                  <ProtectedComponent visibleTo={['list.ruoli']}> 
+                    <ConfigManagement />
+                  </ProtectedComponent>
+                }
+              />
+                <Route
+                  path="/gestione-configurazioni/caricamenti-massivi"
+                  element={
+                    <ProtectedComponent visibleTo={['list.ruoli']}>
+                      <ConfigManagement />
+                    </ProtectedComponent>
+                  }
+                />
               <Route
                 path='/notifiche'
                 element={
