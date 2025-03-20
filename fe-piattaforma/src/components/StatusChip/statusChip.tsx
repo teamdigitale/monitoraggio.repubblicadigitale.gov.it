@@ -26,6 +26,8 @@ const statusTypes = {
   ACTIVABLE: 'ATTIVABILE',
   IN_PROGRESS: 'IN CORSO',
   FAILED: 'FALLITO',
+  PROGRAMMED: 'PROGRAMMATA',
+  ABLE: 'ABILITATA',
 };
 
 export const statusBgColor = (status: string) => {
@@ -34,6 +36,7 @@ export const statusBgColor = (status: string) => {
     case statusTypes.ACTIVE:
     case statusTypes.COMPLETE:
     case statusTypes.SENT:
+    case statusTypes.PROGRAMMED:
       return 'primary-bg-a9';
     case statusTypes.FILLED_OUT:
       return 'primary-bg-c7';
@@ -52,6 +55,7 @@ export const statusBgColor = (status: string) => {
     case statusTypes.IN_PROGRESS:
       return 'activable';
     case statusTypes.FAILED:
+    case statusTypes.ABLE:
       return 'neutral-1-bg-a1';
     default:
       return 'neutral-1-bg-a1';
@@ -64,6 +68,7 @@ export const statusColor = (status: string) => {
     case statusTypes.COMPLETE:
     case statusTypes.ACTIVE:
     case statusTypes.SENT:
+    case statusTypes.PROGRAMMED:
       return 'text-white';
     case statusTypes.FILLED_OUT:
       return 'white-color';
