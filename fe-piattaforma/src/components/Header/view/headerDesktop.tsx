@@ -316,6 +316,27 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                 </Button>
               </li>
             ) : null}
+            {hasUserPermission(['btn.gest.ruoli']) ? (  //cambiare permission
+              <li role='none' className='px-4'>
+                <Button
+                  className={clsx(
+                    'primary-color-b1',
+                    'py-2',
+                    'w-100',
+                    'd-flex',
+                    'justify-content-between'
+                  )}
+                  role='menuitem'
+                  onClick={() => {
+                    navigate('/gestione-configurazioni');
+                    setOpenManagementArea(false);
+                  }}
+                  aria-label='Gestione configurazioni'
+                >
+                  <span> {t('config_management')}</span>
+                </Button>
+              </li>
+            ) : null}
             {hasUserPermission(['btn.cat']) ? (
               <li role='none' className='px-4'>
                 <Button
