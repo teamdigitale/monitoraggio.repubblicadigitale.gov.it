@@ -361,6 +361,7 @@ export function getAgeGroupCodeByYear(date?: Date): string | void {
   if (!date) return;
 
   const age = new Date().getFullYear() - date.getFullYear();
+  if (age >= 14 && age <= 17) return 'E';
   if (age >= 18 && age <= 29) return 'A';
   if (age >= 30 && age <= 54) return 'B';
   if (age >= 55 && age <= 74) return 'C';
