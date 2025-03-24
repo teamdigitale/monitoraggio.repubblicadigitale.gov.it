@@ -39,6 +39,10 @@ import * as XLSX from 'xlsx';
 import { useAppSelector } from '../redux/hooks';
 import { selectProjects } from '../redux/features/administrativeArea/administrativeAreaSlice';
 import { policy } from '../pages/administrator/AdministrativeArea/Entities/utils';
+import { useDispatch } from 'react-redux';
+import { GetConfigurazioneMinorenni } from '../redux/features/citizensArea/citizensAreaThunk';
+import { useParams } from 'react-router-dom';
+import { get } from 'react-hook-form';
 
 const {
   idProgetto,
@@ -88,6 +92,10 @@ export function useFileProcessor(file: File | undefined, removeFile: () => void)
   const { isValidFiscalCode } = useFiscalCodeValidation();
   const [isProcessing, setIsProcessing] = useState(false);
   const projectDetail = useAppSelector(selectProjects).detail?.dettagliInfoProgetto;
+  const [flgAbilitatoAMinori, setFlgAbilitatoAMinori] = useState<boolean>(false);
+  const [dataDecorrenza, setDataDecorrenza] = useState<Date>(moment().toDate());
+  const dispatch = useDispatch();
+  const { serviceId } = useParams();
 
   const handleExcelFileUpload = (file: File): Promise<CSVRecord[]> => {
     return new Promise((resolve, reject) => {
@@ -128,6 +136,16 @@ export function useFileProcessor(file: File | undefined, removeFile: () => void)
     });
   };
 
+  const getMinorenniInfo = async () => {
+      if(serviceId){
+        const config = await GetConfigurazioneMinorenni(serviceId)(dispatch);
+        if(config.id != null){
+          setFlgAbilitatoAMinori(true);
+          setDataDecorrenza(config?.dataDecorrenza);
+        }
+      }
+    };
+
   const processFile = useCallback(async () => {
     return new Promise<ElaboratoCsvRequest>(async (resolve, reject) => {
       function rejectWithMessage(message: string) {
@@ -137,8 +155,8 @@ export function useFileProcessor(file: File | undefined, removeFile: () => void)
 
       if (file) {
         setIsProcessing(true);
-        const fileExtension = file.name.split('.').pop()?.toLowerCase();
-
+        getMinorenniInfo();
+        const fileExtension = file.name.split('.').pop()?.toLowerCase();        
         if (fileExtension === 'csv') {
           if (projectDetail?.policy == policy.RFD) {
             Papa.parse<CSVRecord>(file, {
@@ -210,8 +228,17 @@ export function useFileProcessor(file: File | undefined, removeFile: () => void)
 
                     const cfData: IPersonalInfo =
                       CodiceFiscaleUtils.Parser.cfDecode(filteredRecord.AN3);
-  
-                    if ( filteredRecord.AN3 && !getAgeGroupCodeByYear(cfData.date)) {
+                    const ageGroup = getAgeGroupCodeByYear(cfData.date);
+
+                    if (flgAbilitatoAMinori) {
+                      if (moment().isBefore(dataDecorrenza)) {
+                        errors.push('Data decorrenza futura');
+                      }
+                      if (!ageGroup) {
+                        errors.push('Il cittadino deve avere almeno 14 anni.');
+                      }
+                    }
+                    if (!flgAbilitatoAMinori && (!ageGroup || ageGroup === 'E')) {
                       errors.push('Il cittadino deve essere maggiorenne.');
                     }
 
@@ -295,8 +322,16 @@ export function useFileProcessor(file: File | undefined, removeFile: () => void)
   
                   const cfData: IPersonalInfo =
                     CodiceFiscaleUtils.Parser.cfDecode(filteredRecord.AN3);
-
-                if ( filteredRecord.AN3 && !getAgeGroupCodeByYear(cfData.date)) {
+                  const ageGroup = getAgeGroupCodeByYear(cfData.date);
+                  if (flgAbilitatoAMinori) {
+                    if (moment().isBefore(dataDecorrenza)) {
+                      errors.push('Data decorrenza futura');
+                    }
+                    if (!ageGroup) {
+                      errors.push('Il cittadino deve avere almeno 14 anni.');
+                    }
+                  }
+                  if (!flgAbilitatoAMinori && (!ageGroup || ageGroup === 'E')) {
                     errors.push('Il cittadino deve essere maggiorenne.');
                   }
   
