@@ -10,6 +10,7 @@ import { setCitizenSearchResults } from '../../redux/features/citizensArea/citiz
 import { GetEntitySearchResult } from '../../redux/features/citizensArea/citizensAreaThunk';
 import { emitNotify } from '../../redux/features/notification/notificationSlice';
 import SearchBar from '../SearchBar/searchBar';
+import { dispatchWarning } from '../../utils/notifictionHelper';
 
 interface SearchBarOptionsI {
   setCurrentStep: (value: string) => void;
@@ -19,6 +20,8 @@ interface SearchBarOptionsI {
   alreadySearched?: (param: boolean) => void;
   setSearchValue: (param: { type: string; value: string }) => void;
   resetModal?: () => void;
+  flgAbilitatoAMinori?: boolean;
+  dataDecorrenza?: Date;
 }
 
 const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
@@ -28,7 +31,9 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
   steps,
   alreadySearched,
   setSearchValue,
-  resetModal
+  resetModal,
+  flgAbilitatoAMinori = false,
+  dataDecorrenza
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -47,6 +52,10 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
     return moment().diff(Parser.cfToBirthDate(cf), 'years', false) >= 18;
   }, []);
 
+  const isMaggiore14Anni = useCallback((cf: string): boolean => {
+    return moment().diff(Parser.cfToBirthDate(cf), 'years', false) >= 14;
+  }, []);
+
   const dispatchNotify = useCallback(
     (id, title, status, message, duration) => {
       dispatch(
@@ -61,13 +70,42 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
       if (isCodiceFiscaleValido(query)) {
         const isAdult = isMaggiorenne(query);
         if (!isAdult) {
-          dispatchNotify(
-            1,
-            'ERRORE',
-            'error',
-            'Il codice fiscale risulta essere di un minorenne',
-            'medium'
-          );
+          if(flgAbilitatoAMinori){
+            if(isMaggiore14Anni(query)){
+              if(moment().isAfter(dataDecorrenza)){
+                dispatchWarning(
+                  'ATTENZIONE',
+                  'Il codice fiscale risulta essere di un minore con più di 14 anni')
+                return true;
+              }else{
+                dispatchNotify(
+                  1,
+                  'ERRORE',
+                  'error',
+                  'Data decorrenza futura',
+                  'medium'
+                );
+              }
+            }else{
+              dispatchNotify(
+                1,
+                'ERRORE',
+                'error',
+                'Il codice fiscale risulta essere di un minorenne con meno di 14 anni',
+                'medium'
+              );
+              return false;
+            }
+          }else{
+            dispatchNotify(
+              1,
+              'ERRORE',
+              'error',
+              'Il cittadino deve essere maggiorenne',
+              'medium'
+            );
+            return false;
+          }        
         }
         return isAdult;
       }

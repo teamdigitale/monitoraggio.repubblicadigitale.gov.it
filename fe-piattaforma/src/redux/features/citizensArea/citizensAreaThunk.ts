@@ -284,3 +284,23 @@ export const DownloadEntityValues =
       dispatch(hideLoader());
     }
   };
+
+export const GetConfigurazioneMinorenni =
+  (idServizio: string) => async (dispatch: Dispatch) => {
+    try {
+
+      dispatch(showLoader());
+      const body = {
+        idServizio: Number(idServizio),
+      };
+      const entityEndpoint = `/configurazioneminorenni/dettaglio`;
+      const res = await API.post(entityEndpoint, body);
+      if (res?.data) {
+        return res?.data;
+      }
+    } catch (error) {
+      console.log('GetConfigurazioneMinorenni error', error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
