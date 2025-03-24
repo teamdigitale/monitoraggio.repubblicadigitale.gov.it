@@ -16,6 +16,7 @@ import it.pa.repdgt.surveymgmt.bean.CittadinoServizioBean;
 import it.pa.repdgt.surveymgmt.bean.CittadinoUploadBean;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection.DatiIstanza;
+import it.pa.repdgt.surveymgmt.dto.ConfigurazioneMinorenniDto;
 import it.pa.repdgt.surveymgmt.dto.NuovoCittadinoDTO;
 import it.pa.repdgt.surveymgmt.collection.SezioneQ3Collection;
 import it.pa.repdgt.surveymgmt.exception.CittadinoException;
@@ -116,6 +117,8 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
     private QuestionarioInviatoOnlineRepository questionarioInviatoOnlineRepository;
     @Autowired
     private ServizioSqlRepository servizioSqlRepository;
+    @Autowired
+    private ConfigurazioneMinorenniService configurazioneMinorenniService;
 
     @LogMethod
     @LogExecutionTime
@@ -273,7 +276,17 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
                 if (codiceFiscaleDecrypted.length() != 16)
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                             "Il codice fiscale deve essere composto da 16 caratteri");
-                if (!isCittadinoMaggiorenne(codiceFiscaleDecrypted))
+                ConfigurazioneMinorenniDto configurazioneMinorenniDto = configurazioneMinorenniService
+                        .getConfigurazioneMinorenniByIdServizio(idServizio);
+                if (configurazioneMinorenniDto.getId() != null) {
+                    if (new Date().before(configurazioneMinorenniDto.getDataDecorrenza())) {
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Data di decorrenza futura");
+                    }
+                    if (!isCittadinoMaggioreDi14(codiceFiscaleDecrypted)) {
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                                "Il cittadino deve avere almeno 14 anni");
+                    }
+                } else if (!isCittadinoMaggiorenne(codiceFiscaleDecrypted))
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Il cittadino non e' maggiorenne");
                 nuovoCittadinoRequest.setCodiceFiscale(EncodeUtils.encrypt(codiceFiscaleDecrypted));
             }
@@ -326,8 +339,18 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
             if (codiceFiscaleDecrypted.length() != 16)
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                         "Il codice fiscale deve essere composto da 16 caratteri");
-            if (!isCittadinoMaggiorenne(codiceFiscaleDecrypted))
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Il cittadino non e' maggiorenne");
+                        ConfigurazioneMinorenniDto configurazioneMinorenniDto = configurazioneMinorenniService
+                        .getConfigurazioneMinorenniByIdServizio(idServizio);
+                if (configurazioneMinorenniDto.getId() != null) {
+                    if (new Date().before(configurazioneMinorenniDto.getDataDecorrenza())) {
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Data di decorrenza futura");
+                    }
+                    if (!isCittadinoMaggioreDi14(codiceFiscaleDecrypted)) {
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                                "Il cittadino deve avere almeno 14 anni");
+                    }
+                } else if (!isCittadinoMaggiorenne(codiceFiscaleDecrypted))
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Il cittadino non e' maggiorenne");
             nuovoCittadinoRequest.setCodiceFiscale(EncodeUtils.encrypt(codiceFiscaleDecrypted));
         }
         /*
@@ -390,7 +413,8 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
             cittadino.setCodiceFiscale(nuovoCittadinoRequest.getCodiceFiscale());
         }
         if (fasciaDiEtaRepository.existsById(nuovoCittadinoRequest.getFasciaDiEtaId())) {
-            Optional<FasciaDiEtaEntity> fascOptional = fasciaDiEtaRepository.findById(nuovoCittadinoRequest.getFasciaDiEtaId());
+            Optional<FasciaDiEtaEntity> fascOptional = fasciaDiEtaRepository
+                    .findById(nuovoCittadinoRequest.getFasciaDiEtaId());
             cittadino.setFasciaDiEta(fascOptional.isPresent() ? fascOptional.get() : null);
         }
         cittadino.setCittadinanza(nuovoCittadinoRequest.getCittadinanza());
@@ -411,13 +435,22 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
         }
     }
 
+    public boolean isCittadinoMaggioreDi14(String codiceFiscale) {
+        try {
+            Date dataDiNascita = estraiDataDiNascita(codiceFiscale);
+            return isMaggioreDi14(dataDiNascita);
+        } catch (ParseException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Errore nella data di nascita");
+        }
+    }
+
     private Date estraiDataDiNascita(String codiceFiscaleDecrypted) throws ParseException {
         boolean isFemmina = codiceFiscaleDecrypted.charAt(9) >= '4';
         int giornoDiNascita = convertiCarattereInNumero(codiceFiscaleDecrypted.charAt(9)) * 10
-            + convertiCarattereInNumero(codiceFiscaleDecrypted.charAt(10)) - (isFemmina ? 40 : 0);
+                + convertiCarattereInNumero(codiceFiscaleDecrypted.charAt(10)) - (isFemmina ? 40 : 0);
 
         int secolo = convertiCarattereInNumero(codiceFiscaleDecrypted.charAt(6)) * 10
-            + convertiCarattereInNumero(codiceFiscaleDecrypted.charAt(7));
+                + convertiCarattereInNumero(codiceFiscaleDecrypted.charAt(7));
         int annoDiNascita = (secolo <= RANGE_SECOLO) ? 2000 + secolo : 1900 + secolo;
         Calendar cal = Calendar.getInstance();
         cal.set(annoDiNascita, mappaMesi.get(String.valueOf(codiceFiscaleDecrypted.charAt(8)).toUpperCase()),
@@ -441,25 +474,35 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
         return oggi.after(cal.getTime());
     }
 
+    private boolean isMaggioreDi14(Date dataNascita) {
+        Date oggi = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dataNascita);
+        cal.add(Calendar.YEAR, 14);
+        return oggi.after(cal.getTime());
+    }
+
     public boolean esisteCittadinoByIdServizioAndIdCittadino(@NotNull final Long idServizio,
             @NotNull final Long idCittadino) {
         return this.servizioXCittadinoRepository.findCittadinoByIdServizioAndIdCittadino(idServizio, idCittadino) > 0;
     }
 
     public boolean esisteCittadinoByIdServizioAndCodiceFiscale(@NotNull final Long idServizio,
-        @NotNull final String codiceFiscale) {
-        return this.servizioXCittadinoRepository.findCittadinoByIdServizioAndCodiceFiscale(idServizio, codiceFiscale) > 0;
+            @NotNull final String codiceFiscale) {
+        return this.servizioXCittadinoRepository.findCittadinoByIdServizioAndCodiceFiscale(idServizio,
+                codiceFiscale) > 0;
     }
 
     @LogMethod
     @LogExecutionTime
-    public void associaCittadinoAServizio(@NotNull final Long idServizio, @NotNull final CittadinoEntity cittadino, String idRegistroAttivita) {
+    public void associaCittadinoAServizio(@NotNull final Long idServizio, @NotNull final CittadinoEntity cittadino,
+            String idRegistroAttivita) {
         ServizioXCittadinoEntity servizioXCittadino = new ServizioXCittadinoEntity();
         ServizioCittadinoKey key = new ServizioCittadinoKey(cittadino.getId(), idServizio);
         servizioXCittadino.setId(key);
         servizioXCittadino.setDataOraAggiornamento(new Date());
         servizioXCittadino.setDataOraCreazione(new Date());
-        if(idRegistroAttivita != null)
+        if (idRegistroAttivita != null)
             servizioXCittadino.setCodInserimento(idRegistroAttivita);
         servizioXCittadinoRepository.save(servizioXCittadino);
     }
@@ -554,8 +597,8 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
                 ID_DOMANDA_CODICE_FISCALE, cittadino.getCodiceFiscale(),
                 ID_DOMANDA_CODICE_FISCALE_NON_DISPONIBILE, cittadino.getCodiceFiscale() == null
                         || cittadino.getCodiceFiscale().isEmpty(),
-                ID_DOMANDA_TIPO_DOCUMENTO, null, //cittadino.getTipoDocumento(),
-                ID_DOMANDA_NUMERO_DOCUMENTO, null, //cittadino.getNumeroDocumento(),
+                ID_DOMANDA_TIPO_DOCUMENTO, null, // cittadino.getTipoDocumento(),
+                ID_DOMANDA_NUMERO_DOCUMENTO, null, // cittadino.getNumeroDocumento(),
                 ID_DOMANDA_GENERE, cittadino.getGenere(),
                 ID_DOMANDA_FASCIA_DI_ETA, cittadino.getFasciaDiEta().getFascia(),
                 ID_DOMANDA_TITOLO_DI_STUDIO, cittadino.getTitoloDiStudio(),
@@ -724,10 +767,9 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
 
     private boolean checkPassCittadinoUpload(CittadinoUploadBean cittadinoUpload) {
         final String codiceFiscale = cittadinoUpload.getCodiceFiscale();
-        if ((codiceFiscale == null || "".equals(codiceFiscale.trim()))
-                ){
+        if ((codiceFiscale == null || "".equals(codiceFiscale.trim()))) {
             cittadinoUpload.setEsito(
-                    "UPLOAD - KO - CODICE FISCALE" +/*, NUMERO DOCUMENTO", TIPO DOCUMENTO*/  " NON VALORIZZATO");
+                    "UPLOAD - KO - CODICE FISCALE" + /* , NUMERO DOCUMENTO", TIPO DOCUMENTO */ " NON VALORIZZATO");
             return false;
         }
         if (cittadinoUpload.getGenere() == null || "".equals(cittadinoUpload.getGenere().trim())) {
