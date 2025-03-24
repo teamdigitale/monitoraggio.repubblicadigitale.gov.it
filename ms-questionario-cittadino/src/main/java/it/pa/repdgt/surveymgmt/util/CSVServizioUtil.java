@@ -44,6 +44,7 @@ public class CSVServizioUtil {
 	};
 
 	private static final List<String> HEADERS = Arrays.asList(
+			"ID",
 			"NOME",
 			"FACILITATORE",
 			"DATA",
@@ -85,6 +86,7 @@ public class CSVServizioUtil {
 
 	private static List<String> getCSVRecord(final ServizioResource servizioResource) {
 		return Arrays.asList(
+				servizioResource.getId(),
 				servizioResource.getNomeServizio(),
 				servizioResource.getNominativoFacilitatore(),
 				servizioResource.getDataOraAggiornamento(),
