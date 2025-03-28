@@ -52,6 +52,7 @@ import it.pa.repdgt.programmaprogetto.request.ProgettiParam;
 import it.pa.repdgt.programmaprogetto.request.ProgettoFiltroRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgettoRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgrammiParam;
+import it.pa.repdgt.programmaprogetto.resource.CreaProgettoResource;
 import it.pa.repdgt.programmaprogetto.resource.PaginaProgetti;
 import it.pa.repdgt.programmaprogetto.resource.ProgrammaDropdownResource;
 import it.pa.repdgt.shared.awsintegration.service.EmailService;
@@ -674,8 +675,8 @@ public class ProgettoServiceTest {
 		progetto1.setDataInizioProgetto(new Date());
 		progetto1.setDataFineProgetto(new Date());
 		when(progettoService.salvaProgetto(progetto1)).thenReturn(progetto1);
-		ProgettoEntity progettocreato = progettoService.creaNuovoProgetto(progetto1);
-		assertThat(progettocreato.getId()).isEqualTo(progetto1.getId());
+		CreaProgettoResource progettocreato = progettoService.creaNuovoProgetto(progetto1);
+		assertThat(progettocreato.getIdProgettoCreato()).isEqualTo(progetto1.getId());
 		verify(progettoRepository, times(1)).save(progetto1);
 	}
 
