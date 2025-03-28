@@ -1,16 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Icon } from 'design-react-kit';
 import {
     StatusChip,
     Table,
 } from '../../../../components';
-import { newTable } from '../../../../components/Table/table';
-import { TableHeadingMinorenni } from '../../../administrator/AdministrativeArea/Entities/utils';
+import { newTable, TableRowI } from '../../../../components/Table/table';
+import { formTypes, TableHeadingMinorenni } from '../../../administrator/AdministrativeArea/Entities/utils';
 import '../configManagement.scss';
+import ManageAbilitaProgramma from '../../../administrator/AdministrativeArea/Entities/modals/manageAbilitaProgram';
+import { openModal } from '../../../../redux/features/modal/modalSlice';
+import { useDispatch } from 'react-redux';
+import { GetProgramDetail } from '../../../../redux/features/administrativeArea/programs/programsThunk';
+
 
 const ConfigManagementMinorenni: React.FC = () => {
-
-    const programmi = [         //dati per mockup
+    const [creation, setCreation] = useState<boolean>(false);
+    const dispatch = useDispatch();
+    const programmi = [         //dati per mockup, sostiuire con metodo che recupera righe tabella configurazione_minorenni
         {
             nome: '#digitalizziamoci',
             intervento: 'RFD',
@@ -38,10 +44,37 @@ const ConfigManagementMinorenni: React.FC = () => {
             stato: <StatusChip status={td.stato} rowTableId={td.nome} />,
         }))
     );
+ 
+    const handleAbilitaProgramma = () => {
+        setCreation(true);
+        dispatch(
+              openModal({
+                id: formTypes.PROGRAMMA,
+                payload: {
+                  title: 'Abilita programma',
+                },
+              })
+            );
+    };
+
+    const handleModificaProgramma = (row: TableRowI) => {
+        setCreation(false);
+        console.log("id:",row.id);              //modificare dopo che la tabella sarà stata sistemata
+        
+        GetProgramDetail(row.id as string)
+        dispatch(
+            openModal({
+              id: formTypes.PROGRAMMA,
+              payload: {
+                title: 'Modifica programma',
+              },
+            })
+          );
+    };
 
     return (
         <div className="container">
-            <div className="d-flex justify-content-between align-items-start mb-3">
+            <div className="d-flex justify-content-between align-items-start">
                 <div style={{ marginRight: '50px', marginBottom: '100px' }}>
                     <p className='custom-section-title__section-title main-title primary-color-a9 text-left'>Programmi abilitati all'inserimento di minori</p>
                     <p className='primary-color-a9 mb-0'> I programmi di entrambi gli interventi (RFD e SCD) possono accogliere la partecipazione di persone di minore età a condizione che siano abilitati alla raccolta e all’inserimento su Facilita dei relativi codici fiscali.
@@ -52,7 +85,7 @@ const ConfigManagementMinorenni: React.FC = () => {
                         color='primary'
                         icon
                         className='page-title__cta'
-                        onClick={() => console.log('Cliccato')}
+                        onClick={handleAbilitaProgramma}
                         aria-label={`Abilita programma`}
                     >
                         <Icon
@@ -71,10 +104,14 @@ const ConfigManagementMinorenni: React.FC = () => {
                 {...tableValues}
                 id='table'
                 onActionClick={{
-                    edit: (row) => console.log('Edit action', row),
+                    edit: (row) => {
+                        if (typeof row !== 'string') {
+                            handleModificaProgramma(row);
+                        } else {
+                            console.error('Invalid row type:', row);
+                        }
+                    },
                 }}
-                // onCellClick={(field, row) => console.log(field, row)}
-                onRowClick={row => console.log(row)}
                 withActions
                 totalCounter={programmi.length}
                 className='table-compact'
@@ -83,6 +120,7 @@ const ConfigManagementMinorenni: React.FC = () => {
                     console.log(`Sorting by ${orderBy} in ${direction} order`);
                 }}
             />
+            <ManageAbilitaProgramma creation={creation}/>
         </div>
     );
 };
