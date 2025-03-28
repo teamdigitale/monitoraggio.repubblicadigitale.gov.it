@@ -1,5 +1,19 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.429](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.428...1.0.0-test.429) (2025-03-28)
+
+
+### Features
+
+* **U320:** fix refresh dettaglio progetto e modifica testo warning 20250328 ([1711369](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/17113690acd33c7b66f5570394baa2f4940100d8))
+* **test:** aggiornamento data limite servizi 20250328 ([4bbb112](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4bbb112cc7412665d00d847caf732e0b59106891))
+
+
+### Bug Fixes
+
+* **U320:** gestione titolo su warning 20250328 ([198ac9c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/198ac9c214838d5d902870d0d332c63fee5200fe))
+* **U320:** Gestione warning modifica programma progetto 20250328 ([64fdc40](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/64fdc40d331c54e887a4c006c0974f6006ac2587))
+
 ## [1.0.0-test.428](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.427...1.0.0-test.428) (2025-03-14)
 
 
