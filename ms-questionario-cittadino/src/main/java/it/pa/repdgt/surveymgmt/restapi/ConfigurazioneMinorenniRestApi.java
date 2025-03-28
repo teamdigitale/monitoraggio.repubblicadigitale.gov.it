@@ -3,8 +3,8 @@ package it.pa.repdgt.surveymgmt.restapi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,9 +21,15 @@ public class ConfigurazioneMinorenniRestApi {
 
     @GetMapping(path = "/dettaglio")
     @ResponseStatus(value = HttpStatus.OK)
-    public ConfigurazioneMinorenniDto getConfigurazioneMinorenniByIdServizio(@RequestBody Long idServizio) {
+    public ConfigurazioneMinorenniDto getConfigurazioneMinorenniByIdServizioOrIdProgramma(
+        @RequestParam(required = false) Long idServizio, 
+        @RequestParam(required = false) Long idProgramma) {
 
-        return configurazioneMinorenniService.getConfigurazioneMinorenniByIdServizio(idServizio);
+            if (idServizio == null && idProgramma == null) {
+                throw new IllegalArgumentException("Almeno uno tra 'idServizio' o 'idProgramma' deve essere valorizzato.");
+            }
+
+        return configurazioneMinorenniService.getConfigurazioneMinorenniByIdServizioOrIdProgramma(idServizio, idProgramma);
 
     }
     
