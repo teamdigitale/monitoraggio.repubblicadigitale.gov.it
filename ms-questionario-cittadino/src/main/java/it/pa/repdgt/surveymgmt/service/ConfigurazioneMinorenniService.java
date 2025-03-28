@@ -18,10 +18,10 @@ public class ConfigurazioneMinorenniService {
 
     @LogMethod
     @LogExecutionTime
-    public ConfigurazioneMinorenniDto getConfigurazioneMinorenniByIdServizio(Long idServizio) {
+    public ConfigurazioneMinorenniDto getConfigurazioneMinorenniByIdServizioOrIdProgramma(Long idServizio, Long idProgramma) {
 
         Optional<ConfigurazioneMinorenniEntity> confMinorenniOpt = configurazioneMinorenniRepository
-                .findByIdServizio(idServizio);
+                .findConfigurazioneByIdServizioOrIdProgramma(idServizio, idProgramma);
 
         if (confMinorenniOpt.isEmpty()) {
             // Restituisci un oggetto vuoto
