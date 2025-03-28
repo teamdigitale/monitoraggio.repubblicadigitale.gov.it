@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import com.mysql.cj.x.protobuf.MysqlxNotice.Warning;
+
 import it.pa.repdgt.programmaprogetto.bean.DettaglioProgrammaBean;
 import it.pa.repdgt.programmaprogetto.bean.SchedaProgrammaBean;
 import it.pa.repdgt.programmaprogetto.exception.ProgrammaException;
@@ -27,6 +29,7 @@ import it.pa.repdgt.programmaprogetto.request.ProgettiParam;
 import it.pa.repdgt.programmaprogetto.request.ProgettoFiltroRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgrammaRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgrammiParam;
+import it.pa.repdgt.programmaprogetto.resource.CreaProgrammaResource;
 import it.pa.repdgt.programmaprogetto.resource.PaginaProgrammi;
 import it.pa.repdgt.programmaprogetto.resource.ProgrammaDropdownResource;
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
@@ -43,6 +46,7 @@ import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.shared.repository.BrokenAccessControlRepository;
+import it.pa.repdgt.shared.resources.WarningResource;
 import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import it.pa.repdgt.shared.service.storico.StoricoService;
 import lombok.extern.slf4j.Slf4j;
@@ -480,7 +484,8 @@ public class ProgrammaService {
 	@LogMethod
 	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
-	public ProgrammaEntity creaNuovoProgramma(ProgrammaEntity programma) {
+	public CreaProgrammaResource creaNuovoProgramma(ProgrammaEntity programma) {
+		CreaProgrammaResource creaProgrammaResource = new CreaProgrammaResource();
 		if(this.programmaRepository.findProgrammaByCodice(programma.getCodice()).isPresent()) {
 			String errorMessage = String.format("Errore creazione programma. Programma con codice='%s' già presente.", programma.getCodice());
 			throw new ProgrammaException(errorMessage, CodiceErroreEnum.P01);
@@ -499,15 +504,22 @@ public class ProgrammaService {
 		if(programma.getCup() == "" || programma.getCup() == null) {
 			programma.setCup("cup_non_presente-"+ programma.getCodice());
 			programma.setCupManipolato(true);
+			creaProgrammaResource.setWarning(true);
+			creaProgrammaResource.setWarningTitle("CUP TEMPORANEO");
+			creaProgrammaResource.setWarningMessage("È stato generato dal sistema un CUP temporaneo. Ti invitiamo a modificarlo inserendo quello corretto.");
 		}else if(programmaRepository.findAltroProgrammaByCup(programma.getCup(), programma.getCodice()).isPresent()){			//query che verifica se cup è già associato a qualche programma
 			programma.setCup(programma.getCup() + "-" + programma.getCodice());
 			programma.setCupManipolato(true);
+			creaProgrammaResource.setWarning(true);
+			creaProgrammaResource.setWarningTitle("CUP GIÀ ESISTENTE");
+			creaProgrammaResource.setWarningMessage("Hai inserito un CUP già assegnato a un altro progetto. È stato generato dal sistema un CUP temporaneo. Ti invitiamo a modificarlo inserendo quello corretto.");
 		}else{
 			programma.setCupManipolato(false);
 		}
 		this.salvaProgramma(programma);
 		this.associaQuestionarioTemplateAProgramma(programma.getId(), questionarioTemplate.getId());
-		return programma;
+		creaProgrammaResource.setIdProgrammaCreato(programma.getId());
+		return creaProgrammaResource;
 	}
 
 	@LogMethod
@@ -584,7 +596,8 @@ public class ProgrammaService {
 	@LogMethod
 	@LogExecutionTime
 	@Transactional(rollbackOn = Exception.class)
-	public ProgrammaEntity aggiornaProgramma(final ProgrammaRequest programmaRequest, final Long idProgramma) {
+	public WarningResource aggiornaProgramma(final ProgrammaRequest programmaRequest, final Long idProgramma) {
+		WarningResource warningResource = new WarningResource();
 		if (!this.programmaRepository.existsById(idProgramma)) {
 			final String errorMessage = String.format("Impossibile aggiornare il Programma con id=%s. Programma non presente", idProgramma);
 			throw new ProgrammaException(errorMessage, CodiceErroreEnum.P06);
@@ -605,16 +618,22 @@ public class ProgrammaService {
 			if(programmaFetch.getCup() == "" || programmaFetch.getCup() == null) {
 				programmaFetch.setCup("cup_non_presente-"+ programmaFetch.getCodice());
 				programmaFetch.setCupManipolato(true);
+				warningResource.setWarning(true);
+				warningResource.setWarningTitle("CUP TEMPORANEO");
+				warningResource.setWarningMessage("È stato generato dal sistema un CUP temporaneo. Ti invitiamo a modificarlo inserendo quello corretto.");
 			}else if(programmaRepository.findAltroProgrammaByCup(programmaFetch.getCup(), programmaFetch.getCodice()).isPresent()){			//query che verifica se cup è già associato a qualche programma
 				programmaFetch.setCup(programmaFetch.getCup() + "-" + programmaFetch.getCodice());
 				programmaFetch.setCupManipolato(true);
+				warningResource.setWarning(true);
+				warningResource.setWarningTitle("CUP GIÀ ESISTENTE");
+				warningResource.setWarningMessage("Hai inserito un CUP già assegnato a un altro progetto. È stato generato dal sistema un CUP temporaneo. Ti invitiamo a modificarlo inserendo quello corretto.");
 			}else{
 				programmaFetch.setCupManipolato(false);
 			}
 		}
 		programmaFetch.setDataOraAggiornamento(new Date());
 
-		return this.programmaRepository.save(programmaFetch);
+		return warningResource;
 	}
 
 	/**

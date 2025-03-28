@@ -103,12 +103,9 @@ public class ProgrammaRestApi {
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public CreaProgrammaResource creaNuovoProgramma(@RequestBody @Valid ProgrammaRequest nuovoProgrammaRequest) {
 		ProgrammaEntity programmaEntity = this.programmaMapper.toEntityFrom(nuovoProgrammaRequest);
-		ProgrammaEntity programmaEntityCreato = this.programmaService.creaNuovoProgramma(programmaEntity);
-		String warningMessage = "";
-		if(programmaEntityCreato.getCupManipolato()){
-			warningMessage = "Il CUP inserito è stato manipolato da sistema";
-		}
-		return new CreaProgrammaResource(programmaEntityCreato.getId(), programmaEntityCreato.getCupManipolato(), warningMessage);
+		//ProgrammaEntity programmaEntityCreato = this.programmaService.creaNuovoProgramma(programmaEntity);
+		CreaProgrammaResource programmaEntityCreato = this.programmaService.creaNuovoProgramma(programmaEntity);
+		return programmaEntityCreato;
 	}
 	
 	// 2.6 - Aggiornamento programma esistente
@@ -119,12 +116,8 @@ public class ProgrammaRestApi {
 			@RequestBody @Valid final ProgrammaRequest programmaRequest) {
 		if(!accessControServiceUtils.checkPermessoIdProgramma(programmaRequest, idProgramma))
 			throw new ProgrammaException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
-		ProgrammaEntity programmaAggiornato = this.programmaService.aggiornaProgramma(programmaRequest, idProgramma);
-		String warningMessage = "";
-		if(programmaAggiornato.getCupManipolato()){
-			warningMessage = "Il CUP inserito è stato manipolato da sistema";
-		}
-		return new WarningResource(programmaAggiornato.getCupManipolato(), warningMessage);
+		WarningResource warningResource = this.programmaService.aggiornaProgramma(programmaRequest, idProgramma);
+		return warningResource;
 	}
 	
 	// 2.7 - associa Ente a programma come Gestore Programma 
