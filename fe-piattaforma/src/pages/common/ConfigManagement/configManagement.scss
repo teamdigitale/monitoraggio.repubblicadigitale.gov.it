@@ -1,5 +1,19 @@
-.table-compact tr,
-.table-compact td,
+.table-compact {
+    table-layout: auto;
+    width: 100%; 
+}
+
+.table-compact th,
+.table-compact td {
+    white-space: nowrap;
+    text-align: left; 
+}
+
 .table-compact th {
-    font-weight: bold; 
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.table-compact td {
+    font-weight: bold;
 }

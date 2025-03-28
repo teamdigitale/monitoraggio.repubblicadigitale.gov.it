@@ -42,6 +42,8 @@ interface SearchBarI extends Omit<SelectI, 'onInputChange'> {
   onQueryChange?: (query: string) => void;
   disableSubmit?: boolean;
   searchType?: string;
+  interventoCheckbox?: boolean;
+  onInterventoChange?: (value: string) => void;
 }
 
 const SearchBar: React.FC<SearchBarI> = (props) => {
@@ -63,6 +65,8 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
     // tooltipText = '',
     infoText = '',
     searchType,
+    interventoCheckbox = false,
+    onInterventoChange
   } = props;
   const dispatch = useDispatch();
   const [selectedOption, setSelectedOption] = useState<
@@ -75,6 +79,15 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [hasSearchValue, setHasSearchValue] = useState<boolean>(false);
   const { isValidFiscalCode } = useFiscalCodeValidation();
+
+  const [interventoOption, setinterventoOption] = useState('RFD');
+
+  const handleInterventoOptionChange = (value: string) => {
+    setinterventoOption(value);
+    if (props.onInterventoChange) {
+      props.onInterventoChange(value);
+    }
+  };
 
   const handleInputChange = (newValue: string) => newValue.replace(/\W/g, '');
 
@@ -226,13 +239,41 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
             }}
           />
         ) : (
+          <div style={{ width: '100%' }}>
+            {interventoCheckbox && (
+                /* Radio Buttons */
+                <div className='d-flex mb-2 justify-content-center'>
+                <span style={{ fontSize: '20px', marginRight: '150px' }}>
+                  <input
+                  type='radio'
+                  name='searchType'
+                  value='RFD'
+                  checked={interventoOption === 'RFD'}
+                  onChange={(event) => handleInterventoOptionChange(event.target.value)}
+                  style={{ marginRight: '5px' }}
+                  />
+                   RFD
+                </span>
+                <span style={{ fontSize: '20px', marginRight: '150px' }}>
+                  <input
+                  type='radio'
+                  name='searchType'
+                  value='SCD'
+                  checked={interventoOption === 'SCD'}
+                  onChange={(event) => handleInterventoOptionChange(event.target.value)}
+                  style={{ marginRight: '5px' }}
+                  />
+                  SCD
+                </span>
+                </div>
+              )}
           <div
             className={clsx(
               'input-group',
               // 'mb-3',
-              'search-bar-custom__input-group'
-            )}
-          >
+                'search-bar-custom__input-group'
+              )}
+              >
             <div className='search-bar-custom__left-section'>
               <Input
                 addon
@@ -358,6 +399,7 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
                 </Button>
               )}
             </div>
+          </div>
           </div>
         )}
       </div>

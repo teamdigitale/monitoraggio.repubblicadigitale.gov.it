@@ -261,7 +261,7 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
             <div className='d-flex flex-row justify-content-start'>
               <Button
                 {...tertiaryCTA}
-                color='secondary'
+                color={ tertiaryCTA.buttonsClass ? tertiaryCTA.buttonsClass : 'secondary'}
                 className={clsx(
                   device.mediaIsPhone ? 'cta-button' : 'mr-2 cta-button',
                   device.mediaIsPhone && noPaddingSecondary && 'pt-0'

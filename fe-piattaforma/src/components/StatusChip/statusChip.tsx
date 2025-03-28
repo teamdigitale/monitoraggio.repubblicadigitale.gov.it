@@ -38,6 +38,8 @@ export const statusBgColor = (status: string) => {
     case statusTypes.SENT:
     case statusTypes.PROGRAMMED:
       return 'primary-bg-a9';
+    case statusTypes.PROGRAMMED:
+      return 'primary-bg';
     case statusTypes.FILLED_OUT:
       return 'primary-bg-c7';
     case statusTypes.DRAFT:
