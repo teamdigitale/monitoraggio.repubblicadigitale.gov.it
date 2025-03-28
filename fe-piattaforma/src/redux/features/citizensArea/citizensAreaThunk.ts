@@ -285,16 +285,18 @@ export const DownloadEntityValues =
     }
   };
 
-export const GetConfigurazioneMinorenni =
-  (idServizio: string) => async (dispatch: Dispatch) => {
+  export const GetConfigurazioneMinorenni =
+  (idServizio?: string, idProgramma?: string) => async (dispatch: Dispatch) => {
     try {
-
       dispatch(showLoader());
-      const body = {
-        idServizio: Number(idServizio),
-      };
-      const entityEndpoint = `/configurazioneminorenni/dettaglio`;
-      const res = await API.post(entityEndpoint, body);
+      
+      const queryParams = new URLSearchParams();
+      if (idServizio) queryParams.append('idServizio', idServizio);
+      if (idProgramma) queryParams.append('idProgramma', idProgramma);
+
+      const entityEndpoint = `/configurazioneminorenni/dettaglio?${queryParams.toString()}`;
+      const res = await API.get(entityEndpoint);
+
       if (res?.data) {
         return res?.data;
       }
