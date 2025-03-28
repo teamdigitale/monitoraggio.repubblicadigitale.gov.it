@@ -113,12 +113,8 @@ public class ProgettoRestApi {
 	public CreaProgettoResource creaNuovoProgetto(@RequestBody @Valid ProgettoRequest nuovoProgettoRequest,
 			@RequestParam(value = "idProgramma") Long idProgramma) {
 		ProgettoEntity progettoEntity = this.progettoMapper.toEntityFrom(nuovoProgettoRequest, idProgramma);
-		ProgettoEntity progettoEntityCreato = this.progettoService.creaNuovoProgetto(progettoEntity);
-		String warningMessage = "";
-		if(progettoEntityCreato.getCupManipolato()){
-			warningMessage = "Il CUP inserito è stato manipolato da sistema";
-		}
-		return new CreaProgettoResource(progettoEntityCreato.getId(), progettoEntityCreato.getCupManipolato(), warningMessage);
+		CreaProgettoResource creaProgettoResource = this.progettoService.creaNuovoProgetto(progettoEntity);
+		return creaProgettoResource;
 	}
 	
 	// 3.7 - Update Progetto
@@ -128,12 +124,8 @@ public class ProgettoRestApi {
 								 @RequestBody @Valid ProgettoRequest progettoRequest) {
 		if(!accessControServiceUtils.checkPermessoIdProgetto(progettoRequest, idProgetto))
 			throw new ProgettoException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
-		ProgettoEntity progettoAggiornato = this.progettoService.aggiornaProgetto(progettoRequest, idProgetto);
-		String warningMessage = "";
-		if(progettoAggiornato.getCupManipolato()){
-			warningMessage = "Il CUP inserito è stato manipolato da sistema";
-		}
-		return new WarningResource(progettoAggiornato.getCupManipolato(), warningMessage);
+		WarningResource warningResource = this.progettoService.aggiornaProgetto(progettoRequest, idProgetto);
+		return warningResource;
 	}
 
 	// 3.8 - Associa Ente a Progetto come Gestore Progetto

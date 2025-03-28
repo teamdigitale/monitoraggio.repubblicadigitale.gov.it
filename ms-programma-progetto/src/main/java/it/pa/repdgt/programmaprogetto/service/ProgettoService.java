@@ -29,6 +29,7 @@ import it.pa.repdgt.programmaprogetto.repository.ProgettoRepository;
 import it.pa.repdgt.programmaprogetto.request.ProgettiParam;
 import it.pa.repdgt.programmaprogetto.request.ProgettoFiltroRequest;
 import it.pa.repdgt.programmaprogetto.request.ProgettoRequest;
+import it.pa.repdgt.programmaprogetto.resource.CreaProgettoResource;
 import it.pa.repdgt.programmaprogetto.resource.PaginaProgetti;
 import it.pa.repdgt.programmaprogetto.resource.ProgrammaDropdownResource;
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
@@ -45,6 +46,7 @@ import it.pa.repdgt.shared.entityenum.RuoloUtenteEnum;
 import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.shared.repository.BrokenAccessControlRepository;
+import it.pa.repdgt.shared.resources.WarningResource;
 import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import it.pa.repdgt.shared.service.storico.StoricoService;
 import lombok.extern.slf4j.Slf4j;
@@ -103,7 +105,8 @@ public class ProgettoService {
 
 	@LogMethod
 	@LogExecutionTime
-	public ProgettoEntity creaNuovoProgetto(ProgettoEntity progettoEntity) {
+	public CreaProgettoResource creaNuovoProgetto(ProgettoEntity progettoEntity) {
+		CreaProgettoResource creaProgettoResource = new CreaProgettoResource();
 		if(progettoEntity.getDataInizioProgetto().after(progettoEntity.getDataFineProgetto())) {
 			String errorMessage = String.format("Impossibile creare il progetto. La data di fine non può essere antecedente alla data di inizio");
 			throw new ProgettoException(errorMessage, CodiceErroreEnum.PR01);
@@ -115,13 +118,19 @@ public class ProgettoService {
 		if(progettoEntity.getCup() == "" || progettoEntity.getCup() == null){
 			progettoEntity.setCup("cup_non_presente-"+ progettoEntity.getId());
 			progettoEntity.setCupManipolato(true);
+			creaProgettoResource.setWarning(true);
+			creaProgettoResource.setWarningTitle("CUP TEMPORANEO");
+			creaProgettoResource.setWarningMessage("È stato generato dal sistema un CUP temporaneo. Ti invitiamo a modificarlo inserendo quello corretto.");
 		}else if(progettoRepository.findAltroProgettoByCup(progettoEntity.getCup(), progettoEntity.getId()).isPresent()){			//query che verifica se cup è già associato a qualche progetto
 			progettoEntity.setCup(progettoEntity.getCup() + "-" + progettoEntity.getId());
 			progettoEntity.setCupManipolato(true);
+			creaProgettoResource.setWarning(true);
+			creaProgettoResource.setWarningTitle("CUP GIÀ ESISTENTE");
+			creaProgettoResource.setWarningMessage("Hai inserito un CUP già assegnato a un altro progetto. È stato generato dal sistema un CUP temporaneo. Ti invitiamo a modificarlo inserendo quello corretto.");
 		}else{
 			progettoEntity.setCupManipolato(false);
 		}
-		return this.salvaProgetto(progettoEntity);
+		return creaProgettoResource;
 	}
 
 	@LogMethod
@@ -222,7 +231,8 @@ public class ProgettoService {
 	 * */
 	@LogMethod
 	@LogExecutionTime
-	public ProgettoEntity aggiornaProgetto(ProgettoRequest progettoRequest, Long idProgetto) {
+	public WarningResource aggiornaProgetto(ProgettoRequest progettoRequest, Long idProgetto) {
+		WarningResource warningResource = new WarningResource();
 		if(!this.progettoRepository.existsById(idProgetto)) {
 			String errorMessage = String.format("Impossibile aggiornare il progetto. Progetto con id=%s non presente", idProgetto);
 			throw new ProgettoException(errorMessage, CodiceErroreEnum.PR04);
@@ -239,15 +249,21 @@ public class ProgettoService {
 			if(progettoFetch.getCup() == "" || progettoFetch.getCup() == null){
 				progettoFetch.setCup("cup_non_presente-"+ idProgetto);
 				progettoFetch.setCupManipolato(true);
+				warningResource.setWarning(true);
+				warningResource.setWarningTitle("CUP TEMPORANEO");
+				warningResource.setWarningMessage("È stato generato dal sistema un CUP temporaneo. Ti invitiamo a modificarlo inserendo quello corretto.");
 			}else if(progettoRepository.findAltroProgettoByCup(progettoFetch.getCup(), idProgetto).isPresent()){			//query che verifica se cup è già associato a qualche progetto
 				progettoFetch.setCup(progettoFetch.getCup() + "-" + idProgetto);
 				progettoFetch.setCupManipolato(true);
+				warningResource.setWarning(true);
+				warningResource.setWarningTitle("CUP GIÀ ESISTENTE");
+				warningResource.setWarningMessage("Hai inserito un CUP già assegnato a un altro progetto. È stato generato dal sistema un CUP temporaneo. Ti invitiamo a modificarlo inserendo quello corretto.");
 			}else{
 				progettoFetch.setCupManipolato(false);
 			}
 		}
 		progettoFetch.setDataOraAggiornamento(new Date());
-		return this.progettoRepository.save(progettoFetch);
+		return warningResource;
 	}
 
 	/**

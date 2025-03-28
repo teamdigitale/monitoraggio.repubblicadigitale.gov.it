@@ -13,8 +13,8 @@ import lombok.Setter;
 public class CreaProgrammaResource extends WarningResource {
 	private Long idProgrammaCreato;
 
-	public CreaProgrammaResource(Long idProgrammaCreato, Boolean warning, String warningMessage) {
-        super(warning, warningMessage);
+	public CreaProgrammaResource(Long idProgrammaCreato, Boolean warning, String warningMessage, String warningTitle) {
+        super(warning, warningMessage, warningTitle);
         this.idProgrammaCreato = idProgrammaCreato;
     }
 }
