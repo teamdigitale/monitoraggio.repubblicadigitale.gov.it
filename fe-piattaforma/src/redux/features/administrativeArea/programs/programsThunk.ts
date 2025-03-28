@@ -116,7 +116,7 @@ export const createProgram =
         });
         if (res) {
           if (res.data?.warning) {
-            dispatchWarning("CUP MANIPOLATO", res.data?.warningMessage);
+            dispatchWarning(res.data?.warningTitle, res.data?.warningMessage);
           }
           return res;
         }
@@ -166,7 +166,7 @@ export const updateProgram =
         });
         if (res) {
           if (res.data?.warning) {
-            dispatchWarning("CUP MANIPOLATO", res.data?.warningMessage);
+            dispatchWarning(res.data?.warningTitle, res.data?.warningMessage);
           }
           return res;
         }

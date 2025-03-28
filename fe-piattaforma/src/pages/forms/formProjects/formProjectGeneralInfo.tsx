@@ -285,7 +285,7 @@ const FormProjectGeneralInfo: React.FC<FormProjectGeneralInfoInterface> = (
         />
         <Input
           {...form?.cup}
-          label={projectDetails && projectDetails.cupManipolato ? 'CUP - Codice Unico Progetto(manipolato da sistema)' :'CUP - Codice Unico Progetto'}
+          label={projectDetails && projectDetails.cupManipolato ? 'CUP - Codice Unico Progetto (manipolato da sistema)' :'CUP - Codice Unico Progetto'}
           col='col-12 col-lg-6'
           onInputChange={(value, field) => {
             if (typeof value === 'string') {
