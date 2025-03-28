@@ -72,6 +72,7 @@ const ManageProject: React.FC<FormEnteGestoreProgettoFullInterface> = ({
       } else if (projectId) {
         // dispatch(createProjectDetails(newFormValues));
         await dispatch(updateProject(projectId, newFormValues));
+        dispatch(GetProjectDetail(projectId));
         setCurrentStep(0);
         // TODO here dispatch update program
       }
