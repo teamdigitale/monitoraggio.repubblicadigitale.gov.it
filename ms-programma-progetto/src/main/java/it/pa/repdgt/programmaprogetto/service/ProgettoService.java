@@ -121,7 +121,7 @@ public class ProgettoService {
 			creaProgettoResource.setWarning(true);
 			creaProgettoResource.setWarningTitle("CUP TEMPORANEO");
 			creaProgettoResource.setWarningMessage("È stato generato dal sistema un CUP temporaneo. Ti invitiamo a modificarlo inserendo quello corretto.");
-		}else if(progettoRepository.findAltroProgettoByCup(progettoEntity.getCup(), progettoEntity.getId()).isPresent()){			//query che verifica se cup è già associato a qualche progetto
+		}else if(!progettoRepository.findAltroProgettoByCup(progettoEntity.getCup(), progettoEntity.getId()).isEmpty()){			//query che verifica se cup è già associato a qualche progetto
 			progettoEntity.setCup(progettoEntity.getCup() + "-" + progettoEntity.getId());
 			progettoEntity.setCupManipolato(true);
 			creaProgettoResource.setWarning(true);
@@ -263,7 +263,7 @@ public class ProgettoService {
 				warningResource.setWarning(true);
 				warningResource.setWarningTitle("CUP TEMPORANEO");
 				warningResource.setWarningMessage("È stato generato dal sistema un CUP temporaneo. Ti invitiamo a modificarlo inserendo quello corretto.");
-			}else if(progettoRepository.findAltroProgettoByCup(progettoFetch.getCup(), idProgetto).isPresent()){			//query che verifica se cup è già associato a qualche progetto
+			}else if(!progettoRepository.findAltroProgettoByCup(progettoFetch.getCup(), idProgetto).isEmpty()){			//query che verifica se cup è già associato a qualche progetto
 				progettoFetch.setCup(progettoFetch.getCup() + "-" + idProgetto);
 				progettoFetch.setCupManipolato(true);
 				warningResource.setWarning(true);

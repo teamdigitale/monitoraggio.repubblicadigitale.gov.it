@@ -507,7 +507,7 @@ public class ProgrammaService {
 			creaProgrammaResource.setWarning(true);
 			creaProgrammaResource.setWarningTitle("CUP TEMPORANEO");
 			creaProgrammaResource.setWarningMessage("È stato generato dal sistema un CUP temporaneo. Ti invitiamo a modificarlo inserendo quello corretto.");
-		}else if(programmaRepository.findAltroProgrammaByCup(programma.getCup(), programma.getCodice()).isPresent()){			//query che verifica se cup è già associato a qualche programma
+		}else if(!programmaRepository.findAltroProgrammaByCup(programma.getCup(), programma.getCodice()).isEmpty()){ // Gestione del caso in cui la lista è vuota
 			programma.setCup(programma.getCup() + "-" + programma.getCodice());
 			programma.setCupManipolato(true);
 			creaProgrammaResource.setWarning(true);
@@ -621,7 +621,7 @@ public class ProgrammaService {
 				warningResource.setWarning(true);
 				warningResource.setWarningTitle("CUP TEMPORANEO");
 				warningResource.setWarningMessage("È stato generato dal sistema un CUP temporaneo. Ti invitiamo a modificarlo inserendo quello corretto.");
-			}else if(programmaRepository.findAltroProgrammaByCup(programmaFetch.getCup(), programmaFetch.getCodice()).isPresent()){			//query che verifica se cup è già associato a qualche programma
+			}else if(!programmaRepository.findAltroProgrammaByCup(programmaFetch.getCup(), programmaFetch.getCodice()).isEmpty()){			//query che verifica se cup è già associato a qualche programma
 				programmaFetch.setCup(programmaFetch.getCup() + "-" + programmaFetch.getCodice());
 				programmaFetch.setCupManipolato(true);
 				warningResource.setWarning(true);
