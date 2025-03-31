@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.432](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.431...1.0.0-test.432) (2025-03-31)
+
+
+### Bug Fixes
+
+* **U320:** fix salvataggio entity 20250331 ([3bbfa3c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3bbfa3c452c7f86342830332b78de96ff3a7f663))
+
 ## [1.0.0-test.431](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.430...1.0.0-test.431) (2025-03-31)
 
 
