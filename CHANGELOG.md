@@ -1,5 +1,49 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.45.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.44.1...1.45.0) (2025-03-31)
+
+
+### Features
+
+* **U320:** controllo robusto 2 su cup 20250331 ([dbd9d4e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/dbd9d4ebdae7b3536955346abcfcf0fa3e91318c))
+* **U250:** fix refresh liste e cambio label bottoni conferma 20250227 ([7555e48](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7555e48475d2a48337fe98ca003916ad631ed833))
+* **U250:** modifiche grafiche aggiungi facilitatori referenti e delegati 20241205 ([c13b847](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c13b8472a180cc3d88745af728435e4dce74e027))
+* **U320:** fix refresh dettaglio progetto e modifica testo warning 20250328 ([8a0fd33](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8a0fd33e24bc9a48c6a65055b880db8edbc4cd85))
+* **U320:** blocco aggiunta ente e controlli CUP 20250227 ([789a25e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/789a25e84afd6702306bf35b6d0f1ed2ca638e80))
+* **U257:** ultimate modifiche header e role picker 20241206 ([b85b64a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b85b64a14c7ea3af720d9d91fb1ee5f45cda7320))
+* **U257:** chg header e role picker 20241206 ([4dd0471](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4dd0471aeae1a4eac7d68b80d7cd467781a87fed))
+* **U257:** recupero info ente scelto 20241206 ([11f02af](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/11f02afe7d8e3be9678862cccc1faa2bde0ee5a0))
+* **U257:** chg header e role picker 20241206 ([5f4933b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5f4933bf512fbc4ef8c553a2cbd3606daaabde9c))
+* **U256:** visualizzazione stato ruolo corretto 20250114 ([b053239](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b053239ffc38a6a411066c1a1934d0f8d6ac278c))
+* **U256:** Visualizzare in maniera chiara e coerente lo stato utente/ruolo 20241218 ([277858a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/277858aed5da764c36dceaa531a7a5864cd133a6))
+* **test:** aggiornamento data limite servizi 20250328 ([ff39408](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ff39408f6c00424c16324ae1f64c13001ae1aa25))
+
+
+### Bug Fixes
+
+* **main:** riferimenti ente partner 20250331 ([8c32a03](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8c32a03d79efff1ed4d94a92f9e880431b13c991))
+* **U320:** fix salvataggio entity 20250331 ([6c34cbf](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6c34cbf6e81a22e81fa4550a5d05241d8f8a5b89))
+* **fe-piattaforma:** configurazione dashboard per enti partner 20240906 ([1a4a252](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1a4a252c8cbfc08af2d144b8994224eec7c519c3))
+* **U250:** modifica label cta 20250314 ([638d503](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/638d503f8329db5ec241854833bb036f184c79a9))
+* **U250:** fix modale modifica referente/delegato/facilitatore 20250314 ([9e9e297](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9e9e297dd165ed5be0d89cccf94871981456f4ee))
+* **U250:** fix refresh liste ente partner 20250310 ([8ec34d4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8ec34d416826a0ec4fa9e170098bef4fc70f2bab))
+* **U250:** fix form svuotato utente 20250304 ([4b018e4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4b018e4fdec1954a40b1bd3337a8a758382a10c0))
+* **U250:** rimozione resetUserDetails errato 20250304 ([3a96625](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3a96625859c52f8854702d1097ec21ecabfd73b0))
+* **U250:** fix conferma modale enabled 20250218 ([6a4280d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6a4280d6d4d338f99b224bf0e23412109a046d99))
+* **U250:** fix modali Referenti/Delegati/Facilitatori 20250204 ([066c16a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/066c16a6dc3868cd3e5f0a050689789763ded6a5))
+* **U250:** fix rimozione dati dopo cancellazione ricerca 20250114 ([a3bc2f3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a3bc2f3a8672ee43c543a9044027464763bdac1e))
+* **U250:** fix modifica Scheda Utente 20241205 ([0888cf6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0888cf6206221b85b72614825cd928f0d6850580))
+* **U250:** fix form ruolo disabilita salvataggio 20241203 ([c837200](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c83720042e500b84f22f831df748191f7b692703))
+* **U320:** controlli unicita cup 20250330 ([f6cb9ab](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f6cb9ab1b3d1b29e796988f985e05593caaa58e5))
+* **U320:** gestione titolo su warning 20250328 ([fe10582](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fe10582814afafe014a15537818e5357f4ba2c42))
+* **U320:** Gestione warning modifica programma progetto 20250328 ([0e8d50c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0e8d50ca13a170f538e5b485e8cd0c1cc25e0d5a))
+* **U320:** fix visualizzazione label cup 20250303 ([a1904e4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a1904e40fd84c93596c27743513454354b9aa2cd))
+* **U257:** fix taglio ultimi caratteri role tile 20250227 ([2b2d53d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2b2d53d23dac4af744af299607c8fc1582a271a3))
+* **U257:** fix truncate nome progetto header e "Ente" bold selettore ruolo 20250218 ([deb574e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/deb574e54ce5aeacc8f6e81b92e20600d70dd205))
+* **U257:** fix merge da U257 20250206 ([0bb4273](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0bb42733ead3c5d57ca7b16efa5fda396de8bee7))
+* **U257:** fix wip da rimuovere 20241206 ([21206ef](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/21206efbd5fd5ab3fe7281e08ec67105be19a3ac))
+* **U256:** visibilita freccia e link lista ruoli 20250221 ([ecd35b3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ecd35b35684e41f6f40343421915f93a83953f75))
+
 ## [1.44.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.44.0...1.44.1) (2025-03-03)
 
 
