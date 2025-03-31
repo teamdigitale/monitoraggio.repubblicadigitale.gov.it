@@ -632,7 +632,7 @@ public class ProgrammaService {
 			}
 		}
 		programmaFetch.setDataOraAggiornamento(new Date());
-
+		this.salvaProgramma(programmaFetch);
 		return warningResource;
 	}
 

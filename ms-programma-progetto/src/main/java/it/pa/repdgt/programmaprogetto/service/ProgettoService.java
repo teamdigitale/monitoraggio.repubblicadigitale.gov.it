@@ -130,6 +130,7 @@ public class ProgettoService {
 		}else{
 			progettoEntity.setCupManipolato(false);
 		}
+		this.salvaProgetto(progettoEntity);
 		return creaProgettoResource;
 	}
 
@@ -274,6 +275,7 @@ public class ProgettoService {
 			}
 		}
 		progettoFetch.setDataOraAggiornamento(new Date());
+		this.salvaProgetto(progettoFetch);
 		return warningResource;
 	}
 
