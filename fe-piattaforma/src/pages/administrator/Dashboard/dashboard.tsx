@@ -71,9 +71,9 @@ const dashboardRoles: {
   CITTADINO: {
     endpoint: 'vw-cittadino',
   },
-  REPP: {
-    rfd: 'vw_ente_partner_RFD_test_def',
-    scd: 'vw_ente_partner_SCD_test_def'
+  REPP: { // include anche  DEPP
+    rfd: 'vw_ente_partner_RFD_prod_def',
+    scd: 'vw_ente_partner_SCD_prod_def'
   }
 };
 
