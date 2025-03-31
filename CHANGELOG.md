@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.431](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.430...1.0.0-test.431) (2025-03-31)
+
+
+### Features
+
+* **U320:** controllo robusto 2 su cup 20250331 ([93fcdcf](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/93fcdcf916b820d0987e794a4ee1014032300297))
+
 ## [1.0.0-test.430](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.429...1.0.0-test.430) (2025-03-30)
 
 
