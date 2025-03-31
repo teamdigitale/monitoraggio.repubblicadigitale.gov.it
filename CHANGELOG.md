@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.430](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.429...1.0.0-test.430) (2025-03-30)
+
+
+### Bug Fixes
+
+* **U320:** controlli unicita cup 20250330 ([8efaef3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8efaef33c610148698aacb2268edecdd9a3b4aa0))
+
 ## [1.0.0-test.429](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.428...1.0.0-test.429) (2025-03-28)
 
 
