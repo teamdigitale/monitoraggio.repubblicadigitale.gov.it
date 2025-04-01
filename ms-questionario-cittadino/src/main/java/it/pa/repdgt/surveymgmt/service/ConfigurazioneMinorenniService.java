@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
+import it.pa.repdgt.shared.entity.ConfigurazioneMinorenniEntity;
 import it.pa.repdgt.surveymgmt.dto.ConfigurazioneMinorenniDto;
 import it.pa.repdgt.surveymgmt.repository.ConfigurazioneMinorenniRepository;
 
@@ -23,7 +24,7 @@ public class ConfigurazioneMinorenniService {
         Optional<ConfigurazioneMinorenniEntity> confMinorenniOpt = configurazioneMinorenniRepository
                 .findConfigurazioneByIdServizioOrIdProgramma(idServizio, idProgramma);
 
-        if (confMinorenniOpt.isEmpty()) {
+        if (!confMinorenniOpt.isPresent()) {
             // Restituisci un oggetto vuoto
             return new ConfigurazioneMinorenniDto();
         }

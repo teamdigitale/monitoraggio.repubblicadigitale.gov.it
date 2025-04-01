@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import it.pa.repdgt.shared.entity.CittadinoEntity;
+import it.pa.repdgt.shared.entity.ConfigurazioneMinorenniEntity;
 
 @Repository
 public interface ConfigurazioneMinorenniRepository extends JpaRepository<ConfigurazioneMinorenniEntity, Long> {
