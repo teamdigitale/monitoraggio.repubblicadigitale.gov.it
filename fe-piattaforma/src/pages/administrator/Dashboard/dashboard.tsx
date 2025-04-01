@@ -206,15 +206,18 @@ const Dashboard = () => {
       if (endpoint) {
         const res = await API.get(endpoint);
         if (res?.data?.EmbedUrl) {
-          setFrameUrl(
+            setFrameUrl(
             `${res.data.EmbedUrl}&locale=it-IT${
               user?.idProgetto && project?.id
-                ? `&progetto=${user.idProgetto}`
-                : user?.idProgramma && program?.codice
-                ? `&programma=${user.idProgramma}`
-                : ''
+              ? `&progetto=${user.idProgetto}`
+              : user?.idProgramma && program?.codice
+              ? `&programma=${user.idProgramma}`
+              : ''
+            }${['REPP','DEPP'].includes(user?.codiceRuolo ?? '')
+              ? `&ente=${user?.idEnte}`
+              : ''
             }`
-          );
+            );
         }
       }
     } catch (error) {
