@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.433](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.432...1.0.0-test.433) (2025-04-01)
+
+
+### Bug Fixes
+
+* **test:** fix dasbhoard ente partner 20250401 ([3d9612f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3d9612fd380b95991af6df628dd63d07b9c1be58))
+
 ## [1.0.0-test.432](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.431...1.0.0-test.432) (2025-03-31)
 
 
