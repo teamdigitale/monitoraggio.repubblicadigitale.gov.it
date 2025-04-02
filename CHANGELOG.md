@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.435](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.434...1.0.0-test.435) (2025-04-02)
+
+
+### Bug Fixes
+
+* **U385:** fix query e requestParam nuovo EP 20250402 ([ec42440](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ec42440128239f3735a012f396eddad837bde38d))
+
 ## [1.0.0-test.434](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.433...1.0.0-test.434) (2025-04-02)
 
 
