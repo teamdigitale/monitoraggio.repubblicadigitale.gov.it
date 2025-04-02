@@ -10,7 +10,6 @@ import { setCitizenSearchResults } from '../../redux/features/citizensArea/citiz
 import { GetEntitySearchResult } from '../../redux/features/citizensArea/citizensAreaThunk';
 import { emitNotify } from '../../redux/features/notification/notificationSlice';
 import SearchBar from '../SearchBar/searchBar';
-import { dispatchWarning } from '../../utils/notifictionHelper';
 
 interface SearchBarOptionsI {
   setCurrentStep: (value: string) => void;
@@ -68,50 +67,32 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
   const isValidFiscalCode = useCallback(
     (query: string) => {
       if (isCodiceFiscaleValido(query)) {
-        const isAdult = isMaggiorenne(query);
-        if (!isAdult) {
-          if(flgAbilitatoAMinori){
-            if(isMaggiore14Anni(query)){
-              if(moment().isAfter(dataDecorrenza)){
-                dispatchWarning(
-                  'ATTENZIONE',
-                  'Il codice fiscale risulta essere di un minore con più di 14 anni')
-                return true;
-              }else{
-                dispatchNotify(
-                  1,
-                  'ERRORE',
-                  'error',
-                  'Data decorrenza futura',
-                  'medium'
-                );
-              }
-            }else{
-              dispatchNotify(
-                1,
-                'ERRORE',
-                'error',
-                'Il codice fiscale risulta essere di un minorenne con meno di 14 anni',
-                'medium'
-              );
-              return false;
-            }
-          }else{
+        if(flgAbilitatoAMinori && moment().isAfter(dataDecorrenza)){
+          if(!isMaggiore14Anni(query)){
             dispatchNotify(
               1,
               'ERRORE',
               'error',
-              'Il cittadino deve essere maggiorenne',
+              'Il cittadino inserito deve avere almeno 14 anni',
               'medium'
             );
             return false;
-          }        
+          }
+          return true;
+        }else{
+          if(!isMaggiorenne(query)){
+            dispatchNotify(
+              1,
+              'ERRORE',
+              'error',
+              'Il cittadino inserito deve essere maggiorenne',
+              'medium'
+            );
+            return false;
+          }
+          return true;
         }
-        return isAdult;
-      }
-
-      return false;
-    },
+    }},
     [dispatchNotify, isMaggiorenne]
   );
 
@@ -121,7 +102,7 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
       setCurrentStep(value);
       setRadioFilter(value);
       setMustValidateCf(value === 'codiceFiscale');
-      setCanSubmit(value !== 'codiceFiscale' || isValidFiscalCode(query));
+      setCanSubmit(value !== 'codiceFiscale' || !!isValidFiscalCode(query));
     },
     [
       handleSearchReset,
@@ -135,7 +116,7 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
   const onQueryChange = useCallback(
     (query: string) => {
       const upperCaseQuery = query.toUpperCase();
-      setCanSubmit(mustValidateCf ? isValidFiscalCode(upperCaseQuery) : true);
+      setCanSubmit(mustValidateCf ? !!isValidFiscalCode(upperCaseQuery) : true);
       setQuery(upperCaseQuery);
     },
     [isValidFiscalCode, mustValidateCf]
