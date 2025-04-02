@@ -22,8 +22,8 @@ public class ConfigurazioneMinorenniRestApi {
     @GetMapping(path = "/dettaglio")
     @ResponseStatus(value = HttpStatus.OK)
     public ConfigurazioneMinorenniDto getConfigurazioneMinorenniByIdServizioOrIdProgramma(
-        @RequestParam(required = false) Long idServizio, 
-        @RequestParam(required = false) Long idProgramma) {
+        @RequestParam(required = false, name = "idServizio") Long idServizio, 
+        @RequestParam(required = false, name = "idProgramma") Long idProgramma) {
 
             if (idServizio == null && idProgramma == null) {
                 throw new IllegalArgumentException("Almeno uno tra 'idServizio' o 'idProgramma' deve essere valorizzato.");
