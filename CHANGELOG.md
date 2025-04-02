@@ -1,5 +1,21 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.434](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.433...1.0.0-test.434) (2025-04-02)
+
+
+### Features
+
+* **U385:** query dinamica getConfigurazioneMinorenniByIdServizioOrIdProgramma ([c7a4577](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c7a457732cee6bd34d20486ab97c87c36ddb44b1))
+* **U385:** prima implementazione FE gestione cittadini minorenni 20250324 ([0f7b3e2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0f7b3e2242098f162ca8693935359da328890024))
+* **U385:** prima implementazione BE controllo cittadini minorenni 20250324 ([56e33d1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/56e33d17d5e78621b21046c67205a28067aac4de))
+
+
+### Bug Fixes
+
+* **U385:** fix condizioni casistiche errori 20250402 ([1ff75c9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1ff75c97ab3d104147d77b9f772b6ac22d1cccb9))
+* **U385:** fix controllo risultato vuoto fix nomi e import 20250401 ([eda3dca](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/eda3dca61d62f4eb007ac591458d5960344dc2e5))
+* **Z2258:** aggiunta colonna id servizio in scarica elenco servizi 20250324 ([881d3fc](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/881d3fc33ecb6d0ca5508043d2701dcd60bf655a))
+
 ## [1.0.0-test.433](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.432...1.0.0-test.433) (2025-04-01)
 
 
