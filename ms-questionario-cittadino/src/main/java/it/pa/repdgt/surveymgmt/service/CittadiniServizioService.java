@@ -277,11 +277,8 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                             "Il codice fiscale deve essere composto da 16 caratteri");
                 ConfigurazioneMinorenniDto configurazioneMinorenniDto = configurazioneMinorenniService
-                        .getConfigurazioneMinorenniByIdServizio(idServizio);
-                if (configurazioneMinorenniDto.getId() != null) {
-                    if (new Date().before(configurazioneMinorenniDto.getDataDecorrenza())) {
-                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Data di decorrenza futura");
-                    }
+                        .getConfigurazioneMinorenniByIdServizioOrIdProgramma(idServizio, null);
+                if (configurazioneMinorenniDto.getId() != null && new Date().after(configurazioneMinorenniDto.getDataDecorrenza())) {
                     if (!isCittadinoMaggioreDi14(codiceFiscaleDecrypted)) {
                         throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                                 "Il cittadino deve avere almeno 14 anni");
@@ -340,11 +337,8 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                         "Il codice fiscale deve essere composto da 16 caratteri");
                         ConfigurazioneMinorenniDto configurazioneMinorenniDto = configurazioneMinorenniService
-                        .getConfigurazioneMinorenniByIdServizio(idServizio);
-                if (configurazioneMinorenniDto.getId() != null) {
-                    if (new Date().before(configurazioneMinorenniDto.getDataDecorrenza())) {
-                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Data di decorrenza futura");
-                    }
+                        .getConfigurazioneMinorenniByIdServizioOrIdProgramma(idServizio, null);
+                if (configurazioneMinorenniDto.getId() != null && new Date().after(configurazioneMinorenniDto.getDataDecorrenza())) {
                     if (!isCittadinoMaggioreDi14(codiceFiscaleDecrypted)) {
                         throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                                 "Il cittadino deve avere almeno 14 anni");
