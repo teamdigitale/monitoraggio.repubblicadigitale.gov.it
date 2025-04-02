@@ -19,11 +19,13 @@ public interface ConfigurazioneMinorenniRepository extends JpaRepository<Configu
     // public Optional<ConfigurazioneMinorenniEntity> findByIdServizio(Long
     // idServizio, Long idProgramma);
 
-    @Query(value = "SELECT c FROM configurazione_minorenni c " +
-            "LEFT JOIN programma p ON c.id_programma = p.id_programma " +
-            "LEFT JOIN servizio s ON s.id_progetto = p.id " +
-            "WHERE (:idServizio IS NOT NULL AND s.id = :idServizio) " +
-            "   OR (:idProgramma IS NOT NULL AND c.id_programma = :idProgramma)", nativeQuery = true)
+    @Query(value = "SELECT c.* " +
+                   "FROM configurazione_minorenni c " +
+                   "JOIN programma p ON c.id_programma = p.id " +
+                   "JOIN servizio s ON s.id_progetto = p.id " +
+                   "WHERE (:idServizio IS NOT NULL AND s.id = :idServizio) " +
+                   "OR (:idProgramma IS NOT NULL AND c.id_programma = :idProgramma)", 
+           nativeQuery = true)
     Optional<ConfigurazioneMinorenniEntity> findConfigurazioneByIdServizioOrIdProgramma(
         Long idServizio,
         Long idProgramma
