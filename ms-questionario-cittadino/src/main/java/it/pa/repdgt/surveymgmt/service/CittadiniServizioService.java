@@ -278,13 +278,17 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
                             "Il codice fiscale deve essere composto da 16 caratteri");
                 ConfigurazioneMinorenniDto configurazioneMinorenniDto = configurazioneMinorenniService
                         .getConfigurazioneMinorenniByIdServizioOrIdProgramma(idServizio, null);
-                if (configurazioneMinorenniDto.getId() != null && new Date().after(configurazioneMinorenniDto.getDataDecorrenza())) {
-                    if (!isCittadinoMaggioreDi14(codiceFiscaleDecrypted)) {
+                if (!isCittadinoMaggiorenne(codiceFiscaleDecrypted)) {
+                    if (configurazioneMinorenniDto.getId() != null
+                            && new Date().after(configurazioneMinorenniDto.getDataDecorrenza())) {
+                        if (!isCittadinoMaggioreUgualeDi14(codiceFiscaleDecrypted)) {
+                            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                                    "Il cittadino deve avere almeno 14 anni");
+                        }
+                    } else
                         throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                                "Il cittadino deve avere almeno 14 anni");
-                    }
-                } else if (!isCittadinoMaggiorenne(codiceFiscaleDecrypted))
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Il cittadino non e' maggiorenne");
+                                "Il cittadino deve essere maggiorenne");
+                }
                 nuovoCittadinoRequest.setCodiceFiscale(EncodeUtils.encrypt(codiceFiscaleDecrypted));
             }
             mapNuovoCittadinoRequestToCittadino(cittadino, nuovoCittadinoRequest);
@@ -338,13 +342,16 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
                         "Il codice fiscale deve essere composto da 16 caratteri");
                         ConfigurazioneMinorenniDto configurazioneMinorenniDto = configurazioneMinorenniService
                         .getConfigurazioneMinorenniByIdServizioOrIdProgramma(idServizio, null);
-                if (configurazioneMinorenniDto.getId() != null && new Date().after(configurazioneMinorenniDto.getDataDecorrenza())) {
-                    if (!isCittadinoMaggioreDi14(codiceFiscaleDecrypted)) {
-                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                                "Il cittadino deve avere almeno 14 anni");
-                    }
-                } else if (!isCittadinoMaggiorenne(codiceFiscaleDecrypted))
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Il cittadino non e' maggiorenne");
+
+                if(!isCittadinoMaggiorenne(codiceFiscaleDecrypted)){
+                    if (configurazioneMinorenniDto.getId() != null && new Date().after(configurazioneMinorenniDto.getDataDecorrenza())) {
+                        if (!isCittadinoMaggioreUgualeDi14(codiceFiscaleDecrypted)) {
+                            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                                    "Il cittadino deve avere almeno 14 anni");
+                        }
+                    } else
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Il cittadino deve essere maggiorenne");
+                }
             nuovoCittadinoRequest.setCodiceFiscale(EncodeUtils.encrypt(codiceFiscaleDecrypted));
         }
         /*
@@ -427,10 +434,10 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
         }
     }
 
-    public boolean isCittadinoMaggioreDi14(String codiceFiscale) {
+    public boolean isCittadinoMaggioreUgualeDi14(String codiceFiscale) {
         try {
             Date dataDiNascita = estraiDataDiNascita(codiceFiscale);
-            return isMaggioreDi14(dataDiNascita);
+            return isMaggioreUgualeDi14(dataDiNascita);
         } catch (ParseException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Errore nella data di nascita");
         }
@@ -466,7 +473,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
         return oggi.after(cal.getTime());
     }
 
-    private boolean isMaggioreDi14(Date dataNascita) {
+    private boolean isMaggioreUgualeDi14(Date dataNascita) {
         Date oggi = new Date();
         Calendar cal = Calendar.getInstance();
         cal.setTime(dataNascita);
