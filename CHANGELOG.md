@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.436](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.435...1.0.0-test.436) (2025-04-03)
+
+
+### Bug Fixes
+
+* **U385:** fix query recupero configurazione e modifica controlli verifica eta 20250403 ([b3ac43f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b3ac43f8cfe3349eb45e1a06a9beb2f2d6bf1d25))
+
 ## [1.0.0-test.435](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.434...1.0.0-test.435) (2025-04-02)
 
 
