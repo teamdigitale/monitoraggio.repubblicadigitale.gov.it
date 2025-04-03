@@ -26,6 +26,7 @@ import { formFieldI } from '../../../../../utils/formHelper';
 import FormAuthorities from '../../../../forms/formAuthorities';
 import ExistingEnteInfo from '../../../../forms/formServices/ExistingEnteInfo';
 import NoResultsFoundEnte from '../../../../../components/NoResultsFoundEnte/noResultsFoundEnte';
+import { dispatchNotify } from '../../../../../utils/notifictionHelper';
 
 const id = 'ente-partner';
 
@@ -76,6 +77,15 @@ const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
   
 
   const handleSearchAuthority = async (search: string) => {
+    if(search.length !== 11) {
+      dispatchNotify({
+        status: 'error',
+        message: 'Il codice fiscale deve essere lungo 11 caratteri',
+        title: 'Attenzione',
+        closable: true
+    });
+      return;
+    }
     resetModal(false);
     dispatch(resetAuthorityDetails());
     setSearchedFiscalCode(search);
@@ -194,7 +204,7 @@ const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
             // 'search-bar-borders',
             'search-bar-custom'
           )}
-          placeholder='Inserisci il codice fiscale dell’ente' //Modificare BE
+          placeholder='Inserisci il codice fiscale dell’ente'
           onSubmit={handleSearchAuthority}
           onReset={() => {
             resetModal(false);
