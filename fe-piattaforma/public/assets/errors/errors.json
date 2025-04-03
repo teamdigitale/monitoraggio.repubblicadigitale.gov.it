@@ -2,467 +2,593 @@
   "errors": {
     "A01": {
       "titolo": "ACCESSO NON CONSENTITO",
-      "descrizione": "Devi avere almeno un ruolo assegnato per accedere a Facilita"
+      "descrizione": "Devi avere almeno un ruolo assegnato per accedere a Facilita",
+      "type": "error"
     },
     "A02": {
       "titolo": "",
-      "descrizione": "Contenuto non consentito"
+      "descrizione": "Contenuto non consentito",
+      "type": "error"
     },
     "A03": {
       "titolo": "Il tuo ruolo su Facilita risulta in sospeso",
-      "descrizione": "È possibile che il tuo ruolo sulla piattaforma Facilita non sia stato creato correttamente e, al momento, risulti in sospeso. Contatta il tuo referente per richiederne nuovamente la creazione e consertirti il regolare accesso alla piattaforma."
+      "descrizione": "È possibile che il tuo ruolo sulla piattaforma Facilita non sia stato creato correttamente e, al momento, risulti in sospeso. Contatta il tuo referente per richiederne nuovamente la creazione e consertirti il regolare accesso alla piattaforma.",
+      "type": "error"
     },
     "C01": {
       "titolo": "",
-      "descrizione": "Errore Risorsa non trovata"
+      "descrizione": "Errore Risorsa non trovata",
+      "type": "error"
     },
     "C02": {
       "titolo": "",
-      "descrizione": "Errore storicizazione ente"
+      "descrizione": "Errore storicizazione ente",
+      "type": "error"
     },
     "C03": {
       "titolo": "",
-      "descrizione": "Errore Utente con ruolo DEGP/REGP non definito per il progetto"
+      "descrizione": "Errore Utente con ruolo DEGP/REGP non definito per il progetto",
+      "type": "error"
     },
     "C04": {
       "titolo": "",
-      "descrizione": "Errore Utente con ruolo DEG/REG non definito per il programma"
+      "descrizione": "Errore Utente con ruolo DEG/REG non definito per il programma",
+      "type": "error"
     },
     "C05": {
       "titolo": "",
-      "descrizione": "Errore Utente con ruolo DEPP/REPP non definito per il progetto"
+      "descrizione": "Errore Utente con ruolo DEPP/REPP non definito per il progetto",
+      "type": "error"
     },
     "C06": {
       "titolo": "",
-      "descrizione": "Errore Combinazione (ProgrammaProgetto) non trovata"
+      "descrizione": "Errore Combinazione (ProgrammaProgetto) non trovata",
+      "type": "error"
     },
     "C07": {
       "titolo": "",
-      "descrizione": "Errore integrazione dati utente"
+      "descrizione": "Errore integrazione dati utente",
+      "type": "error"
     },
     "D01": {
       "titolo": "SI È VERIFICATO UN ERRORE",
-      "descrizione": "Ti invitiamo a riprovare più tardi."
+      "descrizione": "Ti invitiamo a riprovare più tardi.",
+      "type": "error"
     },
     "G01": {
       "titolo": "",
-      "descrizione": "Errore Generico"
+      "descrizione": "Errore Generico",
+      "type": "error"
     },
     "G02": {
       "titolo": "",
-      "descrizione": "Errore Richiesta errata"
+      "descrizione": "Errore Richiesta errata",
+      "type": "error"
     },
     "G03": {
       "titolo": "",
-      "descrizione": "Errore Pagina richista non esistente"
+      "descrizione": "Errore Pagina richista non esistente",
+      "type": "error"
     },
     "R01": {
       "titolo": "NOME RUOLO GIÀ IN USO",
-      "descrizione": "Il nome inserito risulta associato a un altro ruolo. Inserisci un nome ruolo differente"
+      "descrizione": "Il nome inserito risulta associato a un altro ruolo. Inserisci un nome ruolo differente",
+      "type": "error"
     },
     "R02": {
       "titolo": "",
-      "descrizione": "Errore impossibile aggiornare il ruolo"
+      "descrizione": "Errore impossibile aggiornare il ruolo",
+      "type": "error"
     },
     "R03": {
       "titolo": "",
-      "descrizione": "Errore impossibile cancellare il ruolo DTD/DSCU"
+      "descrizione": "Errore impossibile cancellare il ruolo DTD/DSCU",
+      "type": "error"
     },
     "R04": {
       "titolo": "",
-      "descrizione": "Errore impossibile cancellare il ruoli predefiniti"
+      "descrizione": "Errore impossibile cancellare il ruoli predefiniti",
+      "type": "error"
     },
     "R05": {
       "titolo": "",
-      "descrizione": "Errore impossibile cancellare ruolo associato ad utente"
+      "descrizione": "Errore impossibile cancellare ruolo associato ad utente",
+      "type": "error"
     },
     "R06": {
       "titolo": "",
-      "descrizione": "Errore impossibile cancellare ruolo"
+      "descrizione": "Errore impossibile cancellare ruolo",
+      "type": "error"
     },
     "R07": {
       "titolo": "",
-      "descrizione": "Errore impossibile attivare il ruolo per l'utente"
+      "descrizione": "Errore impossibile attivare il ruolo per l'utente",
+      "type": "error"
     },
     "RG01": {
       "titolo": "",
-      "descrizione": "Errore impossibile creare associazione ruolo al gruppo"
+      "descrizione": "Errore impossibile creare associazione ruolo al gruppo",
+      "type": "error"
     },
     "RG02": {
       "titolo": "",
-      "descrizione": "Errore impossibile aggiornare associazione ruolo al gruppo"
+      "descrizione": "Errore impossibile aggiornare associazione ruolo al gruppo",
+      "type": "error"
     },
     "RC01": {
       "titolo": "ACCESSO ALLA CHAT NON RIUSCITO",
-      "descrizione": "Non è stato possibile avviare Rocket.Chat, ti invitiamo a riprovare più tardi"
+      "descrizione": "Non è stato possibile avviare Rocket.Chat, ti invitiamo a riprovare più tardi",
+      "type": "error"
     },
     "RC02": {
       "titolo": "ACCESSO ALLA CHAT NON RIUSCITO",
-      "descrizione": "Non è stato possibile avviare Rocket.Chat, ti invitiamo a riprovare più tardi"
+      "descrizione": "Non è stato possibile avviare Rocket.Chat, ti invitiamo a riprovare più tardi",
+      "type": "error"
     },
     "RC03": {
       "titolo": "ACCESSO ALLA CHAT NON RIUSCITO",
-      "descrizione": "Non è stato possibile avviare Rocket.Chat, ti invitiamo a riprovare più tardi"
+      "descrizione": "Non è stato possibile avviare Rocket.Chat, ti invitiamo a riprovare più tardi",
+      "type": "error"
     },
     "U01": {
       "titolo": "CODICE FISCALE GIÀ IN USO",
-      "descrizione": "Il codice fiscale inserito risulta associato a un altro utente. Ti invitiamo a verificarne la correttezza"
+      "descrizione": "Il codice fiscale inserito risulta associato a un altro utente. Ti invitiamo a verificarne la correttezza",
+      "type": "error"
     },
     "U02": {
       "titolo": "",
-      "descrizione": "Errore cancellazione utente con ruolo associato"
+      "descrizione": "Errore cancellazione utente con ruolo associato",
+      "type": "error"
     },
     "U03": {
       "titolo": "",
-      "descrizione": "Errore l'utente con codice fiscale possiede già il ruolo"
+      "descrizione": "Errore l'utente con codice fiscale possiede già il ruolo",
+      "type": "error"
     },
     "U04": {
       "titolo": "",
-      "descrizione": "Errore impossibile associare il ruolo all'utente"
+      "descrizione": "Errore impossibile associare il ruolo all'utente",
+      "type": "error"
     },
     "U05": {
       "titolo": "",
-      "descrizione": "Errore Impossibile cancellare ruolo non associato all'utente"
+      "descrizione": "Errore Impossibile cancellare ruolo non associato all'utente",
+      "type": "error"
     },
     "U06": {
       "titolo": "",
-      "descrizione": "Errore ruolo non definito per l'utente"
+      "descrizione": "Errore ruolo non definito per l'utente",
+      "type": "error"
     },
     "U07": {
       "titolo": "CODICE FISCALE GIÀ IN USO",
-      "descrizione": "Il codice fiscale inserito risulta associato a un altro cittadino. Ti invitiamo a verificarne la correttezza"
+      "descrizione": "Il codice fiscale inserito risulta associato a un altro cittadino. Ti invitiamo a verificarne la correttezza",
+      "type": "error"
     },
     "U08": {
       "titolo": "",
-      "descrizione": "Errore codice fiscale non specificato"
+      "descrizione": "Errore codice fiscale non specificato",
+      "type": "error"
     },
     "U09": {
       "titolo": "",
-      "descrizione": "Errore impossibile aggiungere ruolo all'utente"
+      "descrizione": "Errore impossibile aggiungere ruolo all'utente",
+      "type": "error"
     },
     "U10": {
       "titolo": "",
-      "descrizione": "Errore impossibile cancellare ruolo all'utente"
+      "descrizione": "Errore impossibile cancellare ruolo all'utente",
+      "type": "error"
     },
     "U16": {
       "titolo": "RUOLO GIÀ ASSEGNATO ALL'UTENTE",
-      "descrizione": "Seleziona un altro ruolo"
+      "descrizione": "Seleziona un altro ruolo",
+      "type": "error"
     },
     "U20": {
       "titolo": "UTENTE NON TROVATO",
-      "descrizione": "L'utente non è presente su Facilita"
+      "descrizione": "L'utente non è presente su Facilita",
+      "type": "error"
     },
     "U23": {
       "titolo": "CITTADINO GIÀ ASSOCIATO AL SERVIZIO",
-      "descrizione": "Inserisci un nuovo cittadino da associare al servizio"
+      "descrizione": "Inserisci un nuovo cittadino da associare al servizio",
+      "type": "error"
     },
     "S01": {
       "titolo": "CARICAMENTO NON RIUSCITO",
-      "descrizione": "Non è stato possibile caricare la lista cittadini. Ti invitiamo a riprovare più tardi"
+      "descrizione": "Non è stato possibile caricare la lista cittadini. Ti invitiamo a riprovare più tardi",
+      "type": "error"
     },
     "S02": {
       "titolo": "ELENCO NON SCARICATO",
-      "descrizione": "Non è stato possibile scaricare l'elenco servizi. Ti invitiamo a riprovare più tardi"
+      "descrizione": "Non è stato possibile scaricare l'elenco servizi. Ti invitiamo a riprovare più tardi",
+      "type": "error"
     },
     "S03": {
       "titolo": "",
-      "descrizione": "Errore servizio non accessibile per l'utente"
+      "descrizione": "Errore servizio non accessibile per l'utente",
+      "type": "error"
     },
     "S04": {
       "titolo": "",
-      "descrizione": "Errore creazione servizio. Nessun questionario template associato al programma"
+      "descrizione": "Errore creazione servizio. Nessun questionario template associato al programma",
+      "type": "error"
     },
     "S05": {
       "titolo": "",
-      "descrizione": "Errore creazione servizio. Utente non ha ruolo FACILITATORE o VOLONTARIO"
+      "descrizione": "Errore creazione servizio. Utente non ha ruolo FACILITATORE o VOLONTARIO",
+      "type": "error"
     },
     "S06": {
       "titolo": "",
-      "descrizione": "Errore aggiornare servizio. Utente non ha ruolo FACILITATORE o VOLONTARIO"
+      "descrizione": "Errore aggiornare servizio. Utente non ha ruolo FACILITATORE o VOLONTARIO",
+      "type": "error"
     },
     "S07": {
       "titolo": "",
-      "descrizione": "Errore impossibile eliminare il servizio."
+      "descrizione": "Errore impossibile eliminare il servizio.",
+      "type": "error"
     },
     "S08": {
       "titolo": "NOME SERVIZIO GIÀ IN USO",
-      "descrizione": "Il nome inserito risulta associato a un altro servizio. Inserisci un nome servizio differente"
+      "descrizione": "Il nome inserito risulta associato a un altro servizio. Inserisci un nome servizio differente",
+      "type": "error"
     },
     "S09": {
       "titolo": "",
-      "descrizione": "Errore servizio non esistente"
+      "descrizione": "Errore servizio non esistente",
+      "type": "error"
     },
     "S10": {
       "titolo": "",
-      "descrizione": "Il servizio che vuoi creare riporta gli stessi dati di un servizio già esistente per la stessa data. Per creare una nuovo servizio, assicurati di differenziare almeno un’informazione, per esempio il nome o la descrizione"
+      "descrizione": "Il servizio che vuoi creare riporta gli stessi dati di un servizio già esistente per la stessa data. Per creare una nuovo servizio, assicurati di differenziare almeno un’informazione, per esempio il nome o la descrizione",
+      "type": "error"
     },
     "S11": {
       "titolo": "",
-      "descrizione": "Errore creazione servizio"
+      "descrizione": "Errore creazione servizio",
+      "type": "error"
     },
     "SD01": {
       "titolo": "NOME SEDE GIÀ IN USO",
-      "descrizione": "Il nome inserito risulta associato a un'altra sede. Inserisci un nome sede differente"
+      "descrizione": "Il nome inserito risulta associato a un'altra sede. Inserisci un nome sede differente",
+      "type": "error"
     },
     "SD02": {
       "titolo": "NUOVO NOME SEDE GIÀ IN USO",
-      "descrizione": "Il nuovo nome inserito risulta associato a un'altra sede. Inserisci un nome sede differente"
+      "descrizione": "Il nuovo nome inserito risulta associato a un'altra sede. Inserisci un nome sede differente",
+      "type": "error"
     },
     "Q01": {
       "titolo": "",
-      "descrizione": "Errore questionario template inesistente"
+      "descrizione": "Errore questionario template inesistente",
+      "type": "error"
     },
     "QT01": {
       "titolo": "ELENCO NON SCARICATO",
-      "descrizione": "Non è stato possibile scaricare l'elenco questionari. Ti invitiamo a riprovare più tardi"
+      "descrizione": "Non è stato possibile scaricare l'elenco questionari. Ti invitiamo a riprovare più tardi",
+      "type": "error"
     },
     "QT02": {
       "titolo": "NUOVO NOME QUESTIONARIO GIÀ IN USO",
-      "descrizione": "Il nuovo nome inserito risulta associato a un altro questionario. Inserisci un nome questionario differente"
+      "descrizione": "Il nuovo nome inserito risulta associato a un altro questionario. Inserisci un nome questionario differente",
+      "type": "error"
     },
     "QT03": {
       "titolo": "",
-      "descrizione": "Errore impossibile cancellare il questionario"
+      "descrizione": "Errore impossibile cancellare il questionario",
+      "type": "error"
     },
     "QT04": {
       "titolo": "",
-      "descrizione": "Errore impossibile recuperare il questionario poichè inesistente su MongoDB"
+      "descrizione": "Errore impossibile recuperare il questionario poichè inesistente su MongoDB",
+      "type": "error"
     },
     "QT05": {
       "titolo": "",
-      "descrizione": "Errore impossibile recuperare il questionario poichè inesistente su MySql"
+      "descrizione": "Errore impossibile recuperare il questionario poichè inesistente su MySql",
+      "type": "error"
     },
     "QT06": {
       "titolo": "",
-      "descrizione": "Errore impossibile avere un programma senza associato alcun questionario template"
+      "descrizione": "Errore impossibile avere un programma senza associato alcun questionario template",
+      "type": "error"
     },
     "QT07": {
       "titolo": "",
-      "descrizione": "Errore impossibile salvare il questionario template perchè id questionario template già esistente"
+      "descrizione": "Errore impossibile salvare il questionario template perchè id questionario template già esistente",
+      "type": "error"
     },
     "QC01": {
       "titolo": "",
-      "descrizione": "Errore questionario compilato non presente su mySql"
+      "descrizione": "Errore questionario compilato non presente su mySql",
+      "type": "error"
     },
     "QC02": {
       "titolo": "",
-      "descrizione": "Errore questionario compilato non presente su MongoDB"
+      "descrizione": "Errore questionario compilato non presente su MongoDB",
+      "type": "error"
     },
     "CIT01": {
       "titolo": "CARICAMENTO NON RIUSCITO",
-      "descrizione": "Non è stato possibile caricare la lista cittadini. Ti invitiamo a riprovare più tardi"
+      "descrizione": "Non è stato possibile caricare la lista cittadini. Ti invitiamo a riprovare più tardi",
+      "type": "error"
     },
     "CIT02": {
       "titolo": "",
-      "descrizione": "Errore impossibile aggiornare cittadino"
+      "descrizione": "Errore impossibile aggiornare cittadino",
+      "type": "error"
     },
     "CIT03": {
       "titolo": "ELENCO NON SCARICATO",
-      "descrizione": "Non è stato possibile scaricare l'elenco cittadini. Ti invitiamo a riprovare più tardi"
+      "descrizione": "Non è stato possibile scaricare l'elenco cittadini. Ti invitiamo a riprovare più tardi",
+      "type": "error"
     },
     "E01": {
       "titolo": "",
-      "descrizione": "Errore invio email"
+      "descrizione": "Errore invio email",
+      "type": "error"
     },
     "EN01": {
       "titolo": "ELENCO NON SCARICATO",
-      "descrizione": "Non è stato possibile scaricare l'elenco enti. Ti invitiamo a riprovare più tardi"
+      "descrizione": "Non è stato possibile scaricare l'elenco enti. Ti invitiamo a riprovare più tardi",
+      "type": "error"
     },
     "EN02": {
       "titolo": "CARICAMENTO NON RIUSCITO",
-      "descrizione": "Non è stato possibile caricare la lista enti partner. Ti invitiamo a riprovare più tardi"
+      "descrizione": "Non è stato possibile caricare la lista enti partner. Ti invitiamo a riprovare più tardi",
+      "type": "error"
     },
     "EN03": {
       "titolo": "",
-      "descrizione": "Errore Impossibile assegnare ente come gestore del programma"
+      "descrizione": "Errore Impossibile assegnare ente come gestore del programma",
+      "type": "error"
     },
     "EN04": {
       "titolo": "REFERENTE O DELEGATO GIÀ ASSOCIATO ALL'ENTE",
-      "descrizione": "Inserisci un nuovo referente o delegato da associare all'ente partner del progetto"
+      "descrizione": "Inserisci un nuovo referente o delegato da associare all'ente partner del progetto",
+      "type": "error"
     },
     "EN05": {
       "titolo": "CARICAMENTO NON RIUSCITO",
-      "descrizione": "Non è stato possibile caricare la lista enti partner. Ti invitiamo a riprovare più tardi"
+      "descrizione": "Non è stato possibile caricare la lista enti partner. Ti invitiamo a riprovare più tardi",
+      "type": "error"
     },
     "EN06": {
       "titolo": "RIMOZIONE NON CONSENTITA",
-      "descrizione": "Il referente/delegato non può essere rimosso, perché è l'unico attivo sull'ente partner"
+      "descrizione": "Il referente/delegato non può essere rimosso, perché è l'unico attivo sull'ente partner",
+      "type": "error"
     },
     "EN07": {
       "titolo": "FACILITATORE O VOLONTARIO GIÀ ASSOCIATO",
-      "descrizione": "Inserisci un nuovo facilitatore o volontario da associare"
+      "descrizione": "Inserisci un nuovo facilitatore o volontario da associare",
+      "type": "error"
     },
     "EN08": {
       "titolo": "RIMOZIONE NON CONSENTITA",
-      "descrizione": "Non puoi rimuovere il facilitatore o volontario dalla sede o dall'ente o dal progetto"
+      "descrizione": "Non puoi rimuovere il facilitatore o volontario dalla sede o dall'ente o dal progetto",
+      "type": "error"
     },
     "EN09": {
       "titolo": "",
-      "descrizione": "Errore Impossibile terminare/cancellare associazione Ente-Sede-Progetto"
+      "descrizione": "Errore Impossibile terminare/cancellare associazione Ente-Sede-Progetto",
+      "type": "error"
     },
     "EN10": {
       "titolo": "CODICE FISCALE GIÀ IN USO",
-      "descrizione": "Il codice fiscale inserito risulta associato a un altro ente. Ti invitiamo a verificarne la correttezza"
+      "descrizione": "Il codice fiscale inserito risulta associato a un altro ente. Ti invitiamo a verificarne la correttezza",
+      "type": "error"
     },
     "EN11": {
       "titolo": "REFERENTE O DELEGATO GIÀ ASSOCIATO ALL'ENTE",
-      "descrizione": "Inserisci un nuovo referente o delegato da associare all'ente gestore di programma"
+      "descrizione": "Inserisci un nuovo referente o delegato da associare all'ente gestore di programma",
+      "type": "error"
     },
     "EN12": {
       "titolo": "REFERENTE O DELEGATO GIÀ ASSOCIATO ALL'ENTE",
-      "descrizione": "Inserisci un nuovo referente o delegato da associare all'ente gestore di progetto"
+      "descrizione": "Inserisci un nuovo referente o delegato da associare all'ente gestore di progetto",
+      "type": "error"
     },
     "EN13": {
       "titolo": "",
-      "descrizione": "Errore Impossibile aggiornare ente"
+      "descrizione": "Errore Impossibile aggiornare ente",
+      "type": "error"
     },
     "EN14": {
       "titolo": "NUOVO CODICE FISCALE GIÀ IN USO",
-      "descrizione": "Il nuovo codice fiscale inserito risulta associato a un altro utente. Ti invitiamo a verificarne la correttezza"
+      "descrizione": "Il nuovo codice fiscale inserito risulta associato a un altro utente. Ti invitiamo a verificarne la correttezza",
+      "type": "error"
     },
     "EN15": {
       "titolo": "",
-      "descrizione": "Il codice fiscale inserito risulta appartenere già ad un altro ente"
+      "descrizione": "Il codice fiscale inserito risulta appartenere già ad un altro ente",
+      "type": "error"
     },
     "EN16": {
       "titolo": "RIMOZIONE NON RIUSCITA",
-      "descrizione": "Ti invitiamo a riprovare più tardi. Se l'errore persiste, contatta il supporto"
+      "descrizione": "Ti invitiamo a riprovare più tardi. Se l'errore persiste, contatta il supporto",
+      "type": "error"
     },
     "EN17": {
       "titolo": "RIMOZIONE NON RIUSCITA",
-      "descrizione": "Ti invitiamo a riprovare più tardi. Se l'errore persiste, contatta il supporto"
+      "descrizione": "Ti invitiamo a riprovare più tardi. Se l'errore persiste, contatta il supporto",
+      "type": "error"
     },
     "EN18": {
       "titolo": "RIMOZIONE NON RIUSCITA",
-      "descrizione": "Ti invitiamo a riprovare più tardi. Se l'errore persiste, contatta il supporto"
+      "descrizione": "Ti invitiamo a riprovare più tardi. Se l'errore persiste, contatta il supporto",
+      "type": "error"
     },
     "EN19": {
       "titolo": "RIMOZIONE NON RIUSCITA",
-      "descrizione": "Ti invitiamo a riprovare più tardi. Se l'errore persiste, contatta il supporto"
+      "descrizione": "Ti invitiamo a riprovare più tardi. Se l'errore persiste, contatta il supporto",
+      "type": "error"
     },
     "EN20": {
       "titolo": "RIMOZIONE NON RIUSCITA",
-      "descrizione": "Ti invitiamo a riprovare più tardi. Se l'errore persiste, contatta il supporto"
+      "descrizione": "Ti invitiamo a riprovare più tardi. Se l'errore persiste, contatta il supporto",
+      "type": "error"
     },
     "EN21": {
       "titolo": "RIMOZIONE NON RIUSCITA",
-      "descrizione": "Ti invitiamo a riprovare più tardi. Se l'errore persiste, contatta il supporto"
+      "descrizione": "Ti invitiamo a riprovare più tardi. Se l'errore persiste, contatta il supporto",
+      "type": "error"
     },
     "EN22": {
       "titolo": "RIMOZIONE NON CONSENTITA",
-      "descrizione": "Il referente/delegato non può essere rimosso, perché è l'unico attivo sul programma"
+      "descrizione": "Il referente/delegato non può essere rimosso, perché è l'unico attivo sul programma",
+      "type": "error"
     },
     "EN23": {
       "titolo": "RIMOZIONE NON CONSENTITA",
-      "descrizione": "Il referente/delegato non può essere rimosso, perché è l'unico attivo sul progetto"
+      "descrizione": "Il referente/delegato non può essere rimosso, perché è l'unico attivo sul progetto",
+      "type": "error"
     },
     "EN25": {
       "titolo": "NOME ENTE GIÀ IN USO",
-      "descrizione": "Il nome inserito risulta associato a un altro ente. Inserisci un nome ente differente"
+      "descrizione": "Il nome inserito risulta associato a un altro ente. Inserisci un nome ente differente",
+      "type": "error"
+    },
+    "EN26": {
+      "titolo": "ENTE GIÀ ASSOCIATO",
+      "descrizione": "L'ente risulta essere già associato al progetto come ente gestore",
+      "type": "error"
+    },
+    "EN27": {
+      "titolo": "ENTE GIÀ ASSOCIATO",
+      "descrizione": "L'ente risulta essere già associato al progetto come ente partner",
+      "type": "error"
     },
     "T01": {
       "titolo": "",
-      "descrizione": "Errore token non valido"
+      "descrizione": "Errore token non valido",
+      "type": "error"
     },
     "T02": {
       "titolo": "",
-      "descrizione": "Errore token scaduto"
+      "descrizione": "Errore token scaduto",
+      "type": "error"
     },
     "P01": {
       "titolo": "ID PROGRAMMA GIÀ IN USO",
-      "descrizione": "L'ID inserito risulta associato a un altro programma. Ti invitiamo a verificarne la correttezza"
+      "descrizione": "L'ID inserito risulta associato a un altro programma. Ti invitiamo a verificarne la correttezza",
+      "type": "error"
     },
     "P02": {
       "titolo": "",
-      "descrizione": "Errore creazione programma. Questionario template default associato non esistente"
+      "descrizione": "Errore creazione programma. Questionario template default associato non esistente",
+      "type": "error"
     },
     "P03": {
       "titolo": "",
-      "descrizione": "Errore impossibile terminare programma"
+      "descrizione": "Errore impossibile terminare programma",
+      "type": "error"
     },
     "P04": {
       "titolo": "",
-      "descrizione": "Errore impossibile cancellare programma"
+      "descrizione": "Errore impossibile cancellare programma",
+      "type": "error"
     },
     "P05": {
       "titolo": "",
-      "descrizione": "Errore impossibile assegnare programma ad ente gestore"
+      "descrizione": "Errore impossibile assegnare programma ad ente gestore",
+      "type": "error"
     },
     "P06": {
       "titolo": "NUOVO ID PROGRAMMA GIÀ IN USO",
-      "descrizione": "Il nuovo ID inserito risulta associato a un altro programma. Ti invitiamo a verificarne la correttezza"
+      "descrizione": "Il nuovo ID inserito risulta associato a un altro programma. Ti invitiamo a verificarne la correttezza",
+      "type": "error"
     },
     "P07": {
       "titolo": "",
-      "descrizione": "Errore impossibile associare questionario al programma"
+      "descrizione": "Errore impossibile associare questionario al programma",
+      "type": "error"
     },
     "P08": {
       "titolo": "ELENCO NON SCARICATO",
-      "descrizione": "Non è stato possibile scaricare l'elenco programmi. Ti invitiamo a riprovare più tardi"
+      "descrizione": "Non è stato possibile scaricare l'elenco programmi. Ti invitiamo a riprovare più tardi",
+      "type": "error"
     },
     "PR01": {
       "titolo": "",
-      "descrizione": "Errore creazione progetto"
+      "descrizione": "Errore creazione progetto",
+      "type": "error"
     },
     "PR02": {
       "titolo": "",
-      "descrizione": "Errore impossibile cancellare progetto"
+      "descrizione": "Errore impossibile cancellare progetto",
+      "type": "error"
     },
     "PR03": {
       "titolo": "",
-      "descrizione": "Errore impossibile terminare progetto"
+      "descrizione": "Errore impossibile terminare progetto",
+      "type": "error"
     },
     "PR04": {
       "titolo": "",
-      "descrizione": "Errore impossibile aggiornare progetto"
+      "descrizione": "Errore impossibile aggiornare progetto",
+      "type": "error"
     },
     "PR05": {
       "titolo": "",
-      "descrizione": "Errore impossibile assegnare progetto ad ente gestore"
+      "descrizione": "Errore impossibile assegnare progetto ad ente gestore",
+      "type": "error"
     },
     "PR06": {
       "titolo": "",
-      "descrizione": "Errore impossibile assegnare progetto ad al programma"
+      "descrizione": "Errore impossibile assegnare progetto ad al programma",
+      "type": "error"
     },
     "PR07": {
       "titolo": "",
-      "descrizione": "Errore attivare progetto"
+      "descrizione": "Errore attivare progetto",
+      "type": "error"
     },
     "PR08": {
       "titolo": "ELENCO NON SCARICATO",
-      "descrizione": "Non è stato possibile scaricare l'elenco progetti. Ti invitiamo a riprovare più tardi"
+      "descrizione": "Non è stato possibile scaricare l'elenco progetti. Ti invitiamo a riprovare più tardi",
+      "type": "error"
     },
     "PR09": {
       "titolo": "OPERAZIONE NON RIUSCITA",
-      "descrizione": "Non è stato possibile aggiungere l'ente gestore al progetto. Ti invitiamo a riprovare più tardi. Se l'errore persiste, contatta il supporto"
+      "descrizione": "Non è stato possibile aggiungere l'ente gestore al progetto. Ti invitiamo a riprovare più tardi. Se l'errore persiste, contatta il supporto",
+      "type": "error"
     },
     "U21": {
       "titolo": "EMAIL GIÀ IN USO",
-      "descrizione": "L'indirizzo email inserito risulta già registrato sulla piattaforma. Inserisci un nuovo indirizzo email per completare la registrazione dell'utente"
+      "descrizione": "L'indirizzo email inserito risulta già registrato sulla piattaforma. Inserisci un nuovo indirizzo email per completare la registrazione dell'utente",
+      "type": "error"
     },
     "WD01": {
       "titolo": "REGISTRAZIONE NON RIUSCITA",
-      "descrizione": "Non è stato possibile completare la tua registrazione all'area di collaborazione. Verifica nella pagina Documenti le istruzioni per registrarti e riprova"
+      "descrizione": "Non è stato possibile completare la tua registrazione all'area di collaborazione. Verifica nella pagina Documenti le istruzioni per registrarti e riprova",
+      "type": "error"
     },
     "WD02": {
       "titolo": "REGISTRAZIONE NON RIUSCITA",
-      "descrizione": "Non è stato possibile completare la tua registrazione all'area di collaborazione. Ti invitiamo a riprovare più tardi"
+      "descrizione": "Non è stato possibile completare la tua registrazione all'area di collaborazione. Ti invitiamo a riprovare più tardi",
+      "type": "error"
     },
     "CMCRA05": {
       "titolo": "HAI UTILIZZATO UN TERMINE NON CONSENTITO",
-      "descrizione": "Riformula il testo per poterlo salvare"
+      "descrizione": "Riformula il testo per poterlo salvare",
+      "type": "error"
     },
     "CMRRA06": {
       "titolo": "HAI UTILIZZATO UN TERMINE NON CONSENTITO",
-      "descrizione": "Riformula il testo per poterlo salvare"
+      "descrizione": "Riformula il testo per poterlo salvare",
+      "type": "error"
     },
     "A06": {
       "titolo": "ERRORE DATA SERVIZIO",
-      "descrizione": "Inserisci una data compresa fra le date di inizio e fine progetto"
+      "descrizione": "Inserisci una data compresa fra le date di inizio e fine progetto",
+      "type": "error"
     },
     "CM01" : {
       "titolo": "IMPOSSIBILE AVVIARE INSERIMENTO DATI",
-      "descrizione": "E' già in corso un inserimento dati"
+      "descrizione": "E' già in corso un inserimento dati",
+      "type": "error"
     }
   }
 }

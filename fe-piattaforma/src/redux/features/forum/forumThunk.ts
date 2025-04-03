@@ -120,7 +120,8 @@ export const GetNewsList =
     forcedFilters: {
       [key: string]: { label: string; value: string }[] | undefined;
     } = {},
-    updateStore = true
+    updateStore = true,
+    isFromHome = false
   ) =>
   async (dispatch: Dispatch, select: Selector) => {
     try {
@@ -176,6 +177,9 @@ export const GetNewsList =
         items_per_page: [{ label:'6', value: '6' }],
         //sort: [{ value: filters.sort }],
       };
+      if(isFromHome){
+        body.programs[0].value = body.programs[0].value.split(',')[0];
+      } 
       const queryParamFilters = transformFiltersToQueryParams(body).replace(
         'sort',
         'sort_by'
@@ -385,7 +389,8 @@ export const GetDocumentsList =
     forcedFilters?: {
       [key: string]: { label: string; value: string }[] | undefined;
     },
-    updateStore = true
+    updateStore = true,
+    isFromHome = false
   ) =>
   async (dispatch: Dispatch, select: Selector) => {
     try {
@@ -424,7 +429,7 @@ export const GetDocumentsList =
               (filters.programs || [])
                 .map(({ value }: { value: string }) => value)
                 .join(',') ||
-              `${idProgramma ? `public,${idProgramma}` : 'all'}`,
+              `${isFromHome ? 'public' : idProgramma ? `public,${idProgramma}` : 'all'}`,
           },
         ],
         interventions: [

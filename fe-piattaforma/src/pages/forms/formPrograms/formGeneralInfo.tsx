@@ -234,11 +234,18 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
         )}
         <Input
           {...form?.cup}
-          label='CUP - Codice Unico Progetto'
-          col='col-12 col-lg-6'
-          onInputChange={onInputDataChange}
-        />
-        <Input
+            label={programDetails && programDetails.cupManipolato ? 'CUP - Codice Unico Progetto (manipolato da sistema)' :'CUP - Codice Unico Progetto'}
+            col='col-12 col-lg-6'
+            onInputChange={(value, field) => {
+            if (typeof value === 'string') {
+              const formattedValue = value.trim().replace(/\s+/g, '').toUpperCase();              
+              onInputChange(formattedValue, field);
+            } else {
+              onInputChange(value, field);
+            }
+            }}
+          />
+          <Input
           {...form?.dataInizio}
           required
           label='Data inizio'

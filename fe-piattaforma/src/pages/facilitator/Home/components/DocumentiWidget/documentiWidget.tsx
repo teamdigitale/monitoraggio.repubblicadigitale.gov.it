@@ -39,7 +39,8 @@ const DocumentsWidget = () => {
           page: [{ label: '0', value: '0' }],
           items_per_page: [{ label: itemsPerPage, value: itemsPerPage }],
         },
-        false
+        false,
+        true
       )
     );
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment

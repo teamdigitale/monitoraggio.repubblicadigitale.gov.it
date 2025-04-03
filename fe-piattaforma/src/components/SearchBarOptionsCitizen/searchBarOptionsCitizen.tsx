@@ -19,6 +19,8 @@ interface SearchBarOptionsI {
   alreadySearched?: (param: boolean) => void;
   setSearchValue: (param: { type: string; value: string }) => void;
   resetModal?: () => void;
+  flgAbilitatoAMinori?: boolean;
+  dataDecorrenza?: Date;
 }
 
 const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
@@ -28,7 +30,9 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
   steps,
   alreadySearched,
   setSearchValue,
-  resetModal
+  resetModal,
+  flgAbilitatoAMinori = false,
+  dataDecorrenza
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -47,6 +51,10 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
     return moment().diff(Parser.cfToBirthDate(cf), 'years', false) >= 18;
   }, []);
 
+  const isMaggiore14Anni = useCallback((cf: string): boolean => {
+    return moment().diff(Parser.cfToBirthDate(cf), 'years', false) >= 14;
+  }, []);
+
   const dispatchNotify = useCallback(
     (id, title, status, message, duration) => {
       dispatch(
@@ -59,21 +67,16 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
   const isValidFiscalCode = useCallback(
     (query: string) => {
       if (isCodiceFiscaleValido(query)) {
-        const isAdult = isMaggiorenne(query);
-        if (!isAdult) {
-          dispatchNotify(
-            1,
-            'ERRORE',
-            'error',
-            'Il codice fiscale risulta essere di un minorenne',
-            'medium'
-          );
+        if (isMaggiorenne(query) || (flgAbilitatoAMinori && moment().isAfter(dataDecorrenza) && isMaggiore14Anni(query))) {
+          return true;
         }
-        return isAdult;
+        const errorMessage = flgAbilitatoAMinori && moment().isAfter(dataDecorrenza)
+          ? 'Il cittadino inserito deve avere almeno 14 anni'
+          : 'Il cittadino inserito deve essere maggiorenne';
+        dispatchNotify(1, 'ERRORE', 'error', errorMessage, 'medium');
+        return false;
       }
-
-      return false;
-    },
+},
     [dispatchNotify, isMaggiorenne]
   );
 
@@ -83,7 +86,7 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
       setCurrentStep(value);
       setRadioFilter(value);
       setMustValidateCf(value === 'codiceFiscale');
-      setCanSubmit(value !== 'codiceFiscale' || isValidFiscalCode(query));
+      setCanSubmit(value !== 'codiceFiscale' || !!isValidFiscalCode(query));
     },
     [
       handleSearchReset,
@@ -97,7 +100,7 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
   const onQueryChange = useCallback(
     (query: string) => {
       const upperCaseQuery = query.toUpperCase();
-      setCanSubmit(mustValidateCf ? isValidFiscalCode(upperCaseQuery) : true);
+      setCanSubmit(mustValidateCf ? !!isValidFiscalCode(upperCaseQuery) : true);
       setQuery(upperCaseQuery);
     },
     [isValidFiscalCode, mustValidateCf]

@@ -39,6 +39,7 @@ interface ManageFacilitatorFormI {
   formDisabled?: boolean;
   creation?: boolean;
   legend?: string | undefined;
+  updateFacilitators?: () => void;
 }
 
 interface ManageFacilitatorI
@@ -50,11 +51,12 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
   // formDisabled,
   creation = false,
   legend = '',
+  updateFacilitators
 }) => {
   const [newFormValues, setNewFormValues] = useState<{
     [key: string]: formFieldI['value'];
   }>({});
-  const [isFormValid, setIsFormValid] = useState<boolean>(true);
+  const [isFormValid, setIsFormValid] = useState<boolean>(false);
   const usersList = useAppSelector(selectUsers).list;
   const [noResult, setNoResult] = useState(false);
   const dispatch = useDispatch();
@@ -87,6 +89,8 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
     setAlreadySearched(false);
     setIsUserSelected(false);
     setFirstOpen(true);
+    setIsFormValid(false);
+    dispatch(resetUserDetails());
     dispatch(setUsersList(null));
     if (toClose) dispatch(closeModal());
   };
@@ -131,8 +135,11 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
       if (!res?.errorCode) {
         dispatch(closeModal());
         handleCancel();
+      }else if(updateFacilitators) {
+        updateFacilitators();
       }
     }
+    setIsFormValid(false);
     setIsUserSelected(false);
   };
 
@@ -187,6 +194,22 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
         />
       </div>
     );
+  }else if(!creation){ //apro in modifica
+    content = (
+      <div>
+        {usersList && usersList.length > 0 && <ExistingCitizenInfo newVersion={true} />}
+        <FormFacilitator
+          formDisabled={false}
+          sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
+            setNewFormValues({ ...newData })
+          }
+          setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value || isUserSelected)}
+          creation={creation}
+          legend={legend}
+          initialFiscalCode={searchedFiscalCode}
+        />
+      </div>
+    );
   } else if (noResult && !showForm) {
     content = (
       <div style={{ margin: '50px 0' }}>
@@ -202,6 +225,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
     setShowForm(false);
     setAlreadySearched(false);
     setIsUserSelected(false);
+    setIsFormValid(false);
     setFirstOpen(true);
     dispatch(setUsersList(null));
   };
@@ -211,7 +235,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
       id={id}
       primaryCTA={{
         disabled: !isFormValid,
-        label: 'Conferma',
+        label: creation ? 'Aggiungi' : 'Modifica',
         onClick: handleSaveEnte,
       }}
       secondaryCTA={{
@@ -219,12 +243,16 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
         onClick: () => handleCancel(),
       }}
       centerButtons
-      subtitle={<>
-        Inserisci il <strong>codice fiscale</strong> dell'utente e verifica che
-        sia già registrato sulla piattaforma.
-        <br />
-        Se non è presente, compila la sua scheda.
-      </>}
+      {...(creation && {
+        subtitle: (
+          <>
+            Inserisci il <strong>codice fiscale</strong> dell'utente e verifica che
+            sia già registrato sulla piattaforma.
+            <br />
+            Se non è presente, compila la sua scheda.
+          </>
+        ),
+      })}
     >
       <div>
         {creation ? (

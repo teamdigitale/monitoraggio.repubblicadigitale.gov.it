@@ -12,7 +12,7 @@ import {
   DropdownFilterI,
   FilterI,
 } from '../../../../../components/DropdownFilter/dropdownFilter';
-import { TableHeadingServicesList } from '../../../CitizensArea/utils';
+import { TableHeadingServicesList, TableHeadingServicesListFacilitator } from '../../../CitizensArea/utils';
 
 import GenericSearchFilterTableLayout, {
   SearchInformationI,
@@ -40,6 +40,7 @@ import {
 } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 import useGuard from '../../../../../hooks/guard';
 import IconNote from '/public/assets/img/it-note-primary.png';
+import { selectProfile } from '../../../../../redux/features/user/userSlice';
 
 const entity = 'servizio';
 const statusDropdownLabel = 'stato';
@@ -93,14 +94,17 @@ const Services = () => {
         </p>
       );
   };
-
-  const updateTableValues = () => {
+  
+  const ruolo = useAppSelector(selectProfile)?.codiceRuolo;
+  
+  const updateTableValues = () => {    
     const table = newTable(
-      TableHeadingServicesList,
+      ruolo !== "FAC" ? TableHeadingServicesList : TableHeadingServicesListFacilitator,
       servicesList.map((td) => {
         return {
           ...td,
           nome: td?.nome,
+          id: td?.id,
           data: td?.data || formatDate(Number(td?.data), 'snakeDate') || '-',
           stato: <StatusChip status={td?.stato} rowTableId={td?.id} />,
           tipologiaServizio: getTypeService(td?.tipologiaServizio),

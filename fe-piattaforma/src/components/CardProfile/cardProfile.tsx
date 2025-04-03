@@ -75,8 +75,7 @@ const CardProfile: React.FC<CardProfileI> = (props) => {
             <CardTitle className='mb-1 primary-color-a12 '>
               <span
                 className={clsx(
-                  activeProfile && 'font-weight-semibold',
-                  'switch-profile-titles'
+                  activeProfile && 'switch-profile-titles'
                 )}
               >
                 <b>
@@ -94,7 +93,8 @@ const CardProfile: React.FC<CardProfileI> = (props) => {
             <CardText 
               className={clsx( 
                 'primary-color-a12',
-                'switch-profile-subs'
+                'switch-profile-subs',
+                'card-text-padding'
               )}
             >
 

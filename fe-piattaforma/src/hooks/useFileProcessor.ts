@@ -20,8 +20,6 @@ import {
   getSE4ValueFromSE5Value,
   getAgeGroupCodeByYear,
   checkMapSpaces,
-  excelSerialDateToJSDate,
-  excelSerialTimeToHHMM,
 } from '../utils/csvUtils';
 import {
   ageGroupMap,
@@ -39,6 +37,8 @@ import * as XLSX from 'xlsx';
 import { useAppSelector } from '../redux/hooks';
 import { selectProjects } from '../redux/features/administrativeArea/administrativeAreaSlice';
 import { policy } from '../pages/administrator/AdministrativeArea/Entities/utils';
+import { useDispatch } from 'react-redux';
+import { GetConfigurazioneMinorenni } from '../redux/features/citizensArea/citizensAreaThunk';
 
 const {
   idProgetto,
@@ -88,6 +88,10 @@ export function useFileProcessor(file: File | undefined, removeFile: () => void)
   const { isValidFiscalCode } = useFiscalCodeValidation();
   const [isProcessing, setIsProcessing] = useState(false);
   const projectDetail = useAppSelector(selectProjects).detail?.dettagliInfoProgetto;
+  const programDetail = useAppSelector(selectProjects).detail?.dettagliInfoProgramma;
+  const [flgAbilitatoAMinori, setFlgAbilitatoAMinori] = useState<boolean>(false);
+  const [dataDecorrenza, setDataDecorrenza] = useState<Date>(moment().toDate());
+  const dispatch = useDispatch();
 
   const handleExcelFileUpload = (file: File): Promise<CSVRecord[]> => {
     return new Promise((resolve, reject) => {
@@ -128,6 +132,16 @@ export function useFileProcessor(file: File | undefined, removeFile: () => void)
     });
   };
 
+  const getMinorenniInfo = async () => {
+      if(programDetail.id){
+        const config = await GetConfigurazioneMinorenni(undefined, programDetail.id )(dispatch);
+        if(config.id != null){
+          setFlgAbilitatoAMinori(true);
+          setDataDecorrenza(config?.dataDecorrenza);
+        }
+      }
+    };
+
   const processFile = useCallback(async () => {
     return new Promise<ElaboratoCsvRequest>(async (resolve, reject) => {
       function rejectWithMessage(message: string) {
@@ -137,8 +151,8 @@ export function useFileProcessor(file: File | undefined, removeFile: () => void)
 
       if (file) {
         setIsProcessing(true);
-        const fileExtension = file.name.split('.').pop()?.toLowerCase();
-
+        getMinorenniInfo();
+        const fileExtension = file.name.split('.').pop()?.toLowerCase();        
         if (fileExtension === 'csv') {
           if (projectDetail?.policy == policy.RFD) {
             Papa.parse<CSVRecord>(file, {
@@ -210,9 +224,15 @@ export function useFileProcessor(file: File | undefined, removeFile: () => void)
 
                     const cfData: IPersonalInfo =
                       CodiceFiscaleUtils.Parser.cfDecode(filteredRecord.AN3);
-  
-                    if ( filteredRecord.AN3 && !getAgeGroupCodeByYear(cfData.date)) {
-                      errors.push('Il cittadino deve essere maggiorenne.');
+                    const ageGroup = getAgeGroupCodeByYear(cfData.date);
+
+                    if (filteredRecord.AN3) {
+                      const isMinorAllowed = flgAbilitatoAMinori && moment().isAfter(dataDecorrenza);
+                      if (!ageGroup || (!isMinorAllowed && ageGroup === 'E')) {
+                      errors.push(isMinorAllowed 
+                        ? 'Il cittadino deve avere almeno 14 anni.' 
+                        : 'Il cittadino deve essere maggiorenne.');
+                      }
                     }
 
                     const isValidFields = errors.length === 0;
@@ -295,9 +315,19 @@ export function useFileProcessor(file: File | undefined, removeFile: () => void)
   
                   const cfData: IPersonalInfo =
                     CodiceFiscaleUtils.Parser.cfDecode(filteredRecord.AN3);
-
-                if ( filteredRecord.AN3 && !getAgeGroupCodeByYear(cfData.date)) {
-                    errors.push('Il cittadino deve essere maggiorenne.');
+                  const ageGroup = getAgeGroupCodeByYear(cfData.date);
+                  if(filteredRecord.AN3){
+                    if(flgAbilitatoAMinori && moment().isAfter(dataDecorrenza)){
+                      //controllo se ho almeno 14
+                      if(!ageGroup){
+                        errors.push('Il cittadino deve avere almeno 14 anni.');
+                      }
+                    }else{
+                      //controllo se ho almeno 18
+                      if(!ageGroup || ageGroup === 'E'){
+                        errors.push('Il cittadino deve essere maggiorenne.');
+                      }
+                    }
                   }
   
                   const isValidFields = errors.length === 0;

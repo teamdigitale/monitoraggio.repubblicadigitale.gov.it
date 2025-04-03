@@ -130,7 +130,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
           </span>
           <span>{userProfile?.descrizioneEstesaEnte}</span>
         </div>
-        <div className='ml-2'>
+        <div className='ml-2 negative-margin-expand'>
           <Icon
             size=''
             color='white'

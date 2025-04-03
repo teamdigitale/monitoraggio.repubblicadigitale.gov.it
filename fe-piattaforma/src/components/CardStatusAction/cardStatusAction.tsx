@@ -15,9 +15,6 @@ import { selectDevice } from '../../redux/features/app/appSlice';
 // import isEqual from 'lodash.isequal';
 import Input from '../Form/input';
 import StatusChip from '../StatusChip/statusChip';
-import { userRoles } from '../../pages/administrator/AdministrativeArea/Entities/utils';
-import { useNavigate, useParams } from 'react-router-dom';
-import { selectPrograms } from '../../redux/features/administrativeArea/administrativeAreaSlice';
 
 const fieldMappedForTranslations: { [key: string]: string } = {
   serviziErogati: 'provided_services',
@@ -191,6 +188,7 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
                             {t(fieldMappedForTranslations[key])}
                           </span>
                           {group2.includes(key) ? (
+                            onActionClick?.[CRUDActionTypes.VIEW] ? 
                             <a
                               href={`#${fullInfo[key]}`}
                               className='weight-600 text-wrap'
@@ -201,6 +199,10 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
                             >
                               {fullInfo[key] === null ? '---' : fullInfo[key]}
                             </a>
+                            : 
+                            <span className=' neutral-1-color-a8 weight-600 text-wrap'>
+                              {fullInfo[key] === null ? '---' : fullInfo[key]}
+                            </span>
                           ) : (
                             <span className='neutral-1-color-a8 weight-600 text-wrap'>
                               {fullInfo[key] === null ? '---' : fullInfo[key]}

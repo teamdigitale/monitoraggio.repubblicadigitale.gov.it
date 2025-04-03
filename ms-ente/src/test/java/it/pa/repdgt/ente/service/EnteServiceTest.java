@@ -534,9 +534,9 @@ public class EnteServiceTest {
 		String criterioRicerca = "AAAAAAA11";
 		List<EnteEntity> enti = new ArrayList<>();
 		enti.add(ente1);
-		when(enteRepository.findByCriterioRicerca(criterioRicerca, "%"+criterioRicerca+"%")).thenReturn(enti);
+		when(enteRepository.findByCriterioRicerca(criterioRicerca)).thenReturn(enti);
 		enteService.getEntiByCriterioRicerca(criterioRicerca);
-		verify(enteRepository, times(1)).findByCriterioRicerca(criterioRicerca, "%"+criterioRicerca+"%");
+		verify(enteRepository, times(1)).findByCriterioRicerca(criterioRicerca);
 	}
 	
 	@Test

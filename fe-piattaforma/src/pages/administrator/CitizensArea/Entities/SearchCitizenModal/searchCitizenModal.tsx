@@ -34,6 +34,8 @@ import { Icon } from 'design-react-kit';
 import {
   DescriptionForAddingCitizen
 } from '../../../../../components/CitizenRegistration/DescriptionForAddingCitizen';
+import { GetConfigurazioneMinorenni } from '../../../../../redux/features/citizensArea/citizensAreaThunk';
+import moment from 'moment';
 
 const id = 'search-citizen-modal';
 
@@ -93,6 +95,8 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
     selectQuestionarioTemplateSnapshot
   )?.sezioniQuestionarioTemplate?.[0];
   //const [stringQ1, setStringQ1] = useState<string>('');
+  const [flgAbilitatoAMinori, setFlgAbilitatoAMinori] = useState<boolean>(false);
+  const [dataDecorrenza, setDataDecorrenza] = useState<Date>(moment().toDate());
 
   useEffect(() => {
     if (typeof surveyTemplateQ1 !== 'string') {
@@ -113,6 +117,20 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
       setShowFormCompleteForm(false);
     }
   }, [currentStep]);
+
+  useEffect(() => {
+    getMinorenniInfo();
+  },[]);
+
+  const getMinorenniInfo = async () => {
+    if(serviceId){
+      const config = await GetConfigurazioneMinorenni(serviceId)(dispatch);
+      if(config.id != null){
+        setFlgAbilitatoAMinori(true);
+        setDataDecorrenza(config?.dataDecorrenza);
+      }
+    }
+  };
 
   const onClose = () => {
     setCurrentStep(selectedSteps.FISCAL_CODE);
@@ -342,6 +360,8 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
               resetModal(true);
               setCurrentStep(radioFilter);
             }}
+            flgAbilitatoAMinori={flgAbilitatoAMinori}
+            dataDecorrenza={dataDecorrenza}
           />
           {/* <div className={clsx('d-flex', 'align-items-center', 'px-5','py-3')}>
             <Icon

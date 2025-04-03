@@ -103,15 +103,23 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
 
   useEffect(() => {
     if (currentTab === 'sedi' && itemsList?.items) {
+      // 1. Ordina l'intera lista PRIMA di applicare la paginazione
+      const sortedItems = itemsList.items
+        .map((item) => ({
+          ...item,
+          res: showIconBasedOnRole(item),
+        }))
+        .sort((a, b) => a.res - b.res);
+  
+      // 2. Applica la paginazione DOPO l'ordinamento
       const start = (pagination.pageNumber - 1) * pagination.pageSize;
       const end = pagination.pageNumber * pagination.pageSize;
+      const paginatedItems = sortedItems.slice(start, end);
   
-      setCurrentItems([]);
-      setTimeout(() => {
-        setCurrentItems(itemsList.items.slice(start, end) || []);
-      }, 0); 
+      setCurrentItems(paginatedItems);
     }
   }, [currentTab, pagination.pageNumber, pagination.pageSize, itemsList]);
+  
 
   useEffect(() => {
     if (currentTab === 'sedi') {
@@ -140,8 +148,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
         else return 2;
       case 'FAC':
       case 'VOL':
-        if(idEnteRuolo == item?.identeDiRiferimento) return 2;
-        else return 3;
+        return 3;
     }
     return 3;
   };
@@ -333,22 +340,24 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
           : null}
           {currentTab === 'sedi' && showItemsList && currentItems?.length
             ? currentItems
-                .map((item) => {
-                  const res = showIconBasedOnRole(item);
-                  return (
-              <CardStatusActionHeadquarters
-                title={item.nome}
-                status={item.stato}
-                key={item.id}
-                id={item.id}
-                fullInfo={item.fullInfo}
-                onActionClick={item.actions}
-                showPencil={res === 1 ? true : false}
-                showEye={res === 2 ? true : false}
-                showBlank={res === 3 ? true : false}
-              />
-                  );
-                })
+                .map((item) => ({
+                  ...item,
+                  res: showIconBasedOnRole(item),
+                }))
+                .sort((a, b) => a.res - b.res) // Ordina per res (1 prima, poi 2, poi 3)
+                .map((item) => (
+                  <CardStatusActionHeadquarters
+                    title={item.nome}
+                    status={item.stato}
+                    key={item.id}
+                    id={item.id}
+                    fullInfo={item.fullInfo}
+                    onActionClick={item.actions}
+                    showPencil={item.res === 1}
+                    showEye={item.res === 2}
+                    showBlank={item.res === 3}
+                  />
+                ))
             : null}
           {pagination?.totalPages && currentTab === 'sedi' &&(
             <div className='pb-5'>

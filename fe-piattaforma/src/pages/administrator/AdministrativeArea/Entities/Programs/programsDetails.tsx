@@ -1227,10 +1227,12 @@ const ProgramsDetails: React.FC = () => {
         <ManageDelegate
           legend="form aggiunta delegato, i campi con l'asterisco sono obbligatori"
           creation
+          authoritySection={AuthoritySection}
         />
         <ManageReferal
           legend="form aggiunta referente, i campi con l'asterisco sono obbligatori"
           creation
+          authoritySection={AuthoritySection}
         />
         {/* /<ManageProgramManagerAuthority /> */}
         <ManageProject
