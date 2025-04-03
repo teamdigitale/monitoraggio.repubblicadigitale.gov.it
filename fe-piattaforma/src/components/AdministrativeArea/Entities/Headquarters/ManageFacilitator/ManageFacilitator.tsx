@@ -39,22 +39,24 @@ interface ManageFacilitatorFormI {
   formDisabled?: boolean;
   creation?: boolean;
   legend?: string | undefined;
+  updateFacilitators?: () => void;
 }
 
 interface ManageFacilitatorI
   extends withFormHandlerProps,
-    ManageFacilitatorFormI {}
+  ManageFacilitatorFormI { }
 
 const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
   clearForm = () => ({}),
   // formDisabled,
   creation = false,
   legend = '',
+  updateFacilitators
 }) => {
   const [newFormValues, setNewFormValues] = useState<{
     [key: string]: formFieldI['value'];
   }>({});
-  const [isFormValid, setIsFormValid] = useState<boolean>(true);
+  const [isFormValid, setIsFormValid] = useState<boolean>(false);
   const usersList = useAppSelector(selectUsers).list;
   const [noResult, setNoResult] = useState(false);
   const dispatch = useDispatch();
@@ -80,6 +82,18 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [creation, open]);
+
+  const resetModal = (toClose = true) => {
+    clearForm();
+    setShowForm(false);
+    setAlreadySearched(false);
+    setIsUserSelected(false);
+    setFirstOpen(true);
+    setIsFormValid(false);
+    dispatch(resetUserDetails());
+    dispatch(setUsersList(null));
+    if (toClose) dispatch(closeModal());
+  };
 
   useEffect(() => {
     if (usersList && usersList.length === 0) {
@@ -118,11 +132,14 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
 
         dispatch(GetUserDetails(userId));
       }
-      if (!res?.errorCode){
+      if (!res?.errorCode) {
         dispatch(closeModal());
         handleCancel();
-      } 
+      }else if(updateFacilitators) {
+        updateFacilitators();
+      }
     }
+    setIsFormValid(false);
     setIsUserSelected(false);
   };
 
@@ -138,6 +155,9 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
   // };
 
   const handleSearchUser = async (search: string) => {
+    resetModal(false);
+    dispatch(resetUserDetails());
+    setCanSubmit(false);
     setSearchedFiscalCode(search);
     const result = await dispatch(GetUsersBySearch(search)) as any;
     setAlreadySearched(true);
@@ -161,7 +181,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
   if (showForm && !firstOpen) {
     content = (
       <div>
-        { usersList && usersList.length > 0 && <ExistingCitizenInfo/>}
+        {usersList && usersList.length > 0 && <ExistingCitizenInfo newVersion={true} />}
         <FormFacilitator
           formDisabled={isUserSelected}
           sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
@@ -174,11 +194,27 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
         />
       </div>
     );
-  } else if (noResult && !showForm ) {
+  }else if(!creation){ //apro in modifica
     content = (
-    <div style={{ margin: '50px 0' }}>
-      <NoResultsFoundCitizen onClickCta={addNewCitizen} />
-    </div>
+      <div>
+        {usersList && usersList.length > 0 && <ExistingCitizenInfo newVersion={true} />}
+        <FormFacilitator
+          formDisabled={false}
+          sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
+            setNewFormValues({ ...newData })
+          }
+          setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value || isUserSelected)}
+          creation={creation}
+          legend={legend}
+          initialFiscalCode={searchedFiscalCode}
+        />
+      </div>
+    );
+  } else if (noResult && !showForm) {
+    content = (
+      <div style={{ margin: '50px 0' }}>
+        <NoResultsFoundCitizen onClickCta={addNewCitizen} newVersion={true} />
+      </div>
     );
   }
 
@@ -189,6 +225,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
     setShowForm(false);
     setAlreadySearched(false);
     setIsUserSelected(false);
+    setIsFormValid(false);
     setFirstOpen(true);
     dispatch(setUsersList(null));
   };
@@ -198,7 +235,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
       id={id}
       primaryCTA={{
         disabled: !isFormValid,
-        label: 'Conferma',
+        label: creation ? 'Aggiungi' : 'Modifica',
         onClick: handleSaveEnte,
       }}
       secondaryCTA={{
@@ -206,12 +243,16 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
         onClick: () => handleCancel(),
       }}
       centerButtons
-      subtitle={<>
-        Inserisci il <strong>codice fiscale</strong> dell'utente e verifica che
-        sia già registrato sulla piattaforma.
-        <br />
-        Se non è presente, compila la sua scheda.
-      </>}
+      {...(creation && {
+        subtitle: (
+          <>
+            Inserisci il <strong>codice fiscale</strong> dell'utente e verifica che
+            sia già registrato sulla piattaforma.
+            <br />
+            Se non è presente, compila la sua scheda.
+          </>
+        ),
+      })}
     >
       <div>
         {creation ? (
@@ -232,6 +273,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
               dispatch(setUsersList(null));
               dispatch(resetUserDetails());
               setCanSubmit(false);
+              resetModal(false);
             }}
             title=''
             search

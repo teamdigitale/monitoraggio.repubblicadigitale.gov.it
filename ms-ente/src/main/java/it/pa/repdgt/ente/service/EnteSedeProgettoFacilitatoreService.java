@@ -79,8 +79,8 @@ public class EnteSedeProgettoFacilitatoreService {
 		boolean esisteUtente = this.utenteService.esisteUtenteByCodiceFiscale(codiceFiscaleUtente);
 		if(!esisteUtente) {
 			throw new EnteSedeProgettoFacilitatoreException(
-					String.format(CodiceErroreEnum.EN07.getDescrizioneErrore(), codiceFiscaleUtente),
-					CodiceErroreEnum.EN07);
+					String.format(CodiceErroreEnum.U20.getDescrizioneErrore(), codiceFiscaleUtente),
+					CodiceErroreEnum.U20);
 		}
 		
 		// verifico se ente, sede e progetto esistono
@@ -222,10 +222,10 @@ public class EnteSedeProgettoFacilitatoreService {
 		}
 		
 		EnteSedeProgettoFacilitatoreKey id = new EnteSedeProgettoFacilitatoreKey(idEnte, idSede, idProgetto, codiceFiscaleUtente);
-		if(this.enteSedeProgettoFacilitatoreRepository.findById(id).get().getStatoUtente().equals(StatoEnum.NON_ATTIVO.getValue())) {
-			this.cancellaAssociazioneFacilitatore(idEnte, idSede, idProgetto, codiceFiscaleUtente, codiceRuolo);
-			return;
-		}
+		// if(this.enteSedeProgettoFacilitatoreRepository.findById(id).get().getStatoUtente().equals(StatoEnum.NON_ATTIVO.getValue())) {
+		// 	this.cancellaAssociazioneFacilitatore(idEnte, idSede, idProgetto, codiceFiscaleUtente, codiceRuolo);
+		// 	return;
+		// }
 		
 		/*Verifico se il Facilitatore al quale voglio cancellare l'associazione
 		 * è l'unico facilitatore del progetto. Se sì lancio eccezione
@@ -255,17 +255,35 @@ public class EnteSedeProgettoFacilitatoreService {
 		
 		EnteSedeProgettoFacilitatoreKey id = enteSedeProgettoFacilitatore.getId();
 		//quando lo stato del facilitatore è attivo dobbiamo terminarlo
-		if(this.enteSedeProgettoFacilitatoreRepository.findById(id).get().getStatoUtente().equals(StatoEnum.ATTIVO.getValue())) {
+		if(this.enteSedeProgettoFacilitatoreRepository.findById(id).get().getStatoUtente().equals(StatoEnum.ATTIVO.getValue())
+		|| this.enteSedeProgettoFacilitatoreRepository.findById(id).get().getStatoUtente().equals(StatoEnum.NON_ATTIVO.getValue())) {
 			this.terminaAssociazioneFacilitatoreOVolontario(id);
 		}
-		if(this.enteSedeProgettoFacilitatoreRepository.findById(id).get().getStatoUtente().equals(StatoEnum.NON_ATTIVO.getValue())) {
-			this.cancellaAssociazioneFacilitatore(
-					enteSedeProgettoFacilitatore.getId().getIdEnte(),
-					enteSedeProgettoFacilitatore.getId().getIdSede(),
-					enteSedeProgettoFacilitatore.getId().getIdProgetto(),
-					enteSedeProgettoFacilitatore.getId().getIdFacilitatore(),
-					enteSedeProgettoFacilitatore.getRuoloUtente()
-					);
+		// if(this.enteSedeProgettoFacilitatoreRepository.findById(id).get().getStatoUtente().equals(StatoEnum.NON_ATTIVO.getValue())) {
+		// 	this.cancellaAssociazioneFacilitatore(
+		// 			enteSedeProgettoFacilitatore.getId().getIdEnte(),
+		// 			enteSedeProgettoFacilitatore.getId().getIdSede(),
+		// 			enteSedeProgettoFacilitatore.getId().getIdProgetto(),
+		// 			enteSedeProgettoFacilitatore.getId().getIdFacilitatore(),
+		// 			enteSedeProgettoFacilitatore.getRuoloUtente()
+		// 			);
+		// }
+
+		// Controllo se l'utente è FAC o VOL(a seconda del codiceRuolo che mi viene
+		// passato) su altri gestori progetto oltre a questo
+		boolean unicaAssociazione = this.enteSedeProgettoFacilitatoreRepository
+				.findAltreAssociazioni(enteSedeProgettoFacilitatore.getId().getIdProgetto(),
+						enteSedeProgettoFacilitatore.getId().getIdEnte(),
+						enteSedeProgettoFacilitatore.getId().getIdSede(),
+						enteSedeProgettoFacilitatore.getId().getIdFacilitatore(),
+						enteSedeProgettoFacilitatore.getRuoloUtente())
+				.isEmpty();
+		
+		/*Se la condizione sopra è vera allora insieme all'associazione del referente al gestore progetto
+		 * imposterò a cancellato anche l'associazione dell'utente al ruolo
+		 */
+		if(unicaAssociazione) {
+			this.ruoloService.cancellaRuoloUtente(enteSedeProgettoFacilitatore.getId().getIdFacilitatore(), enteSedeProgettoFacilitatore.getRuoloUtente());
 		}
 	}
 		
@@ -281,7 +299,7 @@ public class EnteSedeProgettoFacilitatoreService {
 		
 		final String codiceFiscaleUtenteFacilitaore = id.getIdFacilitatore();
 		final UtenteEntity utenteDBFetch = this.utenteService.getUtenteByCodiceFiscale(codiceFiscaleUtenteFacilitaore);
-		if( utenteDBFetch.getIntegrazioneUtente() != null && utenteDBFetch.getIntegrazioneUtente().getIdUtenteWorkdocs() != null){
+		if( utenteDBFetch != null && utenteDBFetch.getIntegrazioneUtente() != null && utenteDBFetch.getIntegrazioneUtente().getIdUtenteWorkdocs() != null){
 			// Utente non presenta relazione su integrazione_utente da eliminare
 			String idUtenteWorkdocs = utenteDBFetch.getIntegrazioneUtente().getIdUtenteWorkdocs();
 			if(utenteDBFetch.getRuoli().size() == 1 && idUtenteWorkdocs != null) {
@@ -322,16 +340,6 @@ public class EnteSedeProgettoFacilitatoreService {
 	public void cancellaAssociazioneFacilitatore(Long idEnte, Long idSede, Long idProgetto, String codiceFiscaleUtente, String codiceRuolo) {
 		EnteSedeProgettoFacilitatoreKey id = new EnteSedeProgettoFacilitatoreKey(idEnte, idSede, idProgetto, codiceFiscaleUtente);
 		this.enteSedeProgettoFacilitatoreRepository.deleteById(id);	
-		
-		//Controllo se l'utente è FAC o VOL(a seconda del codiceRuolo che mi viene passato) su altri gestori progetto oltre a questo
-		boolean unicaAssociazione = this.enteSedeProgettoFacilitatoreRepository.findAltreAssociazioni(idProgetto,idEnte, idSede, codiceFiscaleUtente, codiceRuolo).isEmpty();
-		
-		/*Se la condizione sopra è vera allora insieme all'associazione del referente al gestore progetto
-		 * imposterò a cancellato anche l'associazione dell'utente al ruolo
-		 */
-		if(unicaAssociazione) {
-			this.ruoloService.cancellaRuoloUtente(codiceFiscaleUtente, codiceRuolo);
-		}
 	}
 	
 	@LogMethod

@@ -1,5 +1,338 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.436](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.435...1.0.0-test.436) (2025-04-03)
+
+
+### Bug Fixes
+
+* **U385:** fix query recupero configurazione e modifica controlli verifica eta 20250403 ([b3ac43f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b3ac43f8cfe3349eb45e1a06a9beb2f2d6bf1d25))
+
+## [1.0.0-test.435](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.434...1.0.0-test.435) (2025-04-02)
+
+
+### Bug Fixes
+
+* **U385:** fix query e requestParam nuovo EP 20250402 ([ec42440](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ec42440128239f3735a012f396eddad837bde38d))
+
+## [1.0.0-test.434](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.433...1.0.0-test.434) (2025-04-02)
+
+
+### Features
+
+* **U385:** query dinamica getConfigurazioneMinorenniByIdServizioOrIdProgramma ([c7a4577](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c7a457732cee6bd34d20486ab97c87c36ddb44b1))
+* **U385:** prima implementazione FE gestione cittadini minorenni 20250324 ([0f7b3e2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0f7b3e2242098f162ca8693935359da328890024))
+* **U385:** prima implementazione BE controllo cittadini minorenni 20250324 ([56e33d1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/56e33d17d5e78621b21046c67205a28067aac4de))
+
+
+### Bug Fixes
+
+* **U385:** fix condizioni casistiche errori 20250402 ([1ff75c9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1ff75c97ab3d104147d77b9f772b6ac22d1cccb9))
+* **U385:** fix controllo risultato vuoto fix nomi e import 20250401 ([eda3dca](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/eda3dca61d62f4eb007ac591458d5960344dc2e5))
+* **Z2258:** aggiunta colonna id servizio in scarica elenco servizi 20250324 ([881d3fc](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/881d3fc33ecb6d0ca5508043d2701dcd60bf655a))
+
+## [1.0.0-test.433](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.432...1.0.0-test.433) (2025-04-01)
+
+
+### Bug Fixes
+
+* **test:** fix dasbhoard ente partner 20250401 ([3d9612f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3d9612fd380b95991af6df628dd63d07b9c1be58))
+
+## [1.0.0-test.432](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.431...1.0.0-test.432) (2025-03-31)
+
+
+### Bug Fixes
+
+* **U320:** fix salvataggio entity 20250331 ([3bbfa3c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3bbfa3c452c7f86342830332b78de96ff3a7f663))
+
+## [1.0.0-test.431](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.430...1.0.0-test.431) (2025-03-31)
+
+
+### Features
+
+* **U320:** controllo robusto 2 su cup 20250331 ([93fcdcf](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/93fcdcf916b820d0987e794a4ee1014032300297))
+
+## [1.0.0-test.430](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.429...1.0.0-test.430) (2025-03-30)
+
+
+### Bug Fixes
+
+* **U320:** controlli unicita cup 20250330 ([8efaef3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8efaef33c610148698aacb2268edecdd9a3b4aa0))
+
+## [1.0.0-test.429](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.428...1.0.0-test.429) (2025-03-28)
+
+
+### Features
+
+* **U320:** fix refresh dettaglio progetto e modifica testo warning 20250328 ([1711369](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/17113690acd33c7b66f5570394baa2f4940100d8))
+* **test:** aggiornamento data limite servizi 20250328 ([4bbb112](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4bbb112cc7412665d00d847caf732e0b59106891))
+
+
+### Bug Fixes
+
+* **U320:** gestione titolo su warning 20250328 ([198ac9c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/198ac9c214838d5d902870d0d332c63fee5200fe))
+* **U320:** Gestione warning modifica programma progetto 20250328 ([64fdc40](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/64fdc40d331c54e887a4c006c0974f6006ac2587))
+
+## [1.0.0-test.428](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.427...1.0.0-test.428) (2025-03-14)
+
+
+### Bug Fixes
+
+* **U250:** fix modale modifica referente/delegato/facilitatore 20250314 ([e0e1654](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e0e16544d9cddb479afafa3dabc3fb759369b668))
+* **U250:** modifica label cta 20250314 ([96235b1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/96235b17d8cee877b964eefd4c975b7aea5df16d))
+
+## [1.0.0-test.427](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.426...1.0.0-test.427) (2025-03-10)
+
+
+### Bug Fixes
+
+* **U250:** fix refresh liste ente partner 20250310 ([68f8a0e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/68f8a0e26d0a58de2f58bf3f2ee9c4340c8e5a6f))
+
+## [1.0.0-test.426](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.425...1.0.0-test.426) (2025-03-05)
+
+
+### Bug Fixes
+
+* **test:** fix typo 20250305 ([91d0a24](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/91d0a242b5d2a7ade5a4a6cae61a3443063b4ed8))
+
+## [1.0.0-test.425](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.424...1.0.0-test.425) (2025-03-04)
+
+
+### Bug Fixes
+
+* **U250:** fix form svuotato utente 20250304 ([7a09377](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7a09377cb886ac3e21e9f3977bf902a2b39f396b))
+
+## [1.0.0-test.424](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.423...1.0.0-test.424) (2025-03-04)
+
+
+### Bug Fixes
+
+* **U320:** fix visualizzazione label cup 20250303 ([2e105b5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2e105b51a8f9bfcfbf2594bb7ae6f5ee796def95))
+* **U250:** rimozione resetUserDetails errato 20250304 ([963c85f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/963c85fb1b9b42e7620470ff02f7a99cac3057bd))
+
+## [1.0.0-test.423](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.422...1.0.0-test.423) (2025-03-03)
+
+
+### Bug Fixes
+
+* **test:** fix download lista enti 20250303 ([0165ec5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0165ec5ab4a58e3a9752362e26a1230b72eb05ec))
+
+## [1.0.0-test.422](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.421...1.0.0-test.422) (2025-02-28)
+
+
+### Features
+
+* **T364:** fix modale modifica servizio 20250228 ([9e65e89](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9e65e89dbc99ea21c6e22632fbad6d84eefc1b5f))
+
+## [1.0.0-test.421](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.420...1.0.0-test.421) (2025-02-27)
+
+
+### Bug Fixes
+
+* **T364:** fix visualizzazione id scheda Dettagli servizio 20250227 ([20f075b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/20f075b1e23a8cb63feb9673e63747b1e7d79e56))
+
+## [1.0.0-test.420](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.419...1.0.0-test.420) (2025-02-27)
+
+
+### Features
+
+* **U250:** fix refresh liste e cambio label bottoni conferma 20250227 ([ace3a0d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ace3a0d1e4307fae07a067ec60ff13f0b43e5741))
+* **U320:** blocco aggiunta ente e controlli CUP 20250227 ([5a157ff](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5a157ff5f0c1c65eb82e22b949e5625828c7b39e))
+
+
+### Bug Fixes
+
+* **U257:** fix taglio ultimi caratteri role tile 20250227 ([798b408](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/798b408837fd2d57ef60a5dc76bb0942649191b0))
+* **test:** aggiornamento data limite 02/25 ([755fa50](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/755fa501fb28a1c91319b669573a033b94102c85))
+
+## [1.0.0-test.419](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.418...1.0.0-test.419) (2025-02-24)
+
+
+### Features
+
+* **U319:** allineamento modali aggiunta ente e fix posizione alert utente presente 20250211 ([2f30063](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2f3006313cf659efaf4b7b4ed146e29e49dab80c))
+* **T364:** aggiunta id in scheda dettaglio e tabella servizi 20250221 ([557b95f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/557b95f121d1f2bf7ac301c50e0839672a94e149))
+
+
+### Bug Fixes
+
+* **U219:** fix test 20250224 ([9ef86b1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9ef86b17b09a5bd283fecc11cb2d292d7bfe3a80))
+* **U256:** visibilita freccia e link lista ruoli 20250221 ([067d8fd](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/067d8fd8a9d61e5fe646856634155f431ddf2d3f))
+
+## [1.0.0-test.418](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.417...1.0.0-test.418) (2025-02-18)
+
+
+### Features
+
+* **U255:** ordinamento card sedi progetto per modificabilità 20250218 ([9c948b9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9c948b9015e284b673af2bf7d50329708d754ebe))
+
+
+### Bug Fixes
+
+* **U250:** fix conferma modale enabled 20250218 ([85f6262](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/85f62622bf78bdbb12378d93c462a49782aa79eb))
+* **U257:** fix truncate nome progetto header e "Ente" bold selettore ruolo 20250218 ([f464523](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f4645234530959b30064c721d407993235215ae5))
+
+## [1.0.0-test.417](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.416...1.0.0-test.417) (2025-02-17)
+
+
+### Bug Fixes
+
+* **T348:** fix download lista area cittadini 20250217 ([31c65c5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/31c65c594147527c1e7109408447fcfac739e0b9))
+
+## [1.0.0-test.416](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.415...1.0.0-test.416) (2025-02-14)
+
+
+### Bug Fixes
+
+* **test:** riabilitazione chiamate drupal e cambio url per home 20250214 ([18fa3a3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/18fa3a355af6d2b28a902ce77cde028557b8c99c))
+
+## [1.0.0-test.415](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.414...1.0.0-test.415) (2025-02-13)
+
+
+### Bug Fixes
+
+* **Z2072:** gestione possibile cittadino duplicato su salvataggio questionario 20250211 ([8241fe4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8241fe403ce9fb8b82eb7c20809792983c50ece3))
+
+## [1.0.0-test.414](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.413...1.0.0-test.414) (2025-02-12)
+
+
+### Bug Fixes
+
+* **test:** commento chiamate forward home 20250212 ([e539804](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e539804381100eeb582fe053a7b362a6fb9eb941))
+
+## [1.0.0-test.413](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.412...1.0.0-test.413) (2025-02-10)
+
+
+### Bug Fixes
+
+* **T352:** fix test 20250210 ([2e0a53a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2e0a53a78c98373f1fa5e07ee0fe29aa3005958a))
+* **T352:** gestione terminazione FAC non attivi 20250207 ([a56e672](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a56e6727a4a47977bde6eadb531d3c71f7ef0673))
+
+## [1.0.0-test.412](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.411...1.0.0-test.412) (2025-02-06)
+
+
+### Features
+
+* **U257:** ultimate modifiche header e role picker 20241206 ([e988a80](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e988a80e4c66580c5c5d7147755c2f9c87d0521d))
+* **U257:** chg header e role picker 20241206 ([49acea7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/49acea7a81cd4da8e514375be9282b55d110074a))
+
+
+### Bug Fixes
+
+* **test:** aggiornata action release 20250206 ([4f8c78b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4f8c78b925044387de4b4604380aedfe8e03100f))
+* **T348:** fix download lista da elenco enti/utenti/programmi/progetti 20250205 ([1ef0abb](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1ef0abb11f7cddc0648261836811e3d1565b962b))
+* **U257:** fix merge da U257 20250206 ([81badb0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/81badb066135101b4071f6852ea84578bb4b0ccd))
+* **U255:** fix sottotitolo sezione sedi 20250204 ([17a1321](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/17a132187819e7e6857c7c2397db6e660b022b01))
+* **U255:** fix visualizzazione bottoni tramite ruoli ed enti 20250130 ([5784f14](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5784f1446b111ff574943c49fc7da59c4c57bf83))
+* **U250:** fix modali Referenti/Delegati/Facilitatori 20250204 ([c386008](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c386008b56dc512000a8edc69e0d91302d0d5b8c))
+
+## [1.0.0-test.411](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.410...1.0.0-test.411) (2025-01-31)
+
+
+### Bug Fixes
+
+* **test:** aggiornamento data limite ins massivo 20250131 ([270ff0f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/270ff0ffe32fc2bf364c1f03eeca912275f65456))
+
+## [1.0.0-test.410](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.409...1.0.0-test.410) (2025-01-30)
+
+
+### Features
+
+* **U256:** visualizzazione stato ruolo corretto 20250114 ([800e1b0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/800e1b0bfc620de65c405fe8cecb13ab845d97d4))
+* **U256:** Visualizzare in maniera chiara e coerente lo stato utente/ruolo 20241218 ([92d4905](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/92d4905be21d0d4fd977c0306009dfe36e344e40))
+
+
+### Bug Fixes
+
+* **T343:** rimozione chiamata EP annunci popolari 20250128 ([5d28124](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5d28124c88d521891c89dd9ebded1627d8d7827c))
+* **T343:** fix bug modale aggiunta documento e rimozionesezione da bacheca 20250127 ([b061079](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b0610792ac8f3d1cb2b0765acb7d930a711fabc2))
+
+## [1.0.0-test.409](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.408...1.0.0-test.409) (2025-01-23)
+
+
+### Features
+
+* **U255:** modifiche tab sedi 20241219 ([e5aa289](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e5aa289e75f095474a72135453645a60f06c7859))
+
+
+### Bug Fixes
+
+* **U255:** fix visualizzazione componenti sede 20241220 ([caf3b6c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/caf3b6c53408379b3590023e5c27daf55e30b2c2))
+
+## [1.0.0-test.408](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.407...1.0.0-test.408) (2025-01-20)
+
+
+### Bug Fixes
+
+* **T214:** gestione rimozione utente_x_ruolo 20250120 ([313f74d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/313f74d454aec844f0ef9c0ab98ed3b2b06ef922))
+* **U251:** rimozione indirizzi non memorizzati 20250120 ([db8bbf2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/db8bbf260d1932fe092e48dcf5945fecdd2add68))
+
+## [1.0.0-test.407](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.406...1.0.0-test.407) (2025-01-16)
+
+
+### Bug Fixes
+
+* **Z1921:** fix gestione caricamento massivo 20240116 ([daa7c11](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/daa7c11e740d1b4b0e8c436b0d34e2a2b38844ac))
+
+## [1.0.0-test.406](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.405...1.0.0-test.406) (2025-01-15)
+
+
+### Bug Fixes
+
+* **Z1934:** fix errore per utente non trovato 20240115 ([d0abe9d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d0abe9df9f0023f2bf87a0f49d9078e8d65e6886))
+* **Z1934:** fix regex CF creazione utente per omocodia 20250115 ([f2fa886](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f2fa886e1f9dfaf2306fa5d8dcb10049c9030008))
+* **Z1648:** fix visualizzazione errore per creazione o modifica servizio 20250114 ([75786fe](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/75786fed23bb4c8f3d2bc888282012e9ff6e0ad5))
+
+## [1.0.0-test.405](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.404...1.0.0-test.405) (2025-01-14)
+
+
+### Bug Fixes
+
+* **T317:** fix form creazione e modifica utente 20250114 ([7163a59](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7163a59b431e7a54effcb81953d13156c26fe593))
+* **Z1743:** fix storicizzazione ente partner ([54ce5ac](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/54ce5ac122ccb909b3f5896efac175ae4fc4040e))
+
+## [1.0.0-test.404](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.403...1.0.0-test.404) (2025-01-14)
+
+
+### Bug Fixes
+
+* **U250:** fix rimozione dati dopo cancellazione ricerca 20250114 ([32c857d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/32c857d77b96dbe2fe2ac5d31112dc01789b3704))
+* **T315:** allineamento pagina errore ad Header e Footer correnti 20250113 ([df5d6f2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/df5d6f2355cf8d264fc6088ee32bdf7e2d143350))
+* **T297:** fix nascosto messaggio per errori drupal 20250108 ([03c8444](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/03c8444d757514ac2445a9abeae4869ad21636ae))
+
+## [1.0.0-test.403](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.402...1.0.0-test.403) (2025-01-10)
+
+
+### Features
+
+* **U251:** chg comportamento form indirizzi sede e salvataggio/aggiornamento indirizzi a DB 20241212 ([636e82f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/636e82f6604b48680e48d1d827f101f6d90fa79a))
+
+## [1.0.0-test.402](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.401...1.0.0-test.402) (2025-01-08)
+
+
+### Bug Fixes
+
+* **T310:** fix controllo nome ente partner 20250108 ([6ef4313](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6ef43136e92bb1cb87b5ed9dcac07c877601006b))
+
+## [1.0.0-test.401](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.400...1.0.0-test.401) (2025-01-02)
+
+
+### Features
+
+* **dataLimite:** aggiornamento data limite massivo Dicembre 20241223 ([6f1c380](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6f1c3806bdab0a07c6f7991dc705305ae34b4b10))
+* **SPID:** nuova versione tasto spid 20241223 ([6f52b3a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6f52b3aadda223003e0a903cb2568bd52d647bb6))
+
+
+### Bug Fixes
+
+* **test:** rm 20241223 ([9cf6ba9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9cf6ba93b421e98c6432853586eb7e47060f7662))
+
+## [1.0.0-test.400](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.399...1.0.0-test.400) (2024-12-18)
+
+
+### Bug Fixes
+
+* **test:** test satosa 20241218 ([5c2aa97](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5c2aa97891d474861710e762d189c67d0b2b2419))
+
 ## [1.0.0-test.399](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.398...1.0.0-test.399) (2024-12-17)
 
 

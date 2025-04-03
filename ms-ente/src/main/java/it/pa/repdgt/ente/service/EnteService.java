@@ -135,7 +135,7 @@ public class EnteService {
 	@LogMethod
 	@LogExecutionTime
 	public List<EnteEntity> getEntiByCriterioRicerca(String criterioRicerca) {
-		return this.enteRepository.findByCriterioRicerca(criterioRicerca,"%"+criterioRicerca+"%");
+		return this.enteRepository.findByCriterioRicerca(criterioRicerca);
 	}
 	
 	@LogMethod
@@ -951,7 +951,7 @@ public class EnteService {
 			String errorMessage = String.format("Impossibile aggiornare l'ente con id=%s. Ente non presente", idEnte);
 			throw new EnteException(errorMessage, CodiceErroreEnum.EN13);
 		}
-		if(this.enteRepository.findByNome(enteEntity.getNome()).isPresent()){
+		if(idEnte != null && this.enteRepository.findByNomeAndIdNot(enteEntity.getNome(), idEnte).isPresent()) {
 			String errorMessage = String.format("Errore: Ente con stesso nome già esistente", enteEntity.getNome());
 			throw new EnteException(errorMessage, CodiceErroreEnum.EN25);
 		}

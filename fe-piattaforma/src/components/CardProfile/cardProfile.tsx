@@ -4,13 +4,8 @@ import React, { memo } from 'react';
 
 import { selectDevice } from '../../redux/features/app/appSlice';
 import { useAppSelector } from '../../redux/hooks';
-import {
-  AvatarSizes,
-  AvatarTextSizes,
-} from '../Avatar/AvatarInitials/avatarInitials';
 import './cardProfile.scss';
 import { UserStateI } from '../../redux/features/user/userSlice';
-import UserAvatar from '../Avatar/UserAvatar/UserAvatar';
 
 interface CardProfileI extends CardProps {
   className?: string;
@@ -24,12 +19,11 @@ const CardProfile: React.FC<CardProfileI> = (props) => {
   const {
     className,
     activeProfile,
-    user = {},
     profile = {},
-    profilePicture,
   } = props;
 
   const device = useAppSelector(selectDevice);
+  const descrizioneEstesaUpperCase = profile?.descrizioneEstesaEnte?.toUpperCase();
 
   return (
     <div
@@ -68,45 +62,59 @@ const CardProfile: React.FC<CardProfileI> = (props) => {
                 !activeProfile && 'card-profile-container__opacity'
               )}
             >
-              <UserAvatar
+              {/* <UserAvatar
                 avatarImage={profilePicture}
                 user={{ uSurname: user?.cognome, uName: user?.nome }}
                 size={AvatarSizes.Small}
                 font={AvatarTextSizes.Small}
                 lightColor={device.mediaIsPhone}
-              />
+              /> */}
             </div>
-          ) : (
-            <div className='spacing' />
-          )}
+          ) : null}
           <div>
             <CardTitle className='mb-1 primary-color-a12 '>
               <span
                 className={clsx(
-                  activeProfile && 'font-weight-semibold',
-                  'switch-profile-titles'
+                  activeProfile && 'switch-profile-titles'
                 )}
               >
-                {profile?.descrizioneRuolo}
+                <b>
+                  {profile?.descrizioneRuolo} 
+                  {profile?.descrizioneRuolo !== 'FACILITATORE' && descrizioneEstesaUpperCase ? ` ${descrizioneEstesaUpperCase}` : ''}
+                </b>
                 {device.mediaIsPhone && <br />}
                 {profile?.nomeEnte ? (
-                  <em className='switch-profile-subs pr-1'>
-                    {` "${profile?.nomeEnte}" `}
-                  </em>
+                  <div className='switch-profile-subs pr-1'>
+                    {`Ente`} <em><b>{`${profile?.nomeEnte} `}</b></em>
+                  </div>
                 ) : null}
               </span>
             </CardTitle>
-            <CardText
-              className={clsx(
-                activeProfile && 'primary-color-b7',
-                !activeProfile && 'neutral-2-color-a5',
-                'switch-profile-subs'
+            <CardText 
+              className={clsx( 
+                'primary-color-a12',
+                'switch-profile-subs',
+                'card-text-padding'
               )}
             >
-              {profile?.nomeProgramma}
-              {profile?.nomeProgettoBreve
-                ? `, ${profile?.nomeProgettoBreve}`
-                : ''}
+
+                  {profile?.codiceRuolo !== 'DSCU' &&
+                  profile?.codiceRuolo !== 'DTD' &&
+                  profile?.codiceRuolo !== 'gestore community' &&
+                  profile?.codiceRuolo !== 'MOD' &&
+                  profile?.codiceRuolo !== 'Profilo UDM' && (
+                    <>
+                    {profile?.codiceRuolo === 'DEG' || profile?.codiceRuolo === 'REG' ? (
+                      <>
+                      Programma <em><b>{profile?.nomeProgramma}</b></em>
+                      </>
+                    ) : (
+                      <>
+                      Progetto <em><b>{profile?.nomeProgettoBreve}</b></em>
+                      </>
+                    )}
+                    </>
+                  )}
             </CardText>
           </div>
         </div>

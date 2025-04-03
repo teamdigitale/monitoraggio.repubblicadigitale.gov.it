@@ -41,15 +41,17 @@ interface ManageDelgateFormI {
   formDisabled?: boolean;
   creation?: boolean;
   legend?: string | undefined;
+  authoritySection?: () => void;
 }
 
-interface ManageDelegateI extends withFormHandlerProps, ManageDelgateFormI {}
+interface ManageDelegateI extends withFormHandlerProps, ManageDelgateFormI { }
 
 const ManageDelegate: React.FC<ManageDelegateI> = ({
   clearForm = () => ({}),
   // formDisabled,
   creation = false,
   legend = '',
+  authoritySection
 }) => {
   const [newFormValues, setNewFormValues] = useState<{
     [key: string]: formFieldI['value'];
@@ -73,6 +75,8 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
     setAlreadySearched(false);
     setIsUserSelected(false);
     setFirstOpen(true);
+    setIsFormValid(false);
+    // dispatch(resetUserDetails());
     dispatch(setUsersList(null));
     if (toClose) dispatch(closeModal());
   };
@@ -142,11 +146,14 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
       }
       if (!res) {
         resetModal();
-      }
+      }else if(authoritySection) authoritySection();
     }
   };
 
   const handleSearchUser = async (search: string) => {
+    resetModal(false);
+    // dispatch(resetUserDetails());
+    setCanSubmit(false);
     setSearchedFiscalCode(search);
     const result = await dispatch(GetUsersBySearch(search)) as any;
     setAlreadySearched(true);
@@ -181,7 +188,7 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
   if (showForm && !firstOpen) {
     content = (
       <div>
-        { usersList && usersList.length > 0 && <ExistingCitizenInfo/>}
+        {usersList && usersList.length > 0 && <ExistingCitizenInfo newVersion={true} />}
         <FormUser
           creation={creation}
           formDisabled={isUserSelected}
@@ -195,11 +202,28 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
         />
       </div>
     );
-  } else if (alreadySearched && (usersList?.length === 0 || !usersList) && !showForm ) {
+  }else if(!creation){ //apro in modifica
+      content = (
+        <div>
+          {usersList && usersList.length > 0 && <ExistingCitizenInfo newVersion = {true} />}
+          <FormUser
+            creation={creation}
+            formDisabled={false}
+            setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value || isUserSelected)}
+            sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
+              setNewFormValues({ ...newData })
+            }
+            fieldsToHide={['ruolo', 'tipoContratto']}
+            legend={legend}
+            initialFiscalCode={searchedFiscalCode}
+          />
+        </div>
+      );
+    } else if (alreadySearched && (usersList?.length === 0 || !usersList) && !showForm) {
     content = (
-    <div style={{ margin: '50px 0' }}>
-      <NoResultsFoundCitizen onClickCta={addNewCitizen} />
-    </div>
+      <div style={{ margin: '50px 0' }}>
+        <NoResultsFoundCitizen onClickCta={addNewCitizen} newVersion={true} />
+      </div>
     );
   }
 
@@ -208,7 +232,7 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
       id={id}
       primaryCTA={{
         disabled: !isFormValid,
-        label: 'Salva',
+        label: creation ? 'Aggiungi' : 'Modifica',
         onClick: handleSaveDelegate,
       }}
       secondaryCTA={{
@@ -216,12 +240,16 @@ const ManageDelegate: React.FC<ManageDelegateI> = ({
         onClick: resetModal,
       }}
       centerButtons
-      subtitle={<>
-        Inserisci il <strong>codice fiscale</strong> dell'utente e verifica che
-        sia già registrato sulla piattaforma.
-        <br />
-        Se non è presente, compila la sua scheda.
-      </>}
+      {...(creation && {
+        subtitle: (
+          <>
+            Inserisci il <strong>codice fiscale</strong> dell'utente e verifica che
+            sia già registrato sulla piattaforma.
+            <br />
+            Se non è presente, compila la sua scheda.
+          </>
+        ),
+      })}
     >
       <div>
         {creation ? (

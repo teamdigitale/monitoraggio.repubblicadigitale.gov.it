@@ -80,7 +80,7 @@ export const mandatoryFields: (keyof CSVRecord)[] = [
   'SE6',
 ];
 
-const maxDate = new Date('2024-11-30')
+const maxDate = new Date('2025-03-31')
 
 export function encryptFiscalCode(filteredRecord: CSVRecord) {
   return filteredRecord.AN3
@@ -144,7 +144,7 @@ export const validateFields = (
     if(!isValidDateFormat(record.SE1) || !isValidDate(record.SE1)){ //valido tramite regex
       errors.push("La data inserita per il servizio non e' valida.");
     } else if (parsedDate > maxDate && extension === 'csv') {
-      errors.push("La data del servizio e' successiva al 30 Novembre 2024.");
+      errors.push("La data del servizio e' successiva al 31 Marzo 2025.");
     }
   }
 
@@ -361,6 +361,7 @@ export function getAgeGroupCodeByYear(date?: Date): string | void {
   if (!date) return;
 
   const age = new Date().getFullYear() - date.getFullYear();
+  if (age >= 14 && age <= 17) return 'E';
   if (age >= 18 && age <= 29) return 'A';
   if (age >= 30 && age <= 54) return 'B';
   if (age >= 55 && age <= 74) return 'C';

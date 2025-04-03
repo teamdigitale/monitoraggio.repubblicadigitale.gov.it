@@ -220,4 +220,7 @@ public class ProgettoEntity implements Serializable {
 	
 	@Column(name = "n_facilitatori_data_target5")
 	private Date nFacilitatoriDataTarget5;
+
+	@Column(name = "cup_manipolato")
+	private Boolean cupManipolato;
 }

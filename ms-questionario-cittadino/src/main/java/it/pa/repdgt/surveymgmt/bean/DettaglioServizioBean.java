@@ -15,6 +15,7 @@ import lombok.Setter;
 public class DettaglioServizioBean implements Serializable {
 	private static final long serialVersionUID = 7237761000675359461L;
 
+	private Long idServizio;
 	private String nomeServizio;
 	private String nomeEnte;
 	private String nomeSede;

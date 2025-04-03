@@ -2,13 +2,12 @@ import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { EmptySection, SearchBar } from '../../../../../components';
+import { SearchBar } from '../../../../../components';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
-import Table, { TableRowI } from '../../../../../components/Table/table';
 
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
 import {
-  // resetAuthorityDetails,
+  resetAuthorityDetails,
   selectAuthorities,
   setAuthoritiesList,
   setAuthorityDetails,
@@ -23,10 +22,10 @@ import {
 import { GetProjectDetail } from '../../../../../redux/features/administrativeArea/projects/projectsThunk';
 import { closeModal } from '../../../../../redux/features/modal/modalSlice';
 import { useAppSelector } from '../../../../../redux/hooks';
-import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
 import { formFieldI } from '../../../../../utils/formHelper';
 import FormAuthorities from '../../../../forms/formAuthorities';
-import { headings } from './manageManagerAuthority';
+import ExistingEnteInfo from '../../../../forms/formServices/ExistingEnteInfo';
+import NoResultsFoundEnte from '../../../../../components/NoResultsFoundEnte/noResultsFoundEnte';
 
 const id = 'ente-partner';
 
@@ -42,7 +41,6 @@ interface ManageProjectPartnerAuthorityI
 
 const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
   clearForm = () => ({}),
-  formDisabled,
   creation = false,
   legend = '',
 }) => {
@@ -55,6 +53,9 @@ const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
   const dispatch = useDispatch();
   const { projectId, authorityId } = useParams();
   const authoritiesList = useAppSelector(selectAuthorities).list;
+  const [firstOpen, setFirstOpen] = useState<boolean>(true);
+  const [isEnteSelected, setIsEnteSelected] = useState(false);
+  const [searchedFiscalCode, setSearchedFiscalCode] = useState<string>('');
 
   useEffect(() => {
     if (creation) dispatch(setAuthorityDetails({}));
@@ -62,16 +63,33 @@ const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
 
   const resetModal = (toClose = true) => {
     clearForm();
-    setShowForm(true);
+    setIsFormValid(false);
+    setShowForm(false);
     setAlreadySearched(false);
+    setFirstOpen(true);
+    setIsEnteSelected(false);
+    dispatch(setAuthoritiesList(null));
     // dispatch(resetAuthorityDetails());
     if (toClose) dispatch(closeModal());
   };
 
-  const handleSearchAuthority = (search: string) => {
-    if (search) dispatch(GetAuthoritiesBySearch(search));
-    setShowForm(false);
-    setAlreadySearched(true);
+  
+
+  const handleSearchAuthority = async (search: string) => {
+    resetModal(false);
+    dispatch(resetAuthorityDetails());
+    setSearchedFiscalCode(search);
+    const result = await dispatch(GetAuthoritiesBySearch(search)) as any;
+    setAlreadySearched(true);    
+    if (result?.data[0]) { //!
+      dispatch(GetAuthorityDetail(result?.data[0].id as string, true));
+      setShowForm(true);
+      setFirstOpen(false);
+      setIsFormValid(true);
+      setIsEnteSelected(true);
+    }
+    // setShowForm(false);
+    // setAlreadySearched(true);
   };
 
   const handleSaveEnte = async () => {
@@ -105,50 +123,47 @@ const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
   };
 
   // The table makes me work with function defined this way
-  const handleSelectAuthority: CRUDActionsI = {
-    [CRUDActionTypes.SELECT]: (td: TableRowI | string) => {
-      if (typeof td !== 'string') {
-        dispatch(GetAuthorityDetail(td.id as string, true));
-        dispatch(setAuthoritiesList(null));
-      }
-      setShowForm(true);
-    },
+  // const handleSelectAuthority: CRUDActionsI = {
+  //   [CRUDActionTypes.SELECT]: (td: TableRowI | string) => {
+  //     if (typeof td !== 'string') {
+  //       dispatch(GetAuthorityDetail(td.id as string, true));
+  //       dispatch(setAuthoritiesList(null));
+  //     }
+  //     setShowForm(true);
+  //   },
+  // };
+
+  const addNewEnte = () => {
+    setAlreadySearched(false);
+    setShowForm(true);
+    setFirstOpen(false);
   };
 
   let content;
-
-  if (showForm) {
+  
+  if (showForm && !firstOpen) {    
     content = (
-      <FormAuthorities
+      <div>
+        {authoritiesList && authoritiesList.length > 0 && <ExistingEnteInfo/>}
+        <FormAuthorities
         noIdField
         creation={creation}
-        formDisabled={!!formDisabled}
+        formDisabled={isEnteSelected}
         sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) => {
           setNewFormValues({ ...newData });
         }}
         setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
         legend={legend}
+        initialFiscalCode={searchedFiscalCode}
       />
+      </div>
     );
-  } else if (authoritiesList && authoritiesList.length > 0) {
+  } else if (alreadySearched && (authoritiesList?.length === 0 || !authoritiesList) && !showForm ) {
     content = (
-      <Table
-        heading={headings}
-        values={authoritiesList.map((item) => ({
-          label: item.nome,
-          id: item.id,
-          tipologia: item.tipologia,
-        }))}
-        onActionRadio={handleSelectAuthority}
-        id='table'
-      />
+    <div style={{ margin: '50px 0' }}>
+      <NoResultsFoundEnte onClickCta={addNewEnte}/>
+    </div>
     );
-  } else if (
-    alreadySearched &&
-    (authoritiesList?.length === 0 || !authoritiesList) &&
-    !showForm
-  ) {
-    content = <EmptySection title='Nessun risultato' withIcon horizontal />;
   }
 
   return (
@@ -163,6 +178,12 @@ const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
         label: 'Annulla',
         onClick: resetModal,
       }}
+      subtitle={<>
+        Inserisci il <strong>codice fiscale</strong> dell'Ente e verifica che
+        sia già registrato sulla piattaforma.
+        <br />
+        Se non è presente, compila la sua scheda.
+      </>}
     >
       <div>
         <SearchBar
@@ -170,22 +191,18 @@ const ManagePartnerAuthority: React.FC<ManageProjectPartnerAuthorityI> = ({
             'w-100',
             'py-4',
             'px-5',
-            'search-bar-borders',
-            'search-bar-bg'
+            // 'search-bar-borders',
+            'search-bar-custom'
           )}
-          placeholder='Inserisci il nome, l’ID o il codice fiscale dell’ente'
+          placeholder='Inserisci il codice fiscale dell’ente' //Modificare BE
           onSubmit={handleSearchAuthority}
           onReset={() => {
-            setShowForm(true);
+            resetModal(false);
+            setShowForm(false);
             dispatch(setAuthorityDetails({}));
           }}
-          title='Cerca'
+          title=''
           search
-          infoText={
-            authoritiesList?.length
-              ? `${authoritiesList?.length} risultati trovati`
-              : ''
-          }
         />
         <div className='mx-5'>{content}</div>
       </div>

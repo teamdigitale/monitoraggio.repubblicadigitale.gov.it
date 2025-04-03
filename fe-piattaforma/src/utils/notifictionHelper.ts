@@ -8,6 +8,16 @@ export const dispatchNotify = (notify?: NotifyI) => {
   store.dispatch(NewNotify(notify) as any);
 };
 
+export const dispatchWarning = (title: string, message: string) => {
+  dispatchNotify({
+    title,
+    status: 'warning',
+    message,
+    closable: true,
+    duration: 'slow',
+  });
+};
+
 const dispatchLogout = () => {
   console.error('401 unauthorized detected, should redirect to logout');
   store.dispatch(LogoutRedirect() as any);
@@ -35,6 +45,7 @@ const networkErrorPayload = {
 const defaultErrorPayload = {
   title: 'SI È VERIFICATO UN ERRORE',
   message: defaultErrorMessage,
+  status: 'error',
 };
 const getDrupalErrorMessage = (errorsList: any, errorMessage: string) => {
   try {
@@ -62,7 +73,7 @@ export const getErrorMessage = async (
   }
 ) => {
   try {
-    const res = await axios('/assets/errors/errors.json');
+    const res = await axios('/assets/errors/errors.json');    
     if (res?.data) {
       const errorsList = { ...res.data.errors };
       if (errorCode === 'A02') {
@@ -70,10 +81,12 @@ export const getErrorMessage = async (
         window.location.replace('/auth-redirect');
       } else if (errorCode === 'D01') {
         // return getDrupalErrorMessage(errorsList, message);
+        return {title: '', message: ''};
       } else if (errorsList[errorCode]) {
         return {
           message: `${errorsList[errorCode]?.descrizione} (errore ${errorCode})`,
           title: errorsList[errorCode]?.titolo || 'ERRORE',
+          status: errorsList[errorCode]?.status || 'error',
         };
       } else {
         return defaultErrorPayload;
@@ -108,17 +121,30 @@ export const errorHandler = async (error: unknown) => {
       dispatchLogout();
     }
 
+    const urlForward = ['board', 'community', 'document'];
     if (!errorData) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      errorData = await getErrorMessage(error?.response?.data);
-    }
-
-    if (errorData) {
+      try {
+        errorData = await getErrorMessage({
+          errorCode: (error as any)?.response?.data?.errorCode,
+        });
+      } catch (error) {
+        console.error("Errore durante il recupero del messaggio:", error);
+      }
+      //aggiunto controllo per non mostrare messaggio di errore in caso di errore drupal forward 
+      if (errorData && !(urlForward.some(keyword => JSON.parse((error as any)?.config.data).url?.includes(keyword)))) { 
+        dispatchNotify({
+          title: errorData.title,
+          status: errorData.status,
+          message: errorData.message,
+          closable: true,
+          duration: 'slow',
+        });
+      }
+    } else {  //dispatch notify network error
       dispatchNotify({
-        title: errorData.title,
+        title: networkErrorPayload.title,
         status: 'error',
-        message: errorData.message,
+        message: networkErrorPayload.message,
         closable: true,
         duration: 'slow',
       });

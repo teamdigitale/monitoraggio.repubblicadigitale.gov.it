@@ -9,9 +9,10 @@ import org.springframework.stereotype.Repository;
 
 import it.pa.repdgt.ente.entity.projection.EnteProjection;
 import it.pa.repdgt.shared.entity.EntePartnerEntity;
+import it.pa.repdgt.shared.entity.key.EntePartnerKey;
 
 @Repository
-public interface EntePartnerRepository extends JpaRepository<EntePartnerEntity, Long> { 
+public interface EntePartnerRepository extends JpaRepository<EntePartnerEntity, EntePartnerKey> { 
 	
 	@Query(value = "SELECT ID_ENTE "
 			+ "FROM ente_partner ep "

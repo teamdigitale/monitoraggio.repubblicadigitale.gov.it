@@ -268,8 +268,9 @@ export const GetAuthoritiesBySearch =
         `${process?.env?.ENTE}ente/cerca?criterioRicerca=${search}`
       );
 
-      if (search && res.data) {
+      if (search && res?.data) {
         dispatch(setAuthoritiesList(res.data));
+        return res;
       } else {
         dispatch(setAuthoritiesList([]));
       }
@@ -449,10 +450,10 @@ export const GetPartnerAuthorityDetail =
             delegatiEntePartner: res.data.delegatiEntePartner,
             referentiEntePartner: res.data.referentiEntePartner,
             dettagliInfoEnte: Object.fromEntries(
-              Object.entries(res.data.ente).map(([key, value]) =>
+              Object.entries(res.data.ente ?? {}).map(([key, value]) =>
                 key === 'partitaIva' ? ['piva', value] : [key, value]
               )
-            ),
+            ),            
             sediEntePartner: res.data.sediEntePartner,
           })
         );

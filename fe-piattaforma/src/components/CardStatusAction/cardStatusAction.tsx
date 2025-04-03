@@ -36,16 +36,17 @@ interface CardStatusActionI {
   actionView?: boolean;
   referente?: string;
   fullInfo?:
-    | {
-        [key: string]: string | undefined;
-      }
-    | undefined;
+  | {
+    [key: string]: string | undefined;
+  }
+  | undefined;
   onActionClick?: CRUDActionsI;
   id?: string | undefined;
   cf?: string | undefined;
   moreThanOneSurvey?: boolean;
   onCheckedChange?: (checked: string) => void;
   activeRole?: boolean;
+  showArrow?: boolean;
 }
 
 const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
@@ -61,6 +62,7 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
     moreThanOneSurvey = false,
     onCheckedChange,
     activeRole = false,
+    showArrow = true,
   } = props;
   const device = useAppSelector(selectDevice);
   const [isChecked, setIsChecked] = useState<string>('');
@@ -153,30 +155,65 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
                   : 'd-flex flex-row w-100 flex-wrap'
               )}
             >
-              {Object.keys(fullInfo).map((key, index) => {
-                if (!fullInfo[key]) return null;
-                return (
-                  <div
-                    className={clsx(
-                      'd-flex',
-                      'flex-column',
-                      'py-3',
-                      device.mediaIsPhone && 'px-1',
-                      device.mediaIsTablet && 'pr-2',
-                      device.mediaIsDesktop && 'pr-5',
-                      'status-action-width',
-                    )}
-                    key={index}
-                  >
-                    <span className='primary-color-a12 mr-2 text-wrap'>
-                      {t(fieldMappedForTranslations[key])}
-                    </span>
-                    <span className='neutral-1-color-a8 weight-600 text-wrap'>
-                      {fullInfo[key] === null ? '---' : fullInfo[key]}
-                    </span>
-                  </div>
-                );
-              })}
+              {Object.keys(fullInfo).length ? (
+                <div
+                  className={clsx(
+                    device.mediaIsPhone
+                      ? 'd-flex flex-column align-items-start'
+                      : 'd-flex flex-row w-100 flex-wrap'
+                  )}
+                >
+                  {(() => {
+                    const keys = Object.keys(fullInfo);
+                    const group1 = keys.slice(2, 4); // Indici 2 e 3
+                    const group2 = keys.slice(0, 2); // Indici 0 e 1
+                    const orderedKeys = [...group1, ...group2];
+
+                    return orderedKeys.map((key, index) => {
+                      if (!fullInfo[key]) return null;
+                      return (
+                        <div
+                          className={clsx(
+                            'd-flex',
+                            'flex-column',
+                            'py-3',
+                            device.mediaIsPhone && 'px-1',
+                            device.mediaIsTablet && 'pr-2',
+                            device.mediaIsDesktop && 'pr-5',
+                            'status-action-width',
+                          )}
+                          key={index}
+                        >
+                          <span className='primary-color-a12 mr-2 text-wrap'>
+                            {t(fieldMappedForTranslations[key])}
+                          </span>
+                          {group2.includes(key) ? (
+                            onActionClick?.[CRUDActionTypes.VIEW] ? 
+                            <a
+                              href={`#${fullInfo[key]}`}
+                              className='weight-600 text-wrap'
+                              style={{ color: '#0066CC' }}
+                              onClick={() => {
+                                onActionClick?.[CRUDActionTypes.VIEW]?.(id ?? '-');
+                              }}
+                            >
+                              {fullInfo[key] === null ? '---' : fullInfo[key]}
+                            </a>
+                            : 
+                            <span className=' neutral-1-color-a8 weight-600 text-wrap'>
+                              {fullInfo[key] === null ? '---' : fullInfo[key]}
+                            </span>
+                          ) : (
+                            <span className='neutral-1-color-a8 weight-600 text-wrap'>
+                              {fullInfo[key] === null ? '---' : fullInfo[key]}
+                            </span>
+                          )}
+                        </div>
+                      );
+                    });
+                  })()}
+                </div>
+              ) : null}
             </div>
           ) : null}
         </div>
@@ -193,7 +230,7 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
           <div
             className={clsx(
               'd-flex',
-              'flex-row',
+              'flex-column',
               'align-items-center',
               'justify-content-end'
             )}
@@ -201,24 +238,28 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
               minWidth: device.mediaIsDesktop
                 ? '190px'
                 : device.mediaIsTablet
-                ? '170px'
-                : 'unset',
+                  ? '170px'
+                  : 'unset',
+              marginBottom: '34px'
             }}
           >
             {status && (
-              <StatusChip
-                className={clsx(
-                  'table-container__status-label',
-                  'primary-bg-a9',
-                  'mr-4',
-                  'section-chip',
-                  'no-border',
-                  device.mediaIsPhone ? 'mx-0 ml-2' : 'mx-3'
-                )}
-                status={status}
-                rowTableId={id}
-                chipWidth
-              />
+              <>
+                <span className='primary-color-a12 mr-2 text-wrap'>Stato Ruolo</span>
+                <StatusChip
+                  className={clsx(
+                    'table-container__status-label',
+                    'primary-bg-a9',
+                    'mr-4',
+                    'section-chip',
+                    'no-border',
+                    device.mediaIsPhone ? 'mx-0 ml-2' : 'mx-3'
+                  )}
+                  status={status}
+                  rowTableId={id}
+                  chipWidth
+                />
+              </>
             )}
           </div>
           {!device.mediaIsPhone && actionView && (
@@ -257,7 +298,7 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
                   </>
                 )
               ) : null}
-              {onActionClick[CRUDActionTypes.VIEW] ? (
+              {showArrow && onActionClick[CRUDActionTypes.VIEW] ? (
                 <Button
                   onClick={() => {
                     onActionClick[CRUDActionTypes.VIEW](id);
@@ -268,9 +309,8 @@ const CardStatusAction: React.FC<CardStatusActionI> = (props) => {
                     color='primary'
                     icon='it-chevron-right'
                     size='sm'
-                    aria-label={`Vai al dettaglio di ${
-                      title || fullInfo?.programma
-                    }`}
+                    aria-label={`Vai al dettaglio di ${title || fullInfo?.programma
+                      }`}
                   />
                 </Button>
               ) : null}

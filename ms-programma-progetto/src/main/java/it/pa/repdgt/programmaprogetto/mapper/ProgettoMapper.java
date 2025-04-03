@@ -253,6 +253,7 @@ public class ProgettoMapper {
 		dettaglioProgetto.setDataFine(progettoFetchDB.getDataFineProgetto());
 		dettaglioProgetto.setStato(progettoFetchDB.getStato());
 		dettaglioProgetto.setPolicy(progettoFetchDB.getProgramma().getPolicy().toString());
+		dettaglioProgetto.setCupManipolato(progettoFetchDB.getCupManipolato());
 		//Numero Target Punti di Facilitazione
 		dettaglioProgetto.setNPuntiFacilitazioneTarget1(progettoFetchDB.getNPuntiFacilitazioneTarget1());
 		dettaglioProgetto.setNPuntiFacilitazioneTarget2(progettoFetchDB.getNPuntiFacilitazioneTarget2());

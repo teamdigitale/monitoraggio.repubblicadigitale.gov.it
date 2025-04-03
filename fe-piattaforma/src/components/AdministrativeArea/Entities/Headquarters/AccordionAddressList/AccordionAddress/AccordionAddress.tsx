@@ -142,7 +142,7 @@ const AccordionAddress: React.FC<AccordionAddressI> = ({
             detailAccordion && 'accordion-container__header-acc',
             'mr-auto'
           )}
-        >{`Indirizzo ${index} *`}</span>
+        >{`Indirizzo ${index}${isReadOnly ? '' : ' *'}`}</span>
         {canBeDeleted && !isReadOnly && (
           <Button
             onClick={(e) => {
@@ -151,9 +151,10 @@ const AccordionAddress: React.FC<AccordionAddressI> = ({
             }}
             className='pl-3 pr-0'
           >
+            <span>Elimina indirizzo</span>
             <Icon
               color='primary'
-              icon='it-less-circle'
+              icon='it-delete'
               size='sm'
               aria-label='Elimina'
             />
