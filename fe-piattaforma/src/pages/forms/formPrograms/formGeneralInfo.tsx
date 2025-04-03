@@ -6,7 +6,7 @@ import withFormHandler, {
 import { selectPrograms } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { selectProfile } from '../../../redux/features/user/userSlice';
 import { useAppSelector } from '../../../redux/hooks';
-import { formatDate } from '../../../utils/common';
+import { formatDateAsMomentString } from '../../../utils/common';
 import {
   formFieldI,
   FormHelper,
@@ -124,11 +124,11 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           ...newForm,
           dataInizio: {
             ...form.dataInizio,
-            maximum: formatDate(form?.dataFine.value as string),
+            maximum: formatDateAsMomentString(form?.dataFine.value as string),
           },
           dataFine: {
             ...form.dataFine,
-            minimum: formatDate(form?.dataInizio.value as string),
+            minimum: formatDateAsMomentString(form?.dataInizio.value as string),
           },
         },
         value,
@@ -139,11 +139,11 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
         ...newForm,
         dataInizio: {
           ...newForm.dataInizio,
-          maximum: formatDate(newForm?.dataFine.value as string),
+          maximum: formatDateAsMomentString(newForm?.dataFine.value as string),
         },
         dataFine: {
           ...newForm.dataFine,
-          minimum: formatDate(newForm?.dataInizio.value as string),
+          minimum: formatDateAsMomentString(newForm?.dataInizio.value as string),
         },
       });
     }
