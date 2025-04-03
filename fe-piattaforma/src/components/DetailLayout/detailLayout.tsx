@@ -95,9 +95,8 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
 
   const handleOnChangePage = (
       pageNumber: number = pagination?.pageNumber,
-      pageSize = 4
     ) => {
-      dispatch(setEntityPagination({ pageNumber, pageSize }));
+      dispatch(setEntityPagination({ pageNumber }));
   };
   const [currentItems, setCurrentItems] = useState<ItemListElemI[]>([]);
 
@@ -109,21 +108,23 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
           ...item,
           res: showIconBasedOnRole(item),
         }))
-        .sort((a, b) => a.res - b.res);
+        .sort((a, b) => a.res - b.res);        
   
       // 2. Applica la paginazione DOPO l'ordinamento
       const start = (pagination.pageNumber - 1) * pagination.pageSize;
-      const end = pagination.pageNumber * pagination.pageSize;
+      const end = start + pagination.pageSize;
       const paginatedItems = sortedItems.slice(start, end);
   
       setCurrentItems(paginatedItems);
+    }else {
+      setCurrentItems([]); 
     }
   }, [currentTab, pagination.pageNumber, pagination.pageSize, itemsList]);
   
 
   useEffect(() => {
     if (currentTab === 'sedi') {
-      dispatch(setEntityPagination({ pageNumber: 1, pageSize: 4 }));
+      dispatch(setEntityPagination({ pageNumber: 1, pageSize: 8 }));
     }else{
       setCurrentItems([]);
     }
@@ -344,12 +345,10 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
                   ...item,
                   res: showIconBasedOnRole(item),
                 }))
-                .sort((a, b) => a.res - b.res) // Ordina per res (1 prima, poi 2, poi 3)
                 .map((item) => (
                   <CardStatusActionHeadquarters
                     title={item.nome}
                     status={item.stato}
-                    key={item.id}
                     id={item.id}
                     fullInfo={item.fullInfo}
                     onActionClick={item.actions}
