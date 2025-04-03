@@ -11,17 +11,10 @@ import it.pa.repdgt.shared.entity.ConfigurazioneMinorenniEntity;
 @Repository
 public interface ConfigurazioneMinorenniRepository extends JpaRepository<ConfigurazioneMinorenniEntity, Long> {
 
-    // @Query(value = "SELECT c FROM servizio s JOIN progetto p ON s.id_progetto =
-    // p.id JOIN configurazione_minorenni c ON c.id_programma = p.id_programma WHERE
-    // s.id = :idServizio", nativeQuery = true)
-    // @Query(value = "SELECT c FROM configurazione_minorenni c WHERE c.id_programma
-    // = :idProgramma", nativeQuery = true)
-    // public Optional<ConfigurazioneMinorenniEntity> findByIdServizio(Long
-    // idServizio, Long idProgramma);
-
-    @Query(value = "SELECT c.* " +
+    @Query(value = "SELECT DISTINCT c.* " +
                    "FROM configurazione_minorenni c " +
-                   "JOIN programma p ON c.id_programma = p.id " +
+                   "JOIN programma progr ON progr.id = c.id_programma " +
+                   "JOIN progetto p ON p.id_programma = progr.id " +
                    "JOIN servizio s ON s.id_progetto = p.id " +
                    "WHERE (:idServizio IS NOT NULL AND s.id = :idServizio) " +
                    "OR (:idProgramma IS NOT NULL AND c.id_programma = :idProgramma)", 

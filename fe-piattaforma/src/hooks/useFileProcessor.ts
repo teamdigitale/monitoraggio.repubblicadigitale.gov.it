@@ -226,17 +226,12 @@ export function useFileProcessor(file: File | undefined, removeFile: () => void)
                       CodiceFiscaleUtils.Parser.cfDecode(filteredRecord.AN3);
                     const ageGroup = getAgeGroupCodeByYear(cfData.date);
 
-                    if(filteredRecord.AN3){
-                      if(flgAbilitatoAMinori && moment().isAfter(dataDecorrenza)){
-                        //controllo se ho almeno 14
-                        if(!ageGroup){
-                          errors.push('Il cittadino deve avere almeno 14 anni.');
-                        }
-                      }else{
-                        //controllo se ho almeno 18
-                        if(!ageGroup || ageGroup === 'E'){
-                          errors.push('Il cittadino deve essere maggiorenne.');
-                        }
+                    if (filteredRecord.AN3) {
+                      const isMinorAllowed = flgAbilitatoAMinori && moment().isAfter(dataDecorrenza);
+                      if (!ageGroup || (!isMinorAllowed && ageGroup === 'E')) {
+                      errors.push(isMinorAllowed 
+                        ? 'Il cittadino deve avere almeno 14 anni.' 
+                        : 'Il cittadino deve essere maggiorenne.');
                       }
                     }
 
