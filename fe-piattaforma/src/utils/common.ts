@@ -41,6 +41,14 @@ export const formatDate = (date?: string) => {
   return undefined;
 };
 
+export const formatDateAsMomentString = (date?: string) => {
+  if (date) {
+    return String(moment(date));
+  }
+ 
+  return undefined;
+};
+
 export const scrollTo = (y: number) => {
   window.scrollTo({
     behavior: 'smooth',
