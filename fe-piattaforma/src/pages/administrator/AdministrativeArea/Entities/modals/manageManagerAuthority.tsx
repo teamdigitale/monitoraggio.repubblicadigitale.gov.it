@@ -33,6 +33,7 @@ import { GetProgramDetail } from '../../../../../redux/features/administrativeAr
 import clsx from 'clsx';
 import ExistingEnteInfo from '../../../../forms/formServices/ExistingEnteInfo';
 import NoResultsFoundEnte from '../../../../../components/NoResultsFoundEnte/noResultsFoundEnte';
+import { dispatchNotify } from '../../../../../utils/notifictionHelper';
 
 const id = 'ente-gestore';
 
@@ -62,7 +63,7 @@ interface ManageManagerAuthorityFormI {
 
 interface ManageManagerAuthorityI
   extends withFormHandlerProps,
-    ManageManagerAuthorityFormI {}
+  ManageManagerAuthorityFormI { }
 
 const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
   clearForm = () => ({}),
@@ -72,7 +73,7 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
   const [newFormValues, setNewFormValues] = useState<{
     [key: string]: formFieldI['value'];
   }>({});
-  const [isFormValid, setIsFormValid] = useState<boolean>(true);
+  const [isFormValid, setIsFormValid] = useState<boolean>(false);
   // const [noResult, setNoResult] = useState(false);
   const dispatch = useDispatch();
   const { entityId, projectId } = useParams();
@@ -199,21 +200,30 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
   // };
 
   const handleSearchAuthority = async (search: string) => {
-      resetModal(false);
-      dispatch(resetAuthorityDetails());
-      setSearchedFiscalCode(search);
-      const result = await dispatch(GetAuthoritiesBySearch(search)) as any;
-      setAlreadySearched(true);    
-      if (result?.data[0]) { //!
-        dispatch(GetAuthorityDetail(result?.data[0].id as string, true));
-        setShowForm(true);
-        setFirstOpen(false);
-        setIsFormValid(true);
-        setIsEnteSelected(true);
-      }
-      // setShowForm(false);
-      // setAlreadySearched(true);
-    };
+    if (search.length !== 11) {
+      dispatchNotify({
+        status: 'error',
+        message: 'Il codice fiscale deve essere lungo 11 caratteri',
+        title: 'Attenzione',
+        closable: true
+      });
+      return;
+    }
+    resetModal(false);
+    dispatch(resetAuthorityDetails());
+    setSearchedFiscalCode(search);
+    const result = await dispatch(GetAuthoritiesBySearch(search)) as any;
+    setAlreadySearched(true);
+    if (result?.data[0]) { //!
+      dispatch(GetAuthorityDetail(result?.data[0].id as string, true));
+      setShowForm(true);
+      setFirstOpen(false);
+      setIsFormValid(true);
+      setIsEnteSelected(true);
+    }
+    // setShowForm(false);
+    // setAlreadySearched(true);
+  };
 
   const addNewEnte = () => {
     setAlreadySearched(false);
@@ -222,29 +232,44 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
   };
 
   let content;
-  
-  if (showForm && !firstOpen) {    
+
+  if (showForm && !firstOpen) {
     content = (
       <div>
-        {authoritiesList && authoritiesList.length > 0 && <ExistingEnteInfo/>}
+        {authoritiesList && authoritiesList.length > 0 && <ExistingEnteInfo />}
         <FormAuthorities
-        noIdField
-        creation={creation}
-        formDisabled={isEnteSelected}
-        sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) => {
-          setNewFormValues({ ...newData });
-        }}
-        setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
-        legend={legend}
-        initialFiscalCode={searchedFiscalCode}
-      />
+          noIdField
+          creation={creation}
+          formDisabled={isEnteSelected}
+          sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) => {
+            setNewFormValues({ ...newData });
+          }}
+          setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
+          legend={legend}
+          initialFiscalCode={searchedFiscalCode}
+        />
       </div>
     );
-  } else if (alreadySearched && (authoritiesList?.length === 0 || !authoritiesList) && !showForm ) {
+  } else if (!creation) { //apro in modifica
     content = (
-    <div style={{ margin: '50px 0' }}>
-      <NoResultsFoundEnte onClickCta={addNewEnte}/>
-    </div>
+      <div>
+        {authoritiesList && authoritiesList.length > 0 && <ExistingEnteInfo />}
+        <FormAuthorities
+          creation={creation}
+          formDisabled={false}
+          setIsFormValid={(value: boolean | undefined) => setIsFormValid(!!value)}
+          sendNewValues={(newData?: { [key: string]: formFieldI['value'] }) =>
+            setNewFormValues({ ...newData })
+          }
+          legend={legend}
+        />
+      </div>
+    );
+  } else if (alreadySearched && (authoritiesList?.length === 0 || !authoritiesList) && !showForm) {
+    content = (
+      <div style={{ margin: '50px 0' }}>
+        <NoResultsFoundEnte onClickCta={addNewEnte} />
+      </div>
     );
   }
 
@@ -281,41 +306,45 @@ const ManageManagerAuthority: React.FC<ManageManagerAuthorityI> = ({
         onClick: resetModal,
       }}
       centerButtons
-      subtitle={<>
-        Inserisci il <strong>codice fiscale</strong> dell'Ente e verifica che
-        sia già registrato sulla piattaforma.
-        <br />
-        Se non è presente, compila la sua scheda.
-      </>}
+      {...(creation && {
+        subtitle: (<>
+          Inserisci il <strong>codice fiscale</strong> dell'Ente e verifica che
+          sia già registrato sulla piattaforma.
+          <br />
+          Se non è presente, compila la sua scheda.
+        </>),
+      })}
     >
       <div>
-        <SearchBar
-          className={clsx(
-            'w-100',
-            'py-4',
-            'px-5',
-            // 'search-bar-borders',
-            'search-bar-custom'
-          )}
-          placeholder='Inserisci il codice fiscale dell’ente'
-          onSubmit={handleSearchAuthority}
-          title=''
-          onReset={() => {
-            resetModal(false);
-            setShowForm(false);
-            dispatch(setAuthoritiesList(null));
-            if (creation) {
-              dispatch(setAuthorityDetails(null));
-              clearForm();
-            } else {
-              projectId &&
-                dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
-              entityId &&
-                dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
-            }
-          }}
-          search
-        />
+        {creation ? (
+          <SearchBar
+            className={clsx(
+              'w-100',
+              'py-4',
+              'px-5',
+              // 'search-bar-borders',
+              'search-bar-custom'
+            )}
+            placeholder='Inserisci il codice fiscale dell’ente'
+            onSubmit={handleSearchAuthority}
+            title=''
+            onReset={() => {
+              resetModal(false);
+              setShowForm(false);
+              dispatch(setAuthoritiesList(null));
+              if (creation) {
+                dispatch(setAuthorityDetails(null));
+                clearForm();
+              } else {
+                projectId &&
+                  dispatch(GetAuthorityManagerDetail(projectId, 'progetto'));
+                entityId &&
+                  dispatch(GetAuthorityManagerDetail(entityId, 'programma'));
+              }
+            }}
+            search
+          />
+        ) : null}
         <div className='mx-5'>{content}</div>
       </div>
     </GenericModal>
