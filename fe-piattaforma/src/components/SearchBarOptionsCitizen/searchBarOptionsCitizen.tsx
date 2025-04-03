@@ -67,32 +67,16 @@ const SearchBarOptionsCitizen: React.FC<SearchBarOptionsI> = ({
   const isValidFiscalCode = useCallback(
     (query: string) => {
       if (isCodiceFiscaleValido(query)) {
-        if(flgAbilitatoAMinori && moment().isAfter(dataDecorrenza)){
-          if(!isMaggiore14Anni(query)){
-            dispatchNotify(
-              1,
-              'ERRORE',
-              'error',
-              'Il cittadino inserito deve avere almeno 14 anni',
-              'medium'
-            );
-            return false;
-          }
-          return true;
-        }else{
-          if(!isMaggiorenne(query)){
-            dispatchNotify(
-              1,
-              'ERRORE',
-              'error',
-              'Il cittadino inserito deve essere maggiorenne',
-              'medium'
-            );
-            return false;
-          }
+        if (isMaggiorenne(query) || (flgAbilitatoAMinori && moment().isAfter(dataDecorrenza) && isMaggiore14Anni(query))) {
           return true;
         }
-    }},
+        const errorMessage = flgAbilitatoAMinori && moment().isAfter(dataDecorrenza)
+          ? 'Il cittadino inserito deve avere almeno 14 anni'
+          : 'Il cittadino inserito deve essere maggiorenne';
+        dispatchNotify(1, 'ERRORE', 'error', errorMessage, 'medium');
+        return false;
+      }
+},
     [dispatchNotify, isMaggiorenne]
   );
 
