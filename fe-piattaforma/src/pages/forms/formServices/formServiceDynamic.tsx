@@ -143,6 +143,8 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
             onInputChange={onInputDataChange}
             disabled={formDisabled}
             className='pl-0 duration-input'
+            setIsFormValid={setIsFormValid}
+            formValues={form || {}}
           />
         );
       case 'date':
