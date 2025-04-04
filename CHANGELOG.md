@@ -1,5 +1,17 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.437](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.436...1.0.0-test.437) (2025-04-04)
+
+
+### Bug Fixes
+
+* **U255:** fix visualizzazione card errate elenco sedi 20250403 ([0cb10f8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0cb10f83fd101995e0dddd719fff6cb24c6c5257))
+* **U319:** fix bottone conferma e fasi aggiunta ente gestore/partner 20250403 ([02c642a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/02c642a9ecff44fa230c9a68b1163749b03fb619))
+* **T403:** fix validità selettore date/durata 20250403 ([490ef39](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/490ef3907fef9ed07945476e8880da6d0b0f7a65))
+* **T403:** fix validazione date progetto 20250403 ([2cb01df](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2cb01df5bc0381eaffdbe60a44f5f4fd4df2475e))
+* **T401:** fix validazione form servizio post modifica durata 20250404 ([99bf61d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/99bf61d9f311012504b40131186bd19736cddb91))
+* **T408:** visualizzazione errata sottotitolo ente 20250404 ([e3f93c9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e3f93c94838be7851b420059e44ce3da845f468c))
+
 ## [1.0.0-test.436](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.435...1.0.0-test.436) (2025-04-03)
 
 
