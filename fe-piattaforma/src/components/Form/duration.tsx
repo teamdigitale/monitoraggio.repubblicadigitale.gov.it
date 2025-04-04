@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Input, { InputI } from './input';
-import { formFieldI } from '../../utils/formHelper';
+import { formFieldI, FormI, FormHelper } from '../../utils/formHelper';
 import './form.scss';
 
 const isExtValueValid = (val: formFieldI['value'], touched: boolean) => {
@@ -15,12 +15,19 @@ const isExtValueValid = (val: formFieldI['value'], touched: boolean) => {
     : false;
 };
 
-const Duration: React.FC<InputI> = (props) => {
+interface DurationI extends InputI {
+  setIsFormValid?: (value: boolean) => void;
+  formValues?: FormI;
+}
+
+const Duration: React.FC<DurationI> = (props) => {
   const {
     id = props.id || props.field || `input-duration-${new Date().getTime()}`,
     value: extValue = '',
     onInputChange = () => ({}),
     touched = false,
+    setIsFormValid = () => ({}),
+    formValues = {},
   } = props;
   const [value, setValue] = useState<string>(extValue.toString() || '');
   const [validDuration, setValidDuration] = useState(
@@ -30,12 +37,13 @@ const Duration: React.FC<InputI> = (props) => {
   const handleOnDurationChange = (val: formFieldI['value']) => {
     const valString = (val || '')?.toString();
     const splitted = valString.split(':');
+    let isValid = false;
     if (valString?.includes('+') || valString?.includes('-')) {
       // + & - are not accepted
-      setValidDuration(false);
+      isValid = false;
     } else if (splitted[0]?.length > 3) {
       // max hours 999
-      setValidDuration(false);
+      isValid = false;
     } else {
       if (Number(splitted[0]) === 0 || Number(splitted[0]) % 1 === 0) {
         // hours is number || 0
@@ -46,29 +54,31 @@ const Duration: React.FC<InputI> = (props) => {
           // minutes is number ||
           if (splitted[1]?.length > 2) {
             // max minutes has two digits
-            setValidDuration(false);
+            isValid = false;
           } else {
             if (Number(splitted[1]) <= 59 && valString !== ':') {
-              setValidDuration(true);
+              isValid = true;
               setValue(valString);
             } else {
               // minutes is bigger than 59
-              setValidDuration(false);
+              isValid = false;
             }
           }
         } else if (!splitted[1]) {
           // minutes do not exist
-          setValidDuration(true);
+          isValid = true;
           setValue(valString);
         } else if (!Number(splitted[1])) {
           // minutes is not number
-          setValidDuration(false);
+          isValid = false;
         }
       } else {
         // hours is not number or hours is not integer
-        setValidDuration(false);
+        isValid = false;
       }
     }
+    setValidDuration(isValid);
+    setIsFormValid?.(FormHelper.isValidForm(formValues) && isValid);
   };
 
   useEffect(() => {
@@ -108,7 +118,7 @@ const Duration: React.FC<InputI> = (props) => {
       minimum={1}
       onInputBlur={handleOnDurationChange}
       value={value}
-      onInputChange={() => ({})}
+      onInputChange={handleOnDurationChange}
       valid={validDuration}
     />
   );
