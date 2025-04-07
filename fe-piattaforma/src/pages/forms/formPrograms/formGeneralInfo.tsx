@@ -14,6 +14,10 @@ import {
   newFormField,
 } from '../../../utils/formHelper';
 import { RegexpType } from '../../../utils/validator';
+import { useDispatch } from 'react-redux';
+import { GetConfigurazioneMinorenni } from '../../../redux/features/citizensArea/citizensAreaThunk';
+import { useParams } from 'react-router-dom';
+import { Button, FormGroup, Icon, Label, UncontrolledTooltip } from 'design-react-kit';
 
 interface ProgramInformationI {
   formDisabled?: boolean;
@@ -48,7 +52,10 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
   const programDetails: { [key: string]: string } | undefined =
     useAppSelector(selectPrograms).detail.dettagliInfoProgramma;
 
+  const { entityId } = useParams();
   const userRole = useAppSelector(selectProfile)?.codiceRuolo;
+  const dispatch = useDispatch();
+  const [showMinorenni, setShowMinorenni] = React.useState(false);
 
   useEffect(() => {
     setIsFormValid(isValidForm);
@@ -165,13 +172,28 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form]);
 
+  const getMinorenniInfo = async () => {
+      if(entityId){
+        const config = await GetConfigurazioneMinorenni(undefined, entityId)(dispatch);
+        const today = new Date();
+        const decorrenzaDate = new Date(config.dataDecorrenza);
+        if (config.id != null && today >= decorrenzaDate) {
+          setShowMinorenni(true);
+        }
+      }
+  };
+
+  useEffect(() => {
+    getMinorenniInfo();
+  }, []);
+
   const bootClass = 'justify-content-between px-0 px-lg-5 mx-2';
 
   return (
     <Form
       legend={legend}
       id='form-general-info'
-      className={formDisabled ? 'mt-5' : 'mt-3'}
+      className={formDisabled ? 'mt-5 mb-5' : 'mt-3'}
       formDisabled={formDisabled}
       customMargin='mb-3 pb-3 ml-3'
     >
@@ -261,8 +283,44 @@ const FormGeneralInfo: React.FC<FormEnteGestoreProgettoFullInterface> = (
           col='col-12 col-lg-6'
           onInputChange={onDateChange}
         />
+        {showMinorenni ? (
+          <FormGroup check className='col-12 col-lg-12'>
+            <Input
+              checked={true}
+              disabled
+              id="disabled-checkbox2"
+              type="checkbox"
+            />
+            <Label
+              check
+              for="disabled-checkbox2"
+            >
+              Gestione CF minori
+            </Label>
+            <Button
+              className='p-0'
+              aria-label='Informazioni'
+              id='icon-info'
+              style={{ minWidth: '30px' }}
+            >
+              <Icon
+              icon='it-info-circle'
+              color='primary'
+              aria-label='Info'
+              aria-hidden
+              style={{ width: '20px'}}
+              />
+            </Button>
+            <UncontrolledTooltip
+              placement='top'
+              target='icon-info'
+            >
+              Indica che è possibile associare ai servizi cittadini a partire dai 14 anni di età
+            </UncontrolledTooltip>
+          </FormGroup>
+        ) : <></>}
       </Form.Row>
-    </Form>
+    </Form> 
   );
 };
 
