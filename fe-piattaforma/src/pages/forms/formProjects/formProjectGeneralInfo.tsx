@@ -14,6 +14,9 @@ import {
   newFormField,
 } from '../../../utils/formHelper';
 import { RegexpType } from '../../../utils/validator';
+import { useDispatch } from 'react-redux';
+import { GetConfigurazioneMinorenni } from '../../../redux/features/citizensArea/citizensAreaThunk';
+import { Button, FormGroup, Icon, Label, UncontrolledTooltip } from 'design-react-kit';
 
 interface ProgramInformationI {
   formDisabled?: boolean;
@@ -52,6 +55,26 @@ const FormProjectGeneralInfo: React.FC<FormProjectGeneralInfoInterface> = (
   const programProjectDetails =
     useAppSelector(selectProjects).detail?.dettagliInfoProgramma;
   const programDetails = programProjectDetails || program;
+
+  
+
+  const dispatch = useDispatch();
+  const [showMinorenni, setShowMinorenni] = React.useState(false);
+
+  const getMinorenniInfo = async () => {
+    if (programDetails) {
+      const config = await GetConfigurazioneMinorenni(undefined, programDetails.id)(dispatch);
+      const today = new Date();
+      const decorrenzaDate = new Date(config.dataDecorrenza);
+      if (config.id != null && today >= decorrenzaDate) {
+        setShowMinorenni(true);
+      }
+    }
+  };
+
+  useEffect(() => {
+    getMinorenniInfo();
+  }, [programDetails]);
 
   useEffect(() => {
     if (
@@ -253,7 +276,7 @@ const FormProjectGeneralInfo: React.FC<FormProjectGeneralInfoInterface> = (
   return (
     <Form
       id='form-project-general-info'
-      className={formDisabled ? 'mt-5' : 'mt-3'}
+      className={formDisabled ? 'mt-5 mb-5' : 'mt-3'}
       formDisabled={formDisabled}
       legend={legend}
       customMargin='mb-3 pb-3 ml-3'
@@ -310,6 +333,42 @@ const FormProjectGeneralInfo: React.FC<FormProjectGeneralInfoInterface> = (
           col='col-12 col-lg-6'
           onInputChange={onDateChange}
         />
+        {showMinorenni ? (
+          <FormGroup check className='col-12 col-lg-12'>
+            <Input
+              checked={true}
+              disabled
+              id="disabled-checkbox2"
+              type="checkbox"
+            />
+            <Label
+              check
+              for="disabled-checkbox2"
+            >
+              Gestione CF minori
+            </Label>
+            <Button
+              className='p-0'
+              aria-label='Informazioni'
+              id='icon-info'
+              style={{ minWidth: '30px' }}
+            >
+              <Icon
+                icon='it-info-circle'
+                color='primary'
+                aria-label='Info'
+                aria-hidden
+                style={{ width: '20px' }}
+              />
+            </Button>
+            <UncontrolledTooltip
+              placement='top'
+              target='icon-info'
+            >
+              Indica che è possibile associare ai servizi cittadini a partire dai 14 anni di età
+            </UncontrolledTooltip>
+          </FormGroup>
+        ) : <></>}
       </Form.Row>
     </Form>
   );
