@@ -35,10 +35,10 @@ module.exports = {
         'changelogTitle': '# Monitoraggio.RepubblicaDigitale.Gov.it'
       }
     ],
-    ['@semantic-release/git', {
-        'assets': ['CHANGELOG.md']
-      }
-    ],
+    // ['@semantic-release/git', {
+    //     'assets': ['CHANGELOG.md']
+    //   }
+    // ],
     ['@semantic-release/github', {
       'assets': [
         {'path': 'CHANGELOG.md'},
