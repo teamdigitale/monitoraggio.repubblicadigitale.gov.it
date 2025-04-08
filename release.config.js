@@ -30,19 +30,19 @@ module.exports = {
         'verifyReleaseCmd': 'echo ${nextRelease.version} > .VERSION',
       }
     ],
-    // ['@semantic-release/changelog', {
-    //     'changelogFile': 'CHANGELOG.md',
-    //     'changelogTitle': '# Monitoraggio.RepubblicaDigitale.Gov.it'
-    //   }
-    // ],
-    // ['@semantic-release/git', {
-    //     'assets': ['CHANGELOG.md']
-    //   }
-    // ],
-    // ['@semantic-release/github', {
-    //   'assets': [
-    //     {'path': 'CHANGELOG.md'},
-    //   ]
-    // }],
+    ['@semantic-release/changelog', {
+        'changelogFile': 'CHANGELOG.md',
+        'changelogTitle': '# Monitoraggio.RepubblicaDigitale.Gov.it'
+      }
+    ],
+    ['@semantic-release/git', {
+        'assets': ['CHANGELOG.md']
+      }
+    ],
+    ['@semantic-release/github', {
+      'assets': [
+        {'path': 'CHANGELOG.md'},
+      ]
+    }],
   ]
 }
