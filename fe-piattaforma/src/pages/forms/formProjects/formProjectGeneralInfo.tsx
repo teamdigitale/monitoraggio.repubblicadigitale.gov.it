@@ -5,7 +5,7 @@ import withFormHandler, {
 } from '../../../hoc/withFormHandler';
 import { selectProjects } from '../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { useAppSelector } from '../../../redux/hooks';
-import { formatDate } from '../../../utils/common';
+import { formatDateAsMomentString } from '../../../utils/common';
 import {
   formFieldI,
   FormHelper,
@@ -96,14 +96,14 @@ const FormProjectGeneralInfo: React.FC<FormProjectGeneralInfoInterface> = (
           dataInizio: {
             ...filledForm.dataInizio,
             touched: false,
-            minimum: formatDate(programDetails.dataInizio),
-            maximum: formatDate(programDetails.dataFine),
+            minimum: formatDateAsMomentString(programDetails.dataInizio),
+            maximum: formatDateAsMomentString(programDetails.dataFine),
           },
           dataFine: {
             ...filledForm.dataFine,
             touched: false,
-            minimum: formatDate(programDetails.dataInizio),
-            maximum: formatDate(programDetails.dataFine),
+            minimum: formatDateAsMomentString(programDetails.dataInizio),
+            maximum: formatDateAsMomentString(programDetails.dataFine),
           },
         };
       }
@@ -141,25 +141,25 @@ const FormProjectGeneralInfo: React.FC<FormProjectGeneralInfoInterface> = (
             minimum: creation
               ? program?.dataInizio
               : programDetails
-              ? formatDate(programDetails.dataInizio)
+              ? formatDateAsMomentString(programDetails.dataInizio)
               : undefined,
             maximum: creation
               ? form?.dataFine.value
-                ? formatDate(form?.dataFine.value as string)
+                ? formatDateAsMomentString(form?.dataFine.value as string)
                 : program?.dataFine
-              : formatDate(form?.dataFine.value as string),
+              : formatDateAsMomentString(form?.dataFine.value as string),
           },
           dataFine: {
             ...form.dataFine,
             minimum: creation
               ? form?.dataInizio.value
-                ? formatDate(form?.dataInizio.value as string)
+                ? formatDateAsMomentString(form?.dataInizio.value as string)
                 : program?.dataInizio
-              : formatDate(form?.dataInizio.value as string),
+              : formatDateAsMomentString(form?.dataInizio.value as string),
             maximum: creation
               ? program?.dataFine
               : programDetails
-              ? formatDate(programDetails.dataFine)
+              ? formatDateAsMomentString(programDetails.dataFine)
               : undefined,
           },
         },
@@ -174,25 +174,25 @@ const FormProjectGeneralInfo: React.FC<FormProjectGeneralInfoInterface> = (
           minimum: creation
             ? program?.dataInizio
             : programDetails
-            ? formatDate(programDetails.dataInizio)
+            ? formatDateAsMomentString(programDetails.dataInizio)
             : undefined,
           maximum: creation
             ? newForm?.dataFine.value
-              ? formatDate(newForm?.dataFine.value as string)
+              ? formatDateAsMomentString(newForm?.dataFine.value as string)
               : program?.dataFine
-            : formatDate(newForm?.dataFine.value as string),
+            : formatDateAsMomentString(newForm?.dataFine.value as string),
         },
         dataFine: {
           ...newForm.dataFine,
           minimum: creation
             ? newForm?.dataInizio.value
-              ? formatDate(newForm?.dataInizio.value as string)
+              ? formatDateAsMomentString(newForm?.dataInizio.value as string)
               : program?.dataInizio
-            : formatDate(newForm?.dataInizio.value as string),
+            : formatDateAsMomentString(newForm?.dataInizio.value as string),
           maximum: creation
             ? program?.dataFine
             : programDetails
-            ? formatDate(programDetails.dataFine)
+            ? formatDateAsMomentString(programDetails.dataFine)
             : undefined,
         },
       });
@@ -229,14 +229,14 @@ const FormProjectGeneralInfo: React.FC<FormProjectGeneralInfoInterface> = (
         dataInizio: {
           ...form.dataInizio,
           touched: false,
-          minimum: formatDate(programDetails.dataInizio),
-          maximum: formatDate(programDetails.dataFine),
+          minimum: formatDateAsMomentString(programDetails.dataInizio),
+          maximum: formatDateAsMomentString(programDetails.dataFine),
         },
         dataFine: {
           ...form.dataFine,
           touched: false,
-          minimum: formatDate(programDetails.dataInizio),
-          maximum: formatDate(programDetails.dataFine),
+          minimum: formatDateAsMomentString(programDetails.dataInizio),
+          maximum: formatDateAsMomentString(programDetails.dataFine),
         },
       });
     }
@@ -285,7 +285,7 @@ const FormProjectGeneralInfo: React.FC<FormProjectGeneralInfoInterface> = (
         />
         <Input
           {...form?.cup}
-          label={projectDetails && projectDetails.cupManipolato ? 'CUP - Codice Unico Progetto(manipolato da sistema)' :'CUP - Codice Unico Progetto'}
+          label={projectDetails && projectDetails.cupManipolato ? 'CUP - Codice Unico Progetto (manipolato da sistema)' :'CUP - Codice Unico Progetto'}
           col='col-12 col-lg-6'
           onInputChange={(value, field) => {
             if (typeof value === 'string') {

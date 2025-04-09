@@ -92,9 +92,8 @@ export const createProject =
           ...body,
         });
         if(res?.data?.warning) {
-          dispatchWarning("CUP MANIPOLATO", res?.data?.warningMessage);
+          dispatchWarning(res.data?.warningTitle, res?.data?.warningMessage);
         }
-        console.log('createProjectDetails body', res);
       }
     } catch (error) {
       console.log(error);
@@ -136,7 +135,9 @@ export const updateProject =
           idProgetto,
           idEnte,
         });
-        console.log('updateProjectDetails res', res);
+        if(res?.data?.warning) {
+          dispatchWarning(res.data?.warningTitle, res?.data?.warningMessage);
+        }
       }
     } catch (error) {
       console.log(error);

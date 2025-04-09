@@ -284,3 +284,25 @@ export const DownloadEntityValues =
       dispatch(hideLoader());
     }
   };
+
+  export const GetConfigurazioneMinorenni =
+  (idServizio?: string, idProgramma?: string) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      
+      const queryParams = new URLSearchParams();
+      if (idServizio) queryParams.append('idServizio', idServizio);
+      if (idProgramma) queryParams.append('idProgramma', idProgramma);
+
+      const entityEndpoint = `/configurazioneminorenni/dettaglio?${queryParams.toString()}`;
+      const res = await API.get(entityEndpoint);
+
+      if (res?.data) {
+        return res?.data;
+      }
+    } catch (error) {
+      console.log('GetConfigurazioneMinorenni error', error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };

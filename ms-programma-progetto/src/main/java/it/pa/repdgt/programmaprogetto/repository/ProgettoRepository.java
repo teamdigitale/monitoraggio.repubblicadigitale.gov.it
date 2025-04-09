@@ -341,6 +341,6 @@ public interface ProgettoRepository extends JpaRepository<ProgettoEntity, Long> 
 			@Param(value = "stati") List<String> stati
 		);
 
-	@Query(value = "SELECT p FROM ProgettoEntity p WHERE p.cup = :cup and (:idProgetto is null or p.id <> :idProgetto)")
-	public Optional<ProgettoEntity> findAltroProgettoByCup(@Param("cup") String cup, @Param("idProgetto") Long idProgetto); 	//ricerca di altri progetti con stesso CUP
+	@Query(value = "SELECT p FROM ProgettoEntity p WHERE UPPER(p.cup) = UPPER(:cup) and (:idProgetto is null or p.id <> :idProgetto)")
+	public List<ProgettoEntity> findAltroProgettoByCup(@Param("cup") String cup, @Param("idProgetto") Long idProgetto); 	//ricerca di altri progetti con stesso CUP
 }

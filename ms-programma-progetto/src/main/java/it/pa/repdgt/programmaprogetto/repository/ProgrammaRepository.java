@@ -24,8 +24,8 @@ public interface ProgrammaRepository extends JpaRepository<ProgrammaEntity, Long
 	@Query(value = "SELECT p FROM ProgrammaEntity p WHERE p.codice = :theCodice")
 	public Optional<ProgrammaEntity> findProgrammaByCodice(@Param(value = "theCodice") String codice);
 	
-	@Query(value = "SELECT p FROM ProgrammaEntity p WHERE p.cup = :cup and (:codice is null or p.codice <> :codice)")
-	public Optional<ProgrammaEntity> findAltroProgrammaByCup(@Param("cup") String cup, @Param("codice") String codice); 	//ricerca di altri programmi con stesso CUP
+	@Query(value = "SELECT p FROM ProgrammaEntity p WHERE UPPER(p.cup) = UPPER(:cup) and (:codice is null or p.codice <> :codice)")
+	public List<ProgrammaEntity> findAltroProgrammaByCup(@Param("cup") String cup, @Param("codice") String codice); 	//ricerca di altri programmi con stesso CUP
 
 	@Query(value = "SELECT * FROM programma p", nativeQuery = true)
 	public List<ProgrammaEntity> findAll();

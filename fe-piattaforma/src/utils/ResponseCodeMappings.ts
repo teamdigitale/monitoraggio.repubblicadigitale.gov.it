@@ -18,6 +18,7 @@ const ageGroupMap: Record<string, number> = {
   B: 2,
   C: 3,
   D: 4,
+  E: 5,
 };
 
 const educationLevelMap: Record<string, string> = {

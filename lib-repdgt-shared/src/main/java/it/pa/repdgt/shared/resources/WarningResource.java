@@ -12,4 +12,5 @@ import lombok.Setter;
 public class WarningResource {
     private Boolean warning;
 	private String warningMessage;
+    private String warningTitle;
 }

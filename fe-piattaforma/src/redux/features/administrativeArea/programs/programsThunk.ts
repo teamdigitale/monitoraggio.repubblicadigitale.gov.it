@@ -116,7 +116,7 @@ export const createProgram =
         });
         if (res) {
           if (res.data?.warning) {
-            dispatchWarning("CUP MANIPOLATO", res.data?.warningMessage);
+            dispatchWarning(res.data?.warningTitle, res.data?.warningMessage);
           }
           return res;
         }
@@ -158,12 +158,18 @@ export const updateProgram =
       );
       if (body) {
         const { idProgramma, idProgetto, idEnte } = getUserHeaders();
-        await API.put(`/programma/${programId}`, {
+        const res = await API.put(`/programma/${programId}`, {
           ...body,
           idProgramma,
           idProgetto,
           idEnte,
         });
+        if (res) {
+          if (res.data?.warning) {
+            dispatchWarning(res.data?.warningTitle, res.data?.warningMessage);
+          }
+          return res;
+        }
       }
     } catch (error) {
       console.log(error);
