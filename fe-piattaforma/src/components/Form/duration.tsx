@@ -118,7 +118,7 @@ const Duration: React.FC<DurationI> = (props) => {
       minimum={1}
       onInputBlur={handleOnDurationChange}
       value={value}
-      onInputChange={handleOnDurationChange}
+      onInputChange={() => {}}
       valid={validDuration}
     />
   );
