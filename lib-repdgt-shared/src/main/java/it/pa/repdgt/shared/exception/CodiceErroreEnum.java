@@ -159,6 +159,9 @@ public enum CodiceErroreEnum {
 	,A06("La data del servizio non rientra all’interno delle date di progetto")
 
 	,CM01("E' già in corso un inserimento dati")
+	
+	,M01("Configurazione minorenni non trovata")
+	,M02("Impossibile modificare la configurazione minorenni poiché essa è abilitata")
 	;
 	
 	private String descrizioneErrore;

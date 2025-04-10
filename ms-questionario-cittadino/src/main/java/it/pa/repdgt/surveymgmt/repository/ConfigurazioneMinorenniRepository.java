@@ -1,12 +1,17 @@
 package it.pa.repdgt.surveymgmt.repository;
 
+import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import it.pa.repdgt.shared.entity.ConfigurazioneMinorenniEntity;
+import it.pa.repdgt.shared.entity.ProgrammaEntity;
 
 @Repository
 public interface ConfigurazioneMinorenniRepository extends JpaRepository<ConfigurazioneMinorenniEntity, Long> {
@@ -23,4 +28,22 @@ public interface ConfigurazioneMinorenniRepository extends JpaRepository<Configu
         Long idServizio,
         Long idProgramma
         );
+
+    @Query(value = "SELECT * FROM configurazione_minorenni \n", nativeQuery = true)
+    Page<ConfigurazioneMinorenniEntity> getAllConfigurazioniPaginate(Pageable pageable);
+
+    @Query(value = "SELECT * FROM configurazione_minorenni \n", nativeQuery = true)
+    List<ConfigurazioneMinorenniEntity> getAllConfigurazioni();
+
+    @Query(value = "SELECT p.* " +
+                    "FROM programma p " +
+                    "WHERE 1=1 " +
+                    "  AND p.policy = :policy " +
+                    "  AND ( " +
+                    "        :criterioRicerca IS NULL " + 
+                    "        OR CAST(p.CODICE AS CHAR) = :criterioRicerca " +
+                    "        OR UPPER(CAST(p.NOME_BREVE AS CHAR)) LIKE UPPER(:criterioRicercaLike) " +
+                    "        OR UPPER(CAST(p.NOME AS CHAR)) LIKE UPPER(:criterioRicercaLike) " +
+                    "      )", nativeQuery = true)
+    List<ProgrammaEntity> getAllProgrammiDaAbilitare(@Param(value = "criterioRicerca") String criterioRicerca, @Param(value = "criterioRicercaLike") String criterioRicercaLike, @Param(value = "intervento") String intervento);
 }
