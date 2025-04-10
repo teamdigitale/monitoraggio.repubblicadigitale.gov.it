@@ -149,7 +149,7 @@ const FormServiceStatic: React.FC<FormEnteGestoreProgettoFullInterface> = (
         }
         <Input
           {...form?.nomeServizio}
-          col= {ruolo === "FAC" ? 'col-12 col-lg-6': 'col-12'}
+          col= {ruolo === "FAC" || ruolo === "VOL" ? 'col-12 col-lg-6': 'col-12'}
           placeholder={`${form?.nomeServizio?.label}`}
           onInputChange={onInputDataChange}
         />
