@@ -31,7 +31,7 @@ const ProjectAccordionForm: React.FC<ProjectAccordionFormI> = (props) => {
 
   return (
     <>
-      <FormProjectGeneralInfo legend={legend} formDisabled />
+      <FormProjectGeneralInfo legend={legend} formDisabled/>
       <h2 className='h5 mb-4' style={{ color: 'rgb(92, 111, 130)' }}>
         Obiettivi progetto
       </h2>

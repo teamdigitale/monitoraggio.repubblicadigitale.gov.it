@@ -118,6 +118,8 @@ public enum CodiceErroreEnum {
 	,EN23("Errore Impossibile terminare referente/delegato gestore progetto")
 	,EN24("Errore Ente partner non presente per idEnte idProgetto indicati")
 	,EN25("Errore Ente con stesso nome già esistente")
+	,EN26("Errore L'ente risulta essere già associato al progetto come ente gestore")
+	,EN27("Errore L'ente risulta essere già associato al progetto come ente partner")
 	
 	,T01("Errore token non valido")
 	,T02("Errore token scaduto")

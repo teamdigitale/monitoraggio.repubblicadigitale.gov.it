@@ -9,6 +9,7 @@ import {
 } from '../administrativeAreaSlice';
 import { formFieldI } from '../../../../utils/formHelper';
 import { getUserHeaders } from '../../user/userThunk';
+import { dispatchWarning } from '../../../../utils/notifictionHelper';
 
 export interface ProgramsLightI {
   id: number;
@@ -114,6 +115,9 @@ export const createProgram =
           ...body,
         });
         if (res) {
+          if (res.data?.warning) {
+            dispatchWarning(res.data?.warningTitle, res.data?.warningMessage);
+          }
           return res;
         }
       }
@@ -154,12 +158,18 @@ export const updateProgram =
       );
       if (body) {
         const { idProgramma, idProgetto, idEnte } = getUserHeaders();
-        await API.put(`/programma/${programId}`, {
+        const res = await API.put(`/programma/${programId}`, {
           ...body,
           idProgramma,
           idProgetto,
           idEnte,
         });
+        if (res) {
+          if (res.data?.warning) {
+            dispatchWarning(res.data?.warningTitle, res.data?.warningMessage);
+          }
+          return res;
+        }
       }
     } catch (error) {
       console.log(error);

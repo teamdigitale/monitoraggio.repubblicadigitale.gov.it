@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { entityStatus, formTypes, userRoles } from '../utils';
 import {
@@ -134,8 +134,7 @@ const AuthoritiesDetails = () => {
       : [],
   };
 
-  let itemAccordionList: ItemsListI[] = [];
-
+  const [itemAccordionList, setItemAccordionList] = useState<ItemsListI[] | null>();
   // Function need to be checked
   const onActionClickReferenti: CRUDActionsI = {
     [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
@@ -212,86 +211,96 @@ const AuthoritiesDetails = () => {
     },
   };
 
-  if (projectId && authorityDetails) {
-    itemAccordionList = [
+  useEffect(() => {
+    if(projectId && authorityDetails) {
+      AuthoritySection();
+    }
+  }, [authorityDetails, projectId]);
+
+  const AuthoritySection = () => {    
+    if (projectId && authorityDetails?.referentiEntePartner !== undefined) {     
+      console.log("authorityDetails", authorityDetails);
+       
+      setItemAccordionList([
       {
         title: 'Referenti',
         items:
-          authorityDetails?.referentiEntePartner?.map(
-            (ref: { [key: string]: string }) => ({
-              ...ref,
-              id: ref?.id,
-              actions: ref.associatoAUtente
-                ? ref.stato !== entityStatus.ATTIVO ||
-                  projectState === entityStatus.TERMINATO
-                  ? {
-                      [CRUDActionTypes.VIEW]:
-                        onActionClickReferenti[CRUDActionTypes.VIEW],
-                    }
-                  : {
-                      [CRUDActionTypes.VIEW]:
-                        onActionClickReferenti[CRUDActionTypes.VIEW],
-                      [CRUDActionTypes.DELETE]: hasUserPermission([
-                        'del.ref_del.partner',
-                      ])
-                        ? onActionClickReferenti[CRUDActionTypes.DELETE]
-                        : undefined,
-                    }
-                : {},
-            })
-          ) || [],
+        authorityDetails?.referentiEntePartner?.map(
+          (ref: { [key: string]: string }) => ({
+          ...ref,
+          id: ref?.id,
+          actions: ref.associatoAUtente
+            ? ref.stato !== entityStatus.ATTIVO ||
+            projectState === entityStatus.TERMINATO
+            ? {
+              [CRUDActionTypes.VIEW]:
+                onActionClickReferenti[CRUDActionTypes.VIEW],
+              }
+            : {
+              [CRUDActionTypes.VIEW]:
+                onActionClickReferenti[CRUDActionTypes.VIEW],
+              [CRUDActionTypes.DELETE]: hasUserPermission([
+                'del.ref_del.partner',
+              ])
+                ? onActionClickReferenti[CRUDActionTypes.DELETE]
+                : undefined,
+              }
+            : {},
+          })
+        ) || [],
       },
       {
         title: 'Delegati',
         items:
-          authorityDetails?.delegatiEntePartner?.map(
-            (del: { [key: string]: string }) => ({
-              ...del,
-              id: del?.id,
-              actions: del.associatoAUtente
-                ? del.stato !== entityStatus.ATTIVO ||
-                  projectState === entityStatus.TERMINATO
-                  ? {
-                      [CRUDActionTypes.VIEW]:
-                        onActionClickDelegati[CRUDActionTypes.VIEW],
-                    }
-                  : {
-                      [CRUDActionTypes.VIEW]:
-                        onActionClickDelegati[CRUDActionTypes.VIEW],
-                      [CRUDActionTypes.DELETE]: hasUserPermission([
-                        'del.ref_del.partner',
-                      ])
-                        ? onActionClickDelegati[CRUDActionTypes.DELETE]
-                        : undefined,
-                    }
-                : {},
-            })
-          ) || [],
+        authorityDetails?.delegatiEntePartner?.map(
+          (del: { [key: string]: string }) => ({
+          ...del,
+          id: del?.id,
+          actions: del.associatoAUtente
+            ? del.stato !== entityStatus.ATTIVO ||
+            projectState === entityStatus.TERMINATO
+            ? {
+              [CRUDActionTypes.VIEW]:
+                onActionClickDelegati[CRUDActionTypes.VIEW],
+              }
+            : {
+              [CRUDActionTypes.VIEW]:
+                onActionClickDelegati[CRUDActionTypes.VIEW],
+              [CRUDActionTypes.DELETE]: hasUserPermission([
+                'del.ref_del.partner',
+              ])
+                ? onActionClickDelegati[CRUDActionTypes.DELETE]
+                : undefined,
+              }
+            : {},
+          })
+        ) || [],
       },
       {
         title: 'Sedi',
         items:
-          authorityDetails?.sediEntePartner?.map(
-            (sedi: { [key: string]: string }) => ({
-              ...sedi,
-              actions: sedi.associatoAUtente
-                ? {
-                    [CRUDActionTypes.VIEW]:
-                      onActionClickSede[CRUDActionTypes.VIEW],
-                    [CRUDActionTypes.DELETE]:
-                      sedi.stato !== entityStatus.ATTIVO ||
-                      projectState === entityStatus.TERMINATO
-                        ? undefined
-                        : hasUserPermission(['del.sede.partner'])
-                        ? onActionClickSede[CRUDActionTypes.DELETE]
-                        : undefined,
-                  }
-                : {},
-            })
-          ) || [],
+        authorityDetails?.sediEntePartner?.map(
+          (sedi: { [key: string]: string }) => ({
+          ...sedi,
+          actions: sedi.associatoAUtente
+            ? {
+              [CRUDActionTypes.VIEW]:
+              onActionClickSede[CRUDActionTypes.VIEW],
+              [CRUDActionTypes.DELETE]:
+              sedi.stato !== entityStatus.ATTIVO ||
+              projectState === entityStatus.TERMINATO
+                ? undefined
+                : hasUserPermission(['del.sede.partner'])
+                ? onActionClickSede[CRUDActionTypes.DELETE]
+                : undefined,
+            }
+            : {},
+          })
+        ) || [],
       },
-    ];
-  }
+      ]);
+    }
+  };
 
   const deleteButton: ButtonInButtonsBar = {
     size: 'xs',
@@ -490,7 +499,7 @@ const AuthoritiesDetails = () => {
                   status: authorityDetails?.dettagliInfoEnte?.stato,
                   upperTitle: { icon: PeopleIcon, text: 'Ente' },
                   subTitle:
-                    projectDetail?.nomeBreve || projectDetail?.nome || '',
+                    '',
                 }}
                 enteIcon
                 formButtons={buttons}
@@ -610,10 +619,13 @@ const AuthoritiesDetails = () => {
               <ManageDelegate
                 legend="form aggiunta delegato, i campi con l'asterisco sono obbligatori"
                 creation
+                authoritySection={AuthoritySection}
               />
               <ManageReferal
                 legend="form aggiunta referente, i campi con l'asterisco sono obbligatori"
                 creation
+                authoritySection={AuthoritySection}
+                enteType={formTypes.ENTE_PARTNER}
               />
               <ManageHeadquarter
                 legend="form aggiunta sede, i campi con l'asterisco sono obbligatori"

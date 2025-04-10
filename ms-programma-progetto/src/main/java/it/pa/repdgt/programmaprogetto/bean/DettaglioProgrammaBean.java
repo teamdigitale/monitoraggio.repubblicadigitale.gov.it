@@ -20,6 +20,7 @@ public class DettaglioProgrammaBean {
 	private String codice;
 	private String stato;
 	private String policy;
+	private Boolean cupManipolato;
 	
 	//Numero Target Punti di Facilitazione
 	private Integer nPuntiFacilitazioneTarget1;

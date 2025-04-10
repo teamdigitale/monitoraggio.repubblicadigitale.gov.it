@@ -9,6 +9,7 @@ import {
 import { formFieldI } from '../../../../utils/formHelper';
 import { parseResult } from '../programs/programsThunk';
 import { getUserHeaders } from '../../user/userThunk';
+import { dispatchWarning } from '../../../../utils/notifictionHelper';
 
 export interface ProjectLightI {
   id: number;
@@ -90,7 +91,9 @@ export const createProject =
         const res = await API.post(`/progetto?idProgramma=${programId}`, {
           ...body,
         });
-        console.log('createProjectDetails body', res);
+        if(res?.data?.warning) {
+          dispatchWarning(res.data?.warningTitle, res?.data?.warningMessage);
+        }
       }
     } catch (error) {
       console.log(error);
@@ -132,7 +135,9 @@ export const updateProject =
           idProgetto,
           idEnte,
         });
-        console.log('updateProjectDetails res', res);
+        if(res?.data?.warning) {
+          dispatchWarning(res.data?.warningTitle, res?.data?.warningMessage);
+        }
       }
     } catch (error) {
       console.log(error);

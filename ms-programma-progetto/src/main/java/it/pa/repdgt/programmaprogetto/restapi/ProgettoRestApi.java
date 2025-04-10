@@ -42,6 +42,7 @@ import it.pa.repdgt.programmaprogetto.service.ProgettoService;
 import it.pa.repdgt.programmaprogetto.util.CSVProgettoUtil;
 import it.pa.repdgt.shared.entity.ProgettoEntity;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
+import it.pa.repdgt.shared.resources.WarningResource;
 import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 
 @RestController
@@ -112,17 +113,19 @@ public class ProgettoRestApi {
 	public CreaProgettoResource creaNuovoProgetto(@RequestBody @Valid ProgettoRequest nuovoProgettoRequest,
 			@RequestParam(value = "idProgramma") Long idProgramma) {
 		ProgettoEntity progettoEntity = this.progettoMapper.toEntityFrom(nuovoProgettoRequest, idProgramma);
-		return new CreaProgettoResource(this.progettoService.creaNuovoProgetto(progettoEntity).getId());
+		CreaProgettoResource creaProgettoResource = this.progettoService.creaNuovoProgetto(progettoEntity);
+		return creaProgettoResource;
 	}
 	
 	// 3.7 - Update Progetto
 	@PutMapping(path = "/{idProgetto}")
 	@ResponseStatus(value = HttpStatus.OK)
-	public void aggiornaProgetto(@PathVariable(value = "idProgetto") Long idProgetto,
+	public WarningResource aggiornaProgetto(@PathVariable(value = "idProgetto") Long idProgetto,
 								 @RequestBody @Valid ProgettoRequest progettoRequest) {
 		if(!accessControServiceUtils.checkPermessoIdProgetto(progettoRequest, idProgetto))
 			throw new ProgettoException(ERROR_MESSAGE_PERMESSO, CodiceErroreEnum.A02);
-		this.progettoService.aggiornaProgetto(progettoRequest, idProgetto);
+		WarningResource warningResource = this.progettoService.aggiornaProgetto(progettoRequest, idProgetto);
+		return warningResource;
 	}
 
 	// 3.8 - Associa Ente a Progetto come Gestore Progetto

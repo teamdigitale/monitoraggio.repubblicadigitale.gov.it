@@ -115,7 +115,6 @@ public class EntePartnerServiceTest {
 		entePartnerUploadBean = new EntePartnerUploadBean(ente1.getNome(), ente1.getNomeBreve(), ente1.getPiva(), ente1.getSedeLegale(), ente1.getTipologia(), ente1.getIndirizzoPec());
 		listaEntePartnerUploadBeans = new ArrayList<>();
 		listaEntePartnerUploadBeans.add(entePartnerUploadBean);
-		
 	}
 	
 	@Test
@@ -126,6 +125,7 @@ public class EntePartnerServiceTest {
 	
 	@Test
 	public void associaEntePartnerPerProgettoTest() {
+		when(progettoService.getProgettoById(1L)).thenReturn(progetto1);
 		entePartnerService.associaEntePartnerPerProgetto(ente1.getId(), progetto1.getId());
 	}
 	

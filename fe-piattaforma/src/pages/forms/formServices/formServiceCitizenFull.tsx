@@ -103,7 +103,9 @@ const FormServiceCitizenFull: React.FC<FormEnteGestoreProgettoFullInterface> = (
       return '2';
     } else if (age >= 55 && age <= 74) {
       return '3';
-    } else {
+    } else if (age >= 14 && age <= 17) {
+      return '5';
+    }  else {
       return '4';
     }
   }, []);
