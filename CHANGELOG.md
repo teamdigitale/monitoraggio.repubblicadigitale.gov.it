@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.438](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.437...1.0.0-test.438) (2025-04-10)
+
+
+### Bug Fixes
+
+* **U385:** fix controllo data odierna per 14/18 anni e dataDecorrenza ([0d2d30d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0d2d30d003c3ba024ca0be3b60cd2852c06ccba0))
+
 ## [1.0.0-test.437](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.436...1.0.0-test.437) (2025-04-04)
 
 
