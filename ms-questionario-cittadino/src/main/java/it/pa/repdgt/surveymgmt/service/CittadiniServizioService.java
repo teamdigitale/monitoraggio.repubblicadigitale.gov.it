@@ -280,7 +280,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
                         .getConfigurazioneMinorenniByIdServizioOrIdProgramma(idServizio, null);
                 if (!isCittadinoMaggiorenne(codiceFiscaleDecrypted)) {
                     if (configurazioneMinorenniDto.getId() != null
-                            && new Date().after(configurazioneMinorenniDto.getDataDecorrenza())) {
+                            && !new Date().before(configurazioneMinorenniDto.getDataDecorrenza())) {
                         if (!isCittadinoMaggioreUgualeDi14(codiceFiscaleDecrypted)) {
                             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                                     "Il cittadino deve avere almeno 14 anni");
@@ -344,7 +344,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
                         .getConfigurazioneMinorenniByIdServizioOrIdProgramma(idServizio, null);
 
                 if(!isCittadinoMaggiorenne(codiceFiscaleDecrypted)){
-                    if (configurazioneMinorenniDto.getId() != null && new Date().after(configurazioneMinorenniDto.getDataDecorrenza())) {
+                    if (configurazioneMinorenniDto.getId() != null && !new Date().before(configurazioneMinorenniDto.getDataDecorrenza())) {
                         if (!isCittadinoMaggioreUgualeDi14(codiceFiscaleDecrypted)) {
                             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                                     "Il cittadino deve avere almeno 14 anni");
@@ -470,7 +470,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
         Calendar cal = Calendar.getInstance();
         cal.setTime(dataNascita);
         cal.add(Calendar.YEAR, 18);
-        return oggi.after(cal.getTime());
+        return !oggi.before(cal.getTime());
     }
 
     private boolean isMaggioreUgualeDi14(Date dataNascita) {
@@ -478,7 +478,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
         Calendar cal = Calendar.getInstance();
         cal.setTime(dataNascita);
         cal.add(Calendar.YEAR, 14);
-        return oggi.after(cal.getTime());
+        return !oggi.before(cal.getTime());
     }
 
     public boolean esisteCittadinoByIdServizioAndIdCittadino(@NotNull final Long idServizio,
