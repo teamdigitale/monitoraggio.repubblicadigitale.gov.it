@@ -99,7 +99,7 @@ const Services = () => {
   
   const updateTableValues = () => {    
     const table = newTable(
-      ruolo !== "FAC" ? TableHeadingServicesList : TableHeadingServicesListFacilitator,
+      ruolo === "FAC" || ruolo === "VOL" ? TableHeadingServicesListFacilitator : TableHeadingServicesList,
       servicesList.map((td) => {
         return {
           ...td,
