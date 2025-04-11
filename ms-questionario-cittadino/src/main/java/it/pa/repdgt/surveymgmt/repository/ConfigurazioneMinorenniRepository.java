@@ -35,15 +35,21 @@ public interface ConfigurazioneMinorenniRepository extends JpaRepository<Configu
     @Query(value = "SELECT * FROM configurazione_minorenni \n", nativeQuery = true)
     List<ConfigurazioneMinorenniEntity> getAllConfigurazioni();
 
-    @Query(value = "SELECT p.* " +
-                    "FROM programma p " +
-                    "WHERE 1=1 " +
-                    "  AND p.policy = :policy " +
-                    "  AND ( " +
-                    "        :criterioRicerca IS NULL " + 
-                    "        OR CAST(p.CODICE AS CHAR) = :criterioRicerca " +
-                    "        OR UPPER(CAST(p.NOME_BREVE AS CHAR)) LIKE UPPER(:criterioRicercaLike) " +
-                    "        OR UPPER(CAST(p.NOME AS CHAR)) LIKE UPPER(:criterioRicercaLike) " +
+    @Query(value = "SELECT * FROM configurazione_minorenni \n" + 
+                   "WHERE id_programma = :idProgramma", nativeQuery = true)
+    Optional<ConfigurazioneMinorenniEntity> getConfigurazioneMinorenniByIdProgramma(@Param(value = "idProgramma") Long idProgramma);
+
+    @Query(value = "SELECT p.* \n" + 
+                    "FROM programma p \n" + 
+                    "LEFT JOIN configurazione_minorenni cm ON cm.id_programma = p.id \n" + 
+                    "WHERE 1=1 \n" + 
+                    "  AND p.policy = :policy\n" + 
+                    "  AND cm.id IS NULL\n" + 
+                    "  AND (\n" + 
+                    "        :criterioRicerca IS NULL  \n" + 
+                    "        OR CAST(p.CODICE AS CHAR) = :criterioRicerca \n" + 
+                    "        OR UPPER(CAST(p.NOME_BREVE AS CHAR)) LIKE UPPER(:criterioRicercaLike) \n" + 
+                    "        OR UPPER(CAST(p.NOME AS CHAR)) LIKE UPPER(:criterioRicercaLike)\n" + 
                     "      )", nativeQuery = true)
     List<ProgrammaEntity> getAllProgrammiDaAbilitare(@Param(value = "criterioRicerca") String criterioRicerca, @Param(value = "criterioRicercaLike") String criterioRicercaLike, @Param(value = "intervento") String intervento);
 }
