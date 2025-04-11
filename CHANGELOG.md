@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.439](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.438...1.0.0-test.439) (2025-04-11)
+
+
+### Bug Fixes
+
+* **T364:** fix visualizzazione id servizio per volontari 20250410 ([8d78ce4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8d78ce46c823c5935c82d9a5f8ca661f61c8b5d2))
+* **T401:** fix autocompletamento errato durata servizio 20250410 ([f2a5ebc](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f2a5ebcd734e80b501b1f065fafb972f0d05b07c))
+
 ## [1.0.0-test.438](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.437...1.0.0-test.438) (2025-04-10)
 
 
