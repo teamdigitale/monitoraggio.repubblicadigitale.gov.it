@@ -2,6 +2,8 @@ package it.pa.repdgt.surveymgmt.request;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,6 +22,7 @@ public class RicercaProgrammiDaAbilitareRequest implements Serializable{
     private String criterioRicerca;
 
     @JsonProperty(value = "intervento")
+    @NotNull(message = "Specificare un intervento")
     private String intervento;
     
 }
