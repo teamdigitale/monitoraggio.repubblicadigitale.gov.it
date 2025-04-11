@@ -162,6 +162,9 @@ public enum CodiceErroreEnum {
 	
 	,M01("Configurazione minorenni non trovata")
 	,M02("Impossibile modificare la configurazione minorenni poiché essa è abilitata")
+	,M03("La data decorrenza non è compresa tra le date di inizio e fine del programma")
+	,M04("L'intervento inserito non è coerente con l'intervento del programma")
+	,M05("Configurazione minorenni già esistente per il programma")
 	;
 	
 	private String descrizioneErrore;

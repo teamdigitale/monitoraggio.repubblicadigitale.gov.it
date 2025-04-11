@@ -32,6 +32,9 @@ public class ConfigurazioneMinorenniService {
     @Autowired
     private ConfigurazioneMinorenniRepository configurazioneMinorenniRepository;
 
+    @Autowired
+    private ProgrammaService programmaService;
+
     @LogMethod
     @LogExecutionTime
     public ConfigurazioneMinorenniDto getConfigurazioneMinorenniByIdServizioOrIdProgramma(Long idServizio, Long idProgramma) {
@@ -84,6 +87,18 @@ public class ConfigurazioneMinorenniService {
     @LogExecutionTime
     public ConfigurazioneMinorenniDto creaOModificaConfigurazioneMinorenni(ConfigurazioneMinorenniRequest request) {
         ConfigurazioneMinorenniEntity configurazioneMinorenniEntity = new ConfigurazioneMinorenniEntity();
+
+        ProgrammaEntity programma = programmaService.getProgrammaById(request.getIdProgramma()); //verifico che il programma esista
+        
+        if (request.getDataDecorrenza().compareTo(programma.getDataInizioProgramma()) < 0 || request.getDataDecorrenza().compareTo(programma.getDataFineProgramma()) > 0) {            
+            throw new CittadinoException("La data decorrenza non è compresa tra le date di inizio e fine del programma", CodiceErroreEnum.M03);
+        }          //verificare che la dataDecorrenza sia compresa nelle date di programma(che esiste)
+
+
+        if(request.getIntervento() != programma.getPolicy().toString()) { //verifico che l'intervento sia coerente con il programma
+            throw new CittadinoException("L'intervento inserito non è coerente con l'intervento del programma", CodiceErroreEnum.M04);
+        }          
+
         if(request.getId() != null) {   //modifica
             Optional<ConfigurazioneMinorenniEntity> configurazioneMinorenniOpt = configurazioneMinorenniRepository.findById(request.getId());
             if (configurazioneMinorenniOpt.isPresent()) {
@@ -100,6 +115,11 @@ public class ConfigurazioneMinorenniService {
                 throw new CittadinoException("Configurazione minorenni non trovata", CodiceErroreEnum.M01);
             }
         }else {  //creazione
+
+            if(configurazioneMinorenniRepository.getConfigurazioneMinorenniByIdProgramma(request.getIdProgramma()).isPresent()) { //verifico che non ci sia già una configurazione per il programma
+                throw new CittadinoException("Configurazione minorenni già esistente per il programma", CodiceErroreEnum.M05);
+            }
+
             configurazioneMinorenniEntity.setIdProgramma(request.getIdProgramma());
             configurazioneMinorenniEntity.setIntervento(request.getIntervento());
             configurazioneMinorenniEntity.setDataAbilitazione(request.getDataAbilitazione());
@@ -132,7 +152,7 @@ public class ConfigurazioneMinorenniService {
         Optional<ConfigurazioneMinorenniEntity> configurazioneMinorenniOpt = configurazioneMinorenniRepository.findById(request.getId());
         if (configurazioneMinorenniOpt.isPresent()) {
             ConfigurazioneMinorenniEntity configurazioneMinorenni = configurazioneMinorenniOpt.get();
-            if(configurazioneMinorenni.getDataDecorrenza().before(new Date())){ //verifico che la configurazione non sia già abilitata
+            if(!configurazioneMinorenni.getDataDecorrenza().after(new Date())){ //verifico che la configurazione non sia già abilitata
                 throw new CittadinoException("Impossibile cancellare la configurazione minorenni poiché essa è abilitata", CodiceErroreEnum.M02);
             }
             configurazioneMinorenniRepository.delete(configurazioneMinorenni);
@@ -144,7 +164,7 @@ public class ConfigurazioneMinorenniService {
     @LogMethod
     @LogExecutionTime
     public List<ProgrammaDaAbilitareDTO> getAllProgrammiDaAbilitare(RicercaProgrammiDaAbilitareRequest request){
-        List<ProgrammaEntity> programmi = configurazioneMinorenniRepository.getAllProgrammiDaAbilitare(request.getCriterioRicerca(), ""+ request.getCriterioRicerca() +"", request.getIntervento());
+        List<ProgrammaEntity> programmi = configurazioneMinorenniRepository.getAllProgrammiDaAbilitare(request.getCriterioRicerca(), "%"+ request.getCriterioRicerca() +"%", request.getIntervento());
         if(programmi != null && !programmi.isEmpty()){
             return programmi.stream().map(programma -> {
                 ProgrammaDaAbilitareDTO programmaDaAbilitareDTO = new ProgrammaDaAbilitareDTO();
