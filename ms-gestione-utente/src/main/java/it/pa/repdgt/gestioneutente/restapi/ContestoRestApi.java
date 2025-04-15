@@ -84,4 +84,6 @@ public class ContestoRestApi {
 	public void confermaIntegrazione(@RequestBody @Valid IntegraContestoRequest integraContestoRequestRequest) {
 		contestoService.integraContesto(integraContestoRequestRequest);
 	}
+
+	
 }
