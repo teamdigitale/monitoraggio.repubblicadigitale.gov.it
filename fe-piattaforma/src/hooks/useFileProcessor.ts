@@ -1,5 +1,5 @@
 import Papa from 'papaparse';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ServiziElaboratiDto } from '../models/ServiziElaboratiDto.model';
 import { ElaboratoCsvRequest } from '../models/ElaboratoCsvRequest.model';
 import { useFiscalCodeValidation } from './useFiscalCodeValidation';
@@ -93,6 +93,10 @@ export function useFileProcessor(file: File | undefined, removeFile: () => void)
   const [dataDecorrenza, setDataDecorrenza] = useState<Date>(moment().toDate());
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    getMinorenniInfo();
+  }, []);
+
   const handleExcelFileUpload = (file: File): Promise<CSVRecord[]> => {
     return new Promise((resolve, reject) => {
       if (file) {
@@ -151,7 +155,6 @@ export function useFileProcessor(file: File | undefined, removeFile: () => void)
 
       if (file) {
         setIsProcessing(true);
-        getMinorenniInfo();
         const fileExtension = file.name.split('.').pop()?.toLowerCase();        
         if (fileExtension === 'csv') {
           if (projectDetail?.policy == policy.RFD) {
