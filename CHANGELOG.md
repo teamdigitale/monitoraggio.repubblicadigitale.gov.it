@@ -1,5 +1,19 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.441](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.440...1.0.0-test.441) (2025-04-17)
+
+
+### Features
+
+* **U313:** wip aggiunta controlli e modifica query per nuovi EP 20250411 ([eda569e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/eda569ea931dc84d14d140067a702e1ba2e5c526))
+* **U313:** wip creazione endpoint necessari per pagina configurazione minorenni 20250410 ([c1c72c1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c1c72c1f2a5edcd54d8fabb2608b57981aa47a75))
+* **U395:** visualizzazione stato attivazione minorenni su programma e progetti 20250407 ([053238c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/053238c913772e2e5ccd4cee50fd034e812bbd05))
+
+
+### Bug Fixes
+
+* **U313:** fix ep elenco programmi per minorenni da get a post 20250417 ([7459279](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7459279adcbd699b3e2acfee966b023e5a42c64e))
+
 ## [1.0.0-test.440](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.439...1.0.0-test.440) (2025-04-17)
 
 
