@@ -35,78 +35,88 @@ const Duration: React.FC<DurationI> = (props) => {
   );
 
   const handleOnDurationChange = (val: formFieldI['value']) => {
-    const valString = (val || '')?.toString();
+    const isValid = validateDuration(val);
+
+    const updatedFormValues = {
+      ...formValues,
+      [props.field ?? 'duration']: {
+        ...formValues?.[props.field ?? 'duration'],
+        value: val ?? '',
+        valid: isValid,
+        touched: true,
+      },
+    };
+
+    setValidDuration(isValid);
+    setIsFormValid?.(FormHelper.isValidForm(updatedFormValues) && isValid);
+  };
+
+
+
+  const handleOnBlur = () => {
+    const valString = (value || '')?.toString();
     const splitted = valString.split(':');
-    let isValid = false;
-    if (valString?.includes('+') || valString?.includes('-')) {
-      // + & - are not accepted
-      isValid = false;
-    } else if (splitted[0]?.length > 3) {
-      // max hours 999
-      isValid = false;
-    } else {
-      if (Number(splitted[0]) === 0 || Number(splitted[0]) % 1 === 0) {
-        // hours is number || 0
-        if (
-          Number(splitted[1]) ||
-          (Number(splitted[1]) === 0 && Number(splitted[0]) !== 0)
-        ) {
-          // minutes is number ||
-          if (splitted[1]?.length > 2) {
-            // max minutes has two digits
-            isValid = false;
-          } else {
-            if (Number(splitted[1]) <= 59 && valString !== ':') {
-              isValid = true;
-              setValue(valString);
-            } else {
-              // minutes is bigger than 59
-              isValid = false;
-            }
-          }
-        } else if (!splitted[1]) {
-          // minutes do not exist
-          isValid = true;
-          setValue(valString);
-        } else if (!Number(splitted[1])) {
-          // minutes is not number
-          isValid = false;
-        }
-      } else {
-        // hours is not number or hours is not integer
-        isValid = false;
-      }
+    let manipulatedValue = valString;
+
+    if (splitted[0]?.length === 1 && !splitted[1]) {
+      manipulatedValue = '0' + manipulatedValue;
+    }
+    if (splitted[0] && !splitted[1]) {
+      manipulatedValue = valString.includes(':')
+        ? manipulatedValue + '00'
+        : manipulatedValue + ':00';
+    }
+    if (splitted[1] && splitted[1]?.length === 1) {
+      manipulatedValue = splitted[0] + ':0' + splitted[1];
+    }
+
+    const isValid = validateDuration(manipulatedValue);
+
+    setValue(manipulatedValue);
+    if (isValid) {
+      onInputChange(manipulatedValue, props.field);
     }
     setValidDuration(isValid);
     setIsFormValid?.(FormHelper.isValidForm(formValues) && isValid);
   };
 
-  useEffect(() => {
-    if (extValue !== value) handleOnDurationChange(extValue);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [extValue]);
+
+  const validateDuration = (val: formFieldI['value']): boolean => {
+    const valString = (val || '')?.toString();
+    const splitted = valString.split(':');
+    let isValid = false;
+
+    if (!valString) return false;
+    if (valString?.includes('+') || valString?.includes('-')) return false;
+    if (splitted[0]?.length > 3) return false;
+
+    if (Number(splitted[0]) === 0 || Number(splitted[0]) % 1 === 0) {
+      if (
+        Number(splitted[1]) ||
+        (Number(splitted[1]) === 0 && Number(splitted[0]) !== 0)
+      ) {
+        if (splitted[1]?.length > 2) {
+          isValid = false;
+        } else {
+          if (Number(splitted[1]) <= 59 && valString !== ':') {
+            isValid = true;
+          }
+        }
+      } else if (!splitted[1]) {
+        isValid = true;
+      }
+    }
+
+    return isValid;
+  };
+
 
   useEffect(() => {
-    if (value !== extValue) {
-      const valString = (value || '')?.toString();
-      const splitted = valString.split(':');
-      let manipulatedValue = valString;
-      if (splitted[0]?.length === 1 && !splitted[1]) {
-        manipulatedValue = '0' + manipulatedValue;
-      }
-      if (splitted[0] && !splitted[1]) {
-        valString.includes(':')
-          ? (manipulatedValue = manipulatedValue + '00')
-          : (manipulatedValue = manipulatedValue + ':00');
-      }
-      if (splitted[1] && splitted[1]?.length === 1) {
-        manipulatedValue = splitted[0] + ':0' + splitted[1];
-      }
-      setValue(manipulatedValue);
-      onInputChange(manipulatedValue, props.field);
+    if (extValue !== value) {
+      setValue(extValue.toString());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value]);
+  }, [extValue]);
 
   return (
     <Input
@@ -116,9 +126,12 @@ const Duration: React.FC<DurationI> = (props) => {
       placeholder='hh:mm'
       maximum={6}
       minimum={1}
-      onInputBlur={handleOnDurationChange}
+      onInputBlur={handleOnBlur}
+      onInputChange={(val) => {
+        setValue((val ?? '').toString());
+        handleOnDurationChange(val);
+      }}
       value={value}
-      onInputChange={() => {}}
       valid={validDuration}
     />
   );
