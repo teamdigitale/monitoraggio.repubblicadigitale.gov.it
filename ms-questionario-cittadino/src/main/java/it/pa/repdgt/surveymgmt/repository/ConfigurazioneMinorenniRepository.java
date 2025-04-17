@@ -51,5 +51,5 @@ public interface ConfigurazioneMinorenniRepository extends JpaRepository<Configu
                     "        OR UPPER(CAST(p.NOME_BREVE AS CHAR)) LIKE UPPER(:criterioRicercaLike) \n" + 
                     "        OR UPPER(CAST(p.NOME AS CHAR)) LIKE UPPER(:criterioRicercaLike)\n" + 
                     "      )", nativeQuery = true)
-    List<ProgrammaEntity> getAllProgrammiDaAbilitare(@Param(value = "criterioRicerca") String criterioRicerca, @Param(value = "criterioRicercaLike") String criterioRicercaLike, @Param(value = "intervento") String intervento);
+    List<ProgrammaEntity> getAllProgrammiDaAbilitare(@Param(value = "criterioRicerca") String criterioRicerca, @Param(value = "criterioRicercaLike") String criterioRicercaLike, @Param(value = "policy") String policy);
 }
