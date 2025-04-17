@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.440](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.439...1.0.0-test.440) (2025-04-17)
+
+
+### Bug Fixes
+
+* **T401:** fix componente durata form servizio 20250417 ([958b846](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/958b84649d72a09727e7f96258d074c6a4740ada))
+* **U385:** fix chiamata recupero config ad avvio pagina car massivo 20250416 ([c2ab290](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c2ab290748958cd18610f0db4ddf6a9294cdbb1a))
+
 ## [1.0.0-test.439](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.438...1.0.0-test.439) (2025-04-11)
 
 
