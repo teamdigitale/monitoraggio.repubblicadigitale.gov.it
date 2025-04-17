@@ -65,7 +65,7 @@ public class ConfigurazioneMinorenniRestApi {
     }
 
 
-    @GetMapping(path = "/programmi")
+    @PostMapping(path = "/programmi")
     @ResponseStatus(value = HttpStatus.OK)
     public List<ProgrammaDaAbilitareDTO> getAllProgrammi(@RequestBody @Valid RicercaProgrammiDaAbilitareRequest request) {
         return configurazioneMinorenniService.getAllProgrammiDaAbilitare(request);
