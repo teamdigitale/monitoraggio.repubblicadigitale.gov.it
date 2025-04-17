@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.442](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.441...1.0.0-test.442) (2025-04-17)
+
+
+### Bug Fixes
+
+* **U313:** fix query recupero programmi 20250417 ([ae2b49a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ae2b49a97a127715e8bbd715708475455e03ac8c))
+
 ## [1.0.0-test.441](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.440...1.0.0-test.441) (2025-04-17)
 
 
