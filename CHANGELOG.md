@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.45.2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.45.1...1.45.2) (2025-04-22)
+
+
+### Bug Fixes
+
+* **prod:** typo 20250422 ([a173d80](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a173d8047b5076bf06581a7608cedfdea4f68d33))
+
 ## [1.45.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.45.0...1.45.1) (2025-04-02)
 
 
