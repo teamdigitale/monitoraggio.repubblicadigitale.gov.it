@@ -15,4 +15,5 @@ public interface RuoliUtentiConstants {
 	
 	public final String FACILITATORE = "FAC";		// Facilitatore
 	public final String VOLONTARIO = "VOL";			// Volontario
+	
 }
