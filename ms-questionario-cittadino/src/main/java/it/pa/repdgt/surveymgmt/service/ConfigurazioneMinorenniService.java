@@ -17,6 +17,7 @@ import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.entity.ConfigurazioneMinorenniEntity;
 import it.pa.repdgt.shared.entity.ProgrammaEntity;
+import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.surveymgmt.dto.ConfigurazioneMinorenniDto;
 import it.pa.repdgt.surveymgmt.dto.ListaConfigurazioniMinorenniPaginatiDTO;
@@ -68,10 +69,26 @@ public class ConfigurazioneMinorenniService {
 
         Pageable paginazione = createPageable(request.getCurrentPage(),request.getPageSize(), request.getSortBy(), request.getSortOrder());
 
-        Page<ConfigurazioneMinorenniEntity> resultPaginate = this.configurazioneMinorenniRepository.getAllConfigurazioniPaginate(paginazione);
+        Page<Object[]> resultPaginate = this.configurazioneMinorenniRepository.getAllConfigurazioniPaginate(paginazione);
+
+        List<ConfigurazioneMinorenniDto> listaDto = resultPaginate.getContent().stream().map(obj -> {
+            ConfigurazioneMinorenniDto dto = new ConfigurazioneMinorenniDto();
+            dto.setId(((Number) obj[0]).longValue());
+            dto.setIdProgramma(((Number) obj[1]).longValue());
+            dto.setIntervento((String) obj[2]);
+            dto.setDataAbilitazione((Date) obj[3]);
+            dto.setDataDecorrenza((Date) obj[4]);
+            dto.setCreateTimestamp((Date) obj[5]);
+            dto.setCreateUser((String) obj[6]);
+            dto.setUpdateTimestamp((Date) obj[7]);
+            dto.setUpdateUser((String) obj[8]);
+            dto.setNomeProgramma((String) obj[9]);
+            return dto;
+        }).collect(Collectors.toList());
+
 
         ListaConfigurazioniMinorenniPaginatiDTO dto = new ListaConfigurazioniMinorenniPaginatiDTO();
-        dto.setConfigurazioniMinorenniList(resultPaginate.getContent());
+        dto.setConfigurazioniMinorenniList(listaDto);
         dto.setNumeroPagine(resultPaginate.getTotalPages());
         dto.setNumeroTotaleElementi(resultPaginate.getTotalElements());
 
@@ -95,7 +112,7 @@ public class ConfigurazioneMinorenniService {
         }          //verificare che la dataDecorrenza sia compresa nelle date di programma(che esiste)
 
 
-        if(request.getIntervento() != programma.getPolicy().toString()) { //verifico che l'intervento sia coerente con il programma
+        if(!request.getIntervento().equals(programma.getPolicy().toString())) { //verifico che l'intervento sia coerente con il programma
             throw new CittadinoException("L'intervento inserito non è coerente con l'intervento del programma", CodiceErroreEnum.M04);
         }          
 
@@ -163,9 +180,17 @@ public class ConfigurazioneMinorenniService {
 
     @LogMethod
     @LogExecutionTime
-    public List<ProgrammaDaAbilitareDTO> getAllProgrammiDaAbilitare(RicercaProgrammiDaAbilitareRequest request){
-        List<ProgrammaEntity> programmi = configurazioneMinorenniRepository.getAllProgrammiDaAbilitare(request.getCriterioRicerca(), "%"+ request.getCriterioRicerca() +"%", request.getIntervento());
-        if(programmi != null && !programmi.isEmpty()){
+    public List<ProgrammaDaAbilitareDTO> getAllProgrammiDaAbilitare(RicercaProgrammiDaAbilitareRequest request) {
+
+        PolicyEnum policyEnum = PolicyEnum.valueOf(request.getIntervento()); 
+    
+        List<ProgrammaEntity> programmi = configurazioneMinorenniRepository.getAllProgrammiDaAbilitare(
+            request.getCriterioRicerca(),
+            "%" + request.getCriterioRicerca() + "%",
+            policyEnum  
+        );
+    
+        if (programmi != null && !programmi.isEmpty()) {
             return programmi.stream().map(programma -> {
                 ProgrammaDaAbilitareDTO programmaDaAbilitareDTO = new ProgrammaDaAbilitareDTO();
                 programmaDaAbilitareDTO.setIdProgramma(programma.getId());
@@ -175,6 +200,9 @@ public class ConfigurazioneMinorenniService {
                 return programmaDaAbilitareDTO;
             }).collect(Collectors.toList());
         }
+    
         return new ArrayList<>();
     }
+    
+    
 }

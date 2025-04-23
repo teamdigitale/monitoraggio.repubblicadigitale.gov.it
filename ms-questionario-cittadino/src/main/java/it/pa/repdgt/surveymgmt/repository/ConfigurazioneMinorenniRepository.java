@@ -12,6 +12,8 @@ import org.springframework.stereotype.Repository;
 
 import it.pa.repdgt.shared.entity.ConfigurazioneMinorenniEntity;
 import it.pa.repdgt.shared.entity.ProgrammaEntity;
+import it.pa.repdgt.shared.entityenum.PolicyEnum;
+import it.pa.repdgt.surveymgmt.dto.ConfigurazioneMinorenniDto;
 
 @Repository
 public interface ConfigurazioneMinorenniRepository extends JpaRepository<ConfigurazioneMinorenniEntity, Long> {
@@ -29,27 +31,29 @@ public interface ConfigurazioneMinorenniRepository extends JpaRepository<Configu
         Long idProgramma
         );
 
-    @Query(value = "SELECT * FROM configurazione_minorenni \n", nativeQuery = true)
-    Page<ConfigurazioneMinorenniEntity> getAllConfigurazioniPaginate(Pageable pageable);
+    @Query(value = "SELECT cm.*, p.nome AS nome_programma \n" +
+                    "FROM configurazione_minorenni cm \n" +
+                    "JOIN programma p ON cm.id_programma = p.id \n"
+                    , nativeQuery = true)
+    Page<Object[]> getAllConfigurazioniPaginate(Pageable pageable);
 
-    @Query(value = "SELECT * FROM configurazione_minorenni \n", nativeQuery = true)
-    List<ConfigurazioneMinorenniEntity> getAllConfigurazioni();
+    @Query(value = "SELECT cm.*, p.nome AS nome_programma \n" +
+            "FROM configurazione_minorenni cm \n" +
+            "JOIN programma p ON cm.id_programma = p.id \n", nativeQuery = true)
+    List<ConfigurazioneMinorenniDto> getAllConfigurazioni();
 
     @Query(value = "SELECT * FROM configurazione_minorenni \n" + 
                    "WHERE id_programma = :idProgramma", nativeQuery = true)
     Optional<ConfigurazioneMinorenniEntity> getConfigurazioneMinorenniByIdProgramma(@Param(value = "idProgramma") Long idProgramma);
 
-    @Query(value = "SELECT p.* \n" + 
-                    "FROM programma p \n" + 
-                    "LEFT JOIN configurazione_minorenni cm ON cm.id_programma = p.id \n" + 
-                    "WHERE 1=1 \n" + 
-                    "  AND p.policy = :policy\n" + 
-                    "  AND cm.id IS NULL\n" + 
-                    "  AND (\n" + 
-                    "        :criterioRicerca IS NULL  \n" + 
-                    "        OR CAST(p.CODICE AS CHAR) = :criterioRicerca \n" + 
-                    "        OR UPPER(CAST(p.NOME_BREVE AS CHAR)) LIKE UPPER(:criterioRicercaLike) \n" + 
-                    "        OR UPPER(CAST(p.NOME AS CHAR)) LIKE UPPER(:criterioRicercaLike)\n" + 
-                    "      )", nativeQuery = true)
-    List<ProgrammaEntity> getAllProgrammiDaAbilitare(@Param(value = "criterioRicerca") String criterioRicerca, @Param(value = "criterioRicercaLike") String criterioRicercaLike, @Param(value = "policy") String policy);
+    @Query(value = "SELECT p " + 
+                "FROM ProgrammaEntity p " + 
+                "LEFT JOIN EnteEntity cm ON cm.id = p.enteGestoreProgramma.id " +
+                "WHERE p.policy = :policy " +
+                "AND cm.id IS NULL " +
+                "AND (:criterioRicerca IS NULL " +
+                "     OR CAST(p.codice AS string) = :criterioRicerca " +
+                "     OR UPPER(CAST(p.nomeBreve AS string)) LIKE UPPER(:criterioRicercaLike) " +
+                "     OR UPPER(CAST(p.nome AS string)) LIKE UPPER(:criterioRicercaLike))")
+    List<ProgrammaEntity> getAllProgrammiDaAbilitare(@Param(value = "criterioRicerca") String criterioRicerca, @Param(value = "criterioRicercaLike") String criterioRicercaLike, @Param(value = "policy") PolicyEnum policy);
 }
