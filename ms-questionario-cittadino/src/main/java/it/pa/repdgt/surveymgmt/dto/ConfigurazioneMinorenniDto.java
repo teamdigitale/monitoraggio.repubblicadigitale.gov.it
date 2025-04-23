@@ -17,4 +17,5 @@ public class ConfigurazioneMinorenniDto {
     private String createUser;
     private Date updateTimestamp;
     private String updateUser;
+    private String nomeProgramma;
 }
