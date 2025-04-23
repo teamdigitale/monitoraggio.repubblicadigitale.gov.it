@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.443](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.442...1.0.0-test.443) (2025-04-23)
+
+
+### Bug Fixes
+
+* **U313:** fix comportamento metodi BE per config minorenni 20250423 ([fc7643c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fc7643ccdc93587d4af2ab54ff54ca1cb224a086))
+
 ## [1.0.0-test.442](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.441...1.0.0-test.442) (2025-04-17)
 
 
