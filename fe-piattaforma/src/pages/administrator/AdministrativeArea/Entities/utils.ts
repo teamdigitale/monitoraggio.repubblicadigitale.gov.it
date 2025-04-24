@@ -161,26 +161,36 @@ export const TableHeadingMinorenni: TableHeadingI[] = [
     label: 'Nome Programma',
     field: 'nomeProgramma',
     size: 'medium',
+    sort: 'nome_programma',
+    direction: 'asc',
   },
   {
     label: 'Intervento',
     field: 'intervento',
     size: 'medium',
+    sort: 'intervento',
+    direction: 'asc',
   },
   {
     label: 'Data di Abilitazione',
     field: 'dataAbilitazione',
     size: 'small',
+    sort: 'data_abilitazione',
+    direction: 'asc',
   },
   {
     label: 'Data di Decorrenza',
     field: 'dataDecorrenza',
     size: 'medium',
+    sort: 'data_decorrenza',
+    direction: 'asc',
   },
   {
     label: 'Stato abilitazione',
     field: 'stato',
     size: 'medium',
+    sort: 'data_decorrenza',
+    direction: 'asc',
   },
 ];
 
