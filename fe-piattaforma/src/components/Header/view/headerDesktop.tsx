@@ -25,7 +25,7 @@ import { defaultRedirectUrl } from '../../../routes';
 import { NotificationsPreview } from '../../index';
 import UserAvatar from '../../Avatar/UserAvatar/UserAvatar';
 import { LogoutRedirect } from '../../../redux/features/user/userThunk';
-import API from '../../../utils/apiHelper';
+// import API from '../../../utils/apiHelper';
 
 const HeaderDesktop: React.FC<HeaderI> = ({
   isHeaderFull = true,
@@ -58,18 +58,18 @@ const HeaderDesktop: React.FC<HeaderI> = ({
     },
   ];
 
-  const [profile, setProfile] = useState<any>(null);
+  // const [profile, setProfile] = useState<any>(null);
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      if (userProfile?.idEnte) {
-        const response = await API.get(`/ente/${userProfile?.idEnte}`);
-        setProfile(response);
-        console.log('PROFILE: ', response);
-      }
-    };
-    fetchProfile();
-  }, [userProfile]);
+  // useEffect(() => {
+  //   const fetchProfile = async () => {
+  //     if (userProfile?.idEnte) {
+  //       const response = await API.post(`/ente/${userProfile?.idEnte}`);
+  //       setProfile(response);
+  //       console.log('PROFILE: ', response);
+  //     }
+  //   };
+  //   fetchProfile();
+  // }, [userProfile]);
   
   
   const userDropDown = () => (
