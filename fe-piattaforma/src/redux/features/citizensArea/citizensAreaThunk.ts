@@ -306,3 +306,77 @@ export const DownloadEntityValues =
       dispatch(hideLoader());
     }
   };
+
+
+export const GetAllConfigurazioniMinorenniPaginate =
+  (payload: any) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      
+      const entityEndpoint = `/configurazioneminorenni/all`;
+      
+      const res = await API.post(entityEndpoint, payload);
+
+      if (res?.data) {
+        return res?.data;
+      }
+    } catch (error) {
+      console.log('GetConfigurazioniMinorenniPaginati error', error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+  export const searchProgrammiDaAbilitare =
+  (criterioRicerca?: string, intervento?: string) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      
+      const entityEndpoint = `/configurazioneminorenni/programmi`;
+      const body = {
+        criterioRicerca,
+        intervento
+      };
+      const res = await API.post(entityEndpoint, body);
+
+      if (res?.data) {
+        return res?.data;
+      }      
+    } catch (error) {
+      console.log('searchProgrammiDaAbilitare error', error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+  export const saveConfigurazioneMinorenni =
+  (payload: any) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      
+      const entityEndpoint = `/configurazioneminorenni/salva`;
+      const res = await API.post(entityEndpoint, payload);
+
+      if (res?.data) {
+        return res?.data;
+      }      
+    } catch (error) {
+      console.log('saveConfigurazioneMinorenni error', error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };
+
+  export const revocaConfigurazioneMinorenni =
+  (payload: any) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(showLoader());
+      
+      const entityEndpoint = `/configurazioneminorenni/elimina`;
+      await API.post(entityEndpoint, payload);   
+    } catch (error) {
+      console.log('saveConfigurazioneMinorenni error', error);
+    } finally {
+      dispatch(hideLoader());
+    }
+  };

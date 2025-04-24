@@ -131,7 +131,10 @@ export type RolePermissionI =
   // WorkDocs
   | 'acc.clb'
   // RocketChat
-  | 'btn.chat';
+  | 'btn.chat'
+  //minorenni
+  | 'view.conf.min'
+  | 'gest.conf.min';
 
 interface RoleI {
   codiceRuolo: string;

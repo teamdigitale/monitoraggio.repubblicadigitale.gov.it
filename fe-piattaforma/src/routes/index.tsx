@@ -290,18 +290,18 @@ const AppRoutes: React.FC = () => {
                   </ProtectedComponent>
                 }
               />
-              <Route      //cambiare visible
+              <Route      
                 path='/gestione-configurazioni'
                 element={
-                  <ProtectedComponent visibleTo={['list.ruoli']}> 
+                  <ProtectedComponent visibleTo={['view.conf.min']}> 
                     <ConfigManagement />
                   </ProtectedComponent>
                 }
               />
-              <Route      //cambiare visible
+              <Route
                 path='/gestione-configurazioni/minorenni'
                 element={
-                  <ProtectedComponent visibleTo={['list.ruoli']}> 
+                  <ProtectedComponent visibleTo={['view.conf.min']}> 
                     <ConfigManagement />
                   </ProtectedComponent>
                 }

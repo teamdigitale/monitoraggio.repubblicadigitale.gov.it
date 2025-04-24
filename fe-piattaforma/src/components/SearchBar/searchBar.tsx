@@ -243,7 +243,7 @@ const SearchBar: React.FC<SearchBarI> = (props) => {
             {interventoCheckbox && (
                 /* Radio Buttons */
                 <div className='d-flex mb-2 justify-content-center'>
-                <span style={{ fontSize: '20px', marginRight: '150px' }}>
+                <span style={{ fontSize: '20px', marginRight: '150px', marginLeft: '150px' }}>
                   <input
                   type='radio'
                   name='searchType'
