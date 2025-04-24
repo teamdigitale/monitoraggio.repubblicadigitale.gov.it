@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, useContext, useState, forwardRef, useImperativeHandle, ForwardedRef  } from 'react';
 import fileUploadImg from './../../../public/assets/img/file_upload.png';
 import { dispatchNotify } from '../../utils/notifictionHelper';
 import itDeletePrimary from '../../../public/assets/img/it-delete-primary.png';
@@ -66,11 +66,12 @@ const acceptedFileTypes = [
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 ];
 
-export default function CSVUploader({
+const CSVUploader =  forwardRef(function CSVUploader({
   file,
   saveFile,
   removeFile,
-}: CSVUploaderProps) {
+}: CSVUploaderProps,
+  ref: ForwardedRef<{ handleDrop: () => void }>) {
   const dispatch = useAppDispatch();
   const { codiceRuolo: userRole } = useAppSelector(selectProfile) || {};
   const projectContext = useContext(ProjectContext);
@@ -152,6 +153,7 @@ export default function CSVUploader({
 
   const handleDrop = useCallback(
     async (event) => {
+      console.log("ciao2")
       event.preventDefault();
       const files = event.dataTransfer.files;           
       const canProceed = await checkTable();
@@ -202,6 +204,10 @@ export default function CSVUploader({
     );
   }
 
+  useImperativeHandle(ref, () => ({
+    handleDrop: () => handleDrop(event),
+  }), [handleDrop]);
+
   return (
     <>
       <WarningModal
@@ -236,8 +242,8 @@ export default function CSVUploader({
             file ? 'success' : ''
           } py-4 pr-4 w-100 h-100 align-items-start`}
           data-bs-upload-dragdrop
-          onDragOver={(e) => e.preventDefault()}
-          onDrop={handleDrop}
+          //onDragOver={(e) => e.preventDefault()}
+         // onDrop={handleDrop}
         >
           <div className='mx-4 xs-d-none d-block'>
             <img
@@ -294,4 +300,6 @@ export default function CSVUploader({
       </div>
     </>
   );
-}
+});
+
+export default CSVUploader;
