@@ -11,8 +11,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import it.pa.repdgt.shared.entity.ConfigurazioneMinorenniEntity;
-import it.pa.repdgt.shared.entity.ProgrammaEntity;
-import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.surveymgmt.dto.ConfigurazioneMinorenniDto;
 
 @Repository
@@ -34,7 +32,11 @@ public interface ConfigurazioneMinorenniRepository extends JpaRepository<Configu
     @Query(value = "SELECT cm.*, p.nome AS nome_programma \n" +
                     "FROM configurazione_minorenni cm \n" +
                     "JOIN programma p ON cm.id_programma = p.id \n"
-                    , nativeQuery = true)
+                    ,
+                    countQuery = "SELECT COUNT(*) \n" +
+                    "FROM configurazione_minorenni cm \n" +
+                    "JOIN programma p ON cm.id_programma = p.id",
+                    nativeQuery = true)
     Page<Object[]> getAllConfigurazioniPaginate(Pageable pageable);
 
     @Query(value = "SELECT cm.*, p.nome AS nome_programma \n" +
@@ -46,14 +48,4 @@ public interface ConfigurazioneMinorenniRepository extends JpaRepository<Configu
                    "WHERE id_programma = :idProgramma", nativeQuery = true)
     Optional<ConfigurazioneMinorenniEntity> getConfigurazioneMinorenniByIdProgramma(@Param(value = "idProgramma") Long idProgramma);
 
-    @Query(value = "SELECT p " + 
-                "FROM ProgrammaEntity p " + 
-                "LEFT JOIN EnteEntity cm ON cm.id = p.enteGestoreProgramma.id " +
-                "WHERE p.policy = :policy " +
-                "AND cm.id IS NULL " +
-                "AND (:criterioRicerca IS NULL " +
-                "     OR CAST(p.codice AS string) = :criterioRicerca " +
-                "     OR UPPER(CAST(p.nomeBreve AS string)) LIKE UPPER(:criterioRicercaLike) " +
-                "     OR UPPER(CAST(p.nome AS string)) LIKE UPPER(:criterioRicercaLike))")
-    List<ProgrammaEntity> getAllProgrammiDaAbilitare(@Param(value = "criterioRicerca") String criterioRicerca, @Param(value = "criterioRicercaLike") String criterioRicercaLike, @Param(value = "policy") PolicyEnum policy);
 }
