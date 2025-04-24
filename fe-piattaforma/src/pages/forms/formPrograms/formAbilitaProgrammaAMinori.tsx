@@ -20,6 +20,7 @@ interface ProgramInformationI {
   edit?: boolean;
   legend?: string | undefined;
   idProgramma?: string;
+  initialValues?: { [key: string]: formFieldI['value'] };
 }
 
 interface FormEnteGestoreProgettoFullInterface
@@ -40,13 +41,14 @@ const FormAbilitaProgrammaAMinori: React.FC<FormEnteGestoreProgettoFullInterface
     getFormValues = () => ({}),
     formDisabled = false,
     legend = '',
-    idProgramma
+    idProgramma, //utilizzato con la modale in fase di abilita programma
+    initialValues //utilizzato con la modale in fase di modifica abilitazione
   } = props;
   const programDetails: { [key: string]: string } | undefined =
-    useAppSelector(selectPrograms).detail.dettagliInfoProgramma;
+    useAppSelector(selectPrograms).detail.dettagliInfoProgramma;    
 
   useEffect(() => {
-    setIsFormValid(isValidForm);
+    setIsFormValid(isValidForm);    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form]);
 
@@ -70,10 +72,16 @@ const FormAbilitaProgrammaAMinori: React.FC<FormEnteGestoreProgettoFullInterface
   }, [formDisabled]);
 
   useEffect(() => {
-    if (programDetails && form) {            
+    if (programDetails && form) {     
+      const formattedDataDecorrenza = initialValues?.dataDecorrenza
+      ? typeof initialValues.dataDecorrenza === 'string'
+        ? initialValues.dataDecorrenza.split('/').reverse().join('-') // Cambia formato da DD/MM/YYYY a YYYY-MM-DD
+        : ''
+      : '';       
       const currentFormFieldList: formFieldI[] = Object.entries({
         ...programDetails,
-        id: idProgramma,
+        id: idProgramma ? idProgramma : initialValues?.id_prog ?? '',
+        dataDecorrenza: formattedDataDecorrenza
       }).map(([key, value]) =>
         newFormField({
           ...form[key],
@@ -104,13 +112,14 @@ const FormAbilitaProgrammaAMinori: React.FC<FormEnteGestoreProgettoFullInterface
           ...form[field],
           value,
         },
-      };
+      };      
 
     if (field === 'dataDecorrenza' && form?.dataFine?.value) {
       const dataDecorrenzaDate = new Date(value as string);
       const dataFineDate = new Date(form.dataFine.value as string);
-
-      if (dataDecorrenzaDate >= dataFineDate) {
+      const dataInizioProgramma = new Date(programDetails?.dataInizio as string);
+      
+      if (dataDecorrenzaDate >= dataFineDate || dataDecorrenzaDate < dataInizioProgramma) {        
         newForm = {
         ...newForm,
         [field]: {

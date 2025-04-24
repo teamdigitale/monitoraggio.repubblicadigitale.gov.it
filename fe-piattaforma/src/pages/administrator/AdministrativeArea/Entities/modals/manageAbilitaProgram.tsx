@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { EmptySection, SearchBar } from '../../../../../components';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
 import Table, {
@@ -10,7 +10,6 @@ import Table, {
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
 import {
   resetProgramDetails,
-  selectEntityList,
   selectPrograms,
   setProgramDetails,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
@@ -24,10 +23,12 @@ import { formFieldI } from '../../../../../utils/formHelper';
 import { formTypes } from '../utils';
 import '../../../../../components/SearchBar/searchBar.scss';
 import { CRUDActionsI, CRUDActionTypes } from '../../../../../utils/common';
-import { GetEntityValues } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 import { GetProgramDetail } from '../../../../../redux/features/administrativeArea/programs/programsThunk';
 import FormAbilitaProgrammaAMinori from '../../../../forms/formPrograms/formAbilitaProgrammaAMinori';
 import ConfirmRevocaAbilitazioneMinori from './confirmRevocaAbilitazioneMinori';
+import { revocaConfigurazioneMinorenni, saveConfigurazioneMinorenni, searchProgrammiDaAbilitare } from '../../../../../redux/features/citizensArea/citizensAreaThunk';
+import { getUserHeaders } from '../../../../../redux/features/user/userThunk';
+import { RootState } from '../../../../../redux/store';
 
 const id = formTypes.PROGRAMMA;
 
@@ -52,6 +53,7 @@ export const headings: TableHeadingI[] = [
 interface ManageReferalFormI {
   formDisabled?: boolean;
   creation?: boolean;
+  fetchData?: (currentPage: number) => Promise<void>;
 }
 
 interface ManageReferalI extends withFormHandlerProps, ManageReferalFormI {}
@@ -60,16 +62,16 @@ const ManageAbilitaProgramma: React.FC<ManageReferalI> = ({
   clearForm = () => ({}),
   // formDisabled,
   creation = false,
+  fetchData = () => ({}),
 }) => {
   const [newFormValues, setNewFormValues] = useState<{
     [key: string]: formFieldI['value'];
   }>({});
   const [isFormValid, setIsFormValid] = useState<boolean>(false);
-  const [showForm, setShowForm] = useState<boolean>(false);
+  const [showForm, setShowForm] = useState<boolean>(!creation);
   const [alreadySearched, setAlreadySearched] = useState<boolean>(false);
   const dispatch = useDispatch();
-  let { programmi: programmiList = [] } = useAppSelector(selectEntityList);
-  
+  const [programmiList, setProgrammiList] = useState<any>([]);
   const open = useAppSelector(selectModalState);
   const [isProgramSelected, setIsProgramSelected] = useState(false);
   const [canSubmit, setCanSubmit] = useState(false);
@@ -79,6 +81,8 @@ const ManageAbilitaProgramma: React.FC<ManageReferalI> = ({
   
   const [selectedRow, setSelectedRow] = useState<TableRowI | null>(null);
 
+  const modalState = useSelector((state: RootState) => state.modal);
+  const row = modalState.payload?.row;
 
   const resetModal = (toClose = true) => {
     clearForm();
@@ -86,7 +90,7 @@ const ManageAbilitaProgramma: React.FC<ManageReferalI> = ({
     setAlreadySearched(false);
     setIsProgramSelected(false);
     dispatch(setProgramDetails({}));
-    programmiList = null;
+    setProgrammiList([]);
     if (toClose) dispatch(closeModal());
   };
 
@@ -98,11 +102,32 @@ const ManageAbilitaProgramma: React.FC<ManageReferalI> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, creation]);
 
-  const handleSaveAbilitazioneProgramma = () => {
-
+  const handleSaveAbilitazioneProgramma = async () => {
+    const { cfUtenteLoggato } = getUserHeaders();
+    const payload = {
+      idProgramma: newFormValues?.id,
+      intervento: newFormValues?.policy,
+      dataAbilitazione: new Date().toISOString().split('T')[0],
+      dataDecorrenza: newFormValues?.dataDecorrenza,
+      cfUtente: cfUtenteLoggato
+    };        
+    await dispatch(saveConfigurazioneMinorenni(payload));
+    fetchData(1); // se necessario passare come props currentPage e pageSize e metterli come parametro
+    dispatch(closeModal());
   };
-  const handleModificaAbilitazioneProgramma = () => {
 
+  const handleModificaAbilitazioneProgramma = async () => {
+    const { cfUtenteLoggato } = getUserHeaders();
+    const payload = {
+      id: row?.id,
+      idProgramma: newFormValues?.id,
+      intervento: newFormValues?.policy,
+      dataDecorrenza: newFormValues?.dataDecorrenza,
+      cfUtente: cfUtenteLoggato
+    };        
+    await dispatch(saveConfigurazioneMinorenni(payload));
+    fetchData(1); // se necessario passare come props currentPage e pageSize e metterli come parametro
+    dispatch(closeModal());
   };
 
   const onQueryChange = (query: string) => {
@@ -119,8 +144,19 @@ const ManageAbilitaProgramma: React.FC<ManageReferalI> = ({
 
   const handleSearchProgram = async (search: string) => {
     if (search) {
-      const entity = 'programma';
-      dispatch(GetEntityValues({ entity }));    //cambiare metodo che recupera programmi usando search e interventoOption
+      const result = await dispatch(searchProgrammiDaAbilitare(search, interventoSelected));    
+      if (Array.isArray(result)) {
+        const mappedProgrammi = result.map(p => ({
+          nomeBreve: p.nomeProgramma,
+          codice: p.codiceProgramma,
+          policy: p.intervento,
+          id: p.idProgramma,
+        }));
+        
+        setProgrammiList(mappedProgrammi);
+      } else {
+        console.error("Il risultato non è un array", result);
+      }
     }
     setShowForm(false);
     setAlreadySearched(true);
@@ -147,7 +183,10 @@ const ManageAbilitaProgramma: React.FC<ManageReferalI> = ({
     dispatch(closeModal());
     dispatch(
       openModal({
-        id: 'confirmRevocaAbilitazioneMinori'
+        id: 'confirmRevocaAbilitazioneMinori',
+        payload: {
+          row: row
+        }
       })
     );
   };
@@ -159,14 +198,19 @@ const ManageAbilitaProgramma: React.FC<ManageReferalI> = ({
         id: formTypes.PROGRAMMA,
         payload: {
           title: 'Modifica programma',
+          row: row
         },
       })
     );
   };
 
-  const onConfirmRevocaAbilitazione = () => {
+  const onConfirmRevocaAbilitazione = async () => {
+    const payload = {
+      id: row?.id,
+    };        
+    await dispatch(revocaConfigurazioneMinorenni(payload));
+    fetchData(1); 
     dispatch(closeModal());
-    alert('onConfirm');
   }
 
 
@@ -215,6 +259,7 @@ const ManageAbilitaProgramma: React.FC<ManageReferalI> = ({
           setIsFormValid={(isValid) => setIsFormValid(isValid ?? false)}
           creation={creation}
           idProgramma={selectedRow?.id ? String(selectedRow.id) : ''}
+          initialValues={row}
         />
     );
   }
@@ -225,7 +270,7 @@ const ManageAbilitaProgramma: React.FC<ManageReferalI> = ({
       id={id}
       primaryCTA={{
         // disabled: !isFormValid || !isProgramSelected,
-        disabled: !showForm ? !isProgramSelected : !isFormValid,
+        disabled: creation ? (!showForm ? !isProgramSelected : !isFormValid): !isFormValid,
         label: showForm || !creation ? 'Conferma' : 'Seleziona',
         onClick: showForm
           ? handleSaveAbilitazioneProgramma
