@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Icon } from 'design-react-kit';
 import {
+    Paginator,
     StatusChip,
     Table,
 } from '../../../../components';
@@ -11,39 +12,69 @@ import ManageAbilitaProgramma from '../../../administrator/AdministrativeArea/En
 import { openModal } from '../../../../redux/features/modal/modalSlice';
 import { useDispatch } from 'react-redux';
 import { GetProgramDetail } from '../../../../redux/features/administrativeArea/programs/programsThunk';
-
+import { GetAllConfigurazioniMinorenniPaginate } from '../../../../redux/features/citizensArea/citizensAreaThunk';
+import { selectEntityPagination, setEntityPagination } from '../../../../redux/features/citizensArea/citizensAreaSlice';
+import { useAppSelector } from '../../../../redux/hooks';
+import useGuard from '../../../../hooks/guard';
 
 const ConfigManagementMinorenni: React.FC = () => {
     const [creation, setCreation] = useState<boolean>(false);
+    const [programmi, setProgrammi] = useState<any>([]);
+    const pagination = useAppSelector(selectEntityPagination);
+    const { pageNumber } = pagination;
+    const { hasUserPermission } = useGuard();    
     const dispatch = useDispatch();
-    const programmi = [         //dati per mockup, sostiuire con metodo che recupera righe tabella configurazione_minorenni
-        {
-            nome: '#digitalizziamoci',
-            intervento: 'RFD',
-            dataAbilitazione: '15/01/2025',
-            dataDecorrenza: '16/01/2025',
-            stato: 'PROGRAMMATA',
-            statoClasse: 'badge badge-primary'
-        },
-        {
-            nome: 'Programma 2',
-            intervento: 'RFD',
-            dataAbilitazione: '01/11/2024',
-            dataDecorrenza: '30/11/2024',
-            stato: 'ABILITATA',
-            statoClasse: 'badge badge-secondary'
-        }
-    ];
-    const tableValues = newTable(
-        TableHeadingMinorenni,
-        programmi.map((td: any) => ({
-            nomeProgramma: td.nome,
-            intervento: td.intervento,
-            dataAbilitazione: td.dataAbilitazione,
-            dataDecorrenza: td.dataDecorrenza,
-            stato: <StatusChip status={td.stato} rowTableId={td.nome} />,
-        }))
-    );
+    const [sortDirection, setSortDirection] = useState<string>('desc');
+    const [sortBy, setSortBy] = useState<string>('data_abilitazione');
+
+    const fetchData = async (currentPage: number, sortByProps?: string, sortDirectionProps?: string) => {  
+              
+        try {
+            const payload = {
+                currentPage: currentPage - 1,
+                pageSize: 8,
+                sortBy: sortByProps ? sortByProps : sortBy,
+                sortOrder: sortDirectionProps ? sortDirectionProps : sortDirection,
+            };
+            const data = await dispatch(GetAllConfigurazioniMinorenniPaginate(payload)) as any;       
+            dispatch(setEntityPagination({ pageSize: 8, totalElements: data.numeroTotaleElementi, totalPages: data.numeroPagine }));     
+            setProgrammi(data.configurazioniMinorenniList); 
+          } catch (error) {
+            console.error("Failed to fetch data:", error);
+          }
+    };
+
+    const handleOnChangePage = (pageNumber: number = pagination?.pageNumber) => {
+        dispatch(setEntityPagination({ pageNumber }));
+        fetchData(pageNumber);
+    };
+    
+    const updateTableValues = () => {        
+        return programmi && programmi?.length > 0 ? newTable(
+            TableHeadingMinorenni,
+            programmi.map((td: any) => ({
+                id: td.id,
+                id_prog: td.idProgramma,
+                nomeProgramma: td.nomeProgramma,
+                intervento: td.intervento,
+                dataAbilitazione: new Date(td.dataAbilitazione).toLocaleDateString('it-IT'),
+                dataDecorrenza: new Date(td.dataDecorrenza).toLocaleDateString('it-IT'),
+                stato: <StatusChip status={new Date(td.dataDecorrenza) > new Date() ? 'PROGRAMMATA' : 'ABILITATA'} rowTableId={td.nome} />,
+                actions: new Date(td.dataDecorrenza) > new Date() ? ['edit'] : [], // solo se PROGRAMMATA
+            }))
+        ) : newTable(
+            TableHeadingMinorenni,
+            []
+        );
+    };
+
+    const [tableValues, setTableValues] = useState(updateTableValues());
+
+    useEffect(() => {
+        if (Array.isArray(programmi) && programmi.length)
+          setTableValues(updateTableValues());
+    }, [programmi]);
+
  
     const handleAbilitaProgramma = () => {
         setCreation(true);
@@ -59,14 +90,13 @@ const ConfigManagementMinorenni: React.FC = () => {
 
     const handleModificaProgramma = (row: TableRowI) => {
         setCreation(false);
-        console.log("id:",row.id);              //modificare dopo che la tabella sarà stata sistemata
-        
-        GetProgramDetail(row.id as string)
+        dispatch(GetProgramDetail(row.id_prog as string));        
         dispatch(
             openModal({
               id: formTypes.PROGRAMMA,
               payload: {
                 title: 'Modifica programma',
+                row: row,
               },
             })
           );
@@ -87,6 +117,7 @@ const ConfigManagementMinorenni: React.FC = () => {
                         className='page-title__cta'
                         onClick={handleAbilitaProgramma}
                         aria-label={`Abilita programma`}
+                        disabled={!hasUserPermission(['gest.conf.min'])}
                     >
                         <Icon
                             color='white'
@@ -103,24 +134,40 @@ const ConfigManagementMinorenni: React.FC = () => {
             <Table
                 {...tableValues}
                 id='table'
-                onActionClick={{
-                    edit: (row) => {
-                        if (typeof row !== 'string') {
-                            handleModificaProgramma(row);
-                        } else {
-                            console.error('Invalid row type:', row);
-                        }
-                    },
-                }}
+                onActionClick={
+                    hasUserPermission(['gest.conf.min']) 
+                        ? {
+                              edit: (row) => {
+                                  if (typeof row !== 'string') {
+                                      handleModificaProgramma(row);
+                                  } else {
+                                      console.error('Invalid row type:', row);
+                                  }
+                              },
+                          }
+                        : {}
+                }
                 withActions
-                totalCounter={programmi.length}
+                totalCounter={programmi?.length}
                 className='table-compact'
-                canSort
-                onSort={(orderBy: string, direction: string) => {   //da gestire
-                    console.log(`Sorting by ${orderBy} in ${direction} order`);
+                onSort={(orderBy: string, direction: string) => {
+                    setSortBy(orderBy);
+                    setSortDirection(direction);
+                    fetchData(pagination?.pageNumber, orderBy, direction);
                 }}
+                canSort
             />
-            <ManageAbilitaProgramma creation={creation}/>
+            {pagination?.pageNumber ? (
+              <Paginator
+                activePage={pagination?.pageNumber}
+                center
+                refID='#table'
+                pageSize={pagination?.pageSize}
+                total={pagination?.totalPages}
+                onChange={handleOnChangePage}
+              />
+            ) : null}
+            <ManageAbilitaProgramma creation={creation} fetchData={fetchData}/>
         </div>
     );
 };

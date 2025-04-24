@@ -15,13 +15,12 @@ const tabs = {
 
 const ConfigManagement: React.FC = () => {
     const device = useAppSelector(selectDevice);
-    const [activeTab, setActiveTab] = useState<string>(tabs.CARICAMENTIMASSIVI);  
+    const [activeTab, setActiveTab] = useState<string>(tabs.MINORENNI);  
     const navigate = useNavigate();
     const location = useLocation();
     
     const disabledPageContent = (
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-            <h1>PAGINA DISABILITATA</h1>
         </div>
     );
 
@@ -42,8 +41,8 @@ const ConfigManagement: React.FC = () => {
                     setContent(<ConfigManagementMinorenni />);
                     break;
                 default:
-                    setActiveTab(tabs.CARICAMENTIMASSIVI);
-                    navigate('/gestione-configurazioni/caricamenti-massivi', { replace: true });
+                    setActiveTab(tabs.MINORENNI);
+                    navigate('/gestione-configurazioni/minorenni', { replace: true });
                     break;
             }
         }
@@ -55,7 +54,7 @@ const ConfigManagement: React.FC = () => {
             className={clsx('mb-5', !device.mediaIsPhone && 'overflow-hidden')}
             role='menu'
         >
-            <NavItem role='none'>
+            {/* <NavItem role='none'>           decommentare quando vi sarà necessità di un'altra tab
                 <span>
                     <NavLink
                         to={`/gestione-configurazioni/caricamenti-massivi`}
@@ -66,7 +65,7 @@ const ConfigManagement: React.FC = () => {
                         Caricamenti massivi
                     </NavLink>
                 </span>
-            </NavItem>
+            </NavItem> */}
             <NavItem role='none'>
                 <span>
                     <NavLink

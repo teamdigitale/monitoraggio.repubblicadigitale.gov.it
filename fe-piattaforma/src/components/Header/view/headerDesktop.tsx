@@ -316,7 +316,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                 </Button>
               </li>
             ) : null}
-            {hasUserPermission(['btn.gest.ruoli']) ? (  //cambiare permission
+            {hasUserPermission(['view.conf.min']) ? (
               <li role='none' className='px-4'>
                 <Button
                   className={clsx(
