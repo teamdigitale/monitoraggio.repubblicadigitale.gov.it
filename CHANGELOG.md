@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.444](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.443...1.0.0-test.444) (2025-04-24)
+
+
+### Bug Fixes
+
+* **U313:** fix errori metodi /all e /programmi 20250424 ([13c79bb](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/13c79bbbb0121ddbc6cd793801ab82c5a5076cc1))
+* **T421:** drop file non funzionante 20250424 ([4c7b909](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4c7b909d5fffff048c767eea420387784c121d42))
+
 ## [1.0.0-test.443](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.442...1.0.0-test.443) (2025-04-23)
 
 
