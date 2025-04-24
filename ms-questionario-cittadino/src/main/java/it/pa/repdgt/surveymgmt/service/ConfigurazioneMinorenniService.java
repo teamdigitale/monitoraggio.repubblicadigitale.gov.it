@@ -24,6 +24,7 @@ import it.pa.repdgt.surveymgmt.dto.ListaConfigurazioniMinorenniPaginatiDTO;
 import it.pa.repdgt.surveymgmt.dto.ProgrammaDaAbilitareDTO;
 import it.pa.repdgt.surveymgmt.exception.CittadinoException;
 import it.pa.repdgt.surveymgmt.repository.ConfigurazioneMinorenniRepository;
+import it.pa.repdgt.surveymgmt.repository.ProgrammaRepository;
 import it.pa.repdgt.surveymgmt.request.ConfigurazioneMinorenniPaginatiRequest;
 import it.pa.repdgt.surveymgmt.request.ConfigurazioneMinorenniRequest;
 import it.pa.repdgt.surveymgmt.request.RicercaProgrammiDaAbilitareRequest;
@@ -35,6 +36,9 @@ public class ConfigurazioneMinorenniService {
 
     @Autowired
     private ProgrammaService programmaService;
+
+    @Autowired
+    private ProgrammaRepository programmaRepository;
 
     @LogMethod
     @LogExecutionTime
@@ -182,12 +186,12 @@ public class ConfigurazioneMinorenniService {
     @LogExecutionTime
     public List<ProgrammaDaAbilitareDTO> getAllProgrammiDaAbilitare(RicercaProgrammiDaAbilitareRequest request) {
 
-        PolicyEnum policyEnum = PolicyEnum.valueOf(request.getIntervento()); 
+        PolicyEnum policyEnum = PolicyEnum.valueOf(request.getIntervento()); //controllo che l'intervento sia valido
     
-        List<ProgrammaEntity> programmi = configurazioneMinorenniRepository.getAllProgrammiDaAbilitare(
+        List<ProgrammaEntity> programmi = programmaRepository.getAllProgrammiDaAbilitare(
             request.getCriterioRicerca(),
             "%" + request.getCriterioRicerca() + "%",
-            policyEnum  
+            policyEnum.toString()  
         );
     
         if (programmi != null && !programmi.isEmpty()) {
