@@ -1,19 +1,22 @@
-.table-compact {
+.table-compact-cmin {
     table-layout: auto;
     width: 100%; 
+    color: #162236;
 }
 
-.table-compact th,
-.table-compact td {
+.table-compact-cmin th{
     white-space: nowrap;
     text-align: left; 
 }
+.table-compact-cmin td {
+    text-align: left; 
+}
 
-.table-compact th {
+.table-compact-cmin th {
     font-size: 15px;
     font-weight: bold;
 }
 
-.table-compact td {
+.table-compact-cmin td {
     font-weight: bold;
 }
