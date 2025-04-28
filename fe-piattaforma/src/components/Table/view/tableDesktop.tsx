@@ -133,7 +133,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
                         name='group'
                         type='radio'
                         id={`radio-${td.id}`}
-                        checked={rowChecked === td.id}
+                        checked={rowChecked === td.id.toString()}
                         withLabel={false}
                         onInputChange={() => {
                           setRowChecked(td.id.toString());

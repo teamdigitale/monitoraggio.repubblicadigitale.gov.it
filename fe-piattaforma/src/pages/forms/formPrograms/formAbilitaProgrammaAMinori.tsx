@@ -19,7 +19,7 @@ interface ProgramInformationI {
   creation?: boolean;
   edit?: boolean;
   legend?: string | undefined;
-  idProgramma?: string;
+  // idProgramma?: string;
   initialValues?: { [key: string]: formFieldI['value'] };
 }
 
@@ -41,7 +41,7 @@ const FormAbilitaProgrammaAMinori: React.FC<FormEnteGestoreProgettoFullInterface
     getFormValues = () => ({}),
     formDisabled = false,
     legend = '',
-    idProgramma, //utilizzato con la modale in fase di abilita programma
+    // idProgramma, //utilizzato con la modale in fase di abilita programma
     initialValues //utilizzato con la modale in fase di modifica abilitazione
   } = props;
   const programDetails: { [key: string]: string } | undefined =
@@ -80,7 +80,8 @@ const FormAbilitaProgrammaAMinori: React.FC<FormEnteGestoreProgettoFullInterface
       : '';       
       const currentFormFieldList: formFieldI[] = Object.entries({
         ...programDetails,
-        id: idProgramma ? idProgramma : initialValues?.id_prog ?? '',
+        // id: idProgramma ? idProgramma : initialValues?.id_prog ?? '',
+        id: programDetails?.codice ?? '',
         dataDecorrenza: formattedDataDecorrenza
       }).map(([key, value]) =>
         newFormField({
