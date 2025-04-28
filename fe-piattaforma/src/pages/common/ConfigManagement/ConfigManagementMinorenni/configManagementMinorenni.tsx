@@ -149,7 +149,7 @@ const ConfigManagementMinorenni: React.FC = () => {
                 }
                 withActions
                 totalCounter={programmi?.length}
-                className='table-compact'
+                className='table-compact-cmin'
                 onSort={(orderBy: string, direction: string) => {
                     setSortBy(orderBy);
                     setSortDirection(direction);

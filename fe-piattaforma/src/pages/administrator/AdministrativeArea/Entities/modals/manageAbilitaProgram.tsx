@@ -78,7 +78,6 @@ const ManageAbilitaProgramma: React.FC<ManageReferalI> = ({
   const [interventoSelected, setInterventoSelected] = useState<string>('RFD');
   const programDetails =
     useAppSelector(selectPrograms).detail.dettagliInfoProgramma;
-  
   const [selectedRow, setSelectedRow] = useState<TableRowI | null>(null);
 
   const modalState = useSelector((state: RootState) => state.modal);
@@ -105,7 +104,7 @@ const ManageAbilitaProgramma: React.FC<ManageReferalI> = ({
   const handleSaveAbilitazioneProgramma = async () => {
     const { cfUtenteLoggato } = getUserHeaders();
     const payload = {
-      idProgramma: newFormValues?.id,
+      idProgramma: selectedRow?.id,
       intervento: newFormValues?.policy,
       dataAbilitazione: new Date().toISOString().split('T')[0],
       dataDecorrenza: newFormValues?.dataDecorrenza,
@@ -120,11 +119,11 @@ const ManageAbilitaProgramma: React.FC<ManageReferalI> = ({
     const { cfUtenteLoggato } = getUserHeaders();
     const payload = {
       id: row?.id,
-      idProgramma: newFormValues?.id,
+      idProgramma: row?.id_prog,
       intervento: newFormValues?.policy,
       dataDecorrenza: newFormValues?.dataDecorrenza,
       cfUtente: cfUtenteLoggato
-    };        
+    };    
     await dispatch(saveConfigurazioneMinorenni(payload));
     fetchData(1); // se necessario passare come props currentPage e pageSize e metterli come parametro
     dispatch(closeModal());
@@ -164,20 +163,12 @@ const ManageAbilitaProgramma: React.FC<ManageReferalI> = ({
 
   const handleSelectProgram: CRUDActionsI = {
     [CRUDActionTypes.SELECT]: (td: TableRowI | string) => {
-      
-      if(isProgramSelected) {
-        if (typeof td !== 'string') {
-          dispatch(GetProgramDetail(td.id as string));
-        }
-        setShowForm(true);
-      }else{
-        if (typeof td !== 'string') {
-          setSelectedRow(td);
-        }
-        setIsProgramSelected(true);
+      if (typeof td !== 'string') {
+        setSelectedRow(td);
       }
+      setIsProgramSelected(true);
     },
-  };
+  };  
 
   const handleRevocaAbilitazione = () => {
     dispatch(closeModal());
@@ -225,7 +216,7 @@ const ManageAbilitaProgramma: React.FC<ManageReferalI> = ({
         }
         setIsFormValid={(isValid) => setIsFormValid(isValid ?? false)}
         creation={creation}
-        idProgramma={selectedRow?.id ? String(selectedRow.id) : ''}
+        // idProgramma={selectedRow?.id ? String(selectedRow.id) : ''}
       />
     );
   } else if (programmiList && programmiList.length > 0 && alreadySearched) {
@@ -258,7 +249,7 @@ const ManageAbilitaProgramma: React.FC<ManageReferalI> = ({
           }
           setIsFormValid={(isValid) => setIsFormValid(isValid ?? false)}
           creation={creation}
-          idProgramma={selectedRow?.id ? String(selectedRow.id) : ''}
+          // idProgramma={selectedRow?.id ? String(selectedRow.id) : ''}
           initialValues={row}
         />
     );
@@ -275,7 +266,7 @@ const ManageAbilitaProgramma: React.FC<ManageReferalI> = ({
         onClick: showForm
           ? handleSaveAbilitazioneProgramma
           : !creation ? handleModificaAbilitazioneProgramma
-            : () => selectedRow && handleSelectProgram[CRUDActionTypes.SELECT](selectedRow),
+            : () => selectedRow && (() => { dispatch(GetProgramDetail(selectedRow.id as string)); setShowForm(true); })(),
       }}
       secondaryCTA={{
         label: 'Annulla',

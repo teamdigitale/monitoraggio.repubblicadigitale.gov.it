@@ -36,10 +36,9 @@ export const statusBgColor = (status: string) => {
     case statusTypes.ACTIVE:
     case statusTypes.COMPLETE:
     case statusTypes.SENT:
-    case statusTypes.PROGRAMMED:
       return 'primary-bg-a9';
     case statusTypes.PROGRAMMED:
-      return 'primary-bg';
+      return 'btn-primary';
     case statusTypes.FILLED_OUT:
       return 'primary-bg-c7';
     case statusTypes.DRAFT:
