@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.45.3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.45.2...1.45.3) (2025-04-30)
+
+
+### Bug Fixes
+
+* **prod:** aggiornamento data limite 20250430 ([37e3df1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/37e3df133e6408a9bba1da68f00ae1c53ad55997))
+
 ## [1.45.2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.45.1...1.45.2) (2025-04-22)
 
 
