@@ -76,6 +76,7 @@ const ManageAbilitaProgramma: React.FC<ManageReferalI> = ({
   const [isProgramSelected, setIsProgramSelected] = useState(false);
   const [canSubmit, setCanSubmit] = useState(false);
   const [interventoSelected, setInterventoSelected] = useState<string>('RFD');
+  const [searchedValue, setSearchedValue] = useState<string>('');
   const programDetails =
     useAppSelector(selectPrograms).detail.dettagliInfoProgramma;
   const [selectedRow, setSelectedRow] = useState<TableRowI | null>(null);
@@ -90,6 +91,8 @@ const ManageAbilitaProgramma: React.FC<ManageReferalI> = ({
     setIsProgramSelected(false);
     dispatch(setProgramDetails({}));
     setProgrammiList([]);
+    setSearchedValue('');
+    setCanSubmit(false);
     if (toClose) dispatch(closeModal());
   };
 
@@ -137,12 +140,19 @@ const ManageAbilitaProgramma: React.FC<ManageReferalI> = ({
     }
   };
 
+  useEffect(() => {
+    if(canSubmit){
+      handleSearchProgram(searchedValue);
+    }
+  }, [interventoSelected]);
+
   const handleInterventoChange = (value: string) => {
     setInterventoSelected(value);
   }
 
   const handleSearchProgram = async (search: string) => {
     if (search) {
+      setSearchedValue(search);
       const result = await dispatch(searchProgrammiDaAbilitare(search, interventoSelected));    
       if (Array.isArray(result)) {
         const mappedProgrammi = result.map(p => ({
@@ -238,7 +248,7 @@ const ManageAbilitaProgramma: React.FC<ManageReferalI> = ({
     (programmiList?.length === 0 || !programmiList) &&
     !showForm
   ) {
-    content = <EmptySection title='Nessun risultato' withIcon horizontal />;
+    content = <EmptySection title='Questa ricerca non ha prodotto risultati' withIcon horizontal />;
   }else if(!creation){
     content = (
         <FormAbilitaProgrammaAMinori
