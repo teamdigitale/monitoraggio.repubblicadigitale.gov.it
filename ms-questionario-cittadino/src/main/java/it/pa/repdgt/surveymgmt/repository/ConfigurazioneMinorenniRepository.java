@@ -19,8 +19,8 @@ public interface ConfigurazioneMinorenniRepository extends JpaRepository<Configu
     @Query(value = "SELECT DISTINCT c.* " +
                    "FROM configurazione_minorenni c " +
                    "JOIN programma progr ON progr.id = c.id_programma " +
-                   "JOIN progetto p ON p.id_programma = progr.id " +
-                   "JOIN servizio s ON s.id_progetto = p.id " +
+                   "LEFT JOIN progetto p ON p.id_programma = progr.id " +
+                   "LEFT JOIN servizio s ON s.id_progetto = p.id " +
                    "WHERE (:idServizio IS NOT NULL AND s.id = :idServizio) " +
                    "OR (:idProgramma IS NOT NULL AND c.id_programma = :idProgramma)", 
            nativeQuery = true)
