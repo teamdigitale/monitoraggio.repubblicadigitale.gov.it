@@ -120,7 +120,7 @@ const FormAbilitaProgrammaAMinori: React.FC<FormEnteGestoreProgettoFullInterface
       const dataFineDate = new Date(form.dataFine.value as string);
       const dataInizioProgramma = new Date(programDetails?.dataInizio as string);
       
-      if (dataDecorrenzaDate >= dataFineDate || dataDecorrenzaDate < dataInizioProgramma) {        
+      if (dataDecorrenzaDate > dataFineDate || dataDecorrenzaDate < dataInizioProgramma) {        
         newForm = {
         ...newForm,
         [field]: {
