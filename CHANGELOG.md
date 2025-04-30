@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.446](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.445...1.0.0-test.446) (2025-04-30)
+
+
+### Bug Fixes
+
+* **U385:** modifica join in left join su progetto e servizio 20250430 ([c525100](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c525100abf2b050c4cd31858ee762d377ed7c887))
+
 ## [1.0.0-test.445](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.444...1.0.0-test.445) (2025-04-30)
 
 
