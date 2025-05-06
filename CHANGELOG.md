@@ -1,5 +1,21 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.447](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.446...1.0.0-test.447) (2025-05-06)
+
+
+### Features
+
+* **U313:** wip implementazione FE nuovi EP 20250424 ([f190eb9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f190eb9ad45e8ea3a57717d51efa5003217c94e8))
+* **U313:** WIP definizione modali per abilita e modifica programma 20250328 ([e4146d6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e4146d6a649c9faefe9972c6e61bb8999b62056e))
+* **U313:** WIP creazione pagina gestione configurazioni 20250320 ([aea0d5f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/aea0d5f4788e67d520da5c6a8f244166f4b03709))
+
+
+### Bug Fixes
+
+* **U385:** fix fascia eta minorenni 20250506 ([41ee8fe](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/41ee8fe711dae5c442afe1d44ae21832081a39e9))
+* **U313:** fix bug data decorrenza e ricerca tramite intervento 20250430 ([fc51737](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fc5173717c25b665cf6b4069c60d1a9416d2b23c))
+* **U313:** fix colore status chip e bug click elenco programmi 20250428 ([0a2ba16](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0a2ba16daa9c3d57e06501bbe423d18f318638c9))
+
 ## [1.0.0-test.446](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.445...1.0.0-test.446) (2025-04-30)
 
 
