@@ -119,7 +119,7 @@ export const citizenFormDropdownOptions = {
     { label: '30-54', value: '2' },
     { label: '55-74', value: '3' },
     { label: '75 e oltre', value: '4' },
-    { label: '0-17', value: '5' },
+    { label: '14-17', value: '5' },
   ],
   provincia: province,
 };
