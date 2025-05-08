@@ -95,7 +95,7 @@ const ConfigManagementMinorenni: React.FC = () => {
             openModal({
               id: formTypes.PROGRAMMA,
               payload: {
-                title: 'Modifica programma',
+                title: 'Modifica abilitazione',
                 row: row,
               },
             })

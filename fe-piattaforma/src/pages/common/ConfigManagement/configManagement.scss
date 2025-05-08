@@ -18,5 +18,9 @@
 }
 
 .table-compact-cmin td {
-    font-weight: bold;
+    font-weight: 600;
 }
+
+.table-compact-cmin th .sort-icon {
+    cursor: pointer;
+  }

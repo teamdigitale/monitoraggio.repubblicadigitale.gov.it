@@ -97,7 +97,7 @@ const TableDesktop: React.FC<TableI> = (props) => {
                       <Icon
                         icon="it-arrow-down-triangle"
                         color='secondary'
-                        className='mb-2'
+                        className='mb-2 sort-icon'
                         onClick={() => handleSort(th.field || '')}
                         style={{ flexShrink: 0 }}
                       />
