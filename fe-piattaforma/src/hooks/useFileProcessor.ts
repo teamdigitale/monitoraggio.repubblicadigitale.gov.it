@@ -164,12 +164,12 @@ export function useFileProcessor(file: File | undefined, removeFile: () => void)
               escapeChar: '"',
               skipEmptyLines: true,
               complete: (results: Papa.ParseResult<CSVRecord>) => {
-                // if(results.data.length > 3000) {
-                //   rejectWithMessage(
-                //     "Visto l'elevato numero di caricamenti odierni, ti chiediamo di inserire file contenenti un massimo di 3000 righe"
-                //   );
-                //   return;
-                // }
+                if(results.data.length > 9000) {
+                  rejectWithMessage(
+                    "Visto l'elevato numero di caricamenti odierni, ti chiediamo di inserire file contenenti un massimo di 9000 righe"
+                  );
+                  return;
+                }
 
                 if (!headersCSV.every((header) => header in results.data[0])) {
                   rejectWithMessage(
@@ -287,6 +287,13 @@ export function useFileProcessor(file: File | undefined, removeFile: () => void)
           if (projectDetail?.policy == policy.SCD) {
             try {
               const excelData = await handleExcelFileUpload(file);
+
+              if(excelData.length > 9000) {
+                rejectWithMessage(
+                  "Visto l'elevato numero di caricamenti odierni, ti chiediamo di inserire file contenenti un massimo di 9000 righe"
+                );
+                return;
+              }
   
               const serviziValidati: ServiziElaboratiDto[] = [];
               const serviziScartati: ServiziElaboratiDto[] = [];
