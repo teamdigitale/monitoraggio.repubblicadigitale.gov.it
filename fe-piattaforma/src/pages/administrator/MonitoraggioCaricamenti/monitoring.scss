@@ -311,3 +311,7 @@ input[id^="react-select-"] {
 .bootstrap-select__single-value{
     color:#0066CC !important
 }
+
+.table-compact th .sort-icon {
+    cursor: pointer;
+  }
