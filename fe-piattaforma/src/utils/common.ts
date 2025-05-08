@@ -158,6 +158,7 @@ export interface ItemListElemI {
   codiceFiscale?: string;
   enteDiRiferimento?: string;
   identeDiRiferimento?: Number;
+  res?: number;
 }
 
 export interface ItemsListI {
