@@ -198,7 +198,7 @@ const ManageAbilitaProgramma: React.FC<ManageReferalI> = ({
       openModal({
         id: formTypes.PROGRAMMA,
         payload: {
-          title: 'Modifica programma',
+          title: 'Modifica abilitazione',
           row: row
         },
       })
