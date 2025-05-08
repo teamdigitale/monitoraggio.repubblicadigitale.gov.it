@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.448](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.447...1.0.0-test.448) (2025-05-08)
+
+
+### Bug Fixes
+
+* **U255:** fix ordinamento sedi progetto e visualizzazione CTA 20250508 ([bca5ea9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/bca5ea911306eee08ed7ff171b4a6574666ff53f))
+* **U313:** accorgimenti grafici tabella e modale 20250508 ([5e4a39a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5e4a39af298d2846f7f4cfd69edd5d2364e9c871))
+
 ## [1.0.0-test.447](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.446...1.0.0-test.447) (2025-05-06)
 
 
