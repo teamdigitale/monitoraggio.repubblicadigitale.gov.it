@@ -227,7 +227,8 @@ const HeadquartersDetails = () => {
     const idEnteDiRiferimento = params.identeDiRiferimento;
     switch (ruolo) {
       case 'DTD':
-        return 1;
+          if(headquarterDetails && headquarterDetails?.stato === entityStatus.TERMINATO) return 2;
+          else return 1;
       case 'DEG':
       case 'REG':
         return 2;
@@ -416,9 +417,14 @@ const HeadquartersDetails = () => {
   };
 
   const removeHeadquarter = async () => {
+    
     if (projectId && authorityId && headquarterId) {
       await dispatch(
         RemoveAuthorityHeadquarter(authorityId, headquarterId, projectId)
+      );
+    } else if(projectId && identeDiRiferimento && headquarterId){
+      await dispatch(
+        RemoveAuthorityHeadquarter(identeDiRiferimento, headquarterId, projectId)
       );
     }
 
