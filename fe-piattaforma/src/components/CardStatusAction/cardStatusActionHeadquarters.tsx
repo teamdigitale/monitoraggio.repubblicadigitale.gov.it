@@ -161,6 +161,7 @@ const CardStatusActionHeadquarters: React.FC<CardStatusActionI> = (props) => {
                           color='primary'
                           icon='it-pencil'
                           size='sm'
+                          key={title ? title : id}
                           aria-label={`Vai al dettaglio di ${title || fullInfo?.programma}`}
                         />
                         <span className='neutral-1-color-a8 weight-600 text-wrap ml-1'>
@@ -173,6 +174,7 @@ const CardStatusActionHeadquarters: React.FC<CardStatusActionI> = (props) => {
                           color='primary'
                           icon='it-password-visible'
                           size='sm'
+                          key={title ? title : id}
                           aria-label={`Vai al dettaglio di ${title || fullInfo?.programma}`}
                         />
                         <span className='neutral-1-color-a8 weight-600 text-wrap ml-1'>
@@ -184,6 +186,7 @@ const CardStatusActionHeadquarters: React.FC<CardStatusActionI> = (props) => {
                         color='primary'
                         icon='it-chevron-right'
                         size='sm'
+                        key={title ? title : id}
                         aria-label={`Vai al dettaglio di ${title || fullInfo?.programma}`}
                       />
                     )}

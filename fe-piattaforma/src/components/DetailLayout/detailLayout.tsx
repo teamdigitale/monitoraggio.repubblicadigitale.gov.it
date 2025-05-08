@@ -102,22 +102,27 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
 
   useEffect(() => {
     if (currentTab === 'sedi' && itemsList?.items) {
-      // 1. Ordina l'intera lista PRIMA di applicare la paginazione
+      // 1. Ordina per 'res', poi alfabeticamente per 'name'
       const sortedItems = itemsList.items
         .map((item) => ({
           ...item,
           res: showIconBasedOnRole(item),
         }))
-        .sort((a, b) => a.res - b.res);        
+        .sort((a, b) => {
+          if (a.res !== b.res) {
+            return a.res - b.res; // Ordina per res crescente
+          }
+          // Se 'res' è uguale, ordina per nome (case-insensitive)
+          return a.nome.localeCompare(b.nome, undefined, { sensitivity: 'base' });
+        });
   
       // 2. Applica la paginazione DOPO l'ordinamento
       const start = (pagination.pageNumber - 1) * pagination.pageSize;
       const end = start + pagination.pageSize;
-      const paginatedItems = sortedItems.slice(start, end);
-  
-      setCurrentItems(paginatedItems);
-    }else {
-      setCurrentItems([]); 
+      const paginatedItems = sortedItems.slice(start, end);        
+      setCurrentItems(paginatedItems);      
+    } else {
+      setCurrentItems([]);
     }
   }, [currentTab, pagination.pageNumber, pagination.pageSize, itemsList]);
   
@@ -137,7 +142,8 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
   
     switch (ruolo) {
       case 'DTD':
-        return 1;
+          if(item.stato === 'TERMINATO')  return 2;
+          else return 1;
       case 'DEG':
       case 'REG':
         return 2;
@@ -341,10 +347,10 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
           : null}
           {currentTab === 'sedi' && showItemsList && currentItems?.length
             ? currentItems
-                .map((item) => ({
-                  ...item,
-                  res: showIconBasedOnRole(item),
-                }))
+                // .map((item) => ({
+                //   ...item,
+                //   res: showIconBasedOnRole(item),
+                // }))
                 .map((item) => (
                   <CardStatusActionHeadquarters
                     title={item.nome}
