@@ -27,7 +27,7 @@ const ConfirmRevocaAbilitazioneMinori: React.FC<ConfirmDeleteModalI> = (props) =
       centerButtons
       onClose={onClose}
     >
-      <div className='d-flex flex-column justify-content-center mt-5'>
+      <div className='d-flex flex-column justify-content-center m-5 '>
         <div className='d-flex justify-content-center mb-4'>
           <Icon
             icon='it-error'
