@@ -84,6 +84,8 @@ const headersCSV = [
   'ES6',
 ];
 
+const massimoCaricamentoRighe = 9000;
+const messaggioCaricamentoSuperato = "Per garantire tempi di risposta ottimali a tutti gli utenti, il numero massimo di righe per ogni file è attualmente limitato a 9000. Se devi elaborare un file molto grande ti invitiamo a suddividerlo in più file."
 export function useFileProcessor(file: File | undefined, removeFile: () => void) {
   const { isValidFiscalCode } = useFiscalCodeValidation();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -164,10 +166,8 @@ export function useFileProcessor(file: File | undefined, removeFile: () => void)
               escapeChar: '"',
               skipEmptyLines: true,
               complete: (results: Papa.ParseResult<CSVRecord>) => {
-                if(results.data.length > 9000) {
-                  rejectWithMessage(
-                    "Visto l'elevato numero di caricamenti odierni, ti chiediamo di inserire file contenenti un massimo di 9000 righe"
-                  );
+                if(results.data.length > massimoCaricamentoRighe) {
+                  rejectWithMessage(messaggioCaricamentoSuperato);
                   return;
                 }
 
@@ -288,10 +288,8 @@ export function useFileProcessor(file: File | undefined, removeFile: () => void)
             try {
               const excelData = await handleExcelFileUpload(file);
 
-              if(excelData.length > 9000) {
-                rejectWithMessage(
-                  "Visto l'elevato numero di caricamenti odierni, ti chiediamo di inserire file contenenti un massimo di 9000 righe"
-                );
+              if(excelData.length > massimoCaricamentoRighe) {
+                rejectWithMessage(messaggioCaricamentoSuperato);
                 return;
               }
   
