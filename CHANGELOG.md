@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.449](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.448...1.0.0-test.449) (2025-05-09)
+
+
+### Bug Fixes
+
+* **test:** impostato limite caricamento massivo 20250508 ([5608a20](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5608a20612bbbae4644c8705ea9103b4245fed5a))
+
 ## [1.0.0-test.448](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.447...1.0.0-test.448) (2025-05-08)
 
 
