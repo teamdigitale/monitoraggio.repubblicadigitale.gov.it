@@ -351,6 +351,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
             nuovoCittadino = false;
         } else {
             mapNuovoCittadinoRequestToCittadino(cittadino, nuovoCittadinoRequest);
+            cittadino.setCodInserimento(idRegistroAttivita);
         }
         // verifico se già esiste il cittadino per quel determinato servizio
         // e in caso affermativo sollevo eccezione
