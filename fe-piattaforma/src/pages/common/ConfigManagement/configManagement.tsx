@@ -84,7 +84,7 @@ const ConfigManagement: React.FC = () => {
 
     return (
         <>
-            <PageTitle title="Gestione configurazioni" subtitle='Lorem ipsum'/>
+            <PageTitle title="Gestione configurazioni" subtitle='Gestisci la configurazione di specifiche funzionalità della piattaforma. L’accesso è riservato a utenti con il ruolo DTD amministratore.'/>
             <div
             className={clsx(
                 'd-flex',
