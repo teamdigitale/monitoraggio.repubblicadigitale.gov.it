@@ -141,6 +141,17 @@ const ManageAbilitaProgramma: React.FC<ManageReferalI> = ({
   };
 
   useEffect(() => {
+    if (navigator.platform.indexOf('Mac') > -1) {
+      document.body.classList.add('macos');
+    }
+
+    // Cleanup: rimuovere la classe quando il componente viene smontato
+    return () => {
+      document.body.classList.remove('macos');
+    };
+  }, []);
+
+  useEffect(() => {
     if(canSubmit){
       handleSearchProgram(searchedValue);
     }
@@ -269,6 +280,7 @@ const ManageAbilitaProgramma: React.FC<ManageReferalI> = ({
     <>
     <GenericModal
       id={id}
+      modalBodyClassNames='scrollbar-modal'
       primaryCTA={{
         // disabled: !isFormValid || !isProgramSelected,
         disabled: creation ? (!showForm ? !isProgramSelected : !isFormValid): !isFormValid,
