@@ -1,15 +1,16 @@
 .table-compact-cmin {
     table-layout: auto;
-    width: 100%; 
+    width: 100%;
     color: #162236;
 }
 
-.table-compact-cmin th{
+.table-compact-cmin th {
     white-space: nowrap;
-    text-align: left; 
+    text-align: left;
 }
+
 .table-compact-cmin td {
-    text-align: left; 
+    text-align: left;
 }
 
 .table-compact-cmin th {
@@ -23,4 +24,19 @@
 
 .table-compact-cmin th .sort-icon {
     cursor: pointer;
-  }
+}
+
+.macos .scrollbar-modal {
+    margin-right: 1px;
+}
+
+.macos .scrollbar-modal::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 7px;
+}
+
+.macos .scrollbar-modal::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+}
