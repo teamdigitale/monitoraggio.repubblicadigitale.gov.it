@@ -1,5 +1,17 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.451](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.450...1.0.0-test.451) (2025-05-12)
+
+
+### Features
+
+* **U313:** aggiunta persistenza scrollbar modale MacOS 20250512 ([7661fd5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7661fd58f62964ea33200f1b3be640d1d13deb5e))
+
+
+### Bug Fixes
+
+* **U313:** aggiunta sottotitolo configurazione minorenni 20250512 ([715f0cb](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/715f0cb5f4dc6f9573ff9bbe8a631bff2560150c))
+
 ## [1.0.0-test.450](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.449...1.0.0-test.450) (2025-05-09)
 
 
