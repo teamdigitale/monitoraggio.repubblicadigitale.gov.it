@@ -1,5 +1,63 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.46.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.45.3...1.46.0) (2025-05-13)
+
+
+### Features
+
+* **U313:** aggiunta persistenza scrollbar modale MacOS 20250512 ([e58f152](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e58f15230e8403f0bae2a291f187163c2113edf2))
+* **U313:** wip implementazione FE nuovi EP 20250424 ([17ed925](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/17ed925942bd245eea1a0896b078550fc0a1788d))
+* **U313:** WIP definizione modali per abilita e modifica programma 20250328 ([af8bfa9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/af8bfa9ee2608b42eb5e48e132ba6341aee8fd3e))
+* **U313:** WIP creazione pagina gestione configurazioni 20250320 ([75c77ee](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/75c77eedc3c5977e902012c157bd6a8b4b40488f))
+* **U313:** wip aggiunta controlli e modifica query per nuovi EP 20250411 ([15558fb](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/15558fb14c4983bf77ac2622d56ce42b305bdb3e))
+* **U313:** wip creazione endpoint necessari per pagina configurazione minorenni 20250410 ([e0749c8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e0749c8c463dc200d95dc41063b80d5d7be2c9c5))
+* **U395:** visualizzazione stato attivazione minorenni su programma e progetti 20250407 ([9a92865](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9a92865ae90c76e0ee786ea9808354bc8997b7ae))
+* **U385:** query dinamica getConfigurazioneMinorenniByIdServizioOrIdProgramma ([9d52659](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9d52659dd28931ddbebf8e0306ab3e1843fb44f4))
+* **U385:** prima implementazione FE gestione cittadini minorenni 20250324 ([023f39e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/023f39e9bf2fdffb53e380bd167dcd0270ee7c34))
+* **U385:** prima implementazione BE controllo cittadini minorenni 20250324 ([7bf411b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7bf411b3acd619bc80ff85a721c11bffdf62e018))
+* **U255:** ordinamento card sedi progetto per modificabilità 20250218 ([242c6dc](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/242c6dcd912b8965b232f9f0103fe44f834a774b))
+* **U255:** modifiche tab sedi 20241219 ([b759bb9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b759bb9cfed5e7ec980c1149e7130ac887d51ac0))
+* **U319:** allineamento modali aggiunta ente e fix posizione alert utente presente 20250211 ([2287822](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/22878227e1a31878f12996f5e3c84a70b78ceed4))
+
+
+### Bug Fixes
+
+* **test:** aggiornato messaggio errore limite righe caricamento 20250509 ([0d69de4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0d69de4f243d7a086a3bec54d48e1113402e5ae0))
+* **test:** impostato limite caricamento massivo 20250508 ([bebd640](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/bebd6405b7e831e3aab2418f6bfe4928bfc01169))
+* **U313:** aggiunta sottotitolo configurazione minorenni 20250512 ([62aa2b2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/62aa2b2e7c76ddbe02f18455b26b572d6aae155f))
+* **U313:** accorgimenti grafici tabella e modale 20250508 ([1c0703c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1c0703cdc8e1eaedea740584718f08f018876eed))
+* **U313:** fix bug data decorrenza e ricerca tramite intervento 20250430 ([19a6653](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/19a6653262c34fe343b61baddbe1bce0ceace33b))
+* **U313:** fix colore status chip e bug click elenco programmi 20250428 ([6349756](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6349756491a69af8b805ac4b3ac79c7bf0b06357))
+* **U313:** fix errori metodi /all e /programmi 20250424 ([dbd82c7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/dbd82c76364e76d24b546a77a54a4c0e73c39dfe))
+* **U313:** fix comportamento metodi BE per config minorenni 20250423 ([86ae5ef](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/86ae5ef9b053311fa1b09e73ce6c943f0d77eab1))
+* **U313:** fix query recupero programmi 20250417 ([7ddfc67](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7ddfc673bd63c32e8e4a6267dc13dd668a7fc802))
+* **U313:** fix ep elenco programmi per minorenni da get a post 20250417 ([057815b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/057815be85326e8603ffae9ea3567324475062da))
+* **U385:** fix fascia eta minorenni 20250506 ([30598f3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/30598f33c240f29d7c01b160cb329735f6d425ae))
+* **U385:** modifica join in left join su progetto e servizio 20250430 ([7933e31](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7933e3119bf1d41b07a7a0c409da83a97dea8400))
+* **U385:** fix chiamata recupero config ad avvio pagina car massivo 20250416 ([b8d7b45](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b8d7b45b4d436acf3e6318595794a9adb9c2e3e8))
+* **U385:** fix controllo data odierna per 14/18 anni e dataDecorrenza ([56abdc2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/56abdc233532e0c8dbef8ee7bea03d5ba2ee5255))
+* **U385:** fix query recupero configurazione e modifica controlli verifica eta 20250403 ([5f3b649](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5f3b6495ebbeea3beaae0b8f9a56f878469aa7ff))
+* **U385:** fix query e requestParam nuovo EP 20250402 ([db6e4c8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/db6e4c8e6e54ba3245983f2443b8cec5b121331c))
+* **U385:** fix condizioni casistiche errori 20250402 ([b9943ae](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b9943ae444eafbec55180a3a7053b0c28c56ec8b))
+* **U385:** fix controllo risultato vuoto fix nomi e import 20250401 ([48bff17](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/48bff17b1c502d011ee7f90b11793b573c035925))
+* **U255:** fix ordinamento sedi progetto e visualizzazione CTA 20250508 ([bd3726a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/bd3726a55a8cb4a27b40849f12b3a6e1e96c01ac))
+* **U255:** fix visualizzazione card errate elenco sedi 20250403 ([1185897](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1185897ba66c318dc906b544669273b6c855234b))
+* **U255:** fix sottotitolo sezione sedi 20250204 ([11404f0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/11404f0bda943660258b581f1d72e829647ed532))
+* **U255:** fix visualizzazione bottoni tramite ruoli ed enti 20250130 ([5bdb275](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5bdb27552cef453eab57a867be4f79f4503529a7))
+* **U255:** fix visualizzazione componenti sede 20241220 ([3ed1c5e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3ed1c5ee78317f4f453ad6a949a987c08af41618))
+* **U319:** fix bottone conferma e fasi aggiunta ente gestore/partner 20250403 ([e17228c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e17228c81e44e4d51bc89ae9a558958e42ffeb36))
+* **U219:** fix test 20250224 ([212aaa5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/212aaa5309c6c4c62aac2303be0df5a31a1b7582))
+* **T364:** fix visualizzazione id servizio per volontari 20250410 ([91f81bd](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/91f81bd5d86d4ce433b046a7e84083f587995ba3))
+* **Z2258:** aggiunta colonna id servizio in scarica elenco servizi 20250324 ([c2b5577](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c2b557783cac43738345aed22f0555065f600e49))
+* **T401:** fix componente durata form servizio 20250417 ([20435f6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/20435f61f1430a469632c33955eb93b9b156c058))
+* **T401:** fix autocompletamento errato durata servizio 20250410 ([89d518e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/89d518eb5e7e70826b2dfb75dba8966399bdcd83))
+* **T401:** fix validazione form servizio post modifica durata 20250404 ([c3e69a1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c3e69a19a1e68c7f27d09f72145518345eb1ab48))
+* **T403:** fix validità selettore date/durata 20250403 ([51d1d3d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/51d1d3dbb786b2d32b0ba1e9a0357397a2929a79))
+* **T403:** fix validazione date progetto 20250403 ([97d6abd](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/97d6abd2e1ad0a499d760df950b3b57c999b4699))
+* **T408:** visualizzazione errata sottotitolo ente 20250404 ([b830e68](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b830e68a521f5430e5a6db57d8d3d32d0548507a))
+* **T421:** drop file non funzionante 20250424 ([d59d0e7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d59d0e783ae8e3555c050deddaa5d0dbe9a89ec8))
+* **main:** fix cod inserimento su record cittadino 20250509 ([fbeac79](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fbeac79f64d004fc710de3ae6bb879da26291236))
+
 ## [1.45.3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.45.2...1.45.3) (2025-04-30)
 
 
