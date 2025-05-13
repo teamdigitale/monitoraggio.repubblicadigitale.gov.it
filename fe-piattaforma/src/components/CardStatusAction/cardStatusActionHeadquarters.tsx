@@ -78,7 +78,7 @@ const CardStatusActionHeadquarters: React.FC<CardStatusActionI> = (props) => {
             'text-truncate'
           )}
         >
-          <span className='neutral-1-color-a8 card-status-action__title'>
+          <span className='neutral-1-color-a8 card-status-action__title text-truncate'>
             <strong>{title}</strong>
             {subtitle && <span className='neutral-1-color-a8'>{subtitle}</span>}
           </span>
