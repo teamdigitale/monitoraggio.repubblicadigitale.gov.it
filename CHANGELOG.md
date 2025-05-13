@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.452](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.451...1.0.0-test.452) (2025-05-13)
+
+
+### Bug Fixes
+
+* **U313:** fix refresh lista revoca con un solo programma 20250513 ([a698ec3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a698ec366cffcaed563791d014cdd8749d30e44e))
+* **U255:** fix lunghezza nome sede 20250513 ([f37f72d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f37f72d29473459c09a3ba991f923e675f758565))
+
 ## [1.0.0-test.451](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.450...1.0.0-test.451) (2025-05-12)
 
 
