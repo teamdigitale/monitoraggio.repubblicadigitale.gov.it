@@ -49,10 +49,10 @@ const ConfigManagementMinorenni: React.FC = () => {
         fetchData(pageNumber);
     };
     
-    const updateTableValues = () => {        
-        return programmi && programmi?.length > 0 ? newTable(
+    const updateTableValues = () => {  
+        return programmi ? newTable(
             TableHeadingMinorenni,
-            programmi.map((td: any) => ({
+            programmi?.map((td: any) => ({
                 id: td.id,
                 id_prog: td.idProgramma,
                 nomeProgramma: td.nomeProgramma,
@@ -70,8 +70,8 @@ const ConfigManagementMinorenni: React.FC = () => {
 
     const [tableValues, setTableValues] = useState(updateTableValues());
 
-    useEffect(() => {
-        if (Array.isArray(programmi) && programmi.length)
+    useEffect(() => {        
+        if (Array.isArray(programmi) && programmi.length != undefined)
           setTableValues(updateTableValues());
     }, [programmi]);
 
