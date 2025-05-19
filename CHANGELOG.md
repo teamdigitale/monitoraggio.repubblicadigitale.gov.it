@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.453](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.452...1.0.0-test.453) (2025-05-19)
+
+
+### Bug Fixes
+
+* **test:** parametrizzazione dashboarda ente gestore progetto 20250519 ([2d6b99d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2d6b99d3d8804d4e70ad0b3fae0fddb6c27bef71))
+
 ## [1.0.0-test.452](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.451...1.0.0-test.452) (2025-05-13)
 
 
