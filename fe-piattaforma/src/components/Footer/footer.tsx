@@ -2,8 +2,25 @@ import React, { memo } from 'react';
 import Logo4 from '/public/assets/img/logo-eu-pnrr-white.png';
 import Logo1 from '/public/assets/img/logo-rd-white.png';
 import Logo2 from '/public/assets/img/mitd-logo_tmp.png';
+import { useDispatch } from 'react-redux';
+import { openModal } from '../../redux/features/modal/modalSlice';
+import AssistenzaModal from '../../pages/administrator/Assistenza/assistenzaModal';
 
 const Footer: React.FC = () => {
+
+  const dispatch = useDispatch();
+  
+  const openModalAssistenza = () => {
+    dispatch(
+      openModal({
+        id: 'ASSISTENZA',
+        payload: {
+          title: "C'è qualcosa che non va nel funzionamento della piattaforma?",
+        },
+      })
+    );
+  };
+
   return (
     <>
       <section className='footer_one footer_styles'>
@@ -65,10 +82,11 @@ const Footer: React.FC = () => {
                   email:
                   <br />
                   <a
-                    href='mailto:supporto-facilita@repubblicadigitale.gov.it'
-                    className='link_common_assistance link_style_assistance'
+                    className='link_common link_label'
+                    style={{ cursor: 'pointer' }}
+                    onClick={openModalAssistenza}
                   >
-                    supporto-facilita@repubblicadigitale.gov.it
+                    Invia una richiesta all'assistenza tecnica
                   </a>
                 </p>
               </div>
@@ -196,6 +214,7 @@ const Footer: React.FC = () => {
           </div>
         </div>
       </section>
+      <AssistenzaModal/>
     </>
   );
 };

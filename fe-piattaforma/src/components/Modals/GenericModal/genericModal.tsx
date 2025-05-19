@@ -53,6 +53,7 @@ export interface GenericModalI {
   showCloseBtn?: boolean;
   onCloseFromHeader?: () => void;
   modalBodyClassNames?: string;
+  withCTAIcon?: React.ReactNode;
 }
 
 const GenericModal: React.FC<GenericModalI> = (props) => {
@@ -87,6 +88,7 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
     showCloseBtn = false,
     onCloseFromHeader,
     modalBodyClassNames,
+    withCTAIcon = <></>
   } = props;
 
   const handleAction = (action: 'primary' | 'secondary' | 'tertiary') => {
@@ -320,6 +322,7 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
                   aria-label={primaryCTA.label}
                 >
                   {primaryCTA.label}
+                  {withCTAIcon}
                 </Button>
               ) : (
                 <button
