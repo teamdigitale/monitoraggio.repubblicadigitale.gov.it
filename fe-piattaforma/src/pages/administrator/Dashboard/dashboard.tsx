@@ -213,7 +213,7 @@ const Dashboard = () => {
               : user?.idProgramma && program?.codice
               ? `&programma=${user.idProgramma}`
               : ''
-            }${['REPP','DEPP'].includes(user?.codiceRuolo ?? '')
+            }${['REPP','DEPP','REGP','DEGP'].includes(user?.codiceRuolo ?? '')
               ? `&ente=${user?.idEnte}`
               : ''
             }`
