@@ -85,10 +85,11 @@ const Footer: React.FC = () => {
                   email:
                   <br />
                   <a
-                    href='mailto:supporto-facilita@repubblicadigitale.gov.it'
-                    className='link_common_assistance link_style_assistance'
+                    className='link_common link_label'
+                    style={{ cursor: 'pointer' }}
+                    onClick={openModalAssistenza}
                   >
-                    supporto-facilita@repubblicadigitale.gov.it
+                    Invia una richiesta all'assistenza tecnica
                   </a>
                 </p>
               </div>

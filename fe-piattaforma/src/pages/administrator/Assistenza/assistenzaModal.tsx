@@ -180,7 +180,7 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
         // disabled: !isFormValid || !isProgramSelected,
         disabled: !assistenzaEnabled,
         label: "Vai all'assistenza",
-        onClick: () => {navigate('/richiesta-assistenza', { state: { from: location.pathname } });},
+        onClick: () => {navigate("/richiesta-assistenza"); resetModal();},
       }}
       secondaryCTA={{
         label: 'Annulla',
