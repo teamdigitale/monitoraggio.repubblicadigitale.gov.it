@@ -1,11 +1,7 @@
 import clsx from 'clsx';
 import { Label } from 'design-react-kit';
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
-//import { TextArea as TextAreaKit } from 'design-react-kit';
-//import { TextAreaProps } from 'design-react-kit/src/Input/TextArea';
+import React, { ChangeEvent, useEffect, useRef, useState, CSSProperties } from 'react';
 import { formFieldI } from '../../utils/formHelper';
-
-//TODO integrate design-react-kit TextArea -> actually there are some TS problems with the library
 
 interface TextAreaPropsI {
   className?: string;
@@ -20,9 +16,9 @@ interface TextAreaPropsI {
   placeholder?: string;
   required?: boolean;
   wrapperClassName?: string;
+  style?: CSSProperties; 
 }
 
-//export interface TextAreaI extends Omit<TextAreaProps, 'value'> {
 export interface TextAreaI extends TextAreaPropsI {
   col?: string | undefined;
   field?: string;
@@ -38,6 +34,7 @@ export interface TextAreaI extends TextAreaPropsI {
   resize?: boolean;
   value?: formFieldI['value'];
   withLabel?: boolean;
+  subLabel?: string; 
 }
 
 const TextArea: React.FC<TextAreaI> = (props) => {
@@ -57,9 +54,11 @@ const TextArea: React.FC<TextAreaI> = (props) => {
     placeholder = '',
     required = false,
     resize = false,
-    //valid,
     value = '',
     withLabel = true,
+    className = '',
+    subLabel, 
+    style, 
   } = props;
 
   const [val, setVal] = useState(value.toString());
@@ -90,26 +89,22 @@ const TextArea: React.FC<TextAreaI> = (props) => {
     },
     required,
     wrapperClassName: col,
+    name: name ?? id,
   };
 
-  /*if (valid !== undefined) {
-    TextAreaProps.valid = valid && !!value;
-    TextAreaProps.invalid = !valid;
-  }*/
-
-  TextAreaProps.name = name ?? TextAreaProps.id;
-  TextAreaProps.label = withLabel
-    ? label && required && !disabled
-      ? `${label} *`
-      : label
-    : '';
+  TextAreaProps.label =
+    withLabel && label
+      ? required && !disabled
+        ? `${label} *`
+        : label
+      : '';
 
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const inputLabel = inputRef.current?.nextElementSibling;
 
   useEffect(() => {
     if (!withLabel && inputRef) {
-      inputLabel?.classList.add('sr-only visibility-hidden');
+      inputLabel?.classList.add('sr-only', 'visibility-hidden');
     }
   }, [withLabel, inputLabel]);
 
@@ -123,6 +118,8 @@ const TextArea: React.FC<TextAreaI> = (props) => {
     'placeholder',
     'touched',
     'withLabel',
+    'subLabel',
+    'style',
   ];
 
   const BaseProps = Object.fromEntries(
@@ -130,18 +127,35 @@ const TextArea: React.FC<TextAreaI> = (props) => {
   );
 
   return (
-    <div className={clsx('bootstrap-select-wrapper', 'form-group', 'mb-0')}>
-      <Label htmlFor={id} className='px-0'>
-        {TextAreaProps.label}
-      </Label>
+    <div
+      className={clsx('bootstrap-select-wrapper', 'form-group', 'mb-0', col)}
+      style={style}
+    >
+      {withLabel && (
+        <>
+          <Label htmlFor={TextAreaProps.id} className="px-0" style={style}>
+            {TextAreaProps.label}
+          </Label>
+          {subLabel && 
+          <p
+            className="form-text mb-2"
+            style={{
+              textAlign: 'left',
+              marginLeft: '7px',
+              fontSize: '0.9rem',
+            }}
+          >{subLabel}</p>}
+        </>
+      )}
+
       <textarea
         {...BaseProps}
         {...TextAreaProps}
         placeholder={placeholder}
         onChange={handleOnChange}
         value={val}
-        //innerRef={inputRef}
         ref={inputRef}
+        className={clsx(className)}
         style={{ resize: !resize ? 'none' : 'unset' }}
       />
     </div>

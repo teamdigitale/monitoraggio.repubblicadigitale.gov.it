@@ -20,6 +20,7 @@ import { selectModalState } from '../redux/features/modal/modalSlice';
 import { PrivacyDisclaimer } from '../pages/common/Privacy/PrivacyDisclaimer';
 import Authicon from '/public/assets/img/auth-box-icon.png';
 import DataReports from '../pages/administrator/MonitoraggioCaricamenti/dataReports';
+import AssistenzaArea from '../pages/administrator/Assistenza/AssistenzaArea';
 
 const AuthRedirect = lazy(() => import('../pages/common/Auth/authRedirect'));
 
@@ -319,6 +320,14 @@ const AppRoutes: React.FC = () => {
                 element={
                   <ProtectedComponent visibleTo={['list.ntf.nr']}>
                     <Notifications />
+                  </ProtectedComponent>
+                }
+              />
+              <Route
+                path='/richiesta-assistenza'
+                element={
+                  <ProtectedComponent visibleTo={[]}>
+                    <AssistenzaArea />
                   </ProtectedComponent>
                 }
               />
