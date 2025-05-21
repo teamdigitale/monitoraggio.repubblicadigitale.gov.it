@@ -46,7 +46,7 @@ const FullLayout: React.FC<LayoutProp> = (props) => {
                 'd-flex justify-content-around container position-relative'
             )}
           >
-            <Breadcrumb />
+            {location.pathname !== '/richiesta-assistenza' && <Breadcrumb />}
             {publishedContent && <UserPublishedContents />}
           </div>
         </div>

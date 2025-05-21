@@ -48,7 +48,8 @@ const HeaderDesktop: React.FC<HeaderI> = ({
   const navigate = useNavigate();
   const [notificationsIsOpen, setNotificationsIsOpen] = useState(false);
   const [openManagementArea, setOpenManagementArea] = useState<boolean>(false);
-
+  const isAssistenzaPage = window.location.pathname === '/richiesta-assistenza';
+  
   const { hasUserPermission } = useGuard();
 
   const userDropdownOptions = [
@@ -388,7 +389,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
     <header
       className={clsx('header-container', isLogged && 'user-logged', 'w-100')}
     >
-      {isLogged && (
+      {isLogged && !isAssistenzaPage && (
         <div
           className={clsx(
             'header-container__top',
@@ -541,7 +542,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                 className='ml-1 mr-2'
               />
             </div> */}
-            {isLogged ? (
+            {isLogged && !isAssistenzaPage ? (
               <div className='header-container__main__search ml-auto'>
                 {/* <SearchBox onClick={(v) => console.log('output:', v)} /> */}
                 <div
@@ -581,7 +582,7 @@ const HeaderDesktop: React.FC<HeaderI> = ({
           </div>
         </div>
       )}
-      {isLogged ? (
+      {isLogged && !isAssistenzaPage ? (
         <div className='header-container__nav primary-bg pt-2'>
           <HeaderMenu isHeaderFull={isHeaderFull} menuRoutes={menuRoutes} />
         </div>
