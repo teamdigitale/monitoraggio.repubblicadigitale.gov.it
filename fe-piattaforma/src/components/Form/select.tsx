@@ -16,6 +16,7 @@ export interface SelectI
   col?: string | undefined;
   field?: formFieldI['field'];
   label?: string;
+  subLabel?: string;
   onInputChange:
     | ((value: formFieldI['value'], field?: formFieldI['field']) => void)
     | undefined;
@@ -117,13 +118,20 @@ const Select: React.FC<SelectI> = (props) => {
       )}
     >
       {withLabel ? (
-        <label
-          id={`${(label || 'label select').replace(/\s/g, '-')}`}
-          className='text-decoration-none'
-        >
-          {label}
-          {required && !isDisabled ? ' *' : ''}
-        </label>
+        <>
+          <label
+            id={`${(label || 'label select').replace(/\s/g, '-')}`}
+            className='text-decoration-none'
+          >
+            {label}
+            {required && !isDisabled ? ' *' : ''}
+          </label>
+          {props.subLabel && (
+            <p className="form-text" style={{ textAlignLast: 'left', fontSize: '0.9rem', marginLeft: '9px' }}>
+              {props.subLabel}
+            </p>
+          )}
+        </>
       ) : null}
       <SelectKit
         {...BaseProps}
