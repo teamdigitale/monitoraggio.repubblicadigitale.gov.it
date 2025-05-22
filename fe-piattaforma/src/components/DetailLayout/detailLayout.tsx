@@ -94,9 +94,9 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
   const idEnteRuolo = useAppSelector(selectProfile)?.idEnte;
 
   const handleOnChangePage = (
-      pageNumber: number = pagination?.pageNumber,
-    ) => {
-      dispatch(setEntityPagination({ pageNumber }));
+    pageNumber: number = pagination?.pageNumber,
+  ) => {
+    dispatch(setEntityPagination({ pageNumber }));
   };
   const [currentItems, setCurrentItems] = useState<ItemListElemI[]>([]);
 
@@ -115,22 +115,22 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
           // Se 'res' è uguale, ordina per nome (case-insensitive)
           return a.nome.localeCompare(b.nome, undefined, { sensitivity: 'base' });
         });
-  
+
       // 2. Applica la paginazione DOPO l'ordinamento
       const start = (pagination.pageNumber - 1) * pagination.pageSize;
       const end = start + pagination.pageSize;
-      const paginatedItems = sortedItems.slice(start, end);        
-      setCurrentItems(paginatedItems);      
+      const paginatedItems = sortedItems.slice(start, end);
+      setCurrentItems(paginatedItems);
     } else {
       setCurrentItems([]);
     }
   }, [currentTab, pagination.pageNumber, pagination.pageSize, itemsList]);
-  
+
 
   useEffect(() => {
     if (currentTab === 'sedi') {
       dispatch(setEntityPagination({ pageNumber: 1, pageSize: 8 }));
-    }else{
+    } else {
       setCurrentItems([]);
     }
   }, [currentTab]);
@@ -139,11 +139,11 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
     // 1 MODIFICA
     // 2 VISUALIZZA
     // 3 -    
-  
+
     switch (ruolo) {
       case 'DTD':
-          if(item.stato === 'TERMINATO')  return 2;
-          else return 1;
+        if (item.stato === 'TERMINATO') return 2;
+        else return 1;
       case 'DEG':
       case 'REG':
         return 2;
@@ -151,7 +151,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
       case 'DEGP':
       case 'REPP':
       case 'DEPP':
-        if(idEnteRuolo == item?.identeDiRiferimento) return 1;
+        if (idEnteRuolo == item?.identeDiRiferimento) return 1;
         else return 2;
       case 'FAC':
       case 'VOL':
@@ -159,7 +159,7 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
     }
     return 3;
   };
-    
+
   return (
     <>
       <div>
@@ -202,63 +202,62 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
             {nav}
           </div>
         )}
-        <div id='content-tab'>{children}</div>
         {currentTab === 'sedi' ? (
           <div className={clsx('text-left', 'mb-5', 'mx-3')}>
-          {<>
-            Questa sezione riporta le sedi associate al progetto.
-          </>}
+            {<>
+              Questa sezione riporta le sedi associate al progetto.
+            </>}
           </div>
 
         ) : null}
+        <div id='content-tab'>{children}</div>
         {itemsAccordionList?.length
           ? itemsAccordionList.map((singleItem, index) => (
-              <Accordion
-                title={singleItem.title || ''}
-                totElem={singleItem.items.length}
-                cta={`Aggiungi ${singleItem.title}`}
-                onClickCta={() =>
-                  dispatch(
-                    openModal({
-                      id:
-                        singleItem.title === 'Referenti'
-                          ? formTypes.REFERENTE
-                          : singleItem.title === 'Delegati'
+            <Accordion
+              title={singleItem.title || ''}
+              totElem={singleItem.items.length}
+              cta={`Aggiungi ${singleItem.title}`}
+              onClickCta={() =>
+                dispatch(
+                  openModal({
+                    id:
+                      singleItem.title === 'Referenti'
+                        ? formTypes.REFERENTE
+                        : singleItem.title === 'Delegati'
                           ? formTypes.DELEGATO
                           : singleItem.title === 'Facilitatori'
-                          ? formTypes.FACILITATORE
-                          : formTypes.SEDE,
-                      payload: { title: `Aggiungi ${singleItem.title}` },
-                    })
-                  )
-                }
-                key={index}
-                lastBottom={index === itemsAccordionList.length - 1}
-              >
-                {singleItem.items?.length ? (
-                  singleItem.items.map((item) => (
-                    <CardStatusAction
-                      key={item.id}
-                      title={`${item.cognome ? item.cognome : ''} ${
-                        item.nome
+                            ? formTypes.FACILITATORE
+                            : formTypes.SEDE,
+                    payload: { title: `Aggiungi ${singleItem.title}` },
+                  })
+                )
+              }
+              key={index}
+              lastBottom={index === itemsAccordionList.length - 1}
+            >
+              {singleItem.items?.length ? (
+                singleItem.items.map((item) => (
+                  <CardStatusAction
+                    key={item.id}
+                    title={`${item.cognome ? item.cognome : ''} ${item.nome
                       }`.trim()}
-                      status={item.stato}
-                      onActionClick={item.actions}
-                      id={item.id}
-                      fullInfo={item.fullInfo}
-                      cf={item.codiceFiscale}
-                    />
-                  ))
-                ) : (
-                  <EmptySection
-                    title={`Non sono presenti ${singleItem.title?.toLowerCase()} associati.`}
-                    icon={IconNote}
-                    withIcon
-                    noMargin
+                    status={item.stato}
+                    onActionClick={item.actions}
+                    id={item.id}
+                    fullInfo={item.fullInfo}
+                    cf={item.codiceFiscale}
                   />
-                )}
-              </Accordion>
-            ))
+                ))
+              ) : (
+                <EmptySection
+                  title={`Non sono presenti ${singleItem.title?.toLowerCase()} associati.`}
+                  icon={IconNote}
+                  withIcon
+                  noMargin
+                />
+              )}
+            </Accordion>
+          ))
           : null}
         {currentTab === 'questionari' ? (
           surveyDefault?.items?.length && showItemsList ? (
@@ -282,41 +281,59 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
           ) : null
         ) : null}
         {showItemsList &&
-        itemsList?.items?.length &&
-        currentTab === 'questionari' ? (
+          itemsList?.items?.length &&
+          currentTab === 'questionari' ? (
           <>
             {itemsList.title && (
               <h2 className='h4 neutral-1-color-a7'>{itemsList.title}</h2>
             )}
             {((currentTab === 'questionari' && isRadioButtonItem) ||
               currentTab !== 'questionari') && (
-              <FormGroup check>
-                {itemsList.items.map((item) => {
-                  return (
-                    <CardStatusActionSurveys
-                      moreThanOneSurvey={
-                        currentTab === 'questionari' && isRadioButtonItem
-                      }
-                      title={item.nome}
-                      status={item.stato}
-                      key={item.id}
-                      id={item.id}
-                      fullInfo={item.fullInfo}
-                      onActionClick={item.actions}
-                      onCheckedChange={(surveyChecked: string) =>
-                        onRadioChange ? onRadioChange(surveyChecked) : null
-                      }
-                    />
-                  );
-                })}
-              </FormGroup>
-            )}
+                <FormGroup check>
+                  {itemsList.items.map((item) => {
+                    return (
+                      <CardStatusActionSurveys
+                        moreThanOneSurvey={
+                          currentTab === 'questionari' && isRadioButtonItem
+                        }
+                        title={item.nome}
+                        status={item.stato}
+                        key={item.id}
+                        id={item.id}
+                        fullInfo={item.fullInfo}
+                        onActionClick={item.actions}
+                        onCheckedChange={(surveyChecked: string) =>
+                          onRadioChange ? onRadioChange(surveyChecked) : null
+                        }
+                      />
+                    );
+                  })}
+                </FormGroup>
+              )}
           </>
         ) : null}
         {currentTab === 'progetti' && showItemsList && itemsList?.items?.length
           ? itemsList.items.map((item) => {
+            return (
+              <CardStatusActionProject
+                title={item.nome}
+                status={item.stato}
+                key={item.id}
+                id={item.id}
+                fullInfo={item.fullInfo}
+                onActionClick={item.actions}
+              />
+            );
+          })
+          : null}
+        {currentTab === 'enti-partner' &&
+          showItemsList &&
+          itemsList?.items?.length
+          ? itemsList.items
+            .filter(item => !item.enteDiRiferimento)
+            .map((item) => {
               return (
-                <CardStatusActionProject
+                <CardStatusActionPartnerAuthority
                   title={item.nome}
                   status={item.stato}
                   key={item.id}
@@ -327,53 +344,35 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
               );
             })
           : null}
-        {currentTab === 'enti-partner' &&
-        showItemsList &&
-        itemsList?.items?.length
-          ? itemsList.items
-              .filter(item => !item.enteDiRiferimento)
-              .map((item) => {
-                return (
-                  <CardStatusActionPartnerAuthority
-                    title={item.nome}
-                    status={item.stato}
-                    key={item.id}
-                    id={item.id}
-                    fullInfo={item.fullInfo}
-                    onActionClick={item.actions}
-                  />
-                );
-              })
-          : null}
-          {currentTab === 'sedi' && showItemsList && currentItems?.length
-            ? currentItems
-                // .map((item) => ({
-                //   ...item,
-                //   res: showIconBasedOnRole(item),
-                // }))
-                .map((item) => (
-                  <CardStatusActionHeadquarters
-                    title={item.nome}
-                    status={item.stato}
-                    id={item.id}
-                    fullInfo={item.fullInfo}
-                    onActionClick={item.actions}
-                    showPencil={item.res === 1}
-                    showEye={item.res === 2}
-                    showBlank={item.res === 3}
-                  />
-                ))
-            : null}
-          {pagination?.totalPages && currentTab === 'sedi' &&(
-            <div className='pb-5'>
-              <Paginator
-                activePage={pagination.pageNumber}
-                pageSize={pagination.pageSize}
-                total={itemsList?.items ? Math.ceil(itemsList.items.length / pagination.pageSize) : 0}
-                onChange={handleOnChangePage}
+        {currentTab === 'sedi' && showItemsList && currentItems?.length
+          ? currentItems
+            // .map((item) => ({
+            //   ...item,
+            //   res: showIconBasedOnRole(item),
+            // }))
+            .map((item) => (
+              <CardStatusActionHeadquarters
+                title={item.nome}
+                status={item.stato}
+                id={item.id}
+                fullInfo={item.fullInfo}
+                onActionClick={item.actions}
+                showPencil={item.res === 1}
+                showEye={item.res === 2}
+                showBlank={item.res === 3}
               />
-            </div>
-          )}
+            ))
+          : null}
+        {pagination?.totalPages && currentTab === 'sedi' && (
+          <div className='pb-5'>
+            <Paginator
+              activePage={pagination.pageNumber}
+              pageSize={pagination.pageSize}
+              total={itemsList?.items ? Math.ceil(itemsList.items.length / pagination.pageSize) : 0}
+              onChange={handleOnChangePage}
+            />
+          </div>
+        )}
         {showItemsList && itemsList?.items?.length && currentTab === 'info' ? (
           <>
             {itemsList.title && (
@@ -393,8 +392,8 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
           </>
         ) : null}
         {buttonsPosition === 'TOP' &&
-        formButtons &&
-        formButtons.length !== 0 ? (
+          formButtons &&
+          formButtons.length !== 0 ? (
           <Sticky mode='bottom' stickyClassName='sticky bg-white'>
             <ButtonsBar buttons={formButtons} />
           </Sticky>
@@ -402,8 +401,8 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
       </div>
 
       {buttonsPosition === 'BOTTOM' &&
-      formButtons &&
-      formButtons.length !== 0 ? (
+        formButtons &&
+        formButtons.length !== 0 ? (
         <div className='mt-5 w-100'>
           <Sticky
             mode='bottom'
@@ -418,10 +417,10 @@ const DetailLayout: React.FC<DetailLayoutI> = ({
             )}
           >
             {formButtons.length === 2 &&
-            (infoProgBtn ||
-              (infoProjBtn &&
-                titleInfo?.status !== 'ATTIVABILE' &&
-                titleInfo?.status !== 'NON ATTIVO')) ? (
+              (infoProgBtn ||
+                (infoProjBtn &&
+                  titleInfo?.status !== 'ATTIVABILE' &&
+                  titleInfo?.status !== 'NON ATTIVO')) ? (
               <div
                 className={clsx(
                   'd-flex',

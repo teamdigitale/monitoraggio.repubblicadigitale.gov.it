@@ -60,7 +60,7 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
   const usersList = useAppSelector(selectUsers).list;
   const [noResult, setNoResult] = useState(false);
   const dispatch = useDispatch();
-  const { projectId, authorityId, headquarterId, userId } = useParams();
+  const { projectId, authorityId, headquarterId, userId, identeDiRiferimento } = useParams();
   const programPolicy =
     useAppSelector(selectHeadquarters).detail?.programmaPolicy;
   const open = useAppSelector(selectModalState);
@@ -105,10 +105,11 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
 
   const handleSaveEnte = async () => {
     if (isFormValid && newFormValues) {
+      const authority = authorityId ? authorityId : identeDiRiferimento;
       let res: any = null;
       if (
         projectId &&
-        authorityId &&
+        authority &&
         headquarterId &&
         programPolicy &&
         creation
@@ -116,13 +117,13 @@ const ManageFacilitator: React.FC<ManageFacilitatorI> = ({
         res = await dispatch(
           AssignHeadquarterFacilitator(
             newFormValues,
-            authorityId,
+            authority,
             projectId,
             headquarterId,
             programPolicy
           )
         );
-        dispatch(GetHeadquarterDetails(headquarterId, authorityId, projectId));
+        dispatch(GetHeadquarterDetails(headquarterId, authority, projectId));
       } else if (userId && !isUserSelected) {
         res = await dispatch(
           UpdateUser(userId, {

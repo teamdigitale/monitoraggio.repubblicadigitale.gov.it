@@ -197,7 +197,7 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
   const handleSaveAssignHeadquarter = async () => {
     if (isFormValid && validateAddressList(addressList)) {
       if (newFormValues && addressList.length) {
-        if (projectId && ((authorityId && headquarterId) || authorityInfo)) {
+        if (projectId && (((authorityId || identeDiRiferimento) && headquarterId) || authorityInfo)) {
           const res: any = await dispatch(
             AssignAuthorityHeadquarter(
               authorityId ? authorityId : authorityInfo?.id,
