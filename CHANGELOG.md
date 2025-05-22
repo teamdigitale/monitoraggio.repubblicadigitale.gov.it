@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.454](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.453...1.0.0-test.454) (2025-05-22)
+
+
+### Bug Fixes
+
+* **test:** fix modifica sede/aggiungi fac scheda sedi di progetto 20250522 ([44b597a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/44b597a816a01d4a6bfd875ab6f21cb734707a9d))
+
 ## [1.0.0-test.453](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.452...1.0.0-test.453) (2025-05-19)
 
 
