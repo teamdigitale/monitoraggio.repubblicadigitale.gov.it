@@ -8,7 +8,8 @@ import { openModal } from "../../../redux/features/modal/modalSlice";
 import UserAvatar from "../../../components/Avatar/UserAvatar/UserAvatar";
 import { AvatarSizes, AvatarTextSizes } from "../../../components/Avatar/AvatarInitials/avatarInitials";
 import FormAssistenza from "../../forms/formAssistenza";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { createTicketAssistenza } from "../../../redux/features/notification/notificationThunk";
 
 const AssistenzaArea: React.FC = () => {
 
@@ -20,23 +21,49 @@ const AssistenzaArea: React.FC = () => {
     const [attachedFiles, setAttachedFiles] = useState<{ name: string; data: File | string }[]>([]);
     const navigate = useNavigate();
     const [requestOk, setRequestOk] = useState(0); // 0 = caricamento, 1 = inviata ok, 2 = errore
+    interface LocationState {
+        from?: string;
+    }
 
+    const location = useLocation();
+    const state = location.state as LocationState;
+    const previousPath = state?.from || '/';
 
-    const [step, setStep] = useState(1); // step iniziale
+    const [step, setStep] = useState(1); 
 
-    const handleNext = () => {
+    const handleNext = async () => {
         if (step === 2) {
             setStep(3);
-            setRequestOk(0); // impostiamo in caricamento
+            setRequestOk(0); 
+            const payload = {
+                areaTematica: formValues?.['1'],
+                descrizione: formValues?.['3'],
+                oggetto: formValues?.['2'],
+                altraAreaTematica: formValues?.['4'],
+                allegati: attachedFiles.map(file => file.data),
 
-            // Simulazione chiamata API
-            setTimeout(() => {
-                // setRequestOk(1); // successo
+                nome: user?.nome + ' ' + user?.cognome,
+                email: user?.email,
+
+                idProgramma: ruolo?.idProgramma, 
+                nomeProgramma: ruolo?.nomeProgramma, 
+                idProgetto: ruolo?.idProgetto, 
+                nomeProgetto: ruolo?.nomeProgettoBreve,
+                policy: ruolo?.policy,
+                idEnte: ruolo?.idEnte,
+                nomeEnte: ruolo?.nomeEnte,
+            }
+            
+            const res = await createTicketAssistenza(payload);
+            if (res === true) {
+                setRequestOk(1); // successo
+            } else {
                 setRequestOk(2); // errore
-            }, 3000);
+            }
+            
         } else if (step === 3 && requestOk === 1) {
             // dopo successo, magari chiudo o torno alla home
-            navigate('/');
+            navigate(previousPath);
         } else if (step === 3 && requestOk === 2) {
             // dopo errore, torno alla richiesta
             setStep(2);
@@ -140,7 +167,7 @@ const AssistenzaArea: React.FC = () => {
             {content}
 
             <div className="d-flex justify-content-center" style={{ gap: '24px' }}>
-                {(step !== 3 || requestOk !== 0) && <Button color="primary" className="cta-button" outline onClick={handleClose}>
+                {(step !== 3 || (requestOk !== 0 && requestOk !== 1)) && <Button color="primary" className="cta-button" outline onClick={handleClose}>
                     {step === 1 ? "Annulla" : "Chiudi"}
                 </Button>}
                 {(step !== 3 || requestOk !== 0) && <Button color="primary" className="cta-button" onClick={handleNext} disabled={step === 2 && !isFormValid}>

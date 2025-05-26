@@ -7,6 +7,7 @@ import TextArea from '../../components/Form/textarea';
 import { Button, Icon } from 'design-react-kit';
 import { uploadFile } from '../../utils/common';
 import InputSublabel from '../../components/InputSubLabel/inputSublabel';
+import { getTematicheAssistenza } from '../../redux/features/notification/notificationThunk';
 
 export interface FormAssistenzaI extends withFormHandlerProps {
     formDisabled?: boolean;
@@ -44,6 +45,28 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
     const initialized = useRef(false);
 
     useEffect(() => {
+        const fetchTematicheAndUpdateForm = async () => {
+            const res = await getTematicheAssistenza();
+            if (res && form?.['1']) {
+                const mapped = res.map((t: any) => ({
+                    label: t.descrizione,
+                    value: t.tag,
+                }));
+
+                updateForm({
+                    ...form,
+                    ['1']: {
+                        ...form['1'],
+                        options: mapped,
+                    },
+                });
+            }
+        };
+
+        fetchTematicheAndUpdateForm();
+    }, []);
+
+    useEffect(() => {
         if (form && initialValues && !initialized.current) {
             const updatedFields: formFieldI[] = Object.entries(initialValues).map(([key, value]) => {
                 if (!form[key]) return null;
@@ -61,6 +84,9 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
         }
     }, [form, initialValues]);
 
+    useEffect(() => {
+        setIsFormValid?.(FormHelper.isValidForm(form));
+    }, [form]);
 
 
     const onInputDataChange = (value: formFieldI['value'], field?: formFieldI['field']) => {
@@ -298,10 +324,10 @@ const form = newForm([
         label: 'Area tematica',
         type: 'select',
         options: [
-            { label: 'Problemi di accesso', value: 'accesso' },
-            { label: 'Errore nella piattaforma', value: 'errore' },
-            { label: 'Richiesta di informazioni', value: 'informazioni' },
-            { label: 'Altro', value: 'altro' },
+            // { label: 'Problemi di accesso', value: 'accesso' },
+            // { label: 'Errore nella piattaforma', value: 'errore' },
+            // { label: 'Richiesta di informazioni', value: 'informazioni' },
+            // { label: 'Altro', value: 'altro' },
         ],
         required: true,
     }),
