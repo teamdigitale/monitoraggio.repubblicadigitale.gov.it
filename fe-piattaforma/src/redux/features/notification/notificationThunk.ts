@@ -66,3 +66,31 @@ export const GetNotificationsList = () => async (dispatch: Dispatch) => {
     dispatch(hideLoader());
   }
 };
+
+export const createTicketAssistenza = async (payload?: any): Promise<boolean> => {
+  try {
+    const endpoint = `/assistenza/apriTicket`;
+    const res = await API.post(endpoint, payload, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    return res?.data === true;
+  } catch (error) {
+    console.log('createTicketAssistenza error', error);
+    return false;
+  }
+};
+
+export const getTematicheAssistenza = async () => {
+  try {
+    const endpoint = `/assistenza/tematiche`;
+    const res = await API.post(endpoint);
+
+    return res?.data;
+  } catch (error) {
+    console.log('createTicketAssistenza error', error);
+    return false;
+  }
+};
