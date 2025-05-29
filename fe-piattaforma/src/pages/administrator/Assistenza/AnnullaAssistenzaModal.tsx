@@ -1,7 +1,7 @@
 import React from 'react';
 import GenericModal from '../../../components/Modals/GenericModal/genericModal';
 import { Icon } from 'design-react-kit';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { closeModal } from '../../../redux/features/modal/modalSlice';
 import { useDispatch } from 'react-redux';
 
@@ -12,13 +12,20 @@ const AnnullaAssistenzaModal: React.FC = () => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const location = useLocation();
+
+    interface LocationState {
+        from?: string;
+    }
+    const state = location.state as LocationState;
+    const previousPath = state?.from || '/';
 
     const onClose = () => {
         dispatch(closeModal());
     };
 
     const onConfirm = () => {
-        navigate('/'); 
+        navigate(previousPath, { replace: true }); 
     };
 
   return (
