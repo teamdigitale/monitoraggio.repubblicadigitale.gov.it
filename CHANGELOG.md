@@ -1,5 +1,20 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.47.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.46.0...1.47.0) (2025-05-29)
+
+
+### Features
+
+* **test:** aggiornamento data limite caricamento massivo 20250529 ([9569b0a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9569b0a961026b760b848a87aee458b6cc01dda8))
+
+
+### Bug Fixes
+
+* **test:** fix modifica sede/aggiungi fac scheda sedi di progetto 20250522 ([68d0459](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/68d0459a4baaf16b2ca6c062e86761c10aeacc58))
+* **test:** parametrizzazione dashboarda ente gestore progetto 20250519 ([192e679](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/192e67921570bb30289deb60663c3a436c5878cf))
+* **U313:** fix refresh lista revoca con un solo programma 20250513 ([25cd96e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/25cd96e0c525068d760d0d5a3acc40b4b25c9017))
+* **U255:** fix lunghezza nome sede 20250513 ([d29886b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d29886b9c82d1d8c49f9e9578343855f0eca8c99))
+
 ## [1.46.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.45.3...1.46.0) (2025-05-13)
 
 
