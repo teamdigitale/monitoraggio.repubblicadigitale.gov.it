@@ -63,7 +63,7 @@ const AssistenzaArea: React.FC = () => {
             
         } else if (step === 3 && requestOk === 1) {
             // dopo successo, magari chiudo o torno alla home
-            navigate(previousPath);
+            navigate(previousPath, { replace: true }); 
         } else if (step === 3 && requestOk === 2) {
             // dopo errore, torno alla richiesta
             setStep(2);

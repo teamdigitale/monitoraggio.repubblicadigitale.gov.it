@@ -8,6 +8,7 @@ import { Button, Icon } from 'design-react-kit';
 import { uploadFile } from '../../utils/common';
 import InputSublabel from '../../components/InputSubLabel/inputSublabel';
 import { getTematicheAssistenza } from '../../redux/features/notification/notificationThunk';
+import TextEditor from '../../components/General/TextEditor/TextEditor';
 
 export interface FormAssistenzaI extends withFormHandlerProps {
     formDisabled?: boolean;
@@ -41,6 +42,13 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
 
     const inputRef = useRef<HTMLInputElement>(null);
     const [files, setFiles] = useState<{ name: string; data: File | string }[]>([]);
+    const [editorText, setEditorText] = useState('<p></p>');
+
+    useEffect(() => {
+        if (form?.['3']?.value !== undefined && form?.['3']?.value !== editorText) {
+            setEditorText(form['3'].value as string);
+        }
+    }, [form?.['3']?.value]);
 
     const initialized = useRef(false);
 
@@ -236,7 +244,7 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
                 />
             </Form.Row>
             <Form.Row>
-                <TextArea
+                {/* <TextArea
                     {...form?.['3']}
                     value={form?.['3']?.value || ''}
                     col="col-12"
@@ -244,6 +252,33 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
                     onInputChange={onInputDataChange}
                     style={{ marginLeft: '6px' }}
                     subLabel="Descrivi nei dettagli la tua richiesta. Ti consigliamo di specificare la sezione della piattaforma per cui richiedi assistenza e i passaggi che hai effettuto"
+                /> */}
+                <label className="form-label" style={{ fontWeight: 600, fontSize: '0.777778rem', marginLeft: '9px', marginBottom: '0px' }}>
+                    Descrizione
+                    <span className="required-asterisk"> *</span>
+                </label>
+                <p className="form-text"
+                    style={{
+                        textAlign: 'left',
+                        marginLeft: '9px',
+                        fontSize: '0.9rem',
+                        marginBottom: '5px',
+                    }}>Descrivi nei dettagli la tua richiesta. Ti consigliamo di specificare la sezione della piattaforma per cui richiedi assistenza e i passaggi che hai effettuato </p>
+                <TextEditor
+                    text={editorText}
+    
+                    onChange={(t: string) => {
+                        setEditorText(t);
+
+                        // Rimuove tutti i tag e spazio bianco
+                        const plainText = t.replace(/<[^>]+>/g, '').trim();
+
+                        // Se non c'è contenuto, manda stringa vuota
+                        const valueToSend = plainText ? t : '';
+
+                        onInputDataChange(valueToSend, '3');
+                    }}
+                    maxLength={1500}
                 />
             </Form.Row>
             <>
@@ -324,7 +359,7 @@ const form = newForm([
         label: 'Area tematica',
         type: 'select',
         options: [
-            // { label: 'Problemi di accesso', value: 'accesso' },
+            { label: 'Opzione di test', value: 'test' },
             // { label: 'Errore nella piattaforma', value: 'errore' },
             // { label: 'Richiesta di informazioni', value: 'informazioni' },
             // { label: 'Altro', value: 'altro' },
