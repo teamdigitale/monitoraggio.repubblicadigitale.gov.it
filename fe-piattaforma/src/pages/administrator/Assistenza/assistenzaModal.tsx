@@ -174,18 +174,18 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
 
   return (
     <>
-      <GenericModal
-        id={id}
-        centerButtons={true}
-        primaryCTA={{
-          // disabled: !isFormValid || !isProgramSelected,
-          disabled: !assistenzaEnabled,
-          label: "Vai all'assistenza",
-          onClick: () => { navigate("/richiesta-assistenza"); resetModal(); },
-        }}
-        secondaryCTA={{
-          label: 'Annulla',
-          onClick: resetModal,
+    <GenericModal
+      id={id}
+      centerButtons={true}
+      primaryCTA={{
+        // disabled: !isFormValid || !isProgramSelected,
+        disabled: !assistenzaEnabled,
+        label: "Vai all'assistenza",
+        onClick: () => {navigate('/richiesta-assistenza', { state: { from: location.pathname } });},
+      }}
+      secondaryCTA={{
+        label: 'Annulla',
+        onClick: resetModal,
         }}
         withCTAIcon=
         {<svg
