@@ -2,8 +2,28 @@ import React, { memo } from 'react';
 import Logo4 from '/public/assets/img/logo-eu-pnrr-white.png';
 import Logo1 from '/public/assets/img/logo-rd-white.png';
 import Logo2 from '/public/assets/img/mitd-logo_tmp.png';
+import { useDispatch } from 'react-redux';
+import { openModal } from '../../redux/features/modal/modalSlice';
+import AssistenzaModal from '../../pages/administrator/Assistenza/assistenzaModal';
+import { useLocation } from 'react-router-dom';
 
 const Footer: React.FC = () => {
+
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const isAssistenzaPage = location.pathname === '/richiesta-assistenza';
+  
+  const openModalAssistenza = () => {
+    dispatch(
+      openModal({
+        id: 'ASSISTENZA',
+        payload: {
+          title: "C'è qualcosa che non va nel funzionamento della piattaforma?",
+        },
+      })
+    );
+  };
+
   return (
     <>
       <section className='footer_one footer_styles'>
@@ -53,7 +73,7 @@ const Footer: React.FC = () => {
               </a>
             </div>
           </div>
-          <div className='row'>
+          {!isAssistenzaPage && <div className='row'>
             <div className='col-sm-12 col-md-4 col-md-4 col-lg-4'>
               <div
                 className='footer_contact_widget'
@@ -132,10 +152,10 @@ const Footer: React.FC = () => {
                 <h4></h4>
               </div>
             </div>
-          </div>
+          </div>}
         </div>
       </section>
-      <section className='footer_middle_area p0 section_style'>
+      {!isAssistenzaPage && <section className='footer_middle_area p0 section_style'>
         <div className='container'>
           <div className='row row_style'>
             <div className='col-12'>
@@ -195,7 +215,8 @@ const Footer: React.FC = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section>}
+      <AssistenzaModal/>
     </>
   );
 };

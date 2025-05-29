@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from 'react';
 import clsx from 'clsx';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import {
   Button,
   Dropdown,
@@ -48,7 +48,9 @@ const HeaderDesktop: React.FC<HeaderI> = ({
   const navigate = useNavigate();
   const [notificationsIsOpen, setNotificationsIsOpen] = useState(false);
   const [openManagementArea, setOpenManagementArea] = useState<boolean>(false);
-  const isAssistenzaPage = window.location.pathname === '/richiesta-assistenza';
+  const location = useLocation();
+  const isAssistenzaPage = location.pathname === '/richiesta-assistenza';
+
   
   const { hasUserPermission } = useGuard();
 
