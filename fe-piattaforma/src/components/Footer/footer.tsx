@@ -5,17 +5,20 @@ import Logo2 from '/public/assets/img/mitd-logo_tmp.png';
 import { useDispatch } from 'react-redux';
 import { openModal } from '../../redux/features/modal/modalSlice';
 import AssistenzaModal from '../../pages/administrator/Assistenza/assistenzaModal';
+import { useAppSelector } from '../../redux/hooks';
+import { selectProfile } from '../../redux/features/user/userSlice';
 
 const Footer: React.FC = () => {
 
   const dispatch = useDispatch();
+  const ruolo = useAppSelector(selectProfile);  
   
   const openModalAssistenza = () => {
     dispatch(
       openModal({
         id: 'ASSISTENZA',
         payload: {
-          title: "C'è qualcosa che non va nel funzionamento della piattaforma?",
+          title: ruolo === undefined || ruolo === null ? "Assistenza" : "C'è qualcosa che non va nel funzionamento della piattaforma?",
         },
       })
     );

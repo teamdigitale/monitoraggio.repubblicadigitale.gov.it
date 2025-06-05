@@ -20,6 +20,7 @@ import { selectModalState } from '../redux/features/modal/modalSlice';
 import { PrivacyDisclaimer } from '../pages/common/Privacy/PrivacyDisclaimer';
 import Authicon from '/public/assets/img/auth-box-icon.png';
 import DataReports from '../pages/administrator/MonitoraggioCaricamenti/dataReports';
+import LandingPage from '../pages/LandingPage/LandingPage';
 
 const AuthRedirect = lazy(() => import('../pages/common/Auth/authRedirect'));
 
@@ -380,7 +381,7 @@ const AppRoutes: React.FC = () => {
             <Route path='/' element={<FullLayout />}>
               {/* Public Paths */}
               <Route path='/registrazione' element={<Registrazione />} />
-              <Route path='/' element={<AuthRedirect />} />
+              <Route path='/' element={<LandingPage />} />
               <Route
                 path='/informativa-privacy-e-cookie'
                 element={<PrivacyDisclaimer />}
@@ -392,7 +393,7 @@ const AppRoutes: React.FC = () => {
                 path='/servizi/questionario/:idQuestionario/online/:token'
                 element={<SurveyOnline />}
               />
-              <Route path='/' element={<AuthRedirect />} />
+              <Route path='/' element={<LandingPage />} />
             </Route>
           </>
         )}
