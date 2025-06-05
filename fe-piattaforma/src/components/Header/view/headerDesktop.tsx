@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useState } from 'react';
 import clsx from 'clsx';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import {
@@ -489,6 +489,50 @@ const HeaderDesktop: React.FC<HeaderI> = ({
                 ) : null}
               </>
             ) : null}
+          </div>
+        </div>
+      )}
+      
+      {!isLogged && user && Object.keys(user).length === 0 && (
+        <div
+          className={clsx(
+            'd-flex',
+            'justify-content-end',
+            'text.white primary-bg-b2'
+          )}
+        >
+          <div
+            className={clsx(
+              'container',
+              'd-flex',
+              'align-items-center',
+              'justify-content-end',
+              'my-0',
+              'position-relative'
+            )}
+          >
+            <a
+              href='https://innovazione.gov.it/'
+              target='_blank'
+              rel='noreferrer'
+              className={clsx('logo-url', 'text-white', 'position-absolute')}
+              style={{
+                left: '6px',
+                fontSize: '0.8rem',
+                textDecoration: 'none',
+              }}
+            >
+              Dipartimento per la trasformazione digitale
+            </a>
+
+                <Button
+                  className="text-white"
+                  style={{ backgroundColor: '#0066cc', borderRadius: 0 }}
+                  onClick={() => navigate('/auth')}
+                >
+                  Accedi
+                </Button>
+            
           </div>
         </div>
       )}
