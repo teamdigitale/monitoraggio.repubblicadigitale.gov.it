@@ -31,6 +31,9 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
   const codRole = ruolo?.codiceRuolo;
   const policyRole = ruolo?.policy;
   const navigate = useNavigate();
+  const isNotLogged = ruolo === undefined || ruolo === null;
+  
+  
 
   const getHref = (label: string) => hrefValues.find(h => h.label === label)?.href || '#';
 
@@ -53,7 +56,10 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
       setAssistenzaEnabled(true);
     } else if ((codRole === 'REG' || codRole === 'REGP' || codRole === 'REPP') && policyRole === 'RFD') {
       setAssistenzaEnabled(true);
-    } else {
+    } else if (isNotLogged) {
+      setAssistenzaEnabled(true);
+    }  
+     else {
       setAssistenzaEnabled(false);
     }
   }, [codRole, policyRole]);
@@ -161,34 +167,70 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
     </div>
   );
 
-  if (codRole === 'FAC' && policyRole === 'RFD') { // Facilitatore RFD
+  const contentNotLogged = (
+    <div className="flex flex-col items-center gap-6 mt-1 mb-5">
+      <div className="rounded p-6 text-center max-w-xl" style={{ backgroundColor: '#eeeeee', padding: '1rem' }}>
+        <p style={{ fontWeight: 'bold', color: '#455b72', marginTop: '0.5rem', fontSize: '1.10rem' }}>
+          Hai bisogno di assistenza?
+        </p>
+        <p className="text-gray-700 mb-4">
+          Effettua l'accesso per inviare una richiesta
+        </p>
+
+        <p style={{ fontWeight: 'bold', color: '#455b72', marginTop: '0.5rem', fontSize: '1.10rem' }}>
+          Non riesci a effettuare l’accesso?
+        </p>
+        <p className="text-gray-700">
+          Puoi chiedere supporto all’indirizzo email<br />
+          <a
+            href="mailto:problemi.accesso@repubblicadigitale.gov.it"
+            className="text-blue-600 underline"
+          >
+            problemi.accesso@repubblicadigitale.gov.it
+          </a>
+        </p>
+      </div>
+    </div>
+  );
+
+  if(codRole === 'FAC' && policyRole === 'RFD'){ // Facilitatore RFD
     content = contentFacRfd;
   } else if ((codRole === 'VOL' || codRole === 'REG' || codRole === 'REGP' || codRole === 'REPP') && policyRole === 'SCD') { // Volontario o Referente SCD
     content = contentVolRefScd;
   } else if ((codRole === 'REG' || codRole === 'REGP' || codRole === 'REPP') && policyRole === 'RFD') {  // Referente RFD
     content = contentRefRfd;
-  } else {
+  }else if(isNotLogged){
+    content = contentNotLogged;
+  }else{
     content = contentNoAssistenza;
   }
 
 
   return (
     <>
-      <GenericModal
-        id={id}
-        centerButtons={true}
-        primaryCTA={{
-          // disabled: !isFormValid || !isProgramSelected,
-          disabled: !assistenzaEnabled,
-          label: "Vai all'assistenza",
-          onClick: () => { navigate("/richiesta-assistenza"); resetModal(); },
-        }}
-        secondaryCTA={{
-          label: 'Annulla',
-          onClick: resetModal,
+    <GenericModal
+      id={id}
+      centerButtons={true}
+      closable={true}
+      showCloseBtn={true}
+      primaryCTA={{
+        disabled: !assistenzaEnabled,
+        label: isNotLogged ? "Accedi" : "Vai all'assistenza",
+        onClick: () => {
+          if (isNotLogged) {
+            navigate("/auth");
+          } else {
+            navigate("/richiesta-assistenza");
+            resetModal();
+          }
+        },
+      }}
+      secondaryCTA={{
+        label: 'Annulla',
+        onClick: resetModal,
         }}
         withCTAIcon=
-        {<svg
+        {!isNotLogged && <svg
           xmlns='http://www.w3.org/2000/svg'
           className='svg_style'
         >
