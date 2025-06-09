@@ -23,7 +23,15 @@ public class AperturaTicketRequest implements Serializable {
     @NotNull
     @JsonProperty(value = "email")
     private String email;
+
+    @NotNull
+    @JsonProperty(value = "codiceFiscale")
+    private String codiceFiscale;
     
+    @NotNull
+    @JsonProperty(value = "ruoloUtente")
+    private String ruoloUtente;
+
     @NotNull
     @JsonProperty(value = "areaTematica")
     private String areaTematica;
