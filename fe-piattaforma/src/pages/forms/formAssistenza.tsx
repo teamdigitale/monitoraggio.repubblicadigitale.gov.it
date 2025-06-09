@@ -102,12 +102,12 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
 
         if (!field) return;
 
-        if (field === '1' && value === 'altro') {
+        if (field === '1' && value === 'altro_problema') {
             if (form && !form['4']) {
                 updateFormField('4', 'add');
             }
 
-        } else if (field === '1' && value !== 'altro') {
+        } else if (field === '1' && value !== 'altro_problema') {
             if (form && form['4']) {
                 updateFormField('4', 'remove');
             }
@@ -118,7 +118,7 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
         const updatedValues = {
             ...currentValues,
             [field]: value,
-            // ...(field === '1' && value !== 'altro' ? { '4': '' } : {}),
+            // ...(field === '1' && value !== 'altro_problema' ? { '4': '' } : {}),
         };
 
         const updatedForm = form
@@ -132,10 +132,10 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
                     ? {
                         '4': {
                             ...(form['4'] || {}),
-                            // required solo se il valore è 'altro'
-                            required: value === 'altro',
-                            // resetta valore se cambia da 'altro' a altro valore
-                            value: value === 'altro' ? form['4']?.value || '' : '',
+                            // required solo se il valore è 'altro_problema'
+                            required: value === 'altro_problema',
+                            // resetta valore se cambia da 'altro_problema' a altro_problema valore
+                            value: value === 'altro_problema' ? form['4']?.value || '' : '',
                         },
                     }
                     : {}),
@@ -194,7 +194,7 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
             customMargin="mb-3 pb-3"
         >
             <Form.Row className="align-items-end">
-                {form?.['1']?.value === 'altro' ? (
+                {form?.['1']?.value === 'altro_problema' ? (
                     <>
                         <Select
                             {...form?.['1']}
@@ -362,7 +362,7 @@ const form = newForm([
             { label: 'Opzione di test', value: 'test' },
             // { label: 'Errore nella piattaforma', value: 'errore' },
             // { label: 'Richiesta di informazioni', value: 'informazioni' },
-            // { label: 'Altro', value: 'altro' },
+            // { label: 'altro_problema', value: 'altro_problema' },
         ],
         required: true,
     }),
