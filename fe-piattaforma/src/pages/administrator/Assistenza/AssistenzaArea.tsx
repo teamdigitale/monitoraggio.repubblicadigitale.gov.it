@@ -44,6 +44,8 @@ const AssistenzaArea: React.FC = () => {
 
                 nome: user?.nome + ' ' + user?.cognome,
                 email: user?.email,
+                codiceFiscale: user?.codiceFiscale,
+                ruoloUtente: ruolo?.codiceRuolo,
 
                 idProgramma: ruolo?.idProgramma, 
                 nomeProgramma: ruolo?.nomeProgramma, 
