@@ -22,11 +22,14 @@ public class AssistenzaService {
     @Autowired
     private AssistenzaTematicheRepository assistenzaTematicheRepository;
 
+    @Autowired
+    private Zendesk zendesk;
+
     public Boolean apriTicket(AperturaTicketRequest entity) {
-        Zendesk zd = new Zendesk.Builder("URL ZENDESK")
-                .setUsername("email account zendesk /token")              //valori da inserire in file properties
-                .setToken("token")
-                .build();
+        // Zendesk zd = new Zendesk.Builder("URL ZENDESK")
+        //         .setUsername("email account zendesk /token")              //valori da inserire in file properties
+        //         .setToken("token")
+        //         .build();
 
         Ticket ticket = new Ticket();
         // Requester (richiedente)
@@ -44,28 +47,52 @@ public class AssistenzaService {
         // Stato del ticket
         ticket.setStatus(Status.NEW);
 
-       // Custom fields(modificare dopo aver ricevuto i campi personalizzati con relativi id)
+        if(entity.getPolicy().equals("RFD")){
+            entity.setPolicy("rsfd");
+        }else if(entity.getPolicy().equals("SCD")){
+            entity.setPolicy("scd");
+        }
+
+        switch(entity.getRuoloUtente()) {
+            case "FAC":
+                entity.setRuoloUtente("facilitatore");
+                break;
+            case "VOL":
+                entity.setRuoloUtente("volontario");
+                break;
+            case "REF":
+                entity.setRuoloUtente("Referente");
+                break;
+            case "DEG":
+                entity.setRuoloUtente("Delegato");
+                break;
+            default:
+                break;
+        }
+
+       // Custom fields(id dell'account di prova)
         List<CustomFieldValue> customFields = new ArrayList<>();
-        customFields.add(new CustomFieldValue(12345678901234L, new String[] {"", ""})); 
+        customFields.add(new CustomFieldValue(27165897882130L, new String[] {entity.getAreaTematica()})); // Area tematica Facilita
+        // customFields.add(new CustomFieldValue(27165780105618L, new String[] {})); // Assegnatario
+        customFields.add(new CustomFieldValue(27165940260882L, new String[] {entity.getCodiceFiscale()})); // Codice fiscale
+        // customFields.add(new CustomFieldValue(27165717838738L, new String[] {entity.getDescrizione()})); // Descrizione
+        customFields.add(new CustomFieldValue(27165900361362L, new String[] {entity.getIdEnte() + " - " + entity.getNomeEnte()})); // Ente
+        // customFields.add(new CustomFieldValue(27165717841170L, new String[] {"", ""})); // Gruppo
+        customFields.add(new CustomFieldValue(27165948277266L, new String[] {entity.getPolicy()})); // Intervento
+        customFields.add(new CustomFieldValue(27165949507474L, new String[] {entity.getNome()})); // Nominativo
+        // customFields.add(new CustomFieldValue(27165717838610L, new String[] {entity.getOggetto()})); // Oggetto
+        // customFields.add(new CustomFieldValue(27165780103954L, new String[] {"", ""})); // Priorità
+        customFields.add(new CustomFieldValue(27165951464210L, new String[] {entity.getIdProgetto() + " - " + entity.getNomeProgetto()})); // Progetto
+        customFields.add(new CustomFieldValue(27165968787090L, new String[] {entity.getRuoloUtente()})); // Ruolo Utente
+        customFields.add(new CustomFieldValue(27165985958418L, new String[] {entity.getAltraAreaTematica()})); // Tematica altro
         ticket.setCustomFields(customFields);
-        ticket.setTags(java.util.Arrays.asList("tag1", "tag2"));
         
         // Creazione ticket
-        Ticket createdTicket = zd.createTicket(ticket);
+        Ticket createdTicket = zendesk.createTicket(ticket);
 
         System.out.println("Ticket creato con ID: " + createdTicket.getId());
 
-        // Internal note (commento privato)
-        // Comment internalNote = new Comment("Questa è una nota privata (interna).");
-        // internalNote.setPublic(false);
-
-        // // Crea un ticket con ID e il commento privato da aggiungere
-        // Ticket ticketUpdate = new Ticket();
-        // ticketUpdate.setId(createdTicket.getId());
-        // ticketUpdate.setComment(internalNote);
-        // Ticket updatedTicket = zd.updateTicket(ticketUpdate);
-
-        zd.close();
+        // zd.close();
         return createdTicket != null; 
     }
 
