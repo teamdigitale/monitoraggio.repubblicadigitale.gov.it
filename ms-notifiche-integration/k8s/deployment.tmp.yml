@@ -152,6 +152,21 @@ spec:
                 configMapKeyRef:
                   name: env-${K8S_NAMESPACE}-options
                   key: drupalAuthPassword
+            - name: ZENDESK_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: ZENDESK_URL
+            - name: ZENDESK_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: ZENDESK_USERNAME
+            - name: ZENDESK_TOKEN
+              valueFrom:
+                configMapKeyRef:
+                  name: env-${K8S_NAMESPACE}-options
+                  key: ZENDESK_TOKEN
 ---
 apiVersion: v1
 kind: Service
