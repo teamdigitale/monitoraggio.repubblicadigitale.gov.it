@@ -6,6 +6,7 @@ import { closeModal, selectModalState } from '../../../redux/features/modal/moda
 import GenericModal from '../../../components/Modals/GenericModal/genericModal';
 import { selectProfile } from '../../../redux/features/user/userSlice';
 import { useNavigate } from 'react-router-dom';
+import { hrefValues } from './assistenzaUtils';
 
 
 
@@ -16,7 +17,7 @@ interface ManageReferalFormI {
   creation?: boolean;
 }
 
-interface ManageReferalI extends withFormHandlerProps, ManageReferalFormI {}
+interface ManageReferalI extends withFormHandlerProps, ManageReferalFormI { }
 
 const AssistenzaModal: React.FC<ManageReferalI> = ({
   // clearForm = () => ({}),
@@ -30,9 +31,9 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
   const codRole = ruolo?.codiceRuolo;
   const policyRole = ruolo?.policy;
   const navigate = useNavigate();
-  
-  
-  
+
+  const getHref = (label: string) => hrefValues.find(h => h.label === label)?.href || '#';
+
 
   const resetModal = (toClose = true) => {
     if (toClose) dispatch(closeModal());
@@ -58,7 +59,7 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
   }, [codRole, policyRole]);
 
   // console.log('codRole:', codRole, 'policyRole:', policyRole);
-  
+
   let content;
 
   const contentFacRfd = (
@@ -67,13 +68,13 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
         <div className='p-3'>
           <p className='my-3 mx-5'>
             Ti ricordiamo che tutte le informazioni per poter utilizzare facilita sono disponibili nel{' '}
-            <a href="#" className="text-blue-600 underline">
+            <a href={getHref('VademecumFacilitatori')} target="_blank" className="text-blue-600 underline">
               vademecum per le facilitatrici e facilitatori
             </a>
           </p>
           <p className='my-3 mx-5'>
             Se il tuo problema riguarda l’attività di facilitazione vai al{' '}
-            <a href="#" className="text-blue-600 underline">
+            <a href={getHref('ManualeFacilitazione')} target="_blank" className="text-blue-600 underline">
               manuale della facilitazione
             </a>
           </p>
@@ -96,13 +97,13 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
         <div className='p-3'>
           <p className='my-3 mx-5'>
             Ti ricordiamo che tutte le informazioni per poter utilizzare facilita sono disponibili nel{' '}
-            <a href="#" className="text-blue-600 underline">
+            <a href={getHref('VademecumVolontari')} target="_blank" className="text-blue-600 underline">
               vademecum per operatrici e operatori volontari
             </a>
           </p>
           <p className='my-3 mx-5'>
             Se il tuo problema riguarda l’attività di facilitazione vai al{' '}
-            <a href="#" className="text-blue-600 underline">
+            <a href={getHref('ManualeVolontario')} target="_blank" className="text-blue-600 underline">
               manuale dell'operatore volontario
             </a>
           </p>
@@ -125,13 +126,13 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
         <div className='p-3'>
           <p className='my-3 mx-5'>
             Ti ricordiamo che tutte le informazioni per poter utilizzare facilita sono disponibili nel{' '}
-            <a href="#" className="text-blue-600 underline">
+            <a href={getHref('VademecumEntiGestoriPartner')} target="_blank" className="text-blue-600 underline">
               vademecum per enti gestori e partner di progetto
             </a>
           </p>
           <p className='my-3 mx-5'>
             Se il tuo problema riguarda l’attività di facilitazione vai al{' '}
-            <a href="#" className="text-blue-600 underline">
+            <a href={getHref('ManualeVolontario')} target='_blank' className="text-blue-600 underline">
               manuale dell'operatore volontario
             </a>
           </p>
@@ -153,38 +154,38 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
       <div className="rounded p-6 text-center max-w-xl my-5" style={{ backgroundColor: '#eeeeee' }}>
         <div className='p-3'>
           <p className='my-3 mx-5'>
-            Il servizio di assistenza tecnica non è disponibile per il tuo ruolo.          
+            Il servizio di assistenza tecnica non è disponibile per il tuo ruolo.
           </p>
         </div>
       </div>
     </div>
   );
 
-  if(codRole === 'FAC' && policyRole === 'RFD'){ // Facilitatore RFD
+  if (codRole === 'FAC' && policyRole === 'RFD') { // Facilitatore RFD
     content = contentFacRfd;
-  }else if((codRole === 'VOL' || codRole === 'REG' || codRole === 'REGP' || codRole === 'REPP') && policyRole === 'SCD'){ // Volontario o Referente SCD
+  } else if ((codRole === 'VOL' || codRole === 'REG' || codRole === 'REGP' || codRole === 'REPP') && policyRole === 'SCD') { // Volontario o Referente SCD
     content = contentVolRefScd;
-  }else if((codRole === 'REG' || codRole === 'REGP' || codRole === 'REPP') && policyRole === 'RFD'){  // Referente RFD
+  } else if ((codRole === 'REG' || codRole === 'REGP' || codRole === 'REPP') && policyRole === 'RFD') {  // Referente RFD
     content = contentRefRfd;
-  }else{
+  } else {
     content = contentNoAssistenza;
   }
 
 
   return (
     <>
-    <GenericModal
-      id={id}
-      centerButtons={true}
-      primaryCTA={{
-        // disabled: !isFormValid || !isProgramSelected,
-        disabled: !assistenzaEnabled,
-        label: "Vai all'assistenza",
-        onClick: () => {navigate("/richiesta-assistenza"); resetModal();},
-      }}
-      secondaryCTA={{
-        label: 'Annulla',
-        onClick: resetModal,
+      <GenericModal
+        id={id}
+        centerButtons={true}
+        primaryCTA={{
+          // disabled: !isFormValid || !isProgramSelected,
+          disabled: !assistenzaEnabled,
+          label: "Vai all'assistenza",
+          onClick: () => { navigate("/richiesta-assistenza"); resetModal(); },
+        }}
+        secondaryCTA={{
+          label: 'Annulla',
+          onClick: resetModal,
         }}
         withCTAIcon=
         {<svg
@@ -199,11 +200,11 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
           ></path>
         </svg>}
       >
-      <div>
-        <div className='mx-5'>{content}</div>
-      </div>
+        <div>
+          <div className='mx-5'>{content}</div>
+        </div>
 
-    </GenericModal>
+      </GenericModal>
     </>
   );
 };
