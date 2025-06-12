@@ -1,16 +1,20 @@
 package it.pa.repdgt.integrazione.service;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.zendesk.client.v2.Zendesk;
+import org.zendesk.client.v2.model.Attachment;
+import org.zendesk.client.v2.model.Comment;
 import org.zendesk.client.v2.model.CustomFieldValue;
 import org.zendesk.client.v2.model.Status;
 import org.zendesk.client.v2.model.Ticket;
 import org.zendesk.client.v2.model.Ticket.Requester;
 
+import it.pa.repdgt.integrazione.dto.AllegatoDTO;
 import it.pa.repdgt.integrazione.dto.AreaTematicaDTO;
 import it.pa.repdgt.integrazione.entity.AssistenzaTematicheEntity;
 import it.pa.repdgt.integrazione.repository.AssistenzaTematicheRepository;
@@ -26,10 +30,6 @@ public class AssistenzaService {
     private Zendesk zendesk;
 
     public Boolean apriTicket(AperturaTicketRequest entity) {
-        // Zendesk zd = new Zendesk.Builder("URL ZENDESK")
-        //         .setUsername("email account zendesk /token")              //valori da inserire in file properties
-        //         .setToken("token")
-        //         .build();
 
         Ticket ticket = new Ticket();
         // Requester (richiedente)
@@ -42,7 +42,8 @@ public class AssistenzaService {
         ticket.setSubject(entity.getOggetto());
 
         // Descrizione del ticket
-        ticket.setDescription(entity.getDescrizione());
+        String descrizionePulita = entity.getDescrizione().replaceAll("<[^>]*>", "");
+        ticket.setDescription(descrizionePulita);
 
         // Stato del ticket
         ticket.setStatus(Status.NEW);
@@ -61,9 +62,15 @@ public class AssistenzaService {
                 entity.setRuoloUtente("volontario");
                 break;
             case "REF":
+            case "REPP":
+            case "REG":
+            case "REGP":
                 entity.setRuoloUtente("Referente");
                 break;
             case "DEG":
+            case "DEPP":
+            case "DEGP":
+            case "DSCU":
                 entity.setRuoloUtente("Delegato");
                 break;
             default:
@@ -82,11 +89,49 @@ public class AssistenzaService {
         customFields.add(new CustomFieldValue(27165949507474L, new String[] {entity.getNome()})); // Nominativo
         // customFields.add(new CustomFieldValue(27165717838610L, new String[] {entity.getOggetto()})); // Oggetto
         // customFields.add(new CustomFieldValue(27165780103954L, new String[] {"", ""})); // Priorità
-        customFields.add(new CustomFieldValue(27165951464210L, new String[] {entity.getIdProgetto() + " - " + entity.getNomeProgetto()})); // Progetto
+        if(entity.getIdProgetto() != null || entity.getNomeProgetto() != null) {                    //controllo per evitare di aggiungere un campo null
+            String idProgetto = entity.getIdProgetto() != null ? entity.getIdProgetto() : "";
+            String nomeProgetto = entity.getNomeProgetto() != null ? entity.getNomeProgetto() : "";
+            if(!idProgetto.isEmpty() || !nomeProgetto.isEmpty()) {
+            customFields.add(new CustomFieldValue(27165951464210L, new String[] {idProgetto + " - " + nomeProgetto})); // Progetto
+            }
+        }
         customFields.add(new CustomFieldValue(27165968787090L, new String[] {entity.getRuoloUtente()})); // Ruolo Utente
         customFields.add(new CustomFieldValue(27165985958418L, new String[] {entity.getAltraAreaTematica()})); // Tematica altro
         ticket.setCustomFields(customFields);
         
+        if (entity.getAllegati() != null && !entity.getAllegati().isEmpty()) {
+            List<Attachment.Upload> uploads = new ArrayList<>();
+
+            for (AllegatoDTO allegatoBase64 : entity.getAllegati()) {
+                try {
+                    byte[] fileBytes = Base64.getDecoder().decode(allegatoBase64.getData());
+
+                    String nomeFile = allegatoBase64.getName();
+
+                    // Upload su Zendesk
+                    Attachment.Upload upload = zendesk.createUpload(nomeFile, fileBytes);
+
+                    uploads.add(upload);
+                } catch (Exception e) {
+                    System.err.println("Errore nell'elaborazione di un allegato: " + e.getMessage());
+                    // puoi loggare o saltare in base alla policy
+                }
+            }
+
+            if (!uploads.isEmpty()) {
+                Comment comment = new Comment();
+                List<String> tokens = new ArrayList<>();
+                for (Attachment.Upload upload : uploads) {
+                    tokens.add(upload.getToken());
+                }
+                comment.setUploads(tokens);
+                ticket.setComment(comment);
+            }
+        }
+
+        
+
         // Creazione ticket
         Ticket createdTicket = zendesk.createTicket(ticket);
 

@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
+import it.pa.repdgt.integrazione.dto.AllegatoDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -48,7 +49,7 @@ public class AperturaTicketRequest implements Serializable {
     private String altraAreaTematica;
 
     @JsonProperty(value = "allegati")
-    private List<String> allegati;
+    private List<AllegatoDTO> allegati;
 
     @JsonProperty(value = "idProgramma")
     private String idProgramma;
