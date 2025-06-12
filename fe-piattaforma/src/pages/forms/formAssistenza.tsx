@@ -3,12 +3,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Form, Select } from '../../components';
 import withFormHandler, { withFormHandlerProps } from '../../hoc/withFormHandler';
 import { formFieldI, FormHelper, newForm, newFormField } from '../../utils/formHelper';
-import TextArea from '../../components/Form/textarea';
 import { Button, Icon } from 'design-react-kit';
 import { uploadFile } from '../../utils/common';
 import InputSublabel from '../../components/InputSubLabel/inputSublabel';
 import { getTematicheAssistenza } from '../../redux/features/notification/notificationThunk';
 import TextEditor from '../../components/General/TextEditor/TextEditor';
+import { useDispatch } from 'react-redux';
 
 export interface FormAssistenzaI extends withFormHandlerProps {
     formDisabled?: boolean;
@@ -43,18 +43,23 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
     const inputRef = useRef<HTMLInputElement>(null);
     const [files, setFiles] = useState<{ name: string; data: File | string }[]>([]);
     const [editorText, setEditorText] = useState('<p></p>');
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        if (form?.['3']?.value !== undefined && form?.['3']?.value !== editorText) {
+        const plainCurrent = editorText.replace(/<[^>]+>/g, '').trim();
+        const plainIncoming = (form?.['3']?.value as string)?.replace(/<[^>]+>/g, '').trim();
+
+        if (plainCurrent === '' && plainIncoming && plainIncoming !== editorText && form!= undefined) {
             setEditorText(form['3'].value as string);
         }
     }, [form?.['3']?.value]);
+
 
     const initialized = useRef(false);
 
     useEffect(() => {
         const fetchTematicheAndUpdateForm = async () => {
-            const res = await getTematicheAssistenza();
+            const res = await getTematicheAssistenza(dispatch);
             if (res && form?.['1']) {
                 const mapped = res.map((t: any) => ({
                     label: t.descrizione,
@@ -146,9 +151,6 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
         sendNewValues?.(updatedValues);
         updateForm(updatedForm);
     };
-
-
-
 
 
     useEffect(() => {
@@ -359,7 +361,7 @@ const form = newForm([
         label: 'Area tematica',
         type: 'select',
         options: [
-            { label: 'Opzione di test', value: 'test' },
+            { label: 'Opzione', value: 'test' },
             // { label: 'Errore nella piattaforma', value: 'errore' },
             // { label: 'Richiesta di informazioni', value: 'informazioni' },
             // { label: 'altro_problema', value: 'altro_problema' },
