@@ -67,8 +67,9 @@ export const GetNotificationsList = () => async (dispatch: Dispatch) => {
   }
 };
 
-export const createTicketAssistenza = async (payload?: any): Promise<boolean> => {
+export const createTicketAssistenza = async (dispatch: Dispatch, payload?: any): Promise<boolean> => {
   try {
+    dispatch(showLoader());
     const endpoint = `/assistenza/apriTicket`;
     const res = await API.post(endpoint, payload, {
       headers: {
@@ -80,11 +81,14 @@ export const createTicketAssistenza = async (payload?: any): Promise<boolean> =>
   } catch (error) {
     console.log('createTicketAssistenza error', error);
     return false;
+  } finally { 
+    dispatch(hideLoader()); 
   }
 };
 
-export const getTematicheAssistenza = async () => {
+export const getTematicheAssistenza = async (dispatch: Dispatch) => {
   try {
+    dispatch(showLoader());
     const endpoint = `/assistenza/tematiche`;
     const res = await API.post(endpoint);
 
@@ -92,5 +96,7 @@ export const getTematicheAssistenza = async () => {
   } catch (error) {
     console.log('createTicketAssistenza error', error);
     return false;
+  }finally { 
+    dispatch(hideLoader()); 
   }
 };
