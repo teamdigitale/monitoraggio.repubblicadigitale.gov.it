@@ -306,7 +306,7 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
                                     />
                                 </div>
                             </div>
-                            <p className='text-muted mt-2'><em>Massimo X MB, formati supportati</em></p>
+                            <p className='text-muted mt-2 text-left'><em>Massimo 50 MB, formati supportati: .txt, .rtf, .odt, .zip, .docx, .doc, .ppt, .pptx, .pdf, .jpg, .png, .gif, .xls, .xlsx, .csv, .mpg, .wmv</em></p>
                         </Form.Row>
                     )) : null}
             </>
@@ -319,7 +319,7 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
                     <input
                         type='file'
                         id='file'
-                        accept='.txt, .rtf, .odt, .zip, .exe, .docx, .doc, .ppt, .pptx, .pdf, .jpg, .png, .gif, .xls, .xlsx, .csv, .mpg, .wmv'
+                        accept='.txt, .rtf, .odt, .zip, .docx, .doc, .ppt, .pptx, .pdf, .jpg, .png, .gif, .xls, .xlsx, .csv, .mpg, .wmv'
                         ref={inputRef}
                         className='sr-only'
                         onChange={updateFile}
@@ -346,7 +346,8 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
                         </Button>
                     </div>
                 </div>
-                <p className='text-muted mt-2'><em>Massimo X MB, formati supportati</em></p>
+                <p className='text-muted mt-2 text-left'>
+                    <em>Massimo 50 MB, formati supportati: .txt, .rtf, .odt, .zip, .docx, .doc, .ppt, .pptx, .pdf, .jpg, .png, .gif, .xls, .xlsx, .csv, .mpg, .wmv</em></p>
             </Form.Row>
 
         </Form>
