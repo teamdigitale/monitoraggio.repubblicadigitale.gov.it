@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Container, Button, Icon } from "design-react-kit";
 import { useAppSelector } from "../../../redux/hooks";
 import { selectProfile, selectUser } from "../../../redux/features/user/userSlice";
@@ -40,8 +40,10 @@ const AssistenzaArea: React.FC = () => {
                 descrizione: formValues?.['3'],
                 oggetto: formValues?.['2'],
                 altraAreaTematica: formValues?.['4'],
-                allegati: attachedFiles.map(file => file.data),
-
+                allegati: attachedFiles.map(file => ({
+                    name: file.name,
+                    data: file.data
+                })),
                 nome: user?.nome + ' ' + user?.cognome,
                 email: user?.email,
                 codiceFiscale: user?.codiceFiscale,
@@ -56,7 +58,7 @@ const AssistenzaArea: React.FC = () => {
                 nomeEnte: ruolo?.nomeEnte,
             }
             
-            const res = await createTicketAssistenza(payload);
+            const res = await createTicketAssistenza(dispatch, payload);
             if (res === true) {
                 setRequestOk(1); // successo
             } else {
@@ -86,9 +88,7 @@ const AssistenzaArea: React.FC = () => {
 
     let content;
 
-    useEffect(() => {
 
-    }, [step]);
     if (step === 1) {
         content = (
             <div className="my-5 d-flex flex-column align-items-center">
@@ -142,7 +142,7 @@ const AssistenzaArea: React.FC = () => {
                         aria-label='Successo'
                     />
                     <p className="mb-4">La tua richiesta è stata inviata.</p>
-                    <p >A breve riceverai una <strong>email di conferma</strong> all'indirizzo {user?.email} </p>
+                    <p >A breve riceverai una <strong>email di conferma</strong> all&#39;indirizzo {user?.email} </p>
                 </div>
             );
         } else if (requestOk === 2) {
@@ -160,7 +160,7 @@ const AssistenzaArea: React.FC = () => {
     }
 
     return (
-        <Container className="text-center my-5">
+        <Container className="text-center mt-5" style={{ marginBottom: '200px' }}>
             <h2 className="text-primary">Richiesta di assistenza tecnica</h2>
             <p className="mt-3">
                 Chiedi assistenza sul funzionamento della piattaforma Facilita ai nostri esperti dedicati
