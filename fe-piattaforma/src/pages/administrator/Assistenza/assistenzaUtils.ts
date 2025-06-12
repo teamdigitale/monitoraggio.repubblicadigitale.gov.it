@@ -1,7 +1,7 @@
 export const hrefValues = [
     {
         label: 'VademecumFacilitatori',
-        href: 'https://drive.repdigitale.org/lib/026b123e-08a4-414c-8f65-ff583cd9dd14/file/Documenti%20Facilita/Vademecum%20per%20enti%20gestori%20e%20partner%20di%20progetto%20per%20l%E2%80%99inserimento%20di%20enti%2C%20sedi%20e%20facilitatori.pdf',
+        href: 'https://drive.repdigitale.org/f/ec274f150c76416eaa84/',
     },
     {
         label: 'ManualeFacilitazione',
