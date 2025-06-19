@@ -35,9 +35,11 @@ const FullLayout: React.FC<LayoutProp> = (props) => {
   const publishedContent = useAppSelector(selectPublishedContent);
 
   return (
-    <>
-      <LocationInterceptor />
+  <>
+    <LocationInterceptor />
+    <div className="d-flex flex-column min-vh-100">
       <Header isHeaderFull={isHeaderFull} />
+
       {withBreadcrumb && location.pathname !== '/' && !device.mediaIsPhone && (
         <div className={clsx(publishedContent && 'lightgrey-bg-b4')}>
           <div
@@ -51,22 +53,28 @@ const FullLayout: React.FC<LayoutProp> = (props) => {
           </div>
         </div>
       )}
+
       {loader.isLoading && <Loader />}
+
       <main
         className={clsx(
           'main-container',
           'main-container__content-container',
           !device.mediaIsDesktop || isFull ? null : 'container',
-          !withBreadcrumb && 'mt-5'
+          !withBreadcrumb && 'mt-5',
+          'flex-grow-1'
         )}
         id='main'
         tabIndex={-1}
       >
         {children ? children : <Outlet />}
       </main>
+
       <Footer />
-    </>
-  );
+    </div>
+  </>
+);
+
 };
 
 export default FullLayout;
