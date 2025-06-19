@@ -5,6 +5,7 @@ import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.zendesk.client.v2.Zendesk;
 import org.zendesk.client.v2.model.Attachment;
@@ -22,6 +23,30 @@ import it.pa.repdgt.integrazione.request.AperturaTicketRequest;
 
 @Service
 public class AssistenzaService {
+
+    @Value("${zendesk.customfield.areatematica}")
+    private Long areaTematica;
+
+    @Value("${zendesk.customfield.codicefiscale}")
+    private Long codiceFiscale;
+
+    @Value("${zendesk.customfield.ente}")
+    private Long ente;
+
+    @Value("${zendesk.customfield.policy}")
+    private Long policy;
+
+    @Value("${zendesk.customfield.nome}")
+    private Long nome;
+
+    @Value("${zendesk.customfield.progetto}")
+    private Long progetto;
+
+    @Value("${zendesk.customfield.ruoloutente}")
+    private Long ruoloUtente;
+
+    @Value("${zendesk.customfield.altraareatematica}")
+    private Long altraAreaTematica;
     
     @Autowired
     private AssistenzaTematicheRepository assistenzaTematicheRepository;
@@ -79,25 +104,20 @@ public class AssistenzaService {
 
        // Custom fields(id dell'account di prova)
         List<CustomFieldValue> customFields = new ArrayList<>();
-        customFields.add(new CustomFieldValue(27165897882130L, new String[] {entity.getAreaTematica()})); // Area tematica Facilita
-        // customFields.add(new CustomFieldValue(27165780105618L, new String[] {})); // Assegnatario
-        customFields.add(new CustomFieldValue(27165940260882L, new String[] {entity.getCodiceFiscale()})); // Codice fiscale
-        // customFields.add(new CustomFieldValue(27165717838738L, new String[] {entity.getDescrizione()})); // Descrizione
-        customFields.add(new CustomFieldValue(27165900361362L, new String[] {entity.getIdEnte() + " - " + entity.getNomeEnte()})); // Ente
-        // customFields.add(new CustomFieldValue(27165717841170L, new String[] {"", ""})); // Gruppo
-        customFields.add(new CustomFieldValue(27165948277266L, new String[] {entity.getPolicy()})); // Intervento
-        customFields.add(new CustomFieldValue(27165949507474L, new String[] {entity.getNome()})); // Nominativo
-        // customFields.add(new CustomFieldValue(27165717838610L, new String[] {entity.getOggetto()})); // Oggetto
-        // customFields.add(new CustomFieldValue(27165780103954L, new String[] {"", ""})); // Priorità
-        if(entity.getIdProgetto() != null || entity.getNomeProgetto() != null) {                    //controllo per evitare di aggiungere un campo null
+        customFields.add(new CustomFieldValue(areaTematica, new String[] {entity.getAreaTematica()})); // Area tematica Facilita
+        customFields.add(new CustomFieldValue(codiceFiscale, new String[] {entity.getCodiceFiscale()})); // Codice fiscale
+        customFields.add(new CustomFieldValue(ente, new String[] {entity.getIdEnte() + " - " + entity.getNomeEnte()})); // Ente
+        customFields.add(new CustomFieldValue(policy, new String[] {entity.getPolicy()})); // Intervento
+        customFields.add(new CustomFieldValue(nome, new String[] {entity.getNome()})); // Nominativo
+        if(entity.getIdProgetto() != null || entity.getNomeProgetto() != null) {    //controllo per evitare di aggiungere un campo null
             String idProgetto = entity.getIdProgetto() != null ? entity.getIdProgetto() : "";
             String nomeProgetto = entity.getNomeProgetto() != null ? entity.getNomeProgetto() : "";
             if(!idProgetto.isEmpty() || !nomeProgetto.isEmpty()) {
-            customFields.add(new CustomFieldValue(27165951464210L, new String[] {idProgetto + " - " + nomeProgetto})); // Progetto
+            customFields.add(new CustomFieldValue(progetto, new String[] {idProgetto + " - " + nomeProgetto})); // Progetto
             }
         }
-        customFields.add(new CustomFieldValue(27165968787090L, new String[] {entity.getRuoloUtente()})); // Ruolo Utente
-        customFields.add(new CustomFieldValue(27165985958418L, new String[] {entity.getAltraAreaTematica()})); // Tematica altro
+        customFields.add(new CustomFieldValue(ruoloUtente, new String[] {entity.getRuoloUtente()})); // Ruolo Utente
+        customFields.add(new CustomFieldValue(altraAreaTematica, new String[] {entity.getAltraAreaTematica()})); // Tematica altro
         ticket.setCustomFields(customFields);
         
         if (entity.getAllegati() != null && !entity.getAllegati().isEmpty()) {
