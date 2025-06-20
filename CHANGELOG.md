@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.456](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.455...1.0.0-test.456) (2025-06-20)
+
+
+### Bug Fixes
+
+* **test:** correzione id campi zendesk 20250620 ([496ed8b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/496ed8b3a9c70c020a666526ec9b8b645836569a))
+
 ## [1.0.0-test.455](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.454...1.0.0-test.455) (2025-06-20)
 
 
