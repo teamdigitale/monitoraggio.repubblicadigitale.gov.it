@@ -1,5 +1,32 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.455](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.454...1.0.0-test.455) (2025-06-20)
+
+
+### Features
+
+* **U346:** mapping id campi in application.properties 20250619 ([879f176](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/879f176c8ca706316f1087a3eeb51e18835b41bb))
+* **U346:** aggiunta gestione allegati BE 20250612 ([a8f17b7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a8f17b71735ac463f88cf5f6267d3e2974233839))
+* **U345:** fix link vademecum facilitatori 20250612 ([4cbf97e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4cbf97ec0fa7723c72803504fe739f2249830bfb))
+* **U346:** aggiunta zendesk a dockerfile 20250609 ([efbecd8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/efbecd8d591f5728e9d599ad351fbb6b0ac1db1a))
+* **U346:** modifica EP apertura ticket e aggiunta zendesk config 20250609 ([e310492](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e310492bf188b3bade77b7a36bb26750f66e0729))
+* **U346:** aggiunta redirect a pagina precedente e text editor 20250529 ([a284f4f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a284f4f12b97c564e3796fc38e8edbaf926a1c34))
+* **U346:** wip BE prima implementazione EP per creazione ticket e recupero aree tematiche 20250526 ([2654d3a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2654d3a2c0df8fcd54abc1a81088e075a04e29f4))
+* **U346:** fix bug form e implementazione chiamate EP assistenza 20250526 ([873ccb9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/873ccb903af5a18d4eae3194ba035339d6f9cbf3))
+* **U346:** wip creazione pagina richiesta assistenza 20250521 ([3d0526c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3d0526c9d506907759b57eefa53eb44301ce064b))
+* **U345:** aggiunta link assistenza footer 20250609 ([142a094](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/142a0945004b608dcc9fb07de4ca331b6541da9e))
+* **U345:** corretta descrizione footer 20250529 ([737eaf0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/737eaf0d85f8e08e43c71a56c3d3b4ccf3f1c893))
+* **U345:** creazione modale redirect a richiesta assistenza 20250519 ([d5bffe6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d5bffe60bd1a24d5923d779d69ed14e35e2b69e8))
+* **test:** aggiornamento data limite caricamento massivo 20250529 ([4eb7561](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4eb7561637ade9ccbfd6109d85ff3a367d750c9c))
+
+
+### Bug Fixes
+
+* **U346:** fix footer pagina assistenza 20250619 ([d14ea89](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d14ea89abddbd5e947f9a0035476fdf3eaf92387))
+* **U346:** fix descrizione allega file 20250612 ([ac42717](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ac42717e197dcce27b63e22a959b07bce2d60737))
+* **U346:** fix grafiche e aggiunta spinner 20250612 ([725b6b9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/725b6b923ce1d96eb0483ea20452670d4c56418f))
+* **U346:** fix tag tematica e aggiunta dati payload 20250609 ([df4f207](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/df4f2074b434ff7e172f46aa2dd1716ae1844314))
+
 ## [1.0.0-test.454](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.453...1.0.0-test.454) (2025-05-22)
 
 
