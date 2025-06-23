@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.458](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.457...1.0.0-test.458) (2025-06-23)
+
+
+### Bug Fixes
+
+* **U346:** fix formattazione campo descrizione ticket 20250623 ([8679046](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8679046422065fe7f50085d4f6f48ad1d08756a4))
+
 ## [1.0.0-test.457](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.456...1.0.0-test.457) (2025-06-23)
 
 
