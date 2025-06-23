@@ -61,7 +61,7 @@ public class AssistenzaService {
 
     public Boolean apriTicket(AperturaTicketRequest entity) {
 
-        log.debug("----- Apertura ticket con i seguenti dati: " + entity.toString() + " -----");
+        log.info("----- Apertura ticket con i seguenti dati: " + entity.toString() + " -----");
 
         Ticket ticket = new Ticket();
         // Requester (richiedente)
@@ -163,8 +163,7 @@ public class AssistenzaService {
         // Creazione ticket
         Ticket createdTicket = zendesk.createTicket(ticket);
 
-        log.debug("----- Ticket creato con ID: " + createdTicket.getId() + "-----");
-
+        log.info("----- Ticket creato con ID: " + createdTicket.getId() + "-----");
         // zd.close();
         return createdTicket != null; 
     }
@@ -172,7 +171,7 @@ public class AssistenzaService {
 
     public List<AreaTematicaDTO> getAreeTematiche() {
 
-        log.debug("----- Recupero delle aree tematiche disponibili -----");
+        log.info("----- Recupero delle aree tematiche disponibili -----");
 
         List<AssistenzaTematicheEntity> listaTematiche = assistenzaTematicheRepository.findAll();
 
