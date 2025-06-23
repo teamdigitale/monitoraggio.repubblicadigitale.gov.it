@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.457](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.456...1.0.0-test.457) (2025-06-23)
+
+
+### Bug Fixes
+
+* **U346:** fix log assistenzaService 20250623 ([e757a0f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e757a0fa283043fc7152ca99979e499aa409a622))
+
 ## [1.0.0-test.456](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.455...1.0.0-test.456) (2025-06-20)
 
 
