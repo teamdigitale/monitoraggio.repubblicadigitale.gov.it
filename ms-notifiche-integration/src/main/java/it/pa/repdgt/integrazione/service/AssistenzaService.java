@@ -20,7 +20,9 @@ import it.pa.repdgt.integrazione.dto.AreaTematicaDTO;
 import it.pa.repdgt.integrazione.entity.AssistenzaTematicheEntity;
 import it.pa.repdgt.integrazione.repository.AssistenzaTematicheRepository;
 import it.pa.repdgt.integrazione.request.AperturaTicketRequest;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class AssistenzaService {
 
@@ -47,6 +49,9 @@ public class AssistenzaService {
 
     @Value("${zendesk.customfield.altraareatematica}")
     private Long altraAreaTematica;
+
+    @Value("${zendesk.idModulo}")
+    private Long idModulo;
     
     @Autowired
     private AssistenzaTematicheRepository assistenzaTematicheRepository;
@@ -56,11 +61,14 @@ public class AssistenzaService {
 
     public Boolean apriTicket(AperturaTicketRequest entity) {
 
+        log.debug("----- Apertura ticket con i seguenti dati: " + entity.toString() + " -----");
+
         Ticket ticket = new Ticket();
         // Requester (richiedente)
         Requester requester = new Requester();
         requester.setEmail(entity.getEmail());
         requester.setName(entity.getNome());
+        ticket.setTicketFormId(idModulo); // ID del modulo di richiesta
         ticket.setRequester(requester);
 
         // Oggetto del ticket
@@ -155,7 +163,7 @@ public class AssistenzaService {
         // Creazione ticket
         Ticket createdTicket = zendesk.createTicket(ticket);
 
-        System.out.println("Ticket creato con ID: " + createdTicket.getId());
+        log.debug("----- Ticket creato con ID: " + createdTicket.getId() + "-----");
 
         // zd.close();
         return createdTicket != null; 
@@ -163,6 +171,9 @@ public class AssistenzaService {
 
 
     public List<AreaTematicaDTO> getAreeTematiche() {
+
+        log.debug("----- Recupero delle aree tematiche disponibili -----");
+
         List<AssistenzaTematicheEntity> listaTematiche = assistenzaTematicheRepository.findAll();
 
         List<AreaTematicaDTO> listaDTO = new ArrayList<>();
