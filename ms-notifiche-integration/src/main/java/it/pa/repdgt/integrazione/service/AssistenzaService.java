@@ -75,8 +75,14 @@ public class AssistenzaService {
         ticket.setSubject(entity.getOggetto());
 
         // Descrizione del ticket
-        String descrizionePulita = entity.getDescrizione().replaceAll("<[^>]*>", "");
-        ticket.setDescription(descrizionePulita);
+        String descrizione = entity.getDescrizione();
+        descrizione = descrizione.replace("<ins>", "<u>").replace("</ins>", "</u>");
+        //.replaceAll("<[^>]*>", ""
+        ticket.setDescription(descrizione);
+
+        Comment comment = new Comment();
+        comment.setHtmlBody(descrizione);
+        ticket.setComment(comment);
 
         // Stato del ticket
         ticket.setStatus(Status.NEW);
@@ -148,7 +154,7 @@ public class AssistenzaService {
             }
 
             if (!uploads.isEmpty()) {
-                Comment comment = new Comment();
+                // Comment comment = new Comment();
                 List<String> tokens = new ArrayList<>();
                 for (Attachment.Upload upload : uploads) {
                     tokens.add(upload.getToken());
