@@ -1,5 +1,17 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.459](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.458...1.0.0-test.459) (2025-06-27)
+
+
+### Features
+
+* **U431:** aggiunta landing page pre accesso 20250605 ([d8d9cca](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d8d9cca23e39bb2defefc1f37c60a9bfd990fcce))
+
+
+### Bug Fixes
+
+* **test:** aggiornamento data limite caricamento massivo Giugno 2025 ([abff704](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/abff7045308f580cf73dfb3bdd9cdada077799d8))
+
 ## [1.0.0-test.458](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.457...1.0.0-test.458) (2025-06-23)
 
 
