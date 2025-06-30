@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.47.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.47.0...1.47.1) (2025-06-30)
+
+
+### Bug Fixes
+
+* **test:** aggiornamento data limite caricamento massivo Giugno 2025 ([d31fb52](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d31fb529e5ad1c2a1ee5664355b7bb94d68246b6))
+
 ## [1.47.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.46.0...1.47.0) (2025-05-29)
 
 
