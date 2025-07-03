@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.460](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.459...1.0.0-test.460) (2025-07-03)
+
+
+### Bug Fixes
+
+* **U346:** aggiunta campo Programma e definizione ruoli 20250703 ([e14150b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e14150ba03df1b449056c3d151abc29d5da8e9e3))
+* **U431:** aggiornato indirizzo mail footer 20250703 ([94b785c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/94b785c7e920f1c58f116faa346f0928f89031e0))
+
 ## [1.0.0-test.459](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.458...1.0.0-test.459) (2025-06-27)
 
 
