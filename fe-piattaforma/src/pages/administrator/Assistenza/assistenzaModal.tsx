@@ -183,10 +183,10 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
         <p className="text-gray-700">
           Puoi chiedere supporto all’indirizzo email<br />
           <a
-            href="mailto:problemi.accesso@repubblicadigitale.gov.it"
+            href="mailto:problema-accesso-facilita@repubblicadigitale.gov.it"
             className="text-blue-600 underline"
           >
-            problemi.accesso@repubblicadigitale.gov.it
+            problema-accesso-facilita@repubblicadigitale.gov.it
           </a>
         </p>
       </div>
