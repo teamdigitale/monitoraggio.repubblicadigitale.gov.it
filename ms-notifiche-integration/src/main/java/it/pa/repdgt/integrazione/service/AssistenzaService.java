@@ -50,6 +50,9 @@ public class AssistenzaService {
     @Value("${zendesk.customfield.altraareatematica}")
     private Long altraAreaTematica;
 
+    @Value("${zendesk.customfield.programma}")
+    private Long programma;
+
     @Value("${zendesk.idModulo}")
     private Long idModulo;
     
@@ -100,17 +103,23 @@ public class AssistenzaService {
             case "VOL":
                 entity.setRuoloUtente("volontario");
                 break;
-            case "REF":
             case "REPP":
+                entity.setRuoloUtente("referente_ente");
+                break;
             case "REG":
+                entity.setRuoloUtente("referente_programma");
+                break;
             case "REGP":
-                entity.setRuoloUtente("Referente");
+                entity.setRuoloUtente("referente_progetto");
                 break;
             case "DEG":
+                entity.setRuoloUtente("delegato_programma");
+                break;
             case "DEPP":
-            case "DEGP":
-            case "DSCU":
-                entity.setRuoloUtente("Delegato");
+                entity.setRuoloUtente("delegato_ente");
+                break;
+            case "DEGP":   
+                entity.setRuoloUtente("delegato_progetto");
                 break;
             default:
                 break;
@@ -132,6 +141,7 @@ public class AssistenzaService {
         }
         customFields.add(new CustomFieldValue(ruoloUtente, new String[] {entity.getRuoloUtente()})); // Ruolo Utente
         customFields.add(new CustomFieldValue(altraAreaTematica, new String[] {entity.getAltraAreaTematica()})); // Tematica altro
+        customFields.add(new CustomFieldValue(programma, new String[] {entity.getNomeProgramma()})); // Programma
         ticket.setCustomFields(customFields);
         
         if (entity.getAllegati() != null && !entity.getAllegati().isEmpty()) {
