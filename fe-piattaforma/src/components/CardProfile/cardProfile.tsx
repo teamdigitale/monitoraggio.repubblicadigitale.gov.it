@@ -80,7 +80,7 @@ const CardProfile: React.FC<CardProfileI> = (props) => {
               >
                 <b>
                   {profile?.descrizioneRuolo} 
-                  {profile?.descrizioneRuolo !== 'FACILITATORE' && descrizioneEstesaUpperCase ? ` ${descrizioneEstesaUpperCase}` : ''}
+                  {!['FACILITATORE','VOLONTARIO'].includes(profile?.descrizioneRuolo) && descrizioneEstesaUpperCase ? ` ${descrizioneEstesaUpperCase}` : ''}
                 </b>
                 {device.mediaIsPhone && <br />}
                 {profile?.nomeEnte ? (
