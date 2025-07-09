@@ -102,7 +102,8 @@ const CardProfile: React.FC<CardProfileI> = (props) => {
                   profile?.codiceRuolo !== 'DTD' &&
                   profile?.codiceRuolo !== 'gestore community' &&
                   profile?.codiceRuolo !== 'MOD' &&
-                  profile?.codiceRuolo !== 'Profilo UDM' && (
+                  profile?.codiceRuolo !== 'Profilo UDM' && 
+                  profile?.codiceRuolo !== 'GESTORE COMMUNITY' && (
                     <>
                     {profile?.codiceRuolo === 'DEG' || profile?.codiceRuolo === 'REG' ? (
                       <>
