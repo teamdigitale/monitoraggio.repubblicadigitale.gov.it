@@ -1,5 +1,15 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.462](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.461...1.0.0-test.462) (2025-07-10)
+
+
+### Bug Fixes
+
+* **U345:** fix modale assistenza testo e cta 20250710 ([4b0294c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4b0294c45e0b6a154dc7c6a0dc8d810b7fbd261e))
+* **U431:** correzione colore subheader, wip fix mailto 20250710 ([85d1760](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/85d176002278b971d12c6e012f552d4706900d56))
+* **T466:** fix visualizzazione ruolo volontario  20250709 ([a312417](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a31241732dc2a74063948e19756eec4a4d7196d6))
+* **T463:** fix visualizzazione ruolo trasversale in scelta profilo 20250709 ([c091034](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c091034f81bfd38c9860bda4526460f819a28532))
+
 ## [1.0.0-test.461](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.460...1.0.0-test.461) (2025-07-03)
 
 
