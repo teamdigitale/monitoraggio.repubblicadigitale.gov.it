@@ -543,8 +543,9 @@ const HeaderDesktop: React.FC<HeaderI> = ({
             'd-flex',
             'align-items-center',
             'w-100',
-            'primary-bg'
-          )}
+            isLogged && 'primary-bg'
+        )}
+        style={!isLogged ?{ backgroundColor: '#004D99' }: {}}
         >
           <div className='container d-flex align-items-center'>
             <div
