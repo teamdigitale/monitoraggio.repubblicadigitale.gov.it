@@ -5,7 +5,6 @@ import { useAppSelector } from '../../../redux/hooks';
 import { closeModal, selectModalState } from '../../../redux/features/modal/modalSlice';
 import GenericModal from '../../../components/Modals/GenericModal/genericModal';
 import { selectProfile } from '../../../redux/features/user/userSlice';
-import { useNavigate } from 'react-router-dom';
 import { hrefValues } from './assistenzaUtils';
 
 
@@ -30,7 +29,6 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
   const ruolo = useAppSelector(selectProfile);
   const codRole = ruolo?.codiceRuolo;
   const policyRole = ruolo?.policy;
-  const navigate = useNavigate();
 
   const getHref = (label: string) => hrefValues.find(h => h.label === label)?.href || '#';
 
@@ -67,15 +65,20 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
       <div className="rounded p-6 text-center max-w-xl" style={{ backgroundColor: '#eeeeee' }}>
         <div className='p-3'>
           <p className='my-3 mx-5'>
-            Ti ricordiamo che tutte le informazioni per poter utilizzare facilita sono disponibili nel{' '}
+            Ti ricordiamo che tutte le informazioni per poter utilizzare Facilita sono disponibili nel{' '}
             <a href={getHref('VademecumFacilitatori')} target="_blank" className="text-blue-600 underline">
-              vademecum per le facilitatrici e facilitatori
+              Vademecum per le facilitatrici e i facilitatori
             </a>
           </p>
           <p className='my-3 mx-5'>
             Se il tuo problema riguarda l’attività di facilitazione vai al{' '}
             <a href={getHref('ManualeFacilitazione')} target="_blank" className="text-blue-600 underline">
-              manuale della facilitazione
+              Manuale della facilitazione
+            </a>
+          </p>
+          <p className='my-3 mx-5'>
+            <a href={getHref('FAQFacilitatori')} target="_blank" className="text-blue-600 underline">
+              FAQ per facilitatori su FACILITA
             </a>
           </p>
         </div>
@@ -84,7 +87,6 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
       <div className="text-center mb-5">
         <div className="font-bold text-gray-700 my-3"><b>Oppure</b></div>
         <p className="text-gray-700">
-          per trovare la soluzione <br />
           Invia una richiesta all’assistenza tecnica
         </p>
       </div>
@@ -96,15 +98,15 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
       <div className="rounded p-6 text-center max-w-xl" style={{ backgroundColor: '#eeeeee' }}>
         <div className='p-3'>
           <p className='my-3 mx-5'>
-            Ti ricordiamo che tutte le informazioni per poter utilizzare facilita sono disponibili nel{' '}
+            Ti ricordiamo che tutte le informazioni per poter utilizzare Facilita sono disponibili nel{' '}
             <a href={getHref('VademecumVolontari')} target="_blank" className="text-blue-600 underline">
-              vademecum per operatrici e operatori volontari
+              Vademecum per volontarie e volontari del Servizio Civile Digitale
             </a>
           </p>
           <p className='my-3 mx-5'>
             Se il tuo problema riguarda l’attività di facilitazione vai al{' '}
             <a href={getHref('ManualeVolontario')} target="_blank" className="text-blue-600 underline">
-              manuale dell'operatore volontario
+              Manuale dell'operatore volontario
             </a>
           </p>
         </div>
@@ -113,7 +115,6 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
       <div className="text-center mb-5">
         <div className="font-bold text-gray-700 my-3"><b>Oppure</b></div>
         <p className="text-gray-700">
-          per trovare la soluzione <br />
           Invia una richiesta all’assistenza tecnica
         </p>
       </div>
@@ -125,15 +126,20 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
       <div className="rounded p-6 text-center max-w-xl" style={{ backgroundColor: '#eeeeee' }}>
         <div className='p-3'>
           <p className='my-3 mx-5'>
-            Ti ricordiamo che tutte le informazioni per poter utilizzare facilita sono disponibili nel{' '}
+            Ti ricordiamo che tutte le informazioni per poter utilizzare Facilita sono disponibili nel{' '}
             <a href={getHref('VademecumEntiGestoriPartner')} target="_blank" className="text-blue-600 underline">
-              vademecum per enti gestori e partner di progetto
+              Vademecum per enti gestori e partner di progetto
             </a>
           </p>
           <p className='my-3 mx-5'>
             Se il tuo problema riguarda l’attività di facilitazione vai al{' '}
             <a href={getHref('ManualeVolontario')} target='_blank' className="text-blue-600 underline">
-              manuale dell'operatore volontario
+              Manuale dell'operatore volontario
+            </a>
+          </p>
+          <p className='my-3 mx-5'>
+            <a href={getHref('FAQEntiGestoriPartner')} target="_blank" className="text-blue-600 underline">
+              FAQ - Domande frequenti
             </a>
           </p>
         </div>
@@ -142,7 +148,6 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
       <div className="text-center mb-5">
         <div className="font-bold text-gray-700 my-3"><b>Oppure</b></div>
         <p className="text-gray-700">
-          per trovare la soluzione <br />
           Invia una richiesta all’assistenza tecnica
         </p>
       </div>
@@ -177,12 +182,10 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
       <GenericModal
         id={id}
         centerButtons={true}
-        primaryCTA={{
-          // disabled: !isFormValid || !isProgramSelected,
-          disabled: !assistenzaEnabled,
+        primaryCTA={assistenzaEnabled ? {
           label: "Vai all'assistenza",
-          onClick: () => { navigate("/richiesta-assistenza"); resetModal(); },
-        }}
+          onClick: () => { window.open("/richiesta-assistenza", "_blank"); resetModal(); },
+        } : undefined}
         secondaryCTA={{
           label: 'Annulla',
           onClick: resetModal,
