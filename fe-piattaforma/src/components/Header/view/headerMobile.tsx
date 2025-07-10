@@ -321,8 +321,9 @@ const HeaderMobile: React.FC<HeaderI> = ({
           'align-items-center',
           'justify-content-between',
           'w-100',
-          'primary-bg'
+          isLogged && 'primary-bg'
         )}
+        style={!isLogged ?{ backgroundColor: '#004D99' }: {}}
       >
         <div className='container d-flex align-items-center'>
           {isLogged && (

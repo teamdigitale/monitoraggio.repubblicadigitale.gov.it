@@ -181,6 +181,8 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
           <a
             href="mailto:problema-accesso-facilita@repubblicadigitale.gov.it"
             className="text-blue-600 underline"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             problema-accesso-facilita@repubblicadigitale.gov.it
           </a>
