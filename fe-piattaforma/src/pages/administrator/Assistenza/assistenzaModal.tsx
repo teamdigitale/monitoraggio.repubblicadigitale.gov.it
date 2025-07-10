@@ -29,7 +29,6 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
   const ruolo = useAppSelector(selectProfile);
   const codRole = ruolo?.codiceRuolo;
   const policyRole = ruolo?.policy;
-  const navigate = useNavigate();
   const isNotLogged = ruolo === undefined || ruolo === null;
   
   
