@@ -31,4 +31,8 @@ export const hrefValues = [
         label: 'FAQEntiGestoriPartner',
         href: 'https://dtd-gov.notion.site/FAQ-Domande-frequenti-adc53816ef334b29a07dcde26f026403'
     },
+    {
+        label: 'CapacityBuilding',
+        href: 'https://dtd-gov.notion.site/Capacity-Building-1-7-2-PNRR-a267078844104d08a0e685d3ffb27acc'
+    }
 ]
