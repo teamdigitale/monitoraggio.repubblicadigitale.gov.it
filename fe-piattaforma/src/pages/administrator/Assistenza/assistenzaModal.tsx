@@ -47,16 +47,16 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
   useEffect(() => {
     if (codRole === 'FAC' && policyRole === 'RFD') {
       setAssistenzaEnabled(true);
-    } else if ((codRole === 'VOL' || codRole === 'REG' || codRole === 'REGP' || codRole === 'REPP') && policyRole === 'SCD') {
+    } else if ((codRole === 'VOL' || codRole === 'REG' || codRole === 'REGP' || codRole === 'REPP' || codRole === 'DEGP') && policyRole === 'SCD') {
       setAssistenzaEnabled(true);
-    } else if ((codRole === 'REG' || codRole === 'REGP' || codRole === 'REPP') && policyRole === 'RFD') {
+    } else if ((codRole === 'REG' || codRole === 'REGP' || codRole === 'REPP' || codRole === 'DEGP') && policyRole === 'RFD') {
       setAssistenzaEnabled(true);
     } else {
       setAssistenzaEnabled(false);
     }
   }, [codRole, policyRole]);
 
-  // console.log('codRole:', codRole, 'policyRole:', policyRole);
+   console.log('codRole:', codRole, 'policyRole:', policyRole);
 
   let content;
 
@@ -93,7 +93,28 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
     </div>
   );
 
-  const contentVolRefScd = (
+  const contentRefScd = (
+    <div className="flex flex-col items-center gap-6">
+      <div className="rounded p-6 text-center max-w-xl" style={{ backgroundColor: '#eeeeee' }}>
+        <div className='p-3'>
+          <p className='my-3 mx-5'>
+            <a href={getHref('GuidaOperativaReferentiDelegati')} target="_blank" className="text-blue-600 underline">
+              Guida operativa per il caricamento massivo dei dati sui servizi 
+            </a>
+          </p>
+        </div>
+      </div>
+
+      <div className="text-center mb-5">
+        <div className="font-bold text-gray-700 my-3"><b>Oppure</b></div>
+        <p className="text-gray-700">
+          Invia una richiesta all’assistenza tecnica
+        </p>
+      </div>
+    </div>
+  );
+
+  const contentVolScd = (
     <div className="flex flex-col items-center gap-6">
       <div className="rounded p-6 text-center max-w-xl" style={{ backgroundColor: '#eeeeee' }}>
         <div className='p-3'>
@@ -132,11 +153,16 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
             </a>
           </p>
           <p className='my-3 mx-5'>
+            <a href={getHref('CapacityBuilding')} target="_blank" className="text-blue-600 underline">
+              Capacity Building - 1.7.2 PNRR 
+            </a>
+          </p>
+          {/* <p className='my-3 mx-5'>
             Se il tuo problema riguarda l’attività di facilitazione vai al{' '}
             <a href={getHref('ManualeVolontario')} target='_blank' className="text-blue-600 underline">
               Manuale dell'operatore volontario
             </a>
-          </p>
+          </p> */}
           <p className='my-3 mx-5'>
             <a href={getHref('FAQEntiGestoriPartner')} target="_blank" className="text-blue-600 underline">
               FAQ - Domande frequenti
@@ -168,9 +194,11 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
 
   if (codRole === 'FAC' && policyRole === 'RFD') { // Facilitatore RFD
     content = contentFacRfd;
-  } else if ((codRole === 'VOL' || codRole === 'REG' || codRole === 'REGP' || codRole === 'REPP') && policyRole === 'SCD') { // Volontario o Referente SCD
-    content = contentVolRefScd;
-  } else if ((codRole === 'REG' || codRole === 'REGP' || codRole === 'REPP') && policyRole === 'RFD') {  // Referente RFD
+  } else if ((codRole === 'REG' || codRole === 'REGP' || codRole === 'REPP') && policyRole === 'SCD' || codRole === 'DEGP') { // Referente SCD
+    content = contentRefScd;
+  } else if ((codRole === 'VOL') && policyRole === 'SCD') { // Volontario SCD
+    content = contentVolScd;
+  } else if ((codRole === 'REG' || codRole === 'REGP' || codRole === 'REPP' || codRole === 'DEGP') && policyRole === 'RFD') {  // Referente RFD
     content = contentRefRfd;
   } else {
     content = contentNoAssistenza;
