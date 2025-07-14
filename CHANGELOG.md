@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.463](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.462...1.0.0-test.463) (2025-07-14)
+
+
+### Bug Fixes
+
+* **U345:** fix definizione ruoli 20250714 ([e6574fe](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e6574fe1de6fd753d698e133d37a6198c92a5110))
+* **U345:** fix modale assistenza link per ruoli 20250711 ([19be52f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/19be52faccb3282cd4d19552e4f67416c3f3f250))
+
 ## [1.0.0-test.462](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.461...1.0.0-test.462) (2025-07-10)
 
 
