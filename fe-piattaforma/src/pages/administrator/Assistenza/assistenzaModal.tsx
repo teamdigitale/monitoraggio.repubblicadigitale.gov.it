@@ -194,7 +194,7 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
 
   if (codRole === 'FAC' && policyRole === 'RFD') { // Facilitatore RFD
     content = contentFacRfd;
-  } else if ((codRole === 'REG' || codRole === 'REGP' || codRole === 'REPP') && policyRole === 'SCD' || codRole === 'DEGP') { // Referente SCD
+  } else if ((codRole === 'REG' || codRole === 'REGP' || codRole === 'REPP' || codRole === 'DEGP') && policyRole === 'SCD' ) { // Referente SCD
     content = contentRefScd;
   } else if ((codRole === 'VOL') && policyRole === 'SCD') { // Volontario SCD
     content = contentVolScd;
