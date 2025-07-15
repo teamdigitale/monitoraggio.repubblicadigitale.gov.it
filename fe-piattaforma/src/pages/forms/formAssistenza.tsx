@@ -9,6 +9,10 @@ import InputSublabel from '../../components/InputSubLabel/inputSublabel';
 import { getTematicheAssistenza } from '../../redux/features/notification/notificationThunk';
 import TextEditor from '../../components/General/TextEditor/TextEditor';
 import { useDispatch } from 'react-redux';
+import './formAssistenza.scss';
+
+// Costante per il valore "Altro" nel dropdown area tematica
+const ALTRO_PROBLEMA_VALUE = 'altro_problema';
 
 export interface FormAssistenzaI extends withFormHandlerProps {
     formDisabled?: boolean;
@@ -45,6 +49,46 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
     const [editorText, setEditorText] = useState('<p></p>');
     const dispatch = useDispatch();
 
+    // Funzione per calcolare quali campi devono essere abilitati
+    const getEnabledFields = () => {
+        const field1Value = form?.['1']?.value;
+        const field2Value = form?.['2']?.value;
+        const field3Value = form?.['3']?.value;
+        const field4Value = form?.['4']?.value;
+
+        // Campo 1 sempre abilitato
+        const enabledFields = { '1': true, '2': false, '3': false, '4': false, files: false };
+
+        // Se campo 1 è valorizzato, abilita campo 2
+        if (field1Value) {
+            enabledFields['2'] = true;
+            
+            // Se campo 1 è "altro_problema", abilita anche campo 4
+            if (field1Value === ALTRO_PROBLEMA_VALUE) {
+                enabledFields['4'] = true;
+            }
+        }
+
+        // Se campo 2 è valorizzato, abilita campo 3
+        if (field2Value) {
+            enabledFields['3'] = true;
+        }
+
+        // Se campo 3 è valorizzato E (campo 4 non è richiesto O campo 4 è valorizzato), abilita files
+        if (field3Value) {
+            const isField4Required = field1Value === ALTRO_PROBLEMA_VALUE;
+            const isField4Valid = !isField4Required || (isField4Required && field4Value);
+            
+            if (isField4Valid) {
+                enabledFields.files = true;
+            }
+        }
+
+        return enabledFields;
+    };
+
+    const enabledFields = getEnabledFields();
+
     useEffect(() => {
         const plainCurrent = editorText.replace(/<[^>]+>/g, '').trim();
         const plainIncoming = (form?.['3']?.value as string)?.replace(/<[^>]+>/g, '').trim();
@@ -65,6 +109,15 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
                     label: t.descrizione,
                     value: t.tag,
                 }));
+
+                // Aggiungo l'opzione "Altro" se non è già presente
+                const hasAltroOption = mapped.some((option: any) => option.value === ALTRO_PROBLEMA_VALUE);
+                if (!hasAltroOption) {
+                    mapped.push({
+                        label: 'Altro',
+                        value: ALTRO_PROBLEMA_VALUE,
+                    });
+                }
 
                 updateForm({
                     ...form,
@@ -107,12 +160,12 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
 
         if (!field) return;
 
-        if (field === '1' && value === 'altro_problema') {
+        if (field === '1' && value === ALTRO_PROBLEMA_VALUE) {
             if (form && !form['4']) {
                 updateFormField('4', 'add');
             }
 
-        } else if (field === '1' && value !== 'altro_problema') {
+        } else if (field === '1' && value !== ALTRO_PROBLEMA_VALUE) {
             if (form && form['4']) {
                 updateFormField('4', 'remove');
             }
@@ -138,9 +191,9 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
                         '4': {
                             ...(form['4'] || {}),
                             // required solo se il valore è 'altro_problema'
-                            required: value === 'altro_problema',
+                            required: value === ALTRO_PROBLEMA_VALUE,
                             // resetta valore se cambia da 'altro_problema' a altro_problema valore
-                            value: value === 'altro_problema' ? form['4']?.value || '' : '',
+                            value: value === ALTRO_PROBLEMA_VALUE ? form['4']?.value || '' : '',
                         },
                     }
                     : {}),
@@ -168,6 +221,10 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
                     onFilesChange?.(newFiles);
                     return newFiles;
                 });
+                // Reset dell'input dopo aver aggiunto il file
+                if (inputRef.current) {
+                    inputRef.current.value = '';
+                }
             }
         });
     };
@@ -178,6 +235,10 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
             onFilesChange?.(updatedFiles);
             return updatedFiles;
         });
+        // Reset dell'input dopo aver rimosso il file
+        if (inputRef.current) {
+            inputRef.current.value = '';
+        }
     };
 
     const addDocument = () => {
@@ -190,13 +251,13 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
         <Form
             legend={legend}
             id="form-assistenza"
-            className={clsx('')}
+            className={clsx('form-assistenza')}
             formDisabled={formDisabled}
             marginShowMandatory={false}
             customMargin="mb-3 pb-3"
         >
             <Form.Row className="align-items-end">
-                {form?.['1']?.value === 'altro_problema' ? (
+                {form?.['1']?.value === ALTRO_PROBLEMA_VALUE ? (
                     <>
                         <Select
                             {...form?.['1']}
@@ -204,8 +265,8 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
                             value={form?.['1']?.value || ''}
                             placeholder="Seleziona l'area tematica"
                             onInputChange={onInputDataChange}
-                            isDisabled={formDisabled}
-                            subLabel='Seleziona l’area tematica di assistenza'
+                            isDisabled={formDisabled || !enabledFields['1']}
+                            subLabel="Seleziona l'area per cui hai bisogno di assistenza"
                             className="align-self-end"
                         />
 
@@ -215,34 +276,35 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
                             value={form?.['4']?.value || ''}
                             label={form?.['4']?.label || "Specifica un'altra area tematica"}
                             placeholder="Inserisci un'altra area tematica"
-                            onInputChange={onInputDataChange}
+                            onInputChange={enabledFields['4'] ? onInputDataChange : () => {}}
                             description="Definisci l'area tematica della tua richiesta"
-                            className="align-self-end"
+                            className={clsx("align-self-end", !enabledFields['4'] && "disabled-field")}
                         />
                     </>
                 ) : (
                     <Select
                         {...form?.['1']}
-                        col='col-12'
+                        col='col-6'
                         value={form?.['1']?.value || ''}
                         placeholder="Seleziona l'area tematica"
                         onInputChange={onInputDataChange}
-                        isDisabled={formDisabled}
-                        subLabel='Seleziona l’area tematica di assistenza'
+                        isDisabled={formDisabled || !enabledFields['1']}
+                        subLabel="Seleziona l'area per cui hai bisogno di assistenza"
                     />
                 )}
 
 
             </Form.Row>
-            <Form.Row>
+            <Form.Row className={clsx(!enabledFields['2'] && "disabled-field")}>
                 <InputSublabel
                     {...form?.['2']}
                     col="col-12"
                     value={form?.['2']?.value || ''}
                     label={form?.['2']?.label || 'Oggetto della richiesta'}
                     placeholder="Es: Impossibile modificare i dati del profilo"
-                    onInputChange={onInputDataChange}
+                    onInputChange={enabledFields['2'] ? onInputDataChange : () => {}}
                     description="Descrivi in modo sintetico l'argomento specifico della tua richiesta"
+                    // className={clsx(!enabledFields['2'] && "disabled-field")}
                 />
             </Form.Row>
             <Form.Row>
@@ -255,36 +317,38 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
                     style={{ marginLeft: '6px' }}
                     subLabel="Descrivi nei dettagli la tua richiesta. Ti consigliamo di specificare la sezione della piattaforma per cui richiedi assistenza e i passaggi che hai effettuto"
                 /> */}
-                <label className="form-label" style={{ fontWeight: 600, fontSize: '0.777778rem', marginLeft: '9px', marginBottom: '0px' }}>
+                <label className={clsx("form-assistenza-label", !enabledFields['3'] && "disabled-field")} style={{ marginLeft: '9px' }}>
                     Descrizione
                     <span className="required-asterisk"> *</span>
                 </label>
-                <p className="form-text"
+                <p className={clsx("form-text", !enabledFields['3'] && "disabled-field")}
                     style={{
                         textAlign: 'left',
                         marginLeft: '9px',
                         fontSize: '0.9rem',
                         marginBottom: '5px',
                     }}>Descrivi nei dettagli la tua richiesta. Ti consigliamo di specificare la sezione della piattaforma per cui richiedi assistenza e i passaggi che hai effettuato </p>
-                <TextEditor
-                    text={editorText}
-    
-                    onChange={(t: string) => {
-                        setEditorText(t);
+                <div className={clsx(!enabledFields['3'] && "disabled-field") } style={{ width: '100%', textAlign: 'justify'} }>
+                    <TextEditor
+                        text={editorText}
+                        onChange={enabledFields['3'] ? (t: string) => {
+                            setEditorText(t);
 
-                        // Rimuove tutti i tag e spazio bianco
-                        const plainText = t.replace(/<[^>]+>/g, '').trim();
+                            // Rimuove tutti i tag e spazio bianco
+                            const plainText = t.replace(/<[^>]+>/g, '').trim();
 
-                        // Se non c'è contenuto, manda stringa vuota
-                        const valueToSend = plainText ? t : '';
+                            // Se non c'è contenuto, manda stringa vuota
+                            const valueToSend = plainText ? t : '';
 
-                        onInputDataChange(valueToSend, '3');
-                    }}
-                    maxLength={1500}
-                />
+                            onInputDataChange(valueToSend, '3');
+                        } : () => {}}
+                        maxLength={1500}
+                        placeholder="Inserisci la descrizione dettagliata della tua richiesta"
+                    />
+                </div>
             </Form.Row>
             <>
-                {files.length > 0
+                {files.length > 0 && enabledFields.files
                     ? files.map((file, index) => (
                         <Form.Row key={index} className="mb-4 ml-1">
                             <div className='mt-5 d-flex align-items-center'>
@@ -303,16 +367,17 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
                                         onClick={() => removeDocument(index)}
                                         aria-label='Elimina'
                                         aria-hidden
+                                        style={{ cursor: 'pointer' }}
                                     />
                                 </div>
                             </div>
-                            <p className='text-muted mt-2 text-left'><em>Massimo 50 MB, formati supportati: .txt, .rtf, .odt, .zip, .docx, .doc, .ppt, .pptx, .pdf, .jpg, .png, .gif, .xls, .xlsx, .csv, .mpg, .wmv</em></p>
+                            <p className='text-muted mt-2 text-left'><em>Massimo 50 MB</em></p>
                         </Form.Row>
                     )) : null}
             </>
 
             <Form.Row className="mb-4 ml-1">
-                <div className='mt-5 d-flex align-items-center'>
+                <div className={clsx('mt-5 d-flex align-items-center', !enabledFields.files && "disabled-field")}>
                     <strong className='mr-2'>ALLEGA FILE</strong>
                 </div>
                 <div className='w-100'>
@@ -322,17 +387,19 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
                         accept='.txt, .rtf, .odt, .zip, .docx, .doc, .ppt, .pptx, .pdf, .jpg, .png, .gif, .xls, .xlsx, .csv, .mpg, .wmv'
                         ref={inputRef}
                         className='sr-only'
-                        onChange={updateFile}
+                        onChange={enabledFields.files ? updateFile : () => {}}
+                        disabled={!enabledFields.files}
                     />
                     <div className='d-flex align-items-center justify-content-between'>
-                        <p className='mt-2 mb-0' style={{ color: '#4c4c4d' }}>
+                        <p className={clsx('mt-2 mb-0', !enabledFields.files && "disabled-field")} style={{ color: '#4c4c4d' }}>
                             Carica file dal tuo dispositivo
                         </p>
                         <Button
                             outline
                             color='primary'
                             className='py-2 px-0 btn-document-modal'
-                            onClick={addDocument}
+                            onClick={enabledFields.files ? addDocument : () => {}}
+                            disabled={!enabledFields.files}
                         >
                             <Icon
                                 icon='it-plus'
@@ -346,8 +413,8 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
                         </Button>
                     </div>
                 </div>
-                <p className='text-muted mt-2 text-left'>
-                    <em>Massimo 50 MB, formati supportati: .txt, .rtf, .odt, .zip, .docx, .doc, .ppt, .pptx, .pdf, .jpg, .png, .gif, .xls, .xlsx, .csv, .mpg, .wmv</em></p>
+                <p className={clsx('text-muted mt-2 text-left', !enabledFields.files && "disabled-field")}>
+                    <em>Massimo 50 MB</em></p>
             </Form.Row>
 
         </Form>

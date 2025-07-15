@@ -170,7 +170,7 @@ const AssistenzaArea: React.FC = () => {
 
             <div className="d-flex justify-content-center" style={{ gap: '24px' }}>
                 {(step !== 3 || (requestOk !== 0 && requestOk !== 1)) && <Button color="primary" className="cta-button" outline onClick={handleClose}>
-                    {step === 1 ? "Annulla" : "Chiudi"}
+                    {step === 1 ? "Annulla" : "Chiudi" }
                 </Button>}
                 {(step !== 3 || requestOk !== 0) && <Button color="primary" className="cta-button" onClick={handleNext} disabled={step === 2 && !isFormValid}>
                     {step === 1 ? "Prosegui" : step === 2 ? "Invia" : requestOk === 1 ? "Chiudi" : "Torna alla richiesta"}
