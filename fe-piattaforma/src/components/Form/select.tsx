@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Select as SelectKit, SelectProps } from 'design-react-kit';
+import { Select as SelectKit, SelectProps, Icon } from 'design-react-kit';
 import clsx from 'clsx';
 import { formFieldI } from '../../utils/formHelper';
 
@@ -51,6 +51,7 @@ const Select: React.FC<SelectI> = (props) => {
     onMenuScrollToBottom
   } = props;
   const [selectedOption, setSelectedOption] = useState<OptionType>();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
 
   useEffect(() => {
@@ -99,6 +100,14 @@ const Select: React.FC<SelectI> = (props) => {
     setSelectedOption(option);
   };
 
+  const handleMenuOpen = () => {
+    setIsMenuOpen(true);
+  };
+
+  const handleMenuClose = () => {
+    setIsMenuOpen(false);
+  };
+
   const BaseProps = {
     ...props,
     col: undefined,
@@ -133,27 +142,42 @@ const Select: React.FC<SelectI> = (props) => {
           )}
         </>
       ) : null}
-      <SelectKit
-        {...BaseProps}
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        onChange={handleChange}
-        options={options}
-        value={selectedOption}
-        menuPlacement={position}
-        onMenuScrollToBottom={onMenuScrollToBottom}
-        color='primary'
-        className={clsx(
-          (value && !isDisabled ? 'border-select-value' : '') ||
-            (isDisabled ? 'deleteArrowInSelect' : '')
+      <div className='position-relative'>
+        <SelectKit
+          {...BaseProps}
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          onChange={handleChange}
+          onMenuOpen={handleMenuOpen}
+          onMenuClose={handleMenuClose}
+          options={options}
+          value={selectedOption}
+          menuPlacement={position}
+          onMenuScrollToBottom={onMenuScrollToBottom}
+          color='primary'
+          className={clsx(
+            'custom-select-with-icon',
+            (value && !isDisabled ? 'border-select-value' : '') ||
+              (isDisabled ? 'deleteArrowInSelect' : '')
+          )}
+          classNamePrefix={clsx(
+            shortDropdownMenu ? 'bootstrap-select-short' : 'bootstrap-select'
+          )}
+          aria-labelledby={`${(label || 'label select').replace(/\s/g, '-')}`}
+          isDisabled={isDisabled}
+          isSearchable={isSearchable}
+        />
+        {!isDisabled && (
+          <div className={clsx('custom-select-icon', { 'is-open': isMenuOpen })}>
+            <Icon
+              icon='it-expand'
+              size='sm'
+              color='primary'
+              aria-hidden={true}
+            />
+          </div>
         )}
-        classNamePrefix={clsx(
-          shortDropdownMenu ? 'bootstrap-select-short' : 'bootstrap-select'
-        )}
-        aria-labelledby={`${(label || 'label select').replace(/\s/g, '-')}`}
-        isDisabled={isDisabled}
-        isSearchable={isSearchable}
-      />
+      </div>
     </div>
   );
 };

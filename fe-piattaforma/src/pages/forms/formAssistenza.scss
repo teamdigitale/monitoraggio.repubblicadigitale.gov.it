@@ -1,0 +1,154 @@
+// Stile uniforme per tutte le label del form assistenza
+.form-assistenza-label {
+  font-weight: 600;
+  font-size: inherit;
+//   text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  display: block;
+  color: #000 !important;
+  
+  .required-asterisk {
+    color: #000 !important;
+    font-weight: bold;
+  }
+}
+
+// Override per i componenti Select e InputSublabel
+.form-assistenza {
+  // Per il componente Select
+  .bootstrap-select-wrapper {
+    label {
+      font-weight: 600 !important;
+    //   text-transform: uppercase !important;
+      font-size: inherit !important;
+      color: #000 !important;
+    }
+  }
+  
+  // Per il componente InputSublabel
+  .form-label {
+    font-weight: 600 !important;
+    // text-transform: uppercase !important;
+    font-size: inherit !important;
+    color: #000 !important;
+    
+    .required-asterisk {
+      color: #000 !important;
+      font-weight: bold !important;
+    }
+  }
+  
+  // Stili per i campi disabilitati
+  .disabled-field {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+  
+  // Override generale per tutte le label
+  label {
+    font-weight: 600 !important;
+    // text-transform: uppercase !important;
+    color: #000 !important;
+  }
+  
+  // Override per i bordi degli input - cambia da azzurro a grigio
+  #input-sublabel {
+    .form-input {
+      border-bottom: 2px solid #6c757d !important;
+      
+      &:focus {
+        border-bottom-color: #495057 !important;
+      }
+    }
+    
+    input {
+      border-bottom: 1px solid #6c757d !important;
+      
+      &:focus {
+        border-bottom-color: #495057 !important;
+      }
+    }
+  }
+  
+  // Override per il componente Select - cambia da azzurro a grigio
+  .border-select-value {
+    .bootstrap-select {
+      &__control {
+        border-bottom: 1px solid #6c757d !important;
+      }
+
+      &__control:focus {
+        border-bottom: 1px solid #495057 !important;
+      }
+    }
+  }
+  
+  // Override più specifico per il Select - multiple selettori
+  .bootstrap-select-wrapper {
+    .border-select-value {
+      .bootstrap-select {
+        &__control {
+          border-bottom: 1px solid #6c757d !important;
+        }
+
+        &__control:focus {
+          border-bottom: 1px solid #495057 !important;
+        }
+      }
+    }
+    
+    // Selettore alternativo per bootstrap-select
+    .bootstrap-select__control {
+      border-bottom: 1px solid #6c757d !important;
+      
+      &:focus {
+        border-bottom: 1px solid #495057 !important;
+      }
+    }
+  }
+  
+  // Override globale per qualsiasi elemento bootstrap-select
+  .bootstrap-select__control {
+    border-bottom: 1px solid #6c757d !important;
+    
+    &:focus {
+      border-bottom: 1px solid #495057 !important;
+    }
+  }
+  
+  // Override per tutti i possibili selettori del Select
+  .css-1pahdxg-control,
+  .css-1s2u09g-control,
+  .css-1hwfws3-control {
+    border-bottom: 1px solid #6c757d !important;
+    
+    &:focus {
+      border-bottom: 1px solid #495057 !important;
+    }
+  }
+  
+  // Override per il div contenitore del Select
+  div[class*="control"] {
+    border-bottom: 1px solid #6c757d !important;
+    
+    &:focus {
+      border-bottom: 1px solid #495057 !important;
+    }
+  }
+  
+  // Override specifico per il campo 1 (Select)
+  .col-6 {
+    .bootstrap-select-wrapper {
+      .border-select-value,
+      .bootstrap-select,
+      div[class*="control"] {
+        border-bottom: 1px solid #6c757d !important;
+        
+        &:focus {
+          border-bottom: 1px solid #495057 !important;
+        }
+      }
+    }
+  }
+}
