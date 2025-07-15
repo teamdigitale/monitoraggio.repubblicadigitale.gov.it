@@ -16,9 +16,10 @@ interface TextEditorI {
   text: string;
   onChange: (text: string) => void;
   maxLength?: number;
+  placeholder?: string;
 }
 
-const TextEditor = ({ text, onChange, maxLength = 1500 }: TextEditorI) => {
+const TextEditor = ({ text, onChange, maxLength = 1500, placeholder }: TextEditorI) => {
   const [hasFocus, setHasFocus] = useState(false);
   const [editorState, setEditorState] = useState(
     EditorState.createWithContent(
@@ -51,6 +52,7 @@ const TextEditor = ({ text, onChange, maxLength = 1500 }: TextEditorI) => {
           },
         }}
         editorState={editorState}
+        placeholder={placeholder}
         onEditorStateChange={(editorState) => {
           if (
             editorState.getCurrentContent().getPlainText().length <= maxLength
