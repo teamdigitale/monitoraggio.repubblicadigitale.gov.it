@@ -473,4 +473,28 @@ input > span {
 .deleteArrowInSelect .bootstrap-select__indicators {
   display: none;
 }
- 
+
+// Stili per la select personalizzata con icona it-expand
+.custom-select-with-icon {
+  .bootstrap-select__indicators {
+    display: none !important;
+  }
+}
+
+.custom-select-icon {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: 1;
+  transition: transform 0.3s ease;
+  
+  .icon {
+    color: #0073e6 !important; // Colore azzurro per l'icona
+  }
+
+  &.is-open {
+    transform: translateY(-50%) rotate(180deg);
+  }
+}
