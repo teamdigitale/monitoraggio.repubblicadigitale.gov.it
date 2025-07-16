@@ -47,7 +47,7 @@ const InputSublabel: React.FC<InputSublabelProps> = ({
             style={{
               textAlign: 'left',
               marginLeft: '9px',
-              marginTop: '40px',
+              // marginTop: '40px',
               fontSize: '0.9rem',
             }}>{description}</p>
       <input
