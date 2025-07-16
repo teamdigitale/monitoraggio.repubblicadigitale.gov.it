@@ -98,8 +98,17 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
         }
     }, [form?.['3']?.value]);
 
+    // Aggiorna il TextEditor quando i valori iniziali cambiano
+    useEffect(() => {
+        if (initialValues && initialValues['3'] && typeof initialValues['3'] === 'string') {
+            setEditorText(initialValues['3']);
+        }
+    }, [initialValues]);
+
 
     const initialized = useRef(false);
+    const prevInitialValues = useRef<{ [key: string]: any } | undefined>(undefined);
+    const optionsLoaded = useRef(false);
 
     useEffect(() => {
         const fetchTematicheAndUpdateForm = async () => {
@@ -126,6 +135,8 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
                         options: mapped,
                     },
                 });
+                
+                optionsLoaded.current = true;
             }
         };
 
@@ -133,7 +144,13 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
     }, []);
 
     useEffect(() => {
-        if (form && initialValues && !initialized.current) {
+        // Aspetta che le opzioni siano caricate prima di inizializzare con i valori iniziali
+        const shouldInitialize = form && initialValues && optionsLoaded.current && (
+            !initialized.current || 
+            JSON.stringify(prevInitialValues.current) !== JSON.stringify(initialValues)
+        );
+
+        if (shouldInitialize) {
             const updatedFields: formFieldI[] = Object.entries(initialValues).map(([key, value]) => {
                 if (!form[key]) return null;
 
@@ -143,12 +160,41 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
                 });
             }).filter(Boolean) as formFieldI[];
 
-            updateForm(newForm(updatedFields));
-            sendNewValues?.(initialValues);
-            setIsFormValid?.(FormHelper.isValidForm(form));
+            let newFormData = newForm(updatedFields);
+            
+            // Mantieni le opzioni del dropdown che sono state caricate
+            if (form['1'] && form['1'].options && (newFormData as any)['1']) {
+                (newFormData as any)['1'] = {
+                    ...(newFormData as any)['1'],
+                    options: form['1'].options,
+                };
+            }
+            
+            // Se il campo '1' ha valore "altro_problema", assicurati che il campo '4' sia presente
+            if (initialValues['1'] === ALTRO_PROBLEMA_VALUE) {
+                const field4 = form['4'];
+                if (field4) {
+                    newFormData = {
+                        ...newFormData,
+                        '4': {
+                            ...field4,
+                            value: initialValues['4'] || '',
+                            required: true,
+                        }
+                    };
+                }
+            }
+
+            updateForm(newFormData);
+            
+            // Invia tutti i valori del form corrente, non solo gli initialValues
+            const allCurrentValues = FormHelper.getFormValues(newFormData);
+            sendNewValues?.(allCurrentValues);
+            setIsFormValid?.(FormHelper.isValidForm(newFormData));
             initialized.current = true;
+            prevInitialValues.current = initialValues;
         }
-    }, [form, initialValues]);
+    }, [form, initialValues, optionsLoaded.current]);
 
     useEffect(() => {
         setIsFormValid?.(FormHelper.isValidForm(form));
