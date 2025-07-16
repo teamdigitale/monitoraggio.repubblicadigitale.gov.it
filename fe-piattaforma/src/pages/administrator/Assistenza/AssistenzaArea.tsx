@@ -48,17 +48,14 @@ const AssistenzaArea: React.FC = () => {
                 idEnte: ruolo?.idEnte,
                 nomeEnte: ruolo?.nomeEnte,
             }
-            
-            // COMMENTO LA CHIAMATA PER ESEGUIRE TEST SU ERRORE
-            // const res = await createTicketAssistenza(dispatch, payload);
-            // if (res === true) {
-            //     setRequestOk(1); // successo
-            // } else {
-            //     setRequestOk(2); // errore
-            // }
+        
+            const res = await createTicketAssistenza(dispatch, payload);
+            if (res === true) {
+                setRequestOk(1); // successo
+            } else {
+                setRequestOk(2); // errore
+            }
 
-            // SIMULAZIONE DI ERRORE
-            setRequestOk(2); 
             
         } else if (step === 3 && requestOk === 1) {
             // dopo successo, chiudo la finestra/tab
