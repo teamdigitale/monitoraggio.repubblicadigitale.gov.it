@@ -63,125 +63,139 @@ public class AssistenzaService {
     private Zendesk zendesk;
 
     public Boolean apriTicket(AperturaTicketRequest entity) {
+        try {
+            log.info("----- Apertura ticket con i seguenti dati: " + entity.toString() + " -----");
 
-        log.info("----- Apertura ticket con i seguenti dati: " + entity.toString() + " -----");
+            Ticket ticket = new Ticket();
+            // Requester (richiedente)
+            Requester requester = new Requester();
+            requester.setEmail(entity.getEmail());
+            requester.setName(entity.getNome());
+            ticket.setTicketFormId(idModulo); // ID del modulo di richiesta
+            ticket.setRequester(requester);
 
-        Ticket ticket = new Ticket();
-        // Requester (richiedente)
-        Requester requester = new Requester();
-        requester.setEmail(entity.getEmail());
-        requester.setName(entity.getNome());
-        ticket.setTicketFormId(idModulo); // ID del modulo di richiesta
-        ticket.setRequester(requester);
+            // Creare il ticket temporaneamente per ottenere l'ID
+            ticket = zendesk.createTicket(ticket);
+            Long ticketId = ticket.getId();
 
-        // Oggetto del ticket
-        ticket.setSubject(entity.getOggetto());
+            // Reimpostare il ticket con tutti i dati necessari
+            ticket = new Ticket();
+            ticket.setId(ticketId);
+            requester = new Requester();
+            requester.setEmail(entity.getEmail());
+            requester.setName(entity.getNome());
+            ticket.setTicketFormId(idModulo);
+            ticket.setRequester(requester);
 
-        // Descrizione del ticket
-        String descrizione = entity.getDescrizione();
-        descrizione = descrizione.replace("<ins>", "<u>").replace("</ins>", "</u>");
-        //.replaceAll("<[^>]*>", ""
-        ticket.setDescription(descrizione);
+            // Oggetto del ticket con ID
+            ticket.setSubject(entity.getOggetto()+ "#" + ticketId + " - ");
 
-        Comment comment = new Comment();
-        comment.setHtmlBody(descrizione);
-        ticket.setComment(comment);
+            // Descrizione del ticket
+            String descrizione = entity.getDescrizione();
+            descrizione = descrizione.replace("<ins>", "<u>").replace("</ins>", "</u>");
+            ticket.setDescription(descrizione);
 
-        // Stato del ticket
-        ticket.setStatus(Status.NEW);
+            Comment comment = new Comment();
+            comment.setHtmlBody(descrizione);
+            ticket.setComment(comment);
 
-        if(entity.getPolicy().equals("RFD")){
-            entity.setPolicy("rsfd");
-        }else if(entity.getPolicy().equals("SCD")){
-            entity.setPolicy("scd");
-        }
+            // Stato del ticket
+            ticket.setStatus(Status.NEW);
 
-        switch(entity.getRuoloUtente()) {
-            case "FAC":
-                entity.setRuoloUtente("facilitatore");
-                break;
-            case "VOL":
-                entity.setRuoloUtente("volontario");
-                break;
-            case "REPP":
-                entity.setRuoloUtente("referente_ente");
-                break;
-            case "REG":
-                entity.setRuoloUtente("referente_programma");
-                break;
-            case "REGP":
-                entity.setRuoloUtente("referente_progetto");
-                break;
-            case "DEG":
-                entity.setRuoloUtente("delegato_programma");
-                break;
-            case "DEPP":
-                entity.setRuoloUtente("delegato_ente");
-                break;
-            case "DEGP":   
-                entity.setRuoloUtente("delegato_progetto");
-                break;
-            default:
-                break;
-        }
-
-       // Custom fields(id dell'account di prova)
-        List<CustomFieldValue> customFields = new ArrayList<>();
-        customFields.add(new CustomFieldValue(areaTematica, new String[] {entity.getAreaTematica()})); // Area tematica Facilita
-        customFields.add(new CustomFieldValue(codiceFiscale, new String[] {entity.getCodiceFiscale()})); // Codice fiscale
-        customFields.add(new CustomFieldValue(ente, new String[] {entity.getIdEnte() + " - " + entity.getNomeEnte()})); // Ente
-        customFields.add(new CustomFieldValue(policy, new String[] {entity.getPolicy()})); // Intervento
-        customFields.add(new CustomFieldValue(nome, new String[] {entity.getNome()})); // Nominativo
-        if(entity.getIdProgetto() != null || entity.getNomeProgetto() != null) {    //controllo per evitare di aggiungere un campo null
-            String idProgetto = entity.getIdProgetto() != null ? entity.getIdProgetto() : "";
-            String nomeProgetto = entity.getNomeProgetto() != null ? entity.getNomeProgetto() : "";
-            if(!idProgetto.isEmpty() || !nomeProgetto.isEmpty()) {
-            customFields.add(new CustomFieldValue(progetto, new String[] {idProgetto + " - " + nomeProgetto})); // Progetto
+            if(entity.getPolicy().equals("RFD")){
+                entity.setPolicy("rsfd");
+            }else if(entity.getPolicy().equals("SCD")){
+                entity.setPolicy("scd");
             }
-        }
-        customFields.add(new CustomFieldValue(ruoloUtente, new String[] {entity.getRuoloUtente()})); // Ruolo Utente
-        customFields.add(new CustomFieldValue(altraAreaTematica, new String[] {entity.getAltraAreaTematica()})); // Tematica altro
-        customFields.add(new CustomFieldValue(programma, new String[] {entity.getNomeProgramma()})); // Programma
-        ticket.setCustomFields(customFields);
-        
-        if (entity.getAllegati() != null && !entity.getAllegati().isEmpty()) {
-            List<Attachment.Upload> uploads = new ArrayList<>();
 
-            for (AllegatoDTO allegatoBase64 : entity.getAllegati()) {
-                try {
-                    byte[] fileBytes = Base64.getDecoder().decode(allegatoBase64.getData());
+            switch(entity.getRuoloUtente()) {
+                case "FAC":
+                    entity.setRuoloUtente("facilitatore");
+                    break;
+                case "VOL":
+                    entity.setRuoloUtente("volontario");
+                    break;
+                case "REPP":
+                    entity.setRuoloUtente("referente_ente");
+                    break;
+                case "REG":
+                    entity.setRuoloUtente("referente_programma");
+                    break;
+                case "REGP":
+                    entity.setRuoloUtente("referente_progetto");
+                    break;
+                case "DEG":
+                    entity.setRuoloUtente("delegato_programma");
+                    break;
+                case "DEPP":
+                    entity.setRuoloUtente("delegato_ente");
+                    break;
+                case "DEGP":   
+                    entity.setRuoloUtente("delegato_progetto");
+                    break;
+                default:
+                    break;
+            }
 
-                    String nomeFile = allegatoBase64.getName();
+           // Custom fields(id dell'account di prova)
+            List<CustomFieldValue> customFields = new ArrayList<>();
+            customFields.add(new CustomFieldValue(areaTematica, new String[] {entity.getAreaTematica()})); // Area tematica Facilita
+            customFields.add(new CustomFieldValue(codiceFiscale, new String[] {entity.getCodiceFiscale()})); // Codice fiscale
+            customFields.add(new CustomFieldValue(ente, new String[] {entity.getIdEnte() + " - " + entity.getNomeEnte()})); // Ente
+            customFields.add(new CustomFieldValue(policy, new String[] {entity.getPolicy()})); // Intervento
+            customFields.add(new CustomFieldValue(nome, new String[] {entity.getNome()})); // Nominativo
+            if(entity.getIdProgetto() != null || entity.getNomeProgetto() != null) {    //controllo per evitare di aggiungere un campo null
+                String idProgetto = entity.getIdProgetto() != null ? entity.getIdProgetto() : "";
+                String nomeProgetto = entity.getNomeProgetto() != null ? entity.getNomeProgetto() : "";
+                if(!idProgetto.isEmpty() || !nomeProgetto.isEmpty()) {
+                customFields.add(new CustomFieldValue(progetto, new String[] {idProgetto + " - " + nomeProgetto})); // Progetto
+                }
+            }
+            customFields.add(new CustomFieldValue(ruoloUtente, new String[] {entity.getRuoloUtente()})); // Ruolo Utente
+            customFields.add(new CustomFieldValue(altraAreaTematica, new String[] {entity.getAltraAreaTematica()})); // Tematica altro
+            customFields.add(new CustomFieldValue(programma, new String[] {entity.getNomeProgramma()})); // Programma
+            ticket.setCustomFields(customFields);
+            
+            if (entity.getAllegati() != null && !entity.getAllegati().isEmpty()) {
+                List<Attachment.Upload> uploads = new ArrayList<>();
 
-                    // Upload su Zendesk
-                    Attachment.Upload upload = zendesk.createUpload(nomeFile, fileBytes);
+                for (AllegatoDTO allegatoBase64 : entity.getAllegati()) {
+                    try {
+                        byte[] fileBytes = Base64.getDecoder().decode(allegatoBase64.getData());
 
-                    uploads.add(upload);
-                } catch (Exception e) {
-                    System.err.println("Errore nell'elaborazione di un allegato: " + e.getMessage());
-                    // puoi loggare o saltare in base alla policy
+                        String nomeFile = allegatoBase64.getName();
+
+                        // Upload su Zendesk
+                        Attachment.Upload upload = zendesk.createUpload(nomeFile, fileBytes);
+
+                        uploads.add(upload);
+                    } catch (Exception e) {
+                        System.err.println("Errore nell'elaborazione di un allegato: " + e.getMessage());
+                        // puoi loggare o saltare in base alla policy
+                    }
+                }
+
+                if (!uploads.isEmpty()) {
+                    // Comment comment = new Comment();
+                    List<String> tokens = new ArrayList<>();
+                    for (Attachment.Upload upload : uploads) {
+                        tokens.add(upload.getToken());
+                    }
+                    comment.setUploads(tokens);
+                    ticket.setComment(comment);
                 }
             }
 
-            if (!uploads.isEmpty()) {
-                // Comment comment = new Comment();
-                List<String> tokens = new ArrayList<>();
-                for (Attachment.Upload upload : uploads) {
-                    tokens.add(upload.getToken());
-                }
-                comment.setUploads(tokens);
-                ticket.setComment(comment);
-            }
+            // Aggiornare il ticket con tutti i dati
+            Ticket finalTicket = zendesk.updateTicket(ticket);
+
+            log.info("----- Ticket creato con ID: " + finalTicket.getId() + "-----");
+            // zd.close();
+            return true;
+        } catch (Exception e) {
+            log.error("Errore durante la creazione/aggiornamento del ticket: ", e);
+            return false;
         }
-
-        
-
-        // Creazione ticket
-        Ticket createdTicket = zendesk.createTicket(ticket);
-
-        log.info("----- Ticket creato con ID: " + createdTicket.getId() + "-----");
-        // zd.close();
-        return createdTicket != null; 
     }
 
 
