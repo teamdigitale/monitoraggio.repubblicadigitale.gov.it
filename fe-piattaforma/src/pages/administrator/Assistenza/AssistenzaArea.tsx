@@ -8,7 +8,6 @@ import { openModal } from "../../../redux/features/modal/modalSlice";
 import UserAvatar from "../../../components/Avatar/UserAvatar/UserAvatar";
 import { AvatarSizes, AvatarTextSizes } from "../../../components/Avatar/AvatarInitials/avatarInitials";
 import FormAssistenza from "../../forms/formAssistenza";
-import { useLocation, useNavigate } from "react-router-dom";
 import { createTicketAssistenza } from "../../../redux/features/notification/notificationThunk";
 
 const AssistenzaArea: React.FC = () => {
@@ -19,15 +18,7 @@ const AssistenzaArea: React.FC = () => {
     const [isFormValid, setIsFormValid] = useState<boolean>(false);
     const [formValues, setFormValues] = useState<{ [key: string]: string | number | boolean | Date | string[] | undefined }>({});
     const [attachedFiles, setAttachedFiles] = useState<{ name: string; data: File | string }[]>([]);
-    const navigate = useNavigate();
     const [requestOk, setRequestOk] = useState(0); // 0 = caricamento, 1 = inviata ok, 2 = errore
-    interface LocationState {
-        from?: string;
-    }
-
-    const location = useLocation();
-    const state = location.state as LocationState;
-    const previousPath = state?.from || '/';
 
     const [step, setStep] = useState(1); 
 
@@ -58,16 +49,20 @@ const AssistenzaArea: React.FC = () => {
                 nomeEnte: ruolo?.nomeEnte,
             }
             
-            const res = await createTicketAssistenza(dispatch, payload);
-            if (res === true) {
-                setRequestOk(1); // successo
-            } else {
-                setRequestOk(2); // errore
-            }
+            // COMMENTO LA CHIAMATA PER ESEGUIRE TEST SU ERRORE
+            // const res = await createTicketAssistenza(dispatch, payload);
+            // if (res === true) {
+            //     setRequestOk(1); // successo
+            // } else {
+            //     setRequestOk(2); // errore
+            // }
+
+            // SIMULAZIONE DI ERRORE
+            setRequestOk(2); 
             
         } else if (step === 3 && requestOk === 1) {
-            // dopo successo, magari chiudo o torno alla home
-            navigate(previousPath, { replace: true }); 
+            // dopo successo, chiudo la finestra/tab
+            window.close();
         } else if (step === 3 && requestOk === 2) {
             // dopo errore, torno alla richiesta
             setStep(2);
@@ -111,7 +106,6 @@ const AssistenzaArea: React.FC = () => {
             </div>
         );
     } else if (step === 2) {
-
         content = (
             <div className="my-5 d-flex flex-column align-items-start" style={{ maxWidth: 720, margin: '0 auto' }}>
                 <FormAssistenza

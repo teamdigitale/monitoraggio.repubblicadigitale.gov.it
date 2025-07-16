@@ -2,6 +2,7 @@
 .form-assistenza-label {
   font-weight: 600;
   font-size: inherit;
+  margin-bottom: -3px !important;
 //   text-transform: uppercase;
   margin-bottom: 0.5rem;
   display: block;
@@ -31,6 +32,7 @@
     // text-transform: uppercase !important;
     font-size: inherit !important;
     color: #000 !important;
+    transform: translateY(-34px) !important;
     
     .required-asterisk {
       color: #000 !important;
@@ -150,5 +152,49 @@
         }
       }
     }
+  }
+  
+  // Allineamento a sinistra per le opzioni del select
+  .bootstrap-select-wrapper {
+    // Opzioni del dropdown
+    .dropdown-menu {
+      .dropdown-item {
+        text-align: left !important;
+        justify-content: flex-start !important;
+      }
+    }
+    
+    // Per react-select se utilizzato
+    .css-1n7v3ny-option,
+    .css-yt9ioa-option,
+    div[class*="option"] {
+      text-align: left !important;
+      justify-content: flex-start !important;
+    }
+    
+    // Menu delle opzioni
+    .css-1nmdiq5-menu,
+    .css-26l3qy-menu,
+    div[class*="menu"] {
+      div[class*="option"] {
+        text-align: left !important;
+        justify-content: flex-start !important;
+      }
+    }
+  }
+  
+  // Override globale per tutti i dropdown del select
+  .bootstrap-select__menu {
+    .bootstrap-select__option {
+      text-align: left !important;
+      justify-content: flex-start !important;
+    }
+  }
+  
+  // Selettori aggiuntivi per assicurare l'allineamento a sinistra
+  [class*="option"],
+  [class*="Option"] {
+    text-align: left !important;
+    justify-content: flex-start !important;
   }
 }
