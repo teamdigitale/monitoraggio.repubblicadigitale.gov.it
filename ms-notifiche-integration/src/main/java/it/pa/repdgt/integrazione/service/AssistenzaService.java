@@ -1,5 +1,6 @@
 package it.pa.repdgt.integrazione.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -20,6 +21,9 @@ import it.pa.repdgt.integrazione.dto.AreaTematicaDTO;
 import it.pa.repdgt.integrazione.entity.AssistenzaTematicheEntity;
 import it.pa.repdgt.integrazione.repository.AssistenzaTematicheRepository;
 import it.pa.repdgt.integrazione.request.AperturaTicketRequest;
+import it.pa.repdgt.shared.data.BasicData;
+import it.pa.repdgt.shared.exception.CodiceErroreEnum;
+import it.pa.repdgt.shared.exception.ZendeskException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -62,7 +66,7 @@ public class AssistenzaService {
     @Autowired
     private Zendesk zendesk;
 
-    public Boolean apriTicket(AperturaTicketRequest entity) {
+    public BasicData apriTicket(AperturaTicketRequest entity) throws ZendeskException {
         try {
             log.info("----- Apertura ticket con i seguenti dati: " + entity.toString() + " -----");
 
@@ -73,6 +77,16 @@ public class AssistenzaService {
             requester.setName(entity.getNome());
             ticket.setTicketFormId(idModulo); // ID del modulo di richiesta
             ticket.setRequester(requester);
+
+
+            // Descrizione del ticket
+            String descrizione = entity.getDescrizione();
+            descrizione = descrizione.replace("<ins>", "<u>").replace("</ins>", "</u>");
+            ticket.setDescription(descrizione);
+
+            Comment comment = new Comment();
+            comment.setHtmlBody(descrizione);
+            ticket.setComment(comment);
 
             // Creare il ticket temporaneamente per ottenere l'ID
             ticket = zendesk.createTicket(ticket);
@@ -88,16 +102,7 @@ public class AssistenzaService {
             ticket.setRequester(requester);
 
             // Oggetto del ticket con ID
-            ticket.setSubject(entity.getOggetto()+ "#" + ticketId + " - ");
-
-            // Descrizione del ticket
-            String descrizione = entity.getDescrizione();
-            descrizione = descrizione.replace("<ins>", "<u>").replace("</ins>", "</u>");
-            ticket.setDescription(descrizione);
-
-            Comment comment = new Comment();
-            comment.setHtmlBody(descrizione);
-            ticket.setComment(comment);
+            ticket.setSubject(entity.getOggetto()+ " (ticket n. " + ticketId + ")");
 
             // Stato del ticket
             ticket.setStatus(Status.NEW);
@@ -191,10 +196,10 @@ public class AssistenzaService {
 
             log.info("----- Ticket creato con ID: " + finalTicket.getId() + "-----");
             // zd.close();
-            return true;
+            return new BasicData(new BigDecimal(finalTicket.getId()), finalTicket.getSubject(), "Ticket creato con successo con ID: " + finalTicket.getId());
         } catch (Exception e) {
             log.error("Errore durante la creazione/aggiornamento del ticket: ", e);
-            return false;
+            throw new ZendeskException(e.getMessage(), CodiceErroreEnum.ZD00);
         }
     }
 
