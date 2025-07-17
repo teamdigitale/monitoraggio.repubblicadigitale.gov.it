@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
+import it.pa.repdgt.shared.exception.ZendeskException;
 import lombok.extern.slf4j.Slf4j;
 
 @RestControllerAdvice(basePackages = {"it.pa.repdgt"})
@@ -91,7 +92,7 @@ public class ApplicationExceptionHandler {
 	}
 	
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-	@ExceptionHandler(value = {UtenteException.class, RocketChatException.class, DrupalException.class, WorkdocsException.class, Exception.class})
+	@ExceptionHandler(value = {UtenteException.class, RocketChatException.class, DrupalException.class, WorkdocsException.class, Exception.class, ZendeskException.class})
 	public Map<String, String> handleException(Exception exc, HttpServletResponse response) {
 		log.error("{}", exc);
 		Map<String, String> errori = new HashMap<>();
@@ -112,6 +113,9 @@ public class ApplicationExceptionHandler {
 		} else if(exc instanceof WorkdocsException) {
 			workdocsException = (WorkdocsException) exc;
 			errori.put("errorCode", workdocsException.getCodiceErroreEnum().toString());
+		} else if(exc instanceof ZendeskException) {
+			ZendeskException zendeskException = (ZendeskException) exc;
+			errori.put("errorCode", zendeskException.getCodiceErroreEnum().toString());
 		} else {
 			errori.put("errorCode", CodiceErroreEnum.G01.toString());
 		}
