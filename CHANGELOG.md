@@ -1,5 +1,19 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.464](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.463...1.0.0-test.464) (2025-07-17)
+
+
+### Features
+
+* **U346:** gestione numero ticket nell'oggetto 20250716 ([58dba4a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/58dba4aca2fe465ec6b9d9962bd64049172636bc))
+
+
+### Bug Fixes
+
+* **U346:** rimozione condizione di errore 20250716 ([53c46b1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/53c46b133c6881ad08abb142f2eddc4c2cd0ce4c))
+* **U346:** fix grafiche, chiusura tab, mantenimento valori form 20250716 ([33d5879](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/33d5879fc5738b7ec1aa35146c1ca37ece5b2e33))
+* **U346:** fix grafici pagina form assistenza steps 20250715 ([c3df791](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c3df7918acbf505055634288b5f663b29eebcc2e))
+
 ## [1.0.0-test.463](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.462...1.0.0-test.463) (2025-07-14)
 
 
