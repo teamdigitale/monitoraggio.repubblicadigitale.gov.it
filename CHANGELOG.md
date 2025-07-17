@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.465](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.464...1.0.0-test.465) (2025-07-17)
+
+
+### Features
+
+* **U346:** Gestione numero ticket in oggetto v2 20250717 ([39ae6a0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/39ae6a050916e996b6ab2a27f94edc8c3b336819))
+
 ## [1.0.0-test.464](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.463...1.0.0-test.464) (2025-07-17)
 
 
