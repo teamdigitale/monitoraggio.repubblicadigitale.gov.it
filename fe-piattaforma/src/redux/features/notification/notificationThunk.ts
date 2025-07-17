@@ -77,7 +77,7 @@ export const createTicketAssistenza = async (dispatch: Dispatch, payload?: any):
       },
     });
 
-    return res?.data === true;
+    return res?.data != null ? true : false;
   } catch (error) {
     console.log('createTicketAssistenza error', error);
     return false;
