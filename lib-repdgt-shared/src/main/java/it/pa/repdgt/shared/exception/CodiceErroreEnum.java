@@ -165,6 +165,7 @@ public enum CodiceErroreEnum {
 	,M03("La data decorrenza non è compresa tra le date di inizio e fine del programma")
 	,M04("L'intervento inserito non è coerente con l'intervento del programma")
 	,M05("Configurazione minorenni già esistente per il programma")
+	,ZD00("Errore generico Zendesk")
 	;
 	
 	private String descrizioneErrore;

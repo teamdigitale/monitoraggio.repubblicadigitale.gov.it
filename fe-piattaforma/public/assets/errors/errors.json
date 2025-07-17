@@ -589,6 +589,11 @@
       "titolo": "IMPOSSIBILE AVVIARE INSERIMENTO DATI",
       "descrizione": "E' già in corso un inserimento dati",
       "type": "error"
+    },
+    "ZD01" : {
+      "titolo": "ERRORE INVIO TICKET",
+      "descrizione": "E' stato riscontrato un errore durante l'invio del ticket. Ti invitiamo a riprovare più tardi.",
+      "type": "error"
     }
   }
 }

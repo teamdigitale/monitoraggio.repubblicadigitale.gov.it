@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 import it.pa.repdgt.integrazione.dto.AreaTematicaDTO;
 import it.pa.repdgt.integrazione.request.AperturaTicketRequest;
 import it.pa.repdgt.integrazione.service.AssistenzaService;
+import it.pa.repdgt.shared.data.BasicData;
+import it.pa.repdgt.shared.exception.ZendeskException;
 
 import java.util.List;
 
@@ -21,7 +23,7 @@ public class AssistenzaRestApi {
     private AssistenzaService assistenzaService;
 
     @PostMapping("/apriTicket")
-    public Boolean apriTicket(@RequestBody AperturaTicketRequest entity) {
+    public BasicData apriTicket(@RequestBody AperturaTicketRequest entity) throws ZendeskException {
         return assistenzaService.apriTicket(entity);
     }
 
