@@ -78,7 +78,6 @@ public class AssistenzaService {
             ticket.setTicketFormId(idModulo); // ID del modulo di richiesta
             ticket.setRequester(requester);
 
-
             // Descrizione del ticket
             String descrizione = entity.getDescrizione();
             descrizione = descrizione.replace("<ins>", "<u>").replace("</ins>", "</u>");
@@ -86,23 +85,6 @@ public class AssistenzaService {
 
             Comment comment = new Comment();
             comment.setHtmlBody(descrizione);
-            ticket.setComment(comment);
-
-            // Creare il ticket temporaneamente per ottenere l'ID
-            ticket = zendesk.createTicket(ticket);
-            Long ticketId = ticket.getId();
-
-            // Reimpostare il ticket con tutti i dati necessari
-            ticket = new Ticket();
-            ticket.setId(ticketId);
-            requester = new Requester();
-            requester.setEmail(entity.getEmail());
-            requester.setName(entity.getNome());
-            ticket.setTicketFormId(idModulo);
-            ticket.setRequester(requester);
-
-            // Oggetto del ticket con ID
-            ticket.setSubject(entity.getOggetto()+ " (ticket n. " + ticketId + ")");
 
             // Stato del ticket
             ticket.setStatus(Status.NEW);
@@ -190,6 +172,23 @@ public class AssistenzaService {
                     ticket.setComment(comment);
                 }
             }
+
+            // Creare il ticket temporaneamente per ottenere l'ID
+            ticket = zendesk.createTicket(ticket);
+            Long ticketId = ticket.getId();
+
+            // Reimpostare il ticket con tutti i dati necessari
+            ticket = new Ticket();
+            ticket.setId(ticketId);
+            requester = new Requester();
+            requester.setEmail(entity.getEmail());
+            requester.setName(entity.getNome());
+            ticket.setTicketFormId(idModulo);
+            ticket.setRequester(requester);
+
+             // Oggetto del ticket con ID
+            ticket.setSubject(entity.getOggetto()+ " (ticket n. " + ticketId + ")");
+
 
             // Aggiornare il ticket con tutti i dati
             Ticket finalTicket = zendesk.updateTicket(ticket);
