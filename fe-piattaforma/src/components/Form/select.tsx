@@ -155,7 +155,7 @@ const Select: React.FC<SelectI> = (props) => {
           menuPlacement={position}
           onMenuScrollToBottom={onMenuScrollToBottom}
           color='primary'
-          maxMenuHeight={500}
+          maxMenuHeight={800}
           className={clsx(
             'custom-select-with-icon',
             (value && !isDisabled ? 'border-select-value' : '') ||
