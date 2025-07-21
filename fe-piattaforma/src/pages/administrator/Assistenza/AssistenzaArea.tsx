@@ -82,6 +82,10 @@ const AssistenzaArea: React.FC = () => {
 
 
     if (step === 1) {
+        console.log('ruolo:', ruolo);
+        console.log('user:', user);
+        
+        
         content = (
             <div className="my-5 d-flex flex-column align-items-center">
                 <UserAvatar
@@ -93,7 +97,7 @@ const AssistenzaArea: React.FC = () => {
 
                 <p className="mt-4 mb-3">
                     Stai per inviare una richiesta con il ruolo di <br />
-                    <strong>{ruolo?.descrizioneRuolo}</strong>
+                    <strong>{ruolo?.descrizioneRuoloCompleta}</strong>
                 </p>
 
                 <p className="text-muted" style={{ maxWidth: 480 }}>
@@ -160,7 +164,7 @@ const AssistenzaArea: React.FC = () => {
             {content}
 
             <div className="d-flex justify-content-center" style={{ gap: '24px' }}>
-                {(step !== 3 || (requestOk !== 0 && requestOk !== 1)) && <Button color="primary" className="cta-button" outline onClick={handleClose}>
+                {(step !== 3 || (requestOk !== 0 && requestOk !== 1)) && <Button color="primary" className="cta-button" outline onClick={step === 1 ? () => window.close() : handleClose}>
                     {step === 1 ? "Annulla" : "Chiudi" }
                 </Button>}
                 {(step !== 3 || requestOk !== 0) && <Button color="primary" className="cta-button" onClick={handleNext} disabled={step === 2 && !isFormValid}>
