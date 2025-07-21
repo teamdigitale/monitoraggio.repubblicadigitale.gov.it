@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.466](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.465...1.0.0-test.466) (2025-07-21)
+
+
+### Bug Fixes
+
+* **U346:** fix nome gestore, chiusura pagina step 1 e opzioni select 20250721 ([64149ba](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/64149bab6dfe6d05b88aa4d436be196e8ff3b44e))
+* **U346:** fix doppia email ticket con allegato 20250718 ([86c3511](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/86c3511a61716a39cb98eecccccd91b42059babb))
+
 ## [1.0.0-test.465](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.464...1.0.0-test.465) (2025-07-17)
 
 
