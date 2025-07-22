@@ -47,9 +47,9 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
   useEffect(() => {
     if (codRole === 'FAC' && policyRole === 'RFD') {
       setAssistenzaEnabled(true);
-    } else if ((codRole === 'VOL' || codRole === 'REG' || codRole === 'REGP' || codRole === 'REPP' || codRole === 'DEGP') && policyRole === 'SCD') {
+    } else if ((codRole === 'VOL' || codRole === 'REG' || codRole === 'REGP' || codRole === 'REPP' || codRole === 'DEGP'  || codRole === 'DEG' || codRole === 'DEPP') && policyRole === 'SCD') {
       setAssistenzaEnabled(true);
-    } else if ((codRole === 'REG' || codRole === 'REGP' || codRole === 'REPP' || codRole === 'DEGP') && policyRole === 'RFD') {
+    } else if ((codRole === 'REG' || codRole === 'REGP' || codRole === 'REPP' || codRole === 'DEGP'  || codRole === 'DEG' || codRole === 'DEPP') && policyRole === 'RFD') {
       setAssistenzaEnabled(true);
     } else {
       setAssistenzaEnabled(false);
@@ -194,11 +194,11 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
 
   if (codRole === 'FAC' && policyRole === 'RFD') { // Facilitatore RFD
     content = contentFacRfd;
-  } else if ((codRole === 'REG' || codRole === 'REGP' || codRole === 'REPP' || codRole === 'DEGP') && policyRole === 'SCD' ) { // Referente SCD
+  } else if ((codRole === 'REG' || codRole === 'REGP' || codRole === 'REPP' || codRole === 'DEGP'  || codRole === 'DEG' || codRole === 'DEPP') && policyRole === 'SCD' ) { // Referente SCD
     content = contentRefScd;
   } else if ((codRole === 'VOL') && policyRole === 'SCD') { // Volontario SCD
     content = contentVolScd;
-  } else if ((codRole === 'REG' || codRole === 'REGP' || codRole === 'REPP' || codRole === 'DEGP') && policyRole === 'RFD') {  // Referente RFD
+  } else if ((codRole === 'REG' || codRole === 'REGP' || codRole === 'REPP' || codRole === 'DEGP'  || codRole === 'DEG' || codRole === 'DEPP') && policyRole === 'RFD') {  // Referente RFD
     content = contentRefRfd;
   } else {
     content = contentNoAssistenza;
