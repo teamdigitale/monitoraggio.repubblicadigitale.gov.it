@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.467](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.466...1.0.0-test.467) (2025-07-22)
+
+
+### Bug Fixes
+
+* **U345:** fix visibilitá assistenza DEG e DEPP 20250722 ([00e122c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/00e122cf3fa0033d63d66152cbd55e449250c688))
+
 ## [1.0.0-test.466](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.465...1.0.0-test.466) (2025-07-21)
 
 
