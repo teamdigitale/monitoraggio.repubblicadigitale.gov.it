@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.468](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.467...1.0.0-test.468) (2025-07-24)
+
+
+### Bug Fixes
+
+* **U345:** fix testo modale assistenza 20250724 ([f78fbd1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f78fbd11f02da535adbc421f1ab8fa8b5ee2334b))
+
 ## [1.0.0-test.467](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.466...1.0.0-test.467) (2025-07-22)
 
 
