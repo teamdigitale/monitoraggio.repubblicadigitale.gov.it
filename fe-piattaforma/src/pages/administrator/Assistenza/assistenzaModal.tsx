@@ -77,14 +77,16 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
             </a>
           </p>
           <p className='my-3 mx-5'>
+            Puoi anche consultare le risposte alle domande più frequenti nelle{' '}
+            <a href={getHref('FAQFacilitatori')} target="_blank" className="text-blue-600 underline">
+              FAQ
+            </a>
+          </p>
+          <br />
+          <p className='my-3 mx-5'>
             Se il tuo problema riguarda l’attività di facilitazione vai al{' '}
             <a href={getHref('ManualeFacilitazione')} target="_blank" className="text-blue-600 underline">
               Manuale della facilitazione
-            </a>
-          </p>
-          <p className='my-3 mx-5'>
-            <a href={getHref('FAQFacilitatori')} target="_blank" className="text-blue-600 underline">
-              FAQ per facilitatori su FACILITA
             </a>
           </p>
         </div>
@@ -104,6 +106,7 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
       <div className="rounded p-6 text-center max-w-xl" style={{ backgroundColor: '#eeeeee' }}>
         <div className='p-3'>
           <p className='my-3 mx-5'>
+            Se il tuo problema riguarda il caricamento massivo dei dati dei servizi, consulta la{' '}
             <a href={getHref('GuidaOperativaReferentiDelegati')} target="_blank" className="text-blue-600 underline">
               Guida operativa per il caricamento massivo dei dati sui servizi 
             </a>
@@ -159,6 +162,14 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
             </a>
           </p>
           <p className='my-3 mx-5'>
+            Puoi anche consultare le risposte alle domande più frequenti nelle{' '}
+            <a href={getHref('FAQEntiGestoriPartner')} target="_blank" className="text-blue-600 underline">
+              FAQ
+            </a>
+          </p>
+          <br />
+          <p className='my-3 mx-5'>
+            Se il tuo problema riguarda le attività di gestione e monitoraggio, consulta il{' '}
             <a href={getHref('CapacityBuilding')} target="_blank" className="text-blue-600 underline">
               Capacity Building - 1.7.2 PNRR 
             </a>
@@ -169,11 +180,7 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
               Manuale dell'operatore volontario
             </a>
           </p> */}
-          <p className='my-3 mx-5'>
-            <a href={getHref('FAQEntiGestoriPartner')} target="_blank" className="text-blue-600 underline">
-              FAQ - Domande frequenti
-            </a>
-          </p>
+          
         </div>
       </div>
 
