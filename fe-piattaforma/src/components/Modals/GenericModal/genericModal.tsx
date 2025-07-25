@@ -286,49 +286,100 @@ const GenericModal: React.FC<GenericModalI> = (props) => {
                   : 'd-flex flex-row justify-content-end'
               )}
             >
-              {secondaryCTA ? (
-                <Button
-                  {...secondaryCTA}
-                  color='secondary'
-                  className={clsx(
-                    device.mediaIsPhone ? 'cta-button mb-2' : 'mr-2 cta-button',
-                    device.mediaIsPhone && noPaddingSecondary && 'pt-0',
-                    secondaryCTA.buttonsClass ?? 'cta-button',
-                    'm-2'
+              {device.mediaIsPhone ? (
+                // In modalità mobile: prima primaryCTA, poi secondaryCTA
+                <>
+                  {primaryCTA ? (
+                    <Button
+                      {...primaryCTA}
+                      className={clsx(
+                        primaryCTA.buttonsClass ?? 'cta-button',
+                        noPaddingPrimary && 'pt-0',
+                        'm-2'
+                      )}
+                      color='primary'
+                      onClick={() => handleAction('primary')}
+                      size='sm'
+                      aria-label={primaryCTA.label}
+                    >
+                      {primaryCTA.label}
+                      {withCTAIcon}
+                    </Button>
+                  ) : (
+                    <button
+                      className='hidden-btn'
+                      aria-label='footer della modale'
+                    />
                   )}
-                  onClick={() => handleAction('secondary')}
-                  size='xs'
-                  aria-label={secondaryCTA.label}
-                >
-                  {secondaryCTA.label}
-                </Button>
-              ) : (
-                <button
-                  className='hidden-btn'
-                  aria-label='footer della modale'
-                />
-              )}
-              {primaryCTA ? (
-                <Button
-                  {...primaryCTA}
-                  className={clsx(
-                    primaryCTA.buttonsClass ?? 'cta-button',
-                    device.mediaIsPhone && noPaddingPrimary && 'pt-0',
-                    'm-2'
+                  {secondaryCTA ? (
+                    <Button
+                      {...secondaryCTA}
+                      color='secondary'
+                      className={clsx(
+                        'cta-button',
+                        noPaddingSecondary && 'pt-0',
+                        secondaryCTA.buttonsClass ?? 'cta-button',
+                        'm-2'
+                      )}
+                      onClick={() => handleAction('secondary')}
+                      size='xs'
+                      aria-label={secondaryCTA.label}
+                    >
+                      {secondaryCTA.label}
+                    </Button>
+                  ) : (
+                    <button
+                      className='hidden-btn'
+                      aria-label='footer della modale'
+                    />
                   )}
-                  color='primary'
-                  onClick={() => handleAction('primary')}
-                  size={!device.mediaIsPhone ? 'xs' : 'sm'}
-                  aria-label={primaryCTA.label}
-                >
-                  {primaryCTA.label}
-                  {withCTAIcon}
-                </Button>
+                </>
               ) : (
-                <button
-                  className='hidden-btn'
-                  aria-label='footer della modale'
-                />
+                // In modalità desktop: ordine originale (secondaryCTA, primaryCTA)
+                <>
+                  {secondaryCTA ? (
+                    <Button
+                      {...secondaryCTA}
+                      color='secondary'
+                      className={clsx(
+                        'mr-2 cta-button',
+                        secondaryCTA.buttonsClass ?? 'cta-button',
+                        'm-2'
+                      )}
+                      onClick={() => handleAction('secondary')}
+                      size='xs'
+                      aria-label={secondaryCTA.label}
+                    >
+                      {secondaryCTA.label}
+                    </Button>
+                  ) : (
+                    <button
+                      className='hidden-btn'
+                      aria-label='footer della modale'
+                    />
+                  )}
+                  {primaryCTA ? (
+                    <Button
+                      {...primaryCTA}
+                      className={clsx(
+                        primaryCTA.buttonsClass ?? 'cta-button',
+                        'm-2'
+                      )}
+                      color='primary'
+                      onClick={() => handleAction('primary')}
+                      size='xs'
+                      aria-label={primaryCTA.label}
+                    >
+                      {primaryCTA.label}
+                      {withCTAIcon}
+                    </Button>
+                  ) : (
+                    <button
+                      className='hidden-btn'
+                      aria-label='footer della modale'
+                    />
+                  )}
+                </>
               )}
             </div>
           ) : (
