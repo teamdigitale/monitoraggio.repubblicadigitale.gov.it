@@ -43,6 +43,7 @@ const HeaderMobile: React.FC<HeaderI> = ({
   const userDropdownOptions = [
     { optionName: 'Il mio profilo', action: () => navigate('/area-personale') },
   ];
+  const isAssistenzaPage = location.pathname === '/richiesta-assistenza';
 
   const userDropDown = () => (
     <Dropdown
@@ -227,7 +228,7 @@ const HeaderMobile: React.FC<HeaderI> = ({
     <header
       className={clsx('header-container', isLogged && 'user-logged', 'w-100')}
     >
-      {isLogged && (
+      {isLogged && !isAssistenzaPage &&(
         <div
           className={clsx(
             'container',
@@ -325,7 +326,7 @@ const HeaderMobile: React.FC<HeaderI> = ({
         )}
       >
         <div className='container d-flex align-items-center'>
-          {isLogged && (
+          {isLogged && !isAssistenzaPage &&(
             <Button
               onClick={() => setIsOpen(true)}
               className='primary-bg-a6 px-2'
@@ -354,9 +355,12 @@ const HeaderMobile: React.FC<HeaderI> = ({
                 style={{width: 'auto', height: '74px'}}
               />*/}
               <div className='h3 text-white m-0'>Facilita</div>
+              <div className='text-white m-0'>
+                  La piattaforma dei servizi di facilitazione digitale
+                </div>
             </NavLink>
           </div>
-          {isLogged ? (
+          {isLogged && !isAssistenzaPage ? (
             <div className='header-container__main__search ml-auto'>
               <div
                 className={clsx(
