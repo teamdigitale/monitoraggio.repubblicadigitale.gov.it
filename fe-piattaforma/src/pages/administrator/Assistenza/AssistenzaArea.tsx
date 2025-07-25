@@ -163,12 +163,12 @@ const AssistenzaArea: React.FC = () => {
 
             {content}
 
-            <div className="d-flex justify-content-center" style={{ gap: '24px' }}>
-                {(step !== 3 || (requestOk !== 0 && requestOk !== 1)) && <Button color="primary" className="cta-button" outline onClick={step === 1 ? () => window.close() : handleClose}>
-                    {step === 1 ? "Annulla" : "Chiudi" }
-                </Button>}
-                {(step !== 3 || requestOk !== 0) && <Button color="primary" className="cta-button" onClick={handleNext} disabled={step === 2 && !isFormValid}>
+            <div className="d-flex flex-column flex-md-row justify-content-center align-items-center" style={{ gap: '24px' }}>
+                {(step !== 3 || requestOk !== 0) && <Button color="primary" className="cta-button order-1 order-md-2" onClick={handleNext} disabled={step === 2 && !isFormValid}>
                     {step === 1 ? "Prosegui" : step === 2 ? "Invia" : requestOk === 1 ? "Chiudi" : "Torna alla richiesta"}
+                </Button>}
+                {(step !== 3 || (requestOk !== 0 && requestOk !== 1)) && <Button color="primary" className="cta-button order-2 order-md-1" outline onClick={step === 1 ? () => window.close() : handleClose}>
+                    {step === 1 ? "Annulla" : "Chiudi" }
                 </Button>}
             </div>
             <AnnullaAssistenzaModal />
