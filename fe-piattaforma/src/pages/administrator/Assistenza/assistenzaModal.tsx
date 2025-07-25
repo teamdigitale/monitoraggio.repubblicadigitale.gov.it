@@ -6,6 +6,7 @@ import { closeModal, selectModalState } from '../../../redux/features/modal/moda
 import GenericModal from '../../../components/Modals/GenericModal/genericModal';
 import { selectProfile } from '../../../redux/features/user/userSlice';
 import { hrefValues } from './assistenzaUtils';
+import './assistenzaModal.scss';
 
 
 
