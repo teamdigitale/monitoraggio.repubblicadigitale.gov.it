@@ -307,7 +307,7 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
                     <>
                         <Select
                             {...form?.['1']}
-                            col='col-6'
+                            col='col-12 col-lg-6'
                             value={form?.['1']?.value || ''}
                             placeholder="Seleziona l'area tematica"
                             onInputChange={onInputDataChange}
@@ -318,7 +318,7 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
 
                         <InputSublabel
                             {...form?.['4']}
-                            col="col-6"
+                            col="col-12 col-lg-6"
                             value={form?.['4']?.value || ''}
                             label={form?.['4']?.label || "Specifica un'altra area tematica"}
                             placeholder="Inserisci un'altra area tematica"
@@ -330,7 +330,7 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
                 ) : (
                     <Select
                         {...form?.['1']}
-                        col='col-6'
+                        col='col-12 col-lg-6'
                         value={form?.['1']?.value || ''}
                         placeholder="Seleziona l'area tematica"
                         onInputChange={onInputDataChange}
