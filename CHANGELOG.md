@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.469](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.468...1.0.0-test.469) (2025-07-28)
+
+
+### Bug Fixes
+
+* **U346:** fix grafiche area assistenza e form assistenza 20250725 ([20334f8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/20334f81a833b473365ae67d7ce0ada67ecca93d))
+* **U345:** fix titolo e cta modaleAssistenza 20250725 ([c751fde](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c751fdeccadfbaa68d43e372af69cd7bd3ef3b89))
+
 ## [1.0.0-test.468](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.467...1.0.0-test.468) (2025-07-24)
 
 
