@@ -1,3 +1,5 @@
 # IDE artifact files
 .idea/
 .DS_Store
+data.sql
+target/
