@@ -1,5 +1,17 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.470](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.469...1.0.0-test.470) (2025-07-30)
+
+
+### Features
+
+* **test:** aggiornamento data limite luglio 20250730 ([cdcf770](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/cdcf770e55e4ffd86f6c658e9f08460f4a5ea2c9))
+
+
+### Bug Fixes
+
+* **test:** update gitignore 20250730 ([12defc0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/12defc04c7948b9828ebe97618f6ce5812b742d9))
+
 ## [1.0.0-test.469](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.468...1.0.0-test.469) (2025-07-28)
 
 
