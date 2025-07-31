@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.471](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.470...1.0.0-test.471) (2025-07-31)
+
+
+### Bug Fixes
+
+* **T479:** fix sezioni forum, documento, dettagli servizio textArea 20250731 ([f6f8e18](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f6f8e18a61cba52fc656dc811cfeccc989d0bc93))
+* **T479:** fix sequenza .." in inserimento annuncio bacheca 20250730 ([49dec43](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/49dec43c6afce9062c43a9e16122169900fd81ea))
+
 ## [1.0.0-test.470](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.469...1.0.0-test.470) (2025-07-30)
 
 
