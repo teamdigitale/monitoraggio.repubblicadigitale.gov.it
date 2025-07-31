@@ -5,6 +5,24 @@ import { formFieldI } from '../../utils/formHelper';
 import { dayOfWeek } from '../../pages/administrator/AdministrativeArea/Entities/utils';
 import { isSafariBrowser } from '../../utils/common';
 
+// Funzione per preservare le virgolette non escapate nel contenuto testuale
+const preserveQuotes = (text: string): string => {
+  // Sostituisce tutte le &quot; con " per preservare il testo originale
+  let processedText = text.replace(/&quot;/g, '"');
+  
+  // Gestione specifica per il pattern '.."' usando zero-width space per prevenire escaping
+  // Aggiunge uno zero-width space (\u200B) prima delle virgolette problematiche
+  processedText = processedText.replace(/\.\."/g, '..\u200B"');
+  
+  return processedText;
+};
+
+// Funzione per ripulire il testo quando viene caricato nell'input
+const cleanInputText = (text: string): string => {
+  // Rimuove gli zero-width space che potrebbero essere stati aggiunti precedentemente
+  return text.replace(/\u200B/g, '');
+};
+
 const blackList = [
   'checked',
   'col',
@@ -78,11 +96,13 @@ const Input: React.FC<InputI> = (props) => {
     validationText
   } = props;
 
-  const [val, setVal] = useState<formFieldI['value']>(value);
+  const [val, setVal] = useState<formFieldI['value']>(
+    typeof value === 'string' ? cleanInputText(value) : value
+  );
   const [check, setChecked] = useState<boolean>(checked);
 
   useEffect(() => {
-    setVal(value);
+    setVal(typeof value === 'string' ? cleanInputText(value) : value);
   }, [value]);
 
   useEffect(() => {
@@ -90,7 +110,14 @@ const Input: React.FC<InputI> = (props) => {
   }, [checked]);
 
   useEffect(() => {
-    if (onInputChange && val !== value) onInputChange(val, field);
+    const cleanedVal = typeof val === 'string' ? cleanInputText(val) : val;
+    const cleanedValue = typeof value === 'string' ? cleanInputText(value) : value;
+    
+    // Confronta solo se c'è una vera differenza nel contenuto, ignorando gli zero-width spaces
+    if (onInputChange && cleanedVal !== cleanedValue) {
+      const outputValue = typeof val === 'string' ? preserveQuotes(val) : val;
+      onInputChange(outputValue, field);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [val]);
 
@@ -139,7 +166,10 @@ const Input: React.FC<InputI> = (props) => {
         : undefined,
     minLength: type === 'text' && minimum ? Number(minimum) : undefined,
     onBlur: (e) => {
-      if (onInputBlur) onInputBlur(val, field);
+      if (onInputBlur) {
+        const outputValue = typeof val === 'string' ? preserveQuotes(val) : val;
+        onInputBlur(outputValue, field);
+      }
       handleOnChange(e);
     },
     disabled,
