@@ -3,6 +3,24 @@ import { Label } from 'design-react-kit';
 import React, { ChangeEvent, useEffect, useRef, useState, CSSProperties } from 'react';
 import { formFieldI } from '../../utils/formHelper';
 
+// Funzione per preservare le virgolette non escapate nel contenuto testuale
+const preserveQuotes = (text: string): string => {
+  // Sostituisce tutte le &quot; con " per preservare il testo originale
+  let processedText = text.replace(/&quot;/g, '"');
+  
+  // Gestione specifica per il pattern '.."' usando zero-width space per prevenire escaping
+  // Aggiunge uno zero-width space (\u200B) prima delle virgolette problematiche
+  processedText = processedText.replace(/\.\."/g, '..\u200B"');
+  
+  return processedText;
+};
+
+// Funzione per ripulire il testo quando viene caricato nella textarea
+const cleanInputText = (text: string): string => {
+  // Rimuove gli zero-width space che potrebbero essere stati aggiunti precedentemente
+  return text.replace(/\u200B/g, '');
+};
+
 interface TextAreaPropsI {
   className?: string;
   cols?: number;
@@ -61,14 +79,20 @@ const TextArea: React.FC<TextAreaI> = (props) => {
     style, 
   } = props;
 
-  const [val, setVal] = useState(value.toString());
+  const [val, setVal] = useState(cleanInputText(value.toString()));
 
   useEffect(() => {
-    setVal(value.toString());
+    setVal(cleanInputText(value.toString()));
   }, [value]);
 
   useEffect(() => {
-    if (onInputChange && val !== value) onInputChange(val, field);
+    const cleanedVal = cleanInputText(val);
+    const cleanedValue = cleanInputText(value.toString());
+    
+    // Confronta solo se c'è una vera differenza nel contenuto, ignorando gli zero-width spaces
+    if (onInputChange && cleanedVal !== cleanedValue) {
+      onInputChange(preserveQuotes(val), field);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [val]);
 
@@ -84,7 +108,7 @@ const TextArea: React.FC<TextAreaI> = (props) => {
     maxLength: maximum ? Number(maximum) : undefined,
     minLength: minimum ? Number(minimum) : undefined,
     onBlur: (e) => {
-      if (onInputBlur) onInputBlur(val, field);
+      if (onInputBlur) onInputBlur(preserveQuotes(val), field);
       handleOnChange(e);
     },
     required,
