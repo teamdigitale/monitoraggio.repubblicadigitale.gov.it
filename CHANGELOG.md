@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.472](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.471...1.0.0-test.472) (2025-08-05)
+
+
+### Bug Fixes
+
+* **T479:** aggiunto errore forward 20250805 ([ccc5348](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ccc5348b78916cd4bfcce35f50b4f1a0d803a063))
+
 ## [1.0.0-test.471](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.470...1.0.0-test.471) (2025-07-31)
 
 
