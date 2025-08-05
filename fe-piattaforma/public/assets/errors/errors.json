@@ -70,6 +70,11 @@
       "descrizione": "Errore Pagina richista non esistente",
       "type": "error"
     },
+    "G04": {
+      "titolo": "Inserimento non consentito",
+      "descrizione": "La tua richiesta è stata bloccata perché il contenuto include caratteri non validi. Se pensi che ci sia un errore, contatta il supporto.",
+      "type": "error"
+    },
     "R01": {
       "titolo": "NOME RUOLO GIÀ IN USO",
       "descrizione": "Il nome inserito risulta associato a un altro ruolo. Inserisci un nome ruolo differente",

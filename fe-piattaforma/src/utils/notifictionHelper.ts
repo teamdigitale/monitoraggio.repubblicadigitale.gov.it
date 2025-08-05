@@ -131,7 +131,8 @@ export const errorHandler = async (error: unknown) => {
         console.error("Errore durante il recupero del messaggio:", error);
       }
       //aggiunto controllo per non mostrare messaggio di errore in caso di errore drupal forward 
-      if (errorData && !(urlForward.some(keyword => JSON.parse((error as any)?.config.data).url?.includes(keyword)))) { 
+      // if (errorData && !(urlForward.some(keyword => JSON.parse((error as any)?.config.data).url?.includes(keyword)))) { 
+      if (errorData) {
         dispatchNotify({
           title: errorData.title,
           status: errorData.status,
@@ -139,7 +140,7 @@ export const errorHandler = async (error: unknown) => {
           closable: true,
           duration: 'slow',
         });
-      }
+     }
     } else {  //dispatch notify network error
       dispatchNotify({
         title: networkErrorPayload.title,
