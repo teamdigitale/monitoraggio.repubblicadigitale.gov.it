@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.473](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.472...1.0.0-test.473) (2025-08-29)
+
+
+### Features
+
+* **test:** aggiornamento data limite agosto 20250829 ([336f9b8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/336f9b8a502ede8b238c996025722bdc7a09048a))
+
 ## [1.0.0-test.472](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.471...1.0.0-test.472) (2025-08-05)
 
 
