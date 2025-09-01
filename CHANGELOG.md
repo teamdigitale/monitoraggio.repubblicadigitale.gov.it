@@ -1,5 +1,18 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.48.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.47.1...1.48.0) (2025-07-31)
+
+
+### Features
+
+* **test:** aggiornamento data limite luglio 20250730 ([58f1ea3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/58f1ea35998df50fd5c1b87d86bf033734d8b624))
+
+
+### Bug Fixes
+
+* **T466:** fix visualizzazione ruolo volontario  20250709 ([ca7ced3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ca7ced31dd016c00c3cd2637165996a0fcb18e37))
+* **T463:** fix visualizzazione ruolo trasversale in scelta profilo 20250709 ([f41bb00](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f41bb00bf1a2125d3d8a62c371e7e6a2b9ed2dd1))
+
 ## [1.47.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.47.0...1.47.1) (2025-06-30)
 
 
