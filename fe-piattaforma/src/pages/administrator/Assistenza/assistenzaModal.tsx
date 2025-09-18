@@ -5,7 +5,8 @@ import { useAppSelector } from '../../../redux/hooks';
 import { closeModal, selectModalState } from '../../../redux/features/modal/modalSlice';
 import GenericModal from '../../../components/Modals/GenericModal/genericModal';
 import { selectProfile } from '../../../redux/features/user/userSlice';
-import { useNavigate } from 'react-router-dom';
+import { hrefValues } from './assistenzaUtils';
+import './assistenzaModal.scss';
 
 
 
@@ -16,7 +17,7 @@ interface ManageReferalFormI {
   creation?: boolean;
 }
 
-interface ManageReferalI extends withFormHandlerProps, ManageReferalFormI {}
+interface ManageReferalI extends withFormHandlerProps, ManageReferalFormI { }
 
 const AssistenzaModal: React.FC<ManageReferalI> = ({
   // clearForm = () => ({}),
@@ -29,10 +30,9 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
   const ruolo = useAppSelector(selectProfile);
   const codRole = ruolo?.codiceRuolo;
   const policyRole = ruolo?.policy;
-  const navigate = useNavigate();
-  
-  
-  
+
+  const getHref = (label: string) => hrefValues.find(h => h.label === label)?.href || '#';
+
 
   const resetModal = (toClose = true) => {
     if (toClose) dispatch(closeModal());
@@ -48,17 +48,17 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
   useEffect(() => {
     if (codRole === 'FAC' && policyRole === 'RFD') {
       setAssistenzaEnabled(true);
-    } else if ((codRole === 'VOL' || codRole === 'REG' || codRole === 'REGP' || codRole === 'REPP') && policyRole === 'SCD') {
+    } else if ((codRole === 'VOL' || codRole === 'REG' || codRole === 'REGP' || codRole === 'REPP' || codRole === 'DEGP'  || codRole === 'DEG' || codRole === 'DEPP') && policyRole === 'SCD') {
       setAssistenzaEnabled(true);
-    } else if ((codRole === 'REG' || codRole === 'REGP' || codRole === 'REPP') && policyRole === 'RFD') {
+    } else if ((codRole === 'REG' || codRole === 'REGP' || codRole === 'REPP' || codRole === 'DEGP'  || codRole === 'DEG' || codRole === 'DEPP') && policyRole === 'RFD') {
       setAssistenzaEnabled(true);
     } else {
       setAssistenzaEnabled(false);
     }
   }, [codRole, policyRole]);
 
-  // console.log('codRole:', codRole, 'policyRole:', policyRole);
-  
+   console.log('codRole:', codRole, 'policyRole:', policyRole);
+
   let content;
 
   const contentFacRfd = (
@@ -66,15 +66,21 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
       <div className="rounded p-6 text-center max-w-xl" style={{ backgroundColor: '#eeeeee' }}>
         <div className='p-3'>
           <p className='my-3 mx-5'>
-            Ti ricordiamo che tutte le informazioni per poter utilizzare facilita sono disponibili nel{' '}
-            <a href="#" className="text-blue-600 underline">
-              vademecum per le facilitatrici e facilitatori
+            Ti ricordiamo che tutte le informazioni per poter utilizzare Facilita sono disponibili nel{' '}
+            <a href={getHref('VademecumFacilitatori')} target="_blank" className="text-blue-600 underline">
+              Vademecum per le facilitatrici e i facilitatori
+            </a>
+          </p>
+          <p className='my-3 mx-5'>
+            Puoi anche consultare le risposte alle domande più frequenti nelle{' '}
+            <a href={getHref('FAQFacilitatori')} target="_blank" className="text-blue-600 underline">
+              FAQ
             </a>
           </p>
           <p className='my-3 mx-5'>
             Se il tuo problema riguarda l’attività di facilitazione vai al{' '}
-            <a href="#" className="text-blue-600 underline">
-              manuale della facilitazione
+            <a href={getHref('ManualeFacilitazione')} target="_blank" className="text-blue-600 underline">
+              Manuale della facilitazione
             </a>
           </p>
         </div>
@@ -83,27 +89,20 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
       <div className="text-center mb-5">
         <div className="font-bold text-gray-700 my-3"><b>Oppure</b></div>
         <p className="text-gray-700">
-          per trovare la soluzione <br />
           Invia una richiesta all’assistenza tecnica
         </p>
       </div>
     </div>
   );
 
-  const contentVolRefScd = (
+  const contentRefScd = (
     <div className="flex flex-col items-center gap-6">
       <div className="rounded p-6 text-center max-w-xl" style={{ backgroundColor: '#eeeeee' }}>
         <div className='p-3'>
           <p className='my-3 mx-5'>
-            Ti ricordiamo che tutte le informazioni per poter utilizzare facilita sono disponibili nel{' '}
-            <a href="#" className="text-blue-600 underline">
-              vademecum per operatrici e operatori volontari
-            </a>
-          </p>
-          <p className='my-3 mx-5'>
-            Se il tuo problema riguarda l’attività di facilitazione vai al{' '}
-            <a href="#" className="text-blue-600 underline">
-              manuale dell'operatore volontario
+            Se il tuo problema riguarda il caricamento massivo dei dati dei servizi, consulta la{' '}
+            <a href={getHref('GuidaOperativaReferentiDelegati')} target="_blank" className="text-blue-600 underline">
+              Guida operativa per il caricamento massivo dei dati sui servizi 
             </a>
           </p>
         </div>
@@ -112,7 +111,34 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
       <div className="text-center mb-5">
         <div className="font-bold text-gray-700 my-3"><b>Oppure</b></div>
         <p className="text-gray-700">
-          per trovare la soluzione <br />
+          Invia una richiesta all’assistenza tecnica
+        </p>
+      </div>
+    </div>
+  );
+
+  const contentVolScd = (
+    <div className="flex flex-col items-center gap-6">
+      <div className="rounded p-6 text-center max-w-xl" style={{ backgroundColor: '#eeeeee' }}>
+        <div className='p-3'>
+          <p className='my-3 mx-5'>
+            Ti ricordiamo che tutte le informazioni per poter utilizzare Facilita sono disponibili nel{' '}
+            <a href={getHref('VademecumVolontari')} target="_blank" className="text-blue-600 underline">
+              Vademecum per volontarie e volontari del Servizio Civile Digitale
+            </a>
+          </p>
+          <p className='my-3 mx-5'>
+            Se il tuo problema riguarda l’attività di facilitazione vai al{' '}
+            <a href={getHref('ManualeVolontario')} target="_blank" className="text-blue-600 underline">
+              Manuale dell'operatore volontario
+            </a>
+          </p>
+        </div>
+      </div>
+
+      <div className="text-center mb-5">
+        <div className="font-bold text-gray-700 my-3"><b>Oppure</b></div>
+        <p className="text-gray-700">
           Invia una richiesta all’assistenza tecnica
         </p>
       </div>
@@ -124,24 +150,36 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
       <div className="rounded p-6 text-center max-w-xl" style={{ backgroundColor: '#eeeeee' }}>
         <div className='p-3'>
           <p className='my-3 mx-5'>
-            Ti ricordiamo che tutte le informazioni per poter utilizzare facilita sono disponibili nel{' '}
-            <a href="#" className="text-blue-600 underline">
-              vademecum per enti gestori e partner di progetto
+            Ti ricordiamo che tutte le informazioni per poter utilizzare Facilita sono disponibili nel{' '}
+            <a href={getHref('VademecumEntiGestoriPartner')} target="_blank" className="text-blue-600 underline">
+              Vademecum per enti gestori e partner di progetto
             </a>
           </p>
           <p className='my-3 mx-5'>
-            Se il tuo problema riguarda l’attività di facilitazione vai al{' '}
-            <a href="#" className="text-blue-600 underline">
-              manuale dell'operatore volontario
+            Puoi anche consultare le risposte alle domande più frequenti nelle{' '}
+            <a href={getHref('FAQEntiGestoriPartner')} target="_blank" className="text-blue-600 underline">
+              FAQ
             </a>
           </p>
+          <p className='my-3 mx-5'>
+            Se il tuo problema riguarda le attività di gestione e monitoraggio, consulta il{' '}
+            <a href={getHref('CapacityBuilding')} target="_blank" className="text-blue-600 underline">
+              Capacity Building - 1.7.2 PNRR 
+            </a>
+          </p>
+          {/* <p className='my-3 mx-5'>
+            Se il tuo problema riguarda l’attività di facilitazione vai al{' '}
+            <a href={getHref('ManualeVolontario')} target='_blank' className="text-blue-600 underline">
+              Manuale dell'operatore volontario
+            </a>
+          </p> */}
+          
         </div>
       </div>
 
       <div className="text-center mb-5">
         <div className="font-bold text-gray-700 my-3"><b>Oppure</b></div>
         <p className="text-gray-700">
-          per trovare la soluzione <br />
           Invia una richiesta all’assistenza tecnica
         </p>
       </div>
@@ -153,38 +191,38 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
       <div className="rounded p-6 text-center max-w-xl my-5" style={{ backgroundColor: '#eeeeee' }}>
         <div className='p-3'>
           <p className='my-3 mx-5'>
-            Il servizio di assistenza tecnica non è disponibile per il tuo ruolo.          
+            Il servizio di assistenza tecnica non è disponibile per il tuo ruolo.
           </p>
         </div>
       </div>
     </div>
   );
 
-  if(codRole === 'FAC' && policyRole === 'RFD'){ // Facilitatore RFD
+  if (codRole === 'FAC' && policyRole === 'RFD') { // Facilitatore RFD
     content = contentFacRfd;
-  }else if((codRole === 'VOL' || codRole === 'REG' || codRole === 'REGP' || codRole === 'REPP') && policyRole === 'SCD'){ // Volontario o Referente SCD
-    content = contentVolRefScd;
-  }else if((codRole === 'REG' || codRole === 'REGP' || codRole === 'REPP') && policyRole === 'RFD'){  // Referente RFD
+  } else if ((codRole === 'REG' || codRole === 'REGP' || codRole === 'REPP' || codRole === 'DEGP'  || codRole === 'DEG' || codRole === 'DEPP') && policyRole === 'SCD' ) { // Referente SCD
+    content = contentRefScd;
+  } else if ((codRole === 'VOL') && policyRole === 'SCD') { // Volontario SCD
+    content = contentVolScd;
+  } else if ((codRole === 'REG' || codRole === 'REGP' || codRole === 'REPP' || codRole === 'DEGP'  || codRole === 'DEG' || codRole === 'DEPP') && policyRole === 'RFD') {  // Referente RFD
     content = contentRefRfd;
-  }else{
+  } else {
     content = contentNoAssistenza;
   }
 
 
   return (
     <>
-    <GenericModal
-      id={id}
-      centerButtons={true}
-      primaryCTA={{
-        // disabled: !isFormValid || !isProgramSelected,
-        disabled: !assistenzaEnabled,
-        label: "Vai all'assistenza",
-        onClick: () => {navigate('/richiesta-assistenza', { state: { from: location.pathname } });},
-      }}
-      secondaryCTA={{
-        label: 'Annulla',
-        onClick: resetModal,
+      <GenericModal
+        id={id}
+        centerButtons={true}
+        primaryCTA={assistenzaEnabled ? {
+          label: "Vai all'assistenza",
+          onClick: () => { window.open("/richiesta-assistenza", "_blank"); resetModal(); },
+        } : undefined}
+        secondaryCTA={{
+          label: 'Annulla',
+          onClick: resetModal,
         }}
         withCTAIcon=
         {<svg
@@ -199,11 +237,11 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
           ></path>
         </svg>}
       >
-      <div>
-        <div className='mx-5'>{content}</div>
-      </div>
+        <div>
+          <div className='mx-5'>{content}</div>
+        </div>
 
-    </GenericModal>
+      </GenericModal>
     </>
   );
 };
