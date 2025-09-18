@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.474](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.473...1.0.0-test.474) (2025-09-18)
+
+
+### Bug Fixes
+
+* **U345:** eliminato spazio box grigia 20250918 ([94af640](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/94af6407467dd2ed021e25e03bfc02bac6645ec6))
+
 ## [1.0.0-test.473](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.472...1.0.0-test.473) (2025-08-29)
 
 
