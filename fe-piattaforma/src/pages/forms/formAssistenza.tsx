@@ -417,7 +417,7 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
                                     />
                                 </div>
                             </div>
-                            <p className='text-muted mt-2 text-left'><em>Massimo 50 MB</em></p>
+                            {/* <p className='text-muted mt-2 text-left'><em>Massimo 50 MB</em></p> */}
                         </Form.Row>
                     )) : null}
             </>
@@ -459,10 +459,11 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
                         </Button>
                     </div>
                 </div>
-                <p className={clsx('text-muted mt-2 text-left', !enabledFields.files && "disabled-field")}>
-                    <em>Massimo 50 MB</em></p>
+                {/* <p className={clsx('text-muted mt-2 text-left', !enabledFields.files && "disabled-field")}>
+                    <em>Massimo 50 MB</em></p> */}
             </Form.Row>
-
+                <p className={clsx('text-muted mt-2 text-left', !enabledFields.files && "disabled-field")}>
+                    <em>Il sistema accetta allegati fino a un massimo di 10MB complessivi</em></p>
         </Form>
     );
 };
