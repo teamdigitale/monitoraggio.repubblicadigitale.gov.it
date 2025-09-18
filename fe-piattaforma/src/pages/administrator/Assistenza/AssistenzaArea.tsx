@@ -9,6 +9,7 @@ import UserAvatar from "../../../components/Avatar/UserAvatar/UserAvatar";
 import { AvatarSizes, AvatarTextSizes } from "../../../components/Avatar/AvatarInitials/avatarInitials";
 import FormAssistenza from "../../forms/formAssistenza";
 import { createTicketAssistenza } from "../../../redux/features/notification/notificationThunk";
+import CardProfile from "../../../components/CardProfile/cardProfile";
 
 const AssistenzaArea: React.FC = () => {
 
@@ -20,12 +21,12 @@ const AssistenzaArea: React.FC = () => {
     const [attachedFiles, setAttachedFiles] = useState<{ name: string; data: File | string }[]>([]);
     const [requestOk, setRequestOk] = useState(0); // 0 = caricamento, 1 = inviata ok, 2 = errore
 
-    const [step, setStep] = useState(1); 
+    const [step, setStep] = useState(1);
 
     const handleNext = async () => {
         if (step === 2) {
             setStep(3);
-            setRequestOk(0); 
+            setRequestOk(0);
             const payload = {
                 areaTematica: formValues?.['1'],
                 descrizione: formValues?.['3'],
@@ -40,15 +41,15 @@ const AssistenzaArea: React.FC = () => {
                 codiceFiscale: user?.codiceFiscale,
                 ruoloUtente: ruolo?.codiceRuolo,
 
-                idProgramma: ruolo?.idProgramma, 
-                nomeProgramma: ruolo?.nomeProgramma, 
-                idProgetto: ruolo?.idProgetto, 
+                idProgramma: ruolo?.idProgramma,
+                nomeProgramma: ruolo?.nomeProgramma,
+                idProgetto: ruolo?.idProgetto,
                 nomeProgetto: ruolo?.nomeProgettoBreve,
                 policy: ruolo?.policy,
                 idEnte: ruolo?.idEnte,
                 nomeEnte: ruolo?.nomeEnte,
             }
-        
+
             const res = await createTicketAssistenza(dispatch, payload);
             if (res === true) {
                 setRequestOk(1); // successo
@@ -56,7 +57,7 @@ const AssistenzaArea: React.FC = () => {
                 setRequestOk(2); // errore
             }
 
-            
+
         } else if (step === 3 && requestOk === 1) {
             // dopo successo, chiudo la finestra/tab
             window.close();
@@ -84,21 +85,30 @@ const AssistenzaArea: React.FC = () => {
     if (step === 1) {
         console.log('ruolo:', ruolo);
         console.log('user:', user);
-        
-        
+
+
         content = (
             <div className="my-5 d-flex flex-column align-items-center">
-                <UserAvatar
+                {/* <UserAvatar
                     avatarImage={user?.immagineProfilo}
                     user={{ uSurname: user?.cognome, uName: user?.nome }}
                     size={AvatarSizes.Medium}
                     font={AvatarTextSizes.Small}
-                />
+                /> */}
 
                 <p className="mt-4 mb-3">
-                    Stai per inviare una richiesta con il ruolo di <br />
-                    <strong>{ruolo?.descrizioneRuoloCompleta}</strong>
+                    Stai per inviare una richiesta con il ruolo di:
                 </p>
+                <div style={{ maxWidth: '480px', width: '100%', textAlign: 'start' }}>
+                    <CardProfile
+                        profile={ruolo}
+                        className='mb-3'
+                        user={user}
+                    />
+                </div>
+
+
+                <p className="mt-3 mb-3"></p>
 
                 <p className="text-muted" style={{ maxWidth: 480 }}>
                     Per richiedere assistenza con un ruolo differente, annulla questa richiesta e assicurati
@@ -168,7 +178,7 @@ const AssistenzaArea: React.FC = () => {
                     {step === 1 ? "Prosegui" : step === 2 ? "Invia" : requestOk === 1 ? "Chiudi" : "Torna alla richiesta"}
                 </Button>}
                 {(step !== 3 || (requestOk !== 0 && requestOk !== 1)) && <Button color="primary" className="cta-button order-2 order-md-1" outline onClick={step === 1 ? () => window.close() : handleClose}>
-                    {step === 1 ? "Annulla" : "Chiudi" }
+                    {step === 1 ? "Annulla" : "Chiudi"}
                 </Button>}
             </div>
             <AnnullaAssistenzaModal />
