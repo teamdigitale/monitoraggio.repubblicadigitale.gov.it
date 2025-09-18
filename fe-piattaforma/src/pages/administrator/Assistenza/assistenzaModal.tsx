@@ -83,7 +83,6 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
               FAQ
             </a>
           </p>
-          <br />
           <p className='my-3 mx-5'>
             Se il tuo problema riguarda l’attività di facilitazione vai al{' '}
             <a href={getHref('ManualeFacilitazione')} target="_blank" className="text-blue-600 underline">
@@ -168,7 +167,6 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
               FAQ
             </a>
           </p>
-          <br />
           <p className='my-3 mx-5'>
             Se il tuo problema riguarda le attività di gestione e monitoraggio, consulta il{' '}
             <a href={getHref('CapacityBuilding')} target="_blank" className="text-blue-600 underline">
