@@ -53,7 +53,7 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
     } else if ((codRole === 'REG' || codRole === 'REGP' || codRole === 'REPP') && policyRole === 'RFD') {
       setAssistenzaEnabled(true);
     } else if (isNotLogged) {
-      setAssistenzaEnabled(true);
+      setAssistenzaEnabled(false);
     }  
      else {
       setAssistenzaEnabled(false);
@@ -211,18 +211,14 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
       centerButtons={true}
       closable={true}
       showCloseBtn={true}
-      primaryCTA={{
+      primaryCTA={!isNotLogged ? {
         disabled: !assistenzaEnabled,
-        label: isNotLogged ? "Accedi" : "Vai all'assistenza",
+        label: "Vai all'assistenza",
         onClick: () => {
-          if (isNotLogged) {
-            navigate("/auth");
-          } else {
-            navigate("/richiesta-assistenza");
-            resetModal();
-          }
+          navigate("/richiesta-assistenza");
+          resetModal();
         },
-      }}
+      } : undefined}
       secondaryCTA={{
         label: 'Annulla',
         onClick: resetModal,
