@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.475](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.474...1.0.0-test.475) (2025-09-19)
+
+
+### Bug Fixes
+
+* **U431:** bottone assistenza nascosto quando non loggato 20250919 ([9d70616](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9d706164dfb362ff9f9ab562c68a358cf0121737))
+
 ## [1.0.0-test.474](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.473...1.0.0-test.474) (2025-09-18)
 
 
