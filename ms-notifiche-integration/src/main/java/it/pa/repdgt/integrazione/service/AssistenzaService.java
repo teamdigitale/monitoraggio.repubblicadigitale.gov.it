@@ -3,13 +3,14 @@ package it.pa.repdgt.integrazione.service;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.zendesk.client.v2.Zendesk;
-import org.zendesk.client.v2.model.Attachment;
+import org.zendesk.client.v2.model.Attachment.Upload;
 import org.zendesk.client.v2.model.Comment;
 import org.zendesk.client.v2.model.CustomFieldValue;
 import org.zendesk.client.v2.model.Status;
@@ -88,6 +89,7 @@ public class AssistenzaService {
 
             // Stato del ticket
             ticket.setStatus(Status.NEW);
+            ticket.setSubject(entity.getOggetto());
 
             if(entity.getPolicy().equals("RFD")){
                 entity.setPolicy("rsfd");
@@ -142,9 +144,11 @@ public class AssistenzaService {
             customFields.add(new CustomFieldValue(altraAreaTematica, new String[] {entity.getAltraAreaTematica()})); // Tematica altro
             customFields.add(new CustomFieldValue(programma, new String[] {entity.getNomeProgramma()})); // Programma
             ticket.setCustomFields(customFields);
+            ticket.setTags(Collections.singletonList("facilita"));
+
             
             if (entity.getAllegati() != null && !entity.getAllegati().isEmpty()) {
-                List<Attachment.Upload> uploads = new ArrayList<>();
+                List<Upload> uploads = new ArrayList<>();
 
                 for (AllegatoDTO allegatoBase64 : entity.getAllegati()) {
                     try {
@@ -153,7 +157,7 @@ public class AssistenzaService {
                         String nomeFile = allegatoBase64.getName();
 
                         // Upload su Zendesk
-                        Attachment.Upload upload = zendesk.createUpload(nomeFile, fileBytes);
+                        Upload upload = zendesk.createUpload(nomeFile, fileBytes);
 
                         uploads.add(upload);
                     } catch (Exception e) {
@@ -165,15 +169,16 @@ public class AssistenzaService {
                 if (!uploads.isEmpty()) {
                     // Comment comment = new Comment();
                     List<String> tokens = new ArrayList<>();
-                    for (Attachment.Upload upload : uploads) {
+                    for (Upload upload : uploads) {
                         tokens.add(upload.getToken());
                     }
                     comment.setUploads(tokens);
-                    ticket.setComment(comment);
+                    //ticket.setComment(comment);
                 }
             }
 
             // Creare il ticket temporaneamente per ottenere l'ID
+            ticket.setComment(comment);
             ticket = zendesk.createTicket(ticket);
             Long ticketId = ticket.getId();
 
@@ -185,9 +190,11 @@ public class AssistenzaService {
             requester.setName(entity.getNome());
             ticket.setTicketFormId(idModulo);
             ticket.setRequester(requester);
+            ticket.setDescription(descrizione);
+            //
 
-             // Oggetto del ticket con ID
-            ticket.setSubject(entity.getOggetto()+ " (ticket n. " + ticketId + ")");
+            // Oggetto del ticket con ID
+            ticket.setSubject(entity.getOggetto());//+ " (ticket n. " + ticketId + ")");
 
 
             // Aggiornare il ticket con tutti i dati
