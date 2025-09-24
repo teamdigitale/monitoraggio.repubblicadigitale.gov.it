@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.476](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.475...1.0.0-test.476) (2025-09-24)
+
+
+### Features
+
+* **U346:** fix gestione invio ticket facilita 20250923 ([15d26cd](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/15d26cde660b44cc725af2457adc644d5186afbb))
+
 ## [1.0.0-test.475](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.474...1.0.0-test.475) (2025-09-19)
 
 
