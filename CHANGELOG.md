@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.477](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.476...1.0.0-test.477) (2025-09-26)
+
+
+### Bug Fixes
+
+* **U431:** rimosso rendering bottone vai all assistenza per ruoli non abilitati 20250926 ([cae0829](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/cae0829692ae40eae090b722cb8f4f75a0f44f3b))
+
 ## [1.0.0-test.476](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.475...1.0.0-test.476) (2025-09-24)
 
 
