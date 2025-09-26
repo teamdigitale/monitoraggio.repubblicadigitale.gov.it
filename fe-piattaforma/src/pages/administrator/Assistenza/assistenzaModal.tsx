@@ -254,8 +254,7 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
       centerButtons={true}
       closable={true}
       showCloseBtn={true}
-      primaryCTA={!isNotLogged ? {
-        disabled: !assistenzaEnabled,
+      primaryCTA={!isNotLogged && assistenzaEnabled? {
         label: "Vai all'assistenza",
         onClick: () => {
           window.open("/richiesta-assistenza", "_blank"); 
