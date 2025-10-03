@@ -105,7 +105,7 @@ const CommunityWidget = () => {
                       'align-cards'
                     )}
                   >
-                    <CardCommunity {...e} />
+                    <CardCommunity {...e} isHome={true} />
                   </div>
                 ))}
               </div>
@@ -128,7 +128,7 @@ const CommunityWidget = () => {
                       key={`card-${i}-${index}`}
                       className='flex-grow-0 my-2'
                     >
-                      <CardCommunity {...e} />
+                      <CardCommunity {...e} isHome={true} />
                     </div>
                   ))}
                 </div>
