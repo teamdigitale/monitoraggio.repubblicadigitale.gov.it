@@ -19,6 +19,7 @@ const CardCommunity: React.FC<ForumCardsI> = (props) => {
     category_label,
     views,
     entity,
+    isHome,
   } = props;
   const navigate = useNavigate();
 
@@ -90,56 +91,58 @@ const CardCommunity: React.FC<ForumCardsI> = (props) => {
         )}
       >
         <p></p>
-        <div className='d-flex'>
-          <div
-            className={clsx(
-              'd-flex',
-              'align-items-center',
-              'category-top',
-              'mr-2'
-            )}
-          >
-            <Icon
-              color='note'
-              icon={Heart}
-              size='xs'
-              aria-label='Likes'
-              aria-hidden
-            />
-            <span className='card-community__span-icons pl-1'>{likes}</span>
+        {!isHome && (
+          <div className='d-flex'>
+            <div
+              className={clsx(
+                'd-flex',
+                'align-items-center',
+                'category-top',
+                'mr-2'
+              )}
+            >
+              <Icon
+                color='note'
+                icon={Heart}
+                size='xs'
+                aria-label='Likes'
+                aria-hidden
+              />
+              <span className='card-community__span-icons pl-1'>{likes}</span>
+            </div>
+            <div
+              className={clsx(
+                'd-flex',
+                'align-items-center',
+                'category-top',
+                'mr-2'
+              )}
+            >
+              <Icon
+                color='note'
+                icon='it-comment'
+                size='sm'
+                aria-label='Comments'
+                aria-hidden
+                style={{ fill: '#0073E5' }}
+              />
+              <span className='card-community__span-icons pl-1'>
+                {comment_count}
+              </span>
+            </div>
+            <div className={clsx('d-flex', 'align-items-center', 'category-top')}>
+              <Icon
+                color='note'
+                icon='it-password-visible'
+                size='sm'
+                aria-label='Views'
+                aria-hidden
+                style={{ fill: '#0073E5' }}
+              />
+              <span className='card-community__span-icons pl-1'>{views}</span>
+            </div>
           </div>
-          <div
-            className={clsx(
-              'd-flex',
-              'align-items-center',
-              'category-top',
-              'mr-2'
-            )}
-          >
-            <Icon
-              color='note'
-              icon='it-comment'
-              size='sm'
-              aria-label='Comments'
-              aria-hidden
-              style={{ fill: '#0073E5' }}
-            />
-            <span className='card-community__span-icons pl-1'>
-              {comment_count}
-            </span>
-          </div>
-          <div className={clsx('d-flex', 'align-items-center', 'category-top')}>
-            <Icon
-              color='note'
-              icon='it-password-visible'
-              size='sm'
-              aria-label='Views'
-              aria-hidden
-              style={{ fill: '#0073E5' }}
-            />
-            <span className='card-community__span-icons pl-1'>{views}</span>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );
