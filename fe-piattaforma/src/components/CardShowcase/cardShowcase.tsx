@@ -58,6 +58,7 @@ const CardShowcase: React.FC<ForumCardsI> = (props) => {
     category_label,
     views,
     highlighted,
+    isHome,
   } = props;
 
   const [imageSrc, setImageSrc] = useState<string>(placeholder_1200x650);
@@ -82,7 +83,7 @@ const CardShowcase: React.FC<ForumCardsI> = (props) => {
   const navigateTo = () => {
     navigate(`/bacheca/${id}`);
   };
-
+  
   return (
     <div
       role='button'
@@ -187,58 +188,60 @@ const CardShowcase: React.FC<ForumCardsI> = (props) => {
           )}
         >
           <p></p>
-          <div className='d-flex'>
-            <div
-              className={clsx(
-                'd-flex',
-                'align-items-center',
-                'category-top',
-                'mr-2'
-              )}
-            >
-              <Icon
-                color='note'
-                icon={Heart}
-                size='xs'
-                aria-label='Like'
-                aria-hidden
-              />
-              <span className='showcase-card__span-icons pl-1'>{likes}</span>
+          {!isHome && ( // Condiziona la visualizzazione delle icone
+            <div className='d-flex'>
+              <div
+                className={clsx(
+                  'd-flex',
+                  'align-items-center',
+                  'category-top',
+                  'mr-2'
+                )}
+              >
+                <Icon
+                  color='note'
+                  icon={Heart}
+                  size='xs'
+                  aria-label='Like'
+                  aria-hidden
+                />
+                <span className='showcase-card__span-icons pl-1'>{likes}</span>
+              </div>
+              <div
+                className={clsx(
+                  'category-top',
+                  'mr-2',
+                  'd-flex',
+                  'align-items-center'
+                )}
+              >
+                <Icon
+                  color='note'
+                  icon='it-comment'
+                  size='sm'
+                  aria-label='Commento'
+                  aria-hidden
+                  style={{ fill: '#0073E5' }}
+                />
+                <span className='showcase-card__span-icons pl-1'>
+                  {comment_count}
+                </span>
+              </div>
+              <div
+                className={clsx('category-top', 'd-flex', 'align-items-center')}
+              >
+                <Icon
+                  color='note'
+                  icon='it-password-visible'
+                  size='sm'
+                  aria-label='Views'
+                  aria-hidden
+                  style={{ fill: '#0073E5' }}
+                />
+                <span className='showcase-card__span-icons pl-1'>{views}</span>
+              </div>
             </div>
-            <div
-              className={clsx(
-                'category-top',
-                'mr-2',
-                'd-flex',
-                'align-items-center'
-              )}
-            >
-              <Icon
-                color='note'
-                icon='it-comment'
-                size='sm'
-                aria-label='Commento'
-                aria-hidden
-                style={{ fill: '#0073E5' }}
-              />
-              <span className='showcase-card__span-icons pl-1'>
-                {comment_count}
-              </span>
-            </div>
-            <div
-              className={clsx('category-top', 'd-flex', 'align-items-center')}
-            >
-              <Icon
-                color='note'
-                icon='it-password-visible'
-                size='sm'
-                aria-label='Views'
-                aria-hidden
-                style={{ fill: '#0073E5' }}
-              />
-              <span className='showcase-card__span-icons pl-1'>{views}</span>
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

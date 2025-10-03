@@ -100,7 +100,7 @@ const BachecaDigitaleWidget = () => {
               <div key={`slide-${i}`} className='d-flex flex-wrap align-cards w-100'>
                 {el.map((e: any, index: any) => (
                   <div key={`card-${i}-${index}`} className='flex-grow-0 mt-2 mb-3 mr-2'>
-                    <CardShowcase {...e}></CardShowcase>
+                    <CardShowcase {...e} isHome={true}></CardShowcase>
                   </div>
                 ))}
               </div>
