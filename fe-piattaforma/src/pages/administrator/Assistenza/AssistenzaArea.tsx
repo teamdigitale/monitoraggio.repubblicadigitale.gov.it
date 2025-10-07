@@ -5,8 +5,6 @@ import { selectProfile, selectUser } from "../../../redux/features/user/userSlic
 import AnnullaAssistenzaModal from "./AnnullaAssistenzaModal";
 import { useDispatch } from "react-redux";
 import { openModal } from "../../../redux/features/modal/modalSlice";
-import UserAvatar from "../../../components/Avatar/UserAvatar/UserAvatar";
-import { AvatarSizes, AvatarTextSizes } from "../../../components/Avatar/AvatarInitials/avatarInitials";
 import FormAssistenza from "../../forms/formAssistenza";
 import { createTicketAssistenza } from "../../../redux/features/notification/notificationThunk";
 import CardProfile from "../../../components/CardProfile/cardProfile";
