@@ -1,13 +1,14 @@
 package it.pa.repdgt.surveymgmt.restapi;
 
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
+import it.pa.repdgt.shared.util.Utils;
 import it.pa.repdgt.surveymgmt.dto.ServiziElaboratiDTO;
 import it.pa.repdgt.surveymgmt.model.ElaboratoCSVRequest;
 import it.pa.repdgt.surveymgmt.model.ImportCsvInputData;
 import it.pa.repdgt.surveymgmt.service.ImportMassivoCSVService;
 import lombok.RequiredArgsConstructor;
 
-import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,11 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
-import java.io.InputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -37,9 +34,12 @@ public class ImportMassivoCSVRestApi {
     private final Validator validator;
     private final ObjectMapper objectMapper;
 
+    @Autowired
+    private Utils utils;
+
     @PostMapping()
-    public ResponseEntity<String> importCsvData(@RequestBody ImportCsvInputData inputData) throws IOException {
-        String csvRequestString = decompressGzip(inputData.getFileData());
+    public ResponseEntity<String> importCsvData(@RequestBody ImportCsvInputData inputData) throws IOException, ValidationException{
+        String csvRequestString = utils.decompressGzip(inputData.getFileData());
         ElaboratoCSVRequest csvRequest = objectMapper.readValue(csvRequestString, ElaboratoCSVRequest.class);
         String uuid = UUID.randomUUID().toString();
         List<ServiziElaboratiDTO> servizi = !csvRequest.getServiziValidati().isEmpty()
@@ -62,20 +62,5 @@ public class ImportMassivoCSVRestApi {
     private boolean valida(ServiziElaboratiDTO servizio) {
         Set<ConstraintViolation<ServiziElaboratiDTO>> violations = validator.validate(servizio);
         return !violations.isEmpty();
-    }
-    private byte[] readAllBytes(InputStream inputStream) throws IOException {
-        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-        int nRead;
-        byte[] data = new byte[16384];
-        while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
-            buffer.write(data, 0, nRead);
-        }
-        return buffer.toByteArray();
-    }
-
-    private String decompressGzip(byte[] compressed) throws IOException {
-        try (InputStream is = new GzipCompressorInputStream(new ByteArrayInputStream(compressed))) {
-            return new String(readAllBytes(is), StandardCharsets.UTF_8);
-        }
     }
 }
