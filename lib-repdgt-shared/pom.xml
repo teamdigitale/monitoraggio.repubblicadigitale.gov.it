@@ -5,7 +5,7 @@
 
 	<groupId>it.pa.repdgt</groupId>
 	<artifactId>repdgt-shared</artifactId>
-	<version>1.0.0-test.478</version>
+	<version>1.0.0-test.479</version>
 	<packaging>jar</packaging>
 
 	<name>repdgt-shared</name>
