@@ -35,12 +35,9 @@ public class ImportMassivoCSVRestApi {
     private final Validator validator;
     private final ObjectMapper objectMapper;
 
-    @Autowired
-    private Utils utils;
-
     @PostMapping()
     public ResponseEntity<String> importCsvData(@RequestBody ImportCsvInputData inputData) throws IOException, ValidationException{
-        String csvRequestString = utils.decompressGzip(inputData.getFileData());
+        String csvRequestString = Utils.decompressGzip(inputData.getFileData());
         ElaboratoCSVRequest csvRequest = objectMapper.readValue(csvRequestString, ElaboratoCSVRequest.class);
         String uuid = UUID.randomUUID().toString();
         List<ServiziElaboratiDTO> servizi = !csvRequest.getServiziValidati().isEmpty()

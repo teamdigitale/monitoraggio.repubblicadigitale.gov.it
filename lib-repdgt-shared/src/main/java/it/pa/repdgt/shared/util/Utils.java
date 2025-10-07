@@ -22,13 +22,13 @@ public class Utils {
 		return strResult;
 	}
 
-	public String decompressGzip(byte[] compressed) throws IOException {
+	public static String decompressGzip(byte[] compressed) throws IOException {
         try (InputStream is = new GzipCompressorInputStream(new ByteArrayInputStream(compressed))) {
             return new String(readAllBytes(is), StandardCharsets.UTF_8);
         }
     }
 
-	private byte[] readAllBytes(InputStream inputStream) throws IOException {
+	private static byte[] readAllBytes(InputStream inputStream) throws IOException {
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
         int nRead;
         byte[] data = new byte[16384];
