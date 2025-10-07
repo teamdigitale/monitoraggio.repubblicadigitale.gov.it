@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.479](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.478...1.0.0-test.479) (2025-10-07)
+
+
+### Bug Fixes
+
+* **U346:** gestione invio allegati ticketing 20251007 ([50f961d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/50f961d1bce9124c90d337fd26c039a5078826c9))
+* **U346:** nuova gestione update subject ticket 20251007 ([04f9f5b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/04f9f5ba55632b21ec31ca3efa0032f8e0d993eb))
+
 ## [1.0.0-test.478](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.477...1.0.0-test.478) (2025-09-29)
 
 
