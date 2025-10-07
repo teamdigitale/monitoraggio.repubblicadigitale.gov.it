@@ -28,14 +28,11 @@ public class AssistenzaRestApi {
     private AssistenzaService assistenzaService;
 
     @Autowired
-    private Utils utils;
-
-    @Autowired
     private ObjectMapper objectMapper;
 
     @PostMapping("/apriTicket")
     public BasicData apriTicket(@RequestBody AperturaTicketRequestZipped inputData) throws ZendeskException, IOException {
-        String inputDataString = utils.decompressGzip(inputData.getFileData());
+        String inputDataString = Utils.decompressGzip(inputData.getFileData());
         AperturaTicketRequest entity = objectMapper.readValue(inputDataString, AperturaTicketRequest.class);
         return assistenzaService.apriTicket(entity);
     }
