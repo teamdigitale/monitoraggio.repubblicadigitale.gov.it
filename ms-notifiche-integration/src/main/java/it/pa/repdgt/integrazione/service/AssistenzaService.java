@@ -1,7 +1,9 @@
 package it.pa.repdgt.integrazione.service;
 
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
@@ -25,7 +27,17 @@ import it.pa.repdgt.integrazione.request.AperturaTicketRequest;
 import it.pa.repdgt.shared.data.BasicData;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.shared.exception.ZendeskException;
+import it.pa.repdgt.shared.restapi.RestTemplateWrapper;
 import lombok.extern.slf4j.Slf4j;
+import java.util.Map;
+
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.core.ParameterizedTypeReference;
 
 @Slf4j
 @Service
@@ -60,12 +72,27 @@ public class AssistenzaService {
 
     @Value("${zendesk.idModulo}")
     private Long idModulo;
+
+    @Value("${ZENDESK_URL}")
+    private String zendeskUrl;
+
+    @Value("${ZENDESK_USERNAME}")
+    private String zendeskUsername;
+
+    @Value("${ZENDESK_TOKEN}") 
+    private String zendeskToken;
     
     @Autowired
     private AssistenzaTematicheRepository assistenzaTematicheRepository;
 
     @Autowired
     private Zendesk zendesk;
+
+    @Autowired
+    private RestTemplateWrapper restTemplateWrapper;
+
+    
+
 
     public BasicData apriTicket(AperturaTicketRequest entity) throws ZendeskException {
         try {
@@ -182,27 +209,39 @@ public class AssistenzaService {
             ticket = zendesk.createTicket(ticket);
             Long ticketId = ticket.getId();
 
-            // Reimpostare il ticket con tutti i dati necessari
-            ticket = new Ticket();
-            ticket.setId(ticketId);
-            requester = new Requester();
-            requester.setEmail(entity.getEmail());
-            requester.setName(entity.getNome());
-            ticket.setTicketFormId(idModulo);
-            ticket.setRequester(requester);
-            ticket.setDescription(descrizione);
-            //
-
+            // // Reimpostare il ticket con tutti i dati necessari
+            // ticket = new Ticket();
+            // ticket.setId(ticketId);
+            // requester = new Requester();
+            // requester.setEmail(entity.getEmail());
+            // requester.setName(entity.getNome());
+            // ticket.setTicketFormId(idModulo);
+            // ticket.setRequester(requester);
+            // ticket.setDescription(descrizione);
             // Oggetto del ticket con ID
-            ticket.setSubject(entity.getOggetto());//+ " (ticket n. " + ticketId + ")");
+           // ticket.setSubject(entity.getOggetto());//+ " (ticket n. " + ticketId + ")");
+            // // Aggiornare il ticket con tutti i dati
+            // Ticket finalTicket = zendesk.updateTicket(ticket);
+
+            // Effettuiamo chiamata REST verso servizio zendesk per aggiornare solo il subject
+            String authHeader = "Basic " + Base64.getEncoder().encodeToString((zendeskUsername + "/token:" + zendeskToken).getBytes(StandardCharsets.UTF_8));
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Authorization", authHeader);
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+            String url = zendeskUrl + "api/v2/tickets/"+ticketId.toString()+".json";
+            String nuovoSubject = entity.getOggetto() + " (ticket n. " + ticketId + ")";
+            String jsonBody = "{\n" +
+                    "  \"ticket\": {\n" +
+                    "    \"subject\": \"" + nuovoSubject+"\"\n" +
+                    "  }\n" +
+                    "}";
+            restTemplateWrapper.httpCall(url, HttpMethod.PUT, jsonBody, headers, new ParameterizedTypeReference<Map<String, Object>>() {});
 
 
-            // Aggiornare il ticket con tutti i dati
-            Ticket finalTicket = zendesk.updateTicket(ticket);
 
-            log.info("----- Ticket creato con ID: " + finalTicket.getId() + "-----");
-            // zd.close();
-            return new BasicData(new BigDecimal(finalTicket.getId()), finalTicket.getSubject(), "Ticket creato con successo con ID: " + finalTicket.getId());
+            log.info("----- Ticket creato con ID: " + ticketId.toString() + "-----");
+            return new BasicData(new BigDecimal(ticketId), nuovoSubject, "Ticket creato con successo con ID: " + ticketId);
         } catch (Exception e) {
             log.error("Errore durante la creazione/aggiornamento del ticket: ", e);
             throw new ZendeskException(e.getMessage(), CodiceErroreEnum.ZD00);
