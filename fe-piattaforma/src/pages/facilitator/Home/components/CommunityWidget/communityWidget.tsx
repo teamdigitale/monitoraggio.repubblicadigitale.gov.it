@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { CardCommunity, EmptySection } from '../../../../../components';
+import { CardCommunity, EmptySection, LoadingSpinner } from '../../../../../components';
 import { selectDevice } from '../../../../../redux/features/app/appSlice';
 import { useAppSelector } from '../../../../../redux/hooks';
 import '../../../../../pages/facilitator/Home/components/BachecaDigitaleWidget/bachecaDigitaleWidget.scss';
@@ -24,13 +24,24 @@ const carouselPagination = {
   tablet: 3,
 };
 
-const CommunityWidget = () => {
+interface CommunityWidgetProps {
+  /**
+   * Indica se il widget viene utilizzato nella homepage.
+   * Quando true, utilizza le viste Drupal senza elementi social.
+   * @default true
+   */
+  isFromHome?: boolean;
+}
+
+const CommunityWidget: React.FC<CommunityWidgetProps> = ({ isFromHome = true }) => {
   const dispatch = useDispatch();
   const device = useAppSelector(selectDevice);
   const [topicsList, setTopicsList] = useState([]);
-  const [titleEmptySection, setTitleEmptySection] = useState<string>('Caricamento in corso');
+  const [titleEmptySection, setTitleEmptySection] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const topicWidgetSet = async () => {
+    setIsLoading(true);
     const itemPerPage =
       communityPagination[getMediaQueryDevice(device)].toString();
     const res = await dispatch(
@@ -39,7 +50,8 @@ const CommunityWidget = () => {
           page: [{ label: '0', value: '0' }],
           items_per_page: [{ label: itemPerPage, value: itemPerPage }],
         },
-        false
+        false,
+        isFromHome // Utilizzo della prop dinamica
       )
     );
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -51,6 +63,7 @@ const CommunityWidget = () => {
     }else if (!res) {
       setTitleEmptySection("Non è stato possibile accedere ai contenuti. Accedi alla sezione Forum");
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -90,7 +103,9 @@ const CommunityWidget = () => {
         </div>
       </div>
       <div className='container'>
-        {topicsList?.length ? (
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : topicsList?.length ? (
           !device.mediaIsPhone ? (
             cardArray.map((el: any, i: number) => (
               <div key={`slide-${i}`} className='row'>

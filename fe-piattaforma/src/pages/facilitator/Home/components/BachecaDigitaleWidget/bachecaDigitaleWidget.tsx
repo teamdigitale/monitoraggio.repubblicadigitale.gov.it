@@ -10,7 +10,7 @@ import Slider, {
   formatSlides,
 } from '../../../../../components/General/Slider/Slider';
 import { getMediaQueryDevice } from '../../../../../utils/common';
-import { EmptySection } from '../../../../../components';
+import { EmptySection, LoadingSpinner } from '../../../../../components';
 import { Link } from 'react-router-dom';
 
 const newsPagination = {
@@ -25,13 +25,24 @@ const carouselPagination = {
   tablet: 3,
 };
 
-const BachecaDigitaleWidget = () => {
+interface BachecaDigitaleWidgetProps {
+  /**
+   * Indica se il widget viene utilizzato nella homepage.
+   * Quando true, utilizza le viste Drupal senza elementi social.
+   * @default true
+   */
+  isFromHome?: boolean;
+}
+
+const BachecaDigitaleWidget: React.FC<BachecaDigitaleWidgetProps> = ({ isFromHome = true }) => {
   const device = useAppSelector(selectDevice);
   const dispatch = useDispatch();
   const [newsList, setNewsList] = useState([]);
-  const [titleEmptySection, setTitleEmptySection] = useState<string>('Caricamento in corso');
+  const [titleEmptySection, setTitleEmptySection] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const newsWidgetSet = async () => {
+    setIsLoading(true);
     const itemPerPage = newsPagination[getMediaQueryDevice(device)].toString();
     const res = await dispatch(
       GetNewsList(
@@ -40,7 +51,8 @@ const BachecaDigitaleWidget = () => {
           items_per_page: [{ label: itemPerPage, value: itemPerPage }],
         },
         false,
-        true
+        isFromHome, // Utilizzo della prop dinamica
+        false
       )
     );
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -52,6 +64,7 @@ const BachecaDigitaleWidget = () => {
     } else if (!res) {
       setTitleEmptySection("Non è stato possibile accedere ai contenuti. Accedi alla sezione Bacheca");
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -91,7 +104,9 @@ const BachecaDigitaleWidget = () => {
         <span className='sr-only'>
           {'La bacheca presenta ' + (newsList?.length || 0) + ' annunci'}
         </span>
-        {newsList?.length ? (
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : newsList?.length ? (
           <Slider isItemsHome={!device.mediaIsPhone} widgetType='news'>
             {formatSlides(
               newsList.slice(0, newsPagination[getMediaQueryDevice(device)]),

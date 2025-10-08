@@ -41,6 +41,7 @@ import EmptySection from './EmptySection/emptySection';
 import DetailsRow from './DetailsRow/detailsRow';
 import StatusChip from './StatusChip/statusChip';
 import AvatarInitials from './Avatar/AvatarInitials/avatarInitials';
+import LoadingSpinner from './LoadingSpinner/loadingSpinner';
 
 export {
   Accordion,
@@ -68,6 +69,7 @@ export {
   Duration,
   PrefixPhone,
   Loader,
+  LoadingSpinner,
   LocationIndex,
   NavLink,
   Paginator,
