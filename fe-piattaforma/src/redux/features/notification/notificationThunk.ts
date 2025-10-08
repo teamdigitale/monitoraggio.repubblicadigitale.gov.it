@@ -8,7 +8,6 @@ import {
   removeNotify,
   setNotificationsList,
 } from './notificationSlice';
-import {compressPayload, toBase64} from '../../../utils/common'
 
 const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -72,9 +71,7 @@ export const createTicketAssistenza = async (dispatch: Dispatch, payload?: any):
   try {
     dispatch(showLoader());
     const endpoint = `/assistenza/apriTicket`;
-    let payloadGzip = compressPayload(payload)
-    let fileData = await toBase64(payloadGzip)
-    const res = await API.post(endpoint, fileData, {
+    const res = await API.post(endpoint, payload, {
       headers: {
         'Content-Type': 'application/json',
       },
