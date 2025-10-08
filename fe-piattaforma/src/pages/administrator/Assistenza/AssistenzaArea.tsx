@@ -8,6 +8,7 @@ import { openModal } from "../../../redux/features/modal/modalSlice";
 import FormAssistenza from "../../forms/formAssistenza";
 import { createTicketAssistenza } from "../../../redux/features/notification/notificationThunk";
 import CardProfile from "../../../components/CardProfile/cardProfile";
+import { compressPayload, toBase64 } from "../../../utils/common";
 
 const AssistenzaArea: React.FC = () => {
 
@@ -25,20 +26,20 @@ const AssistenzaArea: React.FC = () => {
         if (step === 2) {
             setStep(3);
             setRequestOk(0);
+            // La lista di allegati viene compressa dal FE e verrà decompressa dal BE per permettere l'invio di file
+            // di grandi dimensioni
+            let compressAllegati = compressPayload(attachedFiles.map(file => ({name: file.name,data: file.data})))
+            let fileData = await toBase64(compressAllegati)
             const payload = {
                 areaTematica: formValues?.['1'],
                 descrizione: formValues?.['3'],
                 oggetto: formValues?.['2'],
                 altraAreaTematica: formValues?.['4'],
-                allegati: attachedFiles.map(file => ({
-                    name: file.name,
-                    data: file.data
-                })),
                 nome: user?.nome + ' ' + user?.cognome,
                 email: user?.email,
                 codiceFiscale: user?.codiceFiscale,
                 ruoloUtente: ruolo?.codiceRuolo,
-
+                fileData: fileData,
                 idProgramma: ruolo?.idProgramma,
                 nomeProgramma: ruolo?.nomeProgramma,
                 idProgetto: ruolo?.idProgetto,
