@@ -120,11 +120,15 @@ export const GetNewsList =
     forcedFilters: {
       [key: string]: { label: string; value: string }[] | undefined;
     } = {},
-    updateStore = true
+    updateStore = true,
+    isFromHome = false,
+    showGlobalLoader = true
   ) =>
   async (dispatch: Dispatch, select: Selector) => {
     try {
-      dispatch(showLoader());
+      if (showGlobalLoader) {
+        dispatch(showLoader());
+      }
       dispatch({ ...GetNewsListAction, forcedFilters, updateStore });
       const {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -180,7 +184,9 @@ export const GetNewsList =
         'sort',
         'sort_by'
       );
-      const res = await proxyCall(`/board/items${queryParamFilters}`, 'GET');
+      // Utilizzo URL diverso per homepage che non restituisce elementi social
+      const boardPath = isFromHome ? '/board/items-no-social' : '/board/items';
+      const res = await proxyCall(`${boardPath}${queryParamFilters}`, 'GET');
       if (updateStore) {
         if (res?.data?.data) {
           dispatch(setNewsList(res.data.data.items || []));
@@ -197,7 +203,9 @@ export const GetNewsList =
       console.log('GetNewsList error', error);
       return false;
     } finally {
-      dispatch(hideLoader());
+      if (showGlobalLoader) {
+        dispatch(hideLoader());
+      }
     }
   };
 
@@ -256,11 +264,15 @@ export const GetTopicsList =
     forcedFilters?: {
       [key: string]: { label: string; value: string }[] | undefined;
     },
-    updateStore = true
+    updateStore = true,
+    isFromHome = false,
+    showGlobalLoader = true
   ) =>
   async (dispatch: Dispatch, select: Selector) => {
     try {
-      dispatch(showLoader());
+      if (showGlobalLoader) {
+        dispatch(showLoader());
+      }
       dispatch({ ...GetTopicsListAction, forcedFilters, updateStore });
       const {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -281,8 +293,10 @@ export const GetTopicsList =
         ...forcedFilters,
       }).replace('sort', 'sort_by');
       //.replace('categories', 'category')
+      // Utilizzo URL diverso per homepage che non restituisce elementi social
+      const communityPath = isFromHome ? '/community/items-no-social' : '/community/items';
       const res = await proxyCall(
-        `/community/items${queryParamFilters}`,
+        `${communityPath}${queryParamFilters}`,
         'GET'
       );
       if (updateStore) {
@@ -301,7 +315,9 @@ export const GetTopicsList =
       console.log('GetTopicsList error', error);
       return false;
     } finally {
-      dispatch(hideLoader());
+      if (showGlobalLoader) {
+        dispatch(hideLoader());
+      }
     }
   };
 
@@ -385,11 +401,15 @@ export const GetDocumentsList =
     forcedFilters?: {
       [key: string]: { label: string; value: string }[] | undefined;
     },
-    updateStore = true
+    updateStore = true,
+    isFromHome = false,
+    showGlobalLoader = true
   ) =>
   async (dispatch: Dispatch, select: Selector) => {
     try {
-      dispatch(showLoader());
+      if (showGlobalLoader) {
+        dispatch(showLoader());
+      }
       dispatch({ ...GetDocumentsListAction, forcedFilters, updateStore });
       const {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -442,7 +462,9 @@ export const GetDocumentsList =
         ...forcedFilters,
       }).replace('sort', 'sort_by');
       //.replace('categories', 'category')
-      const res = await proxyCall(`/document/items${queryParamFilters}`, 'GET');
+      // Utilizzo URL diverso per homepage che non restituisce elementi social
+      const documentPath = isFromHome ? '/document/items-no-social' : '/document/items';
+      const res = await proxyCall(`${documentPath}${queryParamFilters}`, 'GET');
       if (updateStore) {
         if (res?.data?.data) {
           dispatch(setDocsList(res.data.data.items || []));
@@ -459,7 +481,9 @@ export const GetDocumentsList =
       console.log('GetDocumentsList error', error);
       return false;
     } finally {
-      dispatch(hideLoader());
+      if (showGlobalLoader) {
+        dispatch(hideLoader());
+      }
     }
   };
 
