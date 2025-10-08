@@ -54,7 +54,7 @@ const FullLayout: React.FC<LayoutProp> = (props) => {
         </div>
       )}
 
-      {loader.isLoading && <Loader />}
+      {loader.isLoading && location.pathname !== '/' && <Loader />}
 
       <main
         className={clsx(

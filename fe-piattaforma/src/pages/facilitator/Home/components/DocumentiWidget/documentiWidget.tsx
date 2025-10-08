@@ -10,7 +10,7 @@ import Slider, {
   formatSlides,
 } from '../../../../../components/General/Slider/Slider';
 import { getMediaQueryDevice } from '../../../../../utils/common';
-import { EmptySection } from '../../../../../components';
+import { EmptySection, LoadingSpinner } from '../../../../../components';
 import { Link } from 'react-router-dom';
 
 const docsPagination = {
@@ -25,13 +25,24 @@ const carouselPagination = {
   tablet: 2,
 };
 
-const DocumentsWidget = () => {
+interface DocumentsWidgetProps {
+  /**
+   * Indica se il widget viene utilizzato nella homepage.
+   * Quando true, utilizza le viste Drupal senza elementi social.
+   * @default true
+   */
+  isFromHome?: boolean;
+}
+
+const DocumentsWidget: React.FC<DocumentsWidgetProps> = ({ isFromHome = true }) => {
   const dispatch = useDispatch();
   const device = useAppSelector(selectDevice);
   const [docsList, setDocsList] = useState([]);
-  const [titleEmptySection, setTitleEmptySection] = useState<string>('Caricamento in corso');
+  const [titleEmptySection, setTitleEmptySection] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const docsWidgetSet = async () => {
+    setIsLoading(true);
     const itemsPerPage = docsPagination[getMediaQueryDevice(device)].toString();
     const res = await dispatch(
       GetDocumentsList(
@@ -40,7 +51,8 @@ const DocumentsWidget = () => {
           items_per_page: [{ label: itemsPerPage, value: itemsPerPage }],
         },
         false,
-        true
+        isFromHome, // Utilizzo della prop dinamica
+        false
       )
     );
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -52,6 +64,7 @@ const DocumentsWidget = () => {
     }else if (!res) {
       setTitleEmptySection("Non è stato possibile accedere ai contenuti. Accedi alla sezione Documenti");
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -90,7 +103,9 @@ const DocumentsWidget = () => {
       </div>
       <div className={clsx(device.mediaIsDesktop ? 'col-8' : 'col-12')}>
         <div className='container d-flex flex-wrap'>
-          {docsList?.length ? (
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : docsList?.length ? (
             !device.mediaIsPhone ? (
               cardArray.map((el: any, i: number) => (
                 <div key={`slide-${i}`} className='row'>
