@@ -3,11 +3,12 @@ package it.pa.repdgt.integrazione.restapi;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import it.pa.repdgt.integrazione.dto.AllegatoDTO;
 import it.pa.repdgt.integrazione.dto.AreaTematicaDTO;
 import it.pa.repdgt.integrazione.request.AperturaTicketRequest;
-import it.pa.repdgt.integrazione.request.AperturaTicketRequestZipped;
 import it.pa.repdgt.integrazione.service.AssistenzaService;
 import it.pa.repdgt.shared.data.BasicData;
 import it.pa.repdgt.shared.exception.ZendeskException;
@@ -31,10 +32,11 @@ public class AssistenzaRestApi {
     private ObjectMapper objectMapper;
 
     @PostMapping("/apriTicket")
-    public BasicData apriTicket(@RequestBody AperturaTicketRequestZipped inputData) throws ZendeskException, IOException {
+    public BasicData apriTicket(@RequestBody AperturaTicketRequest inputData) throws ZendeskException, IOException {
         String inputDataString = Utils.decompressGzip(inputData.getFileData());
-        AperturaTicketRequest entity = objectMapper.readValue(inputDataString, AperturaTicketRequest.class);
-        return assistenzaService.apriTicket(entity);
+        List<AllegatoDTO> entity = objectMapper.readValue(inputDataString, new TypeReference<List<AllegatoDTO>>() {});
+        inputData.setAllegati(entity);
+        return assistenzaService.apriTicket(inputData);
     }
 
     @PostMapping("/tematiche")

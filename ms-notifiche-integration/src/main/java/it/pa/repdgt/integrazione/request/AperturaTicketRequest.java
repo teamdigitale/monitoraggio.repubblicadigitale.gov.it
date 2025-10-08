@@ -51,6 +51,9 @@ public class AperturaTicketRequest implements Serializable {
     @JsonProperty(value = "allegati")
     private List<AllegatoDTO> allegati;
 
+    @JsonProperty(value = "fileData")
+    private byte[] fileData;
+
     @JsonProperty(value = "idProgramma")
     private String idProgramma;
 
