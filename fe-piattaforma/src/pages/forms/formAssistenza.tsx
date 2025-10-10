@@ -46,7 +46,10 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
 
     const inputRef = useRef<HTMLInputElement>(null);
     const [files, setFiles] = useState<{ name: string; data: File | string }[]>([]);
+    const [fileSizes, setFileSizes] = useState<{ [fileName: string]: number }>({});
     const [editorText, setEditorText] = useState('<p></p>');
+    const [fileSizeError, setFileSizeError] = useState<boolean>(false);
+    const [isProcessingFile, setIsProcessingFile] = useState<boolean>(false);
     const dispatch = useDispatch();
 
     // Funzione per calcolare quali campi devono essere abilitati
@@ -255,15 +258,132 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
     useEffect(() => {
         if (initialFiles?.length) {
             setFiles(initialFiles);
+            // Per i file iniziali, se sono oggetti File, tracciamo le loro dimensioni
+            // Se sono stringhe, manteniamo le dimensioni esistenti in fileSizes
+            setFileSizes(prev => {
+                const newSizes = { ...prev }; // Mantieni le dimensioni esistenti
+                initialFiles.forEach(file => {
+                    // Solo se non abbiamo già una dimensione per questo file
+                    if (!newSizes[file.name]) {
+                        if (file.data instanceof File) {
+                            newSizes[file.name] = file.data.size;
+                        } else {
+                            // Per i file in formato stringa, assumiamo una dimensione zero
+                            // solo se non abbiamo già una dimensione
+                            newSizes[file.name] = 0;
+                        }
+                    }
+                });
+                console.log('useEffect initialFiles - fileSizes aggiornato:', newSizes);
+                return newSizes;
+            });
         }
     }, [initialFiles]);
 
 
     const updateFile = () => {
+        console.log('=== INIZIO updateFile ===');
+        console.log('Current files array:', files);
+        console.log('Current fileSizes:', fileSizes);
+        console.log('isProcessingFile:', isProcessingFile);
+        
+        // Previeni multiple esecuzioni simultanee
+        if (isProcessingFile) {
+            console.log('DEBUG - updateFile bloccata, elaborazione in corso');
+            return;
+        }
+        
+        // Ottengo riferimento al file selezionato PRIMA che l'input venga resettato
+        if (!inputRef.current?.files?.length) {
+            console.log('ERROR - Nessun file selezionato');
+            return;
+        }
+        
+        const selectedFile = inputRef.current.files[0];
+        console.log('File selezionato:', {
+            name: selectedFile.name,
+            size: selectedFile.size,
+            sizeInMB: (selectedFile.size / (1024 * 1024)).toFixed(2)
+        });
+        
+        // CALCOLO DIRETTO: Somma tutte le dimensioni dei file già presenti
+        let currentTotalSize = 0;
+        console.log('=== CALCOLO DIMENSIONI ===');
+        console.log('files.length:', files.length);
+        
+        files.forEach((existingFile, index) => {
+            const fileSize = fileSizes[existingFile.name];
+            console.log(`File ${index}: ${existingFile.name} -> size: ${fileSize || 'UNDEFINED'}`);
+            if (fileSizes[existingFile.name]) {
+                currentTotalSize += fileSizes[existingFile.name];
+            }
+        });
+        
+        console.log('currentTotalSize calcolato:', currentTotalSize);
+        
+        const newTotalSize = currentTotalSize + selectedFile.size;
+        const maxSize = 10 * 1024 * 1024; // 10MB
+        
+        console.log('=== RISULTATO FINALE ===');
+        console.log('currentTotalSize:', currentTotalSize, '(' + (currentTotalSize / (1024 * 1024)).toFixed(2) + ' MB)');
+        console.log('selectedFile.size:', selectedFile.size, '(' + (selectedFile.size / (1024 * 1024)).toFixed(2) + ' MB)');
+        console.log('newTotalSize:', newTotalSize, '(' + (newTotalSize / (1024 * 1024)).toFixed(2) + ' MB)');
+        console.log('maxSize:', maxSize, '(' + (maxSize / (1024 * 1024)).toFixed(2) + ' MB)');
+        console.log('SUPERA LIMITE?', newTotalSize > maxSize);
+        
+        // Se il nuovo totale supererebbe i 10MB, blocca
+        if (newTotalSize > maxSize) {
+            console.log('🚨 BLOCCATO! Dimensione totale supererebbe il limite');
+            setFileSizeError(true);
+            // Reset dell'input dopo aver rilevato l'errore
+            if (inputRef.current) {
+                inputRef.current.value = '';
+            }
+            
+            // Nasconde automaticamente l'errore dopo 5 secondi
+            setTimeout(() => {
+                setFileSizeError(false);
+            }, 5000);
+            
+            return;
+        }
+        
+        console.log('✅ FILE ACCETTATO - Procedo con upload');
+        
+        // Imposta il lock per prevenire elaborazioni multiple
+        setIsProcessingFile(true);
+        
+        // Salvo le informazioni del file prima di chiamare uploadFile
+        const fileInfo = {
+            name: selectedFile.name,
+            size: selectedFile.size
+        };
+        
         uploadFile('file', (file: any) => {
             if (file?.name) {
+                console.log('=== CALLBACK uploadFile ===');
+                console.log('file.name da callback:', file.name);
+                console.log('fileInfo.name salvato:', fileInfo.name);
+                console.log('fileInfo.size salvato:', fileInfo.size);
+                console.log('NOMI UGUALI?', file.name === fileInfo.name);
+                
+                // Uso le informazioni salvate per tracciare la dimensione nello stato
+                setFileSizes(prev => {
+                    const updated = {
+                        ...prev,
+                        [file.name]: fileInfo.size  // Uso file.name dalla callback come chiave
+                    };
+                    console.log('fileSizes PRIMA dell\'aggiornamento:', prev);
+                    console.log('fileSizes DOPO l\'aggiornamento:', updated);
+                    return updated;
+                });
+                
+                setFileSizeError(false);
                 setFiles(prevFiles => {
                     const newFiles = [...prevFiles, file];
+                    console.log('files array PRIMA:', prevFiles.map(f => f.name));
+                    console.log('file aggiunto:', file.name);
+                    console.log('files array DOPO:', newFiles.map(f => f.name));
                     onFilesChange?.(newFiles);
                     return newFiles;
                 });
@@ -272,15 +392,47 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
                     inputRef.current.value = '';
                 }
             }
+            
+            // Rilascia il lock
+            setIsProcessingFile(false);
         });
     };
 
     const removeDocument = (index: number) => {
         setFiles(prevFiles => {
             const updatedFiles = prevFiles.filter((_, i) => i !== index);
+            
+            // Rimuovi anche le dimensioni del file eliminato
+            const removedFile = prevFiles[index];
+            if (removedFile) {
+                // Aggiorna lo stato
+                setFileSizes(prev => {
+                    const updated = { ...prev };
+                    delete updated[removedFile.name];
+                    return updated;
+                });
+            }
+            
             onFilesChange?.(updatedFiles);
             return updatedFiles;
         });
+        
+        // Verifica se dopo la rimozione la dimensione totale è ora accettabile
+        setTimeout(() => {
+            // Calcolo diretto della dimensione rimanente
+            let remainingSize = 0;
+            files.forEach(file => {
+                if (fileSizes[file.name]) {
+                    remainingSize += fileSizes[file.name];
+                }
+            });
+            
+            const maxSize = 10 * 1024 * 1024; // 10MB
+            if (remainingSize <= maxSize) {
+                setFileSizeError(false);
+            }
+        }, 0);
+        
         // Reset dell'input dopo aver rimosso il file
         if (inputRef.current) {
             inputRef.current.value = '';
@@ -461,9 +613,24 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
                 </div>
                 {/* <p className={clsx('text-muted mt-2 text-left', !enabledFields.files && "disabled-field")}>
                     <em>Massimo 50 MB</em></p> */}
-            </Form.Row>
                 <p className={clsx('text-muted mt-2 text-left', !enabledFields.files && "disabled-field")}>
-                    <em>Il sistema accetta allegati fino a un massimo di 10MB complessivi</em></p>
+                    <em>Il sistema accetta allegati fino a un massimo di 10MB complessivi</em>
+                </p>
+            </Form.Row>
+            
+            {/* Messaggio di errore per file troppo grandi */}
+            {fileSizeError ? (
+                <Form.Row className="mb-2 ml-1">
+                    <div className="w-100">
+                        <p className="text-danger mt-0 mb-0" style={{ fontSize: '0.875rem' }}>
+                            <Icon icon="it-error" size="sm" className="mr-1" />
+                            La dimensione totale degli allegati supera i 10MB consentiti.
+                        </p>
+                    </div>
+                </Form.Row>
+            ) : (
+                <></>
+            )}
         </Form>
     );
 };
