@@ -188,7 +188,7 @@ export const GetNewsList =
         'sort_by'
       );
       // Utilizzo URL diverso per homepage che non restituisce elementi social
-      const boardPath = isFromHome ? '/board/items-no-social' : '/board/items';
+      const boardPath = isFromHome ? '/board/items' : '/board/items_social';
       const res = await proxyCall(`${boardPath}${queryParamFilters}`, 'GET');
       if (updateStore) {
         if (res?.data?.data) {
@@ -297,7 +297,7 @@ export const GetTopicsList =
       }).replace('sort', 'sort_by');
       //.replace('categories', 'category')
       // Utilizzo URL diverso per homepage che non restituisce elementi social
-      const communityPath = isFromHome ? '/community/items-no-social' : '/community/items';
+      const communityPath = isFromHome ? '/community/items' : '/community/items_social';
       const res = await proxyCall(
         `${communityPath}${queryParamFilters}`,
         'GET'
@@ -466,7 +466,7 @@ export const GetDocumentsList =
       }).replace('sort', 'sort_by');
       //.replace('categories', 'category')
       // Utilizzo URL diverso per homepage che non restituisce elementi social
-      const documentPath = isFromHome ? '/document/items-no-social' : '/document/items';
+      const documentPath = isFromHome ? '/document/items' : '/document/items_social';
       const res = await proxyCall(`${documentPath}${queryParamFilters}`, 'GET');
       if (updateStore) {
         if (res?.data?.data) {

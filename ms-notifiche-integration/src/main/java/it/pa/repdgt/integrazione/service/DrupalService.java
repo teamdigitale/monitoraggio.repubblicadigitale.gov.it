@@ -65,9 +65,11 @@ public class DrupalService {
 	
 	public static final List<String> ENDPOINT_RUOLI = Arrays.asList(
 			"^/api/board/items$",
+			"^/api/board/items_social$",
 			"^/api/board/item/[A-Za-z0-9]+/user/[A-Za-z0-9]+$",
 			"^/api/search/board/items$",
 			"^/api/document/items$",
+			"^/api/document/items_social$",
 			"^/api/document/item/[A-Za-z0-9]+/user/[A-Za-z0-9]+$",
 			"^/api/search/document/items$",
 			"^/api/board/filters$",
