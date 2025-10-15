@@ -23,7 +23,9 @@ import ManageProject from '../modals/manageProject';
 import ManageHeadquarter from '../../../../../components/AdministrativeArea/Entities/Headquarters/ManageHeadquarter/manageHeadquarter';
 import { useAppSelector } from '../../../../../redux/hooks';
 import {
+  resetInfoIdsBreadcrumb,
   selectDevice,
+  selectInfoIdsBreadcrumb,
   setInfoIdsBreadcrumb,
 } from '../../../../../redux/features/app/appSlice';
 import clsx from 'clsx';
@@ -46,6 +48,7 @@ import {
   TerminateEntity,
 } from '../../../../../redux/features/administrativeArea/administrativeAreaThunk';
 import {
+  GetAuthorityDetail,
   GetAuthorityManagerDetail,
   RemoveManagerAuthority,
   RemoveReferentDelegate,
@@ -117,6 +120,7 @@ const ProjectsDetails = () => {
   const [currentModal, setCorrectModal] = useState<React.ReactElement>();
   const [emptySection, setEmptySection] = useState<React.ReactElement>();
   const [itemList, setItemList] = useState<ItemsListI | null>();
+  const infoIdsBreadcrumb = useAppSelector(selectInfoIdsBreadcrumb);
   const [itemAccordionList, setItemAccordionList] = useState<
     ItemsListI[] | null
   >();
@@ -155,7 +159,7 @@ const ProjectsDetails = () => {
 
   if (location.pathname === `/area-amministrativa/progetti/${entityId}`) {
     navigate(`/area-amministrativa/progetti/${entityId}/info`);
-  }  
+  }
   useEffect(() => {
     // For breadcrumb
     if (location.pathname === `/area-amministrativa/progetti/${entityId}`) {
@@ -196,26 +200,34 @@ const ProjectsDetails = () => {
   useEffect(() => {
     // For breadcrumb
     if (projectId && projectDetails?.nome) {
+      dispatch(resetInfoIdsBreadcrumb());
       dispatch(
         setInfoIdsBreadcrumb({
           id: programDetails?.id,
           nome: programDetails?.nomeBreve,
+          updateRoleBreadcrumb: true,
         })
       );
       dispatch(
         setInfoIdsBreadcrumb({ id: projectId, nome: projectDetails?.nome })
       );
+      dispatch(
+        setInfoIdsBreadcrumb({
+          id: authorityInfo?.dettagliInfoEnte?.id,
+          nome: authorityInfo?.dettagliInfoEnte?.nome,
+        })
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [projectId, projectDetails, activeTab]);
+  }, [projectId, projectDetails, authorityInfo, activeTab]);
 
   useEffect(() => {
     setPartnerAuthoritiesList(project.entiPartner?.filter(
       (entePartner: { associatoAUtente: boolean }) =>
         entePartner.associatoAUtente === true
-    )); 
-  },[project.entiPartner])
-  
+    ));
+  }, [project.entiPartner])
+
   useEffect(() => {
     /*  scrollTo(0, 0); */
     centerActiveItem();
@@ -233,75 +245,75 @@ const ProjectsDetails = () => {
     'del.ref_del.gest.prgt',
   ])
     ? {
-        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-          navigate(
-            getActionRedirectURL(
-              userRoles.REGP,
-              (typeof td === 'string' ? td : td.id).toString()
-            )
-          );
-        },
-        [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
-          dispatch(
-            openModal({
-              id: 'delete-entity',
-              payload: {
-                entity: 'referent-delegate',
-                cf: td,
-                role: 'REGP',
-                text: 'Confermi di voler disassociare questo referente?',
-              },
-            })
-          );
-        },
-      }
+      [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+        navigate(
+          getActionRedirectURL(
+            userRoles.REGP,
+            (typeof td === 'string' ? td : td.id).toString()
+          )
+        );
+      },
+      [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
+        dispatch(
+          openModal({
+            id: 'delete-entity',
+            payload: {
+              entity: 'referent-delegate',
+              cf: td,
+              role: 'REGP',
+              text: 'Confermi di voler disassociare questo referente?',
+            },
+          })
+        );
+      },
+    }
     : {
-        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-          navigate(
-            getActionRedirectURL(
-              userRoles.REGP,
-              (typeof td === 'string' ? td : td.id).toString()
-            )
-          );
-        },
-      };
+      [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+        navigate(
+          getActionRedirectURL(
+            userRoles.REGP,
+            (typeof td === 'string' ? td : td.id).toString()
+          )
+        );
+      },
+    };
 
   const onActionClickDelegati: CRUDActionsI = hasUserPermission([
     'del.ref_del.gest.prgt',
   ])
     ? {
-        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-          navigate(
-            getActionRedirectURL(
-              userRoles.DEGP,
-              (typeof td === 'string' ? td : td.id).toString()
-            )
-          );
-        },
-        [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
-          dispatch(
-            openModal({
-              id: 'delete-entity',
-              payload: {
-                entity: 'referent-delegate',
-                cf: td,
-                role: 'DEGP',
-                text: 'Confermi di voler disassociare questo delegato?',
-              },
-            })
-          );
-        },
-      }
+      [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+        navigate(
+          getActionRedirectURL(
+            userRoles.DEGP,
+            (typeof td === 'string' ? td : td.id).toString()
+          )
+        );
+      },
+      [CRUDActionTypes.DELETE]: (td: TableRowI | string) => {
+        dispatch(
+          openModal({
+            id: 'delete-entity',
+            payload: {
+              entity: 'referent-delegate',
+              cf: td,
+              role: 'DEGP',
+              text: 'Confermi di voler disassociare questo delegato?',
+            },
+          })
+        );
+      },
+    }
     : {
-        [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
-          navigate(
-            getActionRedirectURL(
-              userRoles.DEGP,
-              (typeof td === 'string' ? td : td.id).toString()
-            )
-          );
-        },
-      };
+      [CRUDActionTypes.VIEW]: (td: TableRowI | string) => {
+        navigate(
+          getActionRedirectURL(
+            userRoles.DEGP,
+            (typeof td === 'string' ? td : td.id).toString()
+          )
+        );
+      },
+    };
 
   const centerActiveItem = () => {
     switch (activeTab) {
@@ -454,39 +466,39 @@ const ProjectsDetails = () => {
         authorityInfo?.dettagliInfoEnte?.statoEnte !== entityStatus.TERMINATO &&
           hasUserPermission(['upd.enti.gest.prgt'])
           ? [
-              {
-                size: 'xs',
-                outline: true,
-                color: 'primary',
-                buttonClass: 'btn-secondary',
-                disabled:
-                  authorityInfo?.dettagliInfoEnte?.statoEnte ===
-                  entityStatus.ATTIVO,
-                text: 'Elimina',
-                onClick: () =>
-                  dispatch(
-                    openModal({
-                      id: 'delete-entity',
-                      payload: {
-                        entity: 'authority',
-                        text: 'Confermi di volere eliminare questo gestore di progetto?',
-                      },
-                    })
-                  ),
-              },
-              {
-                size: 'xs',
-                color: 'primary',
-                text: 'Modifica',
-                onClick: () =>
-                  dispatch(
-                    openModal({
-                      id: 'ente-gestore',
-                      payload: { title: 'Modifica ente gestore progetto' },
-                    })
-                  ),
-              },
-            ]
+            {
+              size: 'xs',
+              outline: true,
+              color: 'primary',
+              buttonClass: 'btn-secondary',
+              disabled:
+                authorityInfo?.dettagliInfoEnte?.statoEnte ===
+                entityStatus.ATTIVO,
+              text: 'Elimina',
+              onClick: () =>
+                dispatch(
+                  openModal({
+                    id: 'delete-entity',
+                    payload: {
+                      entity: 'authority',
+                      text: 'Confermi di volere eliminare questo gestore di progetto?',
+                    },
+                  })
+                ),
+            },
+            {
+              size: 'xs',
+              color: 'primary',
+              text: 'Modifica',
+              onClick: () =>
+                dispatch(
+                  openModal({
+                    id: 'ente-gestore',
+                    payload: { title: 'Modifica ente gestore progetto' },
+                  })
+                ),
+            },
+          ]
           : []
       );
       setItemAccordionList([
@@ -500,12 +512,12 @@ const ProjectsDetails = () => {
                 codiceFiscale: ref.codiceFiscale,
                 actions: ref.associatoAUtente
                   ? authorityInfo?.dettagliInfoEnte?.statoEnte ===
-                      entityStatus.TERMINATO ||
+                    entityStatus.TERMINATO ||
                     ref?.stato !== entityStatus.ATTIVO
                     ? {
-                        [CRUDActionTypes.VIEW]:
-                          onActionClickReferenti[CRUDActionTypes.VIEW],
-                      }
+                      [CRUDActionTypes.VIEW]:
+                        onActionClickReferenti[CRUDActionTypes.VIEW],
+                    }
                     : onActionClickReferenti
                   : {},
               })
@@ -521,12 +533,12 @@ const ProjectsDetails = () => {
                 codiceFiscale: del.codiceFiscale,
                 actions: del.associatoAUtente
                   ? authorityInfo?.dettagliInfoEnte?.statoEnte ===
-                      entityStatus.TERMINATO ||
+                    entityStatus.TERMINATO ||
                     del?.stato !== entityStatus.ATTIVO
                     ? {
-                        [CRUDActionTypes.VIEW]:
-                          onActionClickDelegati[CRUDActionTypes.VIEW],
-                      }
+                      [CRUDActionTypes.VIEW]:
+                        onActionClickDelegati[CRUDActionTypes.VIEW],
+                    }
                     : onActionClickDelegati
                   : {},
               })
@@ -540,23 +552,23 @@ const ProjectsDetails = () => {
                 ...sedi,
                 actions: sedi.associatoAUtente
                   ? authorityInfo?.dettagliInfoEnte?.statoEnte ===
-                      entityStatus.TERMINATO && sedi.associatoAUtente
+                    entityStatus.TERMINATO && sedi.associatoAUtente
                     ? {
-                        [CRUDActionTypes.VIEW]:
-                          onActionClickSede[CRUDActionTypes.VIEW],
-                      }
+                      [CRUDActionTypes.VIEW]:
+                        onActionClickSede[CRUDActionTypes.VIEW],
+                    }
                     : sedi.associatoAUtente
-                    ? {
+                      ? {
                         [CRUDActionTypes.VIEW]:
                           onActionClickSede[CRUDActionTypes.VIEW],
                         [CRUDActionTypes.DELETE]:
                           sedi.stato !== entityStatus.ATTIVO
                             ? undefined
                             : hasUserPermission(['del.sede.gest.prgt'])
-                            ? onActionClickSede[CRUDActionTypes.DELETE]
-                            : undefined,
+                              ? onActionClickSede[CRUDActionTypes.DELETE]
+                              : undefined,
                       }
-                    : {}
+                      : {}
                   : {},
               })
             ) || [],
@@ -607,30 +619,30 @@ const ProjectsDetails = () => {
               ? entePartner.stato !== entityStatus.ATTIVO ||
                 projectDetails?.stato === entityStatus.TERMINATO
                 ? {
-                    [CRUDActionTypes.VIEW]:
-                      onActionClickEntiPartner[CRUDActionTypes.VIEW],
-                  }
+                  [CRUDActionTypes.VIEW]:
+                    onActionClickEntiPartner[CRUDActionTypes.VIEW],
+                }
                 : {
-                    [CRUDActionTypes.VIEW]:
-                      onActionClickEntiPartner[CRUDActionTypes.VIEW],
-                    [CRUDActionTypes.DELETE]: hasUserPermission([
-                      'del.ente.partner',
-                    ])
-                      ? (td: TableRowI | string) => {
-                          dispatch(
-                            openModal({
-                              id: 'delete-entity',
-                              payload: {
-                                entity: 'partner-authority',
-                                authorityId: td,
-                                text: 'Confermi di volere disassociare questo Ente partner?',
-                              },
-                            })
-                          );
-                          // projectId && removeAuthorityPartner(td as string, projectId);
-                        }
-                      : undefined,
-                  }
+                  [CRUDActionTypes.VIEW]:
+                    onActionClickEntiPartner[CRUDActionTypes.VIEW],
+                  [CRUDActionTypes.DELETE]: hasUserPermission([
+                    'del.ente.partner',
+                  ])
+                    ? (td: TableRowI | string) => {
+                      dispatch(
+                        openModal({
+                          id: 'delete-entity',
+                          payload: {
+                            entity: 'partner-authority',
+                            authorityId: td,
+                            text: 'Confermi di volere disassociare questo Ente partner?',
+                          },
+                        })
+                      );
+                      // projectId && removeAuthorityPartner(td as string, projectId);
+                    }
+                    : undefined,
+                }
               : {},
           })
         ),
@@ -657,7 +669,7 @@ const ProjectsDetails = () => {
           //subtitle='Per attivare il progetto aggiungi un Ente partner'
           buttons={
             hasUserPermission(['add.ente.partner']) &&
-            projectDetails?.stato !== entityStatus.TERMINATO
+              projectDetails?.stato !== entityStatus.TERMINATO
               ? partnerAuthorityButtons
               : []
           }
@@ -722,7 +734,7 @@ const ProjectsDetails = () => {
           withIcon
           icon={IconWarning}
           subtitle2={subtitleList}
-          // buttons={EmptySectionButtons.slice(2)}
+        // buttons={EmptySectionButtons.slice(2)}
         />
       );
     }
@@ -760,7 +772,7 @@ const ProjectsDetails = () => {
         >
           <div id='tab-ente-gestore-progetto'>
             {!managingAuthorityID ||
-            authorityInfo?.dettagliInfoEnte?.statoEnte ===
+              authorityInfo?.dettagliInfoEnte?.statoEnte ===
               entityStatus.NON_ATTIVO ? (
               <>
                 <span>{!managingAuthorityID && '*'} Ente gestore</span>
@@ -888,41 +900,41 @@ const ProjectsDetails = () => {
       case 'ATTIVO':
         formButtons = hasUserPermission(['upd.car.prgt', 'term.prgt'])
           ? [
-              {
-                size: 'xs',
-                color: 'secondary',
-                outline: true,
-                text: 'Termina progetto',
-                buttonClass: 'terminate-entity',
-                onClick: () =>
-                  dispatch(
-                    openModal({
-                      id: 'terminate-entity',
-                      payload: {
-                        entity: 'project',
-                        text1:
-                          'Inserisci la data di termine e conferma per terminare il progetto.',
-                        text2:
-                          'Attenzione: non è possibile inserire una data futura.',
-                      },
-                    })
-                  ),
-              },
-              {
-                size: 'xs',
-                color: 'primary',
-                text: 'Modifica',
-                onClick: () =>
-                  dispatch(
-                    openModal({
-                      id: formTypes.PROGETTO,
-                      payload: { title: 'Modifica progetto' },
-                    })
-                  ),
-              },
-            ]
+            {
+              size: 'xs',
+              color: 'secondary',
+              outline: true,
+              text: 'Termina progetto',
+              buttonClass: 'terminate-entity',
+              onClick: () =>
+                dispatch(
+                  openModal({
+                    id: 'terminate-entity',
+                    payload: {
+                      entity: 'project',
+                      text1:
+                        'Inserisci la data di termine e conferma per terminare il progetto.',
+                      text2:
+                        'Attenzione: non è possibile inserire una data futura.',
+                    },
+                  })
+                ),
+            },
+            {
+              size: 'xs',
+              color: 'primary',
+              text: 'Modifica',
+              onClick: () =>
+                dispatch(
+                  openModal({
+                    id: formTypes.PROGETTO,
+                    payload: { title: 'Modifica progetto' },
+                  })
+                ),
+            },
+          ]
           : hasUserPermission(['upd.car.prgt'])
-          ? [
+            ? [
               {
                 size: 'xs',
                 color: 'primary',
@@ -936,66 +948,66 @@ const ProjectsDetails = () => {
                   ),
               },
             ]
-          : hasUserPermission(['term.prgt'])
-          ? [
-              {
-                size: 'xs',
-                color: 'secondary',
-                outline: true,
-                text: 'Termina progetto',
-                buttonClass: 'terminate-entity',
-                onClick: () =>
-                  dispatch(
-                    openModal({
-                      id: 'terminate-entity',
-                      payload: {
-                        entity: 'project',
-                        text1:
-                          'Inserisci la data di termine e conferma per terminare il progetto',
-                        text2:
-                          'Attenzione: non è possibile inserire una data futura.',
-                      },
-                    })
-                  ),
-              },
-            ]
-          : [];
+            : hasUserPermission(['term.prgt'])
+              ? [
+                {
+                  size: 'xs',
+                  color: 'secondary',
+                  outline: true,
+                  text: 'Termina progetto',
+                  buttonClass: 'terminate-entity',
+                  onClick: () =>
+                    dispatch(
+                      openModal({
+                        id: 'terminate-entity',
+                        payload: {
+                          entity: 'project',
+                          text1:
+                            'Inserisci la data di termine e conferma per terminare il progetto',
+                          text2:
+                            'Attenzione: non è possibile inserire una data futura.',
+                        },
+                      })
+                    ),
+                },
+              ]
+              : [];
         break;
       case 'NON ATTIVO':
         formButtons = hasUserPermission(['del.prgt', 'upd.car.prgt'])
           ? [
-              {
-                size: 'xs',
-                outline: true,
-                buttonClass: 'btn-secondary',
-                color: 'primary',
-                text: 'Elimina',
-                onClick: () =>
-                  dispatch(
-                    openModal({
-                      id: 'delete-entity',
-                      payload: {
-                        entity: 'project',
-                        text: 'Confermi di volere eliminare questo progetto?',
-                      },
-                    })
-                  ),
-              },
-              {
-                size: 'xs',
-                color: 'primary',
-                text: 'Modifica',
-                onClick: () =>
-                  dispatch(
-                    openModal({
-                      id: formTypes.PROGETTO,
-                      payload: { title: 'Modifica progetto' },
-                    })
-                  ),
-              },
-            ]
+            {
+              size: 'xs',
+              outline: true,
+              buttonClass: 'btn-secondary',
+              color: 'primary',
+              text: 'Elimina',
+              onClick: () =>
+                dispatch(
+                  openModal({
+                    id: 'delete-entity',
+                    payload: {
+                      entity: 'project',
+                      text: 'Confermi di volere eliminare questo progetto?',
+                    },
+                  })
+                ),
+            },
+            {
+              size: 'xs',
+              color: 'primary',
+              text: 'Modifica',
+              onClick: () =>
+                dispatch(
+                  openModal({
+                    id: formTypes.PROGETTO,
+                    payload: { title: 'Modifica progetto' },
+                  })
+                ),
+            },
+          ]
           : hasUserPermission(['upd.car.prgt'])
-          ? [
+            ? [
               {
                 size: 'xs',
                 color: 'primary',
@@ -1009,54 +1021,54 @@ const ProjectsDetails = () => {
                   ),
               },
             ]
-          : hasUserPermission(['del.prgt'])
-          ? [
-              {
-                size: 'xs',
-                outline: true,
-                color: 'primary',
-                buttonClass: 'btn-secondary',
-                text: 'Elimina',
-                onClick: () =>
-                  dispatch(
-                    openModal({
-                      id: 'delete-entity',
-                      payload: {
-                        entity: 'project',
-                        text: 'Confermi di volere eliminare questo progetto?',
-                      },
-                    })
-                  ),
-              },
-            ]
-          : [];
+            : hasUserPermission(['del.prgt'])
+              ? [
+                {
+                  size: 'xs',
+                  outline: true,
+                  color: 'primary',
+                  buttonClass: 'btn-secondary',
+                  text: 'Elimina',
+                  onClick: () =>
+                    dispatch(
+                      openModal({
+                        id: 'delete-entity',
+                        payload: {
+                          entity: 'project',
+                          text: 'Confermi di volere eliminare questo progetto?',
+                        },
+                      })
+                    ),
+                },
+              ]
+              : [];
         break;
       case 'ATTIVABILE':
         formButtons = hasUserPermission(['act.prgt', 'upd.car.prgt'])
           ? [
-              {
-                size: 'xs',
-                outline: true,
-                color: 'primary',
-                buttonClass: 'btn-secondary',
-                text: 'Attiva',
-                onClick: () => projectActivation(),
-              },
-              {
-                size: 'xs',
-                color: 'primary',
-                text: 'Modifica',
-                onClick: () =>
-                  dispatch(
-                    openModal({
-                      id: formTypes.PROGETTO,
-                      payload: { title: 'Modifica progetto' },
-                    })
-                  ),
-              },
-            ]
+            {
+              size: 'xs',
+              outline: true,
+              color: 'primary',
+              buttonClass: 'btn-secondary',
+              text: 'Attiva',
+              onClick: () => projectActivation(),
+            },
+            {
+              size: 'xs',
+              color: 'primary',
+              text: 'Modifica',
+              onClick: () =>
+                dispatch(
+                  openModal({
+                    id: formTypes.PROGETTO,
+                    payload: { title: 'Modifica progetto' },
+                  })
+                ),
+            },
+          ]
           : hasUserPermission(['upd.car.prgt'])
-          ? [
+            ? [
               {
                 size: 'xs',
                 color: 'primary',
@@ -1070,18 +1082,18 @@ const ProjectsDetails = () => {
                   ),
               },
             ]
-          : hasUserPermission(['act.prgt'])
-          ? [
-              {
-                size: 'xs',
-                outline: true,
-                buttonClass: 'btn-secondary',
-                color: 'primary',
-                text: 'Attiva',
-                onClick: () => projectActivation(),
-              },
-            ]
-          : [];
+            : hasUserPermission(['act.prgt'])
+              ? [
+                {
+                  size: 'xs',
+                  outline: true,
+                  buttonClass: 'btn-secondary',
+                  color: 'primary',
+                  text: 'Attiva',
+                  onClick: () => projectActivation(),
+                },
+              ]
+              : [];
 
         break;
       case 'TERMINATO':
@@ -1090,6 +1102,12 @@ const ProjectsDetails = () => {
     }
     return formButtons;
   };
+
+  useEffect(() => {
+    if (authorityId) {
+      dispatch(GetAuthorityDetail(authorityId));
+    }
+  }, [authorityId]);
 
   useEffect(() => {
     switch (activeTab) {
@@ -1174,43 +1192,43 @@ const ProjectsDetails = () => {
         return authorityInfo?.dettagliInfoEnte?.statoEnte !==
           entityStatus.TERMINATO && hasUserPermission(['add.ref_del.gest.prgt'])
           ? {
-              cta: `Aggiungi ${title}`,
-              ctaAction: () =>
-                dispatch(
-                  openModal({
-                    id:
-                      title === 'Referenti'
-                        ? formTypes.REFERENTE
-                        : formTypes.DELEGATO,
-                    payload: {
-                      title: `Aggiungi ${title}`,
-                    },
-                  })
-                ),
-            }
+            cta: `Aggiungi ${title}`,
+            ctaAction: () =>
+              dispatch(
+                openModal({
+                  id:
+                    title === 'Referenti'
+                      ? formTypes.REFERENTE
+                      : formTypes.DELEGATO,
+                  payload: {
+                    title: `Aggiungi ${title}`,
+                  },
+                })
+              ),
+          }
           : {
-              cta: null,
-              ctaAction: () => ({}),
-            };
+            cta: null,
+            ctaAction: () => ({}),
+          };
       case 'Sedi':
         return authorityInfo?.dettagliInfoEnte?.statoEnte !==
           entityStatus.TERMINATO && hasUserPermission(['add.sede.gest.prgt'])
           ? {
-              cta: `Aggiungi Sede`,
-              ctaAction: () =>
-                dispatch(
-                  openModal({
-                    id: formTypes.SEDE,
-                    payload: {
-                      title: `Aggiungi Sede`,
-                    },
-                  })
-                ),
-            }
+            cta: `Aggiungi Sede`,
+            ctaAction: () =>
+              dispatch(
+                openModal({
+                  id: formTypes.SEDE,
+                  payload: {
+                    title: `Aggiungi Sede`,
+                  },
+                })
+              ),
+          }
           : {
-              cta: null,
-              ctaAction: () => ({}),
-            };
+            cta: null,
+            ctaAction: () => ({}),
+          };
       default:
         return {
           cta: null,
@@ -1255,8 +1273,9 @@ const ProjectsDetails = () => {
   // };
 
   const handleNavigateToCaricamentoDati = useCallback(() => {
-    navigate('./caricamento-dati');
+    navigate(`./${managingAuthorityID}/caricamento-dati`);
   }, [navigate]);
+
 
   return (
     <ProjectContext.Provider
@@ -1313,43 +1332,41 @@ const ProjectsDetails = () => {
               </DetailLayout>
               {itemAccordionList?.length
                 ? itemAccordionList?.map((item, index) => (
-                    <Accordion
-                      key={index}
-                      title={item.title || ''}
-                      totElem={item.items.length}
-                      cta={getAccordionCTA(item.title).cta}
-                      onClickCta={getAccordionCTA(item.title)?.ctaAction}
-                      lastBottom={index === itemAccordionList.length - 1}
-                      detailAccordion
-                    >
-                      {item.items?.length ? (
-                        item.items.map((cardItem) => (
-                          <CardStatusAction
-                            key={cardItem.id}
-                            title={`${
-                              cardItem.cognome ? cardItem.cognome : ''
+                  <Accordion
+                    key={index}
+                    title={item.title || ''}
+                    totElem={item.items.length}
+                    cta={getAccordionCTA(item.title).cta}
+                    onClickCta={getAccordionCTA(item.title)?.ctaAction}
+                    lastBottom={index === itemAccordionList.length - 1}
+                    detailAccordion
+                  >
+                    {item.items?.length ? (
+                      item.items.map((cardItem) => (
+                        <CardStatusAction
+                          key={cardItem.id}
+                          title={`${cardItem.cognome ? cardItem.cognome : ''
                             } ${cardItem.nome}`.trim()}
-                            status={cardItem.stato}
-                            id={cardItem.id}
-                            fullInfo={cardItem.fullInfo}
-                            cf={cardItem.codiceFiscale}
-                            onActionClick={cardItem.actions}
-                          />
-                        ))
-                      ) : (
-                        <EmptySection
-                          title={`Non sono presenti ${item.title?.toLowerCase()} ${
-                            item.title?.toLowerCase() === 'sedi'
-                              ? `associate.`
-                              : `associati.`
-                          }`}
-                          icon={IconNote}
-                          withIcon
-                          noMargin
+                          status={cardItem.stato}
+                          id={cardItem.id}
+                          fullInfo={cardItem.fullInfo}
+                          cf={cardItem.codiceFiscale}
+                          onActionClick={cardItem.actions}
                         />
-                      )}
-                    </Accordion>
-                  ))
+                      ))
+                    ) : (
+                      <EmptySection
+                        title={`Non sono presenti ${item.title?.toLowerCase()} ${item.title?.toLowerCase() === 'sedi'
+                          ? `associate.`
+                          : `associati.`
+                          }`}
+                        icon={IconNote}
+                        withIcon
+                        noMargin
+                      />
+                    )}
+                  </Accordion>
+                ))
                 : null}
               {activeTab === tabs.INFO && !entityId && programDetails?.id ? (
                 <div className={clsx('my-5')}>
@@ -1415,6 +1432,7 @@ const ProjectsDetails = () => {
                 accept='.csv'
                 onClose={() => {
                   if (projectId) dispatch(GetProjectDetail(projectId));
+                  
                 }}
                 onEsito={handleEnteUploadEsito}
                 template={EntiPartnerTemplate}
@@ -1427,15 +1445,15 @@ const ProjectsDetails = () => {
                   id='table-ente-partner'
                 />
               </UploadCSVModal>
-              <ManageDelegate creation authoritySection={AuthoritySection}/>
-              <ManageReferal creation authoritySection={AuthoritySection}/>
+              <ManageDelegate creation authoritySection={AuthoritySection} />
+              <ManageReferal creation authoritySection={AuthoritySection} />
               <ManageHeadquarter creation />
 
               {projectId &&
-              parseInt(projectId) &&
-              activeTab === tabs.ENTE_GESTORE &&
-              (userHeaders.codiceRuoloUtenteLoggato === 'REGP' ||
-                userHeaders.codiceRuoloUtenteLoggato === 'DTD') ? (
+                parseInt(projectId) &&
+                activeTab === tabs.ENTE_GESTORE &&
+                (userHeaders.codiceRuoloUtenteLoggato === 'REGP' ||
+                  userHeaders.codiceRuoloUtenteLoggato === 'DTD') ? (
                 <CSVUploadBanner
                   onPrimaryButtonClick={handleNavigateToCaricamentoDati}
                   policy={projectDetails?.policy}
