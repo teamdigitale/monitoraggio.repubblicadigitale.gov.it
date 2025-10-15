@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.482](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.481...1.0.0-test.482) (2025-10-15)
+
+
+### Bug Fixes
+
+* **test:** fix grafiche per collaudo 20251015 ([58da7b2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/58da7b268a82568f2f2d4eea17b6e508be5cc8a9))
+
 ## [1.0.0-test.481](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.480...1.0.0-test.481) (2025-10-08)
 
 
