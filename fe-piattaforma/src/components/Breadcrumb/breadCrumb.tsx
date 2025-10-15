@@ -79,6 +79,7 @@ const Breadcrumb = () => {
   }, [currentLocation, location]);
 
   useEffect(() => {
+    
     if (
       breadcrumbList?.length &&
       breadcrumbList[breadcrumbList?.length - 1]?.url === urlCurrentLocation

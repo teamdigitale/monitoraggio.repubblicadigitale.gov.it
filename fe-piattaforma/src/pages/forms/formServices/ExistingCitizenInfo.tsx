@@ -45,7 +45,7 @@ export default function ExistingCitizenInfo({ newVersion }: { newVersion?: boole
     >
       <div>
         <Icon
-          icon='it-warning-circle'
+          icon='it-user'
           className='no-results-found__icon mb-4'
           aria-label='Avvertimento no risultati'
         />
