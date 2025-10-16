@@ -76,7 +76,7 @@ const CSVUploader =  forwardRef(function CSVUploader({
   const { codiceRuolo: userRole } = useAppSelector(selectProfile) || {};
   const projectContext = useContext(ProjectContext);
   const [selectedFile, setSelectedFile] = useState<File[] | null>(null);
-  const { projectId, enteId } = useParams();
+  const { projectId, authorityId } = useParams();
   const projectDetail = useAppSelector(selectProjects).detail?.dettagliInfoProgetto;
   const fileInputConsentito = projectDetail?.policy === policy.RFD ? 'CSV' : 'EXCEL';
 
@@ -120,14 +120,14 @@ const CSVUploader =  forwardRef(function CSVUploader({
 
 
   const checkTable = async () => {
-    if (projectId && (enteId || projectContext)) {
+    if (projectId && authorityId) {
       try {
         dispatch(showLoader());
         const res = await searchActivityReport(
           0,
           100,
           parseInt(projectId),
-          enteId ? parseInt(enteId) : projectContext!.idEnte
+          parseInt(authorityId)
         )
         .finally(() => dispatch(hideLoader()));
         for (const element of res.data.content) {
