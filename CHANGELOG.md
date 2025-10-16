@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.483](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.482...1.0.0-test.483) (2025-10-16)
+
+
+### Bug Fixes
+
+* **test:** fix caricamento massivo upload file scd partner 20251016 ([2d189e2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2d189e294e35cb37a320b688e18d01be4d3d0ce5))
+
 ## [1.0.0-test.482](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.481...1.0.0-test.482) (2025-10-15)
 
 
