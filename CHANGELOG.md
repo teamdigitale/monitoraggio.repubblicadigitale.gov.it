@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.484](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.483...1.0.0-test.484) (2025-10-16)
+
+
+### Bug Fixes
+
+* **test:** fix caricamento massivo ente partner 20251016 ([66f4b34](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/66f4b3487828e24463b2ac8da889019c627c40cd))
+
 ## [1.0.0-test.483](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.482...1.0.0-test.483) (2025-10-16)
 
 
