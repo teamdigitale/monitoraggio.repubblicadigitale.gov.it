@@ -25,7 +25,7 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
     DataUploadContext
   );
   const projectContext = useContext<ProjectInfo | undefined>(ProjectContext);
-  const { projectId, enteId } = useParams();
+  const { projectId, authorityId } = useParams();
   const dispatch = useAppDispatch();
   const [activityReportUUID, setActivityReportUUID] = useState<string | undefined>(undefined);
   const [showModal, setShowModal] = useState<boolean | undefined>(undefined)
@@ -75,7 +75,7 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
       dataUploadContext &&
       dataUploadContext.parsedData &&
       projectId &&
-      (enteId || projectContext)
+      authorityId
     ) {
       
       const dispatchPromise = dispatch(
@@ -86,7 +86,7 @@ export default function SubmitFileCsv(props: { clearFile: () => void }) {
       const elaborateCsvPromise = elaborateCsv(
         dataUploadContext.parsedData,
         parseInt(projectId),
-        enteId ? parseInt(enteId) : projectContext!.idEnte,
+        parseInt(authorityId),
         dataUploadContext.parsedData.estensioneInput
       );
       setShowModal(true)
