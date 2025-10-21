@@ -1,5 +1,14 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.485](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.484...1.0.0-test.485) (2025-10-21)
+
+
+### Features
+
+* **U451:** modifica riferimenti viste drupal 20251013 ([ef2c264](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ef2c26479a4ac836d290e904b97983d775890fb0))
+* **U451:** nascosti elementi social da homepage e utilizzo nuove viste drupal su home WIP 20251008 ([8e91b0b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8e91b0b66f59594c988341e0d257cf3d9f521f91))
+* **U451:** rimossi elementi social da card su homepage 20251003 ([5739d6f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5739d6f529d458368a4550639ba2015871b212ae))
+
 ## [1.0.0-test.484](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.483...1.0.0-test.484) (2025-10-16)
 
 
