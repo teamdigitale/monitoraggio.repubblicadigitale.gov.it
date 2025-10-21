@@ -16,7 +16,7 @@ public class EncodeUtils {
             encryptedData = encryptedData.replace(" ", "+");
             return Aes256.decrypt(encryptedData, key);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Il dato inviato non è corretto");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Il dato inviato non è corretto: " + e.getMessage());
         }
     }
 
@@ -34,7 +34,7 @@ public class EncodeUtils {
             }
             return hexString.toString();
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Impossibile salvare il dato");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Impossibile salvare il dato: " + e.getMessage());
         }
     }
 }
