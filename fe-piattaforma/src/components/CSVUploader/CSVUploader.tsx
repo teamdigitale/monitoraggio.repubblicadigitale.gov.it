@@ -3,7 +3,7 @@ import fileUploadImg from './../../../public/assets/img/file_upload.png';
 import { dispatchNotify } from '../../utils/notifictionHelper';
 import itDeletePrimary from '../../../public/assets/img/it-delete-primary.png';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { mapRule } from '../../utils/csvUtils';
+import { mapRule, testoInfoMaxDate } from '../../utils/csvUtils';
 import WarningModal from '../FileHandling/WarningModal';
 import { closeModal, openModal } from '../../redux/features/modal/modalSlice';
 import { selectProfile } from '../../redux/features/user/userSlice';
@@ -196,7 +196,7 @@ const CSVUploader =  forwardRef(function CSVUploader({
           <div className='text-secondary' style={{fontSize: '16px'}}>
             Nell'attuale finestra di caricamento è possibile inserire tutti i servizi erogati 
             {projectDetail?.policy === policy.RFD && (
-              <strong> fino al 30 Settembre 2025</strong>
+                <strong>{testoInfoMaxDate}</strong>
             )}.
           </div>
         </div>
