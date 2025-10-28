@@ -82,7 +82,7 @@ export const mandatoryFields: (keyof CSVRecord)[] = [
 
 const maxDate = new Date('2025-10-31')
 const messaggioErroreMaxDate = "La data del servizio e' successiva al 31 Ottobre 2025."
-export const testoInfoMaxDate = "fino al 31 Ottobre 2025"
+export const testoInfoMaxDate = " fino al 31 Ottobre 2025"
 
 export function encryptFiscalCode(filteredRecord: CSVRecord) {
   return filteredRecord.AN3
