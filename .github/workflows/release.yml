@@ -120,7 +120,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: 'lts/*'
+          node-version: '17.9'
 
       - name: Install semantic-release extra plugins
         run: |
@@ -182,7 +182,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 'lts/*'
+          node-version: '17.9'
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -693,7 +693,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: 'lts/*'
+          node-version: '17.9'
 
       - name: Install semantic-release extra plugins
         run: |

@@ -27,7 +27,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: 'lts/*'
+          node-version: '17.9'
 
       - name: Install commitlint plugins
         run: |

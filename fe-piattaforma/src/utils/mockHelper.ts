@@ -441,6 +441,7 @@ export const initMock = (apiInstance: AxiosInstance) => {
       // @ts-ignore
       const response = await import('/mock/categoriesList.json');
       return [200, response];
+      //prova commento
     });
   }
 };
