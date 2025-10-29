@@ -1,5 +1,21 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.51.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.50.0...1.51.0) (2025-10-29)
+
+
+### Features
+
+* **test:** aggiornamento data limite ottobre 20252810 ([0449409](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/044940961d4e1b30653f5deecae037893711b069))
+
+
+### Bug Fixes
+
+* **main:** update github action 20251029 ([1212642](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1212642807327d6e64c87ea613bea6e5ea66432f))
+* **main:** update github action 20251029 ([f1c9e5a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f1c9e5a51fe7da4dcb25dbc99ec75447d5fbe2ed))
+* **test:** fix caricamento massivo ente partner 20251016 ([0530da0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0530da0bd424443f9005e973193cb186796bd14f))
+* **test:** fix caricamento massivo upload file scd partner 20251016 ([be475a2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/be475a27c42da2b26bd7bcc9fd05f7d0788f56bc))
+* **test:** fix grafiche per collaudo 20251015 ([c14542d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c14542da93a8f8d3064ef67bdc098e8203fdeafd))
+
 ## [1.50.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.49.0...1.50.0) (2025-09-29)
 
 
