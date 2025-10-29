@@ -71,7 +71,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '17.9'
+        node-version: '22.21.1'
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v2
