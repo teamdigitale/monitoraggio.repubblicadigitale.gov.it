@@ -21,7 +21,7 @@ public interface CittadinoRepository extends JpaRepository<CittadinoEntity, Long
 			+ " SELECT DISTINCT"
 			+ "	     cit.GENERE as genere                   "
 			+ " 		,cit.TITOLO_DI_STUDIO as titoloDiStudio "
-			+ " 		,cit.FASCIA_DI_ETA as fasciaDiEta   "
+			+ " 		,cit.FASCIA_DI_ETA_ID as fasciaDiEta   "
 			+ " 		,cit.OCCUPAZIONE as occupazione         "
 			+ " 		,prog.POLICY as policy                  "
 			+ " 		,ser.ID as servizioId                   "
