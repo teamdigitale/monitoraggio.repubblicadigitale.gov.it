@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.489](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.488...1.0.0-test.489) (2025-11-05)
+
+
+### Bug Fixes
+
+* **test:** aggiornamento pom 20251105 ([de8ce1d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/de8ce1d0d5970bbb75ba898718977f82a1b79a6b))
+* **test:** aggiornamento properties 20251105 ([833f031](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/833f031c5d04bbb0b314d84a86d3fdcc84311211))
+
 ## [1.0.0-test.488](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.487...1.0.0-test.488) (2025-11-05)
 
 
