@@ -1,5 +1,17 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.52.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.52.0...1.52.1) (2025-11-05)
+
+
+### Bug Fixes
+
+* **test:** aggiornamento deployment 20251105 ([cec6abf](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/cec6abf040bddbb61838774a5571ba55cfce3ffd))
+* **test:** aggiornamento pom 20251105 ([fbc61b6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fbc61b6bce38d405099d5276d568a3e0f5cec4aa))
+* **test:** aggiornamento properties 20251105 ([d44f842](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d44f8424c236e3d1cd8ceb1aeae7bd4618e40175))
+* **test:** aggiornamento img docker 20251105 ([9cb8e8f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9cb8e8f94c01267b23f3c5c2b721e5c18e7386c4))
+* **test:** aggiornamento deployment 20251105 ([9a2a515](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9a2a5157d395de2b90ebbe4acdeef055cbb8490e))
+* **test:** aggiornamento query open data 20251104 ([b8fa1cb](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b8fa1cba7fc3cba4a58205721f7e4a00cf4a8196))
+
 ## [1.52.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.51.0...1.52.0) (2025-10-29)
 
 
