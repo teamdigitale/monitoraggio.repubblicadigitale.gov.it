@@ -124,7 +124,7 @@
 		<dependency>
 			<groupId>it.pa.repdgt</groupId>
 			<artifactId>repdgt-shared</artifactId>
-			<version>LATEST</version>
+			<version>1.0.0-test.488</version>
 		</dependency>
 		<dependency>
 		    <groupId>de.flapdoodle.embed</groupId>
