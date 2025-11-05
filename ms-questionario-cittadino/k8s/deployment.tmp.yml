@@ -136,7 +136,7 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: env-${K8S_NAMESPACE}-options
-                  key: CF_ST_KEY
+                  key: HIKARI_IDLE_TIMEOUT
             - name: HIKARI_MAX_LIFETIME
               valueFrom:
                 configMapKeyRef:
