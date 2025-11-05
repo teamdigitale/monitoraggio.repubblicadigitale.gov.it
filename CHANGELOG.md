@@ -1,5 +1,16 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.488](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.487...1.0.0-test.488) (2025-11-05)
+
+
+### Bug Fixes
+
+* **test:** aggiornamento img docker 20251105 ([e9fcc8e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e9fcc8e39dbaa883eb0b64cfb23a9bb4e79cfd81))
+* **test:** aggiornamento deployment 20251105 ([ac6a35d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ac6a35d54d44eace1b59b72b7a1d4a7f40b18d91))
+* **test:** aggiornamento query open data 20251104 ([49996e0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/49996e0a0d84bad0fa763c4251301853293873b2))
+* **main:** update github action 20251029 ([3333e5a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3333e5a9ea118354a19b62a147019c221d8a4025))
+* **test:** fixing github action 20251029 ([8c68eb9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8c68eb9017b7a0fb41a17c3f800fceb82f4a2f30))
+
 ## [1.0.0-test.487](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.486...1.0.0-test.487) (2025-10-28)
 
 
