@@ -23,32 +23,32 @@ spec:
             - containerPort: 8080
           imagePullPolicy: Always
           env:
-            - name: urlDB
+            - name: DB_URL
               valueFrom:
                 configMapKeyRef:
                   name: env-${K8S_NAMESPACE}-options
                   key: urlDB
-            - name: usernameDB
+            - name: DB_USERNAME
               valueFrom:
                 configMapKeyRef:
                   name: env-${K8S_NAMESPACE}-options
                   key: usernameDB
-            - name: passwordDB
+            - name: DB_PASSWORD
               valueFrom:
                 configMapKeyRef:
                   name: env-${K8S_NAMESPACE}-options
                   key: passwordDB
-            - name: awsAppId
+            - name: AWS.APP-ID
               valueFrom:
                 configMapKeyRef:
                   name: env-${K8S_NAMESPACE}-options
                   key: awsAppId
-            - name: awsPinpointAccessKey
+            - name: AWS.PINPOINT.ACCESS-KEY
               valueFrom:
                 configMapKeyRef:
                   name: env-${K8S_NAMESPACE}-options
                   key: awsPinpointAccessKey
-            - name: awsPinpointSecretKey
+            - name: AWS.PINPOINT.SECRET-KEY
               valueFrom:
                 configMapKeyRef:
                   name: env-${K8S_NAMESPACE}-options
@@ -78,22 +78,22 @@ spec:
                 configMapKeyRef:
                   name: env-${K8S_NAMESPACE}-options
                   key: DB_MONGO_PASSWORD
-            - name: awsEmailMittente
+            - name: AWS.EMAIL.MITTENTE
               valueFrom:
                 configMapKeyRef:
                   name: env-${K8S_NAMESPACE}-options
                   key: awsEmailMittente
-            - name: awsS3UtenteAccessKey
+            - name: AWS.S3.ACCESS-KEY
               valueFrom:
                 configMapKeyRef:
                   name: env-${K8S_NAMESPACE}-options
                   key: awsS3UtenteAccessKey
-            - name: awsS3UtenteSecretKey
+            - name: AWS.S3.SECRET-KEY
               valueFrom:
                 configMapKeyRef:
                   name: env-${K8S_NAMESPACE}-options
                   key: awsS3UtenteSecretKey
-            - name: awsS3UtenteBucketName
+            - name: AWS.S3.BUCKET-NAME
               valueFrom:
                 configMapKeyRef:
                   name: env-${K8S_NAMESPACE}-options
