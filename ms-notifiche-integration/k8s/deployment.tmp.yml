@@ -23,17 +23,17 @@ spec:
             - containerPort: 8080
           imagePullPolicy: Always
           env:
-            - name: urlDB
+            - name: DB_URL
               valueFrom:
                 configMapKeyRef:
                   name: env-${K8S_NAMESPACE}-options
                   key: urlDB
-            - name: usernameDB
+            - name: DB_USERNAME
               valueFrom:
                 configMapKeyRef:
                   name: env-${K8S_NAMESPACE}-options
                   key: usernameDB
-            - name: passwordDB
+            - name: DB_PASSWORD
               valueFrom:
                 configMapKeyRef:
                   name: env-${K8S_NAMESPACE}-options
@@ -98,52 +98,52 @@ spec:
                 configMapKeyRef:
                   name: env-${K8S_NAMESPACE}-options
                   key: awsS3UtenteSecretKey
-            - name: awsWorkdocsAccessKey
+            - name: AWS.WORKDOCS.ACCESS-KEY
               valueFrom:
                 configMapKeyRef:
                   name: env-${K8S_NAMESPACE}-options
                   key: awsWorkdocsAccessKey
-            - name: awsWorkdocsSecretKey
+            - name: AWS.WORKDOCS.SECRET-KEY
               valueFrom:
                 configMapKeyRef:
                   name: env-${K8S_NAMESPACE}-options
                   key: awsWorkdocsSecretKey
-            - name: awsWorkdocsOrganizationId
+            - name: AWS.WORKDOCS.ORGANIZATION-ID
               valueFrom:
                 configMapKeyRef:
                   name: env-${K8S_NAMESPACE}-options
                   key: awsWorkdocsOrganizationId
-            - name: rocketChatHost
+            - name: ROCKET-CHAT.HOST
               valueFrom:
                 configMapKeyRef:
                   name: env-${K8S_NAMESPACE}-options
                   key: rocketChatHost
-            - name: rocketChatBaseUri
+            - name: ROCKET-CHAT.BASE-URI
               valueFrom:
                 configMapKeyRef:
                   name: env-${K8S_NAMESPACE}-options
                   key: rocketChatBaseUri
-            - name: rocketChatClientAccessToken
+            - name: ROCKET-CHAT.CLIENT.ACCESS-TOKEN
               valueFrom:
                 configMapKeyRef:
                   name: env-${K8S_NAMESPACE}-options
                   key: rocketChatClientAccessToken
-            - name: rocketChatClientUserId
+            - name: ROCKET-CHAT.CLIENT.USER-ID
               valueFrom:
                 configMapKeyRef:
                   name: env-${K8S_NAMESPACE}-options
                   key: rocketChatClientUserId
-            - name: drupalEndpoint
+            - name: DRUPAL.ENDPOINT
               valueFrom:
                 configMapKeyRef:
                   name: env-${K8S_NAMESPACE}-options
                   key: drupalEndpoint
-            - name: drupalAuthUsername
+            - name: DRUPAL.AUTH.USERNAME
               valueFrom:
                 configMapKeyRef:
                   name: env-${K8S_NAMESPACE}-options
                   key: drupalAuthUsername
-            - name: drupalAuthPassword
+            - name: DRUPAL.AUTH.PASSWORD
               valueFrom:
                 configMapKeyRef:
                   name: env-${K8S_NAMESPACE}-options
