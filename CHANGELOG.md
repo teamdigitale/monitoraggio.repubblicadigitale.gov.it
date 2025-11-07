@@ -1,5 +1,18 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.490](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.489...1.0.0-test.490) (2025-11-07)
+
+
+### Features
+
+* **test:** aggiornamento deploy 20251106 ([857558a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/857558a7128c74b64d112470a6420806fe481f85))
+
+
+### Bug Fixes
+
+* **U451:** spostamento date card in basso 20251107 ([9a924f7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9a924f77e842c58ff068971bbeb286da60fb357a))
+* **test:** aggiornamento deployment 20251105 ([b481aea](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b481aead1377be115808ebdce27418f3558349ae))
+
 ## [1.0.0-test.489](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.488...1.0.0-test.489) (2025-11-05)
 
 
