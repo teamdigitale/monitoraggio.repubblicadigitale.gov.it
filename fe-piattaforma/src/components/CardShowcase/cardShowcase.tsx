@@ -155,9 +155,6 @@ const CardShowcase: React.FC<ForumCardsI> = (props) => {
               <span className='font-weight-bold'>
                 {category_label}
               </span>
-              <span>
-                {date ? ` — ${formatDate(date, 'shortDate')}` : ''}
-              </span>
             </div>
           ) : null}
           {title ? (
@@ -178,6 +175,7 @@ const CardShowcase: React.FC<ForumCardsI> = (props) => {
             ) : (
             <div className='pt-4 pb-3'></div>
           )}
+          
         </Col>
         <div
           className={clsx(
@@ -187,7 +185,9 @@ const CardShowcase: React.FC<ForumCardsI> = (props) => {
             'showcase-card__icon-container-alignment'
           )}
         >
-          <p></p>
+          <span className='showcase-card__pre-title mt-1'>
+            {date ? `${formatDate(date, 'shortDate')}` : ''}
+          </span>
           {!isHome && ( // Condiziona la visualizzazione delle icone
             <div className='d-flex'>
               <div

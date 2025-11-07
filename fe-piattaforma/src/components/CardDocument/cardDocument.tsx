@@ -89,9 +89,6 @@ const CardDocument: React.FC<ForumCardsI> = (props) => {
           <span className='font-weight-bold'>
             {category_label}
           </span>
-          <span>
-            {date ? ` — ${formatDate(date, 'shortDate')}` : ''}
-          </span>
         </div>
         <p
           className={clsx(
