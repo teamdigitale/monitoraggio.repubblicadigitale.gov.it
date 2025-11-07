@@ -49,3 +49,4 @@ target/classes/META-INF/MANIFEST.MF
 target/classes/META-INF/maven/it.pa.repdgt/ms-ente/pom.properties
 target/classes/META-INF/maven/it.pa.repdgt/ms-ente/pom.xml
 application-dev.properties
+*/target
