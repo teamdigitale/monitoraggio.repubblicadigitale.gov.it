@@ -55,4 +55,4 @@ target/classes/META-INF/maven/it.pa.repdgt/ms-ente/pom.xml
 .settings/org.springframework.ide.eclipse.prefs
 .settings/org.eclipse.m2e.core.prefs
 application-dev.properties
-*/target
+target/*
