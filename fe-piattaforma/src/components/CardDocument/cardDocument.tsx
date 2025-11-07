@@ -78,11 +78,9 @@ const CardDocument: React.FC<ForumCardsI> = (props) => {
         }
       }}
       tabIndex={0}
-      aria-label={`Categoria: ${category_label}. Data: ${
-        date && formatDate(date, 'shortDate')
-      }. Titolo documento: ${title}. Descrizione: ${description}. Editore: ${entity}. ${downloads} download. ${comment_count} ${
-        Number(comment_count) === 1 ? 'commento' : 'commenti'
-      }`}
+      aria-label={`Categoria: ${category_label}. Data: ${date && formatDate(date, 'shortDate')
+        }. Titolo documento: ${title}. Descrizione: ${description}. Editore: ${entity}. ${downloads} download. ${comment_count} ${Number(comment_count) === 1 ? 'commento' : 'commenti'
+        }`}
     >
       <Col className='text-left'>
         <div className='document-card-container__pre-title'>
@@ -119,6 +117,9 @@ const CardDocument: React.FC<ForumCardsI> = (props) => {
               'mt-1'
             )}
           >
+            <span className='document-card-container__date'>
+              {date && formatDate(date, 'shortDate')}
+            </span>
             <p></p>
             <div className='d-flex align-items-center'>
               <Icon

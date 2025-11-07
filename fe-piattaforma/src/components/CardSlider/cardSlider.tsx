@@ -66,9 +66,6 @@ const CardSlider: React.FC<ForumCardsI> = (props) => {
           <span className='font-weight-bold'>
             {category_label}
           </span>
-          <span>
-            {date ? ` — ${formatDate(date, 'shortDate')}` : ''}
-          </span>
         </div>
         <p className='card-slider-container__title my-2 font-weight-bold'>
           {title}
@@ -81,6 +78,9 @@ const CardSlider: React.FC<ForumCardsI> = (props) => {
             'pt-4'
           )}
         >
+          <span className='showcase-card__pre-title mt-1'>
+          {date ? `${formatDate(date, 'shortDate')}` : ''}
+        </span>
           <p></p>
           <div className='d-flex'>
             {!isDocument ? (
