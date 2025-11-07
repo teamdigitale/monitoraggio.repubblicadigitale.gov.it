@@ -47,22 +47,16 @@ const CardCommunity: React.FC<ForumCardsI> = (props) => {
       }}
       onClick={navigateTo}
       tabIndex={0}
-      aria-label={`Categoria: ${category_label}. Data: ${
-        date && formatDate(date, 'shortDate')
-      }. Titolo topic: ${title}. Descrizione: ${description}. Editore: ${entity}. ${likes} like. ${comment_count} ${
-        Number(comment_count) === 1 ? 'commento' : 'commenti'
-      }. ${views} ${
-        Number(views) === 1 ? 'visualizzazione' : 'visualizzazioni'
-      }`}
+      aria-label={`Categoria: ${category_label}. Data: ${date && formatDate(date, 'shortDate')
+        }. Titolo topic: ${title}. Descrizione: ${description}. Editore: ${entity}. ${likes} like. ${comment_count} ${Number(comment_count) === 1 ? 'commento' : 'commenti'
+        }. ${views} ${Number(views) === 1 ? 'visualizzazione' : 'visualizzazioni'
+        }`}
     >
       <Col className='text-left'>
         {category_label ? (
           <div className='mb-2 card-community__pre-title'>
             <span className='font-weight-bold'>
               {category_label}
-            </span>
-            <span>
-              {date ? ` — ${formatDate(date, 'shortDate')}` : ''}
             </span>
           </div>
         ) : null}
@@ -90,7 +84,9 @@ const CardCommunity: React.FC<ForumCardsI> = (props) => {
           'align-items-center'
         )}
       >
-        <p></p>
+        <span className='showcase-card__pre-title mt-1'>
+          {date ? `${formatDate(date, 'shortDate')}` : ''}
+        </span>
         {!isHome && (
           <div className='d-flex'>
             <div
