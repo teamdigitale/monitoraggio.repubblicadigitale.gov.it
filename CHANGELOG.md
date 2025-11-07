@@ -1,5 +1,18 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.491](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.490...1.0.0-test.491) (2025-11-07)
+
+
+### Features
+
+* **test:** update gitignore v2  20251107 ([18de4d4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/18de4d4a86a68867a3397781ad67b99980e0bf58))
+* **test:** update gitignore 20251107 ([9c60665](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9c60665aa6d66b2d3766a6f361de6cbd60cead2f))
+
+
+### Bug Fixes
+
+* **U451:** fix data card in sezioni specifiche 20251107 ([49b1145](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/49b1145df8621f5226ed8de5ba3445450998e6fe))
+
 ## [1.0.0-test.490](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.489...1.0.0-test.490) (2025-11-07)
 
 
