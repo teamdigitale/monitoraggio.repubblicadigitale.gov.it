@@ -1,7 +1,7 @@
 export const hrefValues = [
     {
         label: 'VademecumFacilitatori',
-        href: 'https://drive.repdigitale.org/f/ec274f150c76416eaa84/',
+        href: 'https://repdigitale.org/vademecumfacilitatori',
     },
     {
         label: 'ManualeFacilitazione',
@@ -13,11 +13,11 @@ export const hrefValues = [
     },
     {
         label: 'GuidaOperativaReferentiDelegati',
-        href: 'https://drive.repdigitale.org/f/d33ad5bb3ada42ea9da6/'
+        href: 'https://repdigitale.org/guidacaricamentoscd'
     },
     {
         label: 'VademecumVolontari',
-        href: 'https://drive.repdigitale.org/f/dc93f6c59a20499aa835/',
+        href: 'https://repdigitale.org/vademecumvolontari',
     },
     {
         label: 'ManualeVolontario',
@@ -25,7 +25,7 @@ export const hrefValues = [
     },
     {
         label: 'VademecumEntiGestoriPartner',
-        href: 'http://drive.repdigitale.org/f/36bd9d83064c4587844d/',
+        href: 'https://repdigitale.org/vademecumentirfd',
     },
     {
         label: 'FAQEntiGestoriPartner',
