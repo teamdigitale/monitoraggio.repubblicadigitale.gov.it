@@ -13,6 +13,7 @@ import './formAssistenza.scss';
 
 // Costante per il valore "Altro" nel dropdown area tematica
 const ALTRO_PROBLEMA_VALUE = 'altro_problema';
+const maxSize = 5 * 1024 * 1024; // 5MB
 
 export interface FormAssistenzaI extends withFormHandlerProps {
     formDisabled?: boolean;
@@ -274,7 +275,6 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
                         }
                     }
                 });
-                console.log('useEffect initialFiles - fileSizes aggiornato:', newSizes);
                 return newSizes;
             });
         }
@@ -282,58 +282,33 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
 
 
     const updateFile = () => {
-        console.log('=== INIZIO updateFile ===');
-        console.log('Current files array:', files);
-        console.log('Current fileSizes:', fileSizes);
-        console.log('isProcessingFile:', isProcessingFile);
         
         // Previeni multiple esecuzioni simultanee
         if (isProcessingFile) {
-            console.log('DEBUG - updateFile bloccata, elaborazione in corso');
             return;
         }
         
         // Ottengo riferimento al file selezionato PRIMA che l'input venga resettato
         if (!inputRef.current?.files?.length) {
-            console.log('ERROR - Nessun file selezionato');
             return;
         }
         
         const selectedFile = inputRef.current.files[0];
-        console.log('File selezionato:', {
-            name: selectedFile.name,
-            size: selectedFile.size,
-            sizeInMB: (selectedFile.size / (1024 * 1024)).toFixed(2)
-        });
         
         // CALCOLO DIRETTO: Somma tutte le dimensioni dei file già presenti
         let currentTotalSize = 0;
-        console.log('=== CALCOLO DIMENSIONI ===');
-        console.log('files.length:', files.length);
         
-        files.forEach((existingFile, index) => {
-            const fileSize = fileSizes[existingFile.name];
-            console.log(`File ${index}: ${existingFile.name} -> size: ${fileSize || 'UNDEFINED'}`);
+        files.forEach((existingFile) => {
             if (fileSizes[existingFile.name]) {
                 currentTotalSize += fileSizes[existingFile.name];
             }
         });
         
-        console.log('currentTotalSize calcolato:', currentTotalSize);
         
         const newTotalSize = currentTotalSize + selectedFile.size;
-        const maxSize = 10 * 1024 * 1024; // 10MB
-        
-        console.log('=== RISULTATO FINALE ===');
-        console.log('currentTotalSize:', currentTotalSize, '(' + (currentTotalSize / (1024 * 1024)).toFixed(2) + ' MB)');
-        console.log('selectedFile.size:', selectedFile.size, '(' + (selectedFile.size / (1024 * 1024)).toFixed(2) + ' MB)');
-        console.log('newTotalSize:', newTotalSize, '(' + (newTotalSize / (1024 * 1024)).toFixed(2) + ' MB)');
-        console.log('maxSize:', maxSize, '(' + (maxSize / (1024 * 1024)).toFixed(2) + ' MB)');
-        console.log('SUPERA LIMITE?', newTotalSize > maxSize);
         
         // Se il nuovo totale supererebbe i 10MB, blocca
         if (newTotalSize > maxSize) {
-            console.log('🚨 BLOCCATO! Dimensione totale supererebbe il limite');
             setFileSizeError(true);
             // Reset dell'input dopo aver rilevato l'errore
             if (inputRef.current) {
@@ -348,7 +323,6 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
             return;
         }
         
-        console.log('✅ FILE ACCETTATO - Procedo con upload');
         
         // Imposta il lock per prevenire elaborazioni multiple
         setIsProcessingFile(true);
@@ -361,11 +335,6 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
         
         uploadFile('file', (file: any) => {
             if (file?.name) {
-                console.log('=== CALLBACK uploadFile ===');
-                console.log('file.name da callback:', file.name);
-                console.log('fileInfo.name salvato:', fileInfo.name);
-                console.log('fileInfo.size salvato:', fileInfo.size);
-                console.log('NOMI UGUALI?', file.name === fileInfo.name);
                 
                 // Uso le informazioni salvate per tracciare la dimensione nello stato
                 setFileSizes(prev => {
@@ -373,17 +342,12 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
                         ...prev,
                         [file.name]: fileInfo.size  // Uso file.name dalla callback come chiave
                     };
-                    console.log('fileSizes PRIMA dell\'aggiornamento:', prev);
-                    console.log('fileSizes DOPO l\'aggiornamento:', updated);
                     return updated;
                 });
                 
                 setFileSizeError(false);
                 setFiles(prevFiles => {
                     const newFiles = [...prevFiles, file];
-                    console.log('files array PRIMA:', prevFiles.map(f => f.name));
-                    console.log('file aggiunto:', file.name);
-                    console.log('files array DOPO:', newFiles.map(f => f.name));
                     onFilesChange?.(newFiles);
                     return newFiles;
                 });
@@ -614,7 +578,7 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
                 {/* <p className={clsx('text-muted mt-2 text-left', !enabledFields.files && "disabled-field")}>
                     <em>Massimo 50 MB</em></p> */}
                 <p className={clsx('text-muted mt-2 text-left', !enabledFields.files && "disabled-field")}>
-                    <em>Il sistema accetta allegati fino a un massimo di 10MB complessivi</em>
+                    <em>Il sistema accetta allegati fino a un massimo di 5MB complessivi</em>
                 </p>
             </Form.Row>
             
@@ -624,7 +588,7 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
                     <div className="w-100">
                         <p className="text-danger mt-0 mb-0" style={{ fontSize: '0.875rem' }}>
                             <Icon icon="it-error" size="sm" className="mr-1" />
-                            La dimensione totale degli allegati supera i 10MB consentiti.
+                            La dimensione totale degli allegati supera i 5MB consentiti.
                         </p>
                     </div>
                 </Form.Row>
