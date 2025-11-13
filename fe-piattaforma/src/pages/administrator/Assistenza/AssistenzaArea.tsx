@@ -82,9 +82,6 @@ const AssistenzaArea: React.FC = () => {
 
 
     if (step === 1) {
-        console.log('ruolo:', ruolo);
-        console.log('user:', user);
-
 
         content = (
             <div className="my-5 d-flex flex-column align-items-center">
