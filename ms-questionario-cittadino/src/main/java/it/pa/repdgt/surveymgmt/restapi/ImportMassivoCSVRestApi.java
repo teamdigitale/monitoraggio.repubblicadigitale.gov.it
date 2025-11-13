@@ -3,12 +3,12 @@ package it.pa.repdgt.surveymgmt.restapi;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.shared.util.Utils;
 import it.pa.repdgt.surveymgmt.dto.ServiziElaboratiDTO;
+import it.pa.repdgt.surveymgmt.exception.ValidationException;
 import it.pa.repdgt.surveymgmt.model.ElaboratoCSVRequest;
 import it.pa.repdgt.surveymgmt.model.ImportCsvInputData;
 import it.pa.repdgt.surveymgmt.service.ImportMassivoCSVService;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
