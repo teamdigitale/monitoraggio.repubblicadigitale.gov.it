@@ -1,5 +1,20 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.492](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.491...1.0.0-test.492) (2025-11-14)
+
+
+### Features
+
+* **U345:** aggiornamento link utili 20251113 ([70331a0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/70331a0fd22c3ce7a7a7226da4e7d8d53840ca2c))
+* **test:** aggiornamento gitignore 202501113 ([dd73f5a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/dd73f5a2c962a97b1de4da4d95199b89c47c5c4b))
+* **U346:** aggiornamento limite dimensione massima allegati zendesk 20251113 ([a69c7f4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a69c7f45d3e21c969372b3ac0d8cf24865ded563))
+* **U346:** inserito limite caricamento allegati 10MB 20251010 ([7748911](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7748911a09d8e1b99b57f9352cbb41bed9184246))
+
+
+### Bug Fixes
+
+* **test:** modifica immagine java 20251114 ([1a53997](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1a53997b011184e07991be4bf59c68c8d4074bb2))
+
 ## [1.0.0-test.491](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.490...1.0.0-test.491) (2025-11-07)
 
 
