@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.53.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.53.0...1.53.1) (2025-11-14)
+
+
+### Bug Fixes
+
+* **main:** modifica immagine java 20251114 ([b324da3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b324da377a9fef125beaff63b991c0d68dea7f05))
+
 ## [1.53.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.52.1...1.53.0) (2025-11-14)
 
 
