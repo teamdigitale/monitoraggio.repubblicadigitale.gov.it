@@ -30,6 +30,7 @@ export interface SelectI
   position?: 'top' | 'bottom' | 'auto';
   shortDropdownMenu?: boolean;
   responsive?:boolean;
+  maxMenuHeight?: number | undefined;
 }
 
 const Select: React.FC<SelectI> = (props) => {
@@ -48,7 +49,8 @@ const Select: React.FC<SelectI> = (props) => {
     position = 'auto',
     shortDropdownMenu = false,
     placeholder = 'Seleziona',
-    onMenuScrollToBottom
+    onMenuScrollToBottom,
+    maxMenuHeight
   } = props;
   const [selectedOption, setSelectedOption] = useState<OptionType>();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -155,7 +157,7 @@ const Select: React.FC<SelectI> = (props) => {
           menuPlacement={position}
           onMenuScrollToBottom={onMenuScrollToBottom}
           color='primary'
-          maxMenuHeight={800}
+          maxMenuHeight={maxMenuHeight ? maxMenuHeight : undefined}
           className={clsx(
             'custom-select-with-icon',
             (value && !isDisabled ? 'border-select-value' : '') ||
