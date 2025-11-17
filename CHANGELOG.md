@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.53.2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.53.1...1.53.2) (2025-11-17)
+
+
+### Bug Fixes
+
+* **B511:** gestione numero elementi campo select 20251117 ([19d5450](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/19d545023c9406e63381a97e09e943aa88174bcc))
+
 ## [1.53.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.53.0...1.53.1) (2025-11-14)
 
 
