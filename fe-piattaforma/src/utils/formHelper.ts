@@ -55,6 +55,7 @@ export interface formFieldI {
     | { label: string; value: string; upperLevel: string }[]
     | undefined;
   keyBE?: string | undefined;
+  maxMenuHeight?: number | undefined;
 }
 
 export interface FormI {
@@ -86,6 +87,7 @@ export const newFormField = ({
   enumLevel1,
   enumLevel2,
   keyBE,
+  maxMenuHeight
 }: formFieldI) => ({
   field,
   value,
@@ -111,6 +113,7 @@ export const newFormField = ({
   enumLevel1,
   enumLevel2,
   keyBE,
+  maxMenuHeight
 });
 
 export const newForm = (fields: formFieldI[] = [], keepPosition = false) => {
