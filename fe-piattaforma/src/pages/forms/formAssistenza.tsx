@@ -430,6 +430,7 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
                             isDisabled={formDisabled || !enabledFields['1']}
                             subLabel="Seleziona l'area per cui hai bisogno di assistenza"
                             className="align-self-end"
+                            maxMenuHeight={800}
                         />
 
                         <InputSublabel
@@ -452,6 +453,7 @@ const FormAssistenza: React.FC<FormAssistenzaFullInterface> = ({
                         onInputChange={onInputDataChange}
                         isDisabled={formDisabled || !enabledFields['1']}
                         subLabel="Seleziona l'area per cui hai bisogno di assistenza"
+                        maxMenuHeight={800}
                     />
                 )}
 
@@ -613,6 +615,7 @@ const form = newForm([
             // { label: 'altro_problema', value: 'altro_problema' },
         ],
         required: true,
+        maxMenuHeight: 800
     }),
     newFormField({
         keyBE: 'altraAreaTematica',
