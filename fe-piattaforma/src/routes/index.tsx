@@ -21,6 +21,7 @@ import { PrivacyDisclaimer } from '../pages/common/Privacy/PrivacyDisclaimer';
 import Authicon from '/public/assets/img/auth-box-icon.png';
 import DataReports from '../pages/administrator/MonitoraggioCaricamenti/dataReports';
 import LandingPage from '../pages/LandingPage/LandingPage';
+import LandingPageNoSpid from '../pages/LandingPageNoSpid/LandingPageNoSpid';
 import AssistenzaArea from '../pages/administrator/Assistenza/AssistenzaArea';
 
 const AuthRedirect = lazy(() => import('../pages/common/Auth/authRedirect'));
@@ -398,6 +399,7 @@ const AppRoutes: React.FC = () => {
             </Route>
             <Route path='/' element={<FullLayout withBreadcrumb={false} />}>
               <Route path='/legal' element={<Accessibility />} />
+              <Route path='/loginNOSPID' element={<LandingPageNoSpid />} />
               <Route
                 path='/servizi/questionario/:idQuestionario/online/:token'
                 element={<SurveyOnline />}
