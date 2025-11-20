@@ -6,6 +6,7 @@ import {
   setSessionValues,
 } from '../../../utils/sessionHelper';
 import { isActiveProvisionalLogin } from '../../../pages/common/Auth/auth';
+import { getSessionValues } from '../../../utils/sessionHelper';
 
 export interface UserStateI {
   isLogged: boolean;
@@ -42,6 +43,7 @@ export interface UserStateI {
     codiceRuoloUtenteLoggato: string;
     permessi: [];
   }[];
+  loginType?: string | null;
 }
 
 export interface UserProfileI {
@@ -88,6 +90,7 @@ const initialStateLogged: UserStateI = {
   notification: [],
   notificationToRead: 0,
   chatToRead: 0,
+  loginType: getSessionValues ? getSessionValues('loginType') : (typeof window !== 'undefined' ? sessionStorage.getItem('loginType') : null),
 };
 const initialStateNotLogged: UserStateI = {
   isLogged: false,
@@ -102,6 +105,7 @@ const initialStateNotLogged: UserStateI = {
   notificationToRead: 0,
   notificationsPreview: [],
   chatToRead: 0,
+  loginType: getSessionValues ? getSessionValues('loginType') : (typeof window !== 'undefined' ? sessionStorage.getItem('loginType') : null),
 };
 
 const initialState: UserStateI = initialStateNotLogged;
@@ -110,6 +114,20 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    setLoginType: (state, action: PayloadAction<string | null>) => {
+      state.loginType = action.payload;
+      if (action.payload !== null && action.payload !== undefined) {
+        setSessionValues('loginType', action.payload);
+      } else {
+        // store null to session to indicate cleared value
+        setSessionValues('loginType', null);
+      }
+    },
+    // NEW: clear login type from state and session
+    clearLoginType: (state) => {
+      state.loginType = null;
+      setSessionValues('loginType', null);
+    },
     setUserContext: (state, action: PayloadAction<any>) => {
       const { payload } = action;
       state.user = {
@@ -179,6 +197,8 @@ export const {
   setUserNotificationsToRead,
   setUserChatToRead,
   setUserNotificationsPreview,
+  setLoginType,
+  clearLoginType
 } = userSlice.actions;
 
 export const selectLogged = (state: RootState) => state.user.isLogged;
@@ -194,5 +214,6 @@ export const selectUserNotificationToRead = (state: RootState) =>
 export const selectUserChatToRead = (state: RootState) => state.user.chatToRead;
 export const selectImmagineProfilo = (state: RootState) =>
   state.user.user?.immagineProfilo;
+export const selectLoginType = (state: RootState) => state.user.loginType;
 
 export default userSlice.reducer;

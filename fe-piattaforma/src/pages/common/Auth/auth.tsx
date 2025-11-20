@@ -20,10 +20,11 @@ import { newForm, newFormField } from '../../../utils/formHelper';
 import { getUrlParameter } from '../../../utils/common';
 import { GetSPIDToken } from '../../../redux/features/auth/authThunk';
 import { setSessionValues } from '../../../utils/sessionHelper';
+import {selectLoginType} from '../../../redux/features/user/userSlice';
 
 const COGNITO_HREF = `${process?.env?.REACT_APP_COGNITO_BASE_URL}oauth2/authorize?client_id=${process?.env?.REACT_APP_COGNITO_CLIENT_ID}&redirect_uri=${process?.env?.REACT_APP_COGNITO_FE_REDIRECT_URL}&scope=openid&response_type=code`;
 
-const COGNITO_HREF_NO_SPID = `https://mitd-test-satosa.auth.eu-central-1.amazoncognito.com/login?client_id=189v3icou9j60tpnjkfl8i547k&response_type=code&scope=aws.cognito.signin.user.admin+openid+profile&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth`;
+const COGNITO_HREF_NO_SPID = `${process?.env?.REACT_APP_COGNITO_BASE_URL}login?client_id=${process?.env?.REACT_APP_COGNITO_CLIENT_ID_NO_SPID}&response_type=code&scope=aws.cognito.signin.user.admin+openid+profile&redirect_uri=${process?.env?.REACT_APP_COGNITO_FE_REDIRECT_URL}`;
 
 export const isActiveProvisionalLogin = false;
 
@@ -33,23 +34,12 @@ const Auth: React.FC<withFormHandlerProps> = ({
 }) => {
   const device = useAppSelector(selectDevice);
   const loader = useAppSelector(selectLoader);
+  const loginType = useAppSelector(selectLoginType)
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { token } = useParams();
-
-  // Determina se l'utente è arrivato da LandingPageNoSpid o LandingPage
-  // Controlla prima il query param, poi il sessionStorage (dopo redirect da Cognito)
-  const querySource = getUrlParameter('source');
-  const storedSource = typeof window !== 'undefined' ? sessionStorage.getItem('auth_source') : null;
-  const isFromNoSpid = querySource === 'noSpid' || storedSource === 'noSpid';
-  const currentCognitoHref = isFromNoSpid ? COGNITO_HREF_NO_SPID : COGNITO_HREF;
-
-  // Salva il source in sessionStorage quando arriva dal query param
-  useEffect(() => {
-    if (querySource === 'noSpid') {
-      sessionStorage.setItem('auth_source', 'noSpid');
-    }
-  }, [querySource]);
+  const preAuthCode = getUrlParameter('code');
+  const currentCognitoHref = loginType=="nospid" ? COGNITO_HREF_NO_SPID : COGNITO_HREF;
 
   const cognitoRedirect = () => {
     dispatch(showLoader());
@@ -83,7 +73,7 @@ const Auth: React.FC<withFormHandlerProps> = ({
 
   const getToken = async (preAuthCode: string) => {
     if (preAuthCode) {
-      const res = await dispatch(GetSPIDToken(preAuthCode, isFromNoSpid));
+      const res = await dispatch(GetSPIDToken(preAuthCode, loginType || "spid"));
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       if (res) {
@@ -103,7 +93,6 @@ const Auth: React.FC<withFormHandlerProps> = ({
     if (!isActiveProvisionalLogin && token) {
       getToken(token);
     } else if (!isActiveProvisionalLogin && window.location.search) {
-      const preAuthCode = getUrlParameter('code');
       if (preAuthCode) {
         getToken(preAuthCode);
       } else {
