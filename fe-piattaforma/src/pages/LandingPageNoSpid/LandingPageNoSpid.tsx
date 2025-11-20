@@ -20,7 +20,7 @@ const LandingPageNoSpid: React.FC = () => {
                 <p className="text-gray-700 text-base md:text-lg max-w-md mb-5">
                     Facilita è il progetto del Dipartimento per la trasformazione digitale per gestire e monitorare i servizi di facilitazione digitale promossi dalla Rete dei servizi di facilitazione digitale e dal Servizio civile digitale.
                 </p>
-                <Button className='cta-button' onClick={() => navigate('/authNOSPID')} color='primary'>
+                <Button className='cta-button' onClick={() => navigate('/auth?source=noSpid')} color='primary'>
                     Accedi
                 </Button>
             </div>
