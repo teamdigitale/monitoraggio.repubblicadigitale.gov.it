@@ -4,26 +4,21 @@ import axios from 'axios';
 
 const GetSPIDTokenAction = { type: 'auth/GetSPIDToken' };
 export const GetSPIDToken =
-  (preAuthCode: string, isFromNoSpid: boolean = false) => async (dispatch: Dispatch) => {
+  (preAuthCode: string, loginType: string) => async (dispatch: Dispatch) => {
     try {
-      dispatch({ ...GetSPIDTokenAction, preAuthCode }); // TODO manage dispatch for dev env only
+      dispatch({ ...GetSPIDTokenAction, preAuthCode, loginType }); // TODO manage dispatch for dev env only
       dispatch(showLoader());
       const params = new URLSearchParams();
       params.append('grant_type', 'authorization_code');
-      
-      // Seleziona le variabili d'ambiente in base al flusso
-      const clientId = isFromNoSpid 
+      // Seleziona le variabili d'ambiente in base al flusso di login
+      const clientId = loginType == "nospid" 
         ? `${process?.env?.REACT_APP_COGNITO_CLIENT_ID_NO_SPID}`
         : `${process?.env?.REACT_APP_COGNITO_CLIENT_ID}`;
-      const clientSecret = isFromNoSpid
+      const clientSecret = loginType == "nospid"
         ? null
         : `${process?.env?.REACT_APP_COGNITO_CLIENT_SECRET}`;
-      const redirectUri = isFromNoSpid
-        ? `${process?.env?.REACT_APP_COGNITO_FE_REDIRECT_URL_NO_SPID}`
-        : `${process?.env?.REACT_APP_COGNITO_FE_REDIRECT_URL}`;
-      const baseUrl = isFromNoSpid
-        ? `${process?.env?.REACT_APP_COGNITO_BASE_URL_NO_SPID}`
-        : `${process?.env?.REACT_APP_COGNITO_BASE_URL}`;
+      const redirectUri = `${process?.env?.REACT_APP_COGNITO_FE_REDIRECT_URL}`;
+      const baseUrl = `${process?.env?.REACT_APP_COGNITO_BASE_URL}`;
       
       params.append('client_id', clientId);
       if (clientSecret) {
