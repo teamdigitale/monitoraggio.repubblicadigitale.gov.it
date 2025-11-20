@@ -3,9 +3,18 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import imgLaptop from '/public/assets/img/landing-page-img.jpg';
 import { Button } from 'design-react-kit';
+import { useDispatch } from 'react-redux';
+import { setLoginType } from '../../redux/features/user/userSlice';
 
 const LandingPage: React.FC = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+ 
+    const handleAccess = () => {
+        // salva in redux il tipo di login desiderato (es. 'spid')
+        dispatch(setLoginType('spid'));
+        navigate('/auth');
+    };
 
     return (
         <div className="my-5" style={{ display: 'flex', flexDirection: 'row', gap: '4rem', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -20,7 +29,7 @@ const LandingPage: React.FC = () => {
                 <p className="text-gray-700 text-base md:text-lg max-w-md mb-5">
                     Facilita è il progetto del Dipartimento per la trasformazione digitale per gestire e monitorare i servizi di facilitazione digitale promossi dalla Rete dei servizi di facilitazione digitale e dal Servizio civile digitale.
                 </p>
-                <Button className='cta-button' onClick={() => navigate('/auth')} color='primary'>
+                <Button className='cta-button' onClick={() => handleAccess()} color='primary'>
                     Accedi
                 </Button>
             </div>
