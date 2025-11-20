@@ -4,34 +4,48 @@ import axios from 'axios';
 
 const GetSPIDTokenAction = { type: 'auth/GetSPIDToken' };
 export const GetSPIDToken =
-  (preAuthCode: string) => async (dispatch: Dispatch) => {
+  (preAuthCode: string, isFromNoSpid: boolean = false) => async (dispatch: Dispatch) => {
     try {
       dispatch({ ...GetSPIDTokenAction, preAuthCode }); // TODO manage dispatch for dev env only
       dispatch(showLoader());
       const params = new URLSearchParams();
       params.append('grant_type', 'authorization_code');
-      params.append(
-        'client_id',
-        `${process?.env?.REACT_APP_COGNITO_CLIENT_ID}`
-      );
-      params.append(
-        'client_secret',
-        `${process?.env?.REACT_APP_COGNITO_CLIENT_SECRET}`
-      );
-      params.append(
-        'redirect_uri',
-        `${process?.env?.REACT_APP_COGNITO_FE_REDIRECT_URL}`
-      );
+      
+      // Seleziona le variabili d'ambiente in base al flusso
+      const clientId = isFromNoSpid 
+        ? `${process?.env?.REACT_APP_COGNITO_CLIENT_ID_NO_SPID}`
+        : `${process?.env?.REACT_APP_COGNITO_CLIENT_ID}`;
+      const clientSecret = isFromNoSpid
+        ? null
+        : `${process?.env?.REACT_APP_COGNITO_CLIENT_SECRET}`;
+      const redirectUri = isFromNoSpid
+        ? `${process?.env?.REACT_APP_COGNITO_FE_REDIRECT_URL_NO_SPID}`
+        : `${process?.env?.REACT_APP_COGNITO_FE_REDIRECT_URL}`;
+      const baseUrl = isFromNoSpid
+        ? `${process?.env?.REACT_APP_COGNITO_BASE_URL_NO_SPID}`
+        : `${process?.env?.REACT_APP_COGNITO_BASE_URL}`;
+      
+      params.append('client_id', clientId);
+      if (clientSecret) {
+        params.append('client_secret', clientSecret);
+      }
+      params.append('redirect_uri', redirectUri);
       params.append('code', `${preAuthCode}`);
+      
+      // Prepara gli header - Authorization header solo se clientSecret è presente
+      const headers: any = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      };
+      if (clientSecret) {
+        headers.Authorization = `Basic ${window.btoa(
+          `${clientId}:${clientSecret}`
+        )}`;
+      }
+      
       const res = await axios
         .create({
-          baseURL: `${process?.env?.REACT_APP_COGNITO_BASE_URL}`,
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            Authorization: `Basic ${window.btoa(
-              `${process?.env?.REACT_APP_COGNITO_CLIENT_ID}:${process?.env?.REACT_APP_COGNITO_CLIENT_SECRET}`
-            )}`,
-          },
+          baseURL: baseUrl,
+          headers,
           timeout: 10000,
         })
         .post('oauth2/token', params);
