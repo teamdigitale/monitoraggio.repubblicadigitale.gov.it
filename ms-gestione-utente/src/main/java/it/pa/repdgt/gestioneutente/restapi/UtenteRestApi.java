@@ -42,10 +42,12 @@ import it.pa.repdgt.gestioneutente.resource.UtentiLightResourcePaginata;
 import it.pa.repdgt.gestioneutente.service.UtenteService;
 import it.pa.repdgt.gestioneutente.util.CSVUtil;
 import it.pa.repdgt.shared.RequestWrapper;
+import it.pa.repdgt.shared.data.ProcessedMultipartFile;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entity.light.UtenteLightEntity;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
+import it.pa.repdgt.shared.util.Utils;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
@@ -190,12 +192,15 @@ public class UtenteRestApi {
 				.body(fileCSV);
 	}
 
+	@Deprecated
 	@PostMapping(path = "/upload/immagineProfilo/{idUtente}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
 	public String uploadImmagineProfiloUtente(
 			@PathVariable(value = "idUtente") Long idUtente,
 			@RequestPart(required = false) MultipartFile multipartifile,
 			RequestWrapper request) throws IOException {
-		return this.utenteService.uploadImmagineProfiloUtente(idUtente, request.getCodiceFiscale(), multipartifile);		
+		String fileNamePrefix = multipartifile.getOriginalFilename().split("\\.").length > 0 ? multipartifile.getOriginalFilename().split("\\.")[0] : multipartifile.getOriginalFilename();
+		MultipartFile processedMultipartFile = Utils.processAndClean(multipartifile, Utils.DEFAULT_MAX_SIZE, Utils.ALLOWED_IMAGE_EXT, fileNamePrefix);
+		return this.utenteService.uploadImmagineProfiloUtente(idUtente, request.getCodiceFiscale(), processedMultipartFile);		
 	}
 
 	@GetMapping(path = "/download/immagineProfilo/{nomeFile}")
