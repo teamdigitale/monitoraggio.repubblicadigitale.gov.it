@@ -25,9 +25,11 @@ import it.pa.repdgt.integrazione.entity.AssistenzaTematicheEntity;
 import it.pa.repdgt.integrazione.repository.AssistenzaTematicheRepository;
 import it.pa.repdgt.integrazione.request.AperturaTicketRequest;
 import it.pa.repdgt.shared.data.BasicData;
+import it.pa.repdgt.shared.data.BasicFileData;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.shared.exception.ZendeskException;
 import it.pa.repdgt.shared.restapi.RestTemplateWrapper;
+import it.pa.repdgt.shared.util.Utils;
 import lombok.extern.slf4j.Slf4j;
 import java.util.Map;
 
@@ -179,12 +181,14 @@ public class AssistenzaService {
 
                 for (AllegatoDTO allegatoBase64 : entity.getAllegati()) {
                     try {
+                        
                         byte[] fileBytes = Base64.getDecoder().decode(allegatoBase64.getData());
-
                         String nomeFile = allegatoBase64.getName();
+                        String prefixNomeFile = nomeFile.split("\\.").length > 0 ? nomeFile.split("\\.")[0] : nomeFile;
+                        BasicFileData fileProcessato = Utils.processAndClean(fileBytes, nomeFile, null, Utils.DEFAULT_MAX_SIZE, Utils.ALL_ALLOWED_EXT, prefixNomeFile);
 
                         // Upload su Zendesk
-                        Upload upload = zendesk.createUpload(nomeFile, fileBytes);
+                        Upload upload = zendesk.createUpload(fileProcessato.getNomeFile(), fileProcessato.getFile());
 
                         uploads.add(upload);
                     } catch (Exception e) {
