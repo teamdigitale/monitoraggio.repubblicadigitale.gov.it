@@ -74,7 +74,7 @@ public class DrupalService {
 			"^/api/document/filters$"
 	);
 
-	public Map forwardRichiestaADrupal(final @NotNull @Valid ForwardRichiestDrupalParam param, String contentType) {
+	public Map<String,Object> forwardRichiestaADrupal(final @NotNull @Valid ForwardRichiestDrupalParam param, String contentType, byte[] bytesFileToUpload) {
 		String urlDaChiamare = drupalEndpoint.concat(param.getUrlRichiesta());
 		final String metodoHttpString = param.getMetodoRichiestaHttp().toUpperCase();
 		final HttpMethod metodoHttp = HttpMethod.resolve(metodoHttpString);
@@ -86,15 +86,7 @@ public class DrupalService {
 		ResponseEntity<Map> responseDrupal = null;
 		try {
 			final HttpHeaders forwardHeaders = this.getHeadersHttp(param, contentType);
-			if(param.getIsUploadFile() != null && param.getIsUploadFile() == Boolean.TRUE) {
-				byte[] bytesFileToUpload = null;
-				try {
-					// Decodifico file Base64
-					bytesFileToUpload = Base64.getDecoder().decode(param.getFileBase64ToUpload());
-				} catch (Exception ex) {
-					throw new DrupalException("Errore decodifica file base64. " + ex.getMessage(), ex, CodiceErroreEnum.G01);
-				}
-				
+			if(param.getIsUploadFile() != null && param.getIsUploadFile() == Boolean.TRUE) {			
 				// Creazione file a partire dall'array di byte
 				nomeFile = param.getFilenameToUpload() == null? "tmpFile": param.getFilenameToUpload();
 				file = new File(nomeFile);
