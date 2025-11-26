@@ -399,7 +399,7 @@ const AppRoutes: React.FC = () => {
             </Route>
             <Route path='/' element={<FullLayout withBreadcrumb={false} />}>
               <Route path='/legal' element={<Accessibility />} />
-              <Route path='/loginNOSPID' element={<LandingPageNoSpid />} />
+              <Route path='/login-nospid' element={<LandingPageNoSpid />} />
               <Route
                 path='/servizi/questionario/:idQuestionario/online/:token'
                 element={<SurveyOnline />}
