@@ -24,7 +24,7 @@ import {selectLoginType} from '../../../redux/features/user/userSlice';
 
 const COGNITO_HREF = `${process?.env?.REACT_APP_COGNITO_BASE_URL}oauth2/authorize?client_id=${process?.env?.REACT_APP_COGNITO_CLIENT_ID}&redirect_uri=${process?.env?.REACT_APP_COGNITO_FE_REDIRECT_URL}&scope=openid&response_type=code`;
 
-const COGNITO_HREF_NO_SPID = `${process?.env?.REACT_APP_COGNITO_BASE_URL}login?client_id=${process?.env?.REACT_APP_COGNITO_CLIENT_ID_NO_SPID}&response_type=code&scope=aws.cognito.signin.user.admin+openid+profile&redirect_uri=${process?.env?.REACT_APP_COGNITO_FE_REDIRECT_URL}`;
+const COGNITO_HREF_NO_SPID = `${process?.env?.REACT_APP_COGNITO_BASE_URL}login?client_id=${process?.env?.REACT_APP_COGNITO_CLIENT_ID_NOSPID}&response_type=code&scope=aws.cognito.signin.user.admin+openid+profile&redirect_uri=${process?.env?.REACT_APP_COGNITO_FE_REDIRECT_URL}`;
 
 export const isActiveProvisionalLogin = false;
 
