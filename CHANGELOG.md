@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.495](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.494...1.0.0-test.495) (2025-11-26)
+
+
+### Bug Fixes
+
+* **secu-wave1:** fix sanificazione nome file 20251126 ([1276a1b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1276a1ba00f21353aaa44a256fad8149db804ef4))
+
 ## [1.0.0-test.494](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.493...1.0.0-test.494) (2025-11-26)
 
 
