@@ -318,10 +318,8 @@ public class Utils {
 		String ext = getExtension(original);
 		String base = sanitizeFilename(original == null ? "file" : original);
 		if (ext != null) base = base.replaceAll("\\." + ext + "$", "");
-		String uuid = UUID.randomUUID().toString();
 		StringBuilder sb = new StringBuilder();
 		if (prefix != null && !prefix.trim().isEmpty()) sb.append(sanitizeFilename(prefix)).append("-");
-		sb.append(base).append("-").append(uuid);
 		if (ext != null) sb.append(".").append(ext);
 		return sb.toString();
 	}
