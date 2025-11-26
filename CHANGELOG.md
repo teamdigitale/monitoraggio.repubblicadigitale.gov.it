@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.494](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.493...1.0.0-test.494) (2025-11-26)
+
+
+### Features
+
+* **secu-wave1:** remediation wave 1 security 20251125 ([2d00552](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2d00552bf83e1cd84bf74525d38f7d568c2682bc))
+
 ## [1.0.0-test.493](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.492...1.0.0-test.493) (2025-11-17)
 
 
