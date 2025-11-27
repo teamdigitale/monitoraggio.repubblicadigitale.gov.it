@@ -12,7 +12,7 @@ export const GetSPIDToken =
       params.append('grant_type', 'authorization_code');
       // Seleziona le variabili d'ambiente in base al flusso di login
       const clientId = loginType == "nospid" 
-        ? `${process?.env?.REACT_APP_COGNITO_CLIENT_ID_NO_SPID}`
+        ? `${process?.env?.REACT_APP_COGNITO_CLIENT_ID_NOSPID}`
         : `${process?.env?.REACT_APP_COGNITO_CLIENT_ID}`;
       const clientSecret = loginType == "nospid"
         ? null
