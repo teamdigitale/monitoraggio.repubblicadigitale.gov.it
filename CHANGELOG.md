@@ -1,5 +1,16 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.496](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.495...1.0.0-test.496) (2025-11-27)
+
+
+### Features
+
+* **U465:** config params 20251126 ([f448bbd](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f448bbdb8d94b76682d6449672cec30f31b4fe31))
+* **U465:** business logic pagina login nospid 20251120 ([f090dc4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f090dc4d77c8c6d42487929b47fb157545002c03))
+* **U465:** wip business logic pagina login NOSPID 20251120 ([9550edd](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9550edd2fe16f6a4fdd99f979d5e52d641eec4f4))
+* **U465:** implementazione pagina login NOSPID 20251118 ([e197e34](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e197e34cf4818f993969ae814b36559c802b7fa3))
+* **test:** aggiornamento data limite Novembre 2025 20251127 ([81f4d19](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/81f4d199417d6c523cbfa710dfafa80ee970b221))
+
 ## [1.0.0-test.495](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.494...1.0.0-test.495) (2025-11-26)
 
 
