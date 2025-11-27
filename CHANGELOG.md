@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.497](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.496...1.0.0-test.497) (2025-11-27)
+
+
+### Bug Fixes
+
+* **U465:** fix parametro 20251127 ([24c1ba8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/24c1ba816e5f2890f54f21cabade2c7d64d55910))
+
 ## [1.0.0-test.496](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.495...1.0.0-test.496) (2025-11-27)
 
 
