@@ -1,4 +1,4 @@
-FROM php:8.1.12-apache-buster
+FROM php:8.3.28-apache
 
 ENV ThemeBuildCommand=build
 
@@ -55,7 +55,7 @@ RUN chown -R www-data:www-data /var/log/cron/
 
 USER ${APACHE_RUN_USER}:
 
-RUN (cd /var/www/html/ && composer install -v)
+RUN (cd /var/www/html/ && composer update --no-audit --no-security-blocking -W -v)
 
 RUN (crontab -u $(whoami) -l; echo "0 * * * * /usr/local/bin/php /var/www/html/vendor/bin/drush cron > /var/log/cron/drupal.log" ) | crontab -u $(whoami) -
 
