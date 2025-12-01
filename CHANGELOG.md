@@ -1,5 +1,23 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.54.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.53.2...1.54.0) (2025-12-01)
+
+
+### Features
+
+* **U451:** modifica riferimenti viste drupal 20251013 ([0acfc8f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0acfc8f65e775631f72745755e184c684cd5f35f))
+* **test:** aggiornamento data limite Novembre 2025 20251127 ([31d3fd8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/31d3fd843faa029cd6d74f58c0681373d2d1f6ef))
+* **secu-wave1:** remediation wave 1 security 20251125 ([d91fba3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d91fba30b793cd5b14aafa9343dc1e93a665a6e7))
+* **U451:** nascosti elementi social da homepage e utilizzo nuove viste drupal su home WIP 20251008 ([60d0889](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/60d0889fb71a6ec3f9852e87c5fd7ea5bb311a6f))
+* **U451:** rimossi elementi social da card su homepage 20251003 ([f359714](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f3597145003aded650cccf071354ca1b5e70d31d))
+
+
+### Bug Fixes
+
+* **secu-wave1:** fix sanificazione nome file 20251126 ([d0a7651](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d0a7651f6e04fd7e4d652b0d43f2cbeadf368ffb))
+* **U451:** fix data card in sezioni specifiche 20251107 ([a52f509](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a52f509ad8b387d4d88ffa93e89983b67862f1f2))
+* **U451:** spostamento date card in basso 20251107 ([7e6dcbe](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7e6dcbed1fb9184016463a036bb83f5ed537d91a))
+
 ## [1.53.2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.53.1...1.53.2) (2025-11-17)
 
 
