@@ -9,6 +9,7 @@ import { documentsBody, surveyBody } from '../SectionInfo/bodies';
 import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
 import { selectUserNotification } from '../../redux/features/user/userSlice';
+import DOMPurify from 'dompurify';
 
 interface BreadcrumbI {
   label?: string;
@@ -140,7 +141,7 @@ const PageTitle: React.FC<PageTitleI> = (props) => {
           >
             {innerHTML ? (
               <div
-                dangerouslySetInnerHTML={{ __html: HTMLsubtitle }}
+                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(HTMLsubtitle) }}
                 className='section-info-list'
               />
             ) : lastUpdate ? (

@@ -212,6 +212,7 @@ jobs:
           sed -i "s/{{_REACT_APP_WORKDOCS_SETTINGS_}}/${{ secrets.REACT_APP_WORKDOCS_SETTINGS }}/g" .env
           sed -i "s/{{_REACT_APP_QUICKSIGHT_BASE_URL_}}/${{ secrets.REACT_APP_QUICKSIGHT_BASE_URL }}/g" .env
           sed -i "s/{{_REACT_APP_QUICKSIGHT_SETTINGS_}}/${{ secrets.REACT_APP_QUICKSIGHT_SETTINGS }}/g" .env
+          sed -i "s/{{_AES256_KEY_}}/${{ secrets.AES256_KEY }}/g" .env
 
       - name: File Regex Replace
         uses: mingjun97/file-regex-replace@v1
