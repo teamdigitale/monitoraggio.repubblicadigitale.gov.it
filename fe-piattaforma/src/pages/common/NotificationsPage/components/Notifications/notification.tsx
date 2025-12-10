@@ -26,6 +26,7 @@ import {
 } from '../../../../../redux/features/user/userThunk';
 //import DeleteChecked from '/public/assets/img/it-delete-primary.png';
 import { useNavigate } from 'react-router-dom';
+import DOMPurify from 'dompurify';
 
 export interface NotificationI {
   id?: string;
@@ -239,7 +240,7 @@ const Notification: React.FC<NotificationI> = (props) => {
                   onNavigateToItem();
                 }
               }}
-              dangerouslySetInnerHTML={{ __html: populatedMessage }}
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(populatedMessage) }}
               tabIndex={0}
             />
           </div>

@@ -4,6 +4,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { useAppSelector } from '../../redux/hooks';
 import { selectDevice } from '../../redux/features/app/appSlice';
+import DOMPurify from 'dompurify';
 
 interface InfoPanelI {
   title?: string;
@@ -66,7 +67,7 @@ const InfoPanel: React.FC<InfoPanelI> = (props) => {
             ))
           ) : (
             <div
-              dangerouslySetInnerHTML={{ __html: body }}
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(body) }}
               className='section-info-list'
             />
           )}
@@ -124,7 +125,7 @@ const InfoPanel: React.FC<InfoPanelI> = (props) => {
                   ))
                 ) : (
                   <div
-                    dangerouslySetInnerHTML={{ __html: body }}
+                    dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(body) }}
                     className='section-info-list'
                   />
                 )}

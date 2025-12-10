@@ -4,6 +4,7 @@ import React, { memo } from 'react';
 import './sectionInfo.scss';
 import { selectDevice } from '../../redux/features/app/appSlice';
 import { useAppSelector } from '../../redux/hooks';
+import DOMPurify from 'dompurify';
 
 export interface SectionInfoI extends CardProps {
   title?: string;
@@ -61,7 +62,7 @@ const SectionInfo: React.FC<SectionInfoI> = (props) => {
           </CardTitle>
         </Col>
         <div
-          dangerouslySetInnerHTML={{ __html: body }}
+          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(body) }}
           className={isSurveyList ? 'section-info-list' : ''}
         />
       </div>
