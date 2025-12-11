@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.498](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.497...1.0.0-test.498) (2025-12-11)
+
+
+### Bug Fixes
+
+* **U465:** fix typo 20251211 ([952ecea](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/952ecea6014495bd9a73332c9eea837768081c31))
+
 ## [1.0.0-test.497](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.496...1.0.0-test.497) (2025-11-27)
 
 
