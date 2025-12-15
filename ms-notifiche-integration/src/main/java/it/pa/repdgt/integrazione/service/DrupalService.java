@@ -41,6 +41,7 @@ import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import lombok.extern.slf4j.Slf4j;
+import it.pa.repdgt.shared.util.UrlSanitizationUtil;
 
 @Service
 @Validated
@@ -63,20 +64,18 @@ public class DrupalService {
 	@Autowired
 	private RestTemplate restTemplate;
 	
-	public static final List<String> ENDPOINT_RUOLI = Arrays.asList(
-			"^/api/board/items$",
-			"^/api/board/items_social$",
-			"^/api/board/item/[A-Za-z0-9]+/user/[A-Za-z0-9]+$",
-			"^/api/search/board/items$",
-			"^/api/document/items$",
-			"^/api/document/items_social$",
-			"^/api/document/item/[A-Za-z0-9]+/user/[A-Za-z0-9]+$",
-			"^/api/search/document/items$",
-			"^/api/board/filters$",
-			"^/api/document/filters$"
-	);
+
 
 	public Map<String,Object> forwardRichiestaADrupal(final @NotNull @Valid ForwardRichiestDrupalParam param, String contentType, byte[] bytesFileToUpload) {
+		// ===== SANIFICAZIONE E VALIDAZIONE URL =====
+		try {
+			UrlSanitizationUtil.validateUrl(param.getUrlRichiesta());
+		} catch (RuntimeException e) {
+			String messaggioErrore = String.format("Validazione URL fallita: %s", e.getMessage());
+			log.error("URL non valido: {}", param.getUrlRichiesta(), e);
+			throw new DrupalException(messaggioErrore, e, CodiceErroreEnum.D01);
+		}
+		
 		String urlDaChiamare = drupalEndpoint.concat(param.getUrlRichiesta());
 		final String metodoHttpString = param.getMetodoRichiestaHttp().toUpperCase();
 		final HttpMethod metodoHttp = HttpMethod.resolve(metodoHttpString);
@@ -126,7 +125,7 @@ public class DrupalService {
 				log.info("Richiesta Servizio Drupal: {} {} headersRichiesta={} corpoRichiesta={}", 
 						metodoHttp, urlDaChiamare, forwardHeaders, forwardBody);
 				 try {
-					 if("GET".equals(metodoHttpString) && endpointMatcher(param.getUrlRichiesta().split("\\?")[0], ENDPOINT_RUOLI))	
+					 if("GET".equals(metodoHttpString) && endpointMatcher(param.getUrlRichiesta().split("\\?")[0], UrlSanitizationUtil.ENDPOINT_RUOLI))	
 						 urlDaChiamare = this.transformUrl(param, urlDaChiamare);
 					 responseDrupal = this.restTemplate.exchange(urlDaChiamare, metodoHttp, forwardRequestEntity, Map.class);
 				  } catch (Exception ex) {
