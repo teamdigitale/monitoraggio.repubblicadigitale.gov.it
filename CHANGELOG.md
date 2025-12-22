@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.499](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.498...1.0.0-test.499) (2025-12-22)
+
+
+### Bug Fixes
+
+* **U465:** update url accesso alternativo 20251222 ([67701b5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/67701b589a08385336745355040669d8b907d691))
+
 ## [1.0.0-test.498](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.497...1.0.0-test.498) (2025-12-11)
 
 
