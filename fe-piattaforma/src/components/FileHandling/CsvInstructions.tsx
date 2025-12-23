@@ -61,6 +61,7 @@ export default function CsvInstructions({ urlGuida, attachmentGuida }: { urlGuid
           target='_blank'
           className='btn p-0 text-primary-action'
           onClick={attachmentGuida}
+          rel="noopener noreferrer"
         >
           <img className='delete-csv-btn-img mr-2' src={uploadIcon} alt='' />
           Scarica la guida operativa (PDF)

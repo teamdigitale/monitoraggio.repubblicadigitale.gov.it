@@ -263,7 +263,7 @@ const AnteprimaBachecaNews: React.FC<AnteprimaBachecaNewsI> = (props) => {
                   }
                   download
                   target='_blank'
-                  rel='noreferrer'
+                  rel="noopener noreferrer"
                   className='ml-2'
                 >
                   <p className='font-weight-bold h6 mb-0'>Scarica allegato</p>

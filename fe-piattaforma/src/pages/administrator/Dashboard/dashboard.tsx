@@ -301,7 +301,7 @@ const Dashboard = () => {
             ? {
                 action: () => {
                   console.log('go to BI', dashboard_BI_URL);
-                  window.open(dashboard_BI_URL, '_blank');
+                  window.open(dashboard_BI_URL, '_blank',"noopener noreferrer");
                 },
                 label: 'Crea report personalizzati',
               }
