@@ -38,7 +38,7 @@ public class QuestionarioTemplateMapper {
 		final QuestionarioTemplateCollection questionarioTemplateCollection = new QuestionarioTemplateCollection();
 		questionarioTemplateCollection.setNomeQuestionarioTemplate(questionarioTemplateRequest.getNomeQuestionarioTemplate());
 		questionarioTemplateCollection.setDescrizioneQuestionarioTemplate(questionarioTemplateRequest.getDescrizioneQuestionarioTemplate());
-		final List<SezioneQuestionarioTemplate> sezioniQuestionario = this.toCollectionFrom(questionarioTemplateRequest.getSezioniQuestionarioTemplate());
+		final List<SezioneQuestionarioTemplate> sezioniQuestionario = this.toCollectionFromSezioni(questionarioTemplateRequest.getSezioniQuestionarioTemplate());
 		questionarioTemplateCollection.setSezioniQuestionarioTemplate(sezioniQuestionario);
 		return questionarioTemplateCollection;
 	}
@@ -47,20 +47,20 @@ public class QuestionarioTemplateMapper {
 	 * Mappa List<SezioneQuestionarioTemplateRequest> in List<SezioneQuestionarioTemplate>
 	 * 
 	 * */
-	public List<SezioneQuestionarioTemplate> toCollectionFrom(
-			@NotNull(message = "Lista<SezioneQuestionarioTemplate> deve essere non null") 
-			final List<SezioneQuestionarioTemplateRequest> sezioniQuestionarioTemplateRequest) {
+	    public List<SezioneQuestionarioTemplate> toCollectionFromSezioni(
+		    @NotNull(message = "Lista<SezioneQuestionarioTemplate> deve essere non null") 
+		    final List<SezioneQuestionarioTemplateRequest> sezioniQuestionarioTemplateRequest) {
 		return sezioniQuestionarioTemplateRequest
-				.stream()
-				.map(this::toCollectionFrom)
-				.collect(Collectors.toList());
-	}
+			.stream()
+			.map(this::toCollectionFromSezione)
+			.collect(Collectors.toList());
+	    }
 	
 	/**
 	 * Mappa sezioneQuestionarioTemplateRequest in SezioneQuestionarioTemplate
 	 * 
 	 * */
-	public SezioneQuestionarioTemplate toCollectionFrom(
+	public SezioneQuestionarioTemplate toCollectionFromSezione(
 			@NotNull(message = "SezioneQuestionarioTemplateRequest deve essere non null") 
 			@Valid final SezioneQuestionarioTemplateRequest sezioneQuestionarioTemplateRequest) {
 		final SezioneQuestionarioTemplate sezioneQuestionarioTemplate = new QuestionarioTemplateCollection.SezioneQuestionarioTemplate();
