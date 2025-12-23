@@ -73,19 +73,19 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
         <div className='p-3'>
           <p className='my-3 mx-5'>
             Ti ricordiamo che tutte le informazioni per poter utilizzare Facilita sono disponibili nel{' '}
-            <a href={getHref('VademecumFacilitatori')} target="_blank" className="text-blue-600 underline">
+            <a href={getHref('VademecumFacilitatori')} target="_blank" rel="noopener noreferrer"  className="text-blue-600 underline">
               Vademecum per le facilitatrici e i facilitatori
             </a>
           </p>
           <p className='my-3 mx-5'>
             Puoi anche consultare le risposte alle domande più frequenti nelle{' '}
-            <a href={getHref('FAQFacilitatori')} target="_blank" className="text-blue-600 underline">
+            <a href={getHref('FAQFacilitatori')} target="_blank" rel="noopener noreferrer"  className="text-blue-600 underline">
               FAQ
             </a>
           </p>
           <p className='my-3 mx-5'>
             Se il tuo problema riguarda l’attività di facilitazione vai al{' '}
-            <a href={getHref('ManualeFacilitazione')} target="_blank" className="text-blue-600 underline">
+            <a href={getHref('ManualeFacilitazione')} target="_blank" rel="noopener noreferrer"  className="text-blue-600 underline">
               Manuale della facilitazione
             </a>
           </p>
@@ -107,7 +107,7 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
         <div className='p-3'>
           <p className='my-3 mx-5'>
             Se il tuo problema riguarda il caricamento massivo dei dati dei servizi, consulta la{' '}
-            <a href={getHref('GuidaOperativaReferentiDelegati')} target="_blank" className="text-blue-600 underline">
+            <a href={getHref('GuidaOperativaReferentiDelegati')} target="_blank" rel="noopener noreferrer"  className="text-blue-600 underline">
               Guida operativa per il caricamento massivo dei dati sui servizi 
             </a>
           </p>
@@ -129,13 +129,13 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
         <div className='p-3'>
           <p className='my-3 mx-5'>
             Ti ricordiamo che tutte le informazioni per poter utilizzare Facilita sono disponibili nel{' '}
-            <a href={getHref('VademecumVolontari')} target="_blank" className="text-blue-600 underline">
+            <a href={getHref('VademecumVolontari')} target="_blank" rel="noopener noreferrer"  className="text-blue-600 underline">
               Vademecum per volontarie e volontari del Servizio Civile Digitale
             </a>
           </p>
           <p className='my-3 mx-5'>
             Se il tuo problema riguarda l’attività di facilitazione vai al{' '}
-            <a href={getHref('ManualeVolontario')} target="_blank" className="text-blue-600 underline">
+            <a href={getHref('ManualeVolontario')} target="_blank" rel="noopener noreferrer"  className="text-blue-600 underline">
               Manuale dell'operatore volontario
             </a>
           </p>
@@ -157,19 +157,19 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
         <div className='p-3'>
           <p className='my-3 mx-5'>
             Ti ricordiamo che tutte le informazioni per poter utilizzare Facilita sono disponibili nel{' '}
-            <a href={getHref('VademecumEntiGestoriPartner')} target="_blank" className="text-blue-600 underline">
+            <a href={getHref('VademecumEntiGestoriPartner')} target="_blank" rel="noopener noreferrer"  className="text-blue-600 underline">
               Vademecum per enti gestori e partner di progetto
             </a>
           </p>
           <p className='my-3 mx-5'>
             Puoi anche consultare le risposte alle domande più frequenti nelle{' '}
-            <a href={getHref('FAQEntiGestoriPartner')} target="_blank" className="text-blue-600 underline">
+            <a href={getHref('FAQEntiGestoriPartner')} target="_blank" rel="noopener noreferrer"  className="text-blue-600 underline">
               FAQ
             </a>
           </p>
           <p className='my-3 mx-5'>
             Se il tuo problema riguarda le attività di gestione e monitoraggio, consulta il{' '}
-            <a href={getHref('CapacityBuilding')} target="_blank" className="text-blue-600 underline">
+            <a href={getHref('CapacityBuilding')} target="_blank" rel="noopener noreferrer"  className="text-blue-600 underline">
               Capacity Building - 1.7.2 PNRR 
             </a>
           </p>
@@ -222,8 +222,7 @@ const AssistenzaModal: React.FC<ManageReferalI> = ({
           <a
             href="mailto:problema-accesso-facilita@repubblicadigitale.gov.it"
             className="text-blue-600 underline"
-            target="_blank"
-            rel="noopener noreferrer"
+            target="_blank" rel="noopener noreferrer" 
           >
             problema-accesso-facilita@repubblicadigitale.gov.it
           </a>

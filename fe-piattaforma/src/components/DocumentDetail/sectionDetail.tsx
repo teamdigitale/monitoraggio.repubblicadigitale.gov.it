@@ -102,7 +102,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
         })
       );
     }
-    window.open(cleanDrupalFileURL(attachment), '_blank');
+    window.open(cleanDrupalFileURL(attachment), '_blank',"noopener noreferrer");
   };
 
   const deleteOption = {
@@ -370,7 +370,7 @@ const SectionDetail: React.FC<CardDocumentDetailI> = (props) => {
               <a
                 href={cleanDrupalFileURL(external_link)}
                 target='_blank'
-                rel='noreferrer'
+                rel="noopener noreferrer"
                 className='ml-2'
               >
                 <p className='font-weight-bold h6 mb-0'>Link esterno</p>
