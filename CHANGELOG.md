@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.502](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.501...1.0.0-test.502) (2025-12-29)
+
+
+### Bug Fixes
+
+* **secu-wave2:** update release 20251229 ([308c9e3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/308c9e34e89a6d398b69d6b3600e04b85fd0e235))
+
 ## [1.0.0-test.501](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.500...1.0.0-test.501) (2025-12-29)
 
 
