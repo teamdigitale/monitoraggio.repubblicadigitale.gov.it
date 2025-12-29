@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.501](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.500...1.0.0-test.501) (2025-12-29)
+
+
+### Bug Fixes
+
+* **secu-wave2:** aggiornamento release.yml 20251229 ([40f1cf7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/40f1cf7c94e21a9bcb565c589424aa378cf81b03))
+* **secu-wave2:** modifiche sanificazione url drupal 20251229 ([b3ff7e8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b3ff7e8fb578577a3b0a87f6467442cb2f10cfb9))
+
 ## [1.0.0-test.500](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.499...1.0.0-test.500) (2025-12-29)
 
 
