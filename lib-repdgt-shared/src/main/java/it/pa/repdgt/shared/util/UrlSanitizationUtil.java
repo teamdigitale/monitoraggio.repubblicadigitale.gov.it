@@ -54,7 +54,7 @@ public class UrlSanitizationUtil {
 	 */
 	private static final List<Pattern> SUSPICIOUS_PATTERNS = Arrays.asList(
 		Pattern.compile("\\.\\.(/|\\\\)"),           // Path traversal: ../
-		Pattern.compile("[;`|&$()]"),                // Command injection characters
+		//Pattern.compile("[;`|&$()]"),                // Command injection characters
 		Pattern.compile("(javascript:|data:|vbscript:)"), // Protocol injection
 		Pattern.compile("[<>\"'%]"),                 // HTML/XML injection
 		Pattern.compile("(union|select|insert|update|delete|drop)\\s", Pattern.CASE_INSENSITIVE) // SQL injection (base)
