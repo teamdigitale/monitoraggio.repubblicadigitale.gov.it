@@ -1,5 +1,22 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.500](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.499...1.0.0-test.500) (2025-12-29)
+
+
+### Features
+
+* **secu-wave2:** sanificazione url drupal 20251215 ([61d0a88](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/61d0a88ecde2c55a422a9f5e067827410661768a))
+* **test:** aggiornamento data limite Dicembre 20251229 ([0f92979](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0f929793cc6bba5d8cbf332c9458d77936c42c2d))
+* **test:** aggiornamento data limite Dicembre 20251229 ([06f131c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/06f131c035f7cc67c4ea86d450db4508e1f55d7a))
+
+
+### Bug Fixes
+
+* **secu-wave2:** packagelock update 20251229 ([9aaa537](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9aaa5373acdff2a3f997fc6a8769b3aba5bddf6c))
+* **test:** packagelock update 20251229 ([ccad76d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ccad76d427234dd804a6eae919d78bbc7c41d62b))
+* **secu-wave2:** remediation SAST 20251210 ([871d866](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/871d866a3e107ba5559a35c0a0a0d19dac1f886c))
+* **secu-wave2:** rimossi riferimenti 20251128 ([fca7d47](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fca7d4795752b6d1969db6d059b8daf363bfe280))
+
 ## [1.0.0-test.499](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.498...1.0.0-test.499) (2025-12-22)
 
 
