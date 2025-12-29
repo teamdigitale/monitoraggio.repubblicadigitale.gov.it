@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.55.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.55.0...1.55.1) (2025-12-29)
+
+
+### Bug Fixes
+
+* **main:** typo 20251229 ([fef55df](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fef55df3c4b6526aa0c715e67ee1bcad1b385467))
+
 ## [1.55.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.54.0...1.55.0) (2025-12-29)
 
 
