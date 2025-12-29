@@ -79,7 +79,6 @@ public class UrlSanitizationUtil {
 
 		// 2. Controllo sintassi URL (almeno struttura di base)
 		try {
-			// Tentiamo di fare il parsing della parte path + query string
 			String testUrl = "http://localhost" + urlPath;
 			new URL(testUrl);
 		} catch (MalformedURLException e) {

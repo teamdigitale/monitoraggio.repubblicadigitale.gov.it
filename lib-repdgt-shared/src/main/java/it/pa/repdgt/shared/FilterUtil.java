@@ -40,7 +40,6 @@ public class FilterUtil {
 	);
 	
 	public static final List<String> ENDPOINT_SWAGGER = Arrays.asList(			
-//			da decommentare in locale(aggiunta endpoint per lanciare swagger):
 			"^/swagger-ui*",
 			"^/favicon.ico*",
 			"^/swagger-resources*",

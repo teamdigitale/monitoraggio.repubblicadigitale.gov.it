@@ -9,7 +9,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.Set;
-import java.util.UUID;
 import java.util.Arrays;
 import java.util.HashSet;
 import javax.imageio.ImageIO;
