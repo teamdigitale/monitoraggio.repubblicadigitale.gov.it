@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.503](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.502...1.0.0-test.503) (2026-01-14)
+
+
+### Features
+
+* **U465:** gestione logout per tipo login 20260114 ([c839888](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c839888d2d1f23079ce18740181b8a9167161428))
+
 ## [1.0.0-test.502](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.501...1.0.0-test.502) (2025-12-29)
 
 
