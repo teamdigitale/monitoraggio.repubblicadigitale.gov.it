@@ -21,13 +21,11 @@ import { isActiveProvisionalLogin } from '../../../pages/common/Auth/auth';
 import { proxyCall } from '../forum/forumThunk';
 import { transformFiltersToQueryParams } from '../../../utils/common';
 import { setEntityPagination } from '../administrativeArea/administrativeAreaSlice';
-import { useAppSelector } from '../../../redux/hooks';
-import {selectLoginType} from '../../../redux/features/user/userSlice';
 
 
-const COGNITO_HREF = `${process?.env?.REACT_APP_COGNITO_BASE_URL}oauth2/authorize?client_id=${process?.env?.REACT_APP_COGNITO_CLIENT_ID}&redirect_uri=${process?.env?.REACT_APP_COGNITO_FE_REDIRECT_URL}&scope=openid&response_type=code`;
+const COGNITO_HREF = `${process?.env?.REACT_APP_COGNITO_FE_REDIRECT_URL}`
 
-const COGNITO_HREF_NO_SPID = `${process?.env?.REACT_APP_COGNITO_BASE_URL}login?client_id=${process?.env?.REACT_APP_COGNITO_CLIENT_ID_NOSPID}&lang=it&response_type=code&scope=aws.cognito.signin.user.admin+openid+profile&redirect_uri=${process?.env?.REACT_APP_COGNITO_FE_REDIRECT_URL}`;
+const COGNITO_HREF_NO_SPID =`${process?.env?.REACT_APP_COGNITO_FE_REDIRECT_URL}/accesso_alternativo`
 
 export const getUserHeaders = () => {
   const { codiceFiscale, id: idUtente, cfUtenteLoggato } = JSON.parse(getSessionValues('user'));
@@ -255,11 +253,12 @@ export const RocketChatLogin = () => async (dispatch: Dispatch) => {
 };
 
 const LogoutRedirectAction = { type: 'user/LogoutRedirect' };
-export const LogoutRedirect = () => async (dispatch: Dispatch) => {
+export const LogoutRedirect = () => async (dispatch: Dispatch, select: Selector) => {
   try {
     dispatch({ ...LogoutRedirectAction }); // TODO manage dispatch for dev env only
     dispatch(showLoader());
-    const loginType = useAppSelector(selectLoginType)
+     const state = select((state: RootState) => state);
+    const loginType = state.user.loginType;
     const currentCognitoHref = loginType=="nospid" ? COGNITO_HREF_NO_SPID : COGNITO_HREF;
     const logoutRedirectUrl = currentCognitoHref.replace('/auth', '');
     clearSessionValues();
