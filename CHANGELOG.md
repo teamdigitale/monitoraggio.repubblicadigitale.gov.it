@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.504](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.503...1.0.0-test.504) (2026-01-15)
+
+
+### Bug Fixes
+
+* **U465:** gestione redirect logout 20260115 ([45e166c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/45e166c925e03174dd4535bf6b222c7f46e4c4e1))
+
 ## [1.0.0-test.503](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.502...1.0.0-test.503) (2026-01-14)
 
 
