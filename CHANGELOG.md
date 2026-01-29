@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.505](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.504...1.0.0-test.505) (2026-01-29)
+
+
+### Features
+
+* **secu-wave3:** risoluzione issue security 20251223 ([e9321c5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e9321c53acd245710b20ff00b24bd246eea8f943))
+* **test:** aggiornamento data limite Gennaio 20260129 ([00cc803](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/00cc80324f08295fbcc58ecd53b6e87a4626e7ba))
+
 ## [1.0.0-test.504](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.503...1.0.0-test.504) (2026-01-15)
 
 
