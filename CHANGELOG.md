@@ -1,5 +1,26 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.56.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.55.1...1.56.0) (2026-01-30)
+
+
+### Features
+
+* **secu-wave3:** risoluzione issue security 20251223 ([ed0562c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ed0562cd3ee755272c812baa543882fadf3df807))
+* **test:** aggiornamento data limite Gennaio 20260129 ([b16b9b6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b16b9b6a3c19ea5ea02e6b53f9b9c6f1d853dfbb))
+* **U465:** gestione logout per tipo login 20260114 ([fa17db9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fa17db9c1c91ff5df6d4efde4718e5a41f3894fa))
+* **U465:** config params 20251126 ([ce595d7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ce595d7aac0fa8d715a16dfaf5fb4fdb67fb9808))
+* **U465:** business logic pagina login nospid 20251120 ([6a475b8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6a475b8209a08387233a064315cade01be746bd1))
+* **U465:** wip business logic pagina login NOSPID 20251120 ([1c4cd49](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1c4cd49154c5e593814da1f78d97cfee5d685687))
+* **U465:** implementazione pagina login NOSPID 20251118 ([1106c6d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1106c6d68dd5f82b6ed05c3a6afeaf6999d2d2cf))
+
+
+### Bug Fixes
+
+* **main:** disable accesso alternativo 20260130 ([32b7263](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/32b7263e1c47d6e2e1ab788996dbab627faeb910))
+* **U465:** gestione redirect logout 20260115 ([78cedb2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/78cedb2c457eaa83d0a9f6b523e1bb6eeec54f15))
+* **U465:** fix typo 20251211 ([2e83b98](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2e83b98019f11e2d90851b063cfda86fb90d5826))
+* **U465:** fix parametro 20251127 ([4c7c258](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/4c7c25848f490d73f17e9b01556aab71eb84ea31))
+
 ## [1.55.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.55.0...1.55.1) (2025-12-29)
 
 
