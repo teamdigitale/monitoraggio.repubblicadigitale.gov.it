@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.506](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.505...1.0.0-test.506) (2026-02-18)
+
+
+### Bug Fixes
+
+* **U465:** update package-lock 20260218 ([5c3bdc1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5c3bdc1739901675eb91954b6995e35ac089a4d3))
+* **U465:** risoluzione bug accesso alternativo 20260218 ([fa954d8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fa954d8b5e463a04b2a6b8cddf3f5c3b89428eaa))
+
 ## [1.0.0-test.505](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.504...1.0.0-test.505) (2026-01-29)
 
 
