@@ -1,23 +1,26 @@
 import clsx from 'clsx';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import imgLaptop from '/public/assets/img/landing-page-img.jpg';
 import { Button } from 'design-react-kit';
 import { useDispatch } from 'react-redux';
 import { setLoginType } from '../../redux/features/user/userSlice';
 
+
 const LandingPageNoSpid: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     
-    const handleAccess = () => {
-        // salva in redux il tipo di login desiderato (es. 'spid')
+    useEffect(() => {
         dispatch(setLoginType('nospid'));
+    }, [dispatch]);
+    
+    const handleAccess = () => {
         navigate('/auth');
     };
 
     return (
-        <div className="my-5" style={{ display: 'flex', flexDirection: 'row', gap: '4rem', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div className="my-5 ml-4 md:ml-0" style={{ display: 'flex', flexDirection: 'row', gap: '4rem', alignItems: 'center', justifyContent: 'space-between' }}>
             {/* Colonna Testuale */}
             <div>
                 <p
