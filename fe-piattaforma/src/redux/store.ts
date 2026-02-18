@@ -15,6 +15,16 @@ import notificationReducer from './features/notification/notificationSlice';
 import userReducer from './features/user/userSlice';
 import rolesReducer from './features/roles/rolesSlice';
 import forumReducer from './features/forum/forumSlice';
+import { persistReducer, persistStore } from 'redux-persist';
+import storageSession from 'redux-persist/lib/storage/session';
+
+const userPersistConfig = {
+  key: 'user',
+  storage: storageSession,
+  //whitelist: ['loginType'],
+};
+
+const persistedUserReducer = persistReducer(userPersistConfig, userReducer);
 
 const store = createStore(
   combineReducers({
@@ -26,15 +36,13 @@ const store = createStore(
     notification: notificationReducer,
     survey: surveyReducer,
     roles: rolesReducer,
-    user: userReducer,
+    user: persistedUserReducer,
     forum: forumReducer,
   }),
   composeWithDevTools(applyMiddleware(thunk))
 );
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
+export const persistor = persistStore(store);
 export type RootState = ReturnType<typeof store.getState>;
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch;
-
 export default store;
