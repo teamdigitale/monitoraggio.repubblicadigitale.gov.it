@@ -8,18 +8,16 @@ export const GetSPIDToken =
     try {
       dispatch({ ...GetSPIDTokenAction, preAuthCode, loginType }); // TODO manage dispatch for dev env only
       dispatch(showLoader());
-      const params = new URLSearchParams();
-      params.append('grant_type', 'authorization_code');
+
       // Seleziona le variabili d'ambiente in base al flusso di login
-      const clientId = loginType == "nospid" 
-        ? `${process?.env?.REACT_APP_COGNITO_CLIENT_ID_NOSPID}`
-        : `${process?.env?.REACT_APP_COGNITO_CLIENT_ID}`;
-      const clientSecret = loginType == "nospid"
-        ? null
-        : `${process?.env?.REACT_APP_COGNITO_CLIENT_SECRET}`;
+      const clientId = loginType == "nospid" ? `${process?.env?.REACT_APP_COGNITO_CLIENT_ID_NOSPID}` : `${process?.env?.REACT_APP_COGNITO_CLIENT_ID}`;
+      const clientSecret = loginType == "nospid" ? null : `${process?.env?.REACT_APP_COGNITO_CLIENT_SECRET}`;
       const redirectUri = `${process?.env?.REACT_APP_COGNITO_FE_REDIRECT_URL}`;
       const baseUrl = `${process?.env?.REACT_APP_COGNITO_BASE_URL}`;
       
+      // Prepara i parametri per la richiesta token
+      const params = new URLSearchParams();
+      params.append('grant_type', 'authorization_code');
       params.append('client_id', clientId);
       if (clientSecret) {
         params.append('client_secret', clientSecret);
@@ -28,15 +26,10 @@ export const GetSPIDToken =
       params.append('code', `${preAuthCode}`);
       
       // Prepara gli header - Authorization header solo se clientSecret è presente
-      const headers: any = {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      };
+      const headers: any = {'Content-Type': 'application/x-www-form-urlencoded',};
       if (clientSecret) {
-        headers.Authorization = `Basic ${window.btoa(
-          `${clientId}:${clientSecret}`
-        )}`;
+        headers.Authorization = `Basic ${window.btoa(`${clientId}:${clientSecret}`)}`;
       }
-      
       const res = await axios
         .create({
           baseURL: baseUrl,

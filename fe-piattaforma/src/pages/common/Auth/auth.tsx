@@ -26,6 +26,8 @@ const COGNITO_HREF = `${process?.env?.REACT_APP_COGNITO_BASE_URL}oauth2/authoriz
 
 const COGNITO_HREF_NO_SPID = `${process?.env?.REACT_APP_COGNITO_BASE_URL}login?client_id=${process?.env?.REACT_APP_COGNITO_CLIENT_ID_NOSPID}&lang=it&response_type=code&scope=aws.cognito.signin.user.admin+openid+profile&redirect_uri=${process?.env?.REACT_APP_COGNITO_FE_REDIRECT_URL}`;
 
+const COGNITO_HREF_NO_DATA = `${process?.env?.REACT_APP_COGNITO_FE_REDIRECT_URL}`.replace('/auth', '');
+
 export const isActiveProvisionalLogin = false;
 
 const Auth: React.FC<withFormHandlerProps> = ({
@@ -39,7 +41,7 @@ const Auth: React.FC<withFormHandlerProps> = ({
   const navigate = useNavigate();
   const { token } = useParams();
   const preAuthCode = getUrlParameter('code');
-  const currentCognitoHref = loginType=="nospid" ? COGNITO_HREF_NO_SPID : COGNITO_HREF;
+  const currentCognitoHref = loginType== "nospid" ? COGNITO_HREF_NO_SPID : loginType == "spid" ? COGNITO_HREF: COGNITO_HREF_NO_DATA;
 
   const cognitoRedirect = () => {
     dispatch(showLoader());
@@ -73,15 +75,9 @@ const Auth: React.FC<withFormHandlerProps> = ({
 
   const getToken = async (preAuthCode: string) => {
     if (preAuthCode) {
-      const res = await dispatch(GetSPIDToken(preAuthCode, loginType || "spid"));
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+    const res = await dispatch(GetSPIDToken(preAuthCode, loginType || ""));
       if (res) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         setSessionValues('auth', { ...res, preAuthCode });
-        // Pulisci il sessionStorage dopo il login riuscito
-        sessionStorage.removeItem('auth_source');
         createContext();
       } else {
         cognitoRedirect();
@@ -90,7 +86,7 @@ const Auth: React.FC<withFormHandlerProps> = ({
   };
 
   useEffect(() => {
-    if (!isActiveProvisionalLogin && token) {
+    if (!isActiveProvisionalLogin && token && loginType != {}) {
       getToken(token);
     } else if (!isActiveProvisionalLogin && window.location.search) {
       if (preAuthCode) {
