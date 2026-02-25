@@ -9,9 +9,27 @@ import { setLoginType } from '../../redux/features/user/userSlice';
 const LandingPage: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const [showImage, setShowImage] = React.useState(false);
     
     useEffect(() => {
         dispatch(setLoginType('spid'));
+
+         // controlla se mostrare immagine
+        const mq = window.matchMedia('(min-width: 768px)');
+        const onChange = (e: MediaQueryListEvent) => setShowImage(e.matches);
+        setShowImage(mq.matches);
+        if (mq.addEventListener) {
+            mq.addEventListener('change', onChange);
+        } else {
+            mq.addListener(onChange);
+        }
+        return () => {
+            if (mq.removeEventListener) {
+                mq.removeEventListener('change', onChange);
+            } else {
+                mq.removeListener(onChange);
+            }
+        };
     }, [dispatch]);
  
     const handleAccess = () => {
@@ -19,7 +37,7 @@ const LandingPage: React.FC = () => {
     };
 
     return (
-        <div className="my-5 ml-4 md:ml-0" style={{ display: 'flex', flexDirection: 'row', gap: '4rem', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div className="my-5 mx-4 md:mx-0" style={{ display: 'flex', flexDirection: 'row', gap: '4rem', alignItems: 'center', justifyContent: 'space-between' }}>
             {/* Colonna Testuale */}
             <div>
                 <p
@@ -35,14 +53,16 @@ const LandingPage: React.FC = () => {
                     Accedi
                 </Button>
             </div>
-            <div>
-                <img
-                    src={imgLaptop}
-                    alt="Laptop with Facilita interface"
-                    className={clsx('w-full', 'max-w-md')}
-                    style={{ maxHeight: '400px', objectFit: 'cover' }}
-                />
-            </div>
+            {showImage && (
+                <div>
+                    <img
+                        src={imgLaptop}
+                        alt="Laptop with Facilita interface"
+                        className={clsx('w-full', 'max-w-md')}
+                        style={{ maxHeight: '400px', objectFit: 'cover' }}
+                    />
+                </div>
+            )}
         </div>
     );
 };
