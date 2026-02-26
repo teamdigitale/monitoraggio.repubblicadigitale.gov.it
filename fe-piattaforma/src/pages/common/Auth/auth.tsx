@@ -20,7 +20,7 @@ import { newForm, newFormField } from '../../../utils/formHelper';
 import { getUrlParameter } from '../../../utils/common';
 import { GetSPIDToken } from '../../../redux/features/auth/authThunk';
 import { setSessionValues } from '../../../utils/sessionHelper';
-import {selectLoginType} from '../../../redux/features/user/userSlice';
+import {selectLoginType, selectLogged} from '../../../redux/features/user/userSlice';
 
 const COGNITO_HREF = `${process?.env?.REACT_APP_COGNITO_BASE_URL}oauth2/authorize?client_id=${process?.env?.REACT_APP_COGNITO_CLIENT_ID}&redirect_uri=${process?.env?.REACT_APP_COGNITO_FE_REDIRECT_URL}&scope=openid&response_type=code`;
 
@@ -42,6 +42,7 @@ const Auth: React.FC<withFormHandlerProps> = ({
   const { token } = useParams();
   const preAuthCode = getUrlParameter('code');
   const currentCognitoHref = loginType== "nospid" ? COGNITO_HREF_NO_SPID : loginType == "spid" ? COGNITO_HREF: COGNITO_HREF_NO_DATA;
+  const isLogged = useAppSelector(selectLogged);
 
   const cognitoRedirect = () => {
     dispatch(showLoader());
@@ -54,7 +55,9 @@ const Auth: React.FC<withFormHandlerProps> = ({
     );
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    if (validUser) {
+    if(isLogged) {
+      navigate("/", { replace: true });
+    } else if (validUser) {
       navigate('/registrazione');
     } else {
       console.log('manage context error', validUser);
