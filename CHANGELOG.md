@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.507](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.506...1.0.0-test.507) (2026-02-26)
+
+
+### Bug Fixes
+
+* **U465:** modifiche landing page alternativa 20260225 ([b54c1ae](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b54c1ae47025d538f58779685b0365a7bd955758))
+
 ## [1.0.0-test.506](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.505...1.0.0-test.506) (2026-02-18)
 
 
