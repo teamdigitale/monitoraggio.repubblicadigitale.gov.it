@@ -382,6 +382,11 @@ const AppRoutes: React.FC = () => {
                 }
               />
             </Route>
+            <Route path='/' element={<FullLayout withBreadcrumb={false} />}>
+              <Route path='/auth/:token' element={<Auth />} />
+              <Route path='/auth' element={<Auth />} />
+              <Route path='/registrazione' element={<Registrazione />} />
+            </Route>
           </>
         ) : (
           <>
