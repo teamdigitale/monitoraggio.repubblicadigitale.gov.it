@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.508](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.507...1.0.0-test.508) (2026-02-26)
+
+
+### Bug Fixes
+
+* **U465:** risoluzione redirect post scelta ruolo 20260226 ([499d435](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/499d43562aaaf1ad0d453e1abd449d73bf78e692))
+
 ## [1.0.0-test.507](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.506...1.0.0-test.507) (2026-02-26)
 
 
