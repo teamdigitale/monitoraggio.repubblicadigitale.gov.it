@@ -22,6 +22,7 @@ import { GetSPIDToken } from '../../../redux/features/auth/authThunk';
 import { setSessionValues } from '../../../utils/sessionHelper';
 import {selectLoginType, selectLogged} from '../../../redux/features/user/userSlice';
 
+// Lista url per i vari ambienti, da gestire con env var
 const COGNITO_HREF = `${process?.env?.REACT_APP_COGNITO_BASE_URL}oauth2/authorize?client_id=${process?.env?.REACT_APP_COGNITO_CLIENT_ID}&redirect_uri=${process?.env?.REACT_APP_COGNITO_FE_REDIRECT_URL}&scope=openid&response_type=code`;
 
 const COGNITO_HREF_NO_SPID = `${process?.env?.REACT_APP_COGNITO_BASE_URL}login?client_id=${process?.env?.REACT_APP_COGNITO_CLIENT_ID_NOSPID}&lang=it&response_type=code&scope=aws.cognito.signin.user.admin+openid+profile&redirect_uri=${process?.env?.REACT_APP_COGNITO_FE_REDIRECT_URL}`;
@@ -53,10 +54,10 @@ const Auth: React.FC<withFormHandlerProps> = ({
     const validUser = await dispatch(
       CreateUserContext(form.mockUser?.value?.toString())
     );
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     if(isLogged) {
       navigate("/", { replace: true });
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
     } else if (validUser) {
       navigate('/registrazione');
     } else {
@@ -89,6 +90,8 @@ const Auth: React.FC<withFormHandlerProps> = ({
   };
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     if (!isActiveProvisionalLogin && token && loginType != {}) {
       getToken(token);
     } else if (!isActiveProvisionalLogin && window.location.search) {
