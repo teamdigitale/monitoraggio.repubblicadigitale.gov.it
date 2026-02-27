@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.57.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.57.0...1.57.1) (2026-02-27)
+
+
+### Bug Fixes
+
+* **main:** correzione typo 20260227 ([093ca42](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/093ca42e3167e7ad81e9f17a6bc607399ef9281f))
+
 ## [1.57.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.56.0...1.57.0) (2026-02-27)
 
 
