@@ -1,5 +1,22 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.57.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.56.0...1.57.0) (2026-02-27)
+
+
+### Features
+
+* **test:** aggiornamento data limite 20260226 ([f8f0adc](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f8f0adc5749b41f16b0e4a93d373d4f0024658cf))
+* **main:** abilitazione accesso alternativo 20260226 ([f62e2bd](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f62e2bd1f7b5171edbe2ce8814f8bccdb84a76d1))
+
+
+### Bug Fixes
+
+* **U465:** risoluzione redirect post scelta ruolo 20260226 ([b5b74e8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b5b74e8551ef3cdf0ddf5b9370450e04df0910b3))
+* **U465:** modifiche landing page alternativa 20260225 ([992e385](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/992e3851c0af887d848d9ba11fda272faf7db6ce))
+* **U465:** update package-lock 20260218 ([0d802c0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0d802c0ea26b42108b46d1685d761c1f7c171299))
+* **U465:** risoluzione bug accesso alternativo 20260218 ([f0bf786](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f0bf786a9549fa41e50ab9c552054e71c3f35ea0))
+* **U465:** update url accesso alternativo 20251222 ([cef6f81](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/cef6f81c89708e4c1fefa92031b3c8e101ce535a))
+
 ## [1.56.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.55.1...1.56.0) (2026-01-30)
 
 
