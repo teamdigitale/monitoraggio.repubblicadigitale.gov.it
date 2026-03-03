@@ -11,11 +11,6 @@ export const initMock = (apiInstance: AxiosInstance) => {
     const mockInstance = new MockAdapter(apiInstance, {
       onNoMatch: 'passthrough',
     });
-
-    /*mockInstance.onPut('/programma').reply(() => {
-      return [500];
-    });*/
-
     /*mockInstance.onPost('/programma').reply(() => {
       return [201];
     });*/
