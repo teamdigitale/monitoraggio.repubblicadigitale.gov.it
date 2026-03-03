@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.57.2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.57.1...1.57.2) (2026-03-03)
+
+
+### Bug Fixes
+
+* **main:** aggiornamento release action 20260303 ([d2089f2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d2089f2a654ec89a3404241378ea0abd01b70c51))
+
 ## [1.57.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.57.0...1.57.1) (2026-02-27)
 
 
