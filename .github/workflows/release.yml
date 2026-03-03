@@ -47,7 +47,7 @@ jobs:
           environment="${{ github.event.inputs.environment }}"
           in="${{ github.event.inputs.modules }}"
           in=${in// /}
-          if [[ "$in" != "" ]] && [[ "$environment" == "Development" ]]; then
+          if [[ "$in" != "" ]] && [[ "$environment" == "Testing" ]]; then
             echo "fe-piattaforma=false" >> $GITHUB_OUTPUT
             echo "ms-ente=false" >> $GITHUB_OUTPUT
             echo "ms-gestione-utente=false" >> $GITHUB_OUTPUT
