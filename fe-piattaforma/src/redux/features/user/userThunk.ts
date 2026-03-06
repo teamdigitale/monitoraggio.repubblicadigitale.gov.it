@@ -258,6 +258,8 @@ export const LogoutRedirect = () => async (dispatch: Dispatch, select: Selector)
     dispatch({ ...LogoutRedirectAction }); // TODO manage dispatch for dev env only
     dispatch(showLoader());
      const state = select((state: RootState) => state);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const loginType = state.user.loginType;
     const currentCognitoHref = loginType=="nospid" ? COGNITO_HREF_NO_SPID : COGNITO_HREF;
     const logoutRedirectUrl = currentCognitoHref.replace('/auth', '');

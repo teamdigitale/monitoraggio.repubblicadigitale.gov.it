@@ -56,8 +56,8 @@ const Auth: React.FC<withFormHandlerProps> = ({
     );
     if(isLogged) {
       navigate("/", { replace: true });
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     } else if (validUser) {
       navigate('/registrazione');
     } else {
