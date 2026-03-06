@@ -57,6 +57,8 @@ const Auth: React.FC<withFormHandlerProps> = ({
     // @ts-ignore
     if(isLogged) {
       navigate("/", { replace: true });
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     } else if (validUser) {
       navigate('/registrazione');
     } else {
@@ -89,6 +91,8 @@ const Auth: React.FC<withFormHandlerProps> = ({
   };
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     if (!isActiveProvisionalLogin && token && loginType != {}) {
       getToken(token);
     } else if (!isActiveProvisionalLogin && window.location.search) {
