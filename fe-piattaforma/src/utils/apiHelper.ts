@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { initMock } from './mockHelper';
+import axios, { AxiosHeaders } from 'axios';
 import { errorHandler } from './notifictionHelper';
 import { getSessionValues } from './sessionHelper';
 
@@ -12,32 +11,13 @@ const API = axios.create({
 });
 
 API.interceptors.request.use((req) => {
-  //const codiceRuolo = JSON.parse(getSessionValues('profile'))?.codiceRuolo;
-  const newHeaders: {
-    authToken?: string;
-    userRole?: string;
-  } = {
-    ...req.headers,
-    userRole: JSON.parse(getSessionValues('profile'))?.codiceRuolo,
-  };
+  const newHeaders = new AxiosHeaders(req.headers);
+  newHeaders.set('userRole', JSON.parse(getSessionValues('profile'))?.codiceRuolo || "undefined");
   if (JSON.parse(getSessionValues('auth'))?.id_token) {
-    newHeaders.authToken = JSON.parse(getSessionValues('auth'))?.id_token;
-  /*const authSession =
-    getSessionValues('auth') !== 'fguhbjinokj8765d578t9yvghugyftr646tg'
-      ? JSON.parse(getSessionValues('auth'))
-      : getSessionValues('auth');
-  if (authSession.idToken) {
-    newHeaders.authToken = authSession.idToken;
-  } else if (authSession) {
-    newHeaders.authToken = authSession;
+    newHeaders.set('authToken', JSON.parse(getSessionValues('auth'))?.id_token);
   }
-  if (codiceRuolo) {
-    newHeaders.userRole = codiceRuolo;*/
-  }
-  return {
-    ...req,
-    headers: newHeaders,
-  };
+  req.headers = newHeaders;
+  return req;
 });
 
 API.interceptors.response.use(
@@ -60,8 +40,6 @@ API.interceptors.response.use(
     }
   }
 );
-
-initMock(API);
 
 export default API;
 
