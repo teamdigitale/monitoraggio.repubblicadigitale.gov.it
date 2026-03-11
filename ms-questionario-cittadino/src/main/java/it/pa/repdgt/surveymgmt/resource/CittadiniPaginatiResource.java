@@ -22,7 +22,7 @@ public class CittadiniPaginatiResource implements Serializable {
 	private List<CittadinoDto> cittadini; 
 	
 	@JsonProperty(value = "numeroPagine")
-	private Integer numeroPagine;
+	private Long numeroPagine;
 	
 	@JsonProperty(value = "numeroTotaleElementi")
 	private Long numeroTotaleElementi;
