@@ -6,8 +6,14 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.validation.Valid;
 
 import it.pa.repdgt.surveymgmt.util.EncodeUtils;
+import lombok.extern.slf4j.Slf4j;
+
 import org.bson.json.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
@@ -39,6 +45,7 @@ import it.pa.repdgt.surveymgmt.repository.QuestionarioCompilatoRepository;
 import it.pa.repdgt.surveymgmt.request.CittadinoRequest;
 
 @Service
+@Slf4j
 public class CittadinoService {
 
 	@Autowired
@@ -68,8 +75,8 @@ public class CittadinoService {
 	@LogExecutionTime
 	public List<CittadinoDto> getAllCittadiniPaginati(
 			CittadiniPaginatiParam cittadiniPaginatiParam,
-			Integer currPage,
-			Integer pageSize) {
+			Long currPage,
+			Long pageSize) {
 		String codiceRuoloUtente = cittadiniPaginatiParam.getCodiceRuoloUtenteLoggato();
 
 		if (!RuoloUtenteEnum.FAC.toString().equals(codiceRuoloUtente)
@@ -77,11 +84,10 @@ public class CittadinoService {
 			throw new CittadinoException(CodiceErroreEnum.U06.getDescrizioneErrore(), CodiceErroreEnum.U06);
 		}
 
-		List<CittadinoProjection> cittadiniProjection = this
-				.getAllCittadiniFacilitatorePaginatiByFiltro(cittadiniPaginatiParam, currPage, pageSize);
-		return cittadiniProjection
-				.stream()
-				.map(cittadino -> {
+		Page<CittadinoProjection> cittadiniProjection = this
+				.getCittadiniByFiltro(cittadiniPaginatiParam, currPage, pageSize);
+
+		return cittadiniProjection.stream().map(cittadino -> {
 					CittadinoDto cittadinoDto = new CittadinoDto();
 					cittadinoDto.setId(cittadino.getId());
 					cittadinoDto.setDataUltimoAggiornamento(cittadino.getDataUltimoAggiornamento());
@@ -93,68 +99,32 @@ public class CittadinoService {
 				}).collect(Collectors.toList());
 	}
 
-	public List<CittadinoProjection> getAllCittadiniFacilitatoreByFiltro(
-			CittadiniPaginatiParam cittadiniPaginatiParam) {
-		FiltroListaCittadiniParam filtro = cittadiniPaginatiParam.getFiltro();
-		String criterioRicerca = filtro.getCriterioRicerca();
-		List<String> idsSedi;
-		if (filtro.getIdsSedi() == null) {
-			idsSedi = this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgettoAndIdEnte(
-					cittadiniPaginatiParam.getCfUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto(),
-					cittadiniPaginatiParam.getIdEnte());
-		} else {
-			idsSedi = filtro.getIdsSedi();
-		}
+	public Page<CittadinoProjection> getCittadiniByFiltro(
+			CittadiniPaginatiParam param,
+			@Nullable Long currPage,
+			@Nullable Long pageSize
+	) {
+		FiltroListaCittadiniParam filtro = param.getFiltro();
 
-		return this.cittadinoRepository.findAllCittadiniByFiltro(
-				criterioRicerca,
-				idsSedi,
-				cittadiniPaginatiParam.getCfUtenteLoggato());
-	}
-
-	public List<CittadinoProjection> getAllCittadiniFacilitatorePaginatiByFiltro(
-			CittadiniPaginatiParam cittadiniPaginatiParam,
-			Integer currPage,
-			Integer pageSize) {
-		FiltroListaCittadiniParam filtro = cittadiniPaginatiParam.getFiltro();
 		String criterioRicerca = filtro.getCriterioRicerca();
 		if (criterioRicerca != null) {
 			criterioRicerca = EncodeUtils.encrypt(EncodeUtils.decrypt(criterioRicerca));
 		}
-		List<String> idsSedi;
-		if (filtro.getIdsSedi() == null) {
-			idsSedi = this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgettoAndIdEnte(
-					cittadiniPaginatiParam.getCfUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto(),
-					cittadiniPaginatiParam.getIdEnte());
-		} else {
-			idsSedi = filtro.getIdsSedi();
-		}
 
-		return this.cittadinoRepository.findAllCittadiniPaginatiByFiltro(
-				criterioRicerca,
-				idsSedi,
-				cittadiniPaginatiParam.getCfUtenteLoggato(),
-				currPage * pageSize,
-				pageSize);
-	}
+		List<String> idsSedi = (filtro.getIdsSedi() == null)
+				? this.enteSedeProgettoFacilitatoreService
+					.getIdsSediFacilitatoreByCodFiscaleAndIdProgettoAndIdEnte(
+							param.getCfUtenteLoggato(), param.getIdProgetto(), param.getIdEnte())
+				: filtro.getIdsSedi();
 
-	public Integer getNumeroTotaleCittadiniFacilitatoreByFiltro(CittadiniPaginatiParam cittadiniPaginatiParam) {
-		FiltroListaCittadiniParam filtro = cittadiniPaginatiParam.getFiltro();
-		String criterioRicerca = filtro.getCriterioRicerca();
-		List<String> idsSedi;
-		if (filtro.getIdsSedi() == null) {
-			idsSedi = this.enteSedeProgettoFacilitatoreService.getIdsSediFacilitatoreByCodFiscaleAndIdProgettoAndIdEnte(
-					cittadiniPaginatiParam.getCfUtenteLoggato(), cittadiniPaginatiParam.getIdProgetto(),
-					cittadiniPaginatiParam.getIdEnte());
-		} else {
-			idsSedi = filtro.getIdsSedi();
-		}
+		Pageable pageable = (currPage != null && pageSize != null)
+				? PageRequest.of(currPage.intValue(), pageSize.intValue())
+				: Pageable.unpaged();
 
-		List<CittadinoProjection> cittadiniList = this.cittadinoRepository.findAllCittadiniByFiltro(
-				criterioRicerca,
-				idsSedi, cittadiniPaginatiParam.getCfUtenteLoggato());
-		return cittadiniList.size();
-	}
+		return this.cittadinoRepository.findCittadiniByFiltro(
+				criterioRicerca, param.getIdProgetto(), param.getIdEnte(),idsSedi, param.getCfUtenteLoggato(), pageable);
+}
+
 
 	@LogMethod
 	@LogExecutionTime

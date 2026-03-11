@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.apache.commons.csv.CSVFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -37,8 +38,12 @@ import it.pa.repdgt.surveymgmt.util.CSVCittadiniUtil;
 @RestController
 @RequestMapping(path = "/cittadino")
 public class CittadinoRestApi {
+
 	@Autowired
 	private CittadinoService cittadinoService;
+
+	@Autowired
+	private CSVCittadiniUtil cSVCittadiniUtil;
 
 	/***
 	 * Restituisce tutti i cittadini paginati
@@ -48,22 +53,21 @@ public class CittadinoRestApi {
 	@PostMapping(path = "/all")
 	@ResponseStatus(value = HttpStatus.OK)
 	public CittadiniPaginatiResource getAllCittadini(
-			@RequestParam(name = "currPage", defaultValue = "0") Integer currPage,
-			@RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
+			@RequestParam(name = "currPage", defaultValue = "0") Long currPage,
+			@RequestParam(name = "pageSize", defaultValue = "10") Long pageSize,
 			@RequestBody @Valid final CittadiniPaginatiParam cittadiniPaginatiParam) {
 		final List<CittadinoDto> cittadiniList = this.cittadinoService.getAllCittadiniPaginati(
 				cittadiniPaginatiParam,
 				currPage,
 				pageSize);
 
-		final Integer totaleElementi = this.cittadinoService
-				.getNumeroTotaleCittadiniFacilitatoreByFiltro(cittadiniPaginatiParam);
-		final int numeroPagine = totaleElementi / pageSize;
+		final Long totaleElementi = this.cittadinoService.getCittadiniByFiltro(cittadiniPaginatiParam, null, null).getTotalElements();
+		final long numeroPagine = totaleElementi / pageSize;
 
 		return new CittadiniPaginatiResource(
 				cittadiniList,
 				totaleElementi % pageSize > 0 ? numeroPagine + 1 : numeroPagine,
-				Long.valueOf(totaleElementi));
+				totaleElementi);
 	}
 
 	/***
@@ -113,9 +117,9 @@ public class CittadinoRestApi {
 	@PostMapping(path = "/download")
 	public ResponseEntity<InputStreamResource> downloadListaCSVCittadini(
 			@RequestBody @Valid CittadiniPaginatiParam cittadiniPaginatiParam) {
-		List<CittadinoProjection> cittadiniProjection = this.cittadinoService
-				.getAllCittadiniFacilitatoreByFiltro(cittadiniPaginatiParam);
-		ByteArrayInputStream byteArrayInputStream = CSVCittadiniUtil.exportCSVCittadini(cittadiniProjection,
+		Page<CittadinoProjection> cittadiniProjection = this.cittadinoService
+				.getCittadiniByFiltro(cittadiniPaginatiParam, null, null);
+		ByteArrayInputStream byteArrayInputStream = cSVCittadiniUtil.exportCSVCittadini(cittadiniProjection,
 				CSVFormat.DEFAULT);
 		InputStreamResource fileCSV = new InputStreamResource(byteArrayInputStream);
 
