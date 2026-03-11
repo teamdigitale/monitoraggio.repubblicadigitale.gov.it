@@ -3,6 +3,8 @@ package it.pa.repdgt.surveymgmt.repository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,26 +16,6 @@ import it.pa.repdgt.surveymgmt.projection.DettaglioServizioSchedaCittadinoProjec
 
 @Repository
 public interface CittadinoRepository extends JpaRepository<CittadinoEntity, Long> {
-
-	@Query(value = "SELECT cit.id AS id, cit.data_ora_aggiornamento AS dataUltimoAggiornamento, cit.codice_fiscale AS codiceFiscale, COUNT(DISTINCT qc_servizi.servizio_id) AS numeroServizi, COUNT(DISTINCT CASE WHEN qc_quest_compilati.stato = 'COMPILATA' AND qc_quest_compilati.id_facilitatore = :codiceFiscaleUtenteLoggato THEN qc_quest_compilati.id END) AS numeroQuestionariCompilati FROM cittadino cit LEFT JOIN (SELECT qc.id_cittadino, qc.data_ora_aggiornamento, qc.servizio_id, MAX(qc.stato) AS stato FROM questionario_compilato qc INNER JOIN servizio s ON qc.servizio_id = s.id WHERE s.id_facilitatore = :codiceFiscaleUtenteLoggato AND (COALESCE(:idsSedi) IS NULL OR s.id_sede IN (:idsSedi)) GROUP BY qc.id_cittadino, qc.data_ora_aggiornamento, qc.servizio_id) qc_servizi ON cit.id = qc_servizi.id_cittadino LEFT JOIN (SELECT qc.id_cittadino, qc.id, MAX(qc.stato) AS stato, s.id_facilitatore FROM questionario_compilato qc INNER JOIN servizio s ON qc.servizio_id = s.id WHERE qc.stato = 'COMPILATA' AND qc.servizio_id IN (SELECT id FROM servizio WHERE id_facilitatore = :codiceFiscaleUtenteLoggato) GROUP BY qc.id_cittadino, qc.id, s.id_facilitatore) qc_quest_compilati ON cit.id = qc_quest_compilati.id_cittadino WHERE (:criterioRicerca IS NULL OR UPPER(cit.codice_fiscale) = UPPER(:criterioRicerca)) GROUP BY cit.id, cit.data_ora_aggiornamento, cit.codice_fiscale HAVING numeroServizi >= 1 ORDER BY dataUltimoAggiornamento DESC", nativeQuery = true)
-	List<CittadinoProjection> findAllCittadiniByFiltro(
-			@Param("criterioRicerca") String criterioRicerca,
-			@Param("idsSedi") List<String> idsSedi,
-			@Param("codiceFiscaleUtenteLoggato") String codiceFiscaleUtenteLoggato);
-
-	@Query(value = "SELECT cittadini.conteggio_id from (SELECT DISTINCT qc_cittadino.id_cittadino as id,qc_cittadino.codice_fiscale as codiceFiscale,count_servizi.conteggio as numeroServizi,count_quest_compilati.conteggio as numeroQuestionariCompilati,count(qc_cittadino.id_cittadino) as conteggio_id FROM (SELECT DISTINCT qc.id_cittadino,c.codice_fiscale FROM questionario_compilato qc INNER JOIN cittadino c ON c.id=qc.id_cittadino INNER JOIN servizio s ON qc.servizio_id=s.id WHERE s.id_facilitatore=:codiceFiscaleUtenteLoggato AND COALESCE(:idsSedi) IS NULL OR sede_id IN (:idsSedi)) AS qc_cittadino INNER JOIN (SELECT id_cittadino,count(servizio_id) as conteggio FROM questionario_compilato WHERE 1=1 GROUP BY id_cittadino) AS count_servizi ON count_servizi.id_cittadino=qc_cittadino.id_cittadino LEFT JOIN (SELECT id_cittadino,count(*) as conteggio FROM questionario_compilato WHERE stato='COMPILATA' GROUP BY id_cittadino) AS count_quest_compilati ON count_quest_compilati.id_cittadino=qc_cittadino.id_cittadino WHERE (:criterioRicerca IS NULL OR UPPER(qc_cittadino.CODICE_FISCALE)=UPPER(:criterioRicerca) )) as cittadini", nativeQuery = true)
-	Integer conteggioCittadini(
-			@Param("criterioRicerca") String criterioRicerca,
-			@Param("idsSedi") List<String> idsSedi,
-			@Param("codiceFiscaleUtenteLoggato") String codiceFiscaleUtenteLoggato);
-
-	@Query(value = "SELECT cit.id AS id, MAX(qc_servizi.data_ora_aggiornamento) AS dataUltimoAggiornamento, cit.codice_fiscale AS codiceFiscale, COUNT(DISTINCT qc_servizi.servizio_id) AS numeroServizi, COUNT(DISTINCT CASE WHEN qc_quest_compilati.stato = 'COMPILATA' AND qc_quest_compilati.id_facilitatore = :codiceFiscaleUtenteLoggato THEN qc_quest_compilati.id END) AS numeroQuestionariCompilati FROM cittadino cit LEFT JOIN (SELECT qc.id_cittadino, qc.data_ora_aggiornamento, qc.servizio_id, MAX(qc.stato) AS stato FROM questionario_compilato qc INNER JOIN servizio s ON qc.servizio_id = s.id WHERE s.id_facilitatore = :codiceFiscaleUtenteLoggato AND (COALESCE(:idsSedi) IS NULL OR s.id_sede IN (:idsSedi)) GROUP BY qc.id_cittadino, qc.servizio_id, qc.data_ora_aggiornamento) qc_servizi ON cit.id = qc_servizi.id_cittadino LEFT JOIN (SELECT qc.id_cittadino, qc.id, MAX(qc.stato) AS stato, s.id_facilitatore, MAX(qc.data_ora_aggiornamento) AS data_ora_aggiornamento FROM questionario_compilato qc INNER JOIN servizio s ON qc.servizio_id = s.id WHERE qc.stato = 'COMPILATA' AND qc.servizio_id IN (SELECT id FROM servizio WHERE id_facilitatore = :codiceFiscaleUtenteLoggato) GROUP BY qc.id_cittadino, qc.id, s.id_facilitatore) qc_quest_compilati ON cit.id = qc_quest_compilati.id_cittadino WHERE (:criterioRicerca IS NULL OR UPPER(cit.codice_fiscale) = UPPER(:criterioRicerca)) GROUP BY cit.id, cit.codice_fiscale HAVING numeroServizi >= 1 ORDER BY dataUltimoAggiornamento DESC LIMIT :currPage, :pageSize", nativeQuery = true)
-	List<CittadinoProjection> findAllCittadiniPaginatiByFiltro(
-			@Param("criterioRicerca") String criterioRicerca,
-			@Param("idsSedi") List<String> idsSedi,
-			@Param("codiceFiscaleUtenteLoggato") String codiceFiscaleUtenteLoggato,
-			@Param("currPage") Integer currPage,
-			@Param("pageSize") Integer pageSize);
 
 	@Query(value = "SELECT s.id as idServizio, s.nome as nomeServizio, s.id_progetto as idProgetto, s.id_facilitatore as codiceFiscaleFacilitatore, qc.id as idQuestionarioCompilato, qc.stato as statoQuestionarioCompilato, s.id_ente as idEnte,sede.nome as nomeSede, sede.provincia as provincia FROM servizio s INNER JOIN servizio_x_cittadino sxc ON s.id = sxc.id_servizio AND s.id_facilitatore = :idFacilitatore AND sxc.id_cittadino = :idCittadino LEFT JOIN sede sede ON s.id_sede = sede.id LEFT JOIN questionario_compilato qc ON qc.id_cittadino = :idCittadino AND qc.facilitatore_id  = :idFacilitatore AND sxc.id_servizio = qc.servizio_id ORDER BY s.nome", nativeQuery = true)
 	List<DettaglioServizioSchedaCittadinoProjection> findDettaglioServiziSchedaCittadino(
@@ -104,4 +86,71 @@ public interface CittadinoRepository extends JpaRepository<CittadinoEntity, Long
 			@Param(value = "cfUtenteLoggato") String cfUtenteLoggato,
 			@Param(value = "idEnte") Long idEnte,
 			@Param(value = "idProgetto") Long idProgetto);
+
+    @Query(value = 
+			"WITH QUESTIONARI AS (\n" + 
+			"    SELECT\n" + 
+			"        qc.id_cittadino,\n" + 
+			"        qc.id,\n" + 
+			"        qc.data_ora_aggiornamento,\n" + 
+			"        qc.servizio_id,\n" + 
+			"        s.id_facilitatore,\n" + 
+			"        MAX(qc.stato) AS stato\n" + 
+			"    FROM questionario_compilato qc\n" + 
+			"    JOIN servizio s ON qc.servizio_id = s.id\n" + 
+			"    WHERE s.id_facilitatore = :cfUtenteLoggato AND (COALESCE(:idsSedi) IS NULL OR s.id_sede IN (:idsSedi))\n" + 
+			"	 AND qc.ente_id = :idEnte AND qc.progetto_id = :idProgetto\n" + 
+			"    GROUP BY qc.id_cittadino, qc.data_ora_aggiornamento, qc.servizio_id\n" + 
+			")\n" + 
+			"SELECT\n" + 
+			"    cit.id AS id,\n" + 
+			"    cit.data_ora_aggiornamento AS dataUltimoAggiornamento,\n" + 
+			"    cit.codice_fiscale AS codiceFiscale,\n" + 
+			"    COUNT(DISTINCT QUESTIONARI.servizio_id) AS numeroServizi,\n" + 
+			"    COUNT(DISTINCT CASE WHEN QUESTIONARI.stato = 'COMPILATA' AND QUESTIONARI.id_facilitatore = :cfUtenteLoggato THEN QUESTIONARI.id END) AS numeroQuestionariCompilati\n" + 
+			"FROM cittadino cit\n" + 
+			"JOIN QUESTIONARI ON QUESTIONARI.id_cittadino = cit.id\n" + 
+			"WHERE (:criterioRicerca IS NULL OR UPPER(cit.codice_fiscale) = UPPER(:criterioRicerca))\n" + 
+			"GROUP BY cit.id, cit.data_ora_aggiornamento, cit.codice_fiscale\n" + 
+			"HAVING COUNT(DISTINCT QUESTIONARI.servizio_id) >= 1\n" + 
+			"ORDER BY dataUltimoAggiornamento DESC\n", nativeQuery = true)
+    Page<CittadinoProjection> findCittadiniByFiltro(
+            @Param("criterioRicerca") String criterioRicerca,
+			@Param("idProgetto") Long idProgetto,
+			@Param("idEnte") Long idEnte,
+            @Param("idsSedi") List<String> idsSedi,
+            @Param("cfUtenteLoggato") String cfUtenteLoggato,
+            Pageable pageable);
+
+    @Query(value = 
+			"WITH QUESTIONARI AS (\n" + 
+			"    SELECT\n" + 
+			"        qc.id_cittadino,\n" + 
+			"        qc.id,\n" + 
+			"        qc.data_ora_aggiornamento,\n" + 
+			"        qc.servizio_id,\n" + 
+			"        s.id_facilitatore,\n" + 
+			"        MAX(qc.stato) AS stato\n" + 
+			"    FROM questionario_compilato qc\n" + 
+			"    JOIN servizio s ON qc.servizio_id = s.id\n" + 
+			"    WHERE s.id_facilitatore = :cfUtenteLoggato AND (COALESCE(:idsSedi) IS NULL OR s.id_sede IN (:idsSedi))\n" +
+			"	 AND qc.ente_id = :idEnte AND qc.progetto_id = :idProgetto\n" + 
+			"    GROUP BY qc.id_cittadino, qc.data_ora_aggiornamento, qc.servizio_id\n" + 
+			")\n" + 
+			" SELECT COUNT(*) as total FROM ( \n" +
+			"SELECT\n" + 
+			"    cit.id AS id\n" +
+			"FROM cittadino cit\n" + 
+			"JOIN QUESTIONARI ON QUESTIONARI.id_cittadino = cit.id\n" + 
+			"WHERE (:criterioRicerca IS NULL OR UPPER(cit.codice_fiscale) = UPPER(:criterioRicerca))\n" + 
+			"GROUP BY cit.id, cit.data_ora_aggiornamento, cit.codice_fiscale\n" + 
+			"HAVING COUNT(DISTINCT QUESTIONARI.servizio_id) >= 1\n" +
+			") t\n", nativeQuery = true)
+    long countCittadiniByFiltro(
+            @Param("criterioRicerca") String criterioRicerca,
+			@Param("idProgetto") Long idProgetto,
+			@Param("idEnte") Long idEnte,
+            @Param("idsSedi") List<String> idsSedi,
+            @Param("cfUtenteLoggato") String cfUtenteLoggato);
+
 }
