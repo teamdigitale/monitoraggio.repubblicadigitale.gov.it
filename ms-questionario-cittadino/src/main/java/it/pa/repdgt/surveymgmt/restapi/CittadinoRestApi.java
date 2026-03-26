@@ -24,15 +24,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
+import it.pa.repdgt.shared.entity.VPrimoServizioCittadinoEntity;
 import it.pa.repdgt.surveymgmt.bean.SchedaCittadinoBean;
 import it.pa.repdgt.surveymgmt.dto.CittadinoDto;
+import it.pa.repdgt.surveymgmt.dto.RicercaCittadiniDTO;
 import it.pa.repdgt.surveymgmt.dto.SedeDto;
 import it.pa.repdgt.surveymgmt.exception.CittadinoException;
 import it.pa.repdgt.surveymgmt.param.CittadiniPaginatiParam;
 import it.pa.repdgt.surveymgmt.projection.CittadinoProjection;
 import it.pa.repdgt.surveymgmt.request.CittadinoRequest;
+import it.pa.repdgt.surveymgmt.request.RicercaCittadinoRequest;
 import it.pa.repdgt.surveymgmt.resource.CittadiniPaginatiResource;
 import it.pa.repdgt.surveymgmt.service.CittadinoService;
+import it.pa.repdgt.surveymgmt.service.VPrimoServizioCittadinoService;
 import it.pa.repdgt.surveymgmt.util.CSVCittadiniUtil;
 
 @RestController
@@ -44,6 +48,9 @@ public class CittadinoRestApi {
 
 	@Autowired
 	private CSVCittadiniUtil cSVCittadiniUtil;
+
+	@Autowired
+	private VPrimoServizioCittadinoService vPrimoServizioCittadinoService;
 
 	/***
 	 * Restituisce tutti i cittadini paginati
@@ -127,5 +134,31 @@ public class CittadinoRestApi {
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=cittadini.csv")
 				.contentType(MediaType.parseMediaType("application/csv"))
 				.body(fileCSV);
+	}
+
+	/***
+	 * Ricerca singola cittadino tramite codice fiscale / ID
+	 *
+	 */
+	@PostMapping(path = "/ricerca")
+	@ResponseStatus(value = HttpStatus.OK)
+	public ResponseEntity<VPrimoServizioCittadinoEntity> ricercaSingola(
+			@RequestBody @Valid final RicercaCittadinoRequest request) {
+		return this.vPrimoServizioCittadinoService
+				.ricercaSingola(request.getCriterioRicerca())
+				.map(ResponseEntity::ok)
+				.orElse(ResponseEntity.noContent().build());
+	}
+
+	/***
+	 * Ricerca multipla cittadini tramite elenco codici fiscali / ID
+	 *
+	 */
+	@PostMapping(path = "/ricerca-multipla")
+	@ResponseStatus(value = HttpStatus.OK)
+	public RicercaCittadiniDTO ricercaMultipla(
+			@RequestBody @Valid final RicercaCittadinoRequest request) {
+		return this.vPrimoServizioCittadinoService
+				.ricercaMultipla(request.getCriterioRicercaMultipla());
 	}
 }
