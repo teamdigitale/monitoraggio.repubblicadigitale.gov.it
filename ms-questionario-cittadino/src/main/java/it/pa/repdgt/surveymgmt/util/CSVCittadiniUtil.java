@@ -7,22 +7,27 @@ import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Service;
 
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
+import it.pa.repdgt.surveymgmt.dto.CittadinoDto;
 import it.pa.repdgt.surveymgmt.exception.CittadinoException;
 import it.pa.repdgt.surveymgmt.projection.CittadinoProjection;
 
+@Service
 public class CSVCittadiniUtil {
-	private static final List<String> HEADERS = Arrays.asList(
+	private final List<String> HEADERS = Arrays.asList(
 			"ID",
 			"NUMERO SERVIZI",
 			"NUMERO QUESTIONARI COMPILATI");
 
-	public static ByteArrayInputStream exportCSVCittadini(List<CittadinoProjection> cittadini, CSVFormat csvFormat) {
-		CSVCittadiniUtil.ordinaListaCittadiniPerIDAsc(cittadini);
+	public ByteArrayInputStream exportCSVCittadini(Page<CittadinoProjection> cittadini, CSVFormat csvFormat) {
+		List<CittadinoDto> cittadiniDto = ordinaListaCittadiniPerIDAsc(cittadini);
 		try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 				CSVPrinter csvPrinter = new CSVPrinter(new PrintWriter(outputStream), csvFormat);) {
 			if (cittadini == null || cittadini.isEmpty()) {
@@ -31,7 +36,7 @@ public class CSVCittadiniUtil {
 			}
 
 			csvPrinter.printRecord(HEADERS);
-			for (CittadinoProjection cittadino : cittadini) {
+			for (CittadinoDto cittadino : cittadiniDto) {
 				csvPrinter.printRecord(CSVCittadiniUtil.getCSVRecord(cittadino));
 			}
 			csvPrinter.flush();
@@ -41,11 +46,22 @@ public class CSVCittadiniUtil {
 		}
 	}
 
-	private static void ordinaListaCittadiniPerIDAsc(List<CittadinoProjection> cittadini) {
-		cittadini.sort(Comparator.comparing(CittadinoProjection::getId));
+	private  List<CittadinoDto>  ordinaListaCittadiniPerIDAsc(Page<CittadinoProjection> cittadiniProjection) {
+		List<CittadinoDto> cittadiniDto = cittadiniProjection.stream().map(cittadino -> {
+					CittadinoDto cittadinoDto = new CittadinoDto();
+					cittadinoDto.setId(cittadino.getId());
+					cittadinoDto.setDataUltimoAggiornamento(cittadino.getDataUltimoAggiornamento());
+					cittadinoDto.setCodiceFiscale(cittadino.getCodiceFiscale());
+					cittadinoDto.setNumeroServizi(cittadino.getNumeroServizi());
+					cittadinoDto.setNumeroQuestionariCompilati(cittadino.getNumeroQuestionariCompilati() == null ? 0L
+							: cittadino.getNumeroQuestionariCompilati());
+					return cittadinoDto;
+				}).collect(Collectors.toList());
+		cittadiniDto.sort(Comparator.comparing(CittadinoDto::getId));
+		return cittadiniDto;
 	}
 
-	private static List<String> getCSVRecord(CittadinoProjection cittadino) {
+	private static List<String> getCSVRecord(CittadinoDto cittadino) {
 		return Arrays.asList(
 				cittadino.getId().toString(),
 				cittadino.getNumeroServizi().toString(),
