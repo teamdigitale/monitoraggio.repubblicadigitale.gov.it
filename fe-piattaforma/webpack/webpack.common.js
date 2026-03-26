@@ -54,6 +54,7 @@ const config = {
         test: /\.(png|jpg|jpeg|gif)$/i,
         type: 'asset/resource',
       },
+      { test: /\.m?js$/, resolve: { fullySpecified: false } }
     ],
   },
   resolve: {

@@ -23,6 +23,7 @@ import DataReports from '../pages/administrator/MonitoraggioCaricamenti/dataRepo
 import LandingPage from '../pages/LandingPage/LandingPage';
 import LandingPageNoSpid from '../pages/LandingPageNoSpid/LandingPageNoSpid';
 import AssistenzaArea from '../pages/administrator/Assistenza/AssistenzaArea';
+import AreaCittadiniAdminEngine from '../pages/administrator/AreaCittadiniAdmin/AreaCittadiniAdminEngine';
 
 const AuthRedirect = lazy(() => import('../pages/common/Auth/authRedirect'));
 
@@ -387,6 +388,7 @@ const AppRoutes: React.FC = () => {
               <Route path='/auth' element={<Auth />} />
               <Route path='/registrazione' element={<Registrazione />} />
             </Route>
+            <Route path='/areaCittadiniAdmin' element={<AreaCittadiniAdminEngine />} />
           </>
         ) : (
           <>

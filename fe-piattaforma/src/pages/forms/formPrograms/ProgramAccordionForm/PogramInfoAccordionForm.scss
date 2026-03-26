@@ -5,32 +5,6 @@
     margin: 10px 30px 10px 30px;
   }
 
-  // .collapse-body {
-  //   box-shadow: rem(0px) rem(0px) rem(80px) rgba(0, 43, 85, 0.1);
-  //   padding: 0;
-  //   padding: rem(19px) rem(0px) rem(12px) rem(0px);
-  //   width: 100%
-  // }
-
-  // .collapse-div {
-  //   margin-bottom: rem(29px);
-  // }
-
-  // .collapse {
-  //   padding-left: rem(50px);
-  //   padding-bottom: rem(29px);
-  // }
-
-  // @media screen and (max-width: 576px) {
-  //   .collapse {
-  //     width: rem(330px);
-  //     margin: 0;
-  //     &.show {
-  //       margin: 0;
-  //     }
-  //   }
-  // }
-
   @media screen and (max-width: 576px) {
     .collapse-body {
       margin: 0 20px 20px;
