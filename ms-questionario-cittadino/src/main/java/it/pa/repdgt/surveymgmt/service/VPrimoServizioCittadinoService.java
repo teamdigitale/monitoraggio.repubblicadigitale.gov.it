@@ -51,16 +51,13 @@ public class VPrimoServizioCittadinoService {
         List<String> nonTrovati = new ArrayList<>();
 
         for (String valore : valoriUnici) {
-            Optional<VPrimoServizioCittadinoEntity> risultato;
-
-            if (valore.matches("^\\d+$")) {
-                risultato = this.vPrimoServizioCittadinoRepository.findByIdCittadino(Long.parseLong(valore));
-            } else if (valore.matches("^[A-Fa-f0-9]{64}$")) {
-                risultato = this.vPrimoServizioCittadinoRepository.findByCodiceFiscale(valore.toLowerCase());
-            } else {
-                String hash = EncodeUtils.encrypt(valore);
-                risultato = this.vPrimoServizioCittadinoRepository.findByCodiceFiscale(hash);
+            // La ricerca multipla accetta solo hash esadecimali a 64 caratteri
+            if (!valore.matches("^[A-Fa-f0-9]{64}$")) {
+                nonTrovati.add(valore);
+                continue;
             }
+            Optional<VPrimoServizioCittadinoEntity> risultato =
+                    this.vPrimoServizioCittadinoRepository.findByCodiceFiscale(valore.toLowerCase());
 
             if (risultato.isPresent()) {
                 tuttiTrovati.add(risultato.get());
