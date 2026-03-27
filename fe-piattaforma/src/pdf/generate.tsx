@@ -1,8 +1,6 @@
-
 import { pdf } from '@react-pdf/renderer';
-import { DocumentoSchede } from './DocumentoSchede';
-import type { Utente } from './SchedaUtente';
-import React from 'react';
+import { GenericPdfDocument } from './GenericPdfDocument';
+import type { FieldEntry } from './fieldsConfig';
 
 function downloadBlob(blob: Blob, filename: string) {
   const url = URL.createObjectURL(blob);
@@ -13,12 +11,28 @@ function downloadBlob(blob: Blob, filename: string) {
   URL.revokeObjectURL(url);
 }
 
-export async function generaSchedaSingola(utente: Utente, logoSrc: string) {
-  const blob = await pdf(<DocumentoSchede utenti={[utente]} logoSrc={logoSrc} />).toBlob();
-  downloadBlob(blob, `scheda_${utente.cognome}_${utente.nome}.pdf`);
+export async function generaSchedaSingola(
+  record: Record<string, unknown>,
+  fields: FieldEntry[],
+  title: string,
+  logoSrc: string,
+  filename: string
+) {
+  const blob = await pdf(
+    <GenericPdfDocument records={[record]} fields={fields} title={title} logoSrc={logoSrc} />
+  ).toBlob();
+  downloadBlob(blob, filename);
 }
 
-export async function generaSchedeMultiple(utenti: Utente[], logoSrc: string) {
-  const blob = await pdf(<DocumentoSchede utenti={utenti} logoSrc={logoSrc} />).toBlob();
-  downloadBlob(blob, `schede_${utenti.length}pagine.pdf`);
+export async function generaSchedeMultiple(
+  records: Record<string, unknown>[],
+  fields: FieldEntry[],
+  title: string,
+  logoSrc: string,
+  filename: string
+) {
+  const blob = await pdf(
+    <GenericPdfDocument records={records} fields={fields} title={title} logoSrc={logoSrc} />
+  ).toBlob();
+  downloadBlob(blob, filename);
 }

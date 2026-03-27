@@ -15,6 +15,7 @@ import notificationReducer from './features/notification/notificationSlice';
 import userReducer from './features/user/userSlice';
 import rolesReducer from './features/roles/rolesSlice';
 import forumReducer from './features/forum/forumSlice';
+import ricercaCittadiniReducer from './features/ricercaCittadini/ricercaCittadiniSlice';
 import { persistReducer, persistStore } from 'redux-persist';
 import storageSession from 'redux-persist/lib/storage/session';
 
@@ -38,6 +39,7 @@ const store = createStore(
     roles: rolesReducer,
     user: persistedUserReducer,
     forum: forumReducer,
+    ricercaCittadini: ricercaCittadiniReducer,
   }),
   composeWithDevTools(applyMiddleware(thunk))
 );
