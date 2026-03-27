@@ -52,11 +52,7 @@ public class QuestionarioCompilatoService {
 	@Autowired
 	private QuestionarioInviatoOnlineRepository questionarioInviatoOnlineRepository;
 	@Autowired
-	private EmailService emailService;
-	@Autowired
 	private QuestionarioTemplateService questionarioTemplateService;
-	@Autowired
-	private FasciaDiEtaRepository fasciaDiEtaRepository;
 	@Autowired
 	private QuestionarioCompilatoRepository questionarioCompilatoRepository;
 
