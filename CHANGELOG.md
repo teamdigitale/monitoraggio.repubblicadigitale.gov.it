@@ -1,5 +1,22 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.511](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.510...1.0.0-test.511) (2026-03-26)
+
+
+### Features
+
+* **U538:** aggiunti endpoints ricerca/ricerca-multipla 20260326 ([9d0e400](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9d0e400cfe08406afe022580e15fcaf7cc3263fe))
+* **U538:** aggiunti endpoints ricerca/ricerca-multipla 20260326 ([eb9f33f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/eb9f33f273c22d249ea7c0b9bc204d46ddd8d113))
+* **U536:** nuova gestione recupero area cittadini 20260311 ([27f7cb4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/27f7cb4e646568e0712954960d2190b3be941b32))
+* **U538:** wip business logic pdf 20260306 ([037ad9f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/037ad9faad8bea4f033e9e67639a8fc75b8951eb))
+* **U358:** WIP business logic pdf 20260306 ([c7ead04](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c7ead0436b0973d87cf343a3e541ae3df1248b8f))
+* **U358:** WIP business logic pdf 20260306 ([8d232e5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8d232e57763ddcca513df68e2e7449c8a9f254bb))
+
+
+### Bug Fixes
+
+* **test:** risoluzione scss 20260326 ([c8ecab5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c8ecab5fa53b09c8f1ca71f8a631008d08f498f9))
+
 ## [1.0.0-test.510](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.509...1.0.0-test.510) (2026-03-03)
 
 
