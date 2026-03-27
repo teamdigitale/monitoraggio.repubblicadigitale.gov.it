@@ -220,6 +220,11 @@ export const MenuRoutes = [
         visible: ['tab.am', 'subtab.utenti'],
       }),
       newMenuItem({
+        label: 'Cittadini',
+        path: '/area-amministrativa/cittadini',
+        visible: ['tab.am'],
+      }),
+      newMenuItem({
         label: 'Questionari',
         path: '/area-amministrativa/questionari',
         visible: ['tab.am', 'subtab.quest'],

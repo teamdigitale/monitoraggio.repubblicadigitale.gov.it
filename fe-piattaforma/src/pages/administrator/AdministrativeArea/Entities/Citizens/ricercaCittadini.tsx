@@ -1,0 +1,118 @@
+import React, { useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { Nav } from 'design-react-kit';
+import { NavLink } from '../../../../../components';
+import RicercaSingola from './ricercaSingola';
+import RicercaMultipla from './ricercaMultipla';
+import { resetRicercaCittadiniState } from '../../../../../redux/features/ricercaCittadini/ricercaCittadiniSlice';
+import type { PrimoServizioCittadinoI } from '../../../../../redux/features/ricercaCittadini/ricercaCittadiniSlice';
+import { generaSchedaSingola, generaSchedeMultiple } from '../../../../../pdf/generate';
+import { schedaCittadinoFields, schedaCittadinoTitle } from '../../../../../pdf/fieldsConfig';
+
+const tabs = {
+  SINGOLA: 'tab-ricerca-singola',
+  MULTIPLA: 'tab-ricerca-multipla',
+};
+
+const RicercaCittadini: React.FC = () => {
+  const [activeTab, setActiveTab] = useState(tabs.SINGOLA);
+  const [tabKey, setTabKey] = useState(0);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleTabChange = useCallback((tabId: string) => {
+    setActiveTab(tabId);
+    setTabKey((k) => k + 1);
+    dispatch(resetRicercaCittadiniState());
+  }, [dispatch]);
+
+  const handleAccessoScheda = useCallback(
+    (idCittadino: number | string) => {
+      navigate(`${idCittadino}`);
+    },
+    [navigate]
+  );
+
+  const handleDownloadScheda = useCallback(
+    (cittadino: PrimoServizioCittadinoI) => {
+      const record = { ...cittadino, competenzaDigitale: 'TBD' };
+      generaSchedaSingola(
+        record,
+        schedaCittadinoFields,
+        schedaCittadinoTitle,
+        '/assets/img/logo-scritta-blu-x2.png',
+        `scheda_cittadino_${cittadino.idCittadino}.pdf`
+      );
+    },
+    []
+  );
+
+  return (
+    <div>
+      <p className='mt-3 mb-5'>
+        Cerca i cittadini nel database tramite codice fiscale, codice
+        identificativo o ID numerico. Puoi effettuare una ricerca singola o
+        caricare un elenco per la ricerca multipla.
+      </p>
+
+      <Nav tabs className='mb-5 justify-content-center' style={{ overflow: 'visible', padding: '2px 2px 0 2px' }} role='menu'>
+        <li role='none' style={{ marginTop: '1px' }}>
+          <NavLink
+            onClick={() => handleTabChange(tabs.SINGOLA)}
+            active={activeTab === tabs.SINGOLA}
+            role='menuitem'
+          >
+            Ricerca Singola
+          </NavLink>
+        </li>
+        <li role='none' style={{ marginTop: '1px' }}>
+          <NavLink
+            onClick={() => handleTabChange(tabs.MULTIPLA)}
+            active={activeTab === tabs.MULTIPLA}
+            role='menuitem'
+          >
+            Ricerca Multipla
+          </NavLink>
+        </li>
+      </Nav>
+
+      <div className='mt-5'>
+        {activeTab === tabs.SINGOLA && (
+          <RicercaSingola
+            key={`singola-${tabKey}`}
+            onAccessoScheda={handleAccessoScheda}
+            onDownloadScheda={handleDownloadScheda}
+          />
+        )}
+        {activeTab === tabs.MULTIPLA && (
+          <RicercaMultipla
+            key={`multipla-${tabKey}`}
+            onDownloadSchede={(trovati) => {
+              const records = trovati.map((t) => ({ ...t, competenzaDigitale: 'TBD' }));
+              generaSchedeMultiple(
+                records,
+                schedaCittadinoFields,
+                schedaCittadinoTitle,
+                '/assets/img/logo-scritta-blu-x2.png',
+                `schede_cittadini_${trovati.length}.pdf`
+              );
+            }}
+            onDownloadElencoScarti={(nonTrovati) => {
+              const csv = 'Cittadini non trovati:\n' + nonTrovati.join('\n');
+              const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = `elenco_scarti_${nonTrovati.length}.csv`;
+              a.click();
+              URL.revokeObjectURL(url);
+            }}
+          />
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default RicercaCittadini;

@@ -48,6 +48,12 @@ const ServicesDetails = lazy(
 const SurveyDetailsEdit = lazy(
   () => import('./Entities/Surveys/surveyDetailsEdit/surveyDetailsEdit')
 );
+const RicercaCittadini = lazy(
+  () => import('./Entities/Citizens/ricercaCittadini')
+);
+const SchedaCittadino = lazy(
+  () => import('./Entities/Citizens/schedaCittadino')
+);
 import ProtectedComponent from '../../../hoc/AuthGuard/ProtectedComponent/ProtectedComponent';
 import { defaultRedirectUrl } from '../../../routes';
 import ViewSurvey from './Entities/Surveys/viewSurvey/viewSurvey';
@@ -90,6 +96,9 @@ export const PageTitleMock: PageTitleMockI = {
     title: 'Elenco servizi',
     textCta: 'Crea servizio',
     iconCta: 'it-plus',
+  },
+  '/area-amministrativa/cittadini': {
+    title: 'Ricerca cittadini',
   },
 };
 
@@ -550,6 +559,24 @@ const AreaAmministrativaRoutes = [
         <ServicesDetails />
       </ProtectedComponent>
     }
+  />,
+  <Route
+    key='area-amministrativa-cittadini'
+    element={
+      <ProtectedComponent visibleTo={['tab.am']}>
+        <RicercaCittadini />
+      </ProtectedComponent>
+    }
+    path='cittadini'
+  />,
+  <Route
+    key='area-amministrativa-cittadini-dettaglio'
+    element={
+      <ProtectedComponent visibleTo={['tab.am']}>
+        <SchedaCittadino />
+      </ProtectedComponent>
+    }
+    path='cittadini/:idCittadino'
   />,
   <Route
     key='default-redirect-url'
