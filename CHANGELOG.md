@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.512](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.511...1.0.0-test.512) (2026-03-27)
+
+
+### Bug Fixes
+
+* **test:** typo 20260327 ([fe34dbc](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fe34dbc723491e55a7704725786e74e5b8cc5417))
+
 ## [1.0.0-test.511](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.510...1.0.0-test.511) (2026-03-26)
 
 
