@@ -1,5 +1,17 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.513](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.512...1.0.0-test.513) (2026-03-27)
+
+
+### Features
+
+* **U538:** nuova ricerca cittadini 20260327 ([bf42ebc](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/bf42ebc6063ab3d6ce0063c745fb0f4df25121bf))
+
+
+### Bug Fixes
+
+* **U538:** ricerca multipla solo per id alfanumerici 20260327 ([d40d193](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d40d19322cb244c9af531d4c1f19b1c0f04fea75))
+
 ## [1.0.0-test.512](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.511...1.0.0-test.512) (2026-03-27)
 
 
