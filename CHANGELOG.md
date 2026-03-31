@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.58.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.57.2...1.58.0) (2026-03-31)
+
+
+### Features
+
+* **U536:** nuova gestione recupero area cittadini 20260311 ([fbed5f1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/fbed5f1e80f1df599337ed44b11e3a6e6b71bfd0))
+* **test:** aggiornamento data limite Marzo 20260330 ([ac03203](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ac03203ec4bca59ef41b9b304be523d61825a81c))
+
 ## [1.57.2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.57.1...1.57.2) (2026-03-03)
 
 
