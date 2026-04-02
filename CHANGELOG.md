@@ -1,5 +1,17 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.514](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.513...1.0.0-test.514) (2026-04-02)
+
+
+### Features
+
+* **test:** aggiornamento data limite Marzo 20260330 ([8735cdb](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8735cdb856d515e4a92078c86b31ddb3ca6c5a9a))
+
+
+### Bug Fixes
+
+* **test:** recupero lista cittadini fac 20260402 ([cb0a430](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/cb0a430d75b2e1ba5e81ab01748de7b4be8c1dfc))
+
 ## [1.0.0-test.513](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.512...1.0.0-test.513) (2026-03-27)
 
 
