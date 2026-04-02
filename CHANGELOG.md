@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.58.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.58.0...1.58.1) (2026-04-02)
+
+
+### Bug Fixes
+
+* **test:** recupero lista cittadini fac 20260402 ([0acbef8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0acbef81011fd857c7805492fcf0adc173ee2f53))
+
 ## [1.58.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.57.2...1.58.0) (2026-03-31)
 
 
