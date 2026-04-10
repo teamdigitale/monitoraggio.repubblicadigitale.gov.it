@@ -13,6 +13,9 @@ const AES256 = require('aes-everywhere');
 const encryptValue = (value: string): string =>
   AES256.encrypt(value.toUpperCase(), process?.env?.AES256_KEY);
 
+const encryptRaw = (value: string): string =>
+  AES256.encrypt(value, process?.env?.AES256_KEY);
+
 export const RicercaSingolaCittadino =
   (criterioRicerca: string) => async (dispatch: Dispatch) => {
     try {
@@ -25,13 +28,10 @@ export const RicercaSingolaCittadino =
       };
       const endpoint = `${process?.env?.QUESTIONARIO_CITTADINO}cittadino/ricerca`;
       const res = await API.post(endpoint, body);
-      if (res?.data) {
-        dispatch(setRicercaSingolaResult(res.data));
-      } else {
-        dispatch(setRicercaSingolaResult(null));
-      }
+      const data = res?.data;
+      dispatch(setRicercaSingolaResult(Array.isArray(data) ? data : data ? [data] : []));
     } catch (error) {
-      dispatch(setRicercaSingolaResult(null));
+      dispatch(setRicercaSingolaResult([]));
       console.log('RicercaSingolaCittadino error', error);
     } finally {
       dispatch(hideLoader());
@@ -46,7 +46,7 @@ export const RicercaMultiplaCittadini =
       const body = {
         codiceRuoloUtenteLoggato,
         cfUtenteLoggato,
-        criterioRicercaMultipla: criteriRicerca.map(encryptValue),
+        criterioRicercaMultipla: criteriRicerca.map(encryptRaw),
       };
       const endpoint = `${process?.env?.QUESTIONARIO_CITTADINO}cittadino/ricerca-multipla`;
       const res = await API.post(endpoint, body);

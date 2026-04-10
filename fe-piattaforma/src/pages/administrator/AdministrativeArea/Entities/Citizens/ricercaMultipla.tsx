@@ -7,7 +7,7 @@ import {
   selectRicercaMultipla,
   resetRicercaMultipla,
 } from '../../../../../redux/features/ricercaCittadini/ricercaCittadiniSlice';
-import type { PrimoServizioCittadinoI } from '../../../../../redux/features/ricercaCittadini/ricercaCittadiniSlice';
+import type { PrimoServizioCittadinoI, ScartoRicercaI } from '../../../../../redux/features/ricercaCittadini/ricercaCittadiniSlice';
 import { RicercaMultiplaCittadini } from '../../../../../redux/features/ricercaCittadini/ricercaCittadiniThunk';
 
 const MAX_RIGHE = 100;
@@ -15,7 +15,7 @@ const MAX_RIGHE = 100;
 interface RicercaMultiplaProps {
   onDownloadSchede?: (trovati: PrimoServizioCittadinoI[]) => void;
   onDownloadElencoScarti?: (
-    nonTrovati: string[]
+    nonTrovati: (ScartoRicercaI | string)[]
   ) => void;
 }
 

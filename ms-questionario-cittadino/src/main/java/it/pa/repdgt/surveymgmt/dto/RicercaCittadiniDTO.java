@@ -16,6 +16,6 @@ public class RicercaCittadiniDTO {
 
     private List<VPrimoServizioCittadinoEntity> trovati;
 
-    private List<String> nonTrovati;
+    private List<ScartoRicercaDTO> nonTrovati;
 
 }

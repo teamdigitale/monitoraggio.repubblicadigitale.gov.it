@@ -1,12 +1,12 @@
-import React, { useState, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useCallback, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Nav } from 'design-react-kit';
 import { NavLink } from '../../../../../components';
 import RicercaSingola from './ricercaSingola';
 import RicercaMultipla from './ricercaMultipla';
 import { resetRicercaCittadiniState } from '../../../../../redux/features/ricercaCittadini/ricercaCittadiniSlice';
-import type { PrimoServizioCittadinoI } from '../../../../../redux/features/ricercaCittadini/ricercaCittadiniSlice';
+import type { PrimoServizioCittadinoI, ScartoRicercaI } from '../../../../../redux/features/ricercaCittadini/ricercaCittadiniSlice';
 import { generaSchedaSingola, generaSchedeMultiple } from '../../../../../pdf/generate';
 import { schedaCittadinoFields, schedaCittadinoTitle } from '../../../../../pdf/fieldsConfig';
 
@@ -19,7 +19,15 @@ const RicercaCittadini: React.FC = () => {
   const [activeTab, setActiveTab] = useState(tabs.SINGOLA);
   const [tabKey, setTabKey] = useState(0);
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fromScheda = (location.state as { fromScheda?: boolean })?.fromScheda;
+    if (!fromScheda) {
+      dispatch(resetRicercaCittadiniState());
+    }
+  }, [dispatch, location.state]);
 
   const handleTabChange = useCallback((tabId: string) => {
     setActiveTab(tabId);
@@ -34,20 +42,6 @@ const RicercaCittadini: React.FC = () => {
     [navigate]
   );
 
-  const handleDownloadScheda = useCallback(
-    (cittadino: PrimoServizioCittadinoI) => {
-      const record = { ...cittadino, competenzaDigitale: 'TBD' };
-      generaSchedaSingola(
-        record,
-        schedaCittadinoFields,
-        schedaCittadinoTitle,
-        '/assets/img/logo-scritta-blu-x2.png',
-        `scheda_cittadino_${cittadino.idCittadino}.pdf`
-      );
-    },
-    []
-  );
-
   return (
     <div>
       <p className='mt-3 mb-5'>
@@ -60,7 +54,7 @@ const RicercaCittadini: React.FC = () => {
         <li role='none' style={{ marginTop: '1px' }}>
           <NavLink
             onClick={() => handleTabChange(tabs.SINGOLA)}
-            active={activeTab === tabs.SINGOLA}
+            active={activeTab !== tabs.SINGOLA}
             role='menuitem'
           >
             Ricerca Singola
@@ -69,7 +63,7 @@ const RicercaCittadini: React.FC = () => {
         <li role='none' style={{ marginTop: '1px' }}>
           <NavLink
             onClick={() => handleTabChange(tabs.MULTIPLA)}
-            active={activeTab === tabs.MULTIPLA}
+            active={activeTab !== tabs.MULTIPLA}
             role='menuitem'
           >
             Ricerca Multipla
@@ -82,7 +76,16 @@ const RicercaCittadini: React.FC = () => {
           <RicercaSingola
             key={`singola-${tabKey}`}
             onAccessoScheda={handleAccessoScheda}
-            onDownloadScheda={handleDownloadScheda}
+            onDownloadScheda={(cittadino: PrimoServizioCittadinoI) => {
+              const record = { ...cittadino, competenzaDigitale: 'TBD' };
+              generaSchedaSingola(
+                record,
+                schedaCittadinoFields,
+                schedaCittadinoTitle,
+                '/assets/img/logo-scritta-blu-x2.png',
+                `scheda_cittadino_${cittadino.idCittadino}.pdf`
+              );
+            }}
           />
         )}
         {activeTab === tabs.MULTIPLA && (
@@ -98,8 +101,12 @@ const RicercaCittadini: React.FC = () => {
                 `schede_cittadini_${trovati.length}.pdf`
               );
             }}
-            onDownloadElencoScarti={(nonTrovati) => {
-              const csv = 'Cittadini non trovati:\n' + nonTrovati.join('\n');
+            onDownloadElencoScarti={(nonTrovati: ScartoRicercaI[]) => {
+              const righe = nonTrovati.map((s) =>
+                typeof s === 'string' ? s : `${s.riga};${s.codice}`
+              );
+              const header = typeof nonTrovati[0] === 'string' ? '' : 'Numero riga;ID alfanumerico\n';
+              const csv = header + righe.join('\n');
               const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
               const url = URL.createObjectURL(blob);
               const a = document.createElement('a');

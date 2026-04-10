@@ -142,12 +142,10 @@ public class CittadinoRestApi {
 	 */
 	@PostMapping(path = "/ricerca")
 	@ResponseStatus(value = HttpStatus.OK)
-	public ResponseEntity<VPrimoServizioCittadinoEntity> ricercaSingola(
+	public List<VPrimoServizioCittadinoEntity> ricercaSingola(
 			@RequestBody @Valid final RicercaCittadinoRequest request) {
 		return this.vPrimoServizioCittadinoService
-				.ricercaSingola(request.getCriterioRicerca())
-				.map(ResponseEntity::ok)
-				.orElse(ResponseEntity.noContent().build());
+				.ricercaSingola(request.getCriterioRicerca());
 	}
 
 	/***

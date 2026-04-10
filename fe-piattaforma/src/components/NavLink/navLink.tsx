@@ -48,7 +48,7 @@ const NavLink: React.FC<NavLinkI> = ({
       role='button'
       onKeyDown={onClick}
       onClick={onClick}
-      className={clsx('nav-link-custom', 'nav-link', active && 'active')}
+      className={clsx('nav-link-custom', 'nav-link', !active && 'active')}
     >
       {children}
     </div>

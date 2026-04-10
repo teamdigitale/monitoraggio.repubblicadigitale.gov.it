@@ -21,14 +21,19 @@ export interface PrimoServizioCittadinoI {
   tipologiaServizio: string;
 }
 
+export interface ScartoRicercaI {
+  riga: number;
+  codice: string;
+}
+
 export interface RicercaMultiplaResultI {
   trovati: PrimoServizioCittadinoI[];
-  nonTrovati: string[];
+  nonTrovati: (ScartoRicercaI | string)[];
 }
 
 interface RicercaCittadiniStateI {
   ricercaSingola: {
-    result: PrimoServizioCittadinoI | null;
+    result: PrimoServizioCittadinoI[];
     hasSearched: boolean;
     errorMessage: string;
   };
@@ -41,7 +46,7 @@ interface RicercaCittadiniStateI {
 
 const initialState: RicercaCittadiniStateI = {
   ricercaSingola: {
-    result: null,
+    result: [],
     hasSearched: false,
     errorMessage: '',
   },
@@ -59,11 +64,11 @@ export const ricercaCittadiniSlice = createSlice({
     resetRicercaCittadiniState: () => initialState,
     setRicercaSingolaResult: (
       state,
-      action: PayloadAction<PrimoServizioCittadinoI | null>
+      action: PayloadAction<PrimoServizioCittadinoI[]>
     ) => {
       state.ricercaSingola.result = action.payload;
       state.ricercaSingola.hasSearched = true;
-      state.ricercaSingola.errorMessage = action.payload
+      state.ricercaSingola.errorMessage = action.payload.length > 0
         ? ''
         : 'Cittadino non trovato';
     },

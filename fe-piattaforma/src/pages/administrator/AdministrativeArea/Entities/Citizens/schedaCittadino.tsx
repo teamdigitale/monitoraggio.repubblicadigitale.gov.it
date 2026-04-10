@@ -42,7 +42,7 @@ const SchedaCittadino: React.FC = () => {
         <Button
           className='px-0 mb-4'
           color='link'
-          onClick={() => navigate('/area-amministrativa/cittadini')}
+          onClick={() => navigate('/area-amministrativa/cittadini', { state: { fromScheda: true } })}
         >
           <Icon icon='it-chevron-left' size='sm' className='mr-1' aria-hidden />
           Ricerca cittadini
@@ -60,7 +60,7 @@ const SchedaCittadino: React.FC = () => {
       <Button
         className='px-0 mb-4'
         color='link'
-        onClick={() => navigate('/area-amministrativa/cittadini')}
+        onClick={() => navigate('/area-amministrativa/cittadini', { state: { fromScheda: true } })}
       >
         <Icon icon='it-chevron-left' size='sm' className='mr-1' aria-hidden />
         Ricerca cittadini
@@ -71,19 +71,10 @@ const SchedaCittadino: React.FC = () => {
       </h5>
 
       <div className='row mb-2'>
-        <div className='col-12 col-lg-6 mb-2'>
+        <div className='col-12 mb-2'>
           <Input
             label='Codice identificativo unico'
             value={scheda.codiceFiscale}
-            col='col-12'
-            disabled
-            className='font-size-codice-id'
-          />
-        </div>
-        <div className='col-12 col-lg-6 mb-2'>
-          <Input
-            label='Genere'
-            value={scheda.genere}
             col='col-12'
             disabled
           />
@@ -93,12 +84,23 @@ const SchedaCittadino: React.FC = () => {
       <div className='row mb-2'>
         <div className='col-12 col-lg-6 mb-2'>
           <Input
+            label='Genere'
+            value={scheda.genere}
+            col='col-12'
+            disabled
+          />
+        </div>
+        <div className='col-12 col-lg-6 mb-2'>
+          <Input
             label='Fascia di età'
             value={scheda.fascia}
             col='col-12'
             disabled
           />
         </div>
+      </div>
+
+      <div className='row mb-2'>
         <div className='col-12 col-lg-6 mb-2'>
           <Input
             label='Titolo di studio'
@@ -107,9 +109,6 @@ const SchedaCittadino: React.FC = () => {
             disabled
           />
         </div>
-      </div>
-
-      <div className='row mb-4'>
         <div className='col-12 col-lg-6 mb-2'>
           <Input
             label='Stato occupazionale'
@@ -118,6 +117,9 @@ const SchedaCittadino: React.FC = () => {
             disabled
           />
         </div>
+      </div>
+
+      <div className='row mb-4'>
         <div className='col-12 col-lg-6 mb-2'>
           <Input
             label='Cittadinanza'
