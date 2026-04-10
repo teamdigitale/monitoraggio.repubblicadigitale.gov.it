@@ -5,7 +5,7 @@ export type FieldEntry =
 export const schedaCittadinoTitle = 'Dati Cittadino';
 
 export const schedaCittadinoFields: FieldEntry[] = [
-  { type: 'field', key: 'codiceFiscale', label: 'Codice identificativo unico', half: false, small: true },
+  { type: 'field', key: 'codiceFiscale', label: 'Codice identificativo unico', half: false },
   { type: 'field', key: 'genere', label: 'Genere', half: true },
   { type: 'field', key: 'fascia', label: 'Fascia di età', half: true },
   { type: 'field', key: 'titoloDiStudio', label: 'Titolo di studio', half: true },

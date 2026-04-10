@@ -14,12 +14,12 @@ import it.pa.repdgt.shared.entity.VPrimoServizioCittadinoEntity;
 public interface VPrimoServizioCittadinoRepository extends JpaRepository<VPrimoServizioCittadinoEntity, Long> {
 
     @Query(value = "SELECT * FROM vw_primo_servizio_cittadino WHERE codice_fiscale = :codiceFiscale", nativeQuery = true)
-    Optional<VPrimoServizioCittadinoEntity> findByCodiceFiscale(@Param("codiceFiscale") String codiceFiscale);
+    List<VPrimoServizioCittadinoEntity> findByCodiceFiscale(@Param("codiceFiscale") String codiceFiscale);
 
     @Query(value = "SELECT * FROM vw_primo_servizio_cittadino WHERE codice_fiscale IN (:codiciFiscali)", nativeQuery = true)
     List<VPrimoServizioCittadinoEntity> findByCodiceFiscaleIn(@Param("codiciFiscali") List<String> codiciFiscali);
 
     @Query(value = "SELECT * FROM vw_primo_servizio_cittadino WHERE id_cittadino = :idCittadino", nativeQuery = true)
-    Optional<VPrimoServizioCittadinoEntity> findByIdCittadino(@Param("idCittadino") Long idCittadino);
+    List<VPrimoServizioCittadinoEntity> findByIdCittadino(@Param("idCittadino") Long idCittadino);
 
 }

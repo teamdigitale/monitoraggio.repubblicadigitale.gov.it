@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Button } from 'design-react-kit';
 import { Input } from '../../../../../components';
+import Table, { newTable, TableHeadingI } from '../../../../../components/Table/table';
 import clsx from 'clsx';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../../../../redux/hooks';
@@ -11,6 +12,13 @@ import {
 } from '../../../../../redux/features/ricercaCittadini/ricercaCittadiniSlice';
 import type { PrimoServizioCittadinoI } from '../../../../../redux/features/ricercaCittadini/ricercaCittadiniSlice';
 import { RicercaSingolaCittadino } from '../../../../../redux/features/ricercaCittadini/ricercaCittadiniThunk';
+
+const TableHeading: TableHeadingI[] = [
+  { label: 'Intervento', field: 'intervento', size: 'medium' },
+  { label: 'ID cittadino', field: 'idCittadino', size: 'medium' },
+  { label: 'Programma', field: 'programma', size: 'medium' },
+  { label: 'Data primo servizio', field: 'dataPrimoServizio', size: 'medium' },
+];
 
 interface RicercaSingolaProps {
   onAccessoScheda?: (idCittadino: number) => void;
@@ -36,16 +44,30 @@ const RicercaSingola: React.FC<RicercaSingolaProps> = ({
     dispatch(resetRicercaSingola());
   };
 
+  const tableValues = useMemo(() => {
+    if (result.length === 0) return newTable(TableHeading, []);
+    return newTable(
+      TableHeading,
+      result.map((r) => ({
+        id: r.idCittadino,
+        intervento: r.tipologiaServizio || '-',
+        idCittadino: r.idCittadino,
+        programma: r.nomeServizio || '-',
+        dataPrimoServizio: r.dataServizio || '-',
+      }))
+    );
+  }, [result]);
+
   const handleAccessoScheda = () => {
-    if (result) {
-      dispatch(setSchedaCittadino(result));
-      onAccessoScheda?.(result.idCittadino);
+    if (result.length > 0) {
+      dispatch(setSchedaCittadino(result[0]));
+      onAccessoScheda?.(result[0].idCittadino);
     }
   };
 
   const handleDownloadScheda = () => {
-    if (result) {
-      onDownloadScheda?.(result);
+    if (result.length > 0) {
+      onDownloadScheda?.(result[0]);
     }
   };
 
@@ -60,7 +82,7 @@ const RicercaSingola: React.FC<RicercaSingolaProps> = ({
             placeholder='Inserisci codice fiscale, ID numerico o ID alfanumerico'
             value={searchValue}
             onInputChange={(value) => setSearchValue(String(value ?? ''))}
-            col='col-12'
+            col='col-12 mb-0'
           />
         </div>
         <div
@@ -71,7 +93,6 @@ const RicercaSingola: React.FC<RicercaSingolaProps> = ({
             'justify-content-start',
             'justify-content-lg-end'
           )}
-          style={{ paddingBottom: '16px' }}
         >
           <Button
             color='primary'
@@ -100,34 +121,13 @@ const RicercaSingola: React.FC<RicercaSingolaProps> = ({
         </div>
       )}
 
-      {hasSearched && result && (
-        <div className='mb-5'>
-          <div
-            className={clsx(
-              'p-4',
-              'rounded',
-              'border',
-              'border-primary',
-              'bg-white'
-            )}
-          >
-            <div className='row mb-2'>
-              <div className='col-6'>
-                <strong>Tipologia servizio:</strong> {result.tipologiaServizio}
-              </div>
-              <div className='col-6'>
-                <strong>Nome servizio:</strong> {result.nomeServizio}
-              </div>
-            </div>
-            <div className='row mb-2'>
-              <div className='col-6'>
-                <strong>Data primo servizio:</strong> {result.dataServizio}
-              </div>
-              <div className='col-6'>
-                <strong>Gestore:</strong> {result.nomeGestore}
-              </div>
-            </div>
-          </div>
+      {hasSearched && result.length > 0 && (
+        <div className='mb-5' style={{ paddingLeft: '2px' }}>
+          <Table
+            {...tableValues}
+            id='table-ricerca-singola'
+            className='table-compact'
+          />
           <div
             className={clsx(
               'd-flex',
@@ -142,10 +142,10 @@ const RicercaSingola: React.FC<RicercaSingolaProps> = ({
               className='mr-3'
               onClick={handleAccessoScheda}
             >
-              Accesso scheda
+              Visualizza scheda
             </Button>
             <Button color='primary' onClick={handleDownloadScheda}>
-              Download scheda
+              Download PDF
             </Button>
           </div>
         </div>

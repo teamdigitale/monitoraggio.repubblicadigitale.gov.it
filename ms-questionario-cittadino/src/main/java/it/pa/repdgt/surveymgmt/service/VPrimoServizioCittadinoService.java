@@ -1,17 +1,18 @@
 package it.pa.repdgt.surveymgmt.service;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.pa.repdgt.shared.entity.VPrimoServizioCittadinoEntity;
 import it.pa.repdgt.surveymgmt.dto.RicercaCittadiniDTO;
+import it.pa.repdgt.surveymgmt.dto.ScartoRicercaDTO;
 import it.pa.repdgt.surveymgmt.repository.VPrimoServizioCittadinoRepository;
 import it.pa.repdgt.surveymgmt.util.EncodeUtils;
 
@@ -21,7 +22,7 @@ public class VPrimoServizioCittadinoService {
     @Autowired
     private VPrimoServizioCittadinoRepository vPrimoServizioCittadinoRepository;
 
-    public Optional<VPrimoServizioCittadinoEntity> ricercaSingola(String criterioRicercaCifrato) {
+    public List<VPrimoServizioCittadinoEntity> ricercaSingola(String criterioRicercaCifrato) {
         String valoreChiaro = EncodeUtils.decrypt(criterioRicercaCifrato).trim().toUpperCase();
 
         // ID numerico → cerca per id_cittadino
@@ -40,29 +41,42 @@ public class VPrimoServizioCittadinoService {
     }
 
     public RicercaCittadiniDTO ricercaMultipla(List<String> criteriRicercaCifrati) {
-        List<String> valoriChiari = criteriRicercaCifrati.stream()
-                .map(cifrato -> EncodeUtils.decrypt(cifrato).trim().toUpperCase())
-                .collect(Collectors.toList());
+        // Decritta senza forzare uppercase (i codici hex sono case sensitive per lo scarti)
+        List<String> valoriChiari = new ArrayList<>();
+        for (String cifrato : criteriRicercaCifrati) {
+            valoriChiari.add(EncodeUtils.decrypt(cifrato).trim());
+        }
 
-        // Deduplica preservando l'ordine
-        Set<String> valoriUnici = new LinkedHashSet<>(valoriChiari);
-
+        // Cache risultati per evitare query duplicate sullo stesso codice
+        Map<String, List<VPrimoServizioCittadinoEntity>> cache = new HashMap<>();
+        Set<Long> idGiaInseriti = new HashSet<>();
         List<VPrimoServizioCittadinoEntity> tuttiTrovati = new ArrayList<>();
-        List<String> nonTrovati = new ArrayList<>();
+        List<ScartoRicercaDTO> nonTrovati = new ArrayList<>();
 
-        for (String valore : valoriUnici) {
+        for (int i = 0; i < valoriChiari.size(); i++) {
+            String valore = valoriChiari.get(i);
+            int riga = i + 1;
+
             // La ricerca multipla accetta solo hash esadecimali a 64 caratteri
-            if (!valore.matches("^[A-Fa-f0-9]{64}$")) {
-                nonTrovati.add(valore);
+            if (!valore.matches("(?i)^[a-f0-9]{64}$")) {
+                nonTrovati.add(new ScartoRicercaDTO(riga, valore));
                 continue;
             }
-            Optional<VPrimoServizioCittadinoEntity> risultato =
-                    this.vPrimoServizioCittadinoRepository.findByCodiceFiscale(valore.toLowerCase());
 
-            if (risultato.isPresent()) {
-                tuttiTrovati.add(risultato.get());
+            String chiaveLookup = valore.toLowerCase();
+            List<VPrimoServizioCittadinoEntity> risultati = cache.computeIfAbsent(
+                    chiaveLookup,
+                    k -> this.vPrimoServizioCittadinoRepository.findByCodiceFiscale(k)
+            );
+
+            if (!risultati.isEmpty()) {
+                for (VPrimoServizioCittadinoEntity r : risultati) {
+                    if (idGiaInseriti.add(r.getIdCittadino())) {
+                        tuttiTrovati.add(r);
+                    }
+                }
             } else {
-                nonTrovati.add(valore);
+                nonTrovati.add(new ScartoRicercaDTO(riga, valore));
             }
         }
 
