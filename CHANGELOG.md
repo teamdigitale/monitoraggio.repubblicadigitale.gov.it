@@ -1,5 +1,14 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.515](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.514...1.0.0-test.515) (2026-04-10)
+
+
+### Bug Fixes
+
+* **U538:** fix padding button ([8b2ae0b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8b2ae0bc049027d2d144d622318d464ebee8afdb))
+* **U538:** fix button e searchbar layout dopo update dependencies ([0e6a051](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0e6a0518b2bcf2e184fe9c4d8236d73c0a9bf2ea))
+* **U538:** fix vari ricerca/ricerca-multipla cittadini ([d49f4b3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d49f4b399d35c04222650d2039bf2e14b0965616))
+
 ## [1.0.0-test.514](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.513...1.0.0-test.514) (2026-04-02)
 
 
