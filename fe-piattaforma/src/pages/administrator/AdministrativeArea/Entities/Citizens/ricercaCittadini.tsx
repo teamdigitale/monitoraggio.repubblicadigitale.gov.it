@@ -45,9 +45,11 @@ const RicercaCittadini: React.FC = () => {
   return (
     <div>
       <p className='mt-3 mb-5'>
-        Cerca i cittadini nel database tramite codice fiscale, codice
-        identificativo o ID numerico. Puoi effettuare una ricerca singola o
-        caricare un elenco per la ricerca multipla.
+        Effettua una ricerca tra i cittadini registrati su Facilita per aver
+        partecipato ad attivit&agrave; di facilitazione o formazione. Puoi
+        cercare le loro schede singolarmente oppure per liste tramite codice
+        fiscale, codice identificativo alfanumerico o ID cittadino, e scaricarle
+        in PDF.
       </p>
 
       <Nav tabs className='mb-5 justify-content-center' style={{ overflow: 'visible', padding: '2px 2px 0 2px' }} role='menu'>
@@ -77,9 +79,8 @@ const RicercaCittadini: React.FC = () => {
             key={`singola-${tabKey}`}
             onAccessoScheda={handleAccessoScheda}
             onDownloadScheda={(cittadino: PrimoServizioCittadinoI) => {
-              const record = { ...cittadino, competenzaDigitale: 'TBD' };
               generaSchedaSingola(
-                record,
+                cittadino,
                 schedaCittadinoFields,
                 schedaCittadinoTitle,
                 '/assets/img/logo-scritta-blu-x2.png',
@@ -92,9 +93,8 @@ const RicercaCittadini: React.FC = () => {
           <RicercaMultipla
             key={`multipla-${tabKey}`}
             onDownloadSchede={(trovati) => {
-              const records = trovati.map((t) => ({ ...t, competenzaDigitale: 'TBD' }));
               generaSchedeMultiple(
-                records,
+                trovati,
                 schedaCittadinoFields,
                 schedaCittadinoTitle,
                 '/assets/img/logo-scritta-blu-x2.png',

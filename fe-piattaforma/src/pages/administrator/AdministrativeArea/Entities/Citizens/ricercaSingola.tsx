@@ -78,8 +78,8 @@ const RicercaSingola: React.FC<RicercaSingolaProps> = ({
           <Input
             id='ricerca-cittadino-input'
             field='ricerca-cittadino'
-            label='Codice fiscale / ID numerico e ID alfanumerico'
-            placeholder='Inserisci codice fiscale, ID numerico o ID alfanumerico'
+            label='Codice fiscale, codice identificativo alfanumerico o ID cittadino'
+            placeholder="Inserisci il codice fiscale o il codice identificativo alfanumerico o l'ID del cittadino"
             value={searchValue}
             onInputChange={(value) => setSearchValue(String(value ?? ''))}
             col='col-12 mb-0'
@@ -145,7 +145,7 @@ const RicercaSingola: React.FC<RicercaSingolaProps> = ({
               Visualizza scheda
             </Button>
             <Button color='primary' onClick={handleDownloadScheda}>
-              Download PDF
+              Scarica PDF
             </Button>
           </div>
         </div>

@@ -71,7 +71,7 @@ export const ricercaCittadiniSlice = createSlice({
       state.ricercaSingola.hasSearched = true;
       state.ricercaSingola.errorMessage = action.payload.length > 0
         ? ''
-        : 'Cittadino non trovato';
+        : 'Il cittadino non \u00e8 presente su Facilita. Verifica l\u2019esattezza dei dati inseriti ed effettua una nuova ricerca.';
     },
     resetRicercaSingola: (state) => {
       state.ricercaSingola = initialState.ricercaSingola;

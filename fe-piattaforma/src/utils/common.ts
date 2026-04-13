@@ -222,7 +222,7 @@ export const MenuRoutes = [
       newMenuItem({
         label: 'Cittadini',
         path: '/area-amministrativa/cittadini',
-        visible: ['tab.am'],
+        visible: ['tab.am', 'ric.citt'],
       }),
       newMenuItem({
         label: 'Questionari',
