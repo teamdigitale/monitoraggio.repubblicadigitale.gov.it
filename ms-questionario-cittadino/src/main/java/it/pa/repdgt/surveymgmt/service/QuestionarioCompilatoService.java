@@ -7,12 +7,15 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.springframework.transaction.annotation.Transactional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import it.pa.repdgt.shared.repository.tipologica.FasciaDiEtaRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.json.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,9 +43,16 @@ import it.pa.repdgt.surveymgmt.repository.QuestionarioInviatoOnlineRepository;
 import it.pa.repdgt.surveymgmt.request.QuestionarioCompilatoAnonimoRequest;
 import it.pa.repdgt.surveymgmt.request.QuestionarioCompilatoRequest;
 
+@Slf4j
 @Service
 @Validated
 public class QuestionarioCompilatoService {
+
+	private static final int SECTION_INDEX_SERVIZIO = 2;
+	private static final String PROPERTY_KEY_COMPETENZA = "25";
+	private static final Pattern PROPERTY_PATTERN_COMPETENZA = Pattern.compile(
+			"\\{'" + PROPERTY_KEY_COMPETENZA + "':\\s*\\['([^']*)'\\]\\}");
+
 	@Autowired
 	private CittadinoService cittadinoService;
 	@Autowired
@@ -387,5 +397,38 @@ public class QuestionarioCompilatoService {
 		}
 
 		return true;
+	}
+
+	public String getCompetenzaDigitale(String idQuestionario) {
+		if (idQuestionario == null) {
+			return null;
+		}
+
+		Optional<QuestionarioCompilatoCollection> mongoDoc = questionarioCompilatoMongoRepository
+				.findQuestionarioCompilatoById(idQuestionario);
+
+		if (!mongoDoc.isPresent()) {
+			log.debug("Documento MongoDB non trovato per questionario={}", idQuestionario);
+			return null;
+		}
+
+		List<DatiIstanza> sezioni = mongoDoc.get().getSezioniQuestionarioTemplateIstanze();
+		if (sezioni == null || SECTION_INDEX_SERVIZIO >= sezioni.size()) {
+			log.debug("Sezione {} non presente nel documento {}", SECTION_INDEX_SERVIZIO, idQuestionario);
+			return null;
+		}
+
+		Object questionAnswer = sezioni.get(SECTION_INDEX_SERVIZIO).getDomandaRisposta();
+		if (questionAnswer == null) {
+			return null;
+		}
+
+		Matcher matcher = PROPERTY_PATTERN_COMPETENZA.matcher(questionAnswer.toString());
+		if (matcher.find()) {
+			return matcher.group(1);
+		}
+
+		log.debug("Competenza digitale non trovata nel documento {}", idQuestionario);
+		return null;
 	}
 }

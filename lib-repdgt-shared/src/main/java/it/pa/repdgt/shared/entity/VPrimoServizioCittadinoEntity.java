@@ -75,4 +75,7 @@ public class VPrimoServizioCittadinoEntity implements Serializable {
     @Column(name = "tipologia_servizio")
     private String tipologiaServizio;
 
+    @Column(name = "id_questionario")
+    private String idQuestionario;
+
 }

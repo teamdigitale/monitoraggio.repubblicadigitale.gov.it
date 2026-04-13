@@ -19,6 +19,7 @@ export interface PrimoServizioCittadinoI {
   nomeFacilitatore: string;
   dataServizio: string;
   tipologiaServizio: string;
+  competenzaDigitale: string | null;
 }
 
 export interface ScartoRicercaI {
