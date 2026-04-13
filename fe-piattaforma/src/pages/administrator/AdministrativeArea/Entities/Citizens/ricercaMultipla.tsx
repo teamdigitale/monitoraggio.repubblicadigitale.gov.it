@@ -52,7 +52,7 @@ const RicercaMultipla: React.FC<RicercaMultiplaProps> = ({
     <div>
       <p className='mb-4'>
         Inserisci l&apos;elenco dei codici identificativi alfanumerici dei
-        cittadini da cercare, uno per riga, separati da punto e virgola. Puoi
+        cittadini da cercare, uno per riga, senza segni di punteggiatura. Puoi
         copiare e incollare direttamente un elenco.
       </p>
 
@@ -72,7 +72,7 @@ const RicercaMultipla: React.FC<RicercaMultiplaProps> = ({
               }
             }}
             placeholder={
-              'ID alfanumerico 1;\nID alfanumerico 2;\nID alfanumerico 3;\nID alfanumerico N;'
+              'ID alfanumerico 1\nID alfanumerico 2\nID alfanumerico 3\nID alfanumerico n'
             }
           />
           <div
@@ -98,7 +98,7 @@ const RicercaMultipla: React.FC<RicercaMultiplaProps> = ({
             onClick={handleCaricaElenco}
             disabled={contatoreRighe === 0 || isOverLimit}
           >
-            Carica elenco
+            Cerca elenco
           </Button>
           <Button
             outline
@@ -107,7 +107,7 @@ const RicercaMultipla: React.FC<RicercaMultiplaProps> = ({
             onClick={handleAnnulla}
             disabled={!inputValue && !hasSearched}
           >
-            Annulla
+            Annulla ricerca
           </Button>
         </div>
       </div>

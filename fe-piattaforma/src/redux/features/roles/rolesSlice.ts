@@ -134,7 +134,11 @@ export type RolePermissionI =
   | 'btn.chat'
   //minorenni
   | 'view.conf.min'
-  | 'gest.conf.min';
+  | 'gest.conf.min'
+  //richiesta assistenza
+  | 'ric.ass'
+  //ricerca cittadini per DTD e UDM
+  | 'ric.citt';
 
 interface RoleI {
   codiceRuolo: string;
