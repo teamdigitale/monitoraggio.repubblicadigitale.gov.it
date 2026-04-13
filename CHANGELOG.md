@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.516](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.515...1.0.0-test.516) (2026-04-13)
+
+
+### Features
+
+* **U538:** gestione recupero campo mongo 20260413 ([e2d9b6a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e2d9b6a15496efe9dee808ddefd9209dda439d0f))
+
 ## [1.0.0-test.515](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.514...1.0.0-test.515) (2026-04-10)
 
 
