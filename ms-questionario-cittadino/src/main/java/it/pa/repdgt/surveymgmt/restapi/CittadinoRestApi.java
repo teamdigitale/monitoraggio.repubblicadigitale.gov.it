@@ -24,9 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
-import it.pa.repdgt.shared.entity.VPrimoServizioCittadinoEntity;
 import it.pa.repdgt.surveymgmt.bean.SchedaCittadinoBean;
 import it.pa.repdgt.surveymgmt.dto.CittadinoDto;
+import it.pa.repdgt.surveymgmt.dto.PrimoServizioCittadinoDTO;
 import it.pa.repdgt.surveymgmt.dto.RicercaCittadiniDTO;
 import it.pa.repdgt.surveymgmt.dto.SedeDto;
 import it.pa.repdgt.surveymgmt.exception.CittadinoException;
@@ -142,7 +142,7 @@ public class CittadinoRestApi {
 	 */
 	@PostMapping(path = "/ricerca")
 	@ResponseStatus(value = HttpStatus.OK)
-	public List<VPrimoServizioCittadinoEntity> ricercaSingola(
+	public List<PrimoServizioCittadinoDTO> ricercaSingola(
 			@RequestBody @Valid final RicercaCittadinoRequest request) {
 		return this.vPrimoServizioCittadinoService
 				.ricercaSingola(request.getCriterioRicerca());

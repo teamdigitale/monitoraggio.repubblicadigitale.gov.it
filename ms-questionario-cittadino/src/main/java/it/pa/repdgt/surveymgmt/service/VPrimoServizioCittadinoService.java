@@ -6,13 +6,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.pa.repdgt.shared.entity.VPrimoServizioCittadinoEntity;
+import it.pa.repdgt.surveymgmt.dto.PrimoServizioCittadinoDTO;
 import it.pa.repdgt.surveymgmt.dto.RicercaCittadiniDTO;
 import it.pa.repdgt.surveymgmt.dto.ScartoRicercaDTO;
+import it.pa.repdgt.surveymgmt.mapper.PrimoServizioCittadinoMapper;
 import it.pa.repdgt.surveymgmt.repository.VPrimoServizioCittadinoRepository;
 import it.pa.repdgt.surveymgmt.util.EncodeUtils;
 
@@ -22,22 +25,34 @@ public class VPrimoServizioCittadinoService {
     @Autowired
     private VPrimoServizioCittadinoRepository vPrimoServizioCittadinoRepository;
 
-    public List<VPrimoServizioCittadinoEntity> ricercaSingola(String criterioRicercaCifrato) {
+    @Autowired
+    private PrimoServizioCittadinoMapper primoServizioCittadinoMapper;
+
+    @Autowired
+    private QuestionarioCompilatoService questionarioCompilatoService;
+
+    public List<PrimoServizioCittadinoDTO> ricercaSingola(String criterioRicercaCifrato) {
         String valoreChiaro = EncodeUtils.decrypt(criterioRicercaCifrato).trim().toUpperCase();
+
+        List<VPrimoServizioCittadinoEntity> entities;
 
         // ID numerico → cerca per id_cittadino
         if (valoreChiaro.matches("^\\d+$")) {
-            return this.vPrimoServizioCittadinoRepository.findByIdCittadino(Long.parseLong(valoreChiaro));
+            entities = this.vPrimoServizioCittadinoRepository.findByIdCittadino(Long.parseLong(valoreChiaro));
         }
-
         // Hash SHA-256 (64 caratteri esadecimali) → cerca direttamente per codice_fiscale
-        if (valoreChiaro.matches("^[A-Fa-f0-9]{64}$")) {
-            return this.vPrimoServizioCittadinoRepository.findByCodiceFiscale(valoreChiaro.toLowerCase());
+        else if (valoreChiaro.matches("^[A-Fa-f0-9]{64}$")) {
+            entities = this.vPrimoServizioCittadinoRepository.findByCodiceFiscale(valoreChiaro.toLowerCase());
+        }
+        // Codice fiscale (16 caratteri alfanumerici) → SHA-256 hash → cerca per codice_fiscale
+        else {
+            String codiceFiscaleHash = EncodeUtils.encrypt(valoreChiaro);
+            entities = this.vPrimoServizioCittadinoRepository.findByCodiceFiscale(codiceFiscaleHash);
         }
 
-        // Codice fiscale (16 caratteri alfanumerici) → SHA-256 hash → cerca per codice_fiscale
-        String codiceFiscaleHash = EncodeUtils.encrypt(valoreChiaro);
-        return this.vPrimoServizioCittadinoRepository.findByCodiceFiscale(codiceFiscaleHash);
+        return entities.stream()
+                .map(this::toDTOConCompetenza)
+                .collect(Collectors.toList());
     }
 
     public RicercaCittadiniDTO ricercaMultipla(List<String> criteriRicercaCifrati) {
@@ -81,8 +96,18 @@ public class VPrimoServizioCittadinoService {
         }
 
         RicercaCittadiniDTO dto = new RicercaCittadiniDTO();
-        dto.setTrovati(tuttiTrovati);
+        dto.setTrovati(tuttiTrovati.stream()
+                .map(this::toDTOConCompetenza)
+                .collect(Collectors.toList()));
         dto.setNonTrovati(nonTrovati);
+        return dto;
+    }
+
+    private PrimoServizioCittadinoDTO toDTOConCompetenza(VPrimoServizioCittadinoEntity entity) {
+        PrimoServizioCittadinoDTO dto = primoServizioCittadinoMapper.toDTO(entity);
+        dto.setCompetenzaDigitale(
+                questionarioCompilatoService.getCompetenzaDigitale(entity.getIdQuestionario())
+        );
         return dto;
     }
 

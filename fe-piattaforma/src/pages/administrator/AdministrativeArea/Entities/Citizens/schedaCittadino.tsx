@@ -26,7 +26,7 @@ const SchedaCittadino: React.FC = () => {
 
   const handleDownloadPDF = () => {
     if (!scheda) return;
-    const record = { ...scheda, competenzaDigitale: 'TBD' };
+    const record = { ...scheda };
     generaSchedaSingola(
       record,
       schedaCittadinoFields,
@@ -227,7 +227,7 @@ const SchedaCittadino: React.FC = () => {
         <div className='col-12 col-lg-6 mb-2'>
           <Input
             label='Competenza digitale'
-            value='TBD'
+            value={scheda.competenzaDigitale || '-'}
             col='col-12'
             disabled
           />
