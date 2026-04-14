@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.517](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.516...1.0.0-test.517) (2026-04-13)
+
+
+### Bug Fixes
+
+* **U538:** fix label 20260413 ([dcc5b84](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/dcc5b846da6e2f851240187b4cb688165e7586d6))
+
 ## [1.0.0-test.516](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.515...1.0.0-test.516) (2026-04-13)
 
 
