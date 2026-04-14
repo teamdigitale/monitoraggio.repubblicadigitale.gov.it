@@ -21,7 +21,7 @@
     "@react-pdf/renderer": "^3.4.5",
     "@reduxjs/toolkit": "1.8.0",
     "aes-everywhere": "^1.0.0",
-    "axios": "1.6.8",
+    "axios": "1.15.0",
     "bootstrap-italia": "1.6.3",
     "buffer": "^6.0.3",
     "cypress-axe": "^0.14.0",
