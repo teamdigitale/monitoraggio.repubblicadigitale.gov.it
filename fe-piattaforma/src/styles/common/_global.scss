@@ -44,3 +44,12 @@ a {
   right: 0 !important;
   top: rem(4px) !important;
 }
+
+.ricerca-cittadino-input,
+.ricerca-cittadino-input:focus,
+.ricerca-cittadino-input:active,
+.ricerca-cittadino-input:hover {
+  border: 1px solid #d9dadb !important;
+  box-shadow: none !important;
+  outline: none !important;
+}

@@ -27,10 +27,11 @@ public class PrimoServizioCittadinoDTO {
     private String indirizzoPuntoFacilitazione;
     private String nomeFacilitatore;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Europe/Rome")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", timezone = "Europe/Rome")
     private Date dataServizio;
 
     private String tipologiaServizio;
     private String competenzaDigitale;
+    private String policyProgramma;
 
 }

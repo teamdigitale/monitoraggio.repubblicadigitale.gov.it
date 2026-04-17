@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Button } from 'design-react-kit';
-import { Input } from '../../../../../components';
+import { Button, Icon } from 'design-react-kit';
 import Table, { newTable, TableHeadingI } from '../../../../../components/Table/table';
 import clsx from 'clsx';
 import { useDispatch } from 'react-redux';
@@ -50,7 +49,7 @@ const RicercaSingola: React.FC<RicercaSingolaProps> = ({
       TableHeading,
       result.map((r) => ({
         id: r.idCittadino,
-        intervento: r.tipologiaServizio || '-',
+        intervento: r.policyProgramma || '-',
         idCittadino: r.idCittadino,
         programma: r.nomeServizio || '-',
         dataPrimoServizio: r.dataServizio || '-',
@@ -73,30 +72,31 @@ const RicercaSingola: React.FC<RicercaSingolaProps> = ({
 
   return (
     <div>
-      <div className='row mt-5 mb-5' style={{ alignItems: 'flex-end' }}>
-        <div className='col-12 col-lg-8'>
-          <Input
+      <div className='row mb-5 align-items-center'>
+        <div className='col-12 col-lg-9'>
+          <input
             id='ricerca-cittadino-input'
-            field='ricerca-cittadino'
-            label='Codice fiscale, codice identificativo alfanumerico o ID cittadino'
+            type='text'
+            className='form-control ricerca-cittadino-input'
             placeholder="Inserisci il codice fiscale o il codice identificativo alfanumerico o l'ID del cittadino"
             value={searchValue}
-            onInputChange={(value) => setSearchValue(String(value ?? ''))}
-            col='col-12 mb-0'
+            onChange={(e) => setSearchValue(e.target.value)}
           />
         </div>
         <div
           className={clsx(
             'd-flex',
             'col-12',
-            'col-lg-4',
+            'col-lg-3',
             'justify-content-start',
-            'justify-content-lg-end'
+            'justify-content-lg-end',
+            'mt-3',
+            'mt-lg-0'
           )}
         >
           <Button
             color='primary'
-            className='mr-3'
+            className='mr-2'
             onClick={handleSearch}
             disabled={!searchValue.trim()}
           >
@@ -114,7 +114,7 @@ const RicercaSingola: React.FC<RicercaSingolaProps> = ({
       </div>
 
       {hasSearched && errorMessage && (
-        <div className='mb-5'>
+        <div className='mb-5 pb-3'>
           <div className='alert alert-warning' role='alert'>
             {errorMessage}
           </div>
@@ -122,7 +122,7 @@ const RicercaSingola: React.FC<RicercaSingolaProps> = ({
       )}
 
       {hasSearched && result.length > 0 && (
-        <div className='mb-5' style={{ paddingLeft: '2px' }}>
+        <div className='mb-5 pb-3' style={{ paddingLeft: '2px' }}>
           <Table
             {...tableValues}
             id='table-ricerca-singola'
@@ -145,6 +145,13 @@ const RicercaSingola: React.FC<RicercaSingolaProps> = ({
               Visualizza scheda
             </Button>
             <Button color='primary' onClick={handleDownloadScheda}>
+              <Icon
+                icon='it-download'
+                color='white'
+                size='sm'
+                className='mr-2'
+                aria-hidden
+              />
               Scarica PDF
             </Button>
           </div>
