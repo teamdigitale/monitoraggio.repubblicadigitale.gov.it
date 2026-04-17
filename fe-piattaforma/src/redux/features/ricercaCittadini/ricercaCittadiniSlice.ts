@@ -20,6 +20,7 @@ export interface PrimoServizioCittadinoI {
   dataServizio: string;
   tipologiaServizio: string;
   competenzaDigitale: string | null;
+  policyProgramma: string;
 }
 
 export interface ScartoRicercaI {

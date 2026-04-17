@@ -43,15 +43,6 @@ const styles = StyleSheet.create({
   valueSmall: {
     fontSize: 8,
   },
-  footer: {
-    position: 'absolute',
-    bottom: 28,
-    left: 36,
-    right: 36,
-    fontSize: 8,
-    color: '#777',
-    textAlign: 'right',
-  },
 });
 
 interface GenericPdfDocumentProps {
@@ -124,9 +115,6 @@ export const GenericPdfDocument: React.FC<GenericPdfDocumentProps> = ({
             <Text style={styles.title}>{title}</Text>
           </View>
           {elements}
-          <Text style={styles.footer}>
-            {pageIdx + 1} / {records.length}
-          </Text>
         </Page>
       );
     })}

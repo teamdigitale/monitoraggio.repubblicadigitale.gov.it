@@ -26,9 +26,8 @@ const SchedaCittadino: React.FC = () => {
 
   const handleDownloadPDF = () => {
     if (!scheda) return;
-    const record = { ...scheda };
     generaSchedaSingola(
-      record,
+      scheda,
       schedaCittadinoFields,
       schedaCittadinoTitle,
       '/assets/img/logo-scritta-blu-x2.png',
@@ -66,12 +65,12 @@ const SchedaCittadino: React.FC = () => {
         Ricerca cittadini
       </Button>
 
-      <h5 className='text-uppercase primary-color-b1 font-weight-bold text-center mb-5'>
+      <h5 className='text-uppercase primary-color-b1 font-weight-bold text-center mb-4'>
         Cittadino
       </h5>
 
-      <div className='row mb-2'>
-        <div className='col-12 mb-2'>
+      <div className='row mb-1'>
+        <div className='col-12'>
           <Input
             label='Codice identificativo unico'
             value={scheda.codiceFiscale}
@@ -81,8 +80,8 @@ const SchedaCittadino: React.FC = () => {
         </div>
       </div>
 
-      <div className='row mb-2'>
-        <div className='col-12 col-lg-6 mb-2'>
+      <div className='row mb-1'>
+        <div className='col-12 col-lg-6'>
           <Input
             label='Genere'
             value={scheda.genere}
@@ -90,7 +89,7 @@ const SchedaCittadino: React.FC = () => {
             disabled
           />
         </div>
-        <div className='col-12 col-lg-6 mb-2'>
+        <div className='col-12 col-lg-6'>
           <Input
             label='Fascia di età'
             value={scheda.fascia}
@@ -100,8 +99,8 @@ const SchedaCittadino: React.FC = () => {
         </div>
       </div>
 
-      <div className='row mb-2'>
-        <div className='col-12 col-lg-6 mb-2'>
+      <div className='row mb-1'>
+        <div className='col-12 col-lg-6'>
           <Input
             label='Titolo di studio'
             value={scheda.titoloDiStudio}
@@ -109,7 +108,7 @@ const SchedaCittadino: React.FC = () => {
             disabled
           />
         </div>
-        <div className='col-12 col-lg-6 mb-2'>
+        <div className='col-12 col-lg-6'>
           <Input
             label='Stato occupazionale'
             value={scheda.occupazione}
@@ -119,8 +118,8 @@ const SchedaCittadino: React.FC = () => {
         </div>
       </div>
 
-      <div className='row mb-4'>
-        <div className='col-12 col-lg-6 mb-2'>
+      <div className='row mb-3'>
+        <div className='col-12 col-lg-6'>
           <Input
             label='Cittadinanza'
             value={scheda.cittadinanza}
@@ -131,16 +130,12 @@ const SchedaCittadino: React.FC = () => {
       </div>
 
       {/* Sezione Primo Servizio Fruito */}
-      <div className='row mb-5' style={{ marginTop: '56px' }}>
-        <div className='col-12'>
-          <h6 className='text-uppercase font-weight-bold'>
-            Primo servizio fruito
-          </h6>
-        </div>
-      </div>
+      <h2 className='h5 mb-3 mt-4' style={{ color: 'rgb(92, 111, 130)' }}>
+        Primo servizio fruito
+      </h2>
 
-      <div className='row mb-2'>
-        <div className='col-12 col-lg-6 mb-2'>
+      <div className='row mb-1'>
+        <div className='col-12 col-lg-6'>
           <Input
             label='Regione o provincia autonoma'
             value={scheda.regioneProvincia}
@@ -148,7 +143,7 @@ const SchedaCittadino: React.FC = () => {
             disabled
           />
         </div>
-        <div className='col-12 col-lg-6 mb-2'>
+        <div className='col-12 col-lg-6'>
           <Input
             label='Ente titolare del progetto'
             value={scheda.nomeGestore}
@@ -158,8 +153,8 @@ const SchedaCittadino: React.FC = () => {
         </div>
       </div>
 
-      <div className='row mb-2'>
-        <div className='col-12 col-lg-6 mb-2'>
+      <div className='row mb-1'>
+        <div className='col-12 col-lg-6'>
           <Input
             label='CUP'
             value={scheda.cup}
@@ -167,7 +162,7 @@ const SchedaCittadino: React.FC = () => {
             disabled
           />
         </div>
-        <div className='col-12 col-lg-6 mb-2'>
+        <div className='col-12 col-lg-6'>
           <Input
             label='Nome del progetto'
             value={scheda.nomeServizio}
@@ -177,8 +172,8 @@ const SchedaCittadino: React.FC = () => {
         </div>
       </div>
 
-      <div className='row mb-2'>
-        <div className='col-12 col-lg-6 mb-2'>
+      <div className='row mb-1'>
+        <div className='col-12 col-lg-6'>
           <Input
             label='Nome del punto di facilitazione'
             value={scheda.nomePuntoFacilitazione}
@@ -186,7 +181,7 @@ const SchedaCittadino: React.FC = () => {
             disabled
           />
         </div>
-        <div className='col-12 col-lg-6 mb-2'>
+        <div className='col-12 col-lg-6'>
           <Input
             label='Indirizzo del punto di facilitazione'
             value={scheda.indirizzoPuntoFacilitazione}
@@ -196,8 +191,8 @@ const SchedaCittadino: React.FC = () => {
         </div>
       </div>
 
-      <div className='row mb-2'>
-        <div className='col-12 col-lg-6 mb-2'>
+      <div className='row mb-1'>
+        <div className='col-12 col-lg-6'>
           <Input
             label='Nome del facilitatore'
             value={scheda.nomeFacilitatore}
@@ -205,7 +200,7 @@ const SchedaCittadino: React.FC = () => {
             disabled
           />
         </div>
-        <div className='col-12 col-lg-6 mb-2'>
+        <div className='col-12 col-lg-6'>
           <Input
             label='Data di erogazione'
             value={scheda.dataServizio}
@@ -215,8 +210,8 @@ const SchedaCittadino: React.FC = () => {
         </div>
       </div>
 
-      <div className='row mb-5'>
-        <div className='col-12 col-lg-6 mb-2'>
+      <div className='row mb-3'>
+        <div className='col-12 col-lg-6'>
           <Input
             label='Tipologia del servizio'
             value={scheda.tipologiaServizio}
@@ -224,7 +219,7 @@ const SchedaCittadino: React.FC = () => {
             disabled
           />
         </div>
-        <div className='col-12 col-lg-6 mb-2'>
+        <div className='col-12 col-lg-6'>
           <Input
             label='Competenza digitale'
             value={scheda.competenzaDigitale || '-'}
@@ -234,18 +229,20 @@ const SchedaCittadino: React.FC = () => {
         </div>
       </div>
 
-      {/* CTA Download PDF */}
-      <div className='d-flex justify-content-end mt-4 mb-5'>
-        <Button color='primary' onClick={handleDownloadPDF}>
-          <Icon
-            icon='it-download'
-            color='white'
-            size='sm'
-            className='mr-2'
-            aria-hidden
-          />
-          Download PDF
-        </Button>
+      {/* CTA Scarica PDF allineata al bordo destro dei campi sopra */}
+      <div className='row'>
+        <div className='col-12 d-flex justify-content-end pr-3'>
+          <Button color='primary' onClick={handleDownloadPDF}>
+            <Icon
+              icon='it-download'
+              color='white'
+              size='sm'
+              className='mr-2'
+              aria-hidden
+            />
+            Scarica PDF
+          </Button>
+        </div>
       </div>
     </div>
   );
