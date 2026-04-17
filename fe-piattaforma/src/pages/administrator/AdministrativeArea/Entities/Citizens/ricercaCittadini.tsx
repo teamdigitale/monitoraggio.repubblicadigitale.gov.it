@@ -44,7 +44,7 @@ const RicercaCittadini: React.FC = () => {
 
   return (
     <div>
-      <p className='mt-3 mb-5'>
+      <p className='mt-4 mb-5 pb-3'>
         Effettua una ricerca tra i cittadini registrati su Facilita per aver
         partecipato ad attivit&agrave; di facilitazione o formazione. Puoi
         cercare le loro schede singolarmente oppure per liste tramite codice
@@ -52,7 +52,7 @@ const RicercaCittadini: React.FC = () => {
         in PDF.
       </p>
 
-      <Nav tabs className='mb-5 justify-content-center' style={{ overflow: 'visible', padding: '2px 2px 0 2px' }} role='menu'>
+      <Nav tabs className='mt-5 mb-5 pb-3 justify-content-center' style={{ overflow: 'visible', padding: '2px 2px 0 2px' }} role='menu'>
         <li role='none' style={{ marginTop: '1px' }}>
           <NavLink
             onClick={() => handleTabChange(tabs.SINGOLA)}

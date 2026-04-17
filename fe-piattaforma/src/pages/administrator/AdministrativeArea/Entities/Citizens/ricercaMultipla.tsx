@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Button } from 'design-react-kit';
+import { Button, Icon } from 'design-react-kit';
 import clsx from 'clsx';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../../../../redux/hooks';
@@ -129,15 +129,23 @@ const RicercaMultipla: React.FC<RicercaMultiplaProps> = ({
               )}
             >
               <span className='font-weight-semibold primary-color-b1'>
-                Numero cittadini trovati - {result.trovati.length}
+                Numero cittadini trovati: {result.trovati.length}
               </span>
               <Button
                 color='primary'
+                style={{ minWidth: '200px' }}
                 onClick={() =>
                   onDownloadSchede?.(result.trovati)
                 }
               >
-                Download schede
+                <Icon
+                  icon='it-download'
+                  color='white'
+                  size='sm'
+                  className='mr-2'
+                  aria-hidden
+                />
+                Scarica schede
               </Button>
             </div>
           )}
@@ -152,18 +160,26 @@ const RicercaMultipla: React.FC<RicercaMultiplaProps> = ({
                 'mb-3',
                 'rounded',
                 'border',
-                'border-warning',
+                'border-primary',
                 'bg-white'
               )}
             >
-              <span className='font-weight-semibold text-warning'>
-                Numero cittadini non trovati - {result.nonTrovati.length}
+              <span className='font-weight-semibold primary-color-b1'>
+                Numero cittadini non trovati: {result.nonTrovati.length}
               </span>
               <Button
                 color='primary'
+                style={{ minWidth: '200px' }}
                 onClick={() => onDownloadElencoScarti?.(result.nonTrovati)}
               >
-                Download elenco
+                <Icon
+                  icon='it-download'
+                  color='white'
+                  size='sm'
+                  className='mr-2'
+                  aria-hidden
+                />
+                Scarica elenco
               </Button>
             </div>
           )}
