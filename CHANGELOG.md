@@ -1,5 +1,13 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.518](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.517...1.0.0-test.518) (2026-04-17)
+
+
+### Bug Fixes
+
+* **U538:** modifiche aggiuntive 20260417 ([baafa9b](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/baafa9b60aebb254e448b6d3bcfa93b2e069990d))
+* **test:** upgrade axios version 20260414 ([23a3249](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/23a32494210346e6f19c2a24b52d1c4cd6cd3a0a))
+
 ## [1.0.0-test.517](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.516...1.0.0-test.517) (2026-04-13)
 
 
