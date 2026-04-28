@@ -34,12 +34,10 @@ public class FilterUtil {
 	public static final List<String> ENDPOINT_NOT_CHECKED = Arrays.asList(
 			"^/open-data*",
 			"^/contesto$",
-			"^/contesto/confermaIntegrazione$",
-			"^/utente/upload/immagineProfilo*",
-			"^/utente/download/immagineProfilo*"
-	);
-	
-	public static final List<String> ENDPOINT_SWAGGER = Arrays.asList(			
+			"^/contesto/confermaIntegrazione$");
+
+	public static final List<String> ENDPOINT_SWAGGER = Arrays.asList(
+			// da decommentare in locale(aggiunta endpoint per lanciare swagger):
 			"^/swagger-ui*",
 			"^/favicon.ico*",
 			"^/swagger-resources*",

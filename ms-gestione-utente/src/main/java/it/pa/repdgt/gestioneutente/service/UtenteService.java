@@ -1,10 +1,5 @@
 package it.pa.repdgt.gestioneutente.service;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -23,7 +18,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import it.pa.repdgt.gestioneutente.bean.DettaglioRuoliBean;
 import it.pa.repdgt.gestioneutente.bean.DettaglioUtenteBean;
@@ -116,7 +110,6 @@ public class UtenteService {
 	private String presignedUrlExpireSchedaUtente;
 	@Value("${AWS.S3.PRESIGN_URL-EXPIRE-CONTESTO:15}")
 	private String presignedUrlExpireContesto;
-	private static final String PREFIX_FILE_IMG_PROFILO = "immagineProfilo-";
 
 	@LogExecutionTime
 	@LogMethod
@@ -1304,70 +1297,6 @@ public class UtenteService {
 				"%" + filtroRequest.getCriterioRicerca() + "%",
 				filtroRequest.getRuoli(),
 				filtroRequest.getStati());
-	}
-
-	@LogExecutionTime
-	@LogMethod
-	@Transactional
-	public String uploadImmagineProfiloUtente(Long idUtente, String codiceFiscaleUtenteLoggato, MultipartFile multipartifile) throws IOException {
-		UtenteEntity utenteFetchDb = getUtenteById(idUtente);
-		if(utenteFetchDb == null) {
-			throw new UtenteException("Utente non esistente", CodiceErroreEnum.C01);
-		}
-		if(!utenteFetchDb.getCodiceFiscale().equalsIgnoreCase(codiceFiscaleUtenteLoggato)) {
-			throw new UtenteException("Errore permesso accesso alla risorsa", CodiceErroreEnum.A02);
-		}
-
-		List<String> IMAGE_TYPES_ALLOWED = Arrays.asList("jpg", "jpeg", "png", "image/jpg", "image/jpeg", "image/png");
-		if (multipartifile == null) {
-			utenteFetchDb.setImmagineProfilo(null);
-			salvaUtente(utenteFetchDb);
-			return null;
-		}else {
-			if(!IMAGE_TYPES_ALLOWED.contains(multipartifile.getContentType().toLowerCase()))  {
-				throw new UtenteException("il file non è valido", CodiceErroreEnum.U22); 
-			}
-
-
-			InputStream initialStream = multipartifile.getInputStream();
-			byte[] buffer = new byte[initialStream.available()];
-			initialStream.read(buffer);
-			String[] fileNameSplitted = multipartifile.getOriginalFilename().split("\\.");
-			
-			if(fileNameSplitted != null && fileNameSplitted.length > 2) {
-				throw new UtenteException("Nome file upload deve avere solo una estensione", CodiceErroreEnum.U22);
-			}
-			
-			String fileExtension = fileNameSplitted[fileNameSplitted.length - 1];
-			String nomeFileDb = PREFIX_FILE_IMG_PROFILO + idUtente + "." + fileExtension;
-			File targetFile = new File(nomeFileDb);
-			try (OutputStream outStream = new FileOutputStream(targetFile)) {
-				outStream.write(buffer);
-			}
-			try {
-				this.s3Service.uploadFile(nomeDelBucketS3, targetFile);
-				utenteFetchDb.setImmagineProfilo(nomeFileDb);
-				salvaUtente(utenteFetchDb);
-			}catch(Exception e) {
-				throw e;
-			}finally {
-				targetFile.delete();
-			}
-			return nomeFileDb;
-		}
-	}
-
-	@LogExecutionTime
-	@LogMethod
-	@Transactional
-	public String downloadImmagineProfiloUtente(String nomeFile) {
-		String presignedUrlImmagineProfiloUtente = null;
-		try {
-			presignedUrlImmagineProfiloUtente = this.s3Service.getPresignedUrl(nomeFile, this.nomeDelBucketS3, Long.parseLong(this.presignedUrlExpireContesto));
-		} catch (Exception ex) {
-			throw new UtenteException("Errore download immagine profilo utente", ex, CodiceErroreEnum.U17);
-		}
-		return presignedUrlImmagineProfiloUtente;
 	}
 
 	@LogExecutionTime

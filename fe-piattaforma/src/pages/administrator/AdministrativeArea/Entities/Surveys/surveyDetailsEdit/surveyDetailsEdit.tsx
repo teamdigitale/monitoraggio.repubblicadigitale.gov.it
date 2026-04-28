@@ -48,6 +48,16 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
+
+  // Mitigation V06 (Open Redirect) — defense in depth.
+  // location.pathname proviene da React Router (origine interna), ma Snyk
+  // tracking lo segna come source. Qui validiamo con allowlist regex prima
+  // di concatenare al navigate, escludendo path che non corrispondono al
+  // formato atteso /area-amministrativa/.../questionari/<id>.
+  const safePathname = /^\/area-amministrativa\/[a-zA-Z0-9/_-]+$/.test(location.pathname)
+    ? location.pathname
+    : '/area-amministrativa';
+
   const form = useAppSelector(selectSurveyForm);
   const sections = useAppSelector(selectSurveySections) || [];
   const surveyStatus = useAppSelector(selectSurveyStatus);
@@ -207,7 +217,7 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
             setCloneModeState(true);
             setEditModeState(false);
             entityId
-              ? navigate(location.pathname + '/clona')
+              ? navigate(safePathname + '/clona')
               : navigate(
                   `/area-amministrativa/questionari/${idQuestionario}/clona`
                 );
@@ -220,7 +230,7 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
             setEditModeState(true);
             setCloneModeState(false);
             entityId
-              ? navigate(location.pathname + '/modifica')
+              ? navigate(safePathname + '/modifica')
               : navigate(
                   `/area-amministrativa/questionari/${idQuestionario}/modifica`
                 );
@@ -237,7 +247,7 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
             setCloneModeState(true);
             setEditModeState(false);
             entityId
-              ? navigate(location.pathname + '/clona')
+              ? navigate(safePathname + '/clona')
               : navigate(
                   `/area-amministrativa/questionari/${idQuestionario}/clona`
                 );
@@ -253,7 +263,7 @@ const SurveyDetailsEdit: React.FC<SurveyDetailsEditI> = ({
             setEditModeState(true);
             setCloneModeState(false);
             entityId
-              ? navigate(location.pathname + '/modifica')
+              ? navigate(safePathname + '/modifica')
               : navigate(
                   `/area-amministrativa/questionari/${idQuestionario}/modifica`
                 );

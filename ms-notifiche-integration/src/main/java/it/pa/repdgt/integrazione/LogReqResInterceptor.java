@@ -29,10 +29,9 @@ public class LogReqResInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         
-		String uuid = (this.getRequestHeaders(request).get("authtoken"));
-		String exId = uuid != null && !uuid.equals("") ? 
-				uuid.substring(uuid.length() - 15).concat("-").concat(uuid.substring(0, 15)) : 
-					UUID.randomUUID().toString();;
+		// Mitigation V07 (CRLF Injection): exId generato esclusivamente da UUID.randomUUID(),
+		// nessuna dipendenza da header HTTP controllabili dal client.
+		String exId = UUID.randomUUID().toString();
 		
 		response.setHeader("exchange-id", exId);
 		

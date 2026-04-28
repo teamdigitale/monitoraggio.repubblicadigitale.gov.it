@@ -21,9 +21,19 @@ const RocketChat = () => {
   const dispatch = useDispatch();
   const device = useAppSelector(selectDevice);
 
+  // Origine fidata Rocket.Chat: deve corrispondere esattamente all'origin
+  // dell'iframe per evitare leak del token verso terze parti (mitigation V08).
+  const rocketChatOrigin = (() => {
+    try {
+      return new URL(process.env.REACT_APP_ROCKET_CHAT_BASE_URL || '').origin;
+    } catch {
+      return '';
+    }
+  })();
+
   const authenticateIFrame = () => {
     const target = document.getElementById('rcChannel');
-    if (target && rocketChatToken) {
+    if (target && rocketChatToken && rocketChatOrigin) {
       console.log('authenticateIFrame');
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
@@ -32,7 +42,7 @@ const RocketChat = () => {
           externalCommand: 'login-with-token',
           token: rocketChatToken,
         },
-        '*'
+        rocketChatOrigin
       );
     }
   };

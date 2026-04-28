@@ -1,0 +1,100 @@
+# Snyk (https://snyk.io) policy file.
+#
+# Tutte le soppressioni qui contenute hanno motivazione tecnica documentata,
+# scadenza esplicita e ticket di riferimento. Le motivazioni sono state
+# concordate tra Tech Lead Backend e AppSec Lead.
+#
+# Processo di review:
+# - ogni soppressione e' rivedibile alla scadenza (`expires`)
+# - se Snyk segnala una NUOVA istanza dello stesso pattern, e' obbligatoria
+#   review manuale prima di estendere la soppressione
+# - mai sopprimere un finding senza inserire `reason`, `expires`, `ticket`
+
+version: v1.25.0
+
+ignore:
+  # =============================================================================
+  # V10 — Spring Cross-Site Request Forgery (CSRF)
+  # =============================================================================
+  # Falso positivo strutturale: l'autenticazione e' interamente stateless via
+  # JWT Bearer (Cognito) tramite header HTTP custom (Authtoken/Authorization).
+  # Non esistono cookie di sessione Spring; gli attacchi CSRF richiedono ambient
+  # credentials (cookie auto-inviati), quindi non si applicano. Vedi ADR-002.
+  'java/CSRF':
+    - '*':
+        reason: 'Stateless JWT Bearer auth (Cognito). Nessun cookie di sessione, CSRF non applicabile. Vedi ADR-002 in facilita-docs/documentazione/security/.'
+        expires: 2027-04-28T00:00:00.000Z
+        ticket: 'SEC-CSRF-001'
+        created: 2026-04-28T00:00:00.000Z
+        created-by: 'AppSec Lead'
+
+  # =============================================================================
+  # V04 — Server-Side Request Forgery (SSRF)
+  # =============================================================================
+  # Falso positivo: la URL passata a HttpPut e' una pre-signed URL S3 generata
+  # dall'AWS SDK (registroAttivitaService.generateUploadPresignedUrl), non
+  # influenzabile da input utente. In aggiunta, RestTemplateS3Service.uploadDocument
+  # esegue check whitelist host (*.amazonaws.com) come defense in depth.
+  'java/Ssrf':
+    - 'ms-questionario-cittadino/src/main/java/it/pa/repdgt/surveymgmt/restapi/ImportMassivoCSVRestApi.java':
+        reason: 'URL generata da AWS SDK, validazione host whitelist in RestTemplateS3Service.uploadDocument'
+        expires: 2027-04-28T00:00:00.000Z
+        ticket: 'SEC-SSRF-001'
+        created: 2026-04-28T00:00:00.000Z
+        created-by: 'AppSec Lead'
+
+  # =============================================================================
+  # V05 — DOM-based Cross-Site Scripting (XSS)
+  # =============================================================================
+  # Falso positivo: la response axios e' un Blob binario (CSV/PDF) da S3
+  # pre-signed URL, non eseguibile come HTML. Il filename per il download
+  # deriva da activityReport.fileName (server-generated). In aggiunta,
+  # downloadGeneratedFile sanifica il nome file con whitelist regex e non
+  # usa piu' appendChild.
+  'javascript/DOMXSS':
+    - 'fe-piattaforma/src/utils/csvUtils.ts':
+        reason: 'Blob binario da S3 pre-signed (server-generated), filename sanificato in downloadGeneratedFile'
+        expires: 2027-04-28T00:00:00.000Z
+        ticket: 'SEC-DOMXSS-001'
+        created: 2026-04-28T00:00:00.000Z
+        created-by: 'AppSec Lead'
+
+  # =============================================================================
+  # V06 — Open Redirect
+  # =============================================================================
+  # Falso positivo: location.pathname proviene dal React Router (origine
+  # interna), non da input HTTP esterno. Snyk traccia useLocation come source.
+  # In aggiunta, una allowlist regex (safePathname) valida il pattern atteso
+  # prima di concatenare al navigate.
+  'javascript/OpenRedirect':
+    - 'fe-piattaforma/src/pages/administrator/AdministrativeArea/Entities/Surveys/surveyDetailsEdit/surveyDetailsEdit.tsx':
+        reason: 'React Router useLocation (origine interna), allowlist regex applicata su safePathname'
+        expires: 2027-04-28T00:00:00.000Z
+        ticket: 'SEC-OPENREDIR-001'
+        created: 2026-04-28T00:00:00.000Z
+        created-by: 'AppSec Lead'
+
+  # =============================================================================
+  # V09 — Cross Site Scripting (unsafe innerHTML injection)
+  # =============================================================================
+  # Falso positivo: i finding sono su prop boolean `innerHTML={true}` di
+  # componenti custom (PageTitle, InfoPanel, SectionInfo). I componenti
+  # internamente usano `dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(...) }}`
+  # che e' il pattern raccomandato. Snyk non distingue la prop boolean dal
+  # vero `element.innerHTML = ...`.
+  'javascript/UnsafeInnerHTML':
+    - 'fe-piattaforma/src/pages/common/Accessibility/accessibility.tsx':
+        reason: 'Prop boolean innerHTML su PageTitle: il componente sanifica con DOMPurify.sanitize internamente'
+        expires: 2027-04-28T00:00:00.000Z
+        ticket: 'SEC-INNERHTML-001'
+        created: 2026-04-28T00:00:00.000Z
+        created-by: 'AppSec Lead'
+    - 'fe-piattaforma/src/pages/common/OpenData/openData.tsx':
+        reason: 'Prop boolean innerHTML su PageTitle: il componente sanifica con DOMPurify.sanitize internamente'
+        expires: 2027-04-28T00:00:00.000Z
+        ticket: 'SEC-INNERHTML-002'
+        created: 2026-04-28T00:00:00.000Z
+        created-by: 'AppSec Lead'
+
+# Patches: nessun patch automatico configurato (le mitigation sono nel codice).
+patch: {}

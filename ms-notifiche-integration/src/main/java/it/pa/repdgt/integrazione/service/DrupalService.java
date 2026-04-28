@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
@@ -87,10 +89,14 @@ public class DrupalService {
 		ResponseEntity<Map> responseDrupal = null;
 		try {
 			final HttpHeaders forwardHeaders = this.getHeadersHttp(param, contentType);
-			if(param.getIsUploadFile() != null && param.getIsUploadFile() == Boolean.TRUE) {			
-				// Creazione file a partire dall'array di byte
-				nomeFile = param.getFilenameToUpload() == null? "tmpFile": param.getFilenameToUpload();
-				file = new File(nomeFile);
+			if(param.getIsUploadFile() != null && param.getIsUploadFile() == Boolean.TRUE) {
+				// Mitigation V02 (Path Traversal): file scritto in una temp directory
+				// con nome generato dal JDK (Files.createTempFile e' riconosciuto
+				// dal taint analyzer come sanitizer). Il filename utente NON e'
+				// mai usato come path filesystem.
+				nomeFile = param.getFilenameToUpload() == null ? "tmpFile" : param.getFilenameToUpload();
+				Path tempPath = Files.createTempFile("drupal-upload-", ".tmp");
+				file = tempPath.toFile();
 				fostrm = new FileOutputStream(file);
 				fostrm.write(bytesFileToUpload);
 				resource = new FileSystemResource(file);
