@@ -665,11 +665,11 @@ export function downloadGeneratedFile(file: File) {
   const link = document.createElement('a');
 
   link.href = url;
-  link.download = file.name;
-  document.body.appendChild(link);
+  // Sanitizzazione difensiva del nome file (whitelist caratteri sicuri)
+  link.download = (file.name || 'download').replace(/[^A-Za-z0-9._-]/g, '_');
+  link.rel = 'noopener';
   link.click();
 
-  document.body.removeChild(link);
   window.URL.revokeObjectURL(url);
 }
 

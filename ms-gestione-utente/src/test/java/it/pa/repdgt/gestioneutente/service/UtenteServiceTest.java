@@ -1107,19 +1107,6 @@ public class UtenteServiceTest {
 		assertThat(risultato.size()).isEqualTo(utentiSet.size());
 	}
 
-	// @Test
-	public void uploadImmagineProfiloUtenteTest() throws IOException {
-		when(this.utenteRepository.findById(utente.getId())).thenReturn(Optional.of(utente));
-		service.uploadImmagineProfiloUtente(utente.getId(), utente.getCodiceFiscale(), file);
-	}
-
-	// @Test
-	public void downloadImmagineProfiloUtenteKOTest() {
-		// test KO per errore upload immagine profilo
-		Assertions.assertThrows(UtenteException.class, () -> service.downloadImmagineProfiloUtente("NOMEFILE"));
-		assertThatExceptionOfType(UtenteException.class);
-	}
-
 	@Setter
 	public class ProgettoEnteProjectionImplementation implements ProgettoEnteProjection {
 

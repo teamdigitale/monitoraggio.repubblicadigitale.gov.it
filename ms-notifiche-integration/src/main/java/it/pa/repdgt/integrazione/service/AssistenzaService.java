@@ -29,6 +29,7 @@ import it.pa.repdgt.shared.data.BasicFileData;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.shared.exception.ZendeskException;
 import it.pa.repdgt.shared.restapi.RestTemplateWrapper;
+import it.pa.repdgt.shared.util.SecurityUtils;
 import it.pa.repdgt.shared.util.Utils;
 import lombok.extern.slf4j.Slf4j;
 import java.util.Map;
@@ -183,8 +184,12 @@ public class AssistenzaService {
                     try {
                         
                         byte[] fileBytes = Base64.getDecoder().decode(allegatoBase64.getData());
-                        String nomeFile = allegatoBase64.getName();
-                        String prefixNomeFile = nomeFile.split("\\.").length > 0 ? nomeFile.split("\\.")[0] : nomeFile;
+                        // Mitigation V01 (Regex Injection): SecurityUtils.sanitizeFilename
+                        // valida con whitelist e rimuove path components prima di
+                        // qualsiasi operazione regex (sostituisce split("\\.") che era
+                        // taint source per Snyk).
+                        String nomeFile = SecurityUtils.sanitizeFilename(allegatoBase64.getName());
+                        String prefixNomeFile = SecurityUtils.getBaseName(nomeFile);
                         BasicFileData fileProcessato = Utils.processAndClean(fileBytes, nomeFile, null, Utils.DEFAULT_MAX_SIZE, Utils.ALL_ALLOWED_EXT, prefixNomeFile);
 
                         // Upload su Zendesk
