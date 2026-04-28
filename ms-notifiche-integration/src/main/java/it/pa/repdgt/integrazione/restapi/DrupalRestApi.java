@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import it.pa.repdgt.integrazione.request.ForwardRichiestDrupalParam;
 import it.pa.repdgt.integrazione.service.DrupalService;
 import it.pa.repdgt.shared.data.BasicFileData;
+import it.pa.repdgt.shared.util.SecurityUtils;
 import it.pa.repdgt.shared.util.Utils;
 
 @RestController
@@ -37,12 +38,17 @@ public class DrupalRestApi {
 		BasicFileData fileSanificato = new BasicFileData();
 		if(isUploadFile) {
 			contentType = MediaType.MULTIPART_FORM_DATA_VALUE;
-			
-			byte[] filetoUpload = Base64.getDecoder().decode(forwardRichiestDrupalParam.getFileBase64ToUpload());
-			String fileNamePrefix = forwardRichiestDrupalParam.getFilenameToUpload().split("\\.").length > 0 ? forwardRichiestDrupalParam.getFilenameToUpload().split("\\.")[0] : forwardRichiestDrupalParam.getFilenameToUpload();
 
-			fileSanificato = Utils.processAndClean(filetoUpload, forwardRichiestDrupalParam.getFilenameToUpload(), null, Utils.DEFAULT_MAX_SIZE, Utils.ALL_ALLOWED_EXT,fileNamePrefix);
-		} 
+			byte[] filetoUpload = Base64.getDecoder().decode(forwardRichiestDrupalParam.getFileBase64ToUpload());
+			// Mitigation V01 (Regex Injection) + V02 (Path Traversal):
+			// SecurityUtils estrae base name e sanifica il filename con whitelist
+			// (riconosciuto da Snyk come sanitizer, sostituisce split("\\.") che era taint source)
+			String safeFilename = SecurityUtils.sanitizeFilename(forwardRichiestDrupalParam.getFilenameToUpload());
+			String fileNamePrefix = SecurityUtils.getBaseName(safeFilename);
+			forwardRichiestDrupalParam.setFilenameToUpload(safeFilename);
+
+			fileSanificato = Utils.processAndClean(filetoUpload, safeFilename, null, Utils.DEFAULT_MAX_SIZE, Utils.ALL_ALLOWED_EXT, fileNamePrefix);
+		}
 
 		return this.drupalService.forwardRichiestaADrupal(forwardRichiestDrupalParam, contentType, fileSanificato.getFile());
 	}

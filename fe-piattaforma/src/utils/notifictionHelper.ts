@@ -47,51 +47,37 @@ const defaultErrorPayload = {
   message: defaultErrorMessage,
   status: 'error',
 };
-const getDrupalErrorMessage = (errorsList: any, errorMessage: string) => {
-  try {
-    if (errorMessage) {
-      const errorCode = JSON.parse(
-        decodeURI(errorMessage.replaceAll(' ', '').slice(1, -1))
-      )?.data?.message?.split(':')?.[0];
-      if (errorsList[errorCode]) {
-        return {
-          message: `${errorsList[errorCode]?.descrizione} (errore ${errorCode})`,
-          title: errorsList[errorCode]?.titolo || 'ERRORE',
-        };
-      } else {
-        return defaultErrorPayload;
-      }
-    }
-    return defaultErrorPayload;
-  } catch {
-    return defaultErrorPayload;
-  }
-};
 export const getErrorMessage = async (
-  { errorCode, message = '' }: { errorCode: string; message?: string } = {
-    errorCode: 'ERRORE',
-  }
+  { errorCode }: { errorCode?: string } = {}
 ) => {
+  // Difesa: errorCode mancante o non valido -> default.
+  // Protegge da eventuali variazioni della shape della response backend.
+  if (!errorCode) {
+    return defaultErrorPayload;
+  }
   try {
-    const res = await axios('/assets/errors/errors.json');    
-    if (res?.data) {
-      const errorsList = { ...res.data.errors };
-      if (errorCode === 'A02') {
-        console.log('Errore A02');
-        window.location.replace('/auth-redirect');
-      } else if (errorCode === 'D01') {
-        // return getDrupalErrorMessage(errorsList, message);
-        return {title: '', message: ''};
-      } else if (errorsList[errorCode]) {
-        return {
-          message: `${errorsList[errorCode]?.descrizione} (errore ${errorCode})`,
-          title: errorsList[errorCode]?.titolo || 'ERRORE',
-          status: errorsList[errorCode]?.status || 'error',
-        };
-      } else {
-        return defaultErrorPayload;
-      }
+    const res = await axios('/assets/errors/errors.json');
+    if (!res?.data) {
+      return defaultErrorPayload;
     }
+    const errorsList = { ...res.data.errors };
+    if (errorCode === 'A02') {
+      console.log('Errore A02');
+      window.location.replace('/auth-redirect');
+      return defaultErrorPayload;
+    }
+    if (errorCode === 'D01') {
+      return { title: '', message: '' };
+    }
+    if (errorsList[errorCode]) {
+      return {
+        message: `${errorsList[errorCode]?.descrizione} (errore ${errorCode})`,
+        title: errorsList[errorCode]?.titolo || 'ERRORE',
+        // In errors.json il campo si chiama 'type', non 'status'.
+        status: errorsList[errorCode]?.type || 'error',
+      };
+    }
+    return defaultErrorPayload;
   } catch (error) {
     return defaultErrorPayload;
   }
@@ -121,7 +107,6 @@ export const errorHandler = async (error: unknown) => {
       dispatchLogout();
     }
 
-    const urlForward = ['board', 'community', 'document'];
     if (!errorData) {
       try {
         errorData = await getErrorMessage({
@@ -130,8 +115,6 @@ export const errorHandler = async (error: unknown) => {
       } catch (error) {
         console.error("Errore durante il recupero del messaggio:", error);
       }
-      //aggiunto controllo per non mostrare messaggio di errore in caso di errore drupal forward 
-      // if (errorData && !(urlForward.some(keyword => JSON.parse((error as any)?.config.data).url?.includes(keyword)))) { 
       if (errorData) {
         dispatchNotify({
           title: errorData.title,

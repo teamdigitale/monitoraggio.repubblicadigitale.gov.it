@@ -1,7 +1,6 @@
 package it.pa.repdgt.gestioneutente.restapi;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -22,10 +21,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import it.pa.repdgt.gestioneutente.bean.SchedaUtenteBean;
 import it.pa.repdgt.gestioneutente.bean.SchedaUtenteBeanLight;
@@ -41,13 +38,10 @@ import it.pa.repdgt.gestioneutente.resource.UtenteResource;
 import it.pa.repdgt.gestioneutente.resource.UtentiLightResourcePaginata;
 import it.pa.repdgt.gestioneutente.service.UtenteService;
 import it.pa.repdgt.gestioneutente.util.CSVUtil;
-import it.pa.repdgt.shared.RequestWrapper;
-import it.pa.repdgt.shared.data.ProcessedMultipartFile;
 import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.shared.entity.light.UtenteLightEntity;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
-import it.pa.repdgt.shared.util.Utils;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
@@ -190,23 +184,5 @@ public class UtenteRestApi {
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=utenti.csv")
 				.contentType(MediaType.parseMediaType("application/csv"))
 				.body(fileCSV);
-	}
-
-	@Deprecated
-	@PostMapping(path = "/upload/immagineProfilo/{idUtente}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-	public String uploadImmagineProfiloUtente(
-			@PathVariable(value = "idUtente") Long idUtente,
-			@RequestPart(required = false) MultipartFile multipartifile,
-			RequestWrapper request) throws IOException {
-		String fileNamePrefix = multipartifile.getOriginalFilename().split("\\.").length > 0 ? multipartifile.getOriginalFilename().split("\\.")[0] : multipartifile.getOriginalFilename();
-		MultipartFile processedMultipartFile = Utils.processAndClean(multipartifile, Utils.DEFAULT_MAX_SIZE, Utils.ALLOWED_IMAGE_EXT, fileNamePrefix);
-		return this.utenteService.uploadImmagineProfiloUtente(idUtente, request.getCodiceFiscale(), processedMultipartFile);		
-	}
-
-	@GetMapping(path = "/download/immagineProfilo/{nomeFile}")
-	public String downloadImmagineProfiloUtentePresigned(
-			@PathVariable(value = "nomeFile") final String nomeFile) throws IOException {
-
-		return this.utenteService.downloadImmagineProfiloUtente(nomeFile);
 	}
 }
