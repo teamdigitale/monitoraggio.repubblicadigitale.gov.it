@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.519](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.518...1.0.0-test.519) (2026-04-28)
+
+
+### Bug Fixes
+
+* **U538:** allineamento richieste 20260428 ([ecb647c](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ecb647c4992ae0258f1be0869bf9cb76463becd0))
+
 ## [1.0.0-test.518](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.517...1.0.0-test.518) (2026-04-17)
 
 
