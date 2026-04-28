@@ -130,9 +130,13 @@ const SchedaCittadino: React.FC = () => {
       </div>
 
       {/* Sezione Primo Servizio Fruito */}
-      <h2 className='h5 mb-3 mt-4' style={{ color: 'rgb(92, 111, 130)' }}>
-        Primo servizio fruito
-      </h2>
+      <div className='row mt-4 mb-5 pb-3'>
+        <div className='col-12'>
+          <h2 className='h5 mb-0 px-3' style={{ color: 'rgb(92, 111, 130)' }}>
+            Primo servizio fruito
+          </h2>
+        </div>
+      </div>
 
       <div className='row mb-1'>
         <div className='col-12 col-lg-6'>
