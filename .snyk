@@ -16,13 +16,52 @@ ignore:
   # =============================================================================
   # V10 — Spring Cross-Site Request Forgery (CSRF)
   # =============================================================================
-  # Falso positivo strutturale: l'autenticazione e' interamente stateless via
-  # JWT Bearer (Cognito) tramite header HTTP custom (Authtoken/Authorization).
-  # Non esistono cookie di sessione Spring; gli attacchi CSRF richiedono ambient
-  # credentials (cookie auto-inviati), quindi non si applicano. Vedi ADR-002.
+  # Falso positivo strutturale (oltre 75 endpoint REST sui 6 microservizi).
+  #
+  # Contesto:
+  # Spring Security CSRF protection non e' configurata esplicitamente. In una
+  # web app classica con sessioni stateful basate su cookie sarebbe un finding
+  # reale; nel nostro caso non lo e' per i motivi sotto.
+  #
+  # 1) Autenticazione interamente stateless via JWT Bearer
+  #    - Identity provider: AWS Cognito; access token propagato dal frontend
+  #      via header HTTP custom `Authtoken` (e/o `Authorization: Bearer`)
+  #    - Nessun cookie di sessione Spring lato server; endpoint REST stateless
+  #    - Spring Boot non instanzia `JSESSIONID` (no session management cookie)
+  #
+  # 2) Perche' CSRF non e' applicabile
+  #    Gli attacchi CSRF richiedono che il browser invii automaticamente le
+  #    credenziali di un'altra origine (ambient credentials). Con JWT in header
+  #    HTTP custom:
+  #    - Il browser NON aggiunge automaticamente `Authtoken` su navigazioni
+  #      cross-origin: deve essere settato esplicitamente da JS della stessa
+  #      origine
+  #    - La policy CORS (vedi `MyConfiguration.addCorsMappings`) limita le
+  #      origini fidate, prevenendo che JS terzo possa effettuare richieste
+  #      con credenziali
+  #
+  # 3) Conseguenze
+  #    - Endpoint @PostMapping/@PutMapping/@DeleteMapping non necessitano
+  #      token CSRF nel body o header
+  #    - Frontend non gestisce CSRF token rotation
+  #    - Architettura compatibile con scaling orizzontale stateless
+  #
+  # Condizioni di INVALIDITA' (riaprire la suppression e riabilitare CSRF):
+  #    - Introduzione di `HttpServletRequest.getSession()`
+  #    - Annotazioni Spring Session
+  #    - Cookie con flag di sessione (es. integrazione Drupal session, SPID
+  #      via cookie)
+  #    - Qualsiasi autenticazione che si appoggi a credenziali ambient
+  #
+  # Verifica continua:
+  #    - Nessun endpoint deve impostare cookie `JSESSIONID`
+  #    - Code review obbligatoria su PR che introducano i pattern di cui sopra
+  #
+  # Riferimenti: Snyk Vulnerability DB Spring CSRF; OWASP CSRF Bearer token
+  # best practices; Report SAST PCM Facilita 202603 v1.0.
   'java/CSRF':
     - '*':
-        reason: 'Stateless JWT Bearer auth (Cognito). Nessun cookie di sessione, CSRF non applicabile. Vedi ADR-002 in facilita-docs/documentazione/security/.'
+        reason: 'Stateless JWT Bearer auth (Cognito) via header custom Authtoken; nessun cookie di sessione, CSRF non applicabile. Motivazione estesa nel commento sopra; condizioni di invalidita'' elencate.'
         expires: 2027-04-28T00:00:00.000Z
         ticket: 'SEC-CSRF-001'
         created: 2026-04-28T00:00:00.000Z
