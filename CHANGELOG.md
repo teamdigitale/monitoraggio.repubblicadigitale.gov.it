@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.520](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.519...1.0.0-test.520) (2026-04-29)
+
+
+### Features
+
+* **test:** aggiornamento data limite Aprile 20260429 ([c3eb923](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c3eb923475908f771b416ccb4cddd7078f35d4dc))
+
 ## [1.0.0-test.519](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.518...1.0.0-test.519) (2026-04-28)
 
 
