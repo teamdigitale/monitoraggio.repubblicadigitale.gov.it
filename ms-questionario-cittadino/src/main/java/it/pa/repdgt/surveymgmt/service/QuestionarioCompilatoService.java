@@ -2,6 +2,7 @@ package it.pa.repdgt.surveymgmt.service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -49,9 +50,16 @@ import it.pa.repdgt.surveymgmt.request.QuestionarioCompilatoRequest;
 public class QuestionarioCompilatoService {
 
 	private static final int SECTION_INDEX_SERVIZIO = 2;
+	private static final String PROPERTY_KEY_TIPO_SERVIZIO = "24";
 	private static final String PROPERTY_KEY_COMPETENZA = "25";
-	private static final Pattern PROPERTY_PATTERN_COMPETENZA = Pattern.compile(
-			"\\{'" + PROPERTY_KEY_COMPETENZA + "':\\s*\\['([^']*)'\\]\\}");
+	private static final String SEPARATORE_VOCI = "; ";
+	// Estrae ogni stringa quoted dal contenuto di un array (i valori non contengono mai ' grazie alla
+	// sanitizzazione lato FE in csvUtils.ts che sostituisce ' con ').
+	private static final Pattern PROPERTY_VALUE_PATTERN = Pattern.compile("'([^']*)'");
+	// Split su ": " preservando "(es.: ..." della voce "Risolvere i problemi tecnici" della
+	// firstLevelCompetenceMap. Necessario per supportare il legacy CSV-import che concatena le voci
+	// in un singolo elemento dell'array (vedi csvUtils.ts generateDescriptionFromMappedValues).
+	private static final Pattern COLON_SPLIT_PATTERN = Pattern.compile("(?<!es\\.):\\s+");
 
 	@Autowired
 	private CittadinoService cittadinoService;
@@ -400,13 +408,20 @@ public class QuestionarioCompilatoService {
 	}
 
 	public String getCompetenzaDigitale(String idQuestionario) {
+		return joinValuesOrNull(extractSezioneServizioPropertyValues(idQuestionario, PROPERTY_KEY_COMPETENZA));
+	}
+
+	public String getTipoServizioPrenotato(String idQuestionario) {
+		return joinValuesOrNull(extractSezioneServizioPropertyValues(idQuestionario, PROPERTY_KEY_TIPO_SERVIZIO));
+	}
+
+	private List<String> extractSezioneServizioPropertyValues(String idQuestionario, String propertyKey) {
 		if (idQuestionario == null) {
 			return null;
 		}
 
 		Optional<QuestionarioCompilatoCollection> mongoDoc = questionarioCompilatoMongoRepository
 				.findQuestionarioCompilatoById(idQuestionario);
-
 		if (!mongoDoc.isPresent()) {
 			log.debug("Documento MongoDB non trovato per questionario={}", idQuestionario);
 			return null;
@@ -423,12 +438,31 @@ public class QuestionarioCompilatoService {
 			return null;
 		}
 
-		Matcher matcher = PROPERTY_PATTERN_COMPETENZA.matcher(questionAnswer.toString());
-		if (matcher.find()) {
-			return matcher.group(1);
+		Pattern arrayPattern = Pattern.compile(
+				"\\{'" + Pattern.quote(propertyKey) + "':\\s*\\[([^\\]]*)\\]\\}");
+		Matcher arrayMatcher = arrayPattern.matcher(questionAnswer.toString());
+		if (!arrayMatcher.find()) {
+			log.debug("Property '{}' non trovata nella sezione servizio del documento {}", propertyKey,
+					idQuestionario);
+			return null;
 		}
 
-		log.debug("Competenza digitale non trovata nel documento {}", idQuestionario);
-		return null;
+		List<String> values = new ArrayList<>();
+		Matcher valueMatcher = PROPERTY_VALUE_PATTERN.matcher(arrayMatcher.group(1));
+		while (valueMatcher.find()) {
+			String value = valueMatcher.group(1);
+			// Supporta sia il formato form-fill (un elemento per voce) sia il formato CSV-import
+			// (un elemento con voci unite da ": ").
+			for (String part : COLON_SPLIT_PATTERN.split(value)) {
+				if (!part.isEmpty()) {
+					values.add(part);
+				}
+			}
+		}
+		return values.isEmpty() ? null : values;
+	}
+
+	private static String joinValuesOrNull(List<String> values) {
+		return (values == null || values.isEmpty()) ? null : String.join(SEPARATORE_VOCI, values);
 	}
 }

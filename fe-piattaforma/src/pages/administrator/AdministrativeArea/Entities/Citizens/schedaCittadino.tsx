@@ -30,7 +30,7 @@ const SchedaCittadino: React.FC = () => {
       scheda,
       schedaCittadinoFields,
       schedaCittadinoTitle,
-      '/assets/img/logo-scritta-blu-x2.png',
+      '/assets/img/header_pdf_cittadino.jpg',
       `scheda_cittadino_${scheda.idCittadino}.pdf`
     );
   };
