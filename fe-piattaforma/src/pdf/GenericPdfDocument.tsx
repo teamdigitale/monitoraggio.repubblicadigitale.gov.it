@@ -1,24 +1,22 @@
 import React from 'react';
-import { Document, Page, Text, View, Image, StyleSheet } from '@react-pdf/renderer';
+import { Document, Image, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
 import type { FieldEntry } from './fieldsConfig';
 
 const styles = StyleSheet.create({
   page: { padding: 36, fontSize: 10, fontFamily: 'Helvetica' },
-  header: {
-    position: 'relative',
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 36,
+  // A4 portrait = 595pt; con padding 36pt per lato la larghezza utile e' 523pt.
+  // Altezza calcolata sull'aspect ratio nativo dell'immagine 1190x119 (~10:1) -> 52pt.
+  headerImage: {
+    width: 523,
+    height: 52,
   },
-  logo: { width: 90, height: 28, objectFit: 'contain' },
-  title: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
+  pageTitle: {
     textAlign: 'center',
     fontSize: 14,
     fontFamily: 'Helvetica-Bold',
     textTransform: 'uppercase',
+    marginTop: 36,
+    marginBottom: 24,
   },
   sectionTitle: {
     fontSize: 11,
@@ -43,7 +41,19 @@ const styles = StyleSheet.create({
   valueSmall: {
     fontSize: 8,
   },
+  footer: {
+    position: 'absolute',
+    bottom: 18,
+    left: 36,
+    right: 36,
+    textAlign: 'center',
+    fontSize: 9,
+    color: '#555',
+  },
 });
+
+const FOOTER_TEXT =
+  'I dati contenuti in questa scheda di dettaglio sono stati estratti in maniera automatica dalla piattaforma Facilita';
 
 interface GenericPdfDocumentProps {
   records: Record<string, unknown>[];
@@ -110,11 +120,12 @@ export const GenericPdfDocument: React.FC<GenericPdfDocumentProps> = ({
 
       return (
         <Page size='A4' style={styles.page} key={`page-${pageIdx}`}>
-          <View style={styles.header}>
-            <Image src={logoSrc} style={styles.logo} />
-            <Text style={styles.title}>{title}</Text>
-          </View>
+          <Image src={logoSrc} style={styles.headerImage} />
+          <Text style={styles.pageTitle}>{title}</Text>
           {elements}
+          <Text style={styles.footer} fixed>
+            {FOOTER_TEXT}
+          </Text>
         </Page>
       );
     })}
