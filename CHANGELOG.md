@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.521](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.520...1.0.0-test.521) (2026-04-30)
+
+
+### Features
+
+* **U538:** ulteriori richieste 20260430 ([edb7113](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/edb711360a1c2602af1b387f582ae0ab579d32b3))
+
 ## [1.0.0-test.520](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.519...1.0.0-test.520) (2026-04-29)
 
 
