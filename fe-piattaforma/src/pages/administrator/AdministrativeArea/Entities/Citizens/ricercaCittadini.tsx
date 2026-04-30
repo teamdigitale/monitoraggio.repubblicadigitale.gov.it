@@ -83,7 +83,7 @@ const RicercaCittadini: React.FC = () => {
                 cittadino,
                 schedaCittadinoFields,
                 schedaCittadinoTitle,
-                '/assets/img/logo-scritta-blu-x2.png',
+                '/assets/img/header_pdf_cittadino.jpg',
                 `scheda_cittadino_${cittadino.idCittadino}.pdf`
               );
             }}
@@ -97,7 +97,7 @@ const RicercaCittadini: React.FC = () => {
                 trovati,
                 schedaCittadinoFields,
                 schedaCittadinoTitle,
-                '/assets/img/logo-scritta-blu-x2.png',
+                '/assets/img/header_pdf_cittadino.jpg',
                 `schede_cittadini_${trovati.length}.pdf`
               );
             }}

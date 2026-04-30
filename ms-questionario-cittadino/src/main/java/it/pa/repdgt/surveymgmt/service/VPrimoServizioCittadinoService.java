@@ -105,9 +105,18 @@ public class VPrimoServizioCittadinoService {
 
     private PrimoServizioCittadinoDTO toDTOConCompetenza(VPrimoServizioCittadinoEntity entity) {
         PrimoServizioCittadinoDTO dto = primoServizioCittadinoMapper.toDTO(entity);
-        dto.setCompetenzaDigitale(
-                questionarioCompilatoService.getCompetenzaDigitale(entity.getIdQuestionario())
-        );
+        String idQuestionario = entity.getIdQuestionario();
+
+        // tipologiaServizio: voci dal questionario compilato (key '24'), separate da "; ".
+        // Fallback alla view DB normalizzando il separatore "," a "; ".
+        String tipoServizioDaQuestionario = questionarioCompilatoService.getTipoServizioPrenotato(idQuestionario);
+        if (tipoServizioDaQuestionario != null) {
+            dto.setTipologiaServizio(tipoServizioDaQuestionario);
+        } else if (dto.getTipologiaServizio() != null) {
+            dto.setTipologiaServizio(dto.getTipologiaServizio().replaceAll("\\s*,\\s*", "; "));
+        }
+
+        dto.setCompetenzaDigitale(questionarioCompilatoService.getCompetenzaDigitale(idQuestionario));
         return dto;
     }
 
