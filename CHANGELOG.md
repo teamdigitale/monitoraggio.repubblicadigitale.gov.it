@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.523](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.522...1.0.0-test.523) (2026-05-05)
+
+
+### Features
+
+* **secu2:** update rocketchat 20260505 ([8ae82ff](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8ae82ff097bd507d3dc84c1483e748c7c28b9004))
+
 ## [1.0.0-test.522](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.521...1.0.0-test.522) (2026-04-30)
 
 
