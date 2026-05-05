@@ -1,5 +1,17 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.522](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.521...1.0.0-test.522) (2026-04-30)
+
+
+### Features
+
+* **secu2:** incremento file snyk 20260429 ([2193758](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2193758f9af65bb7328b1ff89dfb7d50a3a0b284))
+
+
+### Bug Fixes
+
+* **secu2:** remediation secu 2 20260428 ([a9b2774](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/a9b2774b0ef5e5f81bc44e45976996abd6ddfa94))
+
 ## [1.0.0-test.521](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.520...1.0.0-test.521) (2026-04-30)
 
 
