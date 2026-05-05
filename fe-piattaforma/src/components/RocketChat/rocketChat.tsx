@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { RocketChatLogin } from '../../redux/features/user/userThunk';
 import { getSessionValues, setSessionValues } from '../../utils/sessionHelper';
@@ -34,7 +34,7 @@ const RocketChat = () => {
   const authenticateIFrame = () => {
     const target = document.getElementById('rcChannel');
     if (target && rocketChatToken && rocketChatOrigin) {
-      console.log('authenticateIFrame');
+      console.log('authenticateIFrame: ', rocketChatToken);
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       target.contentWindow.postMessage(
@@ -74,6 +74,15 @@ const RocketChat = () => {
   };
 
   const handleOnRocketChatLoad = () => {
+    const iframe = document.getElementById('rcChannel') as HTMLIFrameElement | null;
+    // Al primo onLoad ricarico l'iframe (equivalente di "Reload frame" del browser)
+    // per inizializzare correttamente la sessione cookie prima dell'auth via postMessage.
+    // Il flag su dataset evita loop: il reload riattiva onLoad ma il secondo passaggio prosegue.
+    if (iframe && !iframe.dataset.reloaded) {
+      iframe.dataset.reloaded = '1';
+      iframe.src = iframe.src;
+      return;
+    }
     window.addEventListener('message', manageNotification);
     getRocketChatToken();
   };
@@ -81,6 +90,7 @@ const RocketChat = () => {
   const getRocketChatToken = async () => {
     try {
       const token = JSON.parse(getSessionValues('rocketchat'))?.token;
+      console.log("token", token);
       if (token) {
         setRocketChatToken(token);
       } else {
@@ -88,6 +98,7 @@ const RocketChat = () => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         if (res) {
+          console.log("res", res);
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           setRocketChatToken(res.data?.authToken);
