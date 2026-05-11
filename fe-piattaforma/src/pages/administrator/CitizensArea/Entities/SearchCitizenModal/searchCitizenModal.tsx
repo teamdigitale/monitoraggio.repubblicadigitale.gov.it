@@ -22,6 +22,7 @@ import { useParams } from 'react-router-dom';
 import {
   AssociateCitizenToService,
   GetCitizenListServiceDetail,
+  GetServicesDetail,
 } from '../../../../../redux/features/administrativeArea/services/servicesThunk';
 import { SurveySectionPayloadI } from '../../../../../redux/features/administrativeArea/surveys/surveysSlice';
 import { TableRowI } from '../../../../../components/Table/table';
@@ -315,8 +316,10 @@ const SearchCitizenModal: React.FC<SearchCitizenModalI> = () => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         if (res) {
-          // rifaccio get cittadini servizio
+          // rifaccio get cittadini servizio e dettaglio servizio
+          // (lo stato del servizio puo' cambiare al primo cittadino associato)
           dispatch(GetCitizenListServiceDetail(serviceId));
+          dispatch(GetServicesDetail(serviceId));
           resetModal();
         }
       }
