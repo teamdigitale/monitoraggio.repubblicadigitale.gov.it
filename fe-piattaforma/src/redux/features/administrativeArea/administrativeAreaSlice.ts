@@ -61,6 +61,7 @@ export interface AreaAmministrativaStateI {
   headquarters: {
     detail: any;
     list: HeadquarterLight[] | null;
+    tipologieUbicazione: { id: number; descrizione: string }[];
   };
   services: {
     list: ServicesI[];
@@ -121,6 +122,7 @@ const initialState: AreaAmministrativaStateI = {
   headquarters: {
     detail: {},
     list: null,
+    tipologieUbicazione: [],
   },
   services: {
     list: [],
@@ -380,6 +382,9 @@ export const administrativeAreaSlice = createSlice({
     resetHeadquarterDetails: (state) => {
       state.headquarters.detail = {};
     },
+    setTipologieUbicazione: (state, action) => {
+      state.headquarters.tipologieUbicazione = action.payload || [];
+    },
     setUserDetails: (state, action) => {
       state.users.detail = { ...action.payload };
     },
@@ -459,6 +464,7 @@ export const {
   setHeadquartersList,
   setHeadquarterDetails,
   resetHeadquarterDetails,
+  setTipologieUbicazione,
   setUserDetails,
   resetUserDetails,
   setServicesList,
@@ -499,6 +505,8 @@ export const selectAuthorities = (state: RootState) =>
   state.administrativeArea.authorities;
 export const selectHeadquarters = (state: RootState) =>
   state.administrativeArea.headquarters;
+export const selectTipologieUbicazione = (state: RootState) =>
+  state.administrativeArea.headquarters.tipologieUbicazione;
 export const selectServices = (state: RootState) =>
   state.administrativeArea.services;
 export const selectSezioneQ3compilato = (state: RootState) =>

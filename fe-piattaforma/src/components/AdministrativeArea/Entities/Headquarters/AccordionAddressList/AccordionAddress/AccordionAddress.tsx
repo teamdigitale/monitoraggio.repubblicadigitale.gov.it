@@ -7,8 +7,11 @@ import {
   Icon,
 } from 'design-react-kit';
 import React, { useState } from 'react';
+import { useAppSelector } from '../../../../../../redux/hooks';
+import { selectTipologieUbicazione } from '../../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { dayCode } from '../../../../../../pages/administrator/AdministrativeArea/Entities/utils';
 import AddressForm from '../../../../../General/AddressForm/AddressForm';
+import Select from '../../../../../Form/select';
 import OpenDaysSelect from '../../OpenDaysSelect/OpenDaysSelect';
 
 export interface OpenDayHours {
@@ -25,6 +28,7 @@ export interface Address {
   cap: string;
   regione: string;
   nazione: string;
+  tipologiaUbicazione?: number | null;
 }
 
 export interface AddressInfoI {
@@ -54,9 +58,20 @@ const AccordionAddress: React.FC<AccordionAddressI> = ({
   // handleOnToggle,
 }) => {
   const [addressOpen, setAddressOpen] = useState(false);
+  const tipologieUbicazione = useAppSelector(selectTipologieUbicazione);
   // const accordionToggleHandler = (isOpen: boolean) => {
   //   if (handleOnToggle) handleOnToggle(isOpen);
   // };
+
+  const tipologiaChangeHandler = (value: number | null) => {
+    onAddressInfoChange({
+      ...addressInfo,
+      indirizzoSede: {
+        ...addressInfo.indirizzoSede,
+        tipologiaUbicazione: value,
+      },
+    });
+  };
 
   const addressChangeHandler = (
     address: string,
@@ -173,6 +188,24 @@ const AccordionAddress: React.FC<AccordionAddressI> = ({
           }
           formDisabled={isReadOnly}
         />
+
+        <div className='form-row mx-3'>
+          <Select
+            className='mt-3'
+            label='Tipologia ubicazione sede'
+            col='col-12 col-lg-6'
+            required
+            value={addressInfo.indirizzoSede.tipologiaUbicazione ?? ''}
+            isDisabled={isReadOnly}
+            options={tipologieUbicazione.map((t) => ({
+              value: t.id,
+              label: t.descrizione,
+            }))}
+            onInputChange={(value) =>
+              tipologiaChangeHandler(value ? Number(value) : null)
+            }
+          />
+        </div>
 
         <OpenDaysSelect
           openDays={addressInfo.fasceOrarieAperturaIndirizzoSede || {}}

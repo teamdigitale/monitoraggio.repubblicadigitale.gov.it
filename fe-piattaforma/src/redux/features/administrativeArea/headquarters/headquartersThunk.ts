@@ -5,6 +5,7 @@ import { hideLoader, showLoader } from '../../app/appSlice';
 import {
   setHeadquarterDetails,
   setHeadquartersList,
+  setTipologieUbicazione,
 } from '../administrativeAreaSlice';
 import { getUserHeaders } from '../../user/userThunk';
 
@@ -21,6 +22,42 @@ export interface HeadquarterFacilitator {
   stato: string;
   codiceFiscale?: string;
 }
+
+const GetTipologieUbicazioneAction = {
+  type: 'headquarters/GetTipologieUbicazione',
+};
+export const GetTipologieUbicazione =
+  () => async (dispatch: Dispatch) => {
+    try {
+      dispatch({ ...GetTipologieUbicazioneAction });
+      const res = await API.get('/tipologia-ubicazione-sede');
+      if (res?.data) {
+        dispatch(setTipologieUbicazione(res.data));
+      }
+    } catch (error) {
+      console.log('GetTipologieUbicazione error', error);
+    }
+  };
+
+// Normalizza il payload del dettaglio sede mappando `idTipologiaUbicazione` (esposto
+// dalla projection BE) nel campo `tipologiaUbicazione` usato dal payload di POST/PUT
+// e dai componenti del form.
+const normalizeDettaglioSede = (dettaglioSede: any) => {
+  if (!dettaglioSede?.indirizziSedeFasceOrarie) return dettaglioSede;
+  return {
+    ...dettaglioSede,
+    indirizziSedeFasceOrarie: dettaglioSede.indirizziSedeFasceOrarie.map(
+      (info: any) => ({
+        ...info,
+        indirizzoSede: {
+          ...info.indirizzoSede,
+          tipologiaUbicazione:
+            info.indirizzoSede?.idTipologiaUbicazione ?? null,
+        },
+      })
+    ),
+  };
+};
 
 const SetHeadquartersDetailsAction = {
   type: 'headquarters/SetHeadquartersDetails',
@@ -62,7 +99,7 @@ export const GetHeadquarterLightDetails =
       if (res?.data) {
         dispatch(
           setHeadquarterDetails({
-            dettagliInfoSede: res.data.dettaglioSede,
+            dettagliInfoSede: normalizeDettaglioSede(res.data.dettaglioSede),
             facilitatoriSede: res.data.facilitatoriSede,
             dettaglioProgetto: res.data.dettaglioProgetto,
           })
@@ -90,7 +127,7 @@ export const GetHeadquarterDetails =
       if (res?.data) {
         dispatch(
           setHeadquarterDetails({
-            dettagliInfoSede: res.data.dettaglioSede,
+            dettagliInfoSede: normalizeDettaglioSede(res.data.dettaglioSede),
             facilitatoriSede: res.data.facilitatoriSede,
             dettaglioProgetto: res.data.dettaglioProgetto,
             programmaPolicy: res.data.programmaPolicy,

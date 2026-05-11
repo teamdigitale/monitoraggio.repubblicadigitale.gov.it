@@ -140,7 +140,11 @@ export const validateAddressList = (addressList: AddressInfoI[]) => {
       isValid = Object.entries(addressInfo.indirizzoSede).every(
         ([key, value]) =>
           ['via', 'provincia', 'comune', 'cap'].includes(key) ? value : true
-      );
+      ) && isValid;
+      isValid =
+        addressInfo.indirizzoSede.tipologiaUbicazione !== undefined &&
+        addressInfo.indirizzoSede.tipologiaUbicazione !== null &&
+        isValid;
       isValid =
         Object.entries(addressInfo.fasceOrarieAperturaIndirizzoSede).every(
           ([key, value]) =>

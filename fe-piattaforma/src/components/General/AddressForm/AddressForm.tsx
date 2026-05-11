@@ -96,11 +96,14 @@ const AddressForm: React.FC<AddressFormI> = ({
   }, [province, city, initValues]);
 
   const onSelectProvince = (value: string) => {
-    console.log(value, 'il value di select');
     value = setProvinceAndRegion(value);
     const [selectedProvince, selectedRegion] = value.split('/');
     const selectedState = selectedRegion.replace(/\s+/g, '-').toLowerCase();
-    onAddressChange(address, selectedProvince, selectedState, city, CAP);
+    // Cambio provincia => azzero comune e CAP per mantenere coerenza
+    // (il form era buggato: lasciava city/CAP valorizzati con valori non piu'
+    // appartenenti alla provincia selezionata).
+    onAddressChange(address, selectedProvince, selectedState, '', '');
+    setCAPS([]);
 
     axios(`/assets/indirizzi/comuni/${selectedState}.json`)
       .then((response) => {
