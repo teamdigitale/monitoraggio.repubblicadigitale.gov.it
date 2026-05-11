@@ -33,6 +33,10 @@ public class NuovaSedeRequest extends SceltaProfiloParam implements Serializable
 
 	@NotEmpty
 	private List<IndirizzoSedeRequest> indirizziSedeFasceOrarie;
+
+	@NotNull
+	@JsonProperty(value = "serviziAltreLingue")
+	private Boolean serviziAltreLingue;
 	
 	@Setter
 	@Getter
@@ -74,6 +78,9 @@ public class NuovaSedeRequest extends SceltaProfiloParam implements Serializable
 		
 		@JsonProperty(value = "cancellato", defaultValue = "false")
 		private Boolean cancellato = false;
+
+		@JsonProperty(value = "tipologiaUbicazione")
+		private Long tipologiaUbicazione;
 
 	}
 }

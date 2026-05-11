@@ -1,6 +1,7 @@
 package it.pa.repdgt.ente.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,21 +13,27 @@ import it.pa.repdgt.shared.entity.IndirizzoSedeEntity;
 
 @Repository
 public interface IndirizzoSedeRepository extends JpaRepository<IndirizzoSedeEntity, Long> {
+
+	Optional<IndirizzoSedeEntity> findFirstByIdSedeOrderByIdAsc(Long idSede);
+
 	@Query(value = ""
 				 + " SELECT "
-				 + "	 ind_sede.ID   		as id "
-				 + "	,ind_sede.SEDE_ID   as sedeId "
-				 + "	,ind_sede.VIA 		as via "
-				 + "	,ind_sede.CIVICO 	as civico "
-				 + "	,ind_sede.COMUNE 	as comune "
-				 + "	,ind_sede.PROVINCIA as provincia "
-				 + "	,ind_sede.REGIONE   as regione "
-				 + "	,ind_sede.CAP 		as cap "
-				 + "	,ind_sede.NAZIONE 	as nazione"
+				 + "	 ind_sede.ID                              as id "
+				 + "	,ind_sede.SEDE_ID                         as sedeId "
+				 + "	,ind_sede.VIA                             as via "
+				 + "	,ind_sede.CIVICO                          as civico "
+				 + "	,ind_sede.COMUNE                          as comune "
+				 + "	,ind_sede.PROVINCIA                       as provincia "
+				 + "	,ind_sede.REGIONE                         as regione "
+				 + "	,ind_sede.CAP                             as cap "
+				 + "	,ind_sede.NAZIONE                         as nazione "
+				 + "	,ind_sede.ID_TIPOLOGIA_UBICAZIONE_PUNTO   as idTipologiaUbicazione "
+				 + "	,tip_ub.DESCRIZIONE                       as descrizioneTipologiaUbicazione "
 				 + " FROM "
-				 + "	indirizzo_sede ind_sede"
+				 + "	indirizzo_sede ind_sede "
+				 + "	LEFT JOIN tipologia_ubicazione_punto tip_ub ON tip_ub.ID = ind_sede.ID_TIPOLOGIA_UBICAZIONE_PUNTO "
 				 + " WHERE 1=1 "
-				 + "	AND ind_sede.SEDE_ID = :idSede", 
+				 + "	AND ind_sede.SEDE_ID = :idSede",
 		   nativeQuery = true)
-	List<IndirizzoSedeProjection> findIndirizzoSedeByIdSede(@Param(value = "idSede") Long idSede); 
+	List<IndirizzoSedeProjection> findIndirizzoSedeByIdSede(@Param(value = "idSede") Long idSede);
 }
