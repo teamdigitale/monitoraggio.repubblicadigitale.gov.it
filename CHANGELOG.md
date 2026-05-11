@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.524](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.523...1.0.0-test.524) (2026-05-11)
+
+
+### Bug Fixes
+
+* **BF581:** aggiornamento stato servizio 20260511 ([b3ab3d6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b3ab3d65c722b50c940e4af2c7e98330ee3c515b))
+
 ## [1.0.0-test.523](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.522...1.0.0-test.523) (2026-05-05)
 
 
