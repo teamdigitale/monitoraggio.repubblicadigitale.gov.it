@@ -105,25 +105,61 @@ public class SedeService {
 		final SedeEntity sedeSalvata = this.sedeRepository.save(sede);
 
 		// salvo indirizzi_sede associati alla sede salvata in precedenza
-		nuovaSedeRequest
-				.getIndirizziSedeFasceOrarie()
-				.forEach(indirizzoSedeRequest -> {
-					final IndirizzoSedeEntity indirizzoSede = this.indirizzoSedeMapper
-							.toEntityFrom(indirizzoSedeRequest);
-					indirizzoSede.setIdSede(sedeSalvata.getId());
-					indirizzoSede.setDataOraCreazione(new Date());
-					indirizzoSede.setDataOraAggiornamento(new Date());
-					final IndirizzoSedeEntity indirizzoSedeSalvato = this.indirizzoSedeService
-							.salvaIndirizzoSede(indirizzoSede);
+		nuovaSedeRequest.getIndirizziSedeFasceOrarie().forEach(indirizzoSedeRequest -> {
+			IndirizzoSedeEntity indirizzoSede = this.salvaOAggiornaIndirizzo(indirizzoSedeRequest, sedeSalvata.getId());
 
-					IndirizzoSedeFasciaOrariaEntity fasceOrarieDaSalvare = indirizzoSedeRequest
-							.getFasceOrarieAperturaIndirizzoSede();
-					fasceOrarieDaSalvare.setIdIndirizzoSede(indirizzoSedeSalvato.getId());
-					fasceOrarieDaSalvare.setDataOraCreazione(new Date());
-					fasceOrarieDaSalvare.setDataOraAggiornamento(fasceOrarieDaSalvare.getDataOraCreazione());
-					this.indirizzoSedeFasciaOrariaService.salvaIndirizzoSedeFasciaOraria(fasceOrarieDaSalvare);
-				});
-		return sedeSalvata;
+			IndirizzoSedeFasciaOrariaEntity fasceOrarieDaSalvare = indirizzoSedeRequest.getFasceOrarieAperturaIndirizzoSede();
+			fasceOrarieDaSalvare.setIdIndirizzoSede(indirizzoSede.getId());
+			fasceOrarieDaSalvare.setDataOraCreazione(new Date());
+			fasceOrarieDaSalvare.setDataOraAggiornamento(fasceOrarieDaSalvare.getDataOraCreazione());
+			indirizzoSedeFasciaOrariaService.salvaIndirizzoSedeFasciaOraria(fasceOrarieDaSalvare);
+		});
+		return this.allineaCampiGeograficiSedeConPrimoIndirizzo(sedeSalvata);
+	}
+
+	/**
+	 * Allinea i campi geografici denormalizzati su sede prendendoli dall'indirizzo
+	 * con id minore associato (record "primario"), garantendo coerenza dei dati
+	 * verso il datawarehouse che legge da sede invece che da indirizzo_sede.
+	 * Se la sede non ha indirizzi associati la sede viene restituita invariata.
+	 */
+	private SedeEntity allineaCampiGeograficiSedeConPrimoIndirizzo(SedeEntity sede) {
+		Optional<IndirizzoSedeEntity> primoIndirizzo = this.indirizzoSedeService
+				.getPrimoIndirizzoByIdSede(sede.getId());
+		if (!primoIndirizzo.isPresent()) {
+			return sede;
+		}
+		IndirizzoSedeEntity primo = primoIndirizzo.get();
+		sede.setVia(primo.getVia());
+		sede.setCivico(primo.getCivico());
+		sede.setComune(primo.getComune());
+		sede.setProvincia(primo.getProvincia());
+		sede.setRegione(primo.getRegione());
+		sede.setCap(primo.getCap());
+		sede.setNazione(primo.getNazione());
+		sede.setDataOraAggiornamento(new Date());
+		return this.sedeRepository.save(sede);
+	}
+
+	/**
+	 * Crea o aggiorna un IndirizzoSede a partire dalla request. In update carica
+	 * l'entity esistente e applica solo i campi gestiti dal mapper, preservando
+	 * idSede pregresso, dataOraCreazione e gli altri campi non in request.
+	 */
+	private IndirizzoSedeEntity salvaOAggiornaIndirizzo(IndirizzoSedeRequest indirizzoRequest, Long idSede) {
+		Date now = new Date();
+		IndirizzoSedeEntity entity;
+		if (indirizzoRequest.getId() == null) {
+			entity = this.indirizzoSedeMapper.toEntityFrom(indirizzoRequest);
+			entity.setIdSede(idSede);
+			entity.setDataOraCreazione(now);
+		} else {
+			entity = this.indirizzoSedeService.getIndirizzoSedeById(indirizzoRequest.getId());
+			this.indirizzoSedeMapper.updateEntityFrom(entity, indirizzoRequest);
+			entity.setIdSede(idSede);
+		}
+		entity.setDataOraAggiornamento(now);
+		return this.indirizzoSedeService.salvaIndirizzoSede(entity);
 	}
 
 	@LogMethod
@@ -224,34 +260,22 @@ public class SedeService {
 
 		// aggiorno indirizzi della sede
 		List<IndirizzoSedeRequest> listaIndirizzi = nuovaSedeRequest.getIndirizziSedeFasceOrarie();
-		listaIndirizzi.stream()
-				.forEach(indirizzoRequest -> {
-					// se il campo "cancellato" è a TRUE, cancelliamo l'indirizzo dalla sede
-					if (indirizzoRequest.getCancellato() == true) {
-						this.cancellaFasceOrarieByIdIndirizzo(indirizzoRequest.getId());
-						this.indirizzoSedeService.cancellaIndirizzoSedeById(indirizzoRequest.getId());
-					} else if (indirizzoRequest.getId() == null) {
-						// se l'ID dell'indirizzo è null, allora aggiungiamo l'indirizzo alla sede
-						IndirizzoSedeEntity indirizzoSedeEntity = this.indirizzoSedeMapper
-								.toEntityFrom(indirizzoRequest);
-						indirizzoSedeEntity.setIdSede(idSede);
-						indirizzoSedeEntity.setDataOraCreazione(new Date());
-						indirizzoSedeEntity.setDataOraAggiornamento(new Date());
-						indirizzoSedeEntity = this.indirizzoSedeService.salvaIndirizzoSede(indirizzoSedeEntity);
-						this.assegnaFasceOrarie(indirizzoRequest, indirizzoSedeEntity);
-					} else {
-						// se l'ID dell'indirizzo è diverso da null, allora aggiorniamo l'indirizzo
-						IndirizzoSedeEntity indirizzoSedeEntity = this.indirizzoSedeMapper
-								.toEntityFrom(indirizzoRequest);
-						indirizzoSedeEntity.setIdSede(idSede);
-						indirizzoSedeEntity.setId(indirizzoRequest.getId());
-						indirizzoSedeEntity.setDataOraAggiornamento(new Date());
-						indirizzoSedeEntity.setDataOraCreazione(this.indirizzoSedeService
-								.getIndirizzoSedeById(indirizzoRequest.getId()).getDataOraCreazione());
-						this.indirizzoSedeService.salvaIndirizzoSede(indirizzoSedeEntity);
-						this.aggiornaFasceOrarie(indirizzoRequest, indirizzoSedeEntity);
-					}
-				});
+		listaIndirizzi.forEach(indirizzoRequest -> {
+			if (Boolean.TRUE.equals(indirizzoRequest.getCancellato())) {
+				this.cancellaFasceOrarieByIdIndirizzo(indirizzoRequest.getId());
+				this.indirizzoSedeService.cancellaIndirizzoSedeById(indirizzoRequest.getId());
+				return;
+			}
+			boolean isNew = indirizzoRequest.getId() == null;
+			IndirizzoSedeEntity indirizzoSedeEntity = this.salvaOAggiornaIndirizzo(indirizzoRequest, idSede);
+			if (isNew) {
+				this.assegnaFasceOrarie(indirizzoRequest, indirizzoSedeEntity);
+			} else {
+				this.aggiornaFasceOrarie(indirizzoRequest, indirizzoSedeEntity);
+			}
+		});
+
+		this.allineaCampiGeograficiSedeConPrimoIndirizzo(sedeFetchDB);
 	}
 
 	public void assegnaFasceOrarie(IndirizzoSedeRequest indirizzoRequest, IndirizzoSedeEntity indirizzoSedeEntity) {
