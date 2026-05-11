@@ -3,7 +3,10 @@ import { useDispatch } from 'react-redux';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
 import { selectQuestionarioTemplateSnapshot } from '../../../../../redux/features/administrativeArea/administrativeAreaSlice';
-import { GetCitizenListServiceDetail } from '../../../../../redux/features/administrativeArea/services/servicesThunk';
+import {
+  GetCitizenListServiceDetail,
+  GetServicesDetail,
+} from '../../../../../redux/features/administrativeArea/services/servicesThunk';
 import { SurveySectionPayloadI } from '../../../../../redux/features/administrativeArea/surveys/surveysSlice';
 import {
   GetEntityDetail,
@@ -99,8 +102,10 @@ const ManageCitizenInService: React.FC<ManageCitizenInServiceI> = ({
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       if (res) {
-        // rifaccio get cittadini servizio
+        // rifaccio get cittadini servizio e dettaglio servizio
+        // per mantenere allineato lo stato del servizio mostrato in header
         dispatch(GetCitizenListServiceDetail(serviceId));
+        dispatch(GetServicesDetail(serviceId));
         resetModal();
       }
     }
