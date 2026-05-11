@@ -1,12 +1,12 @@
 package it.pa.repdgt.ente.mapper;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import it.pa.repdgt.ente.util.RegioneUtil;
+
 import org.springframework.stereotype.Component;
 
 import it.pa.repdgt.ente.bean.DettaglioProgettoLightBean;
@@ -16,7 +16,6 @@ import it.pa.repdgt.ente.request.NuovaSedeRequest.IndirizzoSedeRequest;
 import it.pa.repdgt.ente.resource.SedeResource;
 import it.pa.repdgt.shared.entity.ProgettoEntity;
 import it.pa.repdgt.shared.entity.SedeEntity;
-import org.springframework.util.StringUtils;
 
 @Component
 public class SedeMapper {
@@ -26,6 +25,7 @@ public class SedeMapper {
 		sedeEntity.setNome(nuovaSedeRequest.getNome());
 		sedeEntity.setServiziErogati(nuovaSedeRequest.getServiziErogati());
 		sedeEntity.setItinere(nuovaSedeRequest.getIsItinere());
+		sedeEntity.setServiziAltreLingue(nuovaSedeRequest.getServiziAltreLingue());
 
 		if (nuovaSedeRequest.getIndirizziSedeFasceOrarie() == null
 				|| nuovaSedeRequest.getIndirizziSedeFasceOrarie().isEmpty()) {
@@ -49,6 +49,7 @@ public class SedeMapper {
 		dettaglioSede.setNome(sedeFetch.getNome());
 		dettaglioSede.setServiziErogati(sedeFetch.getServiziErogati());
 		dettaglioSede.setItinere(sedeFetch.getItinere());
+		dettaglioSede.setServiziAltreLingue(sedeFetch.getServiziAltreLingue());
 		return dettaglioSede;
 	}
 
@@ -59,7 +60,6 @@ public class SedeMapper {
 		SedeResource sedeResource = new SedeResource();
 		sedeResource.setId(sedeEntity.getId());
 		sedeResource.setNome(sedeEntity.getNome());
-		// TODO aggiungere eventuali altri campi ....
 		return sedeResource;
 	}
 
@@ -85,20 +85,10 @@ public class SedeMapper {
 		sedeFetchDB.setNome(nuovaSedeRequest.getNome());
 		sedeFetchDB.setServiziErogati(nuovaSedeRequest.getServiziErogati());
 		sedeFetchDB.setItinere(nuovaSedeRequest.getIsItinere());
-
-		Optional<IndirizzoSedeRequest> indirizzoSedeFiltrata = nuovaSedeRequest.getIndirizziSedeFasceOrarie()
-				.stream()
-				.filter(indirizzoSede -> indirizzoSede.getId() == sedeFetchDB.getId()).findFirst();
-
-		if (indirizzoSedeFiltrata.isPresent()) {
-			sedeFetchDB.setVia(indirizzoSedeFiltrata.get().getVia());
-			sedeFetchDB.setCivico(indirizzoSedeFiltrata.get().getCivico());
-			sedeFetchDB.setComune(indirizzoSedeFiltrata.get().getComune());
-			sedeFetchDB.setRegione(indirizzoSedeFiltrata.get().getRegione());
-			sedeFetchDB.setProvincia(indirizzoSedeFiltrata.get().getProvincia());
-			sedeFetchDB.setNazione(indirizzoSedeFiltrata.get().getNazione());
-		}
-
+		sedeFetchDB.setServiziAltreLingue(nuovaSedeRequest.getServiziAltreLingue());
+		// I campi geografici di sede vengono allineati dopo l'aggiornamento degli indirizzi
+		// dal SedeService, prendendo i valori dall'indirizzo con id minore (primario per
+		// le export verso datawarehouse).
 		return sedeFetchDB;
 	}
 }

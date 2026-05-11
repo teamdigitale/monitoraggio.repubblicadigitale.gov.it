@@ -1,6 +1,7 @@
 package it.pa.repdgt.ente.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
@@ -38,6 +39,12 @@ public class IndirizzoSedeService {
 	@LogExecutionTime
 	public IndirizzoSedeEntity getIndirizzoSedeById(@NotNull Long id) {
 		return this.indirizzoSedeRepository.findById(id).get();
+	}
+
+	@LogMethod
+	@LogExecutionTime
+	public Optional<IndirizzoSedeEntity> getPrimoIndirizzoByIdSede(@NotNull Long idSede) {
+		return this.indirizzoSedeRepository.findFirstByIdSedeOrderByIdAsc(idSede);
 	}
 
 	@LogMethod

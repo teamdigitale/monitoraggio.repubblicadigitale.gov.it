@@ -78,4 +78,7 @@ public class SedeEntity implements Serializable {
 	@LastModifiedDate
 	@Column(name = "DATA_ORA_AGGIORNAMENTO")
 	private Date dataOraAggiornamento;
+
+	@Column(name = "SERVIZI_ALTRE_LINGUE")
+	private Boolean serviziAltreLingue = false;
 }

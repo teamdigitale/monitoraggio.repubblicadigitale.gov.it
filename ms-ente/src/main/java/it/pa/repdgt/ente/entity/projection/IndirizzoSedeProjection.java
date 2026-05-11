@@ -10,4 +10,6 @@ public interface IndirizzoSedeProjection {
 	public String getRegione();
 	public String getCap();
 	public String getNazione();
+	public Long getIdTipologiaUbicazione();
+	public String getDescrizioneTipologiaUbicazione();
 }
