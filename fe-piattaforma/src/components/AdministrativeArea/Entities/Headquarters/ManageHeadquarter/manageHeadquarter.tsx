@@ -6,7 +6,8 @@ import { formFieldI } from '../../../../../utils/formHelper';
 import FormHeadquarter from '../FormHeadquarter/FormHeadquarter';
 import { AddressInfoI } from '../AccordionAddressList/AccordionAddress/AccordionAddress';
 import { Form } from '../../../..';
-import { Toggle } from 'design-react-kit';
+import Select from '../../../../Form/select';
+import { Icon, UncontrolledTooltip } from 'design-react-kit';
 import AccordionAddressList from '../AccordionAddressList/AccordionAddressList';
 // import AddressInfoForm from '../AddressInfoForm/AddressInfoForm';
 import { useParams } from 'react-router-dom';
@@ -23,6 +24,7 @@ import {
   GetHeadquarterDetails,
   GetHeadquarterLightDetails,
   GetHeadquartersBySearch,
+  GetTipologieUbicazione,
 } from '../../../../../redux/features/administrativeArea/headquarters/headquartersThunk';
 import SearchBar from '../../../../SearchBar/searchBar';
 import clsx from 'clsx';
@@ -91,6 +93,7 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
         cap: '',
         regione: '',
         nazione: '',
+        tipologiaUbicazione: null,
       },
       fasceOrarieAperturaIndirizzoSede: {},
     },
@@ -98,6 +101,9 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
 
   // flag for conditionally render multiple address selection
   const [movingHeadquarter, setMovingHeadquarter] = useState<boolean>(false);
+  const [serviziAltreLingue, setServiziAltreLingue] = useState<boolean | null>(
+    null
+  );
   const { projectId, authorityId, headquarterId, identeDiRiferimento } =
     useParams();
   const authorityInfo =
@@ -112,6 +118,10 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
     'Per creare una sede itinerante, compila le informazioni relative ad almeno due indirizzi.';
 
   useEffect(() => {
+    dispatch(GetTipologieUbicazione());
+  }, [dispatch]);
+
+  useEffect(() => {
     if (creation && open) {
       setAddressList([
         {
@@ -123,11 +133,13 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
             cap: '',
             regione: '',
             nazione: '',
+            tipologiaUbicazione: null,
           },
           fasceOrarieAperturaIndirizzoSede: {},
         },
       ]);
       setMovingHeadquarter(false);
+      setServiziAltreLingue(null);
       dispatch(resetHeadquarterDetails());
       dispatch(setHeadquartersList(null));
     }
@@ -135,10 +147,17 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
 
   useEffect(() => {
     if (headquarterDetails) {
-      if (headquarterDetails?.indirizziSedeFasceOrarie)
+      if (headquarterDetails?.indirizziSedeFasceOrarie) {
         setAddressList([...headquarterDetails.indirizziSedeFasceOrarie]);
+      }
       if (headquarterDetails?.itinere)
         setMovingHeadquarter(headquarterDetails.itinere);
+      if (
+        headquarterDetails?.serviziAltreLingue !== undefined &&
+        headquarterDetails?.serviziAltreLingue !== null
+      ) {
+        setServiziAltreLingue(headquarterDetails.serviziAltreLingue);
+      }
     }
   }, [headquarterDetails]);
 
@@ -170,6 +189,7 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
           cap: '',
           regione: '',
           nazione: '',
+          tipologiaUbicazione: null,
         },
         fasceOrarieAperturaIndirizzoSede: {},
       });
@@ -194,8 +214,11 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
     },
   };
 
+  const isAllFormDataValid = (): boolean =>
+    isFormValid && serviziAltreLingue !== null && validateAddressList(addressList);
+
   const handleSaveAssignHeadquarter = async () => {
-    if (isFormValid && validateAddressList(addressList)) {
+    if (isAllFormDataValid()) {
       if (newFormValues && addressList.length) {
         if (projectId && (((authorityId || identeDiRiferimento) && headquarterId) || authorityInfo)) {
           const res: any = await dispatch(
@@ -203,6 +226,7 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
               authorityId ? authorityId : authorityInfo?.id,
               {
                 itinere: movingHeadquarter,
+                serviziAltreLingue,
                 ...newFormValues,
                 indirizziSedeFasceOrarie: [
                   ...addressList.map((addressInfo) => ({
@@ -255,6 +279,7 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
           cap: '',
           regione: '',
           nazione: '',
+          tipologiaUbicazione: null,
         },
         fasceOrarieAperturaIndirizzoSede: {},
       },
@@ -285,23 +310,101 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
         legend={legend}
       />
       <Form
-        legend='interruttore sede itinerante'
+        legend='Sede itinerante e servizi in altre lingue'
         id='form-manage-headquarter'
         className='mx-5 mb-5'
         showMandatory={false}
       >
         <Form.Row>
-          <div className='col-10 col-md-6'>
-            <Toggle
-              label='Sede Itinerante'
-              checked={movingHeadquarter}
-              onChange={(e) => setMovingHeadquarter(e.target.checked)}
+          <div className='col-12 col-md-6'>
+            <div className='d-flex align-items-center mb-2'>
+              <label
+                htmlFor='select-sede-itinerante'
+                className='mb-0 mr-2 font-weight-bold'
+              >
+                Sede itinerante <span className='text-danger'>*</span>
+              </label>
+              <span id='tooltip-sede-itinerante' className='d-inline-flex'>
+                <Icon
+                  icon='it-info-circle'
+                  size='sm'
+                  color='primary'
+                  aria-label='Informazione sede itinerante'
+                />
+              </span>
+              <UncontrolledTooltip
+                placement='right'
+                target='tooltip-sede-itinerante'
+                autohide={false}
+              >
+                <strong>Che cos&apos;è una sede itinerante?</strong>
+                <br />
+                Per sede itinerante si intende qualsiasi soluzione logistica
+                che garantisca la presenza periodica del punto di facilitazione
+                sul territorio, per esempio i mezzi mobili attrezzati (come i
+                camper) oppure i team di facilitatori che operano periodicamente
+                presso spazi messi a disposizione da comuni, enti pubblici o
+                soggetti privati aderenti all&apos;iniziativa. Scopri di più sul{' '}
+                <a
+                  href='https://dtd-gov.notion.site/3-I-luoghi-della-facilitazione-digitale-b88f2c81c3f445bc81b1d583cd9e1283'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  style={{ color: '#fff', textDecoration: 'underline' }}
+                >
+                  Manuale della Facilitazione
+                </a>
+                .
+              </UncontrolledTooltip>
+            </div>
+            <Select
+              id='select-sede-itinerante'
+              value={movingHeadquarter ? 'true' : 'false'}
+              options={[
+                { value: 'false', label: 'No' },
+                { value: 'true', label: 'Sì' },
+              ]}
+              onInputChange={(value) =>
+                setMovingHeadquarter(value === 'true')
+              }
+              withLabel={false}
             />
-          </div>
-          <div>
             {movingHeadquarter && (
-              <span className='d-block no-wrap'>{MIN_ADDRESSES_REQUIRED}</span>
+              <span className='d-block no-wrap mt-2'>
+                {MIN_ADDRESSES_REQUIRED}
+              </span>
             )}
+          </div>
+          <div className='col-12 col-md-6'>
+            <label
+              htmlFor='select-servizi-altre-lingue'
+              className='mb-2 d-block font-weight-bold'
+            >
+              Servizi offerti in altre lingue{' '}
+              <span className='text-danger'>*</span>
+            </label>
+            <Select
+              id='select-servizi-altre-lingue'
+              value={
+                serviziAltreLingue === null
+                  ? ''
+                  : serviziAltreLingue
+                  ? 'true'
+                  : 'false'
+              }
+              required
+              placeholder='Seleziona'
+              options={[
+                {
+                  value: 'true',
+                  label: 'Sì, altre lingue diverse dall’italiano',
+                },
+                { value: 'false', label: 'No, solo in lingua italiana' },
+              ]}
+              onInputChange={(value) =>
+                setServiziAltreLingue(value === 'true')
+              }
+              withLabel={false}
+            />
           </div>
         </Form.Row>
       </Form>
@@ -345,7 +448,7 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
     <GenericModal
       id={id}
       primaryCTA={{
-        disabled: !isFormValid || !validateAddressList(addressList),
+        disabled: !isAllFormDataValid(),
         label: 'Conferma',
         onClick: handleSaveAssignHeadquarter,
       }}
@@ -382,11 +485,13 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
                     cap: '',
                     regione: '',
                     nazione: '',
+                    tipologiaUbicazione: null,
                   },
                   fasceOrarieAperturaIndirizzoSede: {},
                 },
               ]);
               setMovingHeadquarter(false);
+              setServiziAltreLingue(null);
               dispatch(setHeadquartersList(null));
             }}
             title='Cerca'
