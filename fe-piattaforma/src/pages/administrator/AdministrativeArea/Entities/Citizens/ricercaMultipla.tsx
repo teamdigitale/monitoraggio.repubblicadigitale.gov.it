@@ -123,10 +123,9 @@ const RicercaMultipla: React.FC<RicercaMultiplaProps> = ({
                 'p-3',
                 'mb-3',
                 'rounded',
-                'border',
-                'border-primary',
                 'bg-white'
               )}
+              style={{ border: '2px solid #0066CC' }}
             >
               <span className='font-weight-semibold primary-color-b1'>
                 Numero cittadini trovati: {result.trovati.length}
@@ -159,12 +158,14 @@ const RicercaMultipla: React.FC<RicercaMultiplaProps> = ({
                 'p-3',
                 'mb-3',
                 'rounded',
-                'border',
-                'border-primary',
                 'bg-white'
               )}
+              style={{ border: '2px solid #995C00' }}
             >
-              <span className='font-weight-semibold primary-color-b1'>
+              <span
+                className='font-weight-semibold'
+                style={{ color: '#995C00' }}
+              >
                 Numero cittadini non trovati: {result.nonTrovati.length}
               </span>
               <Button
