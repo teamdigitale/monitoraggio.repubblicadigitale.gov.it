@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.525](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.524...1.0.0-test.525) (2026-05-12)
+
+
+### Bug Fixes
+
+* **U538:** modifica grafica ux 20260512 ([bc76451](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/bc76451ecb7e2ce30af831fb9f5775f8274e102e))
+
 ## [1.0.0-test.524](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.523...1.0.0-test.524) (2026-05-11)
 
 
