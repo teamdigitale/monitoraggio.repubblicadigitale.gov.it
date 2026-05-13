@@ -19,7 +19,6 @@ import {openModal} from '../../../redux/features/modal/modalSlice';
 
 import {useAppSelector} from '../../../redux/hooks';
 import ManageTopic from '../../administrator/AdministrativeArea/Entities/modals/manageTopic';
-/* import { ForumPropsMock } from '../../facilitator/Home/components/ForumWidget/forumWidget'; */
 import './community.scss';
 import {
   selectEntityPagination,

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { FormGroup, Toggle } from 'design-react-kit';
@@ -151,13 +151,13 @@ const Surveys = () => {
     value: string;
   }
 
-  const questionnaireOptionsMock: QuestionnaireFilter[] = [
+  const questionnaireOptions: QuestionnaireFilter[] = [
     { label: 'Questionari', key: 'questionnaire', value: 'questionnaire' },
     { label: 'Addendum', key: 'addendum', value: 'Addendum' },
   ];
 
   const [filter /* setFilter */] = useState<QuestionnaireFilter>(
-    questionnaireOptionsMock[0]
+    questionnaireOptions[0]
   );
 
   useEffect(() => {
@@ -313,17 +313,6 @@ const Surveys = () => {
       : { ...addendumCta };
 
   return (
-    /*  <div className={clsx(device.mediaIsDesktop && 'row')}>
-     {device.mediaIsDesktop && (
-        <div className='col-2 mr-2'>
-          <SideSelection
-            filterOptions={questionnaireOptionsMock}
-            onFilterChange={setFilter}
-            defaultOption={questionnaireOptionsMock[0]}
-          />
-        </div>
-      )}  */
-
     <div>
       <PageTitle
         title={
