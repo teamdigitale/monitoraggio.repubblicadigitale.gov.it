@@ -79,8 +79,6 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
   const [isFormValid, setIsFormValid] = useState<boolean>(true);
   const [noResult, setNoResult] = useState(false);
 
-  // This has to be populated with data from the store as soon we have a
-  // well defined mock
   const [addressList, setAddressList] = useState<AddressInfoI[]>([
     {
       indirizzoSede: {
