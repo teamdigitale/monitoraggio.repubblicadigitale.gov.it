@@ -1,8 +1,15 @@
 version: 2
 
 updates:
+  # ---- GitHub Actions ----
   - package-ecosystem: "github-actions"
     directory: "/"
+    target-branch: "test"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "07:00"
+      timezone: Europe/Rome
     commit-message:
       prefix: "chore"
       include: "scope"
@@ -11,14 +18,27 @@ updates:
       - "dependabot"
     assignees:
       - "MattMod"
+    open-pull-requests-limit: 3
+    rebase-strategy: "auto"
+    groups:
+      actions-minor-patch:
+        update-types:
+          - "minor"
+          - "patch"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
+
+  # ---- NPM (frontend) ----
+  - package-ecosystem: "npm"
+    directory: "/fe-piattaforma"
+    target-branch: "test"
     schedule:
       interval: "weekly"
       day: "monday"
       time: "07:00"
       timezone: Europe/Rome
-
-  - package-ecosystem: "npm"
-    directory: "/fe-piattaforma"
     commit-message:
       prefix: "chore"
       include: "scope"
@@ -27,14 +47,52 @@ updates:
       - "dependabot"
     assignees:
       - "nicogheart1"
+    open-pull-requests-limit: 3
+    rebase-strategy: "auto"
+    groups:
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "react-router*"
+          - "@types/react*"
+      redux:
+        patterns:
+          - "redux*"
+          - "@reduxjs/*"
+      types:
+        patterns:
+          - "@types/*"
+      eslint-prettier:
+        patterns:
+          - "eslint*"
+          - "prettier*"
+          - "@typescript-eslint/*"
+      npm-minor-patch:
+        update-types:
+          - "minor"
+          - "patch"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
+
+  # ---- Maven (tutti i moduli backend) ----
+  - package-ecosystem: "maven"
+    directories:
+      - "/lib-repdgt-shared"
+      - "/ms-ente"
+      - "/ms-gestione-utente"
+      - "/ms-notifiche-integration"
+      - "/ms-open-data"
+      - "/ms-programma-progetto"
+      - "/ms-questionario-cittadino"
+    target-branch: "test"
     schedule:
       interval: "weekly"
       day: "monday"
       time: "07:00"
       timezone: Europe/Rome
-
-  - package-ecosystem: "maven"
-    directory: "/ms-ente"
     commit-message:
       prefix: "chore"
       include: "scope"
@@ -43,104 +101,29 @@ updates:
       - "dependabot"
     assignees:
       - "carloalbertosimoncini"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "07:00"
-      timezone: Europe/Rome
-
-  - package-ecosystem: "maven"
-    directory: "/ms-open-data"
-    commit-message:
-      prefix: "chore"
-      include: "scope"
-    labels:
-      - "maven"
-      - "dependabot"
-    assignees:
-      - "carloalbertosimoncini"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "07:00"
-      timezone: Europe/Rome
-
-  - package-ecosystem: "maven"
-    directory: "/ms-programma-progetto"
-    commit-message:
-      prefix: "chore"
-      include: "scope"
-    labels:
-      - "maven"
-      - "dependabot"
-    assignees:
-      - "carloalbertosimoncini"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "07:00"
-      timezone: Europe/Rome
-
-  - package-ecosystem: "maven"
-    directory: "/ms-questionario-cittadino"
-    commit-message:
-      prefix: "chore"
-      include: "scope"
-    labels:
-      - "maven"
-      - "dependabot"
-    assignees:
-      - "carloalbertosimoncini"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "07:00"
-      timezone: Europe/Rome
-
-  - package-ecosystem: "maven"
-    directory: "/ms-gestione-utente"
-    commit-message:
-      prefix: "chore"
-      include: "scope"
-    assignees:
-      - "carloalbertosimoncini"
-    labels:
-      - "maven"
-      - "dependabot"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "07:00"
-      timezone: Europe/Rome
-
-  - package-ecosystem: "maven"
-    directory: "/lib-repdgt-shared"
-    commit-message:
-      prefix: "chore"
-      include: "scope"
-    assignees:
-      - "carloalbertosimoncini"
-    labels:
-      - "maven"
-      - "dependabot"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "07:00"
-      timezone: Europe/Rome
-
-  - package-ecosystem: "maven"
-    directory: "/ms-notifiche-integration"
-    commit-message:
-      prefix: "chore"
-      include: "scope"
-    assignees:
-      - "carloalbertosimoncini"
-    labels:
-      - "maven"
-      - "dependabot"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "07:00"
-      timezone: Europe/Rome
+    open-pull-requests-limit: 5
+    rebase-strategy: "auto"
+    groups:
+      spring:
+        patterns:
+          - "org.springframework*"
+      aws-sdk:
+        patterns:
+          - "software.amazon.awssdk*"
+          - "com.amazonaws*"
+      test:
+        patterns:
+          - "*junit*"
+          - "*mockito*"
+          - "*assertj*"
+      jackson:
+        patterns:
+          - "com.fasterxml.jackson*"
+      maven-minor-patch:
+        update-types:
+          - "minor"
+          - "patch"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
