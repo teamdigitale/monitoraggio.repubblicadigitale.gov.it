@@ -42,6 +42,8 @@ jobs:
       ms-programma-progetto: ${{ steps.modules.outputs.ms-programma-progetto }}
       ms-questionario-cittadino: ${{ steps.modules.outputs.ms-questionario-cittadino }}
       enabled-modules: ${{ steps.modules.outputs.enabled-modules }}
+      enabled-be-modules: ${{ steps.modules.outputs.enabled-be-modules }}
+      has-be-modules: ${{ steps.modules.outputs.has-be-modules }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -84,9 +86,14 @@ jobs:
 
           # Output JSON array dei moduli abilitati (per matrix e loop)
           enabled_list=()
+          enabled_be_list=()
           for module in "${ALL_MODULES[@]}"; do
             if [[ "${enabled[$module]}" == "true" ]]; then
               enabled_list+=("$module")
+              # Sotto-lista dei soli moduli BE (Maven) per alimentare la matrix di buildBE.
+              if [[ "$module" != "fe-piattaforma" ]]; then
+                enabled_be_list+=("$module")
+              fi
             fi
           done
           if [[ ${#enabled_list[@]} -gt 0 ]]; then
@@ -94,8 +101,18 @@ jobs:
           else
             enabled_json='[]'
           fi
+          if [[ ${#enabled_be_list[@]} -gt 0 ]]; then
+            enabled_be_json=$(printf '%s\n' "${enabled_be_list[@]}" | jq -R . | jq -sc .)
+            has_be=true
+          else
+            enabled_be_json='[]'
+            has_be=false
+          fi
           echo "enabled-modules=$enabled_json" >> "$GITHUB_OUTPUT"
+          echo "enabled-be-modules=$enabled_be_json" >> "$GITHUB_OUTPUT"
+          echo "has-be-modules=$has_be" >> "$GITHUB_OUTPUT"
           echo "Enabled modules: $enabled_json"
+          echo "Enabled BE modules: $enabled_be_json"
 
   DryRunRelease:
     needs: CheckInputModules
@@ -237,7 +254,7 @@ jobs:
 
   buildBE:
     needs: [CheckInputModules, DryRunRelease]
-    if: ${{ github.event.inputs.version == '' && contains(fromJson(needs.CheckInputModules.outputs.enabled-modules), matrix.module) }}
+    if: ${{ github.event.inputs.version == '' && needs.CheckInputModules.outputs.has-be-modules == 'true' }}
     name: BE Build ${{ matrix.module }}
     runs-on: ubuntu-latest
     timeout-minutes: 45
@@ -245,13 +262,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        module:
-          - ms-ente
-          - ms-gestione-utente
-          - ms-notifiche-integration
-          - ms-open-data
-          - ms-programma-progetto
-          - ms-questionario-cittadino
+        module: ${{ fromJson(needs.CheckInputModules.outputs.enabled-be-modules) }}
     steps:
       - uses: actions/checkout@v4
         with:
