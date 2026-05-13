@@ -19,9 +19,6 @@ import './homeSearch.scss';
 const PageTitleMock = {
   title: 'Cerca su bacheca, forum e documenti',
 };
-/* const PageTitleMobileMock = {
-  title: 'Cerca',
-}; */
 
 const searchMinLength = 2;
 
