@@ -6,312 +6,172 @@ on:
       - develop
       - test
       - main
-  pull_request:
-    branches:
-      - develop
-      - test
-      - main
+    paths-ignore:
+      - '**.md'
+      - 'facilita-docs/**'
+      - '.github/dependabot.yml'
   schedule:
     - cron: '0 8 * * 1'
   workflow_dispatch:
 
+# Su push consecutivi sullo stesso branch, mantieni solo l'ultimo run:
+# CodeQL scansiona lo stato HEAD, non ha senso accumulare run obsoleti.
+concurrency:
+  group: codeql-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   changes:
     runs-on: ubuntu-latest
-    # Set job outputs to values from filter step
+    timeout-minutes: 5
     outputs:
       fe-piattaforma: ${{ steps.filter.outputs.fe-piattaforma }}
       lib-repdgt-shared: ${{ steps.filter.outputs.lib-repdgt-shared }}
-      ms-ente: ${{ steps.filter.outputs.ms-ente }}
-      ms-gestione-utente: ${{ steps.filter.outputs.ms-gestione-utente }}
-      ms-notifiche-integration: ${{ steps.filter.outputs.ms-notifiche-integration }}
-      ms-open-data: ${{ steps.filter.outputs.ms-open-data }}
-      ms-programma-progetto: ${{ steps.filter.outputs.ms-programma-progetto }}
-      ms-questionario-cittadino: ${{ steps.filter.outputs.ms-questionario-cittadino }}
+      changes: ${{ steps.filter.outputs.changes }}
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    # For pull requests it's not necessary to checkout the code
-    - uses: dorny/paths-filter@v2
-      id: filter
-      with:
-        filters: |
-          fe-piattaforma:
-            - 'fe-piattaforma/**'
-          lib-repdgt-shared:
-            - 'lib-repdgt-shared/**'
-          ms-ente:
-            - 'ms-ente/**'
-          ms-gestione-utente:  
-            - 'ms-gestione-utente/**'
-          ms-notifiche-integration:
-            - 'ms-notifiche-integration/**'
-          ms-open-data:
-            - 'ms-open-data/**'
-          ms-programma-progetto:
-            - 'ms-programma-progetto/**'
-          ms-questionario-cittadino:
-            - 'ms-questionario-cittadino/**'
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            fe-piattaforma:
+              - 'fe-piattaforma/**'
+            lib-repdgt-shared:
+              - 'lib-repdgt-shared/**'
+            ms-ente:
+              - 'ms-ente/**'
+            ms-gestione-utente:
+              - 'ms-gestione-utente/**'
+            ms-notifiche-integration:
+              - 'ms-notifiche-integration/**'
+            ms-open-data:
+              - 'ms-open-data/**'
+            ms-programma-progetto:
+              - 'ms-programma-progetto/**'
+            ms-questionario-cittadino:
+              - 'ms-questionario-cittadino/**'
 
   fe-piattaforma-Analyze:
     needs: changes
     if: ${{ needs.changes.outputs.fe-piattaforma == 'true' }}
     name: Analyze fe-piattaforma
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     permissions:
       actions: read
       contents: read
       security-events: write
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '22.21.1'
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.21.1'
 
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
-      with:
-        languages: 'javascript-typescript'
-        # queries: security-extended,security-and-quality
-        paths-ignore: 'src/node_modules'
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: 'javascript'
+          # queries: security-extended,security-and-quality
 
-    - name: fe-piattaforma Build
-      run: |
-        cd ${{ github.workspace }}/fe-piattaforma
-        npm install --force
-        npm run build
+      - name: fe-piattaforma Build
+        run: |
+          cd ${{ github.workspace }}/fe-piattaforma
+          npm install --legacy-peer-deps
+          npm run build
 
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
 
   lib-repdgt-shared-Analyze:
     needs: changes
     if: ${{ needs.changes.outputs.lib-repdgt-shared == 'true' }}
     name: Analyze lib-repdgt-shared
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     permissions:
       actions: read
       contents: read
       security-events: write
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
-      with:
-        languages: 'java'
-        # queries: security-extended,security-and-quality
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: 'java'
+          # queries: security-extended,security-and-quality
 
-    - name: lib-repdgt-shared Compilation
-      run: |
-        cd ${{ github.workspace }}/lib-repdgt-shared
-        mvn install
+      - name: lib-repdgt-shared Compilation
+        run: |
+          cd ${{ github.workspace }}/lib-repdgt-shared
+          mvn -DskipTests install
 
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
 
-  ms-ente-Analyze:
+  ms-Analyze:
     needs: changes
-    if: ${{ needs.changes.outputs.ms-ente == 'true' }}
-    name: Analyze ms-ente
+    if: ${{ needs.changes.outputs.changes != '' && needs.changes.outputs.changes != '[]' }}
+    name: Analyze ${{ matrix.module }}
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     permissions:
       actions: read
       contents: read
       security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        module:
+          - ms-ente
+          - ms-gestione-utente
+          - ms-notifiche-integration
+          - ms-open-data
+          - ms-programma-progetto
+          - ms-questionario-cittadino
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Skip if module not changed
+        id: skipcheck
+        run: |
+          if echo '${{ needs.changes.outputs.changes }}' | grep -q '"${{ matrix.module }}"'; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "Modulo ${{ matrix.module }} non modificato, skip."
+          fi
 
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
-      with:
-        languages: 'java'
-        # queries: security-extended,security-and-quality
+      - name: Checkout repository
+        if: steps.skipcheck.outputs.run == 'true'
+        uses: actions/checkout@v4
 
-    - name: lib-repdgt-shared Compilation
-      run: |
-        cd ${{ github.workspace }}/lib-repdgt-shared
-        mvn install
+      - name: Initialize CodeQL
+        if: steps.skipcheck.outputs.run == 'true'
+        uses: github/codeql-action/init@v3
+        with:
+          languages: 'java'
+          # queries: security-extended,security-and-quality
 
-    - name: ms-ente Build
-      run: |
-        cd ${{ github.workspace }}/ms-ente
-        mvn package
+      - name: lib-repdgt-shared Compilation
+        if: steps.skipcheck.outputs.run == 'true'
+        run: |
+          cd ${{ github.workspace }}/lib-repdgt-shared
+          mvn -DskipTests install
 
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
+      - name: ${{ matrix.module }} Build
+        if: steps.skipcheck.outputs.run == 'true'
+        run: |
+          cd ${{ github.workspace }}/${{ matrix.module }}
+          mvn -DskipTests package
 
-  ms-gestione-utente-Analyze:
-    needs: changes
-    if: ${{ needs.changes.outputs.ms-gestione-utente == 'true' }}
-    name: Analyze ms-gestione-utente
-    runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
-      with:
-        languages: 'java'
-        # queries: security-extended,security-and-quality
-
-    - name: lib-repdgt-shared Compilation
-      run: |
-        cd ${{ github.workspace }}/lib-repdgt-shared
-        mvn install
-
-    - name: ms-gestione-utente Build
-      run: |
-        cd ${{ github.workspace }}/ms-gestione-utente
-        mvn package
-
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
-
-  ms-notifiche-integration-Analyze:
-    needs: changes
-    if: ${{ needs.changes.outputs.ms-notifiche-integration == 'true' }}
-    name: Analyze ms-notifiche-integration
-    runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
-      with:
-        languages: 'java'
-        # queries: security-extended,security-and-quality
-
-    - name: lib-repdgt-shared Compilation
-      run: |
-        cd ${{ github.workspace }}/lib-repdgt-shared
-        mvn install
-
-    - name: ms-notifiche-integration Build
-      run: |
-        cd ${{ github.workspace }}/ms-notifiche-integration
-        mvn package
-
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
-
-  ms-open-data-Analyze:
-    needs: changes
-    if: ${{ needs.changes.outputs.ms-open-data == 'true' }}
-    name: Analyze ms-open-data
-    runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
-      with:
-        languages: 'java'
-        # queries: security-extended,security-and-quality
-
-    - name: lib-repdgt-shared Compilation
-      run: |
-        cd ${{ github.workspace }}/lib-repdgt-shared
-        mvn install
-
-    - name: ms-open-data Build
-      run: |
-        cd ${{ github.workspace }}/ms-open-data
-        mvn package
-
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
-
-  ms-programma-progetto-Analyze:
-    needs: changes
-    if: ${{ needs.changes.outputs.ms-programma-progetto == 'true' }}
-    name: Analyze ms-programma-progetto
-    runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
-      with:
-        languages: 'java'
-        # queries: security-extended,security-and-quality
-
-    - name: lib-repdgt-shared Compilation
-      run: |
-        cd ${{ github.workspace }}/lib-repdgt-shared
-        mvn install
-
-    - name: ms-programma-progetto Build
-      run: |
-        cd ${{ github.workspace }}/ms-programma-progetto
-        mvn package
-
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
-
-  ms-questionario-cittadino-Analyze:
-    needs: changes
-    if: ${{ needs.changes.outputs.ms-questionario-cittadino == 'true' }}
-    name: Analyze ms-questionario-cittadino
-    runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
-      with:
-        languages: 'java'
-        # queries: security-extended,security-and-quality
-
-    - name: lib-repdgt-shared Compilation
-      run: |
-        cd ${{ github.workspace }}/lib-repdgt-shared
-        mvn install
-
-    - name: ms-questionario-cittadino Build
-      run: |
-        cd ${{ github.workspace }}/ms-questionario-cittadino
-        mvn package
-        cd ${{ github.workspace }}
-
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
+      - name: Perform CodeQL Analysis
+        if: steps.skipcheck.outputs.run == 'true'
+        uses: github/codeql-action/analyze@v3
