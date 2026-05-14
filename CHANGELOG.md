@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.527](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.526...1.0.0-test.527) (2026-05-14)
+
+### Features
+
+* **U541:** modifiche form sede 20260511 ([8d3a399](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/8d3a3991d4940fdfacfacf8d002d323f19a321ca))
+* **U541:** business logic gestione sede 20260511 ([7535afa](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7535afa5963775133f2377e01abfb707037bdd9a))
+
 ## [1.0.0-test.526](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.525...1.0.0-test.526) (2026-05-13)
 
 ### Bug Fixes
