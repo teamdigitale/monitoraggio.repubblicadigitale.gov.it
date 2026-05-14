@@ -310,100 +310,86 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
       <Form
         legend='Sede itinerante e servizi in altre lingue'
         id='form-manage-headquarter'
-        className='mx-5 mb-5'
+        className='mb-0'
         showMandatory={false}
       >
-        <Form.Row>
-          <div className='col-12 col-md-6'>
-            <div className='d-flex align-items-center mb-2'>
-              <label
-                htmlFor='select-sede-itinerante'
-                className='mb-0 mr-2 font-weight-bold'
-              >
-                Sede itinerante <span className='text-danger'>*</span>
-              </label>
-              <span id='tooltip-sede-itinerante' className='d-inline-flex'>
-                <Icon
-                  icon='it-info-circle'
-                  size='sm'
-                  color='primary'
-                  aria-label='Informazione sede itinerante'
-                />
-              </span>
-              <UncontrolledTooltip
-                placement='right'
-                target='tooltip-sede-itinerante'
-                autohide={false}
-              >
-                <strong>Che cos&apos;è una sede itinerante?</strong>
-                <br />
-                Per sede itinerante si intende qualsiasi soluzione logistica
-                che garantisca la presenza periodica del punto di facilitazione
-                sul territorio, per esempio i mezzi mobili attrezzati (come i
-                camper) oppure i team di facilitatori che operano periodicamente
-                presso spazi messi a disposizione da comuni, enti pubblici o
-                soggetti privati aderenti all&apos;iniziativa. Scopri di più sul{' '}
-                <a
-                  href='https://dtd-gov.notion.site/3-I-luoghi-della-facilitazione-digitale-b88f2c81c3f445bc81b1d583cd9e1283'
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  style={{ color: '#fff', textDecoration: 'underline' }}
+        <Form.Row className='justify-content-between'>
+          <Select
+            id='select-sede-itinerante'
+            label='Sede itinerante'
+            labelAfter={
+              <>
+                <span
+                  id='tooltip-sede-itinerante'
+                  className='d-inline-flex ml-2 align-middle'
                 >
-                  Manuale della Facilitazione
-                </a>
-                .
-              </UncontrolledTooltip>
-            </div>
-            <Select
-              id='select-sede-itinerante'
-              value={movingHeadquarter ? 'true' : 'false'}
-              options={[
-                { value: 'false', label: 'No' },
-                { value: 'true', label: 'Sì' },
-              ]}
-              onInputChange={(value) =>
-                setMovingHeadquarter(value === 'true')
-              }
-              withLabel={false}
-            />
-            {movingHeadquarter && (
-              <span className='d-block no-wrap mt-2'>
-                {MIN_ADDRESSES_REQUIRED}
-              </span>
-            )}
-          </div>
-          <div className='col-12 col-md-6'>
-            <label
-              htmlFor='select-servizi-altre-lingue'
-              className='mb-2 d-block font-weight-bold'
-            >
-              Servizi offerti in altre lingue{' '}
-              <span className='text-danger'>*</span>
-            </label>
-            <Select
-              id='select-servizi-altre-lingue'
-              value={
-                serviziAltreLingue === null
-                  ? ''
-                  : serviziAltreLingue
-                  ? 'true'
-                  : 'false'
-              }
-              required
-              placeholder='Seleziona'
-              options={[
-                {
-                  value: 'true',
-                  label: 'Sì, altre lingue diverse dall’italiano',
-                },
-                { value: 'false', label: 'No, solo in lingua italiana' },
-              ]}
-              onInputChange={(value) =>
-                setServiziAltreLingue(value === 'true')
-              }
-              withLabel={false}
-            />
-          </div>
+                  <Icon
+                    icon='it-info-circle'
+                    size='sm'
+                    color='primary'
+                    aria-label='Informazione sede itinerante'
+                  />
+                </span>
+                <UncontrolledTooltip
+                  placement='right'
+                  target='tooltip-sede-itinerante'
+                  autohide={false}
+                >
+                  <strong>Che cos&apos;è una sede itinerante?</strong>
+                  <br />
+                  Per sede itinerante si intende qualsiasi soluzione logistica
+                  che garantisca la presenza periodica del punto di
+                  facilitazione sul territorio, per esempio i mezzi mobili
+                  attrezzati (come i camper) oppure i team di facilitatori che
+                  operano periodicamente presso spazi messi a disposizione da
+                  comuni, enti pubblici o soggetti privati aderenti
+                  all&apos;iniziativa. Scopri di più sul{' '}
+                  <a
+                    href='https://dtd-gov.notion.site/3-I-luoghi-della-facilitazione-digitale-b88f2c81c3f445bc81b1d583cd9e1283'
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    style={{ color: '#fff', textDecoration: 'underline' }}
+                  >
+                    Manuale della Facilitazione
+                  </a>
+                  .
+                </UncontrolledTooltip>
+              </>
+            }
+            required
+            col='col-12 col-lg-6'
+            value={movingHeadquarter ? 'true' : 'false'}
+            options={[
+              { value: 'false', label: 'No' },
+              { value: 'true', label: 'Sì' },
+            ]}
+            onInputChange={(value) => setMovingHeadquarter(value === 'true')}
+            subLabel={
+              movingHeadquarter ? MIN_ADDRESSES_REQUIRED : undefined
+            }
+          />
+          <Select
+            id='select-servizi-altre-lingue'
+            label='Servizi offerti in altre lingue'
+            required
+            col='col-12 col-lg-6'
+            value={
+              serviziAltreLingue === null
+                ? ''
+                : serviziAltreLingue
+                ? 'true'
+                : 'false'
+            }
+            placeholder='Seleziona'
+            options={[
+              {
+                value: 'true',
+                label: 'Sì, altre lingue diverse dall’italiano',
+              },
+              { value: 'false', label: 'No, solo in lingua italiana' },
+            ]}
+            onInputChange={(value) => setServiziAltreLingue(value === 'true')}
+          />
         </Form.Row>
       </Form>
 
