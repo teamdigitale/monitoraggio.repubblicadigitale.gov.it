@@ -1,5 +1,31 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.60.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.59.0...1.60.0) (2026-05-14)
+
+
+### Features
+
+* **U538:** ulteriori richieste 20260430 ([2f44c59](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2f44c59eaf1f6fe9f6fff9401bd996a98526325a))
+* **U538:** gestione recupero campo mongo 20260413 ([2eb6cdb](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2eb6cdb4875056ff6f35076f88fd9621e531982a))
+* **U538:** nuova ricerca cittadini 20260327 ([7037fdb](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7037fdbfab0faa8fe6b557fe40ba39daf4ca0e5f))
+* **U538:** aggiunti endpoints ricerca/ricerca-multipla 20260326 ([133686e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/133686ea80fe8056dc3c849268e821bbec75c05b))
+* **U538:** aggiunti endpoints ricerca/ricerca-multipla 20260326 ([3fbe29e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/3fbe29e45b17e4922732aafe54297f86e4e6aa46))
+* **U538:** wip business logic pdf 20260306 ([acfe0b1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/acfe0b188b4c0ea94195c000eaba4ccb2833ccf5))
+
+
+### Bug Fixes
+
+* **U538:** scss align 20260513 ([5f91931](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5f91931e53a9667285adee5df2fdf7ab7ec8f28f))
+* **U538:** modifica grafica ux 20260512 ([c761ca9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c761ca94720afbc183e31a6e212ca1324c74d1f2))
+* **U538:** allineamento richieste 20260428 ([f7e3a15](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f7e3a155b015676ee2025c58caeea114334c3531))
+* **U538:** modifiche aggiuntive 20260417 ([e0636a6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e0636a6de4ae28377e6339791c11d1bb452f85fb))
+* **U538:** fix label 20260413 ([33d0603](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/33d0603a02f7f55d197460ab882b773fb5794797))
+* **U538:** fix padding button ([ba431df](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ba431df6354e88e27048bfcc9751185f5397cc2c))
+* **U538:** fix button e searchbar layout dopo update dependencies ([c3287e8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/c3287e82afd4706a7b5f4c52df17197b11c99ae8))
+* **U538:** fix vari ricerca/ricerca-multipla cittadini ([f4f3db6](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f4f3db63d0c01bc808a508202e65221ffbd35ee6))
+* **U538:** ricerca multipla solo per id alfanumerici 20260327 ([5026122](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5026122308ce1c35661e058b41f16a0436f0fead))
+* **BF581:** aggiornamento stato servizio 20260511 ([02bcd80](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/02bcd80a9e6d5e186c07f6693c208c1d6ebc81b2))
+
 ## [1.59.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.58.1...1.59.0) (2026-04-30)
 
 
