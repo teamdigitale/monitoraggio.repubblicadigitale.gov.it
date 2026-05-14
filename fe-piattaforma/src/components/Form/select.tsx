@@ -16,6 +16,7 @@ export interface SelectI
   col?: string | undefined;
   field?: formFieldI['field'];
   label?: string;
+  labelAfter?: React.ReactNode;
   subLabel?: string;
   onInputChange:
     | ((value: formFieldI['value'], field?: formFieldI['field']) => void)
@@ -50,7 +51,8 @@ const Select: React.FC<SelectI> = (props) => {
     shortDropdownMenu = false,
     placeholder = 'Seleziona',
     onMenuScrollToBottom,
-    maxMenuHeight
+    maxMenuHeight,
+    labelAfter,
   } = props;
   const [selectedOption, setSelectedOption] = useState<OptionType>();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -68,7 +70,13 @@ const Select: React.FC<SelectI> = (props) => {
   }, [selectedOption]);
 
   useEffect(() => {
-
+    // Reset esplicito: se il valore esterno e' vuoto/null/undefined,
+    // azzeriamo la selezione interna anche quando options e' vuoto
+    // (es. CAP svuotato dopo cambio provincia).
+    if (value === '' || value === null || value === undefined) {
+      if (selectedOption) setSelectedOption(undefined);
+      return;
+    }
     if (options.length) {
       const newSelectedOption = options.find(
         (opt) =>
@@ -80,8 +88,6 @@ const Select: React.FC<SelectI> = (props) => {
         newSelectedOption.value !== selectedOption?.value
       ) {
         setSelectedOption(newSelectedOption);
-      } else if (value === '' && selectedOption) {
-        setSelectedOption(undefined);
       }
     }
 
@@ -136,6 +142,7 @@ const Select: React.FC<SelectI> = (props) => {
           >
             {label}
             {required && !isDisabled ? ' *' : ''}
+            {labelAfter}
           </label>
           {props.subLabel && (
             <p className="form-text" style={{ textAlignLast: 'left', fontSize: '0.9rem', marginLeft: '9px' }}>

@@ -11,6 +11,7 @@ import { useAppSelector } from '../../../../../../redux/hooks';
 import { selectTipologieUbicazione } from '../../../../../../redux/features/administrativeArea/administrativeAreaSlice';
 import { dayCode } from '../../../../../../pages/administrator/AdministrativeArea/Entities/utils';
 import AddressForm from '../../../../../General/AddressForm/AddressForm';
+import Input from '../../../../../Form/input';
 import Select from '../../../../../Form/select';
 import OpenDaysSelect from '../../OpenDaysSelect/OpenDaysSelect';
 
@@ -189,22 +190,34 @@ const AccordionAddress: React.FC<AccordionAddressI> = ({
           formDisabled={isReadOnly}
         />
 
-        <div className='form-row mx-3'>
-          <Select
-            className='mt-3'
-            label='Tipologia ubicazione sede'
-            col='col-12 col-lg-6'
-            required
-            value={addressInfo.indirizzoSede.tipologiaUbicazione ?? ''}
-            isDisabled={isReadOnly}
-            options={tipologieUbicazione.map((t) => ({
-              value: t.id,
-              label: t.descrizione,
-            }))}
-            onInputChange={(value) =>
-              tipologiaChangeHandler(value ? Number(value) : null)
-            }
-          />
+        <div className='form-row'>
+          {isReadOnly ? (
+            <Input
+              label='Tipologia ubicazione sede'
+              col='col-12 col-lg-6'
+              value={
+                tipologieUbicazione.find(
+                  (t) => t.id === addressInfo.indirizzoSede.tipologiaUbicazione
+                )?.descrizione ?? ''
+              }
+              disabled
+            />
+          ) : (
+            <Select
+              className='mt-3'
+              label='Tipologia ubicazione sede'
+              col='col-12 col-lg-6'
+              required
+              value={addressInfo.indirizzoSede.tipologiaUbicazione ?? ''}
+              options={tipologieUbicazione.map((t) => ({
+                value: t.id,
+                label: t.descrizione,
+              }))}
+              onInputChange={(value) =>
+                tipologiaChangeHandler(value ? Number(value) : null)
+              }
+            />
+          )}
         </div>
 
         <OpenDaysSelect
