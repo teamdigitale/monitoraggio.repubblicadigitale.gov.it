@@ -1,5 +1,15 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.528](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.527...1.0.0-test.528) (2026-05-14)
+
+### Features
+
+* **U541:** accorgimenti grafici form sede 20260514 ([74f8be1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/74f8be15d806bb43ffadd9d5a7b6ce21fb58590b))
+
+### Bug Fixes
+
+* **secu2:** upgrade commitlint 20260514 ([37d771e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/37d771e97be61f6ca4e65a91c6dbdb67addf11ff))
+
 ## [1.0.0-test.527](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.526...1.0.0-test.527) (2026-05-14)
 
 ### Features
