@@ -1,5 +1,20 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.526](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.525...1.0.0-test.526) (2026-05-13)
+
+### Bug Fixes
+
+* **secu2:** action github 20260513 ([f494683](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f49468353178d09fa3f25df9e983190958c90440))
+* **secu2:** additional secu 20260513 ([5b4a1b1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5b4a1b14cc8251ec8c76440c60acf6a78a5d8262))
+* **secu2:** aggiornamento action 20260513 ([cfcaa0d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/cfcaa0db8a2ab3bbedc43de566bae78400846ed0))
+
+## [1.0.0-test.525](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.524...1.0.0-test.525) (2026-05-12)
+
+
+### Bug Fixes
+
+* **U538:** modifica grafica ux 20260512 ([bc76451](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/bc76451ecb7e2ce30af831fb9f5775f8274e102e))
+
 ## [1.0.0-test.524](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.523...1.0.0-test.524) (2026-05-11)
 
 

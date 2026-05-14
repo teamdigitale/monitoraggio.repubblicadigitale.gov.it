@@ -58,7 +58,6 @@ const PrintSurvey = lazy(
       '../pages/administrator/AdministrativeArea/Entities/Surveys/printSurvey/printSurvey'
     )
 );
-const Playground = lazy(() => import('../pages/playground'));
 const Auth = lazy(() => import('../pages/common/Auth/auth'));
 const Dashboard = lazy(
   () => import('../pages/administrator/Dashboard/dashboard')
@@ -142,9 +141,6 @@ const AppRoutes: React.FC = () => {
         <Route path='/errore/:errorCode' element={<ErrorPage showIcon genericIcon={Authicon} />} />
         <Route path='/errore' element={<ErrorPage />} />
         <Route path='/open-data' element={<OpenData />} />
-        {process.env.NODE_ENV === 'development' ? (
-          <Route path='/playground' element={<Playground />} />
-        ) : null}
         {isLogged ? (
           <>
             <Route

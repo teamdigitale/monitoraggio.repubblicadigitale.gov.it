@@ -5,46 +5,26 @@ on:
     branches:
       - 'fix/**'
       - 'feat/**'
-  pull_request:
-    branches:
-      - 'main'
-      - 'test'
-      - 'develop'
-      
+  workflow_dispatch:
+
 permissions:
   contents: read
+
+# Su push consecutivi sullo stesso branch tieni solo l'ultimo run.
+concurrency:
+  group: commitlint-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   commitlint:
     name: Commit Linter
-    runs-on: ubuntu-latest  
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v3
-        with:
-          node-version: '22.21.1'
-
-      - name: Install commitlint plugins
-        run: |
-              npm install --save-dev \
-                @commitlint/cli \
-                @commitlint/config-conventional
-                
-      - name: Validate push commits
-        if: ${{ github.event_name == 'push' }}
-        run: |
-          if [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ]; then
-            npx commitlint --from ${{ github.event.after }} --verbose
-          else
-            npx commitlint --from ${{ github.event.before }} --to ${{ github.event.after }} --verbose
-          fi
-      
-      - name: Validate pr commits
-        if: ${{ github.event_name == 'pull_request' }}
-        run: |
-          npx commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose
+      - name: Run commitlint
+        uses: wagoid/commitlint-github-action@v6

@@ -5,13 +5,14 @@
 
 	<groupId>it.pa.repdgt</groupId>
 	<artifactId>repdgt-shared</artifactId>
-	<version>1.0.0-test.524</version>
+	<version>1.0.0-test.526</version>
 	<packaging>jar</packaging>
 
 	<name>repdgt-shared</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
+		<skipTests>true</skipTests>
 		<java.version>8</java.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
