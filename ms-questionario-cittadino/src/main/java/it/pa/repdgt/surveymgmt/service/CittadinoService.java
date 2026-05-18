@@ -27,6 +27,8 @@ import it.pa.repdgt.surveymgmt.bean.DettaglioCittadinoBean;
 import it.pa.repdgt.surveymgmt.bean.DettaglioServizioSchedaCittadinoBean;
 import it.pa.repdgt.surveymgmt.bean.SchedaCittadinoBean;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection;
+import it.pa.repdgt.surveymgmt.collection.payload.SezioneId;
+import it.pa.repdgt.surveymgmt.collection.payload.SezioneQuestionario;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection.DatiIstanza;
 import it.pa.repdgt.surveymgmt.dto.CittadinoDto;
 import it.pa.repdgt.surveymgmt.dto.SedeDto;
@@ -60,8 +62,6 @@ public class CittadinoService {
 	private QuestionarioCompilatoRepository questionarioCompilatoRepository;
 	@Autowired
 	private QuestionarioCompilatoMongoRepository questionarioCompilatoMongoRepository;
-
-	private static final String ID_Q1 = "anagraphic-citizen-section";
 
 	@LogMethod
 	@LogExecutionTime
@@ -279,8 +279,9 @@ public class CittadinoService {
 					.getSezioniQuestionarioTemplateIstanze()
 					.stream()
 					.filter(datiIstanza -> {
-						JsonObject jsonDatiIstanza = (JsonObject) datiIstanza.getDomandaRisposta();
-						return !jsonDatiIstanza.getJson().contains(ID_Q1.toLowerCase());
+						SezioneQuestionario sezione = datiIstanza.getSezione();
+						return sezione == null
+								|| !SezioneId.ANAGRAPHIC_CITIZEN.getId().equalsIgnoreCase(sezione.getId());
 					})
 					.collect(Collectors.toList());
 
