@@ -8,14 +8,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import org.springframework.transaction.annotation.Transactional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import it.pa.repdgt.shared.repository.tipologica.FasciaDiEtaRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.json.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,6 @@ import org.springframework.validation.annotation.Validated;
 
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
-import it.pa.repdgt.shared.awsintegration.service.EmailService;
 import it.pa.repdgt.shared.entity.CittadinoEntity;
 import it.pa.repdgt.shared.entity.QuestionarioCompilatoEntity;
 import it.pa.repdgt.shared.entity.QuestionarioInviatoOnlineEntity;
@@ -33,6 +31,9 @@ import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.surveymgmt.bean.QuestionarioCompilatoBean;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioCompilatoCollection.DatiIstanza;
+import it.pa.repdgt.surveymgmt.collection.payload.RispostaDomanda;
+import it.pa.repdgt.surveymgmt.collection.payload.SezioneId;
+import it.pa.repdgt.surveymgmt.collection.payload.SezioneQuestionario;
 import it.pa.repdgt.surveymgmt.exception.CittadinoException;
 import it.pa.repdgt.surveymgmt.exception.QuestionarioCompilatoException;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
@@ -53,13 +54,12 @@ public class QuestionarioCompilatoService {
 	private static final String PROPERTY_KEY_TIPO_SERVIZIO = "24";
 	private static final String PROPERTY_KEY_COMPETENZA = "25";
 	private static final String SEPARATORE_VOCI = "; ";
-	// Estrae ogni stringa quoted dal contenuto di un array (i valori non contengono mai ' grazie alla
-	// sanitizzazione lato FE in csvUtils.ts che sostituisce ' con ').
-	private static final Pattern PROPERTY_VALUE_PATTERN = Pattern.compile("'([^']*)'");
 	// Split su ": " preservando "(es.: ..." della voce "Risolvere i problemi tecnici" della
 	// firstLevelCompetenceMap. Necessario per supportare il legacy CSV-import che concatena le voci
 	// in un singolo elemento dell'array (vedi csvUtils.ts generateDescriptionFromMappedValues).
 	private static final Pattern COLON_SPLIT_PATTERN = Pattern.compile("(?<!es\\.):\\s+");
+	// Separatore embedded usato in alcuni questionari per concatenare piu' voci in un singolo elemento.
+	private static final Pattern SECTION_SIGN_SPLIT_PATTERN = Pattern.compile("§\\s*");
 
 	@Autowired
 	private CittadinoService cittadinoService;
@@ -197,8 +197,11 @@ public class QuestionarioCompilatoService {
 		final QuestionarioCompilatoCollection questionarioCompilatoDBMongoFetch = questionarioCompilatoCollection;
 		// Recupero le sezioni del questionario compilato salvate
 		List<DatiIstanza> datiIstanza = questionarioCompilatoDBMongoFetch.getSezioniQuestionarioTemplateIstanze();
-		DatiIstanza q1 = datiIstanza.stream().filter(sezione -> ((JsonObject) sezione.getDomandaRisposta()).toString()
-				.contains("anagraphic-citizen-section")).findFirst().get();
+		DatiIstanza q1 = datiIstanza.stream()
+				.filter(sezione -> {
+					SezioneQuestionario s = sezione.getSezione();
+					return s != null && SezioneId.ANAGRAPHIC_CITIZEN.getId().equalsIgnoreCase(s.getId());
+				}).findFirst().get();
 		// Verifico il consenso trattamento dati per il cittadino e in caso non lo abbia
 		// già dato,
 		// lo registro per la prima volta. Ovvero salvo l'informazione sulla tabella
@@ -220,8 +223,7 @@ public class QuestionarioCompilatoService {
 		this.questionarioCompilatoMongoRepository.save(questionarioCompilatoDBMongoFetch);
 	}
 
-	public List<DatiIstanza> creaSezioniQuestionarioFromRequest(
-			QuestionarioCompilatoRequest questionarioCompilatoRequest) {
+	public List<DatiIstanza> creaSezioniQuestionarioFromRequest(QuestionarioCompilatoRequest questionarioCompilatoRequest) {
 		final DatiIstanza sezioneQ1 = new DatiIstanza();
 		sezioneQ1.setDomandaRisposta(new JsonObject(questionarioCompilatoRequest.getSezioneQ1Questionario()));
 		final DatiIstanza sezioneQ2 = new DatiIstanza();
@@ -338,8 +340,6 @@ public class QuestionarioCompilatoService {
 
 		verificaTokenQuestionario(idQuestionarioCompilato, token);
 
-		CittadinoEntity cittadinoAssociatoAlQuestionarioCompilato = questionarioCompilato.getCittadino();
-
 		boolean isAbilitatoTrattamentoDati = true;
 		questionarioCompilatoBean.setAbilitatoConsensoTrattatamentoDatiCittadino(isAbilitatoTrattamentoDati);
 
@@ -424,8 +424,7 @@ public class QuestionarioCompilatoService {
 			return null;
 		}
 
-		Optional<QuestionarioCompilatoCollection> mongoDoc = questionarioCompilatoMongoRepository
-				.findQuestionarioCompilatoById(idQuestionario);
+		Optional<QuestionarioCompilatoCollection> mongoDoc = questionarioCompilatoMongoRepository.findQuestionarioCompilatoById(idQuestionario);
 		if (!mongoDoc.isPresent()) {
 			log.debug("Documento MongoDB non trovato per questionario={}", idQuestionario);
 			return null;
@@ -437,33 +436,38 @@ public class QuestionarioCompilatoService {
 			return null;
 		}
 
-		Object questionAnswer = sezioni.get(SECTION_INDEX_SERVIZIO).getDomandaRisposta();
-		if (questionAnswer == null) {
+		SezioneQuestionario sezione = sezioni.get(SECTION_INDEX_SERVIZIO).getSezione();
+		if (sezione == null) {
 			return null;
 		}
 
-		Pattern arrayPattern = Pattern.compile(
-				"\\{'" + Pattern.quote(propertyKey) + "':\\s*\\[([^\\]]*)\\]\\}");
-		Matcher arrayMatcher = arrayPattern.matcher(questionAnswer.toString());
-		if (!arrayMatcher.find()) {
+		Optional<RispostaDomanda> risposta = sezione.findRisposta(propertyKey);
+		if (!risposta.isPresent()) {
 			log.debug("Property '{}' non trovata nella sezione servizio del documento {}", propertyKey,
 					idQuestionario);
 			return null;
 		}
 
-		List<String> values = new ArrayList<>();
-		Matcher valueMatcher = PROPERTY_VALUE_PATTERN.matcher(arrayMatcher.group(1));
-		while (valueMatcher.find()) {
-			String value = valueMatcher.group(1);
-			// Supporta sia il formato form-fill (un elemento per voce) sia il formato CSV-import
-			// (un elemento con voci unite da ": ").
-			for (String part : COLON_SPLIT_PATTERN.split(value)) {
-				if (!part.isEmpty()) {
-					values.add(part);
-				}
+		List<String> values = risposta.get().getValori().stream()
+				.filter(v -> v != null && !v.isEmpty())
+				.flatMap(v -> Arrays.stream(splitValoreLegacy(v)))
+				.filter(s -> !s.isEmpty())
+				.collect(Collectors.toList());
+		return values.isEmpty() ? null : values;
+	}
+
+	/**
+	 * Spezza un valore legacy in cui piu' voci sono state concatenate
+	 * con ": " (CSV-import) o con "§ " (form-fill su alcuni client).
+	 */
+	private static String[] splitValoreLegacy(String value) {
+		List<String> parti = new ArrayList<>();
+		for (String byColon : COLON_SPLIT_PATTERN.split(value)) {
+			for (String byParagrafo : SECTION_SIGN_SPLIT_PATTERN.split(byColon)) {
+				parti.add(byParagrafo);
 			}
 		}
-		return values.isEmpty() ? null : values;
+		return parti.toArray(new String[0]);
 	}
 
 	private static String joinValuesOrNull(List<String> values) {
