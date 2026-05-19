@@ -1,5 +1,11 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.529](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.528...1.0.0-test.529) (2026-05-19)
+
+### Bug Fixes
+
+* **U538:** modifica gestione collezione questionario istanza 20260518 ([1b79d33](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1b79d339cb60d7b92de3df421d5952015e576423))
+
 ## [1.0.0-test.528](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.527...1.0.0-test.528) (2026-05-14)
 
 ### Features
