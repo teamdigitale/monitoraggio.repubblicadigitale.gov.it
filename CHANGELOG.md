@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.531](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.530...1.0.0-test.531) (2026-05-20)
+
+### Bug Fixes
+
+* **U538:** scss align 20260513 ([b2b47e0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b2b47e0663541cdb38ecf36f2da0d62d06c9923d))
+* **U538:** gestione questionario 20260520 ([6e8d5e0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6e8d5e065d0b94da85568c3948ff20f9fd6af9f0))
+
 ## [1.0.0-test.530](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.529...1.0.0-test.530) (2026-05-20)
 
 ### Bug Fixes
