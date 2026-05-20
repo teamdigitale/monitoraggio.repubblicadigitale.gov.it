@@ -31,6 +31,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        # Clone completo: evita 'fatal: shallow file has changed' quando
+        # dorny/paths-filter tenta di approfondire la storia per il diff base.
+        with:
+          fetch-depth: 0
 
       - uses: dorny/paths-filter@v3
         id: filter
