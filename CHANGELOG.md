@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.530](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.529...1.0.0-test.530) (2026-05-20)
+
+### Bug Fixes
+
+* **test:** action 20260520 ([d9105f8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d9105f8be0af26915bc0c888f7174a65f30265fe))
+* **U538:** gestione tipologia servizio 20260520 ([7474131](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/74741310e892141a6cfffc330772a21e14d2b253))
+
 ## [1.0.0-test.529](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.528...1.0.0-test.529) (2026-05-19)
 
 ### Bug Fixes
