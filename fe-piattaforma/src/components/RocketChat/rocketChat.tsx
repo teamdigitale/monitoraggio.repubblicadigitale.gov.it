@@ -74,16 +74,6 @@ const RocketChat = () => {
   };
 
   const handleOnRocketChatLoad = () => {
-    const iframe = document.getElementById('rcChannel') as HTMLIFrameElement | null;
-    // Al primo onLoad ricarico l'iframe (equivalente di "Reload frame" del browser)
-    // per inizializzare correttamente la sessione cookie prima dell'auth via postMessage.
-    // Il flag su dataset evita loop: il reload riattiva onLoad ma il secondo passaggio prosegue.
-    if (iframe && !iframe.dataset.reloaded) {
-      iframe.dataset.reloaded = '1';
-      iframe.src = iframe.src;
-      return;
-    }
-    window.addEventListener('message', manageNotification);
     getRocketChatToken();
   };
 
@@ -114,6 +104,10 @@ const RocketChat = () => {
   };
 
   useEffect(() => {
+    // Listener registrato una sola volta al mount, indipendentemente dai reload
+    // dell'iframe (che avvengono via Custom Script Rocket.Chat al primo login).
+    // Se fosse aggiunto in handleOnRocketChatLoad si duplicherebbe ad ogni reload.
+    window.addEventListener('message', manageNotification);
     return () => {
       window.removeEventListener('message', manageNotification);
     };
