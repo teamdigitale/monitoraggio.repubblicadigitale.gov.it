@@ -1,5 +1,14 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.60.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.60.0...1.60.1) (2026-05-22)
+
+
+### Bug Fixes
+
+* **U538:** gestione questionario 20260520 ([eb6bd89](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/eb6bd892327f36a4829db0cdd2652be73f72cb25))
+* **U538:** gestione tipologia servizio 20260520 ([19f72d8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/19f72d8a0b80356b45a05d8e503483239d0afddd))
+* **U538:** modifica gestione collezione questionario istanza 20260518 ([2c340f7](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2c340f7ccb3b92c1973f64784b8af9f1c96c2ba4))
+
 ## [1.60.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.59.0...1.60.0) (2026-05-14)
 
 
