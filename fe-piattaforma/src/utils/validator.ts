@@ -1,4 +1,3 @@
-import isEmpty from 'lodash.isempty';
 import {
   AddressInfoI
 } from '../components/AdministrativeArea/Entities/Headquarters/AccordionAddressList/AccordionAddress/AccordionAddress';
@@ -131,12 +130,9 @@ export const validateAddressList = (addressList: AddressInfoI[]) => {
     .filter((addressList) => !addressList.indirizzoSede?.cancellato)
     .every((addressInfo) => {
       let isValid = true;
-      isValid =
-        !isEmpty(addressInfo.fasceOrarieAperturaIndirizzoSede) &&
-        Object.entries(addressInfo.fasceOrarieAperturaIndirizzoSede).some(
-          ([_key, value]) => value !== null
-        ) &&
-        isValid;
+      // La fascia oraria NON e' obbligatoria: l'utente puo' salvare una sede
+      // senza compilarla. Se la compila, i blocchi sottostanti verificano
+      // soltanto la coerenza dei valori inseriti.
       isValid = Object.entries(addressInfo.indirizzoSede).every(
         ([key, value]) =>
           ['via', 'provincia', 'comune', 'cap'].includes(key) ? value : true
