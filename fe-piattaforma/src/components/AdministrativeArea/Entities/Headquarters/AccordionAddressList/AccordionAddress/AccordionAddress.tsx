@@ -196,9 +196,11 @@ const AccordionAddress: React.FC<AccordionAddressI> = ({
               label='Tipologia ubicazione sede'
               col='col-12 col-lg-6'
               value={
+                // Fallback '-' coerente con il rendering di "Servizi offerti
+                // in altre lingue": dato assente nel dettaglio sede.
                 tipologieUbicazione.find(
                   (t) => t.id === addressInfo.indirizzoSede.tipologiaUbicazione
-                )?.descrizione ?? ''
+                )?.descrizione || '-'
               }
               disabled
             />
