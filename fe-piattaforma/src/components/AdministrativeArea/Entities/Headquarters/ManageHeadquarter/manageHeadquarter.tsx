@@ -144,20 +144,25 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
   }, [open, creation]);
 
   useEffect(() => {
-    if (headquarterDetails) {
+    // Allinea lo stato locale ai valori canonical dello store ad ogni apertura
+    // della modale: cosi' eventuali modifiche non confermate (utente chiude
+    // senza salvare) non persistono alla riapertura. Senza la dep su `open`
+    // l'effect non riscatterebbe perche' headquarterDetails non cambia.
+    if (headquarterDetails && open) {
       if (headquarterDetails?.indirizziSedeFasceOrarie) {
         setAddressList([...headquarterDetails.indirizziSedeFasceOrarie]);
       }
       if (headquarterDetails?.itinere)
         setMovingHeadquarter(headquarterDetails.itinere);
-      if (
-        headquarterDetails?.serviziAltreLingue !== undefined &&
-        headquarterDetails?.serviziAltreLingue !== null
-      ) {
-        setServiziAltreLingue(headquarterDetails.serviziAltreLingue);
-      }
+      // Reset esplicito anche al caso "BE = null/undefined" per ripristinare
+      // il placeholder "Seleziona" dopo una modifica non salvata.
+      setServiziAltreLingue(
+        typeof headquarterDetails?.serviziAltreLingue === 'boolean'
+          ? headquarterDetails.serviziAltreLingue
+          : null
+      );
     }
-  }, [headquarterDetails]);
+  }, [headquarterDetails, open]);
 
   useEffect(() => {
     if (headquartersList && headquartersList.length === 0) {
