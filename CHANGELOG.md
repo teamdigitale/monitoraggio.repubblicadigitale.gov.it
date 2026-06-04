@@ -1,5 +1,11 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.533](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.532...1.0.0-test.533) (2026-06-04)
+
+### Bug Fixes
+
+* **U541:** risoluzione issue 20260604 ([51f3ca5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/51f3ca5a43e1d76ce29999e5d5575576330412ed))
+
 ## [1.0.0-test.532](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.531...1.0.0-test.532) (2026-06-03)
 
 ### Features
