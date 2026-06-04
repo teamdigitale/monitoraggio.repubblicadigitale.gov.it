@@ -1,5 +1,17 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.532](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.531...1.0.0-test.532) (2026-06-03)
+
+### Features
+
+* **test:** aggiornamento data limite 20260529 ([2554b27](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2554b2777faa82f2084bf3f28744743e2e6c98b3))
+
+### Bug Fixes
+
+* **U541:** obbligo fascia oraria 20260603 ([e95883d](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e95883d94587647b5dd46c2817f87bdc090c34ec))
+* **test:** gestione difensiva survey 20260529 ([452e994](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/452e99464fedb9c524f3ff0c33e432835838714c))
+* **secu2:** gestione frame rocketchat 20260521 ([5f8b96a](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/5f8b96a9bc4f443877f2617285819201e7ca6c96))
+
 ## [1.0.0-test.531](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.530...1.0.0-test.531) (2026-05-20)
 
 ### Bug Fixes
