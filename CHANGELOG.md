@@ -1,5 +1,11 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.534](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.533...1.0.0-test.534) (2026-06-05)
+
+### Bug Fixes
+
+* **U451:** gestione albero provincia comune cap 20260605 ([2f4b564](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/2f4b564085c22ee8bd725f2e46a82dd84074147f))
+
 ## [1.0.0-test.533](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.532...1.0.0-test.533) (2026-06-04)
 
 ### Bug Fixes
