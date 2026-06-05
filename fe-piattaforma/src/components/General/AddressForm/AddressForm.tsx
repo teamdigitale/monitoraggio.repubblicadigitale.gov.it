@@ -4,24 +4,14 @@ import Input from '../../Form/input';
 import axios from 'axios';
 import Select from '../../Form/select';
 
-/**
- * The address form get values for Provinces, cities and CAPs from static files
- * and in detail page every select field act like a readOnly/disabled input.
- * When a new province is selected I reset city and CAP but the select seem to be design
- * to not accept a value not in the options list, so it will continue to display previous
- * selection.
- */
-
 interface Province {
   name: string;
   state: string;
 }
-
 interface City {
   name: string;
   cap: string[];
 }
-
 interface AddressFormI {
   address: string;
   CAP: string;
@@ -99,10 +89,8 @@ const AddressForm: React.FC<AddressFormI> = ({
     value = setProvinceAndRegion(value);
     const [selectedProvince, selectedRegion] = value.split('/');
     const selectedState = selectedRegion.replace(/\s+/g, '-').toLowerCase();
-    // Cambio provincia => azzero comune e CAP per mantenere coerenza
-    // (il form era buggato: lasciava city/CAP valorizzati con valori non piu'
-    // appartenenti alla provincia selezionata).
     onAddressChange(address, selectedProvince, selectedState, '', '');
+    setCities([]);
     setCAPS([]);
 
     axios(`/assets/indirizzi/comuni/${selectedState}.json`)
@@ -199,6 +187,11 @@ const AddressForm: React.FC<AddressFormI> = ({
               onInputChange={(value) => onSelectProvince(value as string)}
             />
             <Select
+              // Forza il rimount del Select ad ogni cambio provincia: il vecchio
+              // istanza con il proprio selectedOption interno viene scartato e ne
+              // viene creato uno nuovo da zero, eliminando race tra value/options
+              // e tutto lo state visivo / interno persistente.
+              key={`comune-${province}`}
               className='mt-3'
               label='Comune'
               col='col-12 col-lg-6'
