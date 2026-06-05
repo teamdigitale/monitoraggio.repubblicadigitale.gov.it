@@ -1,5 +1,11 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.535](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.534...1.0.0-test.535) (2026-06-05)
+
+### Bug Fixes
+
+* **test:** migliorie grafiche pagina profilo 20260605 ([bb0c3c8](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/bb0c3c89d8ea8eecc7c9a10f78a825e029f7b4cf))
+
 ## [1.0.0-test.534](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.533...1.0.0-test.534) (2026-06-05)
 
 ### Bug Fixes
