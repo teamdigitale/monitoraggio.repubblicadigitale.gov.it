@@ -1,19 +1,20 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import DetailLayout from '../../../components/DetailLayout/detailLayout';
 import { ButtonInButtonsBar } from '../../../components/ButtonsBar/buttonsBar';
 import { openModal } from '../../../redux/features/modal/modalSlice';
-import {
-  formTypes,
-  userRoles,
-} from '../../administrator/AdministrativeArea/Entities/utils';
+import { formTypes } from '../../administrator/AdministrativeArea/Entities/utils';
 import { updateCustomBreadcrumb } from '../../../redux/features/app/appSlice';
 import { useAppSelector } from '../../../redux/hooks';
 import ManageProfile from '../../administrator/AdministrativeArea/Entities/modals/manageProfile';
 import { selectUser } from '../../../redux/features/user/userSlice';
 import useGuard from '../../../hooks/guard';
+import {
+  isProgettoRole,
+  isProgrammaRole,
+} from '../../../utils/roleHelper';
 import { CRUDActionTypes } from '../../../utils/common';
 import { CardStatusAction } from '../../../components';
 import { getSessionValues } from '../../../utils/sessionHelper';
@@ -80,15 +81,31 @@ const UserProfile = () => {
       ]
     : [];
 
-  const isActiveRole = (role: RoleI) => {
-    if (role.codiceRuolo === userRole.codiceRuolo) {
-      if (role.idEnte) {
-        return role.idEnte.toString() === userRole.idEnte?.toString();
-      } else {
-        return true;
-      }
+  /**
+   * Determina se la card del ruolo corrisponde al profilo attivo nella sessione
+   * corrente
+   * Discriminanti completi:
+   *   - codiceRuolo
+   *   - id della risorsa (idProgramma o idProgetto in base alla tipologia di ruolo)
+   *   - idEnte se valorizzato su entrambi i lati
+   */
+  const isActiveRole = (role: RoleI): boolean => {
+    if (!userRole || role.codiceRuolo !== userRole.codiceRuolo) return false;
+
+    // Ruoli globali (es. DTD, DSCU): unica card possibile per codiceRuolo.
+    if (!isProgrammaRole(role.codiceRuolo) && !isProgettoRole(role.codiceRuolo)) {
+      return true;
     }
-    return false;
+    // Confronto del target (programma o progetto) in base al tipo di ruolo.
+    const targetIdFromSession = isProgrammaRole(role.codiceRuolo)
+      ? userRole.idProgramma
+      : userRole.idProgetto;
+    if (role.id?.toString() !== targetIdFromSession?.toString()) return false;
+    // Discriminante ente: confronto solo se entrambi i lati lo hanno valorizzato.
+    if (role.idEnte && userRole.idEnte) {
+      return role.idEnte.toString() === userRole.idEnte.toString();
+    }
+    return true;
   };
 
   return (
@@ -126,12 +143,7 @@ const UserProfile = () => {
                   ? () =>
                       navigate(
                         `/area-amministrativa/${
-                          role?.codiceRuolo === userRoles.VOL || 
-                          role?.codiceRuolo === userRoles.FAC ||
-                          role?.codiceRuolo === userRoles.REGP ||
-                          role?.codiceRuolo === userRoles.DEGP ||
-                          role?.codiceRuolo === userRoles.REPP ||
-                          role?.codiceRuolo === userRoles.DEPP
+                          isProgettoRole(role?.codiceRuolo)
                             ? 'progetti'
                             : 'programmi'
                         }/${role?.id}`,
@@ -146,37 +158,21 @@ const UserProfile = () => {
               <CardStatusAction
                 key={`${role.id}${role.codiceRuolo}`}
                 id={`${role.id}${role.codiceRuolo}`}
-                status={role.statoP}
+                status={role.stato}
                 title={
-                  role.codiceRuolo !== userRoles.REG &&
-                  role.codiceRuolo !== userRoles.DEG &&
-                  role.codiceRuolo !== userRoles.REGP &&
-                  role.codiceRuolo !== userRoles.DEGP &&
-                  role.codiceRuolo !== userRoles.VOL &&
-                  role.codiceRuolo !== userRoles.FAC &&
-                  role.codiceRuolo !== userRoles.REPP &&
-                  role.codiceRuolo !== userRoles.DEPP
+                  !isProgrammaRole(role.codiceRuolo) && !isProgettoRole(role.codiceRuolo)
                     ? role.nome
                     : undefined
                 }
                 fullInfo={
-                  role.codiceRuolo !== userRoles.DTD &&
-                  role.codiceRuolo !== userRoles.DSCU
+                  isProgrammaRole(role.codiceRuolo) || isProgettoRole(role.codiceRuolo)
                     ? {
-                        programma:
-                          role.codiceRuolo === userRoles.REG ||
-                          role.codiceRuolo === userRoles.DEG
-                            ? role.nome
-                            : undefined,
-                        progetto:
-                          role.codiceRuolo === userRoles.REGP ||
-                          role.codiceRuolo === userRoles.DEGP ||
-                          role.codiceRuolo === userRoles.VOL ||
-                          role.codiceRuolo === userRoles.FAC ||
-                          role.codiceRuolo === userRoles.REPP ||
-                          role.codiceRuolo === userRoles.DEPP
-                            ? role.nome
-                            : undefined,
+                        programma: isProgrammaRole(role.codiceRuolo)
+                          ? role.nome
+                          : undefined,
+                        progetto: isProgettoRole(role.codiceRuolo)
+                          ? role.nome
+                          : undefined,
                         ruoli: role.ruolo,
                         ente: role.nomeBreveEnte || role.nomeEnte,
                       }
@@ -196,17 +192,3 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
-
-/*
-const activeRole={
-  role.codiceRuolo === userRole.codiceRuolo && !!role.idEnte
-    ? role.idEnte?.toString() === userRole.idEnte?.toString() &&
-    (role.id?.toString() ===
-      userRole.idProgramma?.toString() ||
-      role.id?.toString() === userRole.idProgetto?.toString())
-    : (role.codiceRuolo === userRole.codiceRuolo &&
-      role.id?.toString() ===
-      userRole.idProgramma?.toString()) ||
-    role.id?.toString() === userRole.idProgetto?.toString()
-};
-*/
