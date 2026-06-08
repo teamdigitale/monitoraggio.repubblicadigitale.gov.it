@@ -211,10 +211,17 @@ const AccordionAddress: React.FC<AccordionAddressI> = ({
               col='col-12 col-lg-6'
               required
               value={addressInfo.indirizzoSede.tipologiaUbicazione ?? ''}
-              options={tipologieUbicazione.map((t) => ({
-                value: t.id,
-                label: t.descrizione,
-              }))}
+              // Se l'array delle tipologie e' vuoto (errore di caricamento o
+              // nessun risultato) la dropdown espone una sola opzione "-" come
+              // fallback.
+              options={
+                tipologieUbicazione.length > 0
+                  ? tipologieUbicazione.map((t) => ({
+                      value: t.id,
+                      label: t.descrizione,
+                    }))
+                  : [{ value: '', label: '-' }]
+              }
               onInputChange={(value) =>
                 tipologiaChangeHandler(value ? Number(value) : null)
               }
