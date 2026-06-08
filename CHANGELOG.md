@@ -1,5 +1,11 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.536](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.535...1.0.0-test.536) (2026-06-08)
+
+### Bug Fixes
+
+* **U541:** filtro tipologie ubicazione e fallback 20260608 ([99116c4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/99116c45063fbfff3d2617c010f00907bc04e40e))
+
 ## [1.0.0-test.535](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.534...1.0.0-test.535) (2026-06-05)
 
 ### Bug Fixes
