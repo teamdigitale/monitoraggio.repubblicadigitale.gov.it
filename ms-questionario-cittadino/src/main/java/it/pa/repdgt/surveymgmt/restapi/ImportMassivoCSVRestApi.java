@@ -1,16 +1,19 @@
 package it.pa.repdgt.surveymgmt.restapi;
 
+import it.pa.repdgt.shared.entity.FinestraCaricamentoEntity;
 import it.pa.repdgt.shared.entityenum.PolicyEnum;
 import it.pa.repdgt.shared.util.Utils;
 import it.pa.repdgt.surveymgmt.dto.ServiziElaboratiDTO;
 import it.pa.repdgt.surveymgmt.exception.ValidationException;
 import it.pa.repdgt.surveymgmt.model.ElaboratoCSVRequest;
 import it.pa.repdgt.surveymgmt.model.ImportCsvInputData;
+import it.pa.repdgt.surveymgmt.service.FinestraCaricamentoService;
 import it.pa.repdgt.surveymgmt.service.ImportMassivoCSVService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,8 +34,19 @@ import java.util.UUID;
 public class ImportMassivoCSVRestApi {
 
     private final ImportMassivoCSVService importMassivoCSVService;
+    private final FinestraCaricamentoService finestraCaricamentoService;
     private final Validator validator;
     private final ObjectMapper objectMapper;
+
+    /**
+     * Espone la finestra di caricamento massivo (id=1, unica per istanza).
+     * Il FE usa il campo dataFine come limite superiore per la data servizio
+     * accettata nel CSV.
+     */
+    @GetMapping("/finestra-caricamento")
+    public ResponseEntity<FinestraCaricamentoEntity> getFinestraCaricamento() {
+        return new ResponseEntity<>(finestraCaricamentoService.getFinestraCaricamento(), HttpStatus.OK);
+    }
 
     @PostMapping()
     public ResponseEntity<String> importCsvData(@RequestBody ImportCsvInputData inputData) throws IOException, ValidationException{

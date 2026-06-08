@@ -113,8 +113,7 @@ public class ServizioBasicService {
 						servizioRequest.getIdProgetto(),
 						servizioRequest.getIdSedeServizio());
 		if (enteSedeProgettoFacilitatore == null) {
-			throw new ResourceNotFoundException(CodiceErroreEnum.C01.getDescrizioneErrore(),
-					CodiceErroreEnum.C01);
+			throw new ResourceNotFoundException(CodiceErroreEnum.C01);
 		}
 
 		List<ServizioEntity> listaServizi = getServizioByDatiControllo(servizioRequest, enteSedeProgettoFacilitatore.getId());

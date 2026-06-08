@@ -16,4 +16,8 @@ public class CittadinoException extends BaseException {
 	public CittadinoException(String messageException, CodiceErroreEnum codiceErroreEnum) {
 		super(messageException, codiceErroreEnum);
 	}
+
+	public CittadinoException(CodiceErroreEnum codiceErroreEnum) {
+		super(codiceErroreEnum);
+	}
 }

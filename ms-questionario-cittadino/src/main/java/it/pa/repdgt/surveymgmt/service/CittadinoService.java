@@ -83,7 +83,7 @@ public class CittadinoService {
 
 		if (!RuoloUtenteEnum.FAC.toString().equals(codiceRuoloUtente)
 				&& !RuoloUtenteEnum.VOL.toString().equals(codiceRuoloUtente)) {
-			throw new CittadinoException(CodiceErroreEnum.U06.getDescrizioneErrore(), CodiceErroreEnum.U06);
+			throw new CittadinoException(CodiceErroreEnum.U06);
 		}
 
 		Page<CittadinoProjection> cittadiniProjection = this
@@ -135,7 +135,7 @@ public class CittadinoService {
 
 		if (!RuoloUtenteEnum.FAC.toString().equals(codiceRuoloUtente)
 				&& !RuoloUtenteEnum.VOL.toString().equals(codiceRuoloUtente)) {
-			throw new CittadinoException(CodiceErroreEnum.U06.getDescrizioneErrore(), CodiceErroreEnum.U06);
+			throw new CittadinoException(CodiceErroreEnum.U06);
 		}
 
 		List<SedeProjection> listaSediProjection = this.sedeService

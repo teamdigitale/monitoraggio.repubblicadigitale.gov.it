@@ -80,9 +80,32 @@ export const mandatoryFields: (keyof CSVRecord)[] = [
   'SE6',
 ];
 
-const maxDate = new Date('2026-05-31')
-const messaggioErroreMaxDate = "La data del servizio e' successiva al 31 Maggio 2026."
-export const testoInfoMaxDate = " fino al 31 Maggio 2026"
+// Stato modulo-livello della finestra di caricamento: viene popolato dalla
+// pagina di upload chiamando setFinestraCaricamento con il dataFine recuperato
+// dal BE. Finche' non e' settato la validazione della data servizio non
+// applica alcun limite superiore.
+let finestraCaricamentoMaxDate: Date | null = null;
+let finestraCaricamentoInfoText = '';
+let finestraCaricamentoErrorMessage = '';
+
+const formatGiornoItaliano = (date: Date): string =>
+  date.toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' });
+
+export const setFinestraCaricamento = (dataFine: Date | null) => {
+  finestraCaricamentoMaxDate = dataFine;
+  if (dataFine) {
+    const giorno = formatGiornoItaliano(dataFine);
+    finestraCaricamentoInfoText = ` fino al ${giorno}`;
+    finestraCaricamentoErrorMessage = `La data del servizio e' successiva al ${giorno}.`;
+  } else {
+    // Mancato recupero della data dal BE: l'utente vede "-" come placeholder
+    // e validateFields non applica alcun limite superiore alla data servizio.
+    finestraCaricamentoInfoText = ' -';
+    finestraCaricamentoErrorMessage = '';
+  }
+};
+
+export const getTestoInfoMaxDate = (): string => finestraCaricamentoInfoText;
 
 export function encryptFiscalCode(filteredRecord: CSVRecord) {
   return filteredRecord.AN3
@@ -145,8 +168,12 @@ export const validateFields = (
     const parsedDate = new Date(record.SE1);
     if(!isValidDateFormat(record.SE1) || !isValidDate(record.SE1)){ //valido tramite regex
       errors.push("La data inserita per il servizio non e' valida.");
-    } else if (parsedDate > maxDate && extension === 'csv') {
-      errors.push(messaggioErroreMaxDate);
+    } else if (
+      finestraCaricamentoMaxDate &&
+      parsedDate > finestraCaricamentoMaxDate &&
+      extension === 'csv'
+    ) {
+      errors.push(finestraCaricamentoErrorMessage);
     }
   }
 

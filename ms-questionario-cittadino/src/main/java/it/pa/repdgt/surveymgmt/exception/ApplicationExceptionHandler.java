@@ -64,7 +64,8 @@ public class ApplicationExceptionHandler {
 
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
 	@ExceptionHandler(value = { QuestionarioTemplateException.class, CittadinoException.class,
-			ServizioException.class, QuestionarioCompilatoException.class, ValidationException.class })
+			ServizioException.class, QuestionarioCompilatoException.class, ValidationException.class,
+			FinestraCaricamentoException.class })
 	public Map<String, String> handleBusinessException(Exception exc, HttpServletResponse response) {
 		log.error("Business exception", exc);
 		String errorCode;
@@ -78,6 +79,8 @@ public class ApplicationExceptionHandler {
 			errorCode = ((QuestionarioCompilatoException) exc).getCodiceErroreEnum().toString();
 		} else if (exc instanceof ValidationException) {
 			errorCode = ((ValidationException) exc).getCodiceErroreEnum().toString();
+		} else if (exc instanceof FinestraCaricamentoException) {
+			errorCode = ((FinestraCaricamentoException) exc).getCodiceErroreEnum().toString();
 		} else {
 			errorCode = CodiceErroreEnum.G01.toString();
 		}

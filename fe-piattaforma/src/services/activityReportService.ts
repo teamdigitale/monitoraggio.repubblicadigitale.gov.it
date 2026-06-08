@@ -7,6 +7,7 @@ import {
 import API from '../utils/apiHelper';
 import { getUserHeaders } from '../redux/features/user/userThunk';
 import { ElaboratoCsvRequest } from '../models/ElaboratoCsvRequest.model';
+import { FinestraCaricamento } from '../models/FinestraCaricamento.model';
 import { UriPresigned } from '../models/UriPresigned.model';
 import {compressPayload, toBase64} from '../utils/common'
 
@@ -52,6 +53,12 @@ export function saveActivityReport(
 }
 
 
+export function getFinestraCaricamento(): Promise<AxiosResponse<FinestraCaricamento>> {
+  return API.get<FinestraCaricamento>(
+    `${process.env.QUESTIONARIO_CITTADINO}importCsv/finestra-caricamento`
+  );
+}
+
 export async function elaborateCsv(
   elaborato: ElaboratoCsvRequest,
   idProgetto: number,
@@ -61,7 +68,6 @@ export async function elaborateCsv(
   const { cfUtenteLoggato, codiceRuoloUtenteLoggato, idProgramma } = getUserHeaders();
   let payloadGzip = compressPayload(elaborato)
   let fileData = await toBase64(payloadGzip)
-  //return API.post(`${process.env.QUESTIONARIO_CITTADINO}importCsv`, 
   return API.post(`${process.env.QUESTIONARIO_CITTADINO}importCsv`,
     {
       cfUtenteLoggato,

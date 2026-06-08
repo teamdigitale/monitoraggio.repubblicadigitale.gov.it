@@ -38,6 +38,7 @@ import it.pa.repdgt.surveymgmt.exception.ServizioException;
 import it.pa.repdgt.surveymgmt.param.FiltroListaServiziParam;
 import it.pa.repdgt.surveymgmt.projection.ProgettoProjection;
 import it.pa.repdgt.surveymgmt.request.ServizioRequest;
+import it.pa.repdgt.surveymgmt.service.utils.ServizioBasicService;
 import lombok.extern.slf4j.Slf4j;
 
 @Service

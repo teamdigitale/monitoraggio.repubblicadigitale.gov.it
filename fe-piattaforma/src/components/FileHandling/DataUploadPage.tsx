@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState, useEffect } from 'react';
+import { useCallback, useRef, useState, useEffect } from 'react';
 import CsvInstructions from './CsvInstructions';
 import ActivityReportTable from '../ActivityReportTable/ActivityReportTable';
 import { DataUploadContext } from '../../contexts/DataUploadContext';
@@ -10,6 +10,10 @@ import { GetItemDetail } from '../../redux/features/forum/forumThunk';
 import { useDispatch } from 'react-redux';
 import { selectUser } from '../../redux/features/user/userSlice';
 import { cleanDrupalFileURL } from '../../utils/common';
+import { getFinestraCaricamento } from '../../services/activityReportService';
+import { setFinestraCaricamento } from '../../utils/csvUtils';
+import { hideLoader, showLoader } from '../../redux/features/app/appSlice';
+import { dispatchNotify, getErrorMessage } from '../../utils/notifictionHelper';
 import { ManageItemEvent, ActionTracker } from '../../redux/features/forum/forumThunk';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button, Icon } from 'design-react-kit';
@@ -61,6 +65,41 @@ export default function DataUploadPage() {
   useEffect(() => {
     getItemDetails();
   }, []);
+
+  useEffect(() => {
+    // Recupera dal BE la finestra di caricamento massivo (id=1) e popola in
+    // csvUtils la data limite usata dalla validazione del CSV e dal testo
+    // informativo. La chiamata e' bloccante con loader globale; su errore
+    // (500 BE o timeout del gateway AWS) mostra la notifica mappata in
+    // errors.json sul codice errorCode della response (fallback CM02 se
+    // l'errore non porta errorCode, p.es. timeout senza response).
+    const notifyError = async (errorCode: string) => {
+      const msg = await getErrorMessage({ errorCode });
+      dispatchNotify({
+        title: msg.title,
+        status: msg.status,
+        message: msg.message,
+        closable: true,
+        duration: 'slow',
+      });
+    };
+    dispatch(showLoader());
+    getFinestraCaricamento()
+      .then((res) => {
+        const dataFine = res?.data?.dataFine;
+        setFinestraCaricamento(dataFine ? new Date(dataFine) : null);
+        if (!dataFine) {
+          notifyError('CM02');
+        }
+      })
+      .catch((error) => {
+        setFinestraCaricamento(null);
+        notifyError(error?.response?.data?.errorCode || 'CM02');
+      })
+      .finally(() => {
+        dispatch(hideLoader());
+      });
+  }, [dispatch]);
 
   const triggerSearch = useCallback(() => {
     if (searchRef && searchRef.current) {

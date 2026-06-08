@@ -16,7 +16,17 @@ public abstract class BaseException extends RuntimeException implements Serializ
 		super(exceptionMessage);
 		this.codiceErroreEnum = codiceErroreEnum;
 	}
-	
+
+	/**
+	 * Usa la descrizione associata all'enum come exceptionMessage: evita di
+	 * dover ripetere il testo nei callsite quando il messaggio coincide con
+	 * quello dichiarato in {@link CodiceErroreEnum}.
+	 */
+	public BaseException(CodiceErroreEnum codiceErroreEnum) {
+		super(codiceErroreEnum.getDescrizioneErrore());
+		this.codiceErroreEnum = codiceErroreEnum;
+	}
+
 	public BaseException(String exceptionMessage, Exception ex) {
 		super (exceptionMessage, ex);
 	}
