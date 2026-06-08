@@ -116,8 +116,11 @@ const ManageHeadquarter: React.FC<ManageHeadquarterI> = ({
     'Per creare una sede itinerante, compila le informazioni relative ad almeno due indirizzi.';
 
   useEffect(() => {
-    dispatch(GetTipologieUbicazione());
-  }, [dispatch]);
+    // Carica le tipologie ubicazione sede a ogni apertura della modale
+    // (creazione o modifica). In caso di errore AccordionAddress espone
+    // l'opzione fallback "-".
+    if (open) dispatch(GetTipologieUbicazione());
+  }, [open, dispatch]);
 
   useEffect(() => {
     if (creation && open) {
