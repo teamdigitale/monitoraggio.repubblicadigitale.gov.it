@@ -45,42 +45,77 @@ const networkErrorPayload = {
 const defaultErrorPayload = {
   title: 'SI È VERIFICATO UN ERRORE',
   message: defaultErrorMessage,
-  status: 'error',
+  status: 'error' as const,
 };
+/**
+ * Risolve il payload da mostrare in notifica con strategia BE-first + fallback
+ * su errors.json:
+ * - Se il BE fornisce gia' title e message (response 4xx/5xx con shape
+ *   { errorCode, title, message }), li usa direttamente: il BE e' la fonte
+ *   piu' aggiornata e supporta messaggi dinamici (es. validazione campi).
+ * - Sui campi non forniti dal BE (title vuoto, message vuoto) ricade su
+ *   errors.json[errorCode] per recuperare quello che manca.
+ * - Se nessuno dei due fornisce nulla, restituisce defaultErrorPayload.
+ *
+ * I codici speciali A02 (redirect logout) e D01 (notifica silenziata)
+ * conservano il comportamento storico indipendentemente da cosa porta il BE.
+ */
+type NotifyStatus = NonNullable<NotifyI['status']>;
+
 export const getErrorMessage = async (
-  { errorCode }: { errorCode?: string } = {}
-) => {
-  // Difesa: errorCode mancante o non valido -> default.
-  // Protegge da eventuali variazioni della shape della response backend.
-  if (!errorCode) {
+  {
+    errorCode,
+    backendTitle,
+    backendMessage,
+  }: {
+    errorCode?: string | undefined;
+    backendTitle?: string | undefined;
+    backendMessage?: string | undefined;
+  } = {}
+): Promise<{ title: string; message: string; status: NotifyStatus }> => {
+  const beTitle = backendTitle?.trim();
+  const beMessage = backendMessage?.trim();
+
+  // Comportamenti speciali ancorati al codice, vincolanti anche se il BE
+  // dovesse fornire title/message diversi.
+  if (errorCode === 'A02') {
+    console.log('Errore A02');
+    window.location.replace('/auth-redirect');
     return defaultErrorPayload;
   }
+  if (errorCode === 'D01') {
+    return { title: '', message: '', status: 'error' };
+  }
+
+  let feTitolo = '';
+  let feDescrizione = '';
+  let feType = '';
   try {
     const res = await axios('/assets/errors/errors.json');
-    if (!res?.data) {
-      return defaultErrorPayload;
+    const entry = errorCode ? res?.data?.errors?.[errorCode] : undefined;
+    if (entry) {
+      feTitolo = entry.titolo || '';
+      feDescrizione = entry.descrizione || '';
+      feType = entry.type || '';
     }
-    const errorsList = { ...res.data.errors };
-    if (errorCode === 'A02') {
-      console.log('Errore A02');
-      window.location.replace('/auth-redirect');
-      return defaultErrorPayload;
-    }
-    if (errorCode === 'D01') {
-      return { title: '', message: '' };
-    }
-    if (errorsList[errorCode]) {
-      return {
-        message: `${errorsList[errorCode]?.descrizione} (errore ${errorCode})`,
-        title: errorsList[errorCode]?.titolo || 'ERRORE',
-        // In errors.json il campo si chiama 'type', non 'status'.
-        status: errorsList[errorCode]?.type || 'error',
-      };
-    }
-    return defaultErrorPayload;
-  } catch (error) {
+  } catch (_err) {
+    // fallback gestito sotto
+  }
+
+  const resolvedTitle = beTitle || feTitolo;
+  const resolvedDescrizione = beMessage || feDescrizione;
+  if (!resolvedTitle && !resolvedDescrizione) {
     return defaultErrorPayload;
   }
+
+  const codeSuffix = errorCode ? ` (errore ${errorCode})` : '';
+  return {
+    title: resolvedTitle || 'ERRORE',
+    message: resolvedDescrizione
+      ? `${resolvedDescrizione}${codeSuffix}`
+      : defaultErrorMessage,
+    status: (feType || 'error') as NotifyStatus,
+  };
 };
 
 export const errorHandler = async (error: unknown) => {
@@ -109,8 +144,11 @@ export const errorHandler = async (error: unknown) => {
 
     if (!errorData) {
       try {
+        const data = (error as any)?.response?.data;
         errorData = await getErrorMessage({
-          errorCode: (error as any)?.response?.data?.errorCode,
+          errorCode: data?.errorCode,
+          backendTitle: data?.title,
+          backendMessage: data?.message,
         });
       } catch (error) {
         console.error("Errore durante il recupero del messaggio:", error);

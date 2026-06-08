@@ -73,8 +73,12 @@ export default function DataUploadPage() {
     // (500 BE o timeout del gateway AWS) mostra la notifica mappata in
     // errors.json sul codice errorCode della response (fallback CM02 se
     // l'errore non porta errorCode, p.es. timeout senza response).
-    const notifyError = async (errorCode: string) => {
-      const msg = await getErrorMessage({ errorCode });
+    const notifyError = async (
+      errorCode: string,
+      backendTitle?: string,
+      backendMessage?: string,
+    ) => {
+      const msg = await getErrorMessage({ errorCode, backendTitle, backendMessage });
       dispatchNotify({
         title: msg.title,
         status: msg.status,
@@ -94,7 +98,8 @@ export default function DataUploadPage() {
       })
       .catch((error) => {
         setFinestraCaricamento(null);
-        notifyError(error?.response?.data?.errorCode || 'CM02');
+        const data = error?.response?.data;
+        notifyError(data?.errorCode || 'CM02', data?.title, data?.message);
       })
       .finally(() => {
         dispatch(hideLoader());

@@ -30,7 +30,7 @@ public class ApplicationExceptionHandler {
 				.map(FieldError::getField).collect(Collectors.joining(", "));
 		return ErrorResponseBuilder.buildBusiness(
 				"Validazione fallita sui campi: " + message,
-				CodiceErroreEnum.G02.toString(), response);
+				CodiceErroreEnum.G02, response);
 	}
 
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
@@ -39,7 +39,7 @@ public class ApplicationExceptionHandler {
 		log.error("Constraint violation", exc);
 		return ErrorResponseBuilder.buildBusiness(
 				"Validazione fallita sui parametri della richiesta",
-				CodiceErroreEnum.G02.toString(), response);
+				CodiceErroreEnum.G02, response);
 	}
 
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
@@ -48,7 +48,7 @@ public class ApplicationExceptionHandler {
 		log.error("Malformed request body", exc);
 		return ErrorResponseBuilder.buildBusiness(
 				"Richiesta non valida: corpo mancante o non leggibile",
-				CodiceErroreEnum.G02.toString(), response);
+				CodiceErroreEnum.G02, response);
 	}
 
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
@@ -57,7 +57,7 @@ public class ApplicationExceptionHandler {
 		log.error("Resource not found", exc);
 		return ErrorResponseBuilder.buildBusiness(
 				exc.getMessage(),
-				exc.getCodiceErroreEnum().toString(), response);
+				exc.getCodiceErroreEnum(), response);
 	}
 
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
@@ -65,21 +65,21 @@ public class ApplicationExceptionHandler {
 			EnteSedeProgettoFacilitatoreException.class, RuoloException.class })
 	public Map<String, String> handleBusinessException(Exception exc, HttpServletResponse response) {
 		log.error("Business exception", exc);
-		String errorCode;
+		CodiceErroreEnum codiceErroreEnum;
 		if (exc instanceof EnteException) {
-			errorCode = ((EnteException) exc).getCodiceErroreEnum().toString();
+			codiceErroreEnum = ((EnteException) exc).getCodiceErroreEnum();
 		} else if (exc instanceof SedeException) {
-			errorCode = ((SedeException) exc).getCodiceErroreEnum().toString();
+			codiceErroreEnum = ((SedeException) exc).getCodiceErroreEnum();
 		} else if (exc instanceof EnteSedeProgettoException) {
-			errorCode = ((EnteSedeProgettoException) exc).getCodiceErroreEnum().toString();
+			codiceErroreEnum = ((EnteSedeProgettoException) exc).getCodiceErroreEnum();
 		} else if (exc instanceof EnteSedeProgettoFacilitatoreException) {
-			errorCode = ((EnteSedeProgettoFacilitatoreException) exc).getCodiceErroreEnum().toString();
+			codiceErroreEnum = ((EnteSedeProgettoFacilitatoreException) exc).getCodiceErroreEnum();
 		} else if (exc instanceof RuoloException) {
-			errorCode = ((RuoloException) exc).getCodiceErroreEnum().toString();
+			codiceErroreEnum = ((RuoloException) exc).getCodiceErroreEnum();
 		} else {
-			errorCode = CodiceErroreEnum.G01.toString();
+			codiceErroreEnum = CodiceErroreEnum.G01;
 		}
-		return ErrorResponseBuilder.buildBusiness(exc.getMessage(), errorCode, response);
+		return ErrorResponseBuilder.buildBusiness(exc.getMessage(), codiceErroreEnum, response);
 	}
 
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)

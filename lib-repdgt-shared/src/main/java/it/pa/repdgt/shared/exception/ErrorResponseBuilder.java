@@ -32,6 +32,7 @@ public final class ErrorResponseBuilder {
         String traceId = UUID.randomUUID().toString();
         Map<String, String> body = new HashMap<>();
         body.put("errorCode", CodiceErroreEnum.G01.toString());
+        body.put("title", CodiceErroreEnum.G01.getTitolo());
         body.put("message", String.format(GENERIC_ERROR_MESSAGE, traceId));
         body.put("traceId", traceId);
         body.put("exchange-id", readExchangeId(response));
@@ -41,13 +42,14 @@ public final class ErrorResponseBuilder {
     /**
      * Costruisce una response per eccezioni business custom: il messaggio
      * (controllato dagli sviluppatori) puo' essere mostrato al client. Aggiunge
-     * sempre traceId per correlation.
+     * sempre traceId per correlation. Il titolo viene letto dall'enum.
      */
-    public static Map<String, String> buildBusiness(String message, String errorCode,
+    public static Map<String, String> buildBusiness(String message, CodiceErroreEnum codiceErroreEnum,
             HttpServletResponse response) {
         String traceId = UUID.randomUUID().toString();
         Map<String, String> body = new HashMap<>();
-        body.put("errorCode", errorCode);
+        body.put("errorCode", codiceErroreEnum.toString());
+        body.put("title", codiceErroreEnum.getTitolo());
         body.put("message", message);
         body.put("traceId", traceId);
         body.put("exchange-id", readExchangeId(response));
