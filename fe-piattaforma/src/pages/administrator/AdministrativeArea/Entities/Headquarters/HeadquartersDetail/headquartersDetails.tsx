@@ -26,6 +26,7 @@ import HeadquarterDetailsContent from '../../../../../../components/Administrati
 import {
   GetHeadquarterDetails,
   GetHeadquarterLightDetails,
+  GetTipologieUbicazione,
   HeadquarterFacilitator,
   RemoveAuthorityHeadquarter,
   RemoveHeadquarterFacilitator,
@@ -121,6 +122,13 @@ const HeadquartersDetails = () => {
     if (entityId && !programDetails?.nomeBreve)
       dispatch(GetProgramDetail(entityId));
   }, []);
+
+  useEffect(() => {
+    // Carica le tipologie ubicazione sede al mount della pagina di dettaglio:
+    // servono al sotto-componente AccordionAddress in modalita' read-only per
+    // mostrare la descrizione corrispondente all'id salvato.
+    dispatch(GetTipologieUbicazione());
+  }, [dispatch]);
 
   useEffect(() => {
     // For breadcrumb
