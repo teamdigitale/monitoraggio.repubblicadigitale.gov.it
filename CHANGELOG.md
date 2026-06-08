@@ -1,5 +1,11 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.537](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.536...1.0.0-test.537) (2026-06-08)
+
+### Bug Fixes
+
+* **U541:** tipologie ubicazione anche su dettaglio sede 20260608 ([7a70825](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7a70825a70ea48de39594cbc2f141786bf048e6f))
+
 ## [1.0.0-test.536](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.535...1.0.0-test.536) (2026-06-08)
 
 ### Bug Fixes
