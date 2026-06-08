@@ -191,6 +191,15 @@ export function containsOnlyNumber(value: string): boolean {
 }
 
 export function checkMapValues(record: CSVRecord, errors: string[]) {
+  // SE3 (tipo di servizio prenotato) ammette un solo valore: se contiene il
+  // separatore di multipli (':') la riga viene scartata con motivazione dedicata.
+  const se3Value = record.SE3;
+  if (
+    se3Value !== undefined && se3Value !== null && se3Value !== '' && se3Value.includes(':')
+  ) {
+    errors.push('Risulta indicato più di un tipo di servizio prenotato.');
+  }
+
   const mapFields = [
     { key: 'AN5', map: documentTypeMap },
     { key: 'AN7', map: genderMap },
@@ -198,7 +207,7 @@ export function checkMapValues(record: CSVRecord, errors: string[]) {
     { key: 'AN9', map: educationLevelMap },
     { key: 'AN10', map: occupationalStatusMap },
     { key: 'AN11', map: citizenshipMap },
-    { key: 'SE3', map: serviceNameMap, multi: true },
+    { key: 'SE3', map: serviceNameMap },
     { key: 'SE4', map: firstLevelCompetenceMap, multi: true },
     { key: 'SE5', map: secondLevelCompetenceMap, multi: true },
     { key: 'SE6', map: publicServiceDomainMap, multi: true },
@@ -235,7 +244,7 @@ export function checkMapValues(record: CSVRecord, errors: string[]) {
 
 export function checkMapSpaces(record: CSVRecord, errors: string[]) {
   const mapFields = [
-    { key: 'SE3', map: serviceNameMap, multi: true },
+    { key: 'SE3', map: serviceNameMap },
     { key: 'SE4', map: firstLevelCompetenceMap, multi: true },
     { key: 'SE5', map: secondLevelCompetenceMap, multi: true },
     { key: 'SE6', map: publicServiceDomainMap, multi: true },

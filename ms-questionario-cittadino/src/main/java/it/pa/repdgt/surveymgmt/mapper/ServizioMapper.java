@@ -16,8 +16,8 @@ import it.pa.repdgt.shared.entity.UtenteEntity;
 import it.pa.repdgt.surveymgmt.collection.SezioneQ3Collection;
 import it.pa.repdgt.surveymgmt.request.ServizioRequest;
 import it.pa.repdgt.surveymgmt.resource.ServizioResource;
-import it.pa.repdgt.surveymgmt.service.SedeService;
-import it.pa.repdgt.surveymgmt.service.UtenteService;
+import it.pa.repdgt.surveymgmt.service.utils.SedeService;
+import it.pa.repdgt.surveymgmt.service.utils.UtenteService;
 
 @Component
 @Validated

@@ -2,7 +2,6 @@ package it.pa.repdgt.surveymgmt.service;
 
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
-import it.pa.repdgt.shared.awsintegration.service.EmailService;
 import it.pa.repdgt.shared.constants.DomandeStrutturaQ1AndQ2Constants;
 import it.pa.repdgt.shared.entity.*;
 import it.pa.repdgt.shared.entity.key.ServizioCittadinoKey;
@@ -48,7 +47,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -88,11 +86,7 @@ public class CittadiniServizioService implements DomandeStrutturaQ1AndQ2Constant
         mappaMesi.put("T", Calendar.DECEMBER);
     }
 
-    private static final String FORMATO_DATA_PATTERN = "dd-MM-yyyy";
-
     private static final Integer RANGE_SECOLO = 23;
-    private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(FORMATO_DATA_PATTERN);
-
     private static final String CF_REGX = "^[A-Z]{6}[0-9]{2}[A-Z]{1}[0-9]{2}[A-Z]{1}[0-9]{3}[A-Z]{1}$";
 
     @Autowired

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Duration, Form, Input, Select } from '../../../components';
 import CheckboxGroup from '../../../components/Form/checkboxGroup';
-// import { OptionTypeMulti } from '../../../components/Form/selectMultiple';
 import SelectMultipleCheckbox from '../../../components/Form/selectMultipleCheckbox';
 import withFormHandler, {
   withFormHandlerProps,
@@ -275,6 +274,10 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
             disabled={formDisabled}
             optionsInColumn
             separator={separator}
+            // Per la domanda 24 (tipo di servizio prenotato) il CheckboxGroup
+            // opera in modalita' single-select: alla selezione di un valore
+            // deseleziona automaticamente gli altri.
+            singleSelection={field.field === '24'}
           />
         );
       }

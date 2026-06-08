@@ -1,4 +1,4 @@
-package it.pa.repdgt.surveymgmt.service;
+package it.pa.repdgt.surveymgmt.service.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

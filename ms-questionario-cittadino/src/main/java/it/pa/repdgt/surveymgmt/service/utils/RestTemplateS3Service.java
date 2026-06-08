@@ -1,4 +1,4 @@
-package it.pa.repdgt.surveymgmt.service;
+package it.pa.repdgt.surveymgmt.service.utils;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.http.client.methods.HttpPut;

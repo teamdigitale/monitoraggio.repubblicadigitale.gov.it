@@ -1,5 +1,7 @@
 package it.pa.repdgt.surveymgmt.service;
 
+import it.pa.repdgt.surveymgmt.service.utils.ProgettoService;
+import it.pa.repdgt.surveymgmt.service.utils.RestTemplateS3Service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.pa.repdgt.shared.entity.*;

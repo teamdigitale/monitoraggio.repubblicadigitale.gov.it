@@ -1,5 +1,6 @@
-package it.pa.repdgt.surveymgmt.service;
+package it.pa.repdgt.surveymgmt.service.utils;
 
+import it.pa.repdgt.surveymgmt.service.ServizioSqlService;
 import java.util.ArrayList;
 import java.util.List;
 

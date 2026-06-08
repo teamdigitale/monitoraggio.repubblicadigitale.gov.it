@@ -1,117 +1,49 @@
 package it.pa.repdgt.surveymgmt.service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
-import org.springframework.transaction.annotation.Transactional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import it.pa.repdgt.shared.annotation.LogExecutionTime;
 import it.pa.repdgt.shared.annotation.LogMethod;
 import it.pa.repdgt.shared.constants.RuoliUtentiConstants;
 import it.pa.repdgt.shared.entity.EnteEntity;
-import it.pa.repdgt.shared.entity.EnteSedeProgettoFacilitatoreEntity;
 import it.pa.repdgt.shared.entity.ProgettoEntity;
 import it.pa.repdgt.shared.entity.QuestionarioCompilatoEntity;
 import it.pa.repdgt.shared.entity.SedeEntity;
 import it.pa.repdgt.shared.entity.ServizioEntity;
 import it.pa.repdgt.shared.entity.ServizioXCittadinoEntity;
 import it.pa.repdgt.shared.entity.TipologiaServizioEntity;
-import it.pa.repdgt.shared.entity.key.EnteSedeProgettoFacilitatoreKey;
-import it.pa.repdgt.shared.entityenum.StatoEnum;
 import it.pa.repdgt.shared.exception.CodiceErroreEnum;
 import it.pa.repdgt.shared.restapi.param.SceltaProfiloParam;
 import it.pa.repdgt.surveymgmt.bean.DettaglioServizioBean;
 import it.pa.repdgt.surveymgmt.bean.SchedaDettaglioServizioBean;
 import it.pa.repdgt.surveymgmt.collection.QuestionarioTemplateCollection;
 import it.pa.repdgt.surveymgmt.collection.SezioneQ3Collection;
-import it.pa.repdgt.surveymgmt.constants.NoteCSV;
 import it.pa.repdgt.surveymgmt.exception.ResourceNotFoundException;
 import it.pa.repdgt.surveymgmt.exception.ServizioException;
-import it.pa.repdgt.surveymgmt.mapper.ServizioMapper;
-import it.pa.repdgt.surveymgmt.mongo.repository.QuestionarioCompilatoMongoRepository;
-import it.pa.repdgt.surveymgmt.mongo.repository.SezioneQ3Respository;
 import it.pa.repdgt.surveymgmt.param.FiltroListaServiziParam;
 import it.pa.repdgt.surveymgmt.projection.ProgettoProjection;
-import it.pa.repdgt.surveymgmt.repository.EnteSedeProgettoFacilitatoreRepository;
-import it.pa.repdgt.surveymgmt.repository.QuestionarioCompilatoRepository;
-import it.pa.repdgt.surveymgmt.repository.ServizioSqlRepository;
-import it.pa.repdgt.surveymgmt.repository.ServizioXCittadinoRepository;
-import it.pa.repdgt.surveymgmt.repository.TipologiaServizioRepository;
 import it.pa.repdgt.surveymgmt.request.ServizioRequest;
-import it.pa.repdgt.surveymgmt.util.CSVMapUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Validated
 @Slf4j
-public class ServizioService {
-	@Autowired
-	private ServizioMapper servizioMapper;
-	@Autowired
-	private UtenteService utenteService;
-	@Autowired
-	private SezioneQ3Respository sezioneQ3Repository;
-	@Autowired
-	private ServizioSqlService servizioSQLService;
-	@Autowired
-	private ProgettoService progettoService;
-	@Autowired
-	private EnteService enteService;
-	@Autowired
-	private SedeService sedeService;
-	@Autowired
-	private QuestionarioTemplateService questionarioTemplateService;
-	@Autowired
-	private QuestionarioTemplateSqlService questionarioTemplateSqlService;
-
-	@Autowired
-	private TipologiaServizioRepository tipologiaServizioRepository;
-
-	@Autowired
-	private ServizioXCittadinoRepository servizioXCittadinoRepository;
-
-	@Autowired
-	private QuestionarioCompilatoRepository questionarioCompilatoRepository;
-
-	@Autowired
-	private QuestionarioCompilatoMongoRepository questionarioCompilatoMongoRepository;
-
-	@Autowired
-	private EnteSedeProgettoFacilitatoreRepository enteSedeProgettoFacilitatoreRepository;
-
-	@Autowired
-	private ServizioSqlRepository servizioSqlRepository;
-
-	@Autowired
-	private SezioneQ3Respository sezioneQ3Respository;
-
-	private ObjectMapper objectMapper = new ObjectMapper();
+public class ServizioService extends ServizioBasicService {
 
 	/**
 	 * Recupera l'elenco dei servizi paginati sulla base della profilazione
@@ -119,7 +51,7 @@ public class ServizioService {
 	 * - ProfilazioneParama - contiene i dati della profilazione dell'utente loggato
 	 * - FiltroListaServiziParam - contiene tutti i filtri da applicare all'elenco
 	 * dei servizi
-	 * 
+	 *
 	 */
 	@LogMethod
 	@LogExecutionTime
@@ -147,7 +79,7 @@ public class ServizioService {
 	 * - ProfilazioneParama - contiene i dati della profilazione dell'utente loggato
 	 * - FiltroListaServiziParam - contiene tutti i filtri da applicare all'elenco
 	 * dei servizi
-	 * 
+	 *
 	 */
 	@LogMethod
 	@LogExecutionTime
@@ -246,6 +178,10 @@ public class ServizioService {
 			throw new ServizioException(messaggioErrore, CodiceErroreEnum.S05);
 		}
 
+		// In creazione il tipo di servizio prenotato deve essere unico (vincolo
+		// applicato sia per il form sia per il caricamento massivo).
+		checkTipologiaServizioSingola(servizioRequest);
+
 		ProgettoEntity progettoServizio = progettoService.getProgettoById(servizioRequest.getIdProgetto());
 		if(servizioRequest.getDataServizio().before(progettoServizio.getDataInizioProgetto()) || servizioRequest.getDataServizio().after(progettoServizio.getDataFineProgetto())){
 			final String messaggioErrore = "Impossibile creare servizio. La data del servizio deve essere compresa fra la data di inizio e data di fine progetto";
@@ -267,86 +203,6 @@ public class ServizioService {
 		this.sezioneQ3Repository.save(sezioneQ3Compilato);
 
 		return servizioCreato;
-	}
-
-	private void checkUnicitaServizio(final ServizioRequest servizioRequest) throws JSONException {
-		EnteSedeProgettoFacilitatoreEntity enteSedeProgettoFacilitatore = enteSedeProgettoFacilitatoreRepository
-				.existsByChiave(
-						servizioRequest.getCfUtenteLoggato(),
-						servizioRequest.getIdEnteServizio(),
-						servizioRequest.getIdProgetto(),
-						servizioRequest.getIdSedeServizio());
-		if (enteSedeProgettoFacilitatore == null) {
-			throw new ResourceNotFoundException(CodiceErroreEnum.C01.getDescrizioneErrore(),
-					CodiceErroreEnum.C01);
-		}
-
-		List<ServizioEntity> listaServizi = getServizioByDatiControllo(servizioRequest, enteSedeProgettoFacilitatore.getId());
-		if(CollectionUtils.isNotEmpty(listaServizi)){
-
-			JSONObject rootNodeNuovoServizio = new JSONObject(servizioRequest.getSezioneQuestionarioCompilatoQ3());				
-			for (ServizioEntity servizioRecuperato : listaServizi) {
-				Optional<SezioneQ3Collection> optSezioneQ3Collection = sezioneQ3Respository
-						.findById(servizioRecuperato.getIdTemplateCompilatoQ3());
-				if (optSezioneQ3Collection.isPresent()) {
-					JsonNode nodeActual = objectMapper.valueToTree(optSezioneQ3Collection.get().getSezioneQ3Compilato());
-					JsonNode pathJson = nodeActual.path("json");
-					JSONObject jsonObjectActual = new JSONObject(pathJson.asText());
-					boolean isStessoServizio = true;
-					if (!recuperaDescrizioneDaJson(jsonObjectActual, 6).equals(recuperaDescrizioneDaJson(rootNodeNuovoServizio, 6))) {
-						isStessoServizio = false;
-					}
-					if (!recuperaDescrizioneDaJson(jsonObjectActual, 5).equals(recuperaDescrizioneDaJson(rootNodeNuovoServizio, 5))) {
-						isStessoServizio = false;
-					}
-					if (!recuperaDescrizioneDaJson(jsonObjectActual, 4).equals(recuperaDescrizioneDaJson(rootNodeNuovoServizio, 4))) {
-						isStessoServizio = false;
-					}
-					if (isStessoServizio) {
-						final String messaggioErrore = "Il servizio che vuoi creare riporta gli stessi dati di un servizio già esistente. Per creare una nuovo servizio, assicurati di differenziare almeno un’informazione, per esempio il nome o la descrizione";
-						throw new ServizioException(messaggioErrore, CodiceErroreEnum.S10);
-					} 
-				}
-			}
-		}
-	}
-
-	private List<ServizioEntity> getServizioByDatiControllo(ServizioRequest servizioRequest,
-			EnteSedeProgettoFacilitatoreKey enteSedeProgettoFacilitatoreKey) {
-		Optional<List<ServizioEntity>> servizioOpt = servizioSqlRepository
-				.findAllByDataServizioAndDurataServizioAndTipologiaServizioAndIdEnteSedeProgettoFacilitatoreAndNome(
-						servizioRequest.getDataServizio(),
-						servizioRequest.getDurataServizio(),
-						String.join(", ", servizioRequest.getListaTipologiaServizi()), enteSedeProgettoFacilitatoreKey,
-						servizioRequest.getNomeServizio());
-		if (servizioOpt.isPresent() && !servizioOpt.get().isEmpty()) {
-			List<ServizioEntity> listaServizi = servizioOpt.get();
-			return listaServizi;
-		}
-		return new ArrayList<>();
-	}
-
-	private Set<String> recuperaDescrizioneDaJson(JSONObject jsonObject, int index) {
-        
-        JSONArray properties = jsonObject.getJSONArray("properties");
-        JSONObject ultimoOggetto = properties.getJSONObject(index);
-        String ultimaChiave = ultimoOggetto.keys().next();
-        JSONArray ultimoValoreArray = ultimoOggetto.getJSONArray(ultimaChiave);
-		Set<String> result = IntStream.range(0, ultimoValoreArray.length())
-                .mapToObj(ultimoValoreArray::getString)
-                .collect(Collectors.toSet());
-		return result;
-        
-    }
-
-	@LogMethod
-	@LogExecutionTime
-	public SezioneQ3Collection creaSezioneQ3(@NotNull final ServizioRequest servizioRequest) {
-		final SezioneQ3Collection sezioneQ3Collection = this.servizioMapper.toCollectionFrom(servizioRequest);
-		sezioneQ3Collection.setId(UUID.randomUUID().toString());
-		sezioneQ3Collection.setDataOraCreazione(new Date());
-		sezioneQ3Collection.setDataOraUltimoAggiornamento(sezioneQ3Collection.getDataOraCreazione());
-		return sezioneQ3Collection;
 	}
 
 	@LogMethod
@@ -375,6 +231,9 @@ public class ServizioService {
 			throw new ServizioException(messaggioErrore, CodiceErroreEnum.A06);
 		}
 
+		// In aggiornamento il tipo di servizio prenotato deve essere unico.
+		checkTipologiaServizioSingola(servizioDaAggiornareRequest);
+
 		checkUnicitaServizio(servizioDaAggiornareRequest);
 
 		// Aggiorno servizio su MySql
@@ -401,7 +260,7 @@ public class ServizioService {
 	 * Recupera tutte le 'tipologie di servizio' associati ai servizi dell'utente
 	 * che si è loggato
 	 * con un determinato profilo
-	 * 
+	 *
 	 */
 	@LogMethod
 	@LogExecutionTime
@@ -419,7 +278,7 @@ public class ServizioService {
 	/**
 	 * Recupera tutti gli stati servizi relativi all'utente che si è loggato
 	 * con un determinato profilo
-	 * 
+	 *
 	 */
 	@LogMethod
 	@LogExecutionTime
@@ -435,31 +294,10 @@ public class ServizioService {
 				.collect(Collectors.toList());
 	}
 
-	public boolean isAutorizzatoForGetSchedaDettaglioServizioAndEliminaServizio(@NotNull Long idServizio,
-			SceltaProfiloParam profilazioneParam) {
-		switch (profilazioneParam.getCodiceRuoloUtenteLoggato()) {
-			case RuoliUtentiConstants.REGP:
-			case RuoliUtentiConstants.DEGP:
-				return this.servizioSQLService.isServizioAssociatoARegpDegp(idServizio,
-						profilazioneParam.getIdProgetto()) > 0;
-			case RuoliUtentiConstants.REPP:
-			case RuoliUtentiConstants.DEPP:
-				return this.servizioSQLService.isServizioAssociatoAReppDepp(idServizio,
-						profilazioneParam.getIdProgetto(), profilazioneParam.getIdEnte()) > 0;
-			case RuoliUtentiConstants.FACILITATORE:
-			case RuoliUtentiConstants.VOLONTARIO:
-				return this.servizioSQLService.isServizioAssociatoAUtenteProgettoEnte(idServizio,
-						profilazioneParam.getIdProgetto(), profilazioneParam.getIdEnte(),
-						profilazioneParam.getCfUtenteLoggato()) > 0;
-			default:
-				return false;
-		}
-	}
-
 	/**
 	 * Recupera i dati da mostrare nella scheda 'Dettaglio servizio' a partire
 	 * dall'id del servizio
-	 * 
+	 *
 	 */
 	@LogMethod
 	@LogExecutionTime
@@ -552,12 +390,6 @@ public class ServizioService {
 
 		// cancello SezioneQ3Compilato su MongoDB
 		this.sezioneQ3Repository.deleteByIdSezioneQ3(servizioEntity.getIdTemplateCompilatoQ3());
-	}
-
-	@LogMethod
-	@LogExecutionTime
-	public boolean isServizioEliminabile(@NotNull final String statoServizio) {
-		return StatoEnum.NON_ATTIVO.getValue().equalsIgnoreCase(statoServizio);
 	}
 
 	@LogMethod

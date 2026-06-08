@@ -69,7 +69,8 @@ public enum CodiceErroreEnum {
 	,S09("Errore servizio non esistente")
 	,S10("Il servizio che vuoi creare riporta gli stessi dati di un servizio già esistente per la stessa data. Per creare una nuovo servizio, assicurati di differenziare almeno un’informazione, per esempio il nome o la descrizione")
 	,S11("Errore creazione servizio")
-	
+	,S12("Risulta indicato più di un tipo di servizio prenotato")
+
 	,SD01("Errore creazione sede")
 	,SD02("Errore aggiornamento sede")
 

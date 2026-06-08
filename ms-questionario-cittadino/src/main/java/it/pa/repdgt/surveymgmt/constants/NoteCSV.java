@@ -14,4 +14,5 @@ public class NoteCSV {
     public static final String NOTE_UTENTE_SEDE_NON_ASSOCIATI_AL_PROGETTO_SCD = "Il volontario o la sede non sono associati al progetto e all'ente per cui accedi";
     public static final String NOTE_PROGETTO_NON_PRESENTE = "Progetto non presente a database";
     public static final String NOTE_DATA_SERVIZIO_NON_COMPRESA_IN_PROGETTO = "La data del servizio non rientra all’interno delle date di progetto";
+    public static final String NOTE_TIPO_SERVIZIO_MULTIPLO = "Risulta indicato più di un tipo di servizio prenotato";
 }
