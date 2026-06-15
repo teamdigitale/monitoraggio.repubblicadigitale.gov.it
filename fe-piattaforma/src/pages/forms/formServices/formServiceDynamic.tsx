@@ -9,6 +9,10 @@ import { selectSezioneQ3compilato } from '../../../redux/features/administrative
 import { useAppSelector } from '../../../redux/hooks';
 import { formatAndParseJsonString } from '../../../utils/common';
 import {
+  isDataServizioOltreLimite,
+  MESSAGGIO_DATA_SERVIZIO_LIMITE,
+} from '../../../utils/datesHelper';
+import {
   formFieldI,
   FormHelper,
   FormI,
@@ -148,6 +152,10 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
         );
       case 'date':
       case 'text': {
+        const dataServizioOltreLimite =
+          !formDisabled &&
+          field.field === '22' &&
+          isDataServizioOltreLimite(field.value as string | number | Date);
         return (
           <>
             <Input
@@ -165,6 +173,9 @@ const FormServiceDynamic: React.FC<FormEnteGestoreProgettoFullInterface> = (
               disabled={formDisabled}
               className='pl-0 duration-input'
               maximum={field.field === '28' ? 600 : undefined}
+              validationText={
+                dataServizioOltreLimite ? MESSAGGIO_DATA_SERVIZIO_LIMITE : ''
+              }
             />
             {field.field === '28' && (
               <div className='input-with-message'>

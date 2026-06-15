@@ -32,7 +32,9 @@ import {
 import { ButtonInButtonsBar } from '../../../../../components/ButtonsBar/buttonsBar';
 import { openModal } from '../../../../../redux/features/modal/modalSlice';
 import { CardCounterI } from '../../../../../components/CardCounter/cardCounter';
-import { formTypes } from '../utils';
+import { entityStatus, formTypes } from '../utils';
+import { Alert } from 'design-react-kit';
+import { isDataServizioOltreLimite } from '../../../../../utils/datesHelper';
 import ManageCitizenInService from '../modals/manageCitizenInService';
 import ConfirmSentSurveyModal from '../modals/confirmSentSurveyModal';
 import { resetCompilingSurveyForm } from '../../../../../redux/features/administrativeArea/surveys/surveysSlice';
@@ -85,8 +87,12 @@ const CitizenListTableHeading: TableHeadingI[] = [
   },
 ];
 
-const CitizensList: React.FC<{ dataServizio: Date }> = ({ dataServizio }) => {
+const CitizensList: React.FC<{ dataServizio: Date; statoServizio?: string }> = ({
+  dataServizio,
+  statoServizio,
+}) => {
   const { serviceId } = useParams();
+  const dataServizioOltreLimite = isDataServizioOltreLimite(dataServizio);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const citizens = useAppSelector(selectServices)?.detail?.cittadini;
@@ -246,7 +252,8 @@ const CitizensList: React.FC<{ dataServizio: Date }> = ({ dataServizio }) => {
     {
       text: 'Aggiungi cittadino',
       color: 'primary',
-      disabled: moment().isBefore(moment(dataServizio)),
+      disabled:
+        moment().isBefore(moment(dataServizio)) || dataServizioOltreLimite,
       onClick: () => {
         dispatch(openModal({ id: 'search-citizen-modal' }));
       },
@@ -287,6 +294,13 @@ const CitizensList: React.FC<{ dataServizio: Date }> = ({ dataServizio }) => {
 
   return (
     <div>
+      {dataServizioOltreLimite && (
+        <Alert color='warning'>
+          {statoServizio === entityStatus.NON_ATTIVO
+            ? 'Non puoi aggiungere cittadini a questo servizio perché la sua data è precedente agli ultimi 15 giorni. Per procedere, aggiorna la data del servizio con una più recente.'
+            : 'Non puoi aggiungere cittadini a questo servizio perché la sua data è precedente agli ultimi 15 giorni. Per procedere, crea un nuovo servizio con una data più recente.'}
+        </Alert>
+      )}
       {citizens?.cittadini?.length > 0 ||
       (citizens?.cittadini?.length === 0 && alreadySearched) ? (
         <GenericSearchFilterTableLayout

@@ -85,8 +85,14 @@ export const mandatoryFields: (keyof CSVRecord)[] = [
 // dal BE. Finche' non e' settato la validazione della data servizio non
 // applica alcun limite superiore.
 let finestraCaricamentoMaxDate: Date | null = null;
+let finestraCaricamentoMinDate: Date | null = null;
 let finestraCaricamentoInfoText = '';
 let finestraCaricamentoErrorMessage = '';
+let finestraCaricamentoMinErrorMessage = '';
+
+// Giorni massimi di anticipo della data servizio rispetto all'inizio della
+// finestra di caricamento mensile.
+const GIORNI_ANTICIPO_DATA_SERVIZIO = 45;
 
 const formatGiornoItaliano = (date: Date): string =>
   date.toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -97,11 +103,23 @@ export const setFinestraCaricamento = (dataFine: Date | null) => {
     const giorno = formatGiornoItaliano(dataFine);
     finestraCaricamentoInfoText = ` fino al ${giorno}`;
     finestraCaricamentoErrorMessage = `La data del servizio e' successiva al ${giorno}.`;
+    // L'inizio della finestra mensile coincide con il giorno successivo a
+    // dataFine (ultimo giorno del mese precedente). La data servizio non puo'
+    // essere anteriore di oltre 45 giorni rispetto a tale inizio.
+    finestraCaricamentoMinDate = moment
+      .utc(dataFine)
+      .add(1, 'day')
+      .subtract(GIORNI_ANTICIPO_DATA_SERVIZIO, 'days')
+      .toDate();
+    const giornoMin = formatGiornoItaliano(finestraCaricamentoMinDate);
+    finestraCaricamentoMinErrorMessage = `La data del servizio e' anteriore di oltre ${GIORNI_ANTICIPO_DATA_SERVIZIO} giorni rispetto all'inizio della finestra di caricamento (a partire dal ${giornoMin}).`;
   } else {
     // Mancato recupero della data dal BE: l'utente vede "-" come placeholder
-    // e validateFields non applica alcun limite superiore alla data servizio.
+    // e validateFields non applica alcun limite alla data servizio.
     finestraCaricamentoInfoText = ' -';
     finestraCaricamentoErrorMessage = '';
+    finestraCaricamentoMinDate = null;
+    finestraCaricamentoMinErrorMessage = '';
   }
 };
 
@@ -168,12 +186,15 @@ export const validateFields = (
     const parsedDate = new Date(record.SE1);
     if(!isValidDateFormat(record.SE1) || !isValidDate(record.SE1)){ //valido tramite regex
       errors.push("La data inserita per il servizio non e' valida.");
-    } else if (
-      finestraCaricamentoMaxDate &&
-      parsedDate > finestraCaricamentoMaxDate &&
-      extension === 'csv'
-    ) {
-      errors.push(finestraCaricamentoErrorMessage);
+    } else if (extension === 'csv') {
+      if (finestraCaricamentoMaxDate && parsedDate > finestraCaricamentoMaxDate) {
+        errors.push(finestraCaricamentoErrorMessage);
+      } else if (
+        finestraCaricamentoMinDate &&
+        parsedDate < finestraCaricamentoMinDate
+      ) {
+        errors.push(finestraCaricamentoMinErrorMessage);
+      }
     }
   }
 

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import GenericModal from '../../../../../components/Modals/GenericModal/genericModal';
+import { Alert } from 'design-react-kit';
+import { getTestoAvvisoLimiteServizio } from '../../../../../utils/datesHelper';
 
 import { withFormHandlerProps } from '../../../../../hoc/withFormHandler';
 
@@ -135,6 +137,9 @@ const ManageServices: React.FC<ManageServicesI> = ({
       }}
     >
       <div className='px-3'>
+        {!formDisabled && (
+          <Alert color='danger'>{getTestoAvvisoLimiteServizio()}</Alert>
+        )}
         <FormService
           creation={creation || false}
           edit={edit || false}

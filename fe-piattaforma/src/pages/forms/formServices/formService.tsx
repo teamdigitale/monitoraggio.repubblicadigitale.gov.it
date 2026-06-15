@@ -13,6 +13,7 @@ import {
   createStringOfCompiledSurveySection,
   formatDate,
 } from '../../../utils/common';
+import { getDataMinimaServizio } from '../../../utils/datesHelper';
 import { formFieldI, FormI } from '../../../utils/formHelper';
 import { generateForm } from '../../../utils/jsonFormHelper';
 import { RegexpType } from '../../../utils/validator';
@@ -80,7 +81,12 @@ const FormService: React.FC<FormServiceI> = (props) => {
         if (key === '22') {
           // case date
           formFromSchema[key].maximum = formatDate(projectDetails?.dataFine);
-          formFromSchema[key].minimum = formatDate(projectDetails?.dataInizio);
+          // La data servizio non puo' essere anteriore agli ultimi 15 giorni:
+          // la validazione esistente sul minimum disabilita il salvataggio.
+          // Non si applica in sola lettura (dettaglio servizio).
+          if (!formDisabled) {
+            formFromSchema[key].minimum = getDataMinimaServizio();
+          }
         }
         if (key === '23') {
           // case duration

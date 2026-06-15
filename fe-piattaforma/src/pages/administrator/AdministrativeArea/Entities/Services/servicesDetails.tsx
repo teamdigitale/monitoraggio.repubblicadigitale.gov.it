@@ -153,7 +153,12 @@ const ServicesDetails = () => {
         case tabs.CITIZENS:
           setActiveTab(tabs.CITIZENS);
           const serviceDate = new Date(serviceDetails.dettaglioServizio.dataServizio);
-          setContent(<CitizensList dataServizio={serviceDate} />);
+          setContent(
+            <CitizensList
+              dataServizio={serviceDate}
+              statoServizio={serviceDetails?.dettaglioServizio?.statoServizio}
+            />
+          );
           break;
         default:
           setActiveTab(tabs.INFO);
