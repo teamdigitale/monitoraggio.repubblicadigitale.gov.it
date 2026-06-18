@@ -119,6 +119,43 @@ public interface ServizioSqlRepository extends JpaRepository<ServizioEntity, Lon
 			+ "    AND ( COALESCE( :statiServizioFiltro ) IS NULL OR s.stato      IN ( :statiServizioFiltro ) )      "
 			+ "    AND  s.ID_ENTE = :idEnte"
 			+ "    ORDER BY s.DATA_ORA_AGGIORNAMENTO DESC", nativeQuery = true)
+	@Deprecated
+	List<ServizioEntity> findAllServiziByFacilitatoreOVolontarioAndFiltroOld(
+			@Param(value = "criterioRicercaServizio") String criterioRicercaServizio,
+			@Param(value = "idsProgrammaFiltro") List<String> idsProgrammaFiltro,
+			@Param(value = "idsProgettoFiltro") List<String> idsProgettoFiltro,
+			@Param(value = "idEnte") Long idEnte,
+			@Param(value = "tipologieServizi") List<String> tipologieServizi,
+			@Param(value = "statiServizioFiltro") List<String> statiServizioFiltro,
+			@Param(value = "codiceFiscaleUtente") String codiceFiscaleUtente);
+
+
+		@Query(value = " "
+			+ " SELECT s.* "
+			+ " FROM servizio s "
+			+ " WHERE 1=1 "
+			+ " AND s.ID_ENTE = :idEnte "
+			+ " AND s.ID_FACILITATORE COLLATE utf8mb4_unicode_ci = :codiceFiscaleUtente "
+			+ " AND (:criterioRicercaServizio IS NULL OR s.ID LIKE :criterioRicercaServizio OR CONVERT(s.NOME USING utf8mb4) LIKE :criterioRicercaServizio) "
+			+ " AND (:statiServizioFiltro IS NULL OR s.stato IN (:statiServizioFiltro)) "
+			+ " AND (:idsProgettoFiltro IS NULL OR s.ID_PROGETTO IN (:idsProgettoFiltro)) "
+			+ " AND (:idsProgrammaFiltro IS NULL OR s.ID_PROGETTO IN ( "
+			+ "       SELECT p.ID "
+			+ "       FROM progetto p "
+			+ "       WHERE p.ID_PROGRAMMA IN (:idsProgrammaFiltro) "
+			+ "     )) "
+			+ " AND (:tipologieServizi IS NULL OR EXISTS ( "
+			+ "       SELECT 1 "
+			+ "       FROM tipologia_servizio ts "
+			+ "       WHERE ts.servizio_id = s.id "
+			+ "         AND ts.titolo IN (:tipologieServizi) "
+			+ "     )) "
+			+ " AND EXISTS ( "
+			+ "       SELECT 1 "
+			+ "       FROM ente_sede_progetto_facilitatore espf "
+			+ "       WHERE espf.ID_FACILITATORE = s.ID_FACILITATORE COLLATE utf8mb4_unicode_ci "
+			+ " ) "
+			+ " ORDER BY s.DATA_ORA_AGGIORNAMENTO DESC ", nativeQuery = true)
 	List<ServizioEntity> findAllServiziByFacilitatoreOVolontarioAndFiltro(
 			@Param(value = "criterioRicercaServizio") String criterioRicercaServizio,
 			@Param(value = "idsProgrammaFiltro") List<String> idsProgrammaFiltro,
