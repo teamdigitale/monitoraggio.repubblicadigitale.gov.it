@@ -1,5 +1,11 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.539](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.538...1.0.0-test.539) (2026-06-18)
+
+### Bug Fixes
+
+* **test:** query recupero servizi x facvol 2 20260618 ([6769a11](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6769a11c8913593b62fc849cac03f9a58bea4ea6))
+
 ## [1.0.0-test.538](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.537...1.0.0-test.538) (2026-06-18)
 
 ### Bug Fixes
