@@ -1,5 +1,11 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.0.0-test.540](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.539...1.0.0-test.540) (2026-06-22)
+
+### Bug Fixes
+
+* **test:** unicita per storico_ente_gestore_progetto 20260622 ([b6dcea9](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b6dcea961e7f3a1603fa9099b0a25c76d9aa47a7))
+
 ## [1.0.0-test.539](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.0.0-test.538...1.0.0-test.539) (2026-06-18)
 
 ### Bug Fixes
