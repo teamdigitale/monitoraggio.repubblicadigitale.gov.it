@@ -11,12 +11,16 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "STORICO_ENTE_GESTORE_PROGETTO")
+@Table(name = "STORICO_ENTE_GESTORE_PROGETTO",
+	uniqueConstraints = @UniqueConstraint(
+		name = "uk_storico_ente_gestore_progetto",
+		columnNames = { "ENTE_ID", "PROGRAMMA_ID", "PROGETTO_ID" }))
 @Setter
 @Getter
 public class StoricoEnteGestoreProgettoEntity implements Serializable {
