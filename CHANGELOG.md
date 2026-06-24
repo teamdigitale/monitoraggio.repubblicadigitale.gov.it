@@ -1,5 +1,30 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.62.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.61.0...1.62.0) (2026-06-24)
+
+### Features
+
+* **U541:** accorgimenti grafici form sede 20260514 ([e130727](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e13072778c95775956abbc487cd9dab18a3dfe5b))
+* **U541:** modifiche form sede 20260511 ([b4f8edc](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/b4f8edc24910b01bf50f6450e31418b2fc99a6c1))
+* **U541:** business logic gestione sede 20260511 ([380a890](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/380a8907887f97a5c3925ce44c3a37e89867abeb))
+* **secu2:** update rocketchat 20260505 ([f1a5388](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/f1a5388d141078301d30ced3f9ccd5585c99e222))
+* **secu2:** incremento file snyk 20260429 ([e2ec002](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e2ec00292445fa5a0bf95c004c19aa8f88b83b75))
+
+### Bug Fixes
+
+* **test:** action 20260520 ([0bd51e4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0bd51e4c21e740a8845c1645eb67f78ce175cef4))
+* **test:** unicita per storico_ente_gestore_progetto 20260622 ([e93ec19](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/e93ec1903ecaaf7c9ff95dfa24e0101f4ebc5075))
+* **test:** query recupero servizi x facvol 2 20260618 ([6b222b3](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6b222b3b557bf574cfbca63aad1cc1196adbf7e0))
+* **test:** query recupero servizi x facvol 20260618 ([0cc720f](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0cc720f27b984baace6125d1d20d558f51142c0b))
+* **U541:** risoluzione issue 20260604 ([19af191](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/19af1916c9a02980294eeef188e986bc1c0a4ace))
+* **U541:** obbligo fascia oraria 20260603 ([af9e5f5](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/af9e5f549d10b9af1f70d76b019f7684282717d3))
+* **secu2:** gestione frame rocketchat 20260521 ([46162d2](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/46162d2b50c574b43123a67860471fc8a5ee75b9))
+* **secu2:** upgrade commitlint 20260514 ([0183d71](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/0183d71c6d7244c96ec9088c6607278b82ea4246))
+* **secu2:** action github 20260513 ([ca022da](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/ca022da420add7af3d092e21de5e92496a6d6dda))
+* **secu2:** additional secu 20260513 ([08642c0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/08642c090ed8d4bee19cbbe382d0c77f4ef30c56))
+* **secu2:** aggiornamento action 20260513 ([6b4505e](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/6b4505e9db06dbe2f3c628ba07ac3bdc464c8af7))
+* **secu2:** remediation secu 2 20260428 ([1fae298](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/1fae2987c110986f13c7fdcbf7278377c4a533aa))
+
 ## [1.61.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.60.1...1.61.0) (2026-05-29)
 
 
