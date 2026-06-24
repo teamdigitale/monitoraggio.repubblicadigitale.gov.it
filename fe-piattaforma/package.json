@@ -91,7 +91,7 @@
     "cross-env": "^7.0.3",
     "css-loader": "6.6.0",
     "css-minimizer-webpack-plugin": "^4.0.0",
-    "cypress": "9.6.0",
+    "cypress": "15.18.0",
     "cz-conventional-changelog": "^3.3.0",
     "dotenv-webpack": "^7.1.0",
     "eslint": "^8.23.0",
