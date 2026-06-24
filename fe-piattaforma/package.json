@@ -26,7 +26,7 @@
     "buffer": "^6.0.3",
     "cypress-axe": "^0.14.0",
     "design-react-kit": "4.0.2",
-    "dompurify": "3.1.6",
+    "dompurify": "3.4.11",
     "draft-js": "^0.11.7",
     "draftjs-to-html": "^0.9.1",
     "focus-trap-react": "^8.11.1",
