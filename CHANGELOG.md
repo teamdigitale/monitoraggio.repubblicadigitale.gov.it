@@ -1,5 +1,11 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.63.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.62.0...1.63.0) (2026-06-30)
+
+### Features
+
+* **test:** aggiornamento data limite giugno 20260630 ([d215615](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/d2156156ac62a7720767879824ab651cdaa0d9dd))
+
 ## [1.62.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.61.0...1.62.0) (2026-06-24)
 
 ### Features
