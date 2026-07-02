@@ -1,0 +1,39 @@
+# Deploy con database GESTITI esterni (es. Azure): nessun container MySQL/Mongo,
+# nessun seed. La vista vw_primo_servizio_cittadino e la collection
+# questionarioTemplateIstanza esistono gia' nelle istanze copiate.
+#
+# Uso:
+#   cp .env.prod.example .env.prod   (poi compilare i valori reali)
+#   docker compose --env-file .env.prod -f docker-compose.prod.yml up --build -d
+
+services:
+  backend:
+    build: ./backend
+    environment:
+      SERVER_PORT: 8081
+      MYSQL_URL: ${MYSQL_URL:?definire MYSQL_URL nel file .env.prod}
+      MYSQL_USERNAME: ${MYSQL_USERNAME:?definire MYSQL_USERNAME nel file .env.prod}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?definire MYSQL_PASSWORD nel file .env.prod}
+      MONGODB_URI: ${MONGODB_URI:?definire MONGODB_URI nel file .env.prod}
+    # Il backend non e' pubblicato sull'host: e' raggiungibile solo dal frontend
+    # sulla rete interna. Per esporlo (debug) scommentare:
+    # ports:
+    #   - "${BACKEND_PORT:-8081}:8081"
+    expose:
+      - "8081"
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_BASE_URL: /api
+    environment:
+      # Se il backend e' su questa stessa rete compose lasciare il default;
+      # se e' un servizio separato (es. Container Apps) mettere il suo URL interno.
+      BACKEND_URL: ${BACKEND_URL:-http://backend:8081}
+    ports:
+      - "${FRONTEND_PORT:-8080}:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
