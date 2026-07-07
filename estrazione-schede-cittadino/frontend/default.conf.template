@@ -1,0 +1,24 @@
+server {
+    listen 80;
+    server_name _;
+
+    root /usr/share/nginx/html;
+    index index.html;
+
+    # /api/* inoltrato al backend. BACKEND_URL (senza slash finale) viene iniettato
+    # all'avvio del container tramite envsubst dell'immagine nginx; lo slash dopo la
+    # variabile rimuove il prefisso /api (/api/cittadino/ricerca -> /cittadino/ricerca).
+    location /api/ {
+        proxy_pass ${BACKEND_URL}/;
+        proxy_ssl_server_name on;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # SPA: ogni route sconosciuta ricade su index.html.
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}

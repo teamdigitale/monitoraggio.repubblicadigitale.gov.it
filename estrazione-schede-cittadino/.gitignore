@@ -1,0 +1,5 @@
+# File d'ambiente con credenziali: mai committare (solo i .example sono tracciati)
+.env
+.env.*
+!.env.example
+!.env.prod.example

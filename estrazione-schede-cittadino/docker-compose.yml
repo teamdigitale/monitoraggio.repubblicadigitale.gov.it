@@ -1,0 +1,56 @@
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-facilita}
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./db/mysql:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p${MYSQL_ROOT_PASSWORD:-root}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  mongo:
+    image: mongo:6
+    environment:
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE:-facilita}
+    ports:
+      - "${MONGO_PORT:-27017}:27017"
+    volumes:
+      - mongo-data:/data/db
+      - ./db/mongo:/docker-entrypoint-initdb.d:ro
+
+  backend:
+    build: ./backend
+    environment:
+      SERVER_PORT: 8081
+      MYSQL_URL: "jdbc:mysql://mysql:3306/${MYSQL_DATABASE:-facilita}?useSSL=false&serverTimezone=Europe/Rome&allowPublicKeyRetrieval=true"
+      MYSQL_USERNAME: root
+      MYSQL_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+      MONGODB_URI: "mongodb://mongo:27017/${MONGO_DATABASE:-facilita}"
+    ports:
+      - "${BACKEND_PORT:-8081}:8081"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      mongo:
+        condition: service_started
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_BASE_URL: /api
+    ports:
+      - "${FRONTEND_PORT:-8080}:80"
+    depends_on:
+      - backend
+
+volumes:
+  mysql-data:
+  mongo-data:
