@@ -1,5 +1,12 @@
 # Monitoraggio.RepubblicaDigitale.Gov.it
 
+## [1.63.0-test.1](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.62.0...1.63.0-test.1) (2026-07-07)
+
+### Features
+
+* **test:** estrapolazione logica 20260702 ([9fccde4](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/9fccde42cbe752d938fb2511292a3de59306471e))
+* **test:** aggiornamento data limite giugno 20260630 ([7eb5da0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/commit/7eb5da07ad6f696f8f0bd845b1c5939e6f75d672))
+
 ## [1.62.0](https://github.com/teamdigitale/monitoraggio.repubblicadigitale.gov.it/compare/1.61.0...1.62.0) (2026-06-24)
 
 ### Features
