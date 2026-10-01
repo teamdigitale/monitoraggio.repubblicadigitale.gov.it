@@ -33,7 +33,7 @@
     "i18next": "^21.8.9",
     "lodash.isempty": "4.4.0",
     "lodash.isequal": "4.5.0",
-    "moment": "2.30.1",
+    "moment": "2.31.0",
     "pako": "^2.1.0",
     "papaparse": "5.4.1",
     "react": "^17.0.2",
